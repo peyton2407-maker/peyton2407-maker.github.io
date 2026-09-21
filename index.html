@@ -659,13 +659,14 @@ button { touch-action: manipulation; }
   <script>/* Live refresh: pull ESPN + fantasy on every open, then re-project. */
 const LIVE = {
   NFL_HFA: 2.15,
-  CFB_HFA: 2.75,
+  CFB_HFA: 3.15,
   NFL_SIGMA: 13.0,
-  CFB_SIGMA: 15.8,
+  CFB_SIGMA: 16.4,
   NFL_AVG_TOTAL: 45.6,
-  CFB_AVG_TOTAL: 53.8,
+  CFB_AVG_TOTAL: 54.2,
   MARKET_WEIGHT_NFL: 0.86,
-  MARKET_WEIGHT_CFB: 0.78,
+  MARKET_WEIGHT_CFB: 0.44,
+  CFB_TOTAL_MARKET: 0.52,
   SIM_N: 150000,
   PRIORS: {
     nfl: { rush: 118, rec: 218, allowed: 336, ppg: 22.8 },
@@ -945,7 +946,30 @@ function getResiduals() {
   if (!DATA.residuals) {
     DATA.residuals = { nfl: {}, cfb: {}, games_learned: {}, history: [] };
   }
+  DATA.residuals.nfl = DATA.residuals.nfl || {};
+  DATA.residuals.cfb = DATA.residuals.cfb || {};
+  DATA.residuals.games_learned = DATA.residuals.games_learned || {};
+  DATA.residuals.history = DATA.residuals.history || [];
   return DATA.residuals;
+}
+function loadResiduals() {
+  try {
+    const c = JSON.parse(localStorage.getItem("doublegs-learn") || "null");
+    if (!c) return;
+    const res = getResiduals();
+    if (c.cfb) res.cfb = Object.assign(res.cfb || {}, c.cfb);
+    if (c.nfl) res.nfl = Object.assign(res.nfl || {}, c.nfl);
+    if (c.games_learned) res.games_learned = Object.assign(c.games_learned, res.games_learned);
+    if (Array.isArray(c.history) && c.history.length) res.history = c.history.slice(-80);
+  } catch (e) {}
+}
+function saveResiduals() {
+  try {
+    const res = getResiduals();
+    localStorage.setItem("doublegs-learn", JSON.stringify({
+      cfb: res.cfb, nfl: res.nfl, games_learned: res.games_learned, history: (res.history || []).slice(-80), saved: Date.now()
+    }));
+  } catch (e) {}
 }
 
 function residualFor(league, teamId) {
@@ -964,21 +988,20 @@ function learnFromFinals(games) {
     const as = Number(g.away.score);
     if (!Number.isFinite(hs) || !Number.isFinite(as)) return;
     const p = g.proj || {};
-    const predM = p.blended_margin != null ? Number(p.blended_margin) : null;
-    const predT = p.hashmark_total != null ? Number(p.hashmark_total) : null;
-    const actM = hs - as;
-    const actT = hs + as;
+    let predM = p._preLearnMargin != null ? Number(p._preLearnMargin) : (p.blended_margin != null ? Number(p.blended_margin) : null);
+    let predT = p._preLearnTotal != null ? Number(p._preLearnTotal) : (p.hashmark_total != null ? Number(p.hashmark_total) : null);
+    if (predM == null && g.odds && g.odds.home_spread != null) predM = -Number(g.odds.home_spread);
+    if (predT == null && g.odds && g.odds.total != null) predT = Number(g.odds.total);
     if (predM == null || predT == null || Number.isNaN(predT)) return;
-    const errM = actM - predM;
-    const errT = actT - predT;
+    const errM = (hs - as) - predM;
+    const errT = (hs + as) - predT;
     const lg = g.league === "nfl" ? "nfl" : "cfb";
+    const recent = lg === "cfb" ? 0.52 : 0.45;
     function bump(id, marginShare, offShare, defShare) {
       const k = String(id);
       const row = res[lg][k] || { n: 0, margin: 0, total: 0, off: 0, def: 0 };
       const n = row.n + 1;
-      const w = 1 / n;
-      // fading average: new games count more early, then stabilize
-      const a = n <= 4 ? 0.45 : n <= 10 ? 0.22 : 0.12;
+      const a = n <= 2 ? recent : n <= 5 ? (lg === "cfb" ? 0.32 : 0.22) : (lg === "cfb" ? 0.18 : 0.12);
       row.n = n;
       row.margin = +(row.margin * (1 - a) + marginShare * a).toFixed(3);
       row.total = +(row.total * (1 - a) + errT * a).toFixed(3);
@@ -986,11 +1009,10 @@ function learnFromFinals(games) {
       row.def = +(row.def * (1 - a) + defShare * a).toFixed(3);
       res[lg][k] = row;
     }
-    // home residual gets +errM (they outscored the projection), away gets -errM
-    const homeOff = (hs - (p.home_points || hs)) ;
-    const awayOff = (as - (p.away_points || as));
-    bump(g.home.id, errM, homeOff, -(as - (p.away_points || as)));
-    bump(g.away.id, -errM, awayOff, -(hs - (p.home_points || hs)));
+    const homeOff = hs - (p.home_points || (predT + predM) / 2);
+    const awayOff = as - (p.away_points || (predT - predM) / 2);
+    bump(g.home.id, errM, homeOff, -awayOff);
+    bump(g.away.id, -errM, awayOff, -homeOff);
     res.games_learned[hid] = {
       when: g.date, league: lg, name: g.short_name || g.name,
       actual: `${as}-${hs}`, pred: `${p.away_points}-${p.home_points}`,
@@ -1003,6 +1025,7 @@ function learnFromFinals(games) {
     if (res.history.length > 80) res.history = res.history.slice(-80);
     learned++;
   });
+  if (learned) saveResiduals();
   return learned;
 }
 
@@ -1012,29 +1035,51 @@ function applyLearningToGame(g) {
   const hr = residualFor(lg, g.home.id);
   const ar = residualFor(lg, g.away.id);
   const hm = (hr.margin || 0) - (ar.margin || 0);
-  const totShift = 0.35 * ((hr.total || 0) + (ar.total || 0)) / 2;
+  const totShiftBase = ((hr.total || 0) + (ar.total || 0)) / 2;
   const p = g.proj;
-  if (p.blended_margin != null && Math.abs(hm) > 0.05) {
-    p.blended_margin = +(Number(p.blended_margin) + 0.55 * hm).toFixed(2);
+  if (p._preLearnMargin == null && p.blended_margin != null) p._preLearnMargin = Number(p.blended_margin);
+  if (p._preLearnTotal == null && p.hashmark_total != null) p._preLearnTotal = Number(p.hashmark_total);
+  const nGames = (hr.n || 0) + (ar.n || 0);
+  const cfb = lg === "cfb";
+  const w = cfb ? 0.74 : 0.55;
+  const tw = cfb ? 0.48 : 0.35;
+  const conf = nGames <= 0 ? 0 : nGames === 1 ? 0.62 : nGames <= 3 ? 0.82 : 1;
+  const mShift = Math.max(-7.5, Math.min(7.5, w * conf * hm));
+  const totShift = Math.max(-6, Math.min(6, tw * conf * totShiftBase));
+  const baseM = p._preLearnMargin;
+  const baseT = p._preLearnTotal;
+  if (baseM != null && Math.abs(mShift) > 0.05) {
+    p.blended_margin = +(baseM + mShift).toFixed(2);
+    p.hashmark_home_spread = +(-p.blended_margin).toFixed(1);
+  } else if (baseM != null) {
+    p.blended_margin = +Number(baseM).toFixed(2);
     p.hashmark_home_spread = +(-p.blended_margin).toFixed(1);
   }
-  if (p.hashmark_total != null && Math.abs(totShift) > 0.05) {
-    p.hashmark_total = +(Number(p.hashmark_total) + totShift).toFixed(1);
+  if (baseT != null && Math.abs(totShift) > 0.05) {
+    p.hashmark_total = +(baseT + totShift).toFixed(1);
+  } else if (baseT != null) {
+    p.hashmark_total = +Number(baseT).toFixed(1);
   }
   if (p.blended_margin != null && p.hashmark_total != null) {
     p.home_points = +Math.max(3, (Number(p.hashmark_total) + Number(p.blended_margin)) / 2).toFixed(1);
     p.away_points = +Math.max(3, (Number(p.hashmark_total) - Number(p.blended_margin)) / 2).toFixed(1);
+    const sigma = cfb ? LIVE.CFB_SIGMA : LIVE.NFL_SIGMA;
+    p.win_prob_home = +normCdf(Number(p.blended_margin) / sigma).toFixed(4);
+    p.win_prob_away = +(1 - p.win_prob_home).toFixed(4);
   }
   if (g.odds && g.odds.home_spread != null && p.blended_margin != null) {
     const mktMargin = -Number(g.odds.home_spread);
     p.edge_spread = +(p.blended_margin - mktMargin).toFixed(2);
+    if (Math.abs(p.edge_spread) < (cfb ? 1.6 : 1.8)) { p.pick = "NO PLAY"; p.pick_line = null; }
+    else if (p.edge_spread > 0) { p.pick = g.home.abbr; p.pick_line = `${g.home.abbr} ${Number(g.odds.home_spread) >= 0 ? "+" : ""}${Number(g.odds.home_spread).toFixed(1)}`; }
+    else { p.pick = g.away.abbr; p.pick_line = `${g.away.abbr} ${(-Number(g.odds.home_spread)) >= 0 ? "+" : ""}${(-Number(g.odds.home_spread)).toFixed(1)}`; }
   }
   if (g.odds && g.odds.total != null && p.hashmark_total != null) {
     p.edge_total = +(p.hashmark_total - Number(g.odds.total)).toFixed(2);
-    if (Math.abs(p.edge_total) < 0.8) p.total_pick = "NO PLAY";
+    if (Math.abs(p.edge_total) < (cfb ? 1.5 : 0.8)) p.total_pick = "NO PLAY";
     else p.total_pick = p.edge_total > 0 ? `OVER ${g.odds.total}` : `UNDER ${g.odds.total}`;
   }
-  p.learned = { home_n: hr.n, away_n: ar.n, margin_shift: +(0.55 * hm).toFixed(2), total_shift: +totShift.toFixed(2) };
+  p.learned = { home_n: hr.n, away_n: ar.n, margin_shift: +mShift.toFixed(2), total_shift: +totShift.toFixed(2) };
   if (g.box) {
     g.box.home_points = p.home_points;
     g.box.away_points = p.away_points;
@@ -1087,9 +1132,25 @@ function erf(x) {
 function normCdf(x) { return 0.5 * (1 + erf(x / Math.sqrt(2))); }
 
 async function getJSON(url, headers) {
-  const res = await fetch(url, { headers: headers || { Accept: "application/json" } });
-  if (!res.ok) throw new Error(`${res.status} ${url}`);
-  return res.json();
+  const opts = { headers: headers || { Accept: "application/json" } };
+  try {
+    const res = await fetch(url, opts);
+    if (res.ok) return res.json();
+    throw new Error(`${res.status} ${url}`);
+  } catch (err) {
+    if (!/espn\.com/i.test(url)) throw err;
+    const proxies = [
+      "https://corsproxy.io/?" + encodeURIComponent(url),
+      "https://api.allorigins.win/raw?url=" + encodeURIComponent(url)
+    ];
+    for (const p of proxies) {
+      try {
+        const res = await fetch(p);
+        if (res.ok) return res.json();
+      } catch (e) {}
+    }
+    throw err;
+  }
 }
 
 function parseAmerican(odds) {
@@ -1363,6 +1424,8 @@ function projectGame(game, ratings) {
   const hr = ratings[game.home.id] || {};
   const ar = ratings[game.away.id] || {};
   let hfa = game.neutral ? 0 : (league === "nfl" ? LIVE.NFL_HFA : LIVE.CFB_HFA);
+  if (league === "cfb" && game.neutral) hfa = 0.4;
+  if (league === "cfb" && game.conference_game && !game.neutral) hfa += 0.2;
   if (game.country && !["", "USA", "US", "United States"].includes(game.country) && !game.neutral) hfa *= 0.35;
   let modelMargin = (hr.fpi != null && ar.fpi != null) ? Number(hr.fpi) - Number(ar.fpi) + hfa : null;
   const odds = game.odds || {};
@@ -1371,7 +1434,8 @@ function projectGame(game, ratings) {
   const homeTax = injuryTaxFor(game, "home");
   const awayTax = injuryTaxFor(game, "away");
   if (modelMargin != null) modelMargin = modelMargin - homeTax + awayTax;
-  const mw = league === "nfl" ? LIVE.MARKET_WEIGHT_NFL : LIVE.MARKET_WEIGHT_CFB;
+  let mw = league === "nfl" ? LIVE.MARKET_WEIGHT_NFL : LIVE.MARKET_WEIGHT_CFB;
+  if (league === "cfb" && (hr.fpi == null || ar.fpi == null)) mw = 0.88;
   let blendedMargin = null;
   if (modelMargin != null && mktMargin != null) blendedMargin = mw * mktMargin + (1 - mw) * modelMargin;
   else blendedMargin = modelMargin ?? mktMargin;
@@ -1382,25 +1446,37 @@ function projectGame(game, ratings) {
     const homePts = LIVE.NFL_AVG_TOTAL / 2 + (hr.off || 0) - (ar.def || 0) + 0.45 * hfa;
     const awayPts = LIVE.NFL_AVG_TOTAL / 2 + (ar.off || 0) - (hr.def || 0) - 0.45 * hfa;
     modelTotal = homePts + awayPts;
+  } else if (league === "cfb") {
+    const offH = hr.off, offA = ar.off, defH = hr.def, defA = ar.def;
+    if (offH != null && offA != null && defH != null && defA != null) {
+      modelTotal = LIVE.CFB_AVG_TOTAL
+        + 0.07 * ((offH - 50) + (offA - 50))
+        - 0.055 * ((defH - 60) + (defA - 60));
+    } else if (modelMargin != null) {
+      const gap = Math.abs((hr.fpi || 0) - (ar.fpi || 0));
+      modelTotal = LIVE.CFB_AVG_TOTAL + Math.min(8, gap * 0.1);
+    }
+    if (modelTotal != null) modelTotal = Math.max(38, Math.min(74, modelTotal));
   } else if (modelMargin != null) {
     const gap = Math.abs((hr.fpi || 0) - (ar.fpi || 0));
     modelTotal = LIVE.CFB_AVG_TOTAL + Math.min(6, gap * 0.08);
   }
   const mktTotal = odds.total;
+  const tw = league === "cfb" ? (LIVE.CFB_TOTAL_MARKET || 0.52) : mw;
   let blendedTotal = null;
-  if (modelTotal != null && mktTotal != null) blendedTotal = mw * Number(mktTotal) + (1 - mw) * modelTotal;
+  if (modelTotal != null && mktTotal != null) blendedTotal = tw * Number(mktTotal) + (1 - tw) * modelTotal;
   else blendedTotal = modelTotal ?? mktTotal;
   const edgeSpread = blendedMargin != null && mktMargin != null ? blendedMargin - mktMargin : null;
   const edgeTotal = blendedTotal != null && mktTotal != null ? blendedTotal - Number(mktTotal) : null;
   let pick = null, pickLine = null;
   if (edgeSpread != null && mktHomeSpread != null) {
-    if (Math.abs(edgeSpread) < (league === "nfl" ? 1.8 : 2.2)) pick = "NO PLAY";
+    if (Math.abs(edgeSpread) < (league === "nfl" ? 1.8 : 1.6)) pick = "NO PLAY";
     else if (edgeSpread > 0) { pick = game.home.abbr; pickLine = `${game.home.abbr} ${mktHomeSpread >= 0 ? "+" : ""}${mktHomeSpread.toFixed(1)}`; }
     else { pick = game.away.abbr; pickLine = `${game.away.abbr} ${(-mktHomeSpread) >= 0 ? "+" : ""}${(-mktHomeSpread).toFixed(1)}`; }
   }
   let totalPick = null;
   if (edgeTotal != null && mktTotal != null) {
-    if (Math.abs(edgeTotal) < (league === "nfl" ? 1.6 : 2.0)) totalPick = "NO PLAY";
+    if (Math.abs(edgeTotal) < (league === "nfl" ? 1.6 : 1.5)) totalPick = "NO PLAY";
     else totalPick = edgeTotal > 0 ? `OVER ${mktTotal}` : `UNDER ${mktTotal}`;
   }
   let homePoints = null, awayPoints = null;
@@ -1432,6 +1508,67 @@ function projectGame(game, ratings) {
     missing_ratings: !(hr.fpi != null && ar.fpi != null),
   };
 }
+
+function cfbRatingsMap() {
+  const map = {};
+  (((DATA && DATA.ratings) || {}).cfb || []).forEach((r) => { if (r && r.id) map[String(r.id)] = r; });
+  return map;
+}
+function repriceCfbGame(g) {
+  if (!g || g.league !== "cfb" || !g.proj) return g;
+  const p = g.proj;
+  const wx = Number(p.weather_adj_total) || 0;
+  const map = cfbRatingsMap();
+  const ratings = {};
+  ratings[g.home.id] = Object.assign({}, map[String(g.home.id)] || {}, {
+    fpi: p.home_fpi != null ? p.home_fpi : (map[String(g.home.id)] || {}).fpi,
+    off: p.home_off != null ? p.home_off : (map[String(g.home.id)] || {}).off,
+    def: p.home_def != null ? p.home_def : (map[String(g.home.id)] || {}).def,
+    fpi_rank: p.home_fpi_rank
+  });
+  ratings[g.away.id] = Object.assign({}, map[String(g.away.id)] || {}, {
+    fpi: p.away_fpi != null ? p.away_fpi : (map[String(g.away.id)] || {}).fpi,
+    off: p.away_off != null ? p.away_off : (map[String(g.away.id)] || {}).off,
+    def: p.away_def != null ? p.away_def : (map[String(g.away.id)] || {}).def,
+    fpi_rank: p.away_fpi_rank
+  });
+  const fresh = projectGame(g, ratings);
+  Object.assign(p, fresh);
+  p.weather_adj_total = wx;
+  if (wx && p.hashmark_total != null) {
+    p.hashmark_total = +(Number(p.hashmark_total) + wx).toFixed(1);
+    if (p.blended_margin != null) {
+      p.home_points = +Math.max(3, (Number(p.hashmark_total) + Number(p.blended_margin)) / 2).toFixed(1);
+      p.away_points = +Math.max(3, (Number(p.hashmark_total) - Number(p.blended_margin)) / 2).toFixed(1);
+    }
+  }
+  p._preLearnMargin = p.blended_margin;
+  p._preLearnTotal = p.hashmark_total;
+  p._cfbV2 = true;
+  if (g.box) {
+    g.box.home_points = p.home_points;
+    g.box.away_points = p.away_points;
+    g.box.total_points = p.hashmark_total;
+  }
+  return g;
+}
+function repriceCfbBoard() {
+  (DATA.games || []).filter((g) => g.league === "cfb").forEach(repriceCfbGame);
+  (DATA.games || []).forEach(applyLearningToGame);
+  if (DATA.notes) {
+    DATA.notes.cfb_blend = "56% FPI / 44% market · off/def totals · learns after every final";
+    DATA.notes.hfa = Object.assign({}, DATA.notes.hfa || {}, { cfb: LIVE.CFB_HFA });
+    DATA.notes.sigma = Object.assign({}, DATA.notes.sigma || {}, { cfb: LIVE.CFB_SIGMA });
+    const n = Object.values((getResiduals().games_learned) || {}).filter((x) => x.league === "cfb").length;
+    DATA.notes.learning = n
+      ? `CFB board shifted after ${n} finals (form fades in; remaining games move).`
+      : "CFB board will shift after every final — residuals stick on this device.";
+  }
+}
+
+window.learnFromFinals = learnFromFinals;
+window.applyLearningToGame = applyLearningToGame;
+window.repriceCfbBoard = repriceCfbBoard;
 
 function mulberry32(a) {
   return function () {
@@ -2483,7 +2620,7 @@ function projectionTable(games) {
   if (!rows.length) return "";
   return `
     <div class="card board-card">
-      <h3 style="margin:0 0 10px">${view === "nfl" ? "Best projections" : view === "cfb" ? "College football" : view === "live" ? "Live board" : "Full"} projection board</h3>
+      <h3 style="margin:0 0 10px">${view === "nfl" ? "Best projections" : view === "cfb" ? "Best CFB projections" : view === "live" ? "Live board" : "Full"} projection board</h3>
       <div class="tablewrap">
       <table class="boardtable">
         <thead>
@@ -2539,7 +2676,7 @@ function renderBoard() {
     <div class="stat"><b>${upcoming.length}</b><span>games on this board</span></div>
     <div class="stat"><b>${games.filter((g) => g.box).length}</b><span>with score + yard projections</span></div>
     <div class="stat"><b>${plays.length}</b><span>spread leans ≥ 0.6 pts</span></div>
-    <div class="stat"><b>${games.filter((g) => g.indoor || g.weather).length}</b><span>with kickoff weather</span></div>`;
+    <div class="stat"><b>${view === "cfb" ? Object.values((DATA.residuals && DATA.residuals.games_learned) || {}).filter((x)=>x.league==="cfb").length : games.filter((g) => g.indoor || g.weather).length}</b><span>${view === "cfb" ? "finals already learned" : "with kickoff weather"}</span></div>`;
   if (!games.length) {
     $("#board").innerHTML = `<div class="empty">No games in this filter. Switch the dropdown to “Upcoming only” or “All games”.</div>`;
     return;
@@ -3113,13 +3250,19 @@ function renderCfbWeather() {
 
 async function pullLiveScores() {
   try {
-    const nfl = await getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?limit=50");
-    const parsed = parseGames(nfl, "nfl");
+    const jobs = [
+      getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?limit=50").then((d) => parseGames(d, "nfl")).catch(() => []),
+      getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?limit=300").then((d) => parseGames(d, "cfb")).catch(() => []),
+      getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?groups=80&limit=300").then((d) => parseGames(d, "cfb")).catch(() => [])
+    ];
+    const packs = await Promise.all(jobs);
     const byId = {};
-    parsed.forEach((g) => { byId[String(g.id)] = g; });
+    packs.flat().forEach((g) => { if (g && g.id) byId[String(g.id)] = g; });
+    let newFinals = 0;
     (DATA.games || []).forEach((g) => {
       const n = byId[String(g.id)];
       if (!n) return;
+      const wasDone = g.completed;
       g.status = n.status;
       g.status_detail = n.status_detail;
       g.completed = n.completed;
@@ -3129,15 +3272,23 @@ async function pullLiveScores() {
       if (g.home) g.home.score = n.home.score;
       if (g.away) g.away.score = n.away.score;
       if (n.odds && n.odds.home_spread != null) g.odds = n.odds;
+      if (!wasDone && g.completed && g.league === "cfb") newFinals++;
     });
     if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games);
-    if (typeof learnFromFinals === "function") {
-      learnFromFinals(DATA.games || []);
-      (DATA.games || []).forEach((g) => applyLearningToGame(g));
+    const learned = typeof learnFromFinals === "function" ? learnFromFinals(DATA.games || []) : 0;
+    (DATA.games || []).forEach((g) => applyLearningToGame(g));
+    if (learned || newFinals) {
+      if (typeof repriceCfbBoard === "function") { /* residuals already applied */ }
+      if (DATA.notes) {
+        const n = Object.values((getResiduals().games_learned) || {}).filter((x) => x.league === "cfb").length;
+        DATA.notes.learning = `CFB board shifted after ${n} finals.`;
+      }
     }
     if (typeof renderBoard === "function") renderBoard();
+    if (view === "cfbpicks" && typeof renderCfbPicks === "function") renderCfbPicks();
     const liveN = (DATA.games || []).filter((g) => typeof isLiveGame === "function" && isLiveGame(g)).length;
     if (liveN) setStamp(liveN + " live · rest-of-game on", true);
+    else if (learned) setStamp("Learned " + learned + " new finals", true);
   } catch (e) { console.warn("live scores", e); }
 }
 
@@ -3240,6 +3391,8 @@ async function boot() {
   $("#overlay").addEventListener("click", (e) => { if (e.target.id === "overlay") closeModal(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
   setView("nfl");
+  try { loadResiduals(); } catch (e) {}
+  try { if (typeof repriceCfbBoard === "function") repriceCfbBoard(); } catch (e) { console.warn(e); }
   if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games || []);
   try {
     const learn = window.learnFromFinals || learnFromFinals;
