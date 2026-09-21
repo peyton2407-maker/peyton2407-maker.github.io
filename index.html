@@ -114,9 +114,9 @@ button { touch-action: manipulation; }
   -webkit-overflow-scrolling: touch;
   scroll-snap-type: x proximity;
   overscroll-behavior-x: contain;
-  cursor: grab;
+  touch-action: pan-x;
+  cursor: default;
 }
-.tabs.is-dragging { cursor: grabbing; user-select: none; }
 .tabs::-webkit-scrollbar { display: block; height: 8px; }
 .tabs::-webkit-scrollbar-track { background: var(--paper-2); border-radius: 99px; }
 .tabs::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 99px; }
@@ -131,6 +131,11 @@ button { touch-action: manipulation; }
   white-space: nowrap;
   flex: none;
   scroll-snap-align: start;
+  touch-action: manipulation;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  z-index: 2;
 }
 .tab.active {
   background: var(--navy);
@@ -286,11 +291,12 @@ button { touch-action: manipulation; }
 .news-item a { color: var(--navy); text-decoration: none; font-weight: 800; }
 .news-item small { color: var(--faint); display: block; margin-top: 4px; }
 
-.overlay { pointer-events: none;
+.overlay { pointer-events: none !important;
   position: fixed; inset: 0; background: rgba(28,36,32,.55);
-  display: none; align-items: flex-end; justify-content: center; z-index: 20;
+  display: none; align-items: flex-end; justify-content: center; z-index: -1;
+  visibility: hidden;
 }
-.overlay.show { display: flex; pointer-events: auto; }
+.overlay.show { display: flex; pointer-events: auto !important; z-index: 40; visibility: visible; }
 .modal {
   width: 100%; max-height: 92vh; overflow: auto;
   background: var(--card);
@@ -325,7 +331,7 @@ button { touch-action: manipulation; }
   .yardgrid, .wxbar, .simgrid { grid-template-columns: repeat(4, 1fr); }
   .prop-stats { grid-template-columns: repeat(3, 1fr); }
   .grid2 { grid-template-columns: 1fr 1fr; }
-  .overlay { pointer-events: none; align-items: center; padding: 28px; }
+  .overlay { align-items: center; padding: 28px; }
   .modal { width: min(880px, 100%); border-radius: 24px; max-height: 90vh; padding: 24px; }
   .tablewrap { display: block; }
   .tabs-wrap { margin: 0 0 18px; }
@@ -3164,34 +3170,16 @@ async function boot() {
   }
   $("#stamp").textContent = `Snapshot ${fmt.when(DATA.generated_at)}`;
   $$(".tab").forEach((t) => t.addEventListener("click", () => setView(t.dataset.view)));
+  document.addEventListener("click", (e) => {
+    const tab = e.target.closest(".tab");
+    if (tab && tab.dataset.view) setView(tab.dataset.view);
+  });
   (function bindTabSlider() {
     const bar = document.getElementById("tabBar");
     if (!bar) return;
     const go = (dir) => bar.scrollBy({ left: dir * Math.min(280, bar.clientWidth * 0.55), behavior: "smooth" });
     document.getElementById("tabsPrev")?.addEventListener("click", () => go(-1));
     document.getElementById("tabsNext")?.addEventListener("click", () => go(1));
-    let down = false, startX = 0, startLeft = 0, moved = false;
-    bar.addEventListener("pointerdown", (e) => {
-      if (e.pointerType === "touch") return;
-      down = true; moved = false; startX = e.clientX; startLeft = bar.scrollLeft;
-      bar.classList.add("is-dragging");
-      bar.setPointerCapture(e.pointerId);
-    });
-    bar.addEventListener("pointermove", (e) => {
-      if (!down) return;
-      const dx = e.clientX - startX;
-      if (Math.abs(dx) > 4) moved = true;
-      bar.scrollLeft = startLeft - dx;
-    });
-    const stop = (e) => {
-      if (!down) return;
-      down = false;
-      bar.classList.remove("is-dragging");
-      if (moved) e.preventDefault();
-    };
-    bar.addEventListener("pointerup", stop);
-    bar.addEventListener("pointercancel", stop);
-    bar.addEventListener("click", (e) => { if (moved) e.stopPropagation(); }, true);
   })();
   $("#q").addEventListener("input", renderBoard);
   $("#openOnly").addEventListener("change", renderBoard);
