@@ -251,11 +251,11 @@ button { touch-action: manipulation; }
 .news-item a { color: var(--navy); text-decoration: none; font-weight: 800; }
 .news-item small { color: var(--faint); display: block; margin-top: 4px; }
 
-.overlay {
+.overlay { pointer-events: none;
   position: fixed; inset: 0; background: rgba(28,36,32,.55);
   display: none; align-items: flex-end; justify-content: center; z-index: 20;
 }
-.overlay.show { display: flex; }
+.overlay.show { display: flex; pointer-events: auto; }
 .modal {
   width: 100%; max-height: 92vh; overflow: auto;
   background: var(--card);
@@ -290,7 +290,7 @@ button { touch-action: manipulation; }
   .yardgrid, .wxbar, .simgrid { grid-template-columns: repeat(4, 1fr); }
   .prop-stats { grid-template-columns: repeat(3, 1fr); }
   .grid2 { grid-template-columns: 1fr 1fr; }
-  .overlay { align-items: center; padding: 28px; }
+  .overlay { pointer-events: none; align-items: center; padding: 28px; }
   .modal { width: min(880px, 100%); border-radius: 24px; max-height: 90vh; padding: 24px; }
   .tablewrap { display: block; }
   .tabs { margin: 0 0 18px; padding: 0; position: static; background: none; }
@@ -1197,7 +1197,7 @@ function simulateGame(game) {
   const lowCut = nfl ? 30 : 35;
   const highCut = nfl ? 55 : 70;
   const blow = nfl ? 17 : 21;
-  const n = (LIVE.SIM_N || 150000);
+  const n = Math.min(8000, (LIVE.SIM_N || 150000));
   const rand = mulberry32(Number(String(game.id || "1").slice(-9)) || 1);
   const home = [], away = [], tots = [];
   let ch = 0, ca = 0, ps = 0, ov = 0, un = 0, pt = 0, hw = 0, bh = 0, ba = 0, lo = 0, hi = 0;
@@ -2458,7 +2458,7 @@ async function boot() {
       });
     } else doWx();
   });
-  if (!fromFile && typeof liveRefresh === "function") {
+  if (false && !fromFile && typeof liveRefresh === "function") {
     liveRefresh().catch((err) => {
       console.warn(err);
       $("#stamp").textContent = `Snapshot ${fmt.when(DATA.generated_at)}`;
