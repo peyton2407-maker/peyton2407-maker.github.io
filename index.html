@@ -2034,7 +2034,7 @@ function gameDayTag(x){
   const st = (x.status || fant || "").toUpperCase();
   const blob = `${x.shortComment||x.short||""} ${x.longComment||x.long||""}`.toLowerCase();
   if (/inactive/.test(blob) || st === "INACTIVE") return "INACTIVE";
-  if (/injured reserve|\bIR\b/.test(st) || /injured reserve/.test(blob)) return "IR";
+  if (/injured reserve|\bIR\b/i.test(st) || /injured reserve/i.test(blob)) return "IR";
   if (/suspension/.test(st) || /suspend/.test(blob)) return "SUSP";
   if (/^OUT$/.test(st) || /\bruled out\b|\binactive for\b/.test(blob)) return "OUT";
   if (/DOUBTFUL/.test(st)) return "DOUBTFUL";
@@ -2060,10 +2060,25 @@ function posWeight(pos){
   return 14;
 }
 function statusWeight(tag){
-  if (["OUT","IR","INACTIVE","SUSP"].includes(tag)) return 80;
-  if (tag === "DOUBTFUL") return 52;
-  if (tag === "QUESTIONABLE") return 28;
+  const t = String(tag || "").toUpperCase();
+  if (["OUT","IR","INACTIVE","SUSP"].includes(t) || /INJURED RESERVE/.test(t)) return 80;
+  if (t === "DOUBTFUL") return 52;
+  if (t === "QUESTIONABLE" || t === "Q") return 28;
   return 0;
+}
+function ensureInjPack(){
+  if (!window.__INJ || typeof window.__INJ !== "object") {
+    window.__INJ = { nfl: [], cfb: [], fetched: null, day: null };
+  }
+  window.__INJ.nfl = window.__INJ.nfl || [];
+  window.__INJ.cfb = window.__INJ.cfb || [];
+  if (typeof DATA === "object" && DATA) {
+    if (!DATA.injuries || typeof DATA.injuries !== "object") DATA.injuries = window.__INJ;
+    DATA.injuries.nfl = DATA.injuries.nfl || window.__INJ.nfl || [];
+    DATA.injuries.cfb = DATA.injuries.cfb || window.__INJ.cfb || [];
+    window.__INJ = DATA.injuries;
+  }
+  return window.__INJ;
 }
 function matchInjuryGame(team, league){
   const t = (team || "").toLowerCase().trim();
@@ -2151,51 +2166,60 @@ function attachInjuriesToGames(){
   });
 }
 function seedInjuriesFromSnap(){
-  const pack = (DATA && DATA.injuries) || window.__INJ;
-  if ((pack.nfl||[]).length) return pack;
-  if (!window.INJURY_SNAP) return pack;
-  pack.nfl = parseInjuryFeed(window.INJURY_SNAP.nfl, "nfl");
-  pack.cfb = parseInjuryFeed(window.INJURY_SNAP.cfb, "cfb");
-  pack.fetched = Date.now();
-  pack.day = new Date().toISOString().slice(0,10);
-  pack.fromSnap = true;
-  if (DATA) DATA.injuries = pack;
-  window.__INJ = pack;
-  attachInjuriesToGames();
+  const pack = ensureInjPack();
+  if ((pack.nfl || []).length && (pack.cfb || []).length) return pack;
+  const snap = window.INJURY_SNAP;
+  if (!snap) return pack;
+  try {
+    if (!(pack.nfl || []).length) pack.nfl = parseInjuryFeed(snap.nfl, "nfl");
+    if (!(pack.cfb || []).length) pack.cfb = parseInjuryFeed(snap.cfb, "cfb");
+    pack.fetched = pack.fetched || Date.parse(snap.pulled) || Date.now();
+    pack.day = pack.day || String(snap.pulled || "").slice(0, 10) || new Date().toISOString().slice(0, 10);
+    pack.fromSnap = true;
+    window.__INJ = pack;
+    if (typeof DATA === "object" && DATA) DATA.injuries = pack;
+    attachInjuriesToGames();
+  } catch (e) { console.warn("injury snap", e); }
   return pack;
 }
 async function fetchInjuries(force){
-  const today = new Date().toISOString().slice(0,10);
-  const pack = (DATA && DATA.injuries) || window.__INJ;
-  seedInjuriesFromSnap();
-  if (!force && pack.day === today && pack.fetched && Date.now()-pack.fetched < 20*60*1000 && (pack.nfl||[]).length) return pack;
+  const today = new Date().toISOString().slice(0, 10);
+  const pack = seedInjuriesFromSnap();
+  if (!force && pack.day === today && pack.fetched && Date.now() - pack.fetched < 20 * 60 * 1000 && (pack.nfl || []).length) return pack;
   if (!force) {
     try {
-      const c = JSON.parse(localStorage.getItem("doublegs-inj-cache")||"null");
-      if (c && c.day === today && (c.nfl||[]).length) {
-        Object.assign(pack, c);
-        if (DATA) DATA.injuries = pack;
+      const c = JSON.parse(localStorage.getItem("doublegs-inj-cache") || "null");
+      if (c && c.day === today && (c.nfl || []).length) {
+        pack.nfl = c.nfl;
+        pack.cfb = c.cfb || pack.cfb || [];
+        pack.fetched = c.fetched || Date.now();
+        pack.day = c.day;
+        window.__INJ = pack;
+        if (typeof DATA === "object" && DATA) DATA.injuries = pack;
         attachInjuriesToGames();
         return pack;
       }
-    } catch(e) {}
+    } catch (e) {}
   }
   try {
     const [nfl, cfb] = await Promise.all([
       getJSON(injEndpoint("/apis/site/v2/sports/football/nfl/injuries")),
       getJSON(injEndpoint("/apis/site/v2/sports/football/college-football/injuries"))
     ]);
-    if (!DATA.injuries) DATA.injuries = {nfl:[], cfb:[], fetched:null, day:null};
-    DATA.injuries.nfl = parseInjuryFeed(nfl, "nfl");
-    DATA.injuries.cfb = parseInjuryFeed(cfb, "cfb");
-    DATA.injuries.fetched = Date.now();
-    DATA.injuries.day = today;
-    window.__INJ = DATA.injuries;
-    try { localStorage.setItem("doublegs-inj-cache", JSON.stringify({day:today, fetched:Date.now(), nfl:DATA.injuries.nfl, cfb:DATA.injuries.cfb})); } catch(e) {}
+    const next = ensureInjPack();
+    const parsedN = parseInjuryFeed(nfl, "nfl");
+    const parsedC = parseInjuryFeed(cfb, "cfb");
+    if (parsedN.length) next.nfl = parsedN;
+    if (parsedC.length) next.cfb = parsedC;
+    next.fetched = Date.now();
+    next.day = today;
+    window.__INJ = next;
+    if (typeof DATA === "object" && DATA) DATA.injuries = next;
+    try { localStorage.setItem("doublegs-inj-cache", JSON.stringify({ day: today, fetched: Date.now(), nfl: next.nfl, cfb: next.cfb })); } catch (e) {}
     attachInjuriesToGames();
     if (typeof renderBoard === "function") renderBoard();
   } catch (e) { console.warn("injuries", e); }
-  return DATA.injuries || window.__INJ;
+  return ensureInjPack();
 }
 function injImpact(r){ return statusWeight(r.tag || r.status); }
 function renderInjuries(league){
@@ -3138,7 +3162,9 @@ function setView(next) {
   if (board) renderBoard();
   if (next === "value") renderValueDogs();
   if (next === "nflinj" || next === "cfbinj") {
-    fetchInjuries(false).then(()=>renderInjuries(next==="nflinj"?"nfl":"cfb"));
+    const lg = next === "nflinj" ? "nfl" : "cfb";
+    try { seedInjuriesFromSnap(); renderInjuries(lg); } catch (e) { console.warn(e); }
+    fetchInjuries(false).then(() => renderInjuries(lg)).catch(() => renderInjuries(lg));
   }
   if (next === "props") renderProps();
   if (next === "cfbpicks") renderCfbPicks();
