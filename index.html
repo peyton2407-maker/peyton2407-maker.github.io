@@ -674,6 +674,37 @@ const LIVE = {
   },
 };
 
+const NFL_HOME_CITY = {
+  ARI:"Glendale", ATL:"Atlanta", BAL:"Baltimore", BUF:"Orchard Park",
+  CAR:"Charlotte", CHI:"Chicago", CIN:"Cincinnati", CLE:"Cleveland",
+  DAL:"Arlington", DEN:"Denver", DET:"Detroit", GB:"Green Bay",
+  HOU:"Houston", IND:"Indianapolis", JAX:"Jacksonville", KC:"Kansas City",
+  LV:"Las Vegas", LAC:"Inglewood", LAR:"Inglewood", MIA:"Miami Gardens",
+  MIN:"Minneapolis", NE:"Foxborough", NO:"New Orleans", NYG:"East Rutherford",
+  NYJ:"East Rutherford", PHI:"Philadelphia", PIT:"Pittsburgh", SF:"Santa Clara",
+  SEA:"Seattle", TB:"Tampa", TEN:"Nashville", WSH:"Landover", WAS:"Landover"
+};
+const REF_TEND = {
+  Hochuli:{ tot:1.4, home:0.12, note:"Hochuli crew: more flags, slightly higher totals" },
+  Allen:{ tot:-0.8, home:0.32, note:"Allen crew: tighter game, mild home whistle" },
+  Blakeman:{ tot:0.9, home:0.1, note:"Blakeman: passing-friendly, overs" },
+  Cheffers:{ tot:0.35, home:0.18, note:"Cheffers: near average-high" },
+  Clark:{ tot:-0.5, home:0.22, note:"Clark: slightly under" },
+  Corrente:{ tot:1.15, home:0.05, note:"Corrente: let them play, overs" },
+  Eck:{ tot:0.2, home:0.1, note:"Eck: near league average" },
+  Hill:{ tot:-1.0, home:0.38, note:"Hill: home-leaning, slower game" },
+  Hussey:{ tot:0.55, home:0.1, note:"Hussey: slight over" },
+  Martin:{ tot:-0.25, home:0.18, note:"Martin: average" },
+  Novak:{ tot:0.7, home:0.14, note:"Novak: a bit of juice on totals" },
+  Rogers:{ tot:-0.15, home:0.1, note:"Rogers: average" },
+  Smith:{ tot:0.45, home:0.2, note:"Smith: mild over" },
+  Torbert:{ tot:-0.6, home:0.28, note:"Torbert: under-lean, home flags" },
+  Vinovich:{ tot:0.3, home:0.1, note:"Vinovich: average" },
+  Wrolstad:{ tot:1.0, home:0.05, note:"Wrolstad: overs" },
+  Kemp:{ tot:0.4, home:0.15, note:"Kemp: slight over" },
+  Boger:{ tot:-0.4, home:0.22, note:"Boger: slower, mild home" }
+};
+
 const CITY_COORDS = {
   "Orchard Park": [42.7676, -78.7439],
   "Buffalo": [42.8864, -78.8784],
@@ -1251,6 +1282,9 @@ function parseGames(payload, league) {
       indoor: !!venue.indoor,
       broadcasts,
       notes: (comp.notes || []).map((n) => n.headline).filter(Boolean),
+      officials: (comp.officials || []).map((o) => o.displayName || o.fullName || [o.firstName, o.lastName].filter(Boolean).join(" ")).filter(Boolean),
+      referee: ((comp.officials || []).find((o) => /referee/i.test(String(o.position || o.role || o.title || ""))) || {}).displayName
+        || ((comp.officials || [])[0] || {}).displayName || null,
       home: extractCompetitor(home, league),
       away: extractCompetitor(away, league),
       odds: extractOdds(comp),
@@ -1309,18 +1343,186 @@ function fpiMap(payload, league) {
 function injuryTaxFor(game, side) {
   const rows = (game.injuries || []).filter((r) => r.side === side || ((r.team || "").toLowerCase().includes((game[side].name || "").toLowerCase())));
   let tax = 0;
+  let olOut = 0;
+  const cfb = game.league === "cfb";
   rows.forEach((r) => {
     const tag = (r.tag || r.status || "").toUpperCase();
     const pos = (r.pos || "").toUpperCase();
-    const out = /OUT|IR|INACTIVE|SUSP/.test(tag);
+    const out = /OUT|IR|INACTIVE|SUSP|INJURED RESERVE/.test(tag);
     const dbt = /DOUBT/.test(tag);
-    if (pos === "QB" && out) tax += 4.6;
-    else if (pos === "QB" && dbt) tax += 2.1;
-    else if (pos === "QB" && /QUESTION/.test(tag)) tax += 0.5;
-    else if (["WR", "RB", "TE", "OT", "T"].includes(pos) && out) tax += 1.05;
-    else if (["WR", "RB"].includes(pos) && dbt) tax += 0.45;
+    const q = /QUESTION|^Q$/.test(tag);
+    if (pos === "QB") {
+      if (out) tax += cfb ? 6.4 : 5.2;
+      else if (dbt) tax += cfb ? 2.8 : 2.3;
+      else if (q) tax += 0.65;
+    } else if (["LT", "RT", "T", "OT"].includes(pos)) {
+      if (out) { tax += 1.4; olOut++; }
+      else if (dbt) tax += 0.55;
+    } else if (pos === "C") {
+      if (out) { tax += 1.15; olOut++; }
+    } else if (["G", "OG", "OL"].includes(pos) && out) { tax += 0.7; olOut++; }
+    else if (["WR", "RB"].includes(pos)) {
+      if (out) tax += 1.2;
+      else if (dbt) tax += 0.45;
+      else if (q) tax += 0.15;
+    } else if (pos === "TE" && out) tax += 0.7;
+    else if (["CB", "EDGE", "DE"].includes(pos) && out) tax += 0.7;
+    else if (["DT", "NT", "S", "LB"].includes(pos) && out) tax += 0.4;
+    else if (out) tax += 0.22;
   });
-  return Math.min(7.5, tax);
+  if (olOut >= 2) tax += 0.8;
+  return Math.min(cfb ? 9 : 7.8, tax);
+}
+function haversineMiles(a, b) {
+  if (!a || !b || a.length < 2 || b.length < 2) return null;
+  const R = 3959, toR = (d) => d * Math.PI / 180;
+  const dlat = toR(b[0] - a[0]), dlon = toR(b[1] - a[1]);
+  const s = Math.sin(dlat / 2) ** 2 + Math.cos(toR(a[0])) * Math.cos(toR(b[0])) * Math.sin(dlon / 2) ** 2;
+  return 2 * R * Math.asin(Math.min(1, Math.sqrt(s)));
+}
+function teamHomeCoords(g, side) {
+  const t = g[side] || {};
+  if (g.league === "nfl") {
+    const city = NFL_HOME_CITY[t.abbr] || NFL_HOME_CITY[String(t.abbr || "").replace("WSH", "WAS")];
+    if (city && CITY_COORDS[city]) return CITY_COORDS[city];
+  }
+  const id = String(t.id || "");
+  const homeG = (DATA.games || []).find((x) => x.league === g.league && String(x.home.id) === id && x.city);
+  if (homeG && typeof coordsForGame === "function") return coordsForGame(homeG);
+  if (side === "home" && typeof coordsForGame === "function") return coordsForGame(g);
+  return null;
+}
+function lastGameFor(teamId, beforeIso, league) {
+  let best = null;
+  (DATA.games || []).forEach((g) => {
+    if (league && g.league !== league) return;
+    if (String(g.home.id) !== String(teamId) && String(g.away.id) !== String(teamId)) return;
+    if (!g.date || g.date >= beforeIso) return;
+    if (!best || g.date > best.date) best = g;
+  });
+  return best;
+}
+function restInfo(g, side) {
+  const last = lastGameFor(g[side].id, g.date, g.league);
+  const typical = 7;
+  if (!last) return { days: typical, kind: "week", last: null };
+  const days = (new Date(g.date) - new Date(last.date)) / 864e5;
+  let kind = "normal";
+  if (days <= 4.6) kind = "short";
+  else if (days <= 5.8) kind = "shortish";
+  else if (days >= 13) kind = "bye";
+  else if (days >= 9.5) kind = "extra";
+  return { days, kind, last };
+}
+function restTaxPts(info, league) {
+  const cfb = league === "cfb";
+  if (info.kind === "short") return cfb ? 2.15 : 1.6;
+  if (info.kind === "shortish") return cfb ? 0.95 : 0.55;
+  if (info.kind === "bye") return cfb ? -2.15 : -1.25;
+  if (info.kind === "extra") return cfb ? -0.75 : -0.4;
+  return 0;
+}
+function travelInfo(g) {
+  const notes = [];
+  let awayTax = 0, homeTax = 0, tot = 0;
+  if (g.neutral) return { awayTax: 0.15, homeTax: 0.15, tot: 0, miles: null, notes: ["Neutral site — no home rest edge"] };
+  const venue = typeof coordsForGame === "function" ? coordsForGame(g) : null;
+  const awayHome = teamHomeCoords(g, "away");
+  const miles = haversineMiles(awayHome, venue);
+  if (miles != null) {
+    if (miles >= 2000) { awayTax += 1.1; tot -= 0.45; notes.push(`Away flew ~${Math.round(miles)} miles`); }
+    else if (miles >= 1200) { awayTax += 0.7; tot -= 0.2; notes.push(`Cross-country ~${Math.round(miles)} mi`); }
+    else if (miles >= 450) { awayTax += 0.28; notes.push(`Road trip ~${Math.round(miles)} mi`); }
+    if (awayHome && venue && awayHome[1] < -105 && venue[1] > -90) {
+      const hour = new Date(g.date).getUTCHours();
+      if (hour <= 18) { awayTax += 0.5; notes.push("West-coast body clock on an East kick"); }
+    }
+  }
+  const lastH = lastGameFor(g.home.id, g.date, g.league);
+  if (lastH && String(lastH.away.id) === String(g.home.id)) {
+    const lastV = typeof coordsForGame === "function" ? coordsForGame(lastH) : null;
+    const back = haversineMiles(lastV, venue);
+    if (back >= 1200) { homeTax += 0.4; notes.push("Home side just got back from a long road trip"); }
+  }
+  return { awayTax, homeTax, tot, miles, notes };
+}
+function refereeInfo(g) {
+  const blob = [(g.referee || ""), (g.officials || []).join(" "), (g.notes || []).join(" ")].join(" ");
+  for (const [k, v] of Object.entries(REF_TEND)) {
+    if (blob && new RegExp(k, "i").test(blob)) return { name: k, tot: v.tot, home: v.home, note: v.note };
+  }
+  if (g.league === "cfb") return { name: null, tot: 0, home: 0, note: "CFB crew unpublished — no referee shift" };
+  return { name: null, tot: 0, home: 0, note: "Referee TBD — crew shift lands when ESPN lists the official" };
+}
+function applySituationalToGame(g) {
+  if (!g || !g.proj || g.completed) return g;
+  const p = g.proj;
+  if (p._baseMargin == null && p.blended_margin != null) p._baseMargin = Number(p.blended_margin);
+  if (p._baseTotal == null && p.hashmark_total != null) p._baseTotal = Number(p.hashmark_total);
+  const ht = injuryTaxFor(g, "home");
+  const at = injuryTaxFor(g, "away");
+  const rh = restInfo(g, "home");
+  const ra = restInfo(g, "away");
+  const rth = restTaxPts(rh, g.league);
+  const rta = restTaxPts(ra, g.league);
+  const tr = travelInfo(g);
+  const ref = refereeInfo(g);
+  const mAdj = -ht + at - rth + rta - (tr.homeTax || 0) + (tr.awayTax || 0) + (ref.home || 0);
+  const tAdj = -0.24 * (ht + at) - 0.32 * (Math.max(0, rth) + Math.max(0, rta)) + (tr.tot || 0) + (ref.tot || 0);
+  const capM = g.league === "nfl" ? 6.5 : 8;
+  const capT = g.league === "nfl" ? 4.5 : 5.5;
+  const m = Math.max(-capM, Math.min(capM, mAdj));
+  const t = Math.max(-capT, Math.min(capT, tAdj));
+  if (p._baseMargin != null) {
+    p.blended_margin = +(p._baseMargin + m).toFixed(2);
+    p.hashmark_home_spread = +(-p.blended_margin).toFixed(1);
+  }
+  if (p._baseTotal != null) p.hashmark_total = +(p._baseTotal + t).toFixed(1);
+  if (p.blended_margin != null && p.hashmark_total != null) {
+    p.home_points = +Math.max(3, (Number(p.hashmark_total) + Number(p.blended_margin)) / 2).toFixed(1);
+    p.away_points = +Math.max(3, (Number(p.hashmark_total) - Number(p.blended_margin)) / 2).toFixed(1);
+    const sigma = g.league === "nfl" ? LIVE.NFL_SIGMA : LIVE.CFB_SIGMA;
+    if (typeof normCdf === "function") {
+      p.win_prob_home = +normCdf(Number(p.blended_margin) / sigma).toFixed(4);
+      p.win_prob_away = +(1 - p.win_prob_home).toFixed(4);
+    }
+  }
+  if (g.odds && g.odds.home_spread != null && p.blended_margin != null) {
+    p.edge_spread = +(p.blended_margin - (-Number(g.odds.home_spread))).toFixed(2);
+  }
+  if (g.odds && g.odds.total != null && p.hashmark_total != null) {
+    p.edge_total = +(p.hashmark_total - Number(g.odds.total)).toFixed(2);
+  }
+  p._preLearnMargin = p.blended_margin;
+  p._preLearnTotal = p.hashmark_total;
+  const notes = [];
+  if (ht) notes.push(`${g.home.abbr} injury −${ht.toFixed(1)}`);
+  if (at) notes.push(`${g.away.abbr} injury −${at.toFixed(1)}`);
+  if (rh.kind === "short" || rh.kind === "bye" || rh.kind === "extra") notes.push(`${g.home.abbr} rest ${rh.kind} (${rh.days ? rh.days.toFixed(1) : "—"}d)`);
+  if (ra.kind === "short" || ra.kind === "bye" || ra.kind === "extra") notes.push(`${g.away.abbr} rest ${ra.kind} (${ra.days ? ra.days.toFixed(1) : "—"}d)`);
+  (tr.notes || []).forEach((n) => notes.push(n));
+  if (ref.name) notes.push(ref.note);
+  g.situational = {
+    injury: { home: +ht.toFixed(2), away: +at.toFixed(2) },
+    rest: { home: rh, away: ra },
+    travel: tr,
+    referee: ref,
+    margin_adj: +m.toFixed(2),
+    total_adj: +t.toFixed(2),
+    notes
+  };
+  if (g.box) {
+    g.box.home_points = p.home_points;
+    g.box.away_points = p.away_points;
+    g.box.total_points = p.hashmark_total;
+  }
+  return g;
+}
+function applySituationalBoard() {
+  try { if (typeof seedInjuriesFromSnap === "function") seedInjuriesFromSnap(); } catch (e) {}
+  try { if (typeof attachInjuriesToGames === "function") attachInjuriesToGames(); } catch (e) {}
+  (DATA.games || []).forEach(applySituationalToGame);
+  window.applySituationalBoard = applySituationalBoard;
 }
 function parseClockSec(clock) {
   const m = String(clock || "0:00").match(/(\d+):(\d+)/);
@@ -1431,9 +1633,6 @@ function projectGame(game, ratings) {
   const odds = game.odds || {};
   const mktHomeSpread = odds.home_spread;
   const mktMargin = mktHomeSpread != null ? -mktHomeSpread : null;
-  const homeTax = injuryTaxFor(game, "home");
-  const awayTax = injuryTaxFor(game, "away");
-  if (modelMargin != null) modelMargin = modelMargin - homeTax + awayTax;
   let mw = league === "nfl" ? LIVE.MARKET_WEIGHT_NFL : LIVE.MARKET_WEIGHT_CFB;
   if (league === "cfb" && (hr.fpi == null || ar.fpi == null)) mw = 0.88;
   let blendedMargin = null;
@@ -1542,9 +1741,8 @@ function repriceCfbGame(g) {
       p.away_points = +Math.max(3, (Number(p.hashmark_total) - Number(p.blended_margin)) / 2).toFixed(1);
     }
   }
-  p._preLearnMargin = p.blended_margin;
-  p._preLearnTotal = p.hashmark_total;
   p._cfbV2 = true;
+  delete p._baseMargin; delete p._baseTotal; delete p._preLearnMargin; delete p._preLearnTotal;
   if (g.box) {
     g.box.home_points = p.home_points;
     g.box.away_points = p.away_points;
@@ -1554,15 +1752,10 @@ function repriceCfbGame(g) {
 }
 function repriceCfbBoard() {
   (DATA.games || []).filter((g) => g.league === "cfb").forEach(repriceCfbGame);
-  (DATA.games || []).forEach(applyLearningToGame);
   if (DATA.notes) {
-    DATA.notes.cfb_blend = "56% FPI / 44% market · off/def totals · learns after every final";
+    DATA.notes.cfb_blend = "56% FPI / 44% market · injury + rest/travel/ref overlay · learns after every final";
     DATA.notes.hfa = Object.assign({}, DATA.notes.hfa || {}, { cfb: LIVE.CFB_HFA });
     DATA.notes.sigma = Object.assign({}, DATA.notes.sigma || {}, { cfb: LIVE.CFB_SIGMA });
-    const n = Object.values((getResiduals().games_learned) || {}).filter((x) => x.league === "cfb").length;
-    DATA.notes.learning = n
-      ? `CFB board shifted after ${n} finals (form fades in; remaining games move).`
-      : "CFB board will shift after every final — residuals stick on this device.";
   }
 }
 
@@ -2285,21 +2478,6 @@ function attachInjuriesToGames(){
       side: (r.team||"").toLowerCase().includes((g.home.name||"").toLowerCase())?"home":"away",
       short:r.short, reporter:r.reporter, score:r.score
     }));
-    if (g._injApplied || g.completed || !g.proj) return;
-    const ht = typeof injuryTaxFor==="function" ? injuryTaxFor(g,"home") : 0;
-    const at = typeof injuryTaxFor==="function" ? injuryTaxFor(g,"away") : 0;
-    if (ht || at) {
-      const p = g.proj;
-      if (p.blended_margin != null) {
-        p.blended_margin = +(Number(p.blended_margin) - ht + at).toFixed(2);
-        p.hashmark_home_spread = +(-p.blended_margin).toFixed(1);
-        if (p.hashmark_total != null) {
-          p.home_points = +Math.max(3, (Number(p.hashmark_total)+Number(p.blended_margin))/2).toFixed(1);
-          p.away_points = +Math.max(3, (Number(p.hashmark_total)-Number(p.blended_margin))/2).toFixed(1);
-        }
-      }
-      g._injApplied = true;
-    }
   });
 }
 function seedInjuriesFromSnap(){
@@ -2595,7 +2773,7 @@ function card(g) {
           <span class="score-dash">–</span>
           <span><b>${homePts ?? "—"}</b> ${g.home.abbr}</span>
         </div>
-        <div class="total-line">Total <b>${tot ?? "—"}</b> <span>market ${o.total ?? "—"}</span> ${p.weather_adj_total ? `<span>wx ${fmt.signed(p.weather_adj_total)}</span>` : ""}</div>
+        <div class="total-line">Total <b>${tot ?? "—"}</b> <span>market ${o.total ?? "—"}</span> ${p.weather_adj_total ? `<span>wx ${fmt.signed(p.weather_adj_total)}</span>` : ""}${(g.situational && (g.situational.margin_adj || g.situational.total_adj)) ? `<span>desk ${fmt.signed(g.situational.margin_adj)} / tot ${fmt.signed(g.situational.total_adj)}</span>` : ""}</div>
         ${totPick}
       </div>
       <div class="yardgrid">
@@ -2728,6 +2906,8 @@ function renderModel() {
         <li>Split the total into team points, then project rush / receiving yards from team stats + opponent yards allowed + game script.</li>
         <li>NFL player props start from ESPN fantasy projections and are scaled so they roughly sum to the team yard totals.</li>
         <li>After every final, Double Gs stores a fading residual for each team (margin, total, offense, defense). Those residuals shift the remaining board so projections improve as the weekend completes.</li>
+        <li>Official injury reports overlay the line: QB / OL / skill outs and doubtfuls are a real point tax, not a footnote.</li>
+        <li>Travel, rest, and referee: miles and west-to-east body clock, short weeks vs byes, and NFL crew tendencies on totals and home whistle.</li>
       </ol>
       <p>${n.disclaimer}</p>
       <p class="subn">Generated ${fmt.when(DATA.generated_at)} · ${n.model}</p>
@@ -2736,11 +2916,8 @@ function renderModel() {
       <div class="card">
         <h3>What v1 does not have yet</h3>
         <ul>
-          <li>Official injury reports as a points overlay</li>
-          <li>Travel / rest / referee tendencies</li>
           <li>Play-by-play EPA rebuild (nflfastR / CFBD)</li>
           <li>Multi-book steam and sharp-public splits</li>
-          <li>Live rest-of-game score + WP from clock, score, and possession (polls ESPN while games are on)</li>
         </ul>
         <p>Those are wired as the next collect modules in <code>refresh.py</code>.</p>
       </div>
@@ -2828,6 +3005,7 @@ function openGame(id) {
       <div class="kv"><div class="lbl">Spread lean</div><b>${p.pick_line || p.pick || "aligned"}</b><div class="subn">Edge ${fmt.signed(p.edge_spread)} · confidence ${p.confidence || 0}</div></div>
       <div class="kv"><div class="lbl">Rush / receiving yards</div><b>${g.away.abbr} ${fmt.n(g.box?.away_rush_yds,0)} / ${fmt.n(g.box?.away_rec_yds,0)}</b><div class="subn">${g.home.abbr} ${fmt.n(g.box?.home_rush_yds,0)} rush / ${fmt.n(g.box?.home_rec_yds,0)} rec</div></div>
       <div class="kv"><div class="lbl">Weather adj</div><b>${fmt.signed(p.weather_adj_total)}</b><div class="subn">${(g.weather_impact && g.weather_impact.note) || (g.indoor ? "Dome" : "Forecast overlay")}</div></div>
+      <div class="kv"><div class="lbl">Injury / rest / travel / ref</div><b>spread ${fmt.signed(g.situational && g.situational.margin_adj)} · total ${fmt.signed(g.situational && g.situational.total_adj)}</b><div class="subn">${((g.situational && g.situational.notes) || []).join(" · ") || "No extra desk tax on this card"}</div></div>
       <div class="kv"><div class="lbl">150,000 sims</div><b>${g.away.abbr} ${g.sim?.away_p10 ?? "—"}–${g.sim?.away_p90 ?? "—"} / ${g.home.abbr} ${g.sim?.home_p10 ?? "—"}–${g.sim?.home_p90 ?? "—"}</b><div class="subn">Cover ${g.away.abbr} ${pct01(g.sim?.cover_away)} · ${g.home.abbr} ${pct01(g.sim?.cover_home)} · O/U ${pct01(g.sim?.over)}/${pct01(g.sim?.under)}</div></div>
       <div class="kv"><div class="lbl">Outlier tails</div><b>Low ${pct01(g.sim?.low_scoring)} · high ${pct01(g.sim?.high_scoring)}</b><div class="subn">Blowout ${g.home.abbr} ${pct01(g.sim?.blowout_home)} · ${g.away.abbr} ${pct01(g.sim?.blowout_away)}</div></div>
     </div>
@@ -3275,6 +3453,7 @@ async function pullLiveScores() {
       if (!wasDone && g.completed && g.league === "cfb") newFinals++;
     });
     if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games);
+    try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) {}
     const learned = typeof learnFromFinals === "function" ? learnFromFinals(DATA.games || []) : 0;
     (DATA.games || []).forEach((g) => applyLearningToGame(g));
     if (learned || newFinals) {
@@ -3393,6 +3572,8 @@ async function boot() {
   setView("nfl");
   try { loadResiduals(); } catch (e) {}
   try { if (typeof repriceCfbBoard === "function") repriceCfbBoard(); } catch (e) { console.warn(e); }
+  try { seedInjuriesFromSnap(); } catch (e) {}
+  try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) { console.warn(e); }
   if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games || []);
   try {
     const learn = window.learnFromFinals || learnFromFinals;
@@ -3405,7 +3586,11 @@ async function boot() {
   pullLiveScores();
   if (!window.__livePoll) window.__livePoll = setInterval(pullLiveScores, 40000);
   seedInjuriesFromSnap();
-  fetchInjuries(false).then(()=>{ if (typeof renderBoard==="function") renderBoard(); });
+  fetchInjuries(false).then(()=>{
+    try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) {}
+    (DATA.games || []).forEach((g) => { if (typeof applyLearningToGame === "function") applyLearningToGame(g); });
+    if (typeof renderBoard==="function") renderBoard();
+  });
   pullDkLines().then(()=>{ if (typeof renderBoard==="function") renderBoard(); if (view==="value") renderValueDogs(); });
   if (!window.__injDaily) window.__injDaily = setInterval(()=>{
     const d = new Date().toISOString().slice(0,10);
