@@ -1480,8 +1480,10 @@ function applySituationalToGame(g) {
   const rta = restTaxPts(ra, g.league);
   const tr = travelInfo(g);
   const ref = refereeInfo(g);
-  const mAdj = -ht + at - rth + rta - (tr.homeTax || 0) + (tr.awayTax || 0) + (ref.home || 0);
-  const tAdj = -0.24 * (ht + at) - 0.32 * (Math.max(0, rth) + Math.max(0, rta)) + (tr.tot || 0) + (ref.tot || 0);
+  const epa = typeof epaInfo === "function" ? epaInfo(g) : { m: 0, t: 0, notes: [] };
+  const stm = typeof steamInfo === "function" ? steamInfo(g) : { m: 0, t: 0, notes: [] };
+  const mAdj = -ht + at - rth + rta - (tr.homeTax || 0) + (tr.awayTax || 0) + (ref.home || 0) + (epa.m || 0) + (stm.m || 0);
+  const tAdj = -0.24 * (ht + at) - 0.32 * (Math.max(0, rth) + Math.max(0, rta)) + (tr.tot || 0) + (ref.tot || 0) + (epa.t || 0) + (stm.t || 0);
   const capM = g.league === "nfl" ? 6.5 : 8;
   const capT = g.league === "nfl" ? 4.5 : 5.5;
   const m = Math.max(-capM, Math.min(capM, mAdj));
@@ -1515,11 +1517,15 @@ function applySituationalToGame(g) {
   if (ra.kind === "short" || ra.kind === "bye" || ra.kind === "extra") notes.push(`${g.away.abbr} rest ${ra.kind} (${ra.days ? ra.days.toFixed(1) : "—"}d)`);
   (tr.notes || []).forEach((n) => notes.push(n));
   if (ref.name) notes.push(ref.note);
+  (epa.notes || []).forEach((n) => notes.push(n));
+  (stm.notes || []).forEach((n) => notes.push(n));
   g.situational = {
     injury: { home: +ht.toFixed(2), away: +at.toFixed(2) },
     rest: { home: rh, away: ra },
     travel: tr,
     referee: ref,
+    epa,
+    steam: stm,
     margin_adj: +m.toFixed(2),
     total_adj: +t.toFixed(2),
     notes
@@ -1536,6 +1542,249 @@ function applySituationalBoard() {
   try { if (typeof attachInjuriesToGames === "function") attachInjuriesToGames(); } catch (e) {}
   (DATA.games || []).forEach(applySituationalToGame);
   window.applySituationalBoard = applySituationalBoard;
+}
+
+window.EPA_PACK = window.EPA_PACK || { nfl: {}, cfb: {}, games: {}, pulled: 0 };
+window.MARKET_DESK = window.MARKET_DESK || {};
+
+function epYte(yte, down, dist) {
+  const y = Math.max(1, Math.min(99, Number(yte) || 50));
+  let ep = 6.9 / (1 + Math.exp((y - 42) / 13)) - 2.2;
+  const d = Number(down) || 1, n = Number(dist) || 10;
+  if (d >= 3 && n >= 8) ep -= 1.15;
+  else if (d >= 3 && n >= 4) ep -= 0.55;
+  else if (d === 2 && n >= 11) ep -= 0.25;
+  if (y <= 8 && d <= 2) ep += 0.35;
+  return ep;
+}
+function driveResultPts(result) {
+  const r = String(result || "").toLowerCase();
+  if (/touchdown|^td$/.test(r)) return 6.94;
+  if (/field goal|^fg$/.test(r)) return 3;
+  if (/safety/.test(r)) return 2;
+  return 0;
+}
+function bumpEpaTeam(league, id, off, def, plays) {
+  const pack = window.EPA_PACK[league] || (window.EPA_PACK[league] = {});
+  const row = pack[String(id)] || { off: 0, def: 0, n: 0, plays: 0 };
+  row.off += off; row.def += def; row.n += 1; row.plays += plays;
+  pack[String(id)] = row;
+}
+function rebuildEpaFromPbp(payload, league, homeId, awayId, gameId) {
+  const gp = (payload && payload.gamepackageJSON) || payload || {};
+  const drives = ((gp.drives || {}).previous) || gp.drives || [];
+  if (!drives.length) return null;
+  let homeOff = 0, awayOff = 0, homePlays = 0, awayPlays = 0, nDrives = 0;
+  drives.forEach((d) => {
+    const tid = String((d.team || {}).id || "");
+    if (!tid) return;
+    const plays = d.plays || [];
+    const first = plays.find((p) => Number((p.start || {}).down) >= 1) || plays[0] || {};
+    const yte = Number((first.start || {}).yardsToEndzone);
+    const ep0 = epYte(Number.isFinite(yte) ? yte : 75, (first.start || {}).down, (first.start || {}).distance);
+    const pts = driveResultPts(d.result || d.displayResult);
+    const epa = pts - ep0;
+    const n = Number(d.offensivePlays) || plays.length || 1;
+    if (tid === String(homeId)) { homeOff += epa; homePlays += n; }
+    else if (tid === String(awayId)) { awayOff += epa; awayPlays += n; }
+    nDrives++;
+  });
+  if (!nDrives) return null;
+  bumpEpaTeam(league, homeId, homeOff, awayOff, homePlays);
+  bumpEpaTeam(league, awayId, awayOff, homeOff, awayPlays);
+  window.EPA_PACK.games[String(gameId)] = { homeOff: +homeOff.toFixed(2), awayOff: +awayOff.toFixed(2) };
+  return true;
+}
+function epaInfo(g) {
+  const pack = (window.EPA_PACK && window.EPA_PACK[g.league]) || {};
+  const h = pack[String(g.home.id)] || { off: 0, def: 0, n: 0 };
+  const a = pack[String(g.away.id)] || { off: 0, def: 0, n: 0 };
+  if (!h.n && !a.n) return { m: 0, t: 0, notes: window.EPA_PACK.pulled ? [] : ["Play-by-play EPA loading…"] };
+  const hOff = h.n ? h.off / h.n : 0;
+  const aOff = a.n ? a.off / a.n : 0;
+  const hDef = h.n ? h.def / h.n : 0;
+  const aDef = a.n ? a.def / a.n : 0;
+  let m = 0.58 * ((hOff - aDef) - (aOff - hDef));
+  let t = 0.26 * (hOff + aOff);
+  const cap = g.league === "nfl" ? 3.4 : 4.2;
+  m = Math.max(-cap, Math.min(cap, m));
+  t = Math.max(-2.8, Math.min(2.8, t));
+  const notes = [];
+  if (h.n || a.n) notes.push(`EPA rebuild ${g.home.abbr} off ${hOff.toFixed(1)} / ${g.away.abbr} off ${aOff.toFixed(1)} (${(h.n || 0) + (a.n || 0)} games of PBP)`);
+  return { m: +m.toFixed(2), t: +t.toFixed(2), notes, home: h, away: a };
+}
+function parseLine(v) {
+  if (v == null) return null;
+  const n = parseFloat(String(v).replace(/[^\d.+-]/g, ""));
+  return Number.isFinite(n) ? n : null;
+}
+function steamInfo(g) {
+  const desk = g.marketDesk || window.MARKET_DESK[String(g.id)] || {};
+  const notes = [];
+  let m = 0, t = 0;
+  const openSp = desk.open_home_spread, nowSp = desk.home_spread != null ? desk.home_spread : (g.odds && g.odds.home_spread);
+  const snapSp = desk.snap_home_spread != null ? desk.snap_home_spread : (g.odds && g.odds.home_spread);
+  if (openSp != null && nowSp != null) {
+    const move = Number(nowSp) - Number(openSp);
+    if (Math.abs(move) >= 0.5) {
+      m += -0.38 * move;
+      notes.push(`Steam: opened ${g.home.abbr} ${fmt.signed(openSp)} → now ${fmt.signed(nowSp)} (${move > 0 ? "toward " + g.away.abbr : "toward " + g.home.abbr})`);
+      if ((desk.favorite_at_open && move > 1.0) || (!desk.favorite_at_open && move < -1.0)) {
+        m += move > 0 ? -0.35 : 0.35;
+        notes.push("Reverse line movement — sharp money on the dog");
+      }
+    }
+  }
+  if (desk.books && desk.books.length > 1) {
+    const spreads = desk.books.map((b) => b.home_spread).filter((x) => x != null);
+    if (spreads.length) {
+      const cons = spreads.reduce((s, x) => s + x, 0) / spreads.length;
+      const dk = nowSp;
+      if (dk != null && Math.abs(dk - cons) >= 0.5) {
+        m += 0.25 * (cons - dk);
+        notes.push(`Multi-book: DK ${fmt.signed(dk)} vs consensus ${fmt.signed(cons)} (${desk.books.map((b) => b.book).join(", ")})`);
+      } else notes.push(`Books in: ${desk.books.map((b) => b.book + " " + fmt.signed(b.home_spread)).join(" · ")}`);
+    }
+  }
+  const hj = desk.home_juice, aj = desk.away_juice;
+  if (hj != null && aj != null && hj !== aj) {
+    if (hj < aj - 5) { m -= 0.2; notes.push(`Public juice on ${g.home.abbr} (${hj} / ${aj}) — slight fade`); }
+    else if (aj < hj - 5) { m += 0.2; notes.push(`Public juice on ${g.away.abbr} (${aj} / ${hj}) — slight fade`); }
+  }
+  if (desk.open_total != null && desk.total != null && Math.abs(desk.total - desk.open_total) >= 0.5) {
+    t += 0.22 * (desk.total - desk.open_total);
+    notes.push(`Total steam ${desk.open_total} → ${desk.total}`);
+  }
+  if (desk.predictor_home != null && nowSp != null) {
+    const predM = (Number(desk.predictor_home) - 50) / 4.2;
+    const mktM = -Number(nowSp);
+    if (Math.abs(predM - mktM) >= 2.5) notes.push(`ESPN predictor ${desk.predictor_home.toFixed(0)}% home vs market ${fmt.signed(nowSp)}`);
+  }
+  const cap = 2.4;
+  m = Math.max(-cap, Math.min(cap, m));
+  t = Math.max(-1.6, Math.min(1.6, t));
+  return { m: +m.toFixed(2), t: +t.toFixed(2), notes, desk };
+}
+function ingestMarketDesk(g, payload) {
+  const gp = (payload && payload.gamepackageJSON) || payload || {};
+  const pc = gp.pickcenter || payload.pickcenter || [];
+  const books = (Array.isArray(pc) ? pc : []).map((row) => {
+    const home = (row.homeTeamOdds || {});
+    const ps = row.pointSpread || {};
+    return {
+      book: (row.provider || {}).displayName || (row.provider || {}).name || "book",
+      home_spread: parseLine(row.spread != null ? (home.favorite ? -Math.abs(row.spread) : Math.abs(row.spread)) : (ps.home && ps.home.close && ps.home.close.line)),
+      total: parseLine(row.overUnder),
+      home_juice: home.spreadOdds,
+      away_juice: (row.awayTeamOdds || {}).spreadOdds,
+      open_home: parseLine(ps.home && ps.home.open && ps.home.open.line),
+      open_total: parseLine(row.total && row.total.over && row.total.over.open && row.total.over.open.line),
+      favorite_at_open: home.favoriteAtOpen
+    };
+  }).filter((b) => b.home_spread != null || b.total != null);
+  const primary = books[0] || {};
+  const pred = gp.predictor || payload.predictor || {};
+  const desk = {
+    books,
+    home_spread: primary.home_spread,
+    total: primary.total,
+    open_home_spread: primary.open_home,
+    open_total: primary.open_total,
+    home_juice: primary.home_juice,
+    away_juice: primary.away_juice,
+    favorite_at_open: primary.favorite_at_open,
+    snap_home_spread: g.odds && g.odds.home_spread,
+    predictor_home: pred.homeTeam && pred.homeTeam.gameProjection != null ? Number(pred.homeTeam.gameProjection) : null
+  };
+  g.marketDesk = desk;
+  window.MARKET_DESK[String(g.id)] = desk;
+  return desk;
+}
+
+async function pullEpaAndMarkets() {
+  try {
+    setStamp("Rebuilding EPA + steam desk…", true);
+    const completed = (DATA.games || []).filter((g) => g.completed);
+    const extra = [];
+    const boardUrls = [
+      ["nfl", "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=1&seasontype=2&limit=50"],
+      ["nfl", "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=2&seasontype=2&limit=50"],
+      ["cfb", "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=3&seasontype=2&limit=300"],
+      ["cfb", "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=2&seasontype=2&limit=300"]
+    ];
+    for (const [lg, url] of boardUrls) {
+      try {
+        const sb = await getJSON(url);
+        (sb.events || []).forEach((ev) => {
+          const st = (ev.status || {}).type || {};
+          if (!st.completed) return;
+          const comp = (ev.competitions || [])[0] || {};
+          const home = (comp.competitors || []).find((c) => c.homeAway === "home");
+          const away = (comp.competitors || []).find((c) => c.homeAway === "away");
+          if (!home || !away) return;
+          extra.push({ id: String(ev.id), league: lg, homeId: String((home.team || home).id), awayId: String((away.team || away).id) });
+        });
+      } catch (e) {}
+    }
+    const seen = new Set();
+    const pbpJobs = [];
+    completed.forEach((g) => {
+      if (seen.has(String(g.id))) return;
+      seen.add(String(g.id));
+      pbpJobs.push({ id: g.id, league: g.league, homeId: g.home.id, awayId: g.away.id });
+    });
+    extra.forEach((g) => {
+      if (seen.has(String(g.id))) return;
+      seen.add(String(g.id));
+      pbpJobs.push(g);
+    });
+    const nflJobs = pbpJobs.filter((j) => j.league === "nfl");
+    const cfbJobs = pbpJobs.filter((j) => j.league === "cfb").slice(0, 42);
+    const jobs = nflJobs.concat(cfbJobs);
+    await poolMap(jobs, 5, async (j) => {
+      if (window.EPA_PACK.games[String(j.id)]) return;
+      const sport = j.league === "nfl" ? "nfl" : "college-football";
+      try {
+        const payload = await getJSON(`https://cdn.espn.com/core/${sport}/playbyplay?xhr=1&gameId=${j.id}`);
+        rebuildEpaFromPbp(payload, j.league, j.homeId, j.awayId, j.id);
+      } catch (e) {}
+    });
+    window.EPA_PACK.pulled = Date.now();
+    const upcoming = (DATA.games || []).filter((g) => !g.completed).slice(0, 48);
+    await poolMap(upcoming, 4, async (g) => {
+      const sport = g.league === "nfl" ? "nfl" : "college-football";
+      try {
+        const payload = await getJSON(`https://cdn.espn.com/core/${sport}/game?xhr=1&gameId=${g.id}`);
+        ingestMarketDesk(g, payload);
+      } catch (e) {}
+      if (g.league === "nfl") {
+        try {
+          const more = await getJSON(`https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/${g.id}/competitions/${g.id}/odds?limit=20`);
+          const items = more.items || [];
+          if (items.length) {
+            const desk = g.marketDesk || (g.marketDesk = { books: [] });
+            items.forEach((it) => {
+              const name = (it.provider || {}).name || (it.provider || {}).displayName;
+              const home = it.homeTeamOdds || {};
+              const sp = it.spread != null ? (home.favorite ? -Math.abs(it.spread) : Math.abs(it.spread)) : null;
+              if (!name || sp == null) return;
+              if (!(desk.books || []).some((b) => b.book === name)) {
+                desk.books = desk.books || [];
+                desk.books.push({ book: name, home_spread: sp, total: it.overUnder != null ? Number(it.overUnder) : null });
+              }
+            });
+            window.MARKET_DESK[String(g.id)] = desk;
+          }
+        } catch (e) {}
+      }
+    });
+    if (typeof applySituationalBoard === "function") applySituationalBoard();
+    if (typeof applyLearningToGame === "function") (DATA.games || []).forEach(applyLearningToGame);
+    if (typeof renderBoard === "function") renderBoard();
+    if (view === "cfbpicks" && typeof renderCfbPicks === "function") renderCfbPicks();
+    const nEpa = Object.keys(window.EPA_PACK.nfl || {}).length + Object.keys(window.EPA_PACK.cfb || {}).length;
+    setStamp(`EPA ${nEpa} teams · steam on ${Object.keys(window.MARKET_DESK).length} games`, true);
+  } catch (e) { console.warn("epa/steam", e); }
 }
 function parseClockSec(clock) {
   const m = String(clock || "0:00").match(/(\d+):(\d+)/);
@@ -2756,13 +3005,16 @@ function simStrip(g) {
 }
 
 function deskPanelHtml(g) {
-  const s = g.situational || { margin_adj: 0, total_adj: 0, notes: [], injury: { home: 0, away: 0 }, rest: {}, travel: {}, referee: {} };
+  const s = g.situational || { margin_adj: 0, total_adj: 0, notes: [] };
   const notes = (s.notes && s.notes.length)
     ? s.notes
-    : ["No extra injury / rest / travel / ref tax — this pick is still using the overlay at 0."];
+    : ["Desk overlay is on — injury, rest, travel, ref, EPA, and steam all sit at 0 on this card."];
+  const epa = s.epa || {};
+  const stm = s.steam || {};
   return `<div class="desk-panel">
-    <div class="lbl">Injury · rest · travel · ref (already in this pick)</div>
+    <div class="lbl">Injury · rest · travel · ref · EPA · steam (already in this pick)</div>
     <div class="desk-nums"><b>Spread ${fmt.signed(s.margin_adj)}</b><b>Total ${fmt.signed(s.total_adj)}</b></div>
+    <div class="desk-nums" style="font-size:13px"><span>EPA ${fmt.signed(epa.m)} / tot ${fmt.signed(epa.t)}</span><span>Steam ${fmt.signed(stm.m)} / tot ${fmt.signed(stm.t)}</span></div>
     <ul class="desk-notes">${notes.map((n) => `<li>${n}</li>`).join("")}</ul>
   </div>`;
 }
@@ -2772,8 +3024,8 @@ function deskStripHtml(games) {
     .sort((a, b) => Math.abs(b.situational.margin_adj || 0) - Math.abs(a.situational.margin_adj || 0))
     .slice(0, 10);
   return `<div class="card desk-strip" style="margin-bottom:14px">
-    <h3>Injury / rest / travel / ref — already in these picks</h3>
-    <p class="subn" style="margin:0 0 10px">Official injury reports, short weeks vs extra rest, road miles / body clock, and NFL referee tendencies. Tap a row or a game card for the full breakdown.</p>
+    <h3>Injury / rest / travel / ref / EPA / steam — already in these picks</h3>
+    <p class="subn" style="margin:0 0 10px">Official injuries, rest & travel, referee, play-by-play EPA rebuild, and multi-book steam / reverse line movement. Tap a row for the full breakdown.</p>
     ${!rows.length ? "<p>Desk overlay is on — no extra tax on this filter yet.</p>" : `<table>
       <thead><tr><th>Game</th><th>Spread move</th><th>Total move</th><th>Why</th></tr></thead>
       <tbody>${rows.map((g) => `<tr data-id="${g.id}">
@@ -2954,16 +3206,18 @@ function renderModel() {
         <li>After every final, Double Gs stores a fading residual for each team (margin, total, offense, defense). Those residuals shift the remaining board so projections improve as the weekend completes.</li>
         <li>Official injury reports overlay the line: QB / OL / skill outs and doubtfuls are a real point tax, not a footnote.</li>
         <li>Travel, rest, and referee: miles and west-to-east body clock, short weeks vs byes, and NFL crew tendencies on totals and home whistle.</li>
+        <li>Play-by-play EPA rebuild from ESPN drives (nflfastR-style expected points vs actual drive result). Team off/def EPA from this season’s finals shift the remaining board.</li>
+        <li>Multi-book steam: opening vs current line, juice, reverse line movement, and any extra books ESPN lists. We follow sharp steam and fade heavy public juice.</li>
       </ol>
       <p>${n.disclaimer}</p>
       <p class="subn">Generated ${fmt.when(DATA.generated_at)} · ${n.model}</p>
     </div>
     <div>
       <div class="card">
-        <h3>What v1 does not have yet</h3>
+        <h3>On deck</h3>
         <ul>
-          <li>Play-by-play EPA rebuild (nflfastR / CFBD)</li>
-          <li>Multi-book steam and sharp-public splits</li>
+          <li>Full nflfastR / CFBD nightly dump when we stand up the collector</li>
+          <li>Ticket vs money percentages from a dedicated splits feed</li>
         </ul>
         <p>Those are wired as the next collect modules in <code>refresh.py</code>.</p>
       </div>
@@ -3639,6 +3893,7 @@ async function boot() {
     if (typeof renderBoard==="function") renderBoard();
   });
   pullDkLines().then(()=>{ if (typeof renderBoard==="function") renderBoard(); if (view==="value") renderValueDogs(); });
+  pullEpaAndMarkets();
   if (!window.__injDaily) window.__injDaily = setInterval(()=>{
     const d = new Date().toISOString().slice(0,10);
     const pack = (DATA && DATA.injuries) || window.__INJ || {};
