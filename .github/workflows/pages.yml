@@ -28,16 +28,25 @@ jobs:
         with:
           repository: peyton2407-maker/double-gs
           path: board
-      - name: Stage site
+      - name: Stage site and unfreeze mobile
         run: |
           mkdir -p site
-          cp board/HASHMARK.html site/index.html
-          cp board/HASHMARK.html index.html
+          python3 - <<'PY'
+          from pathlib import Path
+          s = Path('board/HASHMARK.html').read_text(encoding='utf-8', errors='replace')
+          s = s.replace('const n = (LIVE.SIM_N || 150000);', 'const n = Math.min(8000, (LIVE.SIM_N || 150000));')
+          s = s.replace('if (!fromFile && typeof liveRefresh === "function") {', 'if (false && !fromFile && typeof liveRefresh === "function") {')
+          s = s.replace('.overlay {', '.overlay { pointer-events: none;')
+          s = s.replace('.overlay.show { display: flex; }', '.overlay.show { display: flex; pointer-events: auto; }')
+          Path('site/index.html').write_text(s)
+          Path('index.html').write_text(s)
+          print('bytes', len(s))
+          PY
           touch site/.nojekyll .nojekyll
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html .nojekyll
-          git diff --cached --quiet || git commit -m "Sync full Double Gs board"
+          git diff --cached --quiet || git commit -m "Mobile-safe Double Gs board"
           git push || true
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
