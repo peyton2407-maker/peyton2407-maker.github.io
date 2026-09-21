@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Double Gs</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Nunito:wght@600;800&display=swap");
+:root{--paper:#ebe4d6;--ink:#1c2420;--muted:#66756c;--card:#f3eee3;--line:#d3c6ae;--navy:#24362e;--turf:#2f8a52}
+*{box-sizing:border-box}body{margin:0;font-family:Nunito,sans-serif;background:#e8e0d0;color:var(--ink)}
+.app{max-width:1100px;margin:0 auto;padding:22px 16px 48px}
+.brand{display:flex;gap:12px;align-items:center;margin-bottom:16px}
+.mark{width:48px;height:48px;border-radius:16px;background:linear-gradient(160deg,#f3c15c,#2f8a52);display:grid;place-items:center;font-family:Fraunces,serif;font-weight:700}
+h1{font-family:Fraunces,serif;margin:0;font-size:28px}
+.tabs,.controls{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.tab,select,button,input{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:9px 12px;font:inherit}
+.tab.active{background:var(--navy);color:#f6f1e6}
+.game{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin:0 0 10px;cursor:pointer}
+.row{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.muted{color:var(--muted);font-size:13px}
+b.score{font-family:Fraunces,serif;font-size:22px}
+.note{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:14px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="brand"><div class="mark">GG</div><div><h1>DOUBLE GS</h1><p class="muted" id="stamp">Loading live slate…</p></div></div>
+  <p class="note">Live ESPN week board. Tap NFL / CFB and search. Full projection file still lives in the double-gs repo.</p>
+  <div class="tabs">
+    <button class="tab active" data-v="nfl">NFL</button>
+    <button class="tab" data-v="cfb">CFB</button>
+  </div>
+  <div class="controls">
+    <input id="q" placeholder="Search team…"/>
+  </div>
+  <div id="board"></div>
+</div>
+<script>
+const $ = (s,r=document)=>r.querySelector(s);
+let view='nfl', games=[];
+function parseBoard(payload, league){
+  return (payload.events||[]).map(ev=>{
+    const c=(ev.competitions||[])[0]||{};
+    const home=(c.competitors||[]).find(x=>x.homeAway==='home');
+    const away=(c.competitors||[]).find(x=>x.homeAway==='away');
+    if(!home||!away) return null;
+    const o=(c.odds||[])[0]||{};
+    const st=c.status?.type||ev.status?.type||{};
+    const v=c.venue||{};
+    return {
+      league, id:String(ev.id), date:ev.date, name:ev.shortName||ev.name,
+      completed:!!st.completed, detail:st.shortDetail||st.detail,
+      venue:v.fullName, indoor:!!v.indoor, city:v.address?.city,
+      home:{abbr:home.team?.abbreviation, name:home.team?.displayName, score:home.score},
+      away:{abbr:away.team?.abbreviation, name:away.team?.displayName, score:away.score},
+      details:o.details||'', total:o.overUnder
+    };
+  }).filter(Boolean);
+}
+function render(){
+  const q=($('#q').value||'').toLowerCase();
+  const rows=games.filter(g=>g.league===view && (!q || `${g.name} ${g.home.abbr} ${g.away.abbr}`.toLowerCase().includes(q)));
+  $('#board').innerHTML = rows.map(g=>`
+    <article class="game">
+      <div class="muted">${g.detail||''} · ${g.venue||''} ${g.indoor?'· Dome':''}</div>
+      <div class="row">
+        <div><b>${g.away.abbr}</b> @ <b>${g.home.abbr}</b><div class="muted">${g.away.name} at ${g.home.name}</div></div>
+        <div><b class="score">${g.completed?(g.away.score+'–'+g.home.score):'—'}</b></div>
+      </div>
+      <div class="muted">${g.details||'No line yet'}${g.total!=null?' · O/U '+g.total:''}</div>
+    </article>`).join('') || '<p class="muted">No games in this filter.</p>';
+}
+async function boot(){
+  try{
+    const [nfl,cfb]=await Promise.all([
+      fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=3&seasontype=2&limit=50').then(r=>r.json()),
+      fetch('https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=4&seasontype=2&groups=80&limit=100').then(r=>r.json())
+    ]);
+    games=[...parseBoard(nfl,'nfl'),...parseBoard(cfb,'cfb')];
+    $('#stamp').textContent='Live ESPN slate · '+new Date().toLocaleString();
+    render();
+  }catch(e){
+    $('#stamp').textContent='Could not reach ESPN: '+e;
+  }
+}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  view=t.dataset.v; document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===t)); render();
+});
+$('#q').oninput=render;
+boot();
+</script>
+</body>
+</html>
