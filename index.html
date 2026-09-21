@@ -2483,7 +2483,7 @@ function projectionTable(games) {
   if (!rows.length) return "";
   return `
     <div class="card board-card">
-      <h3 style="margin:0 0 10px">${view === "nfl" ? "NFL" : view === "cfb" ? "College football" : "Full"} projection board</h3>
+      <h3 style="margin:0 0 10px">${view === "nfl" ? "Best projections" : view === "cfb" ? "College football" : view === "live" ? "Live board" : "Full"} projection board</h3>
       <div class="tablewrap">
       <table class="boardtable">
         <thead>
@@ -2547,7 +2547,7 @@ function renderBoard() {
   const table = projectionTable(games);
   const cards = (view === "cfb" ? games.slice(0, 25) : games).map(card).join("");
   const dogs = (view === "nfl" || view === "live") ? valueStripHtml() : "";
-  $("#board").innerHTML = dogs + table + cards;
+  $("#board").innerHTML = table + dogs + cards;
   $$("#board .game").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
   $$("#board .boardtable tr[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
   $$("#board .value-tile").forEach((el) => el.addEventListener("click", (e) => { e.stopPropagation(); openGame(el.dataset.id); }));
