@@ -1,10 +1,13 @@
 name: Deploy full Double Gs
 on:
+  workflow_dispatch:
   push:
     branches: [main]
-  workflow_dispatch:
+    paths:
+      - HASHMARK.html
+      - .github/workflows/pages.yml
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 concurrency:
@@ -17,20 +20,28 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout site repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Checkout full board
         uses: actions/checkout@v4
         with:
           repository: peyton2407-maker/double-gs
           path: board
-      - name: Use full HASHMARK as homepage
+      - name: Stage site
         run: |
+          mkdir -p site
+          cp board/HASHMARK.html site/index.html
           cp board/HASHMARK.html index.html
-          touch .nojekyll
+          touch site/.nojekyll .nojekyll
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html .nojekyll
+          git diff --cached --quiet || git commit -m "Sync full Double Gs board"
+          git push || true
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: site
       - id: deployment
         uses: actions/deploy-pages@v4
