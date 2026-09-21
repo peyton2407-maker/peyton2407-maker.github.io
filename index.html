@@ -363,6 +363,19 @@ button { touch-action: manipulation; }
 .inj-rank{font-size:11px;font-weight:800;color:var(--turf);margin-top:4px}
 .inj-game{font-size:12.5px;font-weight:700;color:var(--navy);margin-top:6px}
 .inj-banner{color:var(--rose);font-size:12.5px;font-weight:800;margin-top:6px}
+.desk-panel,.desk-card,.desk-strip{
+  background:#d7e4d6;
+  border:1.5px solid #4d7a58;
+  border-radius:16px;
+  padding:12px 14px;
+}
+.desk-panel .desk-nums,.desk-card .desk-nums{display:flex;gap:16px;flex-wrap:wrap;margin:6px 0 8px}
+.desk-panel .desk-nums b,.desk-card .desk-nums b{font-size:16px;color:var(--navy)}
+.desk-notes{margin:4px 0 0;padding-left:18px;color:var(--ink-soft);font-size:13px;line-height:1.45}
+.desk-strip h3{margin:0 0 6px}
+.desk-strip table{width:100%;border-collapse:collapse;font-size:13px}
+.desk-strip td,.desk-strip th{padding:8px 6px;border-bottom:1px solid #b7cbb8;text-align:left}
+.desk-strip tr[data-id]{cursor:pointer}
 
 
 .value-strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin:0 0 16px}
@@ -2742,6 +2755,36 @@ function simStrip(g) {
   <div class="simtails">Likely total ${s.total_p25 ?? s.total_p10}–${s.total_p75 ?? s.total_p90} · cover and O/U from 150k realistic draws</div>`;
 }
 
+function deskPanelHtml(g) {
+  const s = g.situational || { margin_adj: 0, total_adj: 0, notes: [], injury: { home: 0, away: 0 }, rest: {}, travel: {}, referee: {} };
+  const notes = (s.notes && s.notes.length)
+    ? s.notes
+    : ["No extra injury / rest / travel / ref tax — this pick is still using the overlay at 0."];
+  return `<div class="desk-panel">
+    <div class="lbl">Injury · rest · travel · ref (already in this pick)</div>
+    <div class="desk-nums"><b>Spread ${fmt.signed(s.margin_adj)}</b><b>Total ${fmt.signed(s.total_adj)}</b></div>
+    <ul class="desk-notes">${notes.map((n) => `<li>${n}</li>`).join("")}</ul>
+  </div>`;
+}
+function deskStripHtml(games) {
+  const rows = (games || [])
+    .filter((g) => g.situational)
+    .sort((a, b) => Math.abs(b.situational.margin_adj || 0) - Math.abs(a.situational.margin_adj || 0))
+    .slice(0, 10);
+  return `<div class="card desk-strip" style="margin-bottom:14px">
+    <h3>Injury / rest / travel / ref — already in these picks</h3>
+    <p class="subn" style="margin:0 0 10px">Official injury reports, short weeks vs extra rest, road miles / body clock, and NFL referee tendencies. Tap a row or a game card for the full breakdown.</p>
+    ${!rows.length ? "<p>Desk overlay is on — no extra tax on this filter yet.</p>" : `<table>
+      <thead><tr><th>Game</th><th>Spread move</th><th>Total move</th><th>Why</th></tr></thead>
+      <tbody>${rows.map((g) => `<tr data-id="${g.id}">
+        <td>${g.away.abbr} @ ${g.home.abbr}</td>
+        <td><b>${fmt.signed(g.situational.margin_adj)}</b></td>
+        <td><b>${fmt.signed(g.situational.total_adj)}</b></td>
+        <td>${(g.situational.notes || []).slice(0, 2).join(" · ") || "—"}</td>
+      </tr>`).join("")}</tbody>
+    </table>`}
+  </div>`;
+}
 function card(g) {
   const p = g.proj || {};
   const o = g.odds || {};
@@ -2765,6 +2808,7 @@ function card(g) {
         ${teamLine(g.home, o.home_favorite ? o.details : "")}
         ${wxChip(g)}
         ${(g.injuries||[]).filter(r=>["OUT","IR","INACTIVE","DOUBTFUL"].includes(r.tag||r.status)).slice(0,3).length ? `<div class="inj-banner">${(g.injuries||[]).filter(r=>["OUT","IR","INACTIVE","DOUBTFUL"].includes(r.tag||r.status)).slice(0,3).map(r=>r.name+" "+(r.tag||r.status)+" ("+ (r.pos||"") +")").join(" · ")}</div>` : ""}
+        ${deskPanelHtml(g)}
       </div>
       <div class="scorebox">
         <div class="lbl">Projected score</div>
@@ -2860,11 +2904,13 @@ function renderBoard() {
     return;
   }
   const table = projectionTable(games);
+  const desk = (view === "nfl" || view === "cfb" || view === "live") ? deskStripHtml(games) : "";
   const cards = (view === "cfb" ? games.slice(0, 25) : games).map(card).join("");
   const dogs = (view === "nfl" || view === "live") ? valueStripHtml() : "";
-  $("#board").innerHTML = table + dogs + cards;
+  $("#board").innerHTML = table + desk + dogs + cards;
   $$("#board .game").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
   $$("#board .boardtable tr[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
+  $$("#board .desk-strip tr[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
   $$("#board .value-tile").forEach((el) => el.addEventListener("click", (e) => { e.stopPropagation(); openGame(el.dataset.id); }));
 }
 
@@ -2990,6 +3036,7 @@ function openGame(id) {
         <div class="subn">${g.home.record || ""} · FPI ${fmt.n(p.home_fpi, 2)} (#${fmt.n(p.home_fpi_rank, 0)})</div>
       </div>
     </div>
+    ${deskPanelHtml(g)}
     ${g.live ? `<div class="card" style="margin:12px 0;border-color:var(--rose)">
       <h3 style="margin:0 0 8px">${g.completed ? "Final vs pregame" : "In-game projector"}</h3>
       <div class="kv"><div class="lbl">Score now</div><b>${g.live.current}</b><div class="subn">${g.status_detail || ""} · ${g.live.remaining_min} min left</div></div>
