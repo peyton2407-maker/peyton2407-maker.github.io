@@ -5052,7 +5052,7 @@ function scanAlerts() {
     if (prev.pick && now.pick && prev.pick !== now.pick) {
       pushAlert("pick", "We flipped a pick · " + g.short_name, `${prev.pick} → ${now.pick}`, true);
     }
-    if (prev.wx != null && now.wx != null && Math.abs(Number(now.wx) - Number(prev.wx)) >= 1.5) {
+    if (prev.wx != null && now.wx != null && Math.abs(Number(prev.wx)) >= 0.4 && Math.abs(Number(now.wx) - Number(prev.wx)) >= 1.5) {
       pushAlert("wx", "Weather flipped the total · " + g.short_name, `weather tax ${prev.wx} → ${now.wx}`, false);
     }
   });
