@@ -5174,10 +5174,102 @@ function gameLogTable(p, rows) {
       <td>${proj ? "—" : cell(r.fum)}</td><td>${proj ? "—" : cell(r.fum_lost)}</td>
     </tr>`;
   const rowFn = p.pos === "QB" ? qbRow : skRow;
-  const body = [rowFn({ week: "Now", opp: p.opp }, true)].concat(season.map((r) => rowFn(r, false))).join("");
+  const body = season.map((r) => rowFn(r, false)).join("");
   return `<h3 style="margin:18px 0 6px">Game log</h3>
     <p class="subn" style="margin:0 0 8px">Same layout as a weekly sheet. Green means he beat the DraftKings line. Snap rate and sack yards are not in the feed, so those cells are left off instead of guessed. Past weeks have no saved projection.</p>
     <div class="log-wrap"><table class="log"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
+}
+
+
+function american(n) {
+  if (n == null || n === "") return "";
+  const s = String(n);
+  if (s[0] === "+" || s[0] === "-") return s;
+  const v = Number(n);
+  if (!Number.isFinite(v)) return "";
+  return v > 0 ? "+" + v : String(v);
+}
+async function loadSchedule(teamId) {
+  window.__SCH = window.__SCH || {};
+  const id = String(teamId || "");
+  if (!id) return [];
+  if (window.__SCH[id]) return window.__SCH[id];
+  const year = new Date().getFullYear();
+  let rows = [];
+  try {
+    const d = await getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/" + id + "/schedule?season=" + year);
+    rows = (d.events || []).map((e) => {
+      const comp = (e.competitions || [])[0] || {};
+      const st = ((comp.status || {}).type) || {};
+      const teams = comp.competitors || [];
+      const self = teams.find((t) => String((t.team || {}).id) === id);
+      const opp = teams.find((t) => String((t.team || {}).id) !== id);
+      return {
+        id: String(e.id),
+        week: (e.week || {}).number,
+        date: e.date,
+        opp: (opp && opp.team && opp.team.abbreviation) || "",
+        home: !!(self && self.homeAway === "home"),
+        played: !!st.completed
+      };
+    });
+  } catch (e) {}
+  window.__SCH[id] = rows;
+  return rows;
+}
+async function loadGamePrice(gameId) {
+  window.__PRICE = window.__PRICE || {};
+  const id = String(gameId || "");
+  if (!id) return null;
+  if (window.__PRICE[id]) return window.__PRICE[id];
+  let price = null;
+  try {
+    const d = await getJSON("https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/" + id + "/competitions/" + id + "/odds/100?lang=en&region=us");
+    const cur = d.current || {};
+    const home = ((d.homeTeamOdds || {}).current) || {};
+    const away = ((d.awayTeamOdds || {}).current) || {};
+    price = {
+      spread: d.details || "",
+      total: d.overUnder,
+      over: (cur.over || {}).american || d.overOdds,
+      under: (cur.under || {}).american || d.underOdds,
+      homeSpread: (home.spread || {}).american,
+      awaySpread: (away.spread || {}).american
+    };
+  } catch (e) {}
+  window.__PRICE[id] = price;
+  return price;
+}
+function paceOf(rows, key) {
+  const vals = (rows || []).map((r) => Number(r[key])).filter((n) => Number.isFinite(n));
+  if (!vals.length) return null;
+  return vals.reduce((s, n) => s + n, 0) / vals.length;
+}
+function unplayedTable(p, sched, season) {
+  const left = (sched || []).filter((g) => !g.played);
+  if (!left.length) return "";
+  const body = left.map((g) => {
+    const price = (window.__PRICE || {})[g.id];
+    const modeled = String(g.id) === String(p.game_id);
+    const book = price
+      ? `${price.spread || "—"} (${american(g.home ? price.homeSpread : price.awaySpread) || "—"}) · total ${price.total ?? "—"} · over ${american(price.over) || "—"} / under ${american(price.under) || "—"}`
+      : "Price not posted";
+    let proj;
+    if (modeled) {
+      const dk = dkLine(p, p.pos === "QB" ? "pass_yds" : (p.pos === "RB" ? "rush_yds" : "rec_yds"));
+      proj = p.pos === "QB"
+        ? `Double Gs ${cell(p.pass_yds, 0)} pass${dk != null ? " (DK " + dk + ")" : ""} · ${cell(p.pass_td, 1)} pass TD · ${cell(p.rush_yds, 0)} rush · ${cell(p.fp, 1)} pts`
+        : `Double Gs ${cell(p.rush_yds, 0)} rush · ${cell(p.rec, 1)} rec · ${cell(p.rec_yds, 0)} rec yds · ${cell(p.fp, 1)} pts`;
+    } else if (p.pos === "QB") {
+      proj = `2026 pace ${cell(paceOf(season, "pass_yds"), 0)} pass · ${cell(paceOf(season, "pass_td"), 1)} pass TD · ${cell(paceOf(season, "rush_yds"), 0)} rush`;
+    } else {
+      proj = `2026 pace ${cell(paceOf(season, "rush_yds"), 0)} rush · ${cell(paceOf(season, "rec"), 1)} rec · ${cell(paceOf(season, "rec_yds"), 0)} rec yds`;
+    }
+    return `<tr><td>${g.week || "—"}</td><td class="l">${g.home ? g.opp : "@" + g.opp}</td><td>${fmt.when(g.date)}</td><td>${book}</td><td class="l">${proj}</td></tr>`;
+  }).join("");
+  return `<h3 style="margin:18px 0 6px">Unplayed games</h3>
+    <p class="subn" style="margin:0 0 8px">The DraftKings price is the real spread and total for that game. Double Gs is the full projection for the week on this board. Later weeks use his 2026 average so far. That is not a new matchup number.</p>
+    <div class="log-wrap"><table class="log"><thead><tr><th>WK</th><th>OPP</th><th>WHEN</th><th>DRAFTKINGS PRICE</th><th>PROJECTION</th></tr></thead><tbody>${body}</tbody></table></div>`;
 }
 
 function findProp(id, gameId) {
@@ -5199,7 +5291,7 @@ function ladderTable(m, season, vs) {
   }).join("");
   const dk = typeof dkLine === "function" ? dkLine(m.player || {}, m.key) : null;
   const dkTxt = dk != null ? `DraftKings <b>${dk}</b>` : "DraftKings line not posted";
-  return `<h3 style="margin:14px 0 0">${m.label}</h3><p class="subn" style="margin:4px 0 0">Double Gs <b>${Number(m.mean).toFixed(1)}</b> · ${dkTxt}. The book price, like -115, is not in this feed.</p>${head}${body}</tbody></table>`;
+  return `<h3 style="margin:14px 0 0">${m.label}</h3><p class="subn" style="margin:4px 0 0">Double Gs <b>${Number(m.mean).toFixed(1)}</b> · ${dkTxt}. Game prices are in the unplayed table. The prop juice is not posted with the yard line.</p>${head}${body}</tbody></table>`;
 }
 function bestDoubleG(markets, season, vs) {
   let best = null;
@@ -5233,8 +5325,13 @@ async function openPlayer(id, gameId) {
   $("#closeModal").onclick = closeModal;
   let rows = [];
   let err = "";
-  try { [rows] = await Promise.all([playerLogs(p.id), loadDkForGame(p.game_id)]); }
-  catch (e) { err = "ESPN did not return his game log."; }
+  let sched = [];
+  try {
+    const pack = await Promise.all([playerLogs(p.id), loadDkForGame(p.game_id), p.team_id ? loadSchedule(p.team_id) : Promise.resolve([])]);
+    rows = pack[0];
+    sched = pack[2] || [];
+    await Promise.all(sched.filter((g) => !g.played).map((g) => loadGamePrice(g.id)));
+  } catch (e) { err = "ESPN did not return his game log."; }
   const year = new Date().getFullYear();
   const season = rows.filter((r) => r.season === year);
   const vs = rows.filter((r) => sameOpp(r.opp, p.opp));
@@ -5256,6 +5353,7 @@ async function openPlayer(id, gameId) {
     <p class="subn">${err || seasonLine}</p>
     ${markets.map((m) => ladderTable(m, season, vs)).join("")}
     ${gameLogTable(p, rows)}
+    ${unplayedTable(p, sched, season)}
     <div class="dg-box">
       <div class="lbl">Double Gs</div>
       ${bestHtml}
