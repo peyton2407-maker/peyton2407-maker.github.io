@@ -534,7 +534,11 @@ option { background: #12201a; color: #e9f3ec; }
 .face{width:100%;height:100%;object-fit:cover;object-position:center 18%;position:relative;z-index:1}
 .face-ph{position:absolute;inset:0;display:grid;place-items:center;font-family:Syne,sans-serif;font-weight:800;color:var(--turf);font-size:18px}
 .who-row{display:flex;gap:10px;align-items:center}
-.prop-why{margin:8px 0 0;color:var(--ink-soft);font-size:13px;line-height:1.45}
+.prop-why{margin:8px 0 0;color:var(--ink);font-size:15px;line-height:1.45}
+.cfb-read{margin-top:12px;display:grid;gap:8px}
+.cfb-read p{margin:0;font-size:16px;line-height:1.45;color:var(--ink)}
+.cfb-read b{color:var(--turf)}
+.score-range{font-size:20px;font-weight:800;color:var(--ink)}
 @media (min-width:760px){
   .td-hero{grid-template-columns:1.2fr 1fr 1fr}
 }
@@ -1276,12 +1280,13 @@ function teamKey(league, id) { return `${league}:${id}`; }
 function getResiduals() {
   DATA = DATA || {};
   if (!DATA.residuals) {
-    DATA.residuals = { nfl: {}, cfb: {}, games_learned: {}, history: [] };
+    DATA.residuals = { nfl: {}, cfb: {}, cfb_buckets: {}, games_learned: {}, history: [] };
   }
   DATA.residuals.nfl = DATA.residuals.nfl || {};
   DATA.residuals.cfb = DATA.residuals.cfb || {};
   DATA.residuals.games_learned = DATA.residuals.games_learned || {};
   DATA.residuals.history = DATA.residuals.history || [];
+  DATA.residuals.cfb_buckets = DATA.residuals.cfb_buckets || {};
   return DATA.residuals;
 }
 function loadResiduals() {
@@ -1289,7 +1294,7 @@ function loadResiduals() {
     const c = JSON.parse(localStorage.getItem("doublegs-learn") || "null");
     if (!c) return;
     const res = getResiduals();
-    if (c.cfb) res.cfb = Object.assign(res.cfb || {}, c.cfb);
+    if (c.cfb_buckets) res.cfb_buckets = Object.assign(res.cfb_buckets || {}, c.cfb_buckets);
     if (c.nfl) res.nfl = Object.assign(res.nfl || {}, c.nfl);
     if (c.games_learned) res.games_learned = Object.assign(c.games_learned, res.games_learned);
     if (Array.isArray(c.history) && c.history.length) res.history = c.history.slice(-80);
@@ -1299,7 +1304,7 @@ function saveResiduals() {
   try {
     const res = getResiduals();
     localStorage.setItem("doublegs-learn", JSON.stringify({
-      cfb: res.cfb, nfl: res.nfl, games_learned: res.games_learned, history: (res.history || []).slice(-80), saved: Date.now()
+      cfb: res.cfb, nfl: res.nfl, cfb_buckets: res.cfb_buckets || {}, games_learned: res.games_learned, history: (res.history || []).slice(-80), saved: Date.now()
     }));
   } catch (e) {}
 }
@@ -1350,6 +1355,20 @@ function learnFromFinals(games) {
       actual: `${as}-${hs}`, pred: `${p.away_points}-${p.home_points}`,
       err_margin: +errM.toFixed(2), err_total: +errT.toFixed(2)
     };
+    if (lg === "cfb") {
+      res.cfb_buckets = res.cfb_buckets || {};
+      const conf = (typeof cfbConf === "function" ? cfbConf(g.home.name) : "") || "Other";
+      const sp = g.odds && g.odds.home_spread != null ? Math.abs(Number(g.odds.home_spread)) : Math.abs(predM);
+      const bucket = sp >= 17 ? "blowout" : sp >= 7 ? "big" : "close";
+      const key = conf + "|" + bucket;
+      const brow = res.cfb_buckets[key] || { n: 0, margin: 0, total: 0 };
+      const bn = brow.n + 1;
+      const ba = bn < 8 ? 0.3 : 0.12;
+      brow.n = bn;
+      brow.margin = +(brow.margin * (1 - ba) + errM * ba).toFixed(3);
+      brow.total = +(brow.total * (1 - ba) + errT * ba).toFixed(3);
+      res.cfb_buckets[key] = brow;
+    }
     res.history.push({
       id: hid, name: g.short_name || g.name, league: lg,
       err_margin: +errM.toFixed(2), err_total: +errT.toFixed(2)
@@ -1373,11 +1392,29 @@ function applyLearningToGame(g) {
   if (p._preLearnTotal == null && p.hashmark_total != null) p._preLearnTotal = Number(p.hashmark_total);
   const nGames = (hr.n || 0) + (ar.n || 0);
   const cfb = lg === "cfb";
-  const w = cfb ? 0.74 : 0.55;
-  const tw = cfb ? 0.48 : 0.35;
-  const conf = nGames <= 0 ? 0 : nGames === 1 ? 0.62 : nGames <= 3 ? 0.82 : 1;
-  const mShift = Math.max(-7.5, Math.min(7.5, w * conf * hm));
-  const totShift = Math.max(-6, Math.min(6, tw * conf * totShiftBase));
+  let mShift = 0, totShift = 0, learnNote = "";
+  if (cfb) {
+    const res = getResiduals();
+    const conf = (typeof cfbConf === "function" ? cfbConf(g.home.name) : "") || "Other";
+    const sp = g.odds && g.odds.home_spread != null ? Math.abs(Number(g.odds.home_spread)) : Math.abs(Number(p.blended_margin) || 0);
+    const bucket = sp >= 17 ? "blowout" : sp >= 7 ? "big" : "close";
+    const brow = (res.cfb_buckets || {})[conf + "|" + bucket];
+    if (brow && brow.n >= 6) {
+      mShift = Math.max(-3, Math.min(3, brow.margin * 0.5));
+      totShift = Math.max(-3, Math.min(3, brow.total * 0.4));
+      learnNote = `${conf} ${bucket} games: after ${brow.n} real finals, the miss is ${brow.margin > 0 ? "+" : ""}${brow.margin} points. This game moves ${mShift > 0 ? "+" : ""}${mShift.toFixed(1)}.`;
+    } else {
+      learnNote = `${conf} ${bucket} games: ${brow ? brow.n : 0} finished games saved. We need 6 before this bucket moves a score. Right now the correction is 0.`;
+    }
+  } else {
+    const w = 0.55;
+    const tw = 0.35;
+    const confw = nGames <= 0 ? 0 : nGames === 1 ? 0.62 : nGames <= 3 ? 0.82 : 1;
+    const hm = (hr.margin || 0) - (ar.margin || 0);
+    const totShiftBase = ((hr.total || 0) + (ar.total || 0)) / 2;
+    mShift = Math.max(-4.5, Math.min(4.5, w * confw * hm));
+    totShift = Math.max(-4, Math.min(4, tw * confw * totShiftBase));
+  }
   const baseM = p._preLearnMargin;
   const baseT = p._preLearnTotal;
   if (baseM != null && Math.abs(mShift) > 0.05) {
@@ -1395,7 +1432,8 @@ function applyLearningToGame(g) {
   if (p.blended_margin != null && p.hashmark_total != null) {
     p.home_points = +Math.max(3, (Number(p.hashmark_total) + Number(p.blended_margin)) / 2).toFixed(1);
     p.away_points = +Math.max(3, (Number(p.hashmark_total) - Number(p.blended_margin)) / 2).toFixed(1);
-    const sigma = cfb ? LIVE.CFB_SIGMA : LIVE.NFL_SIGMA;
+    const sigma = cfb && typeof cfbSigma === "function" ? cfbSigma(p.blended_margin) : (cfb ? LIVE.CFB_SIGMA : LIVE.NFL_SIGMA);
+    p.cfb_sigma = cfb ? sigma : null;
     p.win_prob_home = +normCdf(Number(p.blended_margin) / sigma).toFixed(4);
     p.win_prob_away = +(1 - p.win_prob_home).toFixed(4);
   }
@@ -1412,6 +1450,8 @@ function applyLearningToGame(g) {
     else p.total_pick = p.edge_total > 0 ? `OVER ${g.odds.total}` : `UNDER ${g.odds.total}`;
   }
   p.learned = { home_n: hr.n, away_n: ar.n, margin_shift: +mShift.toFixed(2), total_shift: +totShift.toFixed(2) };
+  p.learn_note = learnNote || "";
+  if (cfb && typeof cfbLockPick === "function") cfbLockPick(g);
   if (g.box) {
     g.box.home_points = p.home_points;
     g.box.away_points = p.away_points;
@@ -1653,8 +1693,10 @@ function injuryTaxFor(game, side) {
     const dbt = /DOUBT/.test(tag);
     const q = /QUESTION|^Q$/.test(tag);
     if (pos === "QB") {
-      if (out) tax += cfb ? 6.4 : 5.2;
-      else if (dbt) tax += cfb ? 2.8 : 2.3;
+      if (cfb) {
+        /* College quarterback points are applied once in the college score card, not here. */
+      } else if (out) tax += 5.2;
+      else if (dbt) tax += 2.3;
       else if (q) tax += 0.65;
     } else if (["LT", "RT", "T", "OT"].includes(pos)) {
       if (out) { tax += 1.4; olOut++; }
@@ -2171,13 +2213,196 @@ function applyLiveBoard(games) {
   });
 }
 
+function cfbSidePoints(off, defAgainst, fieldShare) {
+  const offPts = (Number(off) - 50) * 0.34;
+  const defPts = (Number(defAgainst) - 60) * 0.30;
+  return LIVE.CFB_AVG_TOTAL / 2 + offPts - defPts + (Number(fieldShare) || 0);
+}
+function cfbSigma(margin) {
+  return Math.min(24, +(13.2 + Math.abs(Number(margin) || 0) * 0.32).toFixed(2));
+}
+function cfbField(g) {
+  const lines = [];
+  if (g.neutral) {
+    lines.push("Neutral field. Home points: 0.");
+    return { hfa: 0, lines, altitude: false, body: false, elev: null };
+  }
+  let hfa = 2.5;
+  lines.push("Normal home field: 2.5 points.");
+  const blob = `${g.venue || ""} ${g.city || ""} ${g.state || ""} ${(g.home && g.home.name) || ""}`;
+  const spots = [
+    [/falcon stadium|air force/i, 6621],
+    [/war memorial|wyoming/i, 7220],
+    [/folsom|boulder/i, 5430],
+    [/canvas stadium|sonny lubick|colorado state/i, 5003],
+    [/lavell|brigham/i, 4551],
+    [/rice-eccles|rice eccles/i, 4657],
+    [/new mexico|albuquerque/i, 5312]
+  ];
+  let elev = null;
+  for (const [re, ft] of spots) if (re.test(blob)) elev = ft;
+  let altitude = false;
+  if (elev && elev >= 4500) {
+    const add = Math.min(1.5, +((elev - 4000) / 2200).toFixed(2));
+    hfa += add;
+    altitude = true;
+    lines.push(`This stadium is about ${elev.toLocaleString()} feet up. Thin air adds ${add} points to the home side.`);
+  } else {
+    lines.push("Not a high-altitude stadium we track. Altitude points: 0.");
+  }
+  let body = false;
+  const venue = typeof coordsForGame === "function" ? coordsForGame(g) : null;
+  const awayHome = typeof teamHomeCoords === "function" ? teamHomeCoords(g, "away") : null;
+  if (venue && awayHome && awayHome[1] < -115 && venue[1] > -95) {
+    const d = new Date(g.date);
+    const utc = d.getUTCHours() + d.getUTCMinutes() / 60;
+    if (utc < 17.6) {
+      hfa += 0.8;
+      body = true;
+      lines.push("The visitor is a West Coast team in an early Eastern kickoff. Body clock adds 0.8 points to the home side.");
+    } else {
+      lines.push("The visitor came from the West, but this kickoff is not early enough for a body-clock bump. Extra points: 0.");
+    }
+  }
+  if (g.conference_game) {
+    hfa += 0.2;
+    lines.push("Conference game at home: +0.2.");
+  }
+  return { hfa: +hfa.toFixed(2), lines, altitude, body, elev };
+}
+function cfbQb(g) {
+  const bag = (((typeof DATA !== "undefined" && DATA && DATA.injuries) || window.__INJ || {}).cfb) || [];
+  const rows = bag.filter((r) => {
+    const t = String(r.team || "").toLowerCase();
+    return t && (t.includes(String(g.home.name || "").toLowerCase()) || t.includes(String(g.away.name || "").toLowerCase()));
+  }).filter((r) => String(r.pos || "").toUpperCase() === "QB" || /quarterback/i.test(`${r.pos || ""} ${r.short || ""} ${r.long || ""}`));
+  if (!rows.length) return { pts: 0, side: null, line: "No quarterback is listed out or doubtful. Quarterback points: 0." };
+  const rank = (r) => /OUT|IR|INACTIVE|SUSP/.test(String(r.tag || r.status || "").toUpperCase()) ? 3 : /DOUBT/.test(String(r.tag || r.status || "").toUpperCase()) ? 2 : 1;
+  rows.sort((a, b) => rank(b) - rank(a));
+  const r = rows[0];
+  const tag = String(r.tag || r.status || "").toUpperCase();
+  const side = String(r.team || "").toLowerCase().includes(String(g.home.name || "").toLowerCase()) ? "home" : "away";
+  const who = `${r.name || "Quarterback"} (${side === "home" ? g.home.abbr : g.away.abbr})`;
+  if (/OUT|IR|INACTIVE|SUSP/.test(tag)) {
+    const hard = /season|surgery|torn|acl|achilles/.test(String(r.short || r.long || "").toLowerCase());
+    const pts = hard ? 13 : 10;
+    return { pts, side, line: `${who} is ${tag}. A college starter being out moves the game ${pts} points toward the other side. That is inside the 7 to 14 point range.` };
+  }
+  if (/DOUBT/.test(tag)) return { pts: 7, side, line: `${who} is doubtful. We move the game 7 points, the low end of a starter being out.` };
+  return { pts: 0, side, line: `${who} is only questionable. We do not take 7 to 14 points until the report says doubtful or out. Quarterback points: 0.` };
+}
+function cfbCoordinator(g) {
+  const news = ((DATA && DATA.news && DATA.news.cfb) || []);
+  const week = Number((DATA && DATA.meta && DATA.meta.cfb_weeks && DATA.meta.cfb_weeks[0]) || 4);
+  const names = [g.home.name, g.away.name].map((s) => String(s || "").toLowerCase()).filter((s) => s.length > 3);
+  const hit = news.find((a) => {
+    const h = String(a.headline || "").toLowerCase();
+    return /coordinator/.test(h) && names.some((n) => h.includes(n.split(" ").pop()));
+  });
+  if (!hit) return "No coordinator change is in the college news we have. Points: 0.";
+  if (week > 6) return `News says: ${hit.headline}. It is past week 6, so the early-season coordinator bump is 0.`;
+  return `News says: ${hit.headline}. It is still early in the year, but we do not have a measured points value for that change yet, so points stay 0.`;
+}
+function cfbLockPick(g) {
+  if (!g || g.league !== "cfb" || !g.proj || g.completed) return g;
+  const p = g.proj;
+  const qb = cfbQb(g);
+  const field = g._cfbField || cfbField(g);
+  let margin = p.blended_margin != null ? Number(p.blended_margin) : null;
+  if (margin != null && p._qbApplied) margin -= Number(p._qbApplied);
+  const qbAdd = qb.pts ? (qb.side === "home" ? -qb.pts : qb.pts) : 0;
+  if (margin != null) margin += qbAdd;
+  p._qbApplied = qbAdd;
+  const total = p.hashmark_total != null ? Number(p.hashmark_total) : null;
+  if (margin != null && total != null) {
+    p.blended_margin = +margin.toFixed(2);
+    p.hashmark_home_spread = +(-margin).toFixed(1);
+    p.home_points = +Math.max(3, (total + margin) / 2).toFixed(1);
+    p.away_points = +Math.max(3, (total - margin) / 2).toFixed(1);
+  }
+  const sigma = cfbSigma(margin);
+  p.cfb_sigma = sigma;
+  if (margin != null && typeof normCdf === "function") {
+    p.win_prob_home = +normCdf(margin / sigma).toFixed(4);
+    p.win_prob_away = +(1 - p.win_prob_home).toFixed(4);
+  }
+  const band = sigma * 0.5;
+  if (p.home_points != null) {
+    p.score_low_home = Math.max(0, Math.round(p.home_points - band));
+    p.score_high_home = Math.round(p.home_points + band);
+    p.score_low_away = Math.max(0, Math.round(p.away_points - band));
+    p.score_high_away = Math.round(p.away_points + band);
+  }
+  const mktM = p.market_margin != null ? Number(p.market_margin) : null;
+  const mktT = g.odds && g.odds.total != null ? Number(g.odds.total) : null;
+  const unitGap = p.model_margin != null && mktM != null && Math.abs(Number(p.model_margin) - mktM) >= 6;
+  const totalGap = p.model_total != null && mktT != null && Math.abs(Number(p.model_total) - mktT) >= 6;
+  const travel = typeof travelInfo === "function" ? travelInfo(g) : { miles: 0, notes: [] };
+  const longTrip = (travel.miles || 0) >= 1200;
+  const disagree = qb.pts >= 7 || longTrip || field.body || field.altitude || unitGap || totalGap;
+  const reasons = [];
+  if (qb.pts >= 7) reasons.push("quarterback report");
+  if (longTrip) reasons.push(`road trip about ${Math.round(travel.miles)} miles`);
+  if (field.body) reasons.push("early body-clock kickoff");
+  if (field.altitude) reasons.push("altitude");
+  if (unitGap) reasons.push("offense-versus-defense gap versus the Vegas side");
+  if (totalGap) reasons.push("offense-versus-defense total versus the Vegas total");
+  if (g.odds && g.odds.home_spread != null && margin != null) {
+    p.edge_spread = +(margin - (-Number(g.odds.home_spread))).toFixed(2);
+  }
+  if (mktT != null && total != null) p.edge_total = +(total - mktT).toFixed(2);
+  if (!disagree) {
+    p.pick = "NO PLAY";
+    p.pick_line = null;
+    p.total_pick = "NO PLAY";
+    p.cfb_call = "Stay with Vegas. Quarterback news, travel, altitude, and the offense-defense gap did not move this game enough to fade the line.";
+  } else if (g.odds && g.odds.home_spread != null && p.edge_spread != null) {
+    if (Math.abs(p.edge_spread) < 1.6) {
+      p.pick = "NO PLAY";
+      p.pick_line = null;
+      p.cfb_call = `Something real moved (${reasons.join(", ")}), but the side is still inside 1.6 points of Vegas. We stay with the line.`;
+    } else if (p.edge_spread > 0) {
+      p.pick = g.home.abbr;
+      p.pick_line = `${g.home.abbr} ${Number(g.odds.home_spread) >= 0 ? "+" : ""}${Number(g.odds.home_spread).toFixed(1)}`;
+      p.cfb_call = `We disagree with Vegas because of: ${reasons.join(", ")}.`;
+    } else {
+      p.pick = g.away.abbr;
+      p.pick_line = `${g.away.abbr} ${(-Number(g.odds.home_spread)) >= 0 ? "+" : ""}${(-Number(g.odds.home_spread)).toFixed(1)}`;
+      p.cfb_call = `We disagree with Vegas because of: ${reasons.join(", ")}.`;
+    }
+    if (mktT != null && p.edge_total != null && Math.abs(p.edge_total) >= 1.5 && (totalGap || field.altitude)) {
+      p.total_pick = p.edge_total > 0 ? `OVER ${mktT}` : `UNDER ${mktT}`;
+    } else p.total_pick = "NO PLAY";
+  }
+  const miles = travel.miles != null ? `About ${Math.round(travel.miles)} miles for the visitor.` : "Travel miles are not available for this game.";
+  p.cfb_lines = [
+    `Offense versus defense: ${g.away.abbr} offense grade ${p.away_off ?? "—"} against ${g.home.abbr} defense ${p.home_def ?? "—"}. ${g.home.abbr} offense ${p.home_off ?? "—"} against ${g.away.abbr} defense ${p.away_def ?? "—"}. That builds the score before Vegas is mixed in.`,
+    field.lines.join(" "),
+    qb.line,
+    cfbCoordinator(g),
+    p.learn_note || "No conference correction yet.",
+    `Pace: plays per game are not in this feed, so pace does not move the number.`,
+    `${miles} ${(travel.notes || []).join(" ")}`.trim(),
+    p.cfb_call || "",
+    sigma ? `This is not a tight score. Likely range is about ${p.score_low_away}–${p.score_high_away} for ${g.away.abbr} and ${p.score_low_home}–${p.score_high_home} for ${g.home.abbr}. The average is ${p.away_points}–${p.home_points}.` : ""
+  ].filter(Boolean);
+  return g;
+}
+function cfbReadHtml(g) {
+  const lines = (g.proj && g.proj.cfb_lines) || [];
+  if (g.league !== "cfb" || !lines.length) return "";
+  return `<div class="cfb-read">${lines.map((t) => `<p>${t}</p>`).join("")}</div>`;
+}
 function projectGame(game, ratings) {
   const league = game.league;
   const hr = ratings[game.home.id] || {};
   const ar = ratings[game.away.id] || {};
   let hfa = game.neutral ? 0 : (league === "nfl" ? LIVE.NFL_HFA : LIVE.CFB_HFA);
-  if (league === "cfb" && game.neutral) hfa = 0.4;
-  if (league === "cfb" && game.conference_game && !game.neutral) hfa += 0.2;
+  if (league === "cfb") {
+    const field = cfbField(game);
+    hfa = field.hfa;
+    game._cfbField = field;
+  }
   if (game.country && !["", "USA", "US", "United States"].includes(game.country) && !game.neutral) hfa *= 0.35;
   let modelMargin = (hr.fpi != null && ar.fpi != null) ? Number(hr.fpi) - Number(ar.fpi) + hfa : null;
   const odds = game.odds || {};
@@ -2198,17 +2423,21 @@ function projectGame(game, ratings) {
   } else if (league === "cfb") {
     const offH = hr.off, offA = ar.off, defH = hr.def, defA = ar.def;
     if (offH != null && offA != null && defH != null && defA != null) {
-      modelTotal = LIVE.CFB_AVG_TOTAL
-        + 0.07 * ((offH - 50) + (offA - 50))
-        - 0.055 * ((defH - 60) + (defA - 60));
+      const homePts = cfbSidePoints(offH, defA, hfa * 0.62);
+      const awayPts = cfbSidePoints(offA, defH, -hfa * 0.38);
+      modelTotal = homePts + awayPts;
+      modelMargin = homePts - awayPts;
     } else if (modelMargin != null) {
-      const gap = Math.abs((hr.fpi || 0) - (ar.fpi || 0));
-      modelTotal = LIVE.CFB_AVG_TOTAL + Math.min(8, gap * 0.1);
+      modelTotal = LIVE.CFB_AVG_TOTAL;
     }
-    if (modelTotal != null) modelTotal = Math.max(38, Math.min(74, modelTotal));
   } else if (modelMargin != null) {
     const gap = Math.abs((hr.fpi || 0) - (ar.fpi || 0));
     modelTotal = LIVE.CFB_AVG_TOTAL + Math.min(6, gap * 0.08);
+  }
+  if (league === "cfb" && modelMargin != null && mktMargin != null) {
+    blendedMargin = mw * mktMargin + (1 - mw) * modelMargin;
+  } else if (league === "cfb" && modelMargin != null) {
+    blendedMargin = modelMargin;
   }
   const mktTotal = odds.total;
   const tw = league === "cfb" ? (LIVE.CFB_TOTAL_MARKET || 0.52) : mw;
@@ -2293,6 +2522,7 @@ function repriceCfbGame(g) {
   }
   p._cfbV2 = true;
   delete p._baseMargin; delete p._baseTotal; delete p._preLearnMargin; delete p._preLearnTotal;
+  if (typeof cfbLockPick === "function") cfbLockPick(g);
   if (g.box) {
     g.box.home_points = p.home_points;
     g.box.away_points = p.away_points;
@@ -2872,27 +3102,9 @@ if (typeof learnFromFinals !== "function") {
     });
     return learned;
   };
-  window.applyLearningToGame = function applyLearningToGame(g) {
-    if (!g || !g.proj || g.completed) return g;
-    const lg = g.league === "nfl" ? "nfl" : "cfb";
-    const hr = residualFor(lg, g.home.id);
-    const ar = residualFor(lg, g.away.id);
-    const hm = (hr.margin || 0) - (ar.margin || 0);
-    const totShift = 0.35 * ((hr.total || 0) + (ar.total || 0)) / 2;
-    const p = g.proj;
-    if (p.blended_margin != null && Math.abs(hm) > 0.05) {
-      p.blended_margin = +(Number(p.blended_margin) + 0.55 * hm).toFixed(2);
-      p.hashmark_home_spread = +(-p.blended_margin).toFixed(1);
-    }
-    if (p.hashmark_total != null && Math.abs(totShift) > 0.05) {
-      p.hashmark_total = +(Number(p.hashmark_total) + totShift).toFixed(1);
-    }
-    if (p.blended_margin != null && p.hashmark_total != null) {
-      p.home_points = +Math.max(3, (Number(p.hashmark_total) + Number(p.blended_margin)) / 2).toFixed(1);
-      p.away_points = +Math.max(3, (Number(p.hashmark_total) - Number(p.blended_margin)) / 2).toFixed(1);
-    }
-    return g;
-  };
+  window.applyLearningToGame = (function (prev) {
+    return function (g) { return typeof prev === "function" ? prev(g) : g; };
+  })(window.applyLearningToGame);
 }
 
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -4210,11 +4422,11 @@ function card(g) {
       </div>
       <div class="scorebox">
         <div class="lbl">Projected score</div>
-        <div class="scoreline">
+        ${g.league === "cfb" && p.score_low_away != null ? `<div class="score-range">${g.away.abbr} ${p.score_low_away}–${p.score_high_away}<span class="score-dash"> to </span>${g.home.abbr} ${p.score_low_home}–${p.score_high_home}</div><div class="total-line">Average <b>${awayPts ?? "—"}–${homePts ?? "—"}</b></div>` : `<div class="scoreline">
           <span>${g.away.abbr} <b>${awayPts ?? "—"}</b></span>
           <span class="score-dash">–</span>
           <span><b>${homePts ?? "—"}</b> ${g.home.abbr}</span>
-        </div>
+        </div>`}
         <div class="total-line">Total <b>${tot ?? "—"}</b> <span>market ${o.total ?? "—"}</span> ${p.weather_adj_total ? `<span>wx ${fmt.signed(p.weather_adj_total)}</span>` : ""}${(g.situational && (g.situational.margin_adj || g.situational.total_adj)) ? `<span>desk ${fmt.signed(g.situational.margin_adj)} / tot ${fmt.signed(g.situational.total_adj)}</span>` : ""}</div>
         ${totPick}
       </div>
@@ -4231,6 +4443,7 @@ function card(g) {
         <div class="num">${o.details || "No line"}</div>
         <div class="subn">DG ${g.home.abbr} ${fmt.signed(p.hashmark_home_spread)} · edge ${fmt.signed(edge)}</div>
         ${pickBadge}
+        ${cfbReadHtml(g)}
       </div>
     </article>`;
 }
@@ -4618,6 +4831,7 @@ function openGame(id) {
       </div>
     </div>
     ${deskPanelHtml(g)}
+    ${g.league === "cfb" ? cfbReadHtml(g) : ""}
     ${g.live ? `<div class="card" style="margin:12px 0;border-color:var(--rose)">
       <h3 style="margin:0 0 8px">${g.completed ? "Final vs pregame" : "In-game projector"}</h3>
       <div class="kv"><div class="lbl">Score now</div><b>${g.live.current}</b><div class="subn">${g.status_detail || ""} · ${g.live.remaining_min} min left</div></div>
@@ -4843,12 +5057,13 @@ function renderCfbPicks() {
       </div>
       <div class="prop-stats">
         <div><span class="lbl">Lean</span><b>${headline}</b></div>
-        <div><span class="lbl">Proj score</span><b>${p.away_points ?? "—"}–${p.home_points ?? "—"}</b></div>
+        <div><span class="lbl">Score range</span><b>${p.score_low_away != null ? `${g.away.abbr} ${p.score_low_away}–${p.score_high_away} · ${g.home.abbr} ${p.score_low_home}–${p.score_high_home}` : `${p.away_points ?? "—"}–${p.home_points ?? "—"}`}</b></div>
         <div><span class="lbl">Market</span><b>${o.details || "No line"} · tot ${o.total ?? "—"}</b></div>
         <div><span class="lbl">Spread edge</span><b>${fmt.signed(p.edge_spread)}</b></div>
         <div><span class="lbl">Total edge</span><b>${fmt.signed(p.edge_total)}</b></div>
-        <div><span class="lbl">Team TDs</span><b>${awayTd ?? "—"} / ${homeTd ?? "—"} <span class="subn">(~${totTd.toFixed(1)})</span></b></div>
+        <div><span class="lbl">Team TDs</span><b>${awayTd ?? "—"} / ${homeTd ?? "—"}</b></div>
       </div>
+      ${cfbReadHtml(g)}
     </article>`;
   }).join("");
   $$("#cfbPickBoard .prop-card").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
