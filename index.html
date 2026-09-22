@@ -129,6 +129,7 @@ button { touch-action: manipulation; cursor: pointer; }
 }
 .home-parlay:hover{border-color:var(--sun)}
 .home-parlay .odds{font-family:Syne,sans-serif;font-size:28px;color:var(--turf);line-height:1}
+.home-split{display:grid;grid-template-columns:1fr;gap:16px;align-items:start}
 @media (min-width:860px){
   .home-jumps{grid-template-columns:repeat(4,minmax(0,1fr))}
   .home-split{grid-template-columns:1.35fr .9fr}
@@ -169,74 +170,38 @@ button { touch-action: manipulation; cursor: pointer; }
 .refresh-btn { cursor: pointer; }
 .refresh-btn:hover { border-color: var(--turf); color: var(--turf); }
 
-.tabs-wrap {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 8px;
-  margin: 0 0 16px;
-  max-width: 100%;
-  min-width: 0;
+.tabs-wrap{display:block;margin:0 0 18px}
+.tabs-arrow{display:none}
+#tabBar.tabs{
+  display:grid;gap:14px;overflow:visible;padding:0;margin:0;
+  background:none;scroll-snap-type:none;
 }
-.tabs {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 8px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: thin;
-  scrollbar-color: var(--turf) var(--paper-2);
-  margin: 0;
-  padding: 6px 2px 12px;
-  position: relative;
-  background: none;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x proximity;
-  overscroll-behavior-x: contain;
-  touch-action: auto;
-  cursor: default;
+.tile-group{display:grid;gap:8px}
+.tile-label{
+  font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0;
 }
-.tabs::-webkit-scrollbar { display: block; height: 8px; }
-.tabs::-webkit-scrollbar-track { background: var(--paper-2); border-radius: 99px; }
-.tabs::-webkit-scrollbar-thumb { background: #2a4738; border-radius: 99px; }
-.tabs::-webkit-scrollbar-thumb:hover { background: var(--turf); }
-.tab, a.tab {
-  background: transparent;
-  border: 1px solid var(--line);
-  padding: 10px 15px;
-  border-radius: 999px;
-  cursor: pointer;
-  color: var(--muted);
-  white-space: nowrap;
-  flex: none;
-  scroll-snap-align: start;
-  touch-action: manipulation;
-  pointer-events: auto;
-  -webkit-tap-highlight-color: rgba(182,232,90,.25);
-  position: relative;
-  z-index: 2;
-  min-height: 44px;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
+.tile-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#tabBar .tab, #tabBar a.tab{
+  background:var(--card);
+  border:1px solid var(--line);
+  padding:12px 10px;
+  border-radius:14px;
+  color:var(--ink-soft);
+  white-space:normal;
+  text-align:center;
+  justify-content:center;
+  min-height:52px;
+  font-weight:700;
+  line-height:1.2;
 }
-.tab.active {
-  background: var(--turf);
-  color: #08110e;
-  border-color: var(--turf);
-  font-weight: 800;
+#tabBar .tab.active{background:var(--turf);color:#08110e;border-color:var(--turf);font-weight:800}
+#parlayTabs.tabs{display:flex;flex-wrap:wrap;gap:8px;overflow:visible;padding:0}
+.home-jumps{align-items:stretch}
+.home-jump{display:flex;flex-direction:column;justify-content:space-between;min-height:96px}
+@media (min-width:760px){
+  .tile-row{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .tile-row.trio{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
-.tabs-arrow {
-  width: 36px; height: 36px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: var(--card);
-  color: var(--ink);
-  font-size: 22px; line-height: 1;
-  cursor: pointer;
-  flex: none;
-}
-.tabs-arrow:hover { border-color: var(--turf); color: var(--turf); }
 
 .controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
 .controls input, .controls select, .lg-select {
@@ -568,29 +533,52 @@ option { background: #12201a; color: #e9f3ec; }
     </header>
 
     <div class="tabs-wrap">
-      <button class="tabs-arrow" id="tabsPrev" type="button" aria-label="Slide tabs left">‹</button>
       <nav class="tabs" id="tabBar">
-      <a class="tab active" href="#home" data-view="home">Home</a>
-      <a class="tab" href="#parlay" data-view="parlay">Parlays</a>
-      <a class="tab" href="#card" data-view="card">This week's card</a>
-      <a class="tab" href="#score" data-view="score">Scorecard</a>
-      <a class="tab" href="#alerts" data-view="alerts">Alerts</a>
-      <a class="tab" href="#nfl" data-view="nfl">NFL Week 3</a>
-      <a class="tab" href="#live" data-view="live">Live scores</a>
-      <a class="tab" href="#cfb" data-view="cfb">College football</a>
-      <a class="tab" href="#all" data-view="all">All games</a>
-      <a class="tab" href="#props" data-view="props">Player stats</a>
-      <a class="tab" href="#tds" data-view="tds">Who scores TDs</a>
-      <a class="tab" href="#value" data-view="value">Underdogs</a>
-      <a class="tab" href="#cfbpicks" data-view="cfbpicks">College picks</a>
-      <a class="tab" href="#nflwx" data-view="nflwx">NFL weather</a>
-      <a class="tab" href="#cfbwx" data-view="cfbwx">College weather</a>
-      <a class="tab" href="#nflinj" data-view="nflinj">NFL injuries</a>
-      <a class="tab" href="#cfbinj" data-view="cfbinj">College injuries</a>
-      <a class="tab" href="#ratings" data-view="ratings">Team rankings</a>
-      <a class="tab" href="#model" data-view="model">How it works</a>
+        <div class="tile-group">
+          <p class="tile-label">Start</p>
+          <div class="tile-row">
+            <a class="tab active" href="#home" data-view="home">Home</a>
+            <a class="tab" href="#parlay" data-view="parlay">Parlays</a>
+            <a class="tab" href="#card" data-view="card">This week's card</a>
+            <a class="tab" href="#score" data-view="score">Scorecard</a>
+          </div>
+        </div>
+        <div class="tile-group">
+          <p class="tile-label">Games</p>
+          <div class="tile-row">
+            <a class="tab" href="#nfl" data-view="nfl">NFL Week 3</a>
+            <a class="tab" href="#live" data-view="live">Live scores</a>
+            <a class="tab" href="#cfb" data-view="cfb">College football</a>
+            <a class="tab" href="#all" data-view="all">All games</a>
+          </div>
+        </div>
+        <div class="tile-group">
+          <p class="tile-label">Picks</p>
+          <div class="tile-row">
+            <a class="tab" href="#props" data-view="props">Player stats</a>
+            <a class="tab" href="#tds" data-view="tds">Who scores TDs</a>
+            <a class="tab" href="#value" data-view="value">Underdogs</a>
+            <a class="tab" href="#cfbpicks" data-view="cfbpicks">College picks</a>
+          </div>
+        </div>
+        <div class="tile-group">
+          <p class="tile-label">Reports</p>
+          <div class="tile-row">
+            <a class="tab" href="#nflwx" data-view="nflwx">NFL weather</a>
+            <a class="tab" href="#cfbwx" data-view="cfbwx">College weather</a>
+            <a class="tab" href="#nflinj" data-view="nflinj">NFL injuries</a>
+            <a class="tab" href="#cfbinj" data-view="cfbinj">College injuries</a>
+          </div>
+        </div>
+        <div class="tile-group">
+          <p class="tile-label">More</p>
+          <div class="tile-row trio">
+            <a class="tab" href="#alerts" data-view="alerts">Alerts</a>
+            <a class="tab" href="#ratings" data-view="ratings">Team rankings</a>
+            <a class="tab" href="#model" data-view="model">How it works</a>
+          </div>
+        </div>
       </nav>
-      <button class="tabs-arrow" id="tabsNext" type="button" aria-label="Slide tabs right">›</button>
     </div>
 
     <div id="alertBell" class="alert-bell"></div>
