@@ -1298,6 +1298,7 @@ function loadResiduals() {
     if (c.cfb_buckets) res.cfb_buckets = Object.assign(res.cfb_buckets || {}, c.cfb_buckets);
     if (c.cfb_scale && c.cfb_scale.n) res.cfb_scale = c.cfb_scale;
     if (c.nfl) res.nfl = Object.assign(res.nfl || {}, c.nfl);
+    if (c.cfb) res.cfb = Object.assign(res.cfb || {}, c.cfb);
     if (c.games_learned) res.games_learned = Object.assign(c.games_learned, res.games_learned);
     if (Array.isArray(c.history) && c.history.length) res.history = c.history.slice(-80);
   } catch (e) {}
@@ -2340,10 +2341,13 @@ function cfbLockPick(g) {
   const qb = cfbQb(g);
   const field = g._cfbField || cfbField(g);
   const qbAdd = qb.pts ? (qb.side === "home" ? -qb.pts : qb.pts) : 0;
+  const learnedShift = p.learned && Number.isFinite(Number(p.learned.margin_shift)) ? Number(p.learned.margin_shift) : 0;
+  const learnedTotal = p.learned && Number.isFinite(Number(p.learned.total_shift)) ? Number(p.learned.total_shift) : 0;
   let margin = p.rating_blend != null ? Number(p.rating_blend) : (p.blended_margin != null ? Number(p.blended_margin) : null);
-  if (margin != null) margin += qbAdd;
+  if (margin != null) margin += qbAdd + learnedShift;
   p._qbApplied = qbAdd;
-  const total = p.unit_total != null ? Number(p.unit_total) : (p.hashmark_total != null ? Number(p.hashmark_total) : null);
+  let total = p.unit_total != null ? Number(p.unit_total) : (p.hashmark_total != null ? Number(p.hashmark_total) : null);
+  if (total != null) total += learnedTotal;
   if (margin != null && total != null) {
     p.blended_margin = +margin.toFixed(2);
     p.hashmark_home_spread = +(-margin).toFixed(1);
