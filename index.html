@@ -771,7 +771,9 @@ const LIVE = {
   MARKET_WEIGHT_NFL: 0.86,
   MARKET_WEIGHT_CFB: 0.44,
   CFB_TOTAL_MARKET: 0.52,
-  SIM_N: 150000,
+  SIM_N: 30000,
+  SIM_N_NFL: 30000,
+  SIM_N_CFB: 12000,
   PRIORS: {
     nfl: { rush: 118, rec: 218, allowed: 336, ppg: 22.8 },
     cfb: { rush: 168, rec: 232, allowed: 400, ppg: 27 },
@@ -2147,7 +2149,8 @@ function simulateGame(game) {
   const lowCut = nfl ? 30 : 35;
   const highCut = nfl ? 55 : 70;
   const blow = nfl ? 17 : 21;
-  const n = Math.min(8000, (LIVE.SIM_N || 150000));
+  const live = typeof isLiveGame === "function" && (isLiveGame(game) || game.completed);
+  const n = live ? 8000 : (nfl ? (LIVE.SIM_N_NFL || 30000) : (LIVE.SIM_N_CFB || 12000));
   const rand = mulberry32(Number(String(game.id || "1").slice(-9)) || 1);
   const home = [], away = [], tots = [];
   let ch = 0, ca = 0, ps = 0, ov = 0, un = 0, pt = 0, hw = 0, bh = 0, ba = 0, lo = 0, hi = 0;
@@ -3579,12 +3582,12 @@ function simStrip(g) {
   const home = s.home_avg ?? g.proj?.home_points;
   const tot = s.total_avg ?? g.proj?.hashmark_total;
   return `<div class="simgrid">
-    <div><span class="lbl">Average score (150k sims)</span><b>${g.away.abbr} ${away ?? "—"} – ${g.home.abbr} ${home ?? "—"}</b></div>
+    <div><span class="lbl">Average score</span><b>${g.away.abbr} ${away ?? "—"} – ${g.home.abbr} ${home ?? "—"}</b></div>
     <div><span class="lbl">${g.away.abbr} cover</span><b>${pct01(s.cover_away)}</b></div>
     <div><span class="lbl">${g.home.abbr} cover</span><b>${pct01(s.cover_home)}</b></div>
     <div><span class="lbl">Over / under</span><b>${pct01(s.over)} / ${pct01(s.under)}</b></div>
   </div>
-  <div class="simtails">Average total ${tot ?? "—"} · we ran this game 150,000 times and took the mean</div>`;
+  <div class="simtails">Average total ${tot ?? "—"} · mean score after simulating the game thousands of times</div>`;
 }
 
 function deskPanelHtml(g) {
@@ -3886,7 +3889,7 @@ function openGame(id) {
       <div class="kv"><div class="lbl">Rushing / catching yards</div><b>${g.away.abbr} ${fmt.n(g.box?.away_rush_yds,0)} / ${fmt.n(g.box?.away_rec_yds,0)}</b><div class="subn">${g.home.abbr} ${fmt.n(g.box?.home_rush_yds,0)} rush / ${fmt.n(g.box?.home_rec_yds,0)} rec</div></div>
       <div class="kv"><div class="lbl">Weather effect</div><b>${fmt.signed(p.weather_adj_total)}</b><div class="subn">${(g.weather_impact && g.weather_impact.note) || (g.indoor ? "Played inside — weather doesn't matter" : "Outdoor forecast")}</div></div>
       <div class="kv"><div class="lbl">Injuries & travel</div><b>spread ${fmt.signed(g.situational && g.situational.margin_adj)} · total ${fmt.signed(g.situational && g.situational.total_adj)}</b><div class="subn">${((g.situational && g.situational.notes) || []).join(" · ") || "No extra change"}</div></div>
-      <div class="kv"><div class="lbl">Average score (150k sims)</div><b>${g.away.abbr} ${g.sim?.away_avg ?? g.proj?.away_points ?? "—"} – ${g.home.abbr} ${g.sim?.home_avg ?? g.proj?.home_points ?? "—"}</b><div class="subn">Average total ${g.sim?.total_avg ?? g.proj?.hashmark_total ?? "—"} · ${g.away.abbr} covers ${pct01(g.sim?.cover_away)} · ${g.home.abbr} covers ${pct01(g.sim?.cover_home)} · over ${pct01(g.sim?.over)}</div></div>
+      <div class="kv"><div class="lbl">Average score</div><b>${g.away.abbr} ${g.sim?.away_avg ?? g.proj?.away_points ?? "—"} – ${g.home.abbr} ${g.sim?.home_avg ?? g.proj?.home_points ?? "—"}</b><div class="subn">Average total ${g.sim?.total_avg ?? g.proj?.hashmark_total ?? "—"} · ${g.away.abbr} covers ${pct01(g.sim?.cover_away)} · ${g.home.abbr} covers ${pct01(g.sim?.cover_home)} · over ${pct01(g.sim?.over)}</div></div>
       <div class="kv"><div class="lbl">Weird-game chances</div><b>Very low scoring ${pct01(g.sim?.low_scoring)} · shootout ${pct01(g.sim?.high_scoring)}</b><div class="subn">Blowout ${g.home.abbr} ${pct01(g.sim?.blowout_home)} · ${g.away.abbr} ${pct01(g.sim?.blowout_away)}</div></div>
     </div>
     <div class="card" style="margin-top:14px">
