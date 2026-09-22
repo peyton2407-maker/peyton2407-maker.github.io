@@ -1649,7 +1649,7 @@ async function getJSON(url, headers) {
     if (res.ok) return res.json();
     throw new Error(`${res.status} ${url}`);
   } catch (err) {
-    if (!/espn\.com/i.test(url)) throw err;
+    if (!/espn\.com|actionnetwork\.com/i.test(url)) throw err;
     const proxies = [
       "https://corsproxy.io/?" + encodeURIComponent(url),
       "https://api.allorigins.win/raw?url=" + encodeURIComponent(url)
@@ -5160,6 +5160,98 @@ async function loadDkForGame(gameId) {
   window.__DK[id] = bag;
   return bag;
 }
+
+function oddsKey(name) {
+  const parts = String(name || "").replace(/\./g, " ").trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "";
+  return (parts[0][0] + parts[parts.length - 1]).toLowerCase();
+}
+function addDkPrice(bucket, stat, line, over, under) {
+  if (!stat || !Number.isFinite(line)) return;
+  bucket[stat] = bucket[stat] || [];
+  let hit = bucket[stat].find((x) => Math.abs(x.line - line) < 0.05);
+  if (!hit) { hit = { line, over: null, under: null }; bucket[stat].push(hit); }
+  if (over != null) hit.over = over;
+  if (under != null) hit.under = under;
+}
+async function loadAnOdds(p) {
+  window.__DKODDS = window.__DKODDS || {};
+  const gid = String(p.game_id || "");
+  if (!gid || window.__DKODDS[gid]) return window.__DKODDS[gid];
+  const g = (DATA.games || []).find((x) => String(x.id) === gid);
+  const bag = {};
+  window.__DKODDS[gid] = bag;
+  if (!g) return bag;
+  try {
+    const board = await getJSON("https://api.actionnetwork.com/web/v1/scoreboard/nfl");
+    const game = (board.games || []).find((x) => {
+      const ab = (x.teams || []).map((t) => t.abbr);
+      return ab.some((a) => sameOpp(a, g.home.abbr)) && ab.some((a) => sameOpp(a, g.away.abbr));
+    });
+    if (!game) return bag;
+    const props = await getJSON("https://api.actionnetwork.com/web/v2/games/" + game.id + "/props?bookIds=68");
+    const statOf = (type) => {
+      if (type === "core_bet_type_9_passing_yards") return "pass_yds";
+      if (type === "core_bet_type_11_passing_tds") return "pass_td";
+      if (type === "core_bet_type_12_rushing_yards") return "rush_yds";
+      if (type === "core_bet_type_18_rushing_attempts") return "rush_att";
+      if (type === "core_bet_type_16_receiving_yards") return "rec_yds";
+      if (type === "core_bet_type_15_receptions") return "rec";
+      return "";
+    };
+    Object.keys(props.player_props || {}).forEach((type) => {
+      (props.player_props[type] || []).forEach((row) => {
+        const who = oddsKey(row.player_abbr || row.player_last_name || "");
+        if (!who) return;
+        bag[who] = bag[who] || {};
+        const lines = (row.lines && (row.lines["68"] || row.lines[68])) || [];
+        const mile = type.match(/(passing_yards|rushing_yards|receiving_yards|rushing_attempts|receptions|passing_tds)_milestones_(\d+)/);
+        lines.forEach((ln) => {
+          if (ln.book_id && Number(ln.book_id) !== 68) return;
+          const line = mile ? Number(mile[2]) : Number(ln.value);
+          const stat = mile
+            ? (mile[1] === "passing_yards" ? "pass_yds" : mile[1] === "rushing_yards" ? "rush_yds" : mile[1] === "receiving_yards" ? "rec_yds" : mile[1] === "rushing_attempts" ? "rush_att" : mile[1] === "receptions" ? "rec" : "pass_td")
+            : statOf(type);
+          if (!stat || !Number.isFinite(line)) return;
+          const price = Number(ln.odds);
+          if (!Number.isFinite(price)) return;
+          if (mile || ln.side === "noside" || ln.side === "over") addDkPrice(bag[who], stat, line, price, null);
+          else if (ln.side === "under") addDkPrice(bag[who], stat, line, null, price);
+        });
+      });
+    });
+  } catch (e) {}
+  return bag;
+}
+function money(n) {
+  if (n == null || !Number.isFinite(Number(n))) return "—";
+  const v = Math.round(Number(n));
+  return v > 0 ? "+" + v : String(v);
+}
+function dkOdds(p, key, line, under) {
+  const book = ((window.__DKODDS || {})[String(p.game_id || "")] || {})[oddsKey(p.name)] || {};
+  const list = book[key] || [];
+  let best = null, gap = 99;
+  list.forEach((x) => {
+    const d = Math.min(Math.abs(x.line - Number(line)), Math.abs(x.line - (Number(line) + 0.5)));
+    if (d < gap) { gap = d; best = x; }
+  });
+  const limit = /yds/.test(key) ? 1.1 : 0.26;
+  if (!best || gap > limit) return "—";
+  const n = under ? best.under : (best.over != null ? best.over : null);
+  return money(n);
+}
+function ladderLines(m) {
+  const lines = (m.lines || []).slice();
+  const book = ((window.__DKODDS || {})[String((m.player || {}).game_id || "")] || {})[oddsKey((m.player || {}).name)] || {};
+  (book[m.key] || []).forEach((x) => {
+    const asLine = Math.abs(x.line - Math.round(x.line)) < 0.01 ? x.line - 0.5 : x.line;
+    if (asLine < 0.5) return;
+    if (!lines.some((n) => Math.abs(n - asLine) < 0.2 || Math.abs(n - x.line) < 0.2)) lines.push(asLine);
+  });
+  return lines.sort((a, b) => a - b);
+}
+
 function halfPpr(r) {
   const n = (k) => Number(r[k]) || 0;
   return n("pass_yds") / 25 + n("pass_td") * 4 - n("pass_int") * 2 + n("rush_yds") / 10 + n("rush_td") * 6 + n("rec") * 0.5 + n("rec_yds") / 10 + n("rec_td") * 6 - n("fum_lost") * 2;
@@ -5343,15 +5435,16 @@ function findProp(id, gameId) {
   return hit;
 }
 function ladderTable(m, season, vs) {
-  const head = `<table class="ladder"><thead><tr><th>${m.label}</th><th>This year</th><th>Vs opponent</th><th>Our chance</th><th>DraftKings</th></tr></thead><tbody>`;
-  const body = m.lines.map((line) => {
+  const head = `<table class="ladder"><thead><tr><th>${m.label}</th><th>This year</th><th>Vs opponent</th><th>Our chance</th><th>DraftKings</th><th>DK odds</th></tr></thead><tbody>`;
+  const body = ladderLines(m).map((line) => {
     const yr = hitRate(season, m.key, line, m.under);
     const opp = hitRate(vs, m.key, line, m.under);
     const chance = ourChance(m.mean, line, m.key, m.under);
     const side = m.under ? "under" : "over";
     const fmtH = (h) => h ? `${h.hits}/${h.n}` : "—";
     const book = dkAlt(m.player || {}, m.key, line);
-    return `<tr><td>${side} ${line}</td><td>${fmtH(yr)}</td><td>${fmtH(opp)}</td><td>${Math.round(chance * 100)}%</td><td>${book}</td></tr>`;
+    const price = dkOdds(m.player || {}, m.key, line, m.under);
+    return `<tr><td>${side} ${line}</td><td>${fmtH(yr)}</td><td>${fmtH(opp)}</td><td>${Math.round(chance * 100)}%</td><td>${book}</td><td>${price}</td></tr>`;
   }).join("");
   return `<h3 style="margin:14px 0 0">${m.label}</h3>${head}${body}</tbody></table>`;
 }
@@ -5393,6 +5486,7 @@ async function openPlayer(id, gameId) {
     rows = pack[0];
     sched = pack[2] || [];
     await Promise.all(sched.filter((g) => !g.played).map((g) => loadGamePrice(g.id)));
+    await loadAnOdds(p);
   } catch (e) { err = "ESPN did not return his game log."; }
   const year = new Date().getFullYear();
   const season = rows.filter((r) => r.season === year);
