@@ -395,6 +395,30 @@ option { background: #12201a; color: #e9f3ec; }
 .value-tile .side{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--rose)}
 .value-tile h4{margin:4px 0 2px;font-size:16px;color:var(--ink)}
 
+.td-hero{display:grid;grid-template-columns:1fr;gap:12px;margin:0 0 16px}
+.td-hero-card{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#1a3326 0%,#12201a 55%,#1d2a12 100%);
+  border:1px solid rgba(182,232,90,.45);
+  border-radius:20px;padding:18px 18px 16px;cursor:pointer;
+}
+.td-hero-card:before{
+  content:"";position:absolute;right:-20px;top:-30px;width:140px;height:140px;
+  background:radial-gradient(circle,rgba(240,180,41,.22),transparent 70%);
+}
+.td-pct{
+  font-family:Syne,sans-serif;font-weight:800;letter-spacing:-.04em;
+  font-size:clamp(42px,10vw,64px);line-height:1;color:var(--sun);
+}
+.td-hero-card h3{margin:8px 0 4px;font-family:Syne,sans-serif;font-size:22px;color:var(--ink)}
+.td-bar{height:6px;border-radius:99px;background:rgba(255,255,255,.08);margin:10px 0 0;overflow:hidden}
+.td-bar span{display:block;height:100%;background:linear-gradient(90deg,var(--sun),var(--turf));border-radius:99px}
+.td-card .td-pct{font-size:36px;color:var(--turf)}
+.td-mkt{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--sun)}
+@media (min-width:760px){
+  .td-hero{grid-template-columns:1.2fr 1fr 1fr}
+}
+
 @media (prefers-reduced-motion: reduce) {
   .game:hover, .prop-card:hover { transform: none; }
 }
@@ -427,6 +451,7 @@ option { background: #12201a; color: #e9f3ec; }
       <button class="tab" data-view="cfb">CFB Weeks 4–5</button>
       <button class="tab" data-view="all">Full slate</button>
       <button class="tab" data-view="props">NFL props</button>
+      <button class="tab" data-view="tds">TD scorers</button>
       <button class="tab" data-view="value">Value dogs</button>
       <button class="tab" data-view="cfbpicks">CFB picks</button>
       <button class="tab" data-view="nflwx">NFL weather</button>
@@ -499,6 +524,35 @@ option { background: #12201a; color: #e9f3ec; }
       <p class="subn" id="valStamp" style="margin:0 0 10px">Props we give a real shot — books still posting them as dogs.</p>
       <div class="stat-row" id="valStats"></div>
       <div class="prop-board" id="valBoard"></div>
+    </section>
+
+    <section id="tdSection" style="display:none">
+      <div class="controls props-controls">
+        <select id="tdMarket" class="lg-select">
+          <option value="anytime">Anytime TD</option>
+          <option value="first">First TD scorer</option>
+          <option value="two">2+ TDs</option>
+          <option value="mix">All three markets</option>
+        </select>
+        <select id="tdPos" class="lg-select">
+          <option value="ALL">All scorers</option>
+          <option value="RB">Running backs</option>
+          <option value="WR">Wide receivers</option>
+          <option value="TE">Tight ends</option>
+          <option value="QB">QB rush TDs</option>
+        </select>
+        <select id="tdSort" class="lg-select">
+          <option value="hit">Sort: most likely</option>
+          <option value="value">Sort: best value</option>
+          <option value="lambda">Sort: projected TDs</option>
+          <option value="kick">Sort: kickoff</option>
+        </select>
+        <input id="tdQ" placeholder="Search player, team, game…" />
+      </div>
+      <p class="subn" id="tdStamp" style="margin:0 0 10px">Poisson TD model · team totals + goal-line share + injuries + weather.</p>
+      <div class="td-hero" id="tdHero"></div>
+      <div class="stat-row" id="tdStats"></div>
+      <div class="prop-board td-board" id="tdBoard"></div>
     </section>
 
     <section id="boardSection">
@@ -2448,6 +2502,192 @@ function toAmerican(p) {
   if (p >= 0.5) return Math.round(-100 * p / (1 - p));
   return Math.round(100 * (1 - p) / p);
 }
+function fmtOdds(p) {
+  const a = toAmerican(p);
+  return a > 0 ? "+" + a : String(a);
+}
+function playerOutish(p, g) {
+  const tag = String(p.injury || "").toUpperCase();
+  if (/OUT|IR|INACTIVE|SUSP/.test(tag)) return 1;
+  const hits = (g.injuries || []).filter((r) => (r.name || "").toLowerCase() === String(p.name || "").toLowerCase());
+  if (hits.some((r) => /OUT|IR|INACTIVE|SUSP/.test(String(r.tag || r.status || "").toUpperCase()))) return 1;
+  if (/DOUBT/.test(tag) || hits.some((r) => /DOUBT/.test(String(r.tag || r.status || "").toUpperCase()))) return 0.62;
+  if (/QUESTION|^Q$/.test(tag) || hits.some((r) => /QUESTION/.test(String(r.tag || r.status || "").toUpperCase()))) return 0.22;
+  return 0;
+}
+function buildGameTdModel(g) {
+  if (!g || g.league !== "nfl" || g.completed) return [];
+  const p = g.proj || {};
+  const wx = g.weather_impact || {};
+  const rushTilt = (wx.wet || (wx.rush_mult && wx.rush_mult > 1.02)) ? 1.12 : 1;
+  const recTilt = rushTilt > 1 ? 0.92 : 1;
+  const rows = (g.props || []).filter((pl) => pl.pos !== "K");
+  if (!rows.length) return [];
+  const bySide = { home: rows.filter((r) => r.side === "home"), away: rows.filter((r) => r.side === "away") };
+  const out = [];
+  ["away", "home"].forEach((side) => {
+    const group = bySide[side];
+    const pts = side === "home" ? Number(p.home_points) : Number(p.away_points);
+    const teamTd = Math.max(0.5, (Number.isFinite(pts) ? pts : 21) * 0.64 / 7);
+    const raw = group.map((pl) => {
+      const inj = playerOutish(pl, g);
+      let rush = Number(pl.rush_td || 0) * rushTilt;
+      let rec = Number(pl.rec_td || 0) * recTilt;
+      if (pl.pos === "QB") rec = 0;
+      if (inj >= 1) { rush = 0; rec = 0; }
+      else if (inj > 0) { rush *= (1 - inj); rec *= (1 - inj); }
+      if (pl.pos === "RB" && Number(pl.rush_att || 0) >= 14) rush *= 1.12;
+      if (pl.pos === "TE" && Number(pl.rec || 0) >= 4) rec *= 1.08;
+      return { pl, rush, rec, lam: Math.max(0, rush + rec), inj };
+    });
+    const sum = raw.reduce((a, r) => a + r.lam, 0) || 1;
+    const scale = Math.min(1.22, Math.max(0.84, (teamTd * 0.96) / sum));
+    const scaled = raw.map((r) => ({ ...r, lam: +(r.lam * scale).toFixed(4) }));
+    const firstW = scaled.map((r) => {
+      let w = r.lam;
+      if (r.pl.pos === "WR") w *= 1.16;
+      else if (r.pl.pos === "TE") w *= 1.08;
+      else if (r.pl.pos === "RB") w *= 0.88;
+      else if (r.pl.pos === "QB") w *= 0.62;
+      return Math.max(0, w);
+    });
+    const firstSum = firstW.reduce((a, b) => a + b, 0) || 1;
+    scaled.forEach((r, i) => {
+      r.firstShare = firstW[i] / firstSum;
+    });
+    scaled.forEach((r) => out.push({ side, teamTd, ...r }));
+  });
+  const hm = Number(p.blended_margin) || 0;
+  const pHomeFirst = 1 / (1 + Math.exp(-hm / 7.2));
+  const tot = Number(p.hashmark_total) || 44;
+  const pTdNotFg = Math.min(0.86, Math.max(0.70, 0.76 + (tot - 44) * 0.008));
+  const pHomeFirstTd = pHomeFirst * pTdNotFg;
+  const pAwayFirstTd = (1 - pHomeFirst) * pTdNotFg;
+  return out.map((r) => {
+    const lam = r.lam;
+    const anytime = 1 - Math.exp(-lam);
+    const two = 1 - Math.exp(-lam) - lam * Math.exp(-lam);
+    const pTeamFirst = r.side === "home" ? pHomeFirstTd : pAwayFirstTd;
+    const first = pTeamFirst * r.firstShare;
+    const pl = r.pl;
+    const whyBits = [];
+    whyBits.push(`${lam.toFixed(2)} projected TDs vs ${pl.opp}`);
+    if (r.inj >= 1) whyBits.push("injury desk has them out — λ zeroed");
+    else if (r.inj > 0) whyBits.push("doubtful/questionable tax on λ");
+    if (rushTilt > 1 && pl.pos === "RB") whyBits.push("weather tilts goal-line to the run");
+    if (pl.pos === "RB" && Number(pl.rush_att || 0) >= 14) whyBits.push("workhorse — extra goal-line share");
+    if (pl.pos === "WR") whyBits.push("opening-drive passing bump on first TD");
+    return {
+      id: pl.id, name: pl.name, pos: pl.pos, team: pl.team, opp: pl.opp,
+      game: pl.game || g.short_name, game_id: g.id, date: g.date, side: r.side,
+      lam, anytime, two, first, teamTd: r.teamTd,
+      injury: pl.injury, indoor: pl.indoor, weather: pl.weather,
+      why: whyBits.join(" · "),
+      fairAny: fmtOdds(anytime), fairFirst: fmtOdds(first), fairTwo: fmtOdds(two)
+    };
+  });
+}
+function collectTdBoard() {
+  const rows = [];
+  (DATA.games || []).forEach((g) => {
+    if (g.league !== "nfl" || g.completed) return;
+    buildGameTdModel(g).forEach((r) => rows.push(r));
+  });
+  return rows;
+}
+function tdHit(r, market) {
+  if (market === "first") return r.first;
+  if (market === "two") return r.two;
+  return r.anytime;
+}
+function renderTdDesk() {
+  const board = document.getElementById("tdBoard");
+  if (!board) return;
+  const market = (document.getElementById("tdMarket") || {}).value || "anytime";
+  const pos = (document.getElementById("tdPos") || {}).value || "ALL";
+  const sort = (document.getElementById("tdSort") || {}).value || "hit";
+  const q = ((document.getElementById("tdQ") || {}).value || "").toLowerCase();
+  let rows = collectTdBoard();
+  const expand = [];
+  rows.forEach((r) => {
+    const mkts = market === "mix" ? ["anytime", "first", "two"] : [market];
+    mkts.forEach((m) => {
+      const hit = tdHit(r, m);
+      if (m === "anytime" && hit < 0.08) return;
+      if (m === "first" && hit < 0.03) return;
+      if (m === "two" && hit < 0.04) return;
+      expand.push({
+        ...r, market: m, hit,
+        label: m === "first" ? "First TD" : m === "two" ? "2+ TDs" : "Anytime TD",
+        fair: m === "first" ? r.fairFirst : m === "two" ? r.fairTwo : r.fairAny
+      });
+    });
+  });
+  if (pos !== "ALL") expand.splice(0, expand.length, ...expand.filter((r) => r.pos === pos));
+  if (q) expand.splice(0, expand.length, ...expand.filter((r) => `${r.name} ${r.team} ${r.game} ${r.opp}`.toLowerCase().includes(q)));
+  expand.sort((a, b) => {
+    if (sort === "lambda") return b.lam - a.lam;
+    if (sort === "kick") return String(a.date).localeCompare(String(b.date)) || b.hit - a.hit;
+    if (sort === "value") return (b.hit / 0.45) - (a.hit / 0.45) || b.hit - a.hit;
+    return b.hit - a.hit;
+  });
+  const stamp = document.getElementById("tdStamp");
+  if (stamp) stamp.textContent = "Team TDs from our projected score · player share from ESPN TDs + goal-line/workhorse · Poisson for anytime and 2+ · first TD = who scores first in the game, not just a TD.";
+  const stats = document.getElementById("tdStats");
+  if (stats) {
+    const any = collectTdBoard().sort((a, b) => b.anytime - a.anytime)[0];
+    stats.innerHTML = `
+      <div class="stat"><b>${expand.length}</b><span>TD tickets in this filter</span></div>
+      <div class="stat"><b>${any ? Math.round(any.anytime * 100) + "%" : "—"}</b><span>top anytime (${any ? any.name.split(" ").slice(-1)[0] : "—"})</span></div>
+      <div class="stat"><b>${expand.filter((r) => r.market === "first" || market === "first").length || collectTdBoard().length}</b><span>first-TD names modeled</span></div>
+      <div class="stat"><b>${expand.filter((r) => r.two >= 0.12 || r.market === "two").length}</b><span>real 2+ shots</span></div>`;
+  }
+  const hero = document.getElementById("tdHero");
+  const chalk = collectTdBoard().slice().sort((a, b) => b.anytime - a.anytime);
+  const firsts = collectTdBoard().slice().sort((a, b) => b.first - a.first);
+  const twos = collectTdBoard().slice().sort((a, b) => b.two - a.two);
+  const heroes = [
+    chalk[0] && { ...chalk[0], market: "anytime", hit: chalk[0].anytime, label: "Anytime TD", fair: chalk[0].fairAny },
+    firsts[0] && { ...firsts[0], market: "first", hit: firsts[0].first, label: "First TD", fair: firsts[0].fairFirst },
+    twos[0] && { ...twos[0], market: "two", hit: twos[0].two, label: "2+ TDs", fair: twos[0].fairTwo }
+  ].filter(Boolean);
+  if (hero) {
+    hero.innerHTML = heroes.map((r) => `
+      <article class="td-hero-card" data-id="${r.game_id}">
+        <div class="td-mkt">${r.label}</div>
+        <div class="td-pct">${Math.round(r.hit * 100)}%</div>
+        <h3>${r.name}</h3>
+        <div class="subn">${r.pos} · ${r.team} vs ${r.opp} · ${r.game} · fair ${r.fair}</div>
+        <div class="td-bar"><span style="width:${Math.min(100, r.hit * 100)}%"></span></div>
+      </article>`).join("");
+    hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
+  }
+  const list = expand.slice(0, 48);
+  if (!list.length) {
+    board.innerHTML = `<div class="empty">No TD tickets in this filter. Flip the market dropdown.</div>`;
+    return;
+  }
+  board.innerHTML = list.map((r, i) => `
+    <article class="prop-card td-card" data-id="${r.game_id}">
+      <div class="who">
+        <div>
+          <div class="td-mkt">#${i + 1} · ${r.label}</div>
+          <h4>${r.name}</h4>
+          <div class="prop-meta">${r.pos} · ${r.team} vs ${r.opp} · ${r.game}</div>
+        </div>
+        <div class="td-pct">${Math.round(r.hit * 100)}%</div>
+      </div>
+      <div class="td-bar"><span style="width:${Math.min(100, Math.max(6, r.hit * 100))}%"></span></div>
+      <div class="prop-stats">
+        <div><span class="lbl">Fair odds</span><b>${r.fair}</b></div>
+        <div><span class="lbl">Projected TDs</span><b>${r.lam.toFixed(2)}</b></div>
+        <div><span class="lbl">Anytime / 2+</span><b>${Math.round(r.anytime * 100)}% · ${Math.round(r.two * 100)}%</b></div>
+        <div><span class="lbl">First TD</span><b>${Math.round(r.first * 100)}%</b></div>
+      </div>
+      <p class="subn" style="margin:8px 0 0">${r.why}</p>
+    </article>`).join("");
+  board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
+}
 function pOver(mu, line, sig) {
   if (typeof normCdf !== "function") return 0.5;
   return 1 - normCdf((line - mu) / sig);
@@ -3221,7 +3461,8 @@ function renderModel() {
         <li>Official injury reports overlay the line: QB / OL / skill outs and doubtfuls are a real point tax, not a footnote.</li>
         <li>Travel, rest, and referee: miles and west-to-east body clock, short weeks vs byes, and NFL crew tendencies on totals and home whistle.</li>
         <li>Play-by-play EPA rebuild from ESPN drives (nflfastR-style expected points vs actual drive result). Team off/def EPA from this season’s finals shift the remaining board.</li>
-        <li>Multi-book steam: opening vs current line, juice, reverse line movement, and any extra books ESPN lists. We follow sharp steam and fade heavy public juice.</li>
+        <li>Anytime / first / 2+ TD scorers: team TDs from the projected score, player share from ESPN TDs plus goal-line and workhorse usage, injuries and weather. Anytime and 2+ use Poisson; first TD is who scores the game’s first touchdown (opening-drive pass bump).</li>
+        <li>Multi-book steam: opening vs current line, juice, reverse line movement. We follow sharp steam and fade heavy public juice.</li>
       </ol>
       <p>${n.disclaimer}</p>
       <p class="subn">Generated ${fmt.when(DATA.generated_at)} · ${n.model}</p>
@@ -3804,8 +4045,11 @@ function setView(next) {
   if (injS) injS.style.display = (next === "nflinj" || next === "cfbinj") ? "" : "none";
   const valS = document.getElementById("valueSection");
   if (valS) valS.style.display = next === "value" ? "" : "none";
+  const tdS = document.getElementById("tdSection");
+  if (tdS) tdS.style.display = next === "tds" ? "" : "none";
   if (board) renderBoard();
   if (next === "value") renderValueDogs();
+  if (next === "tds") renderTdDesk();
   if (next === "nflinj" || next === "cfbinj") {
     const lg = next === "nflinj" ? "nfl" : "cfb";
     try { seedInjuriesFromSnap(); renderInjuries(lg); } catch (e) { console.warn(e); }
@@ -3882,6 +4126,9 @@ async function boot() {
   document.getElementById("valKind")?.addEventListener("change", rerenderVal);
   document.getElementById("valPos")?.addEventListener("change", rerenderVal);
   document.getElementById("valQ")?.addEventListener("input", rerenderVal);
+  const rerenderTd = () => renderTdDesk();
+  ["tdMarket","tdPos","tdSort"].forEach((id) => document.getElementById(id)?.addEventListener("change", rerenderTd));
+  document.getElementById("tdQ")?.addEventListener("input", rerenderTd);
   $("#overlay").addEventListener("click", (e) => { if (e.target.id === "overlay") closeModal(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
   setView("nfl");
