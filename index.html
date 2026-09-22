@@ -520,6 +520,15 @@ option { background: #12201a; color: #e9f3ec; }
 .ladder th{color:var(--muted);font-size:12px;font-weight:700}
 .dg-box{margin-top:8px;padding:14px;border-radius:16px;border:1px solid rgba(240,180,41,.45);background:#1a2214}
 .dg-box h3{margin:0 0 6px;font-family:Syne,sans-serif}
+.log-wrap{overflow-x:auto;margin-top:14px;border:1px solid var(--line);border-radius:14px}
+.log{border-collapse:collapse;min-width:980px;width:100%;font-size:13px}
+.log th,.log td{padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap;text-align:center}
+.log th{font-size:11px;letter-spacing:.04em;color:var(--muted)}
+.log .grp{color:var(--turf);font-weight:800}
+.log td.l{text-align:left;font-weight:700}
+.log .up{color:#8dcea0;font-weight:800}
+.log .dn{color:#e08b8b;font-weight:800}
+
 
 .cfb-read{margin-top:12px;display:grid;gap:8px}
 .cfb-read p{margin:0;font-size:16px;line-height:1.45;color:var(--ink)}
@@ -5002,9 +5011,11 @@ function marketsFor(p) {
     yards("pass_yds", "Pass yards", p.pass_yds);
     counts("pass_td", "Pass touchdowns", p.pass_td, [0.5, 1.5, 2.5]);
     yards("rush_yds", "Rush yards", p.rush_yds);
+    counts("rush_att", "Rush attempts", p.rush_att, countLines(p.rush_att || 0));
     counts("pass_int", "Interceptions", p.pass_int, [0.5, 1.5]);
   } else if (p.pos === "RB") {
     yards("rush_yds", "Rush yards", p.rush_yds);
+    counts("rush_att", "Rush attempts", p.rush_att, countLines(p.rush_att || 0));
     yards("rec_yds", "Receiving yards", p.rec_yds);
     counts("rec", "Receptions", p.rec, countLines(p.rec || 0));
     counts("td", "Anytime touchdown", Number(p.rush_td || 0) + Number(p.rec_td || 0), [0.5]);
@@ -5030,9 +5041,10 @@ function parseGamelog(d, season) {
         cats.forEach((c) => {
           const slice = stats.slice(i, i + (c.count || 0));
           const num = (idx) => { const n = parseFloat(slice[idx]); return Number.isFinite(n) ? n : null; };
-          if (c.name === "passing") { bag.pass_yds = num(2); bag.pass_td = num(5); bag.pass_int = num(6); }
-          else if (c.name === "rushing") { bag.rush_yds = num(1); bag.rush_td = num(3); }
-          else if (c.name === "receiving") { bag.rec = num(0); bag.rec_yds = num(2); bag.rec_td = num(4); }
+          if (c.name === "passing") { bag.cmp = num(0); bag.pass_att = num(1); bag.pass_yds = num(2); bag.pass_td = num(5); bag.pass_int = num(6); bag.sacks = num(8); }
+          else if (c.name === "rushing") { bag.rush_att = num(0); bag.rush_yds = num(1); bag.ypc = num(2); bag.rush_td = num(3); }
+          else if (c.name === "receiving") { bag.rec = num(0); bag.targets = num(1); bag.rec_yds = num(2); bag.rec_td = num(4); }
+          else if (c.name === "fumbles") { bag.fum = num(0); bag.fum_lost = num(1); }
           i += c.count || 0;
         });
         bag.td = (Number(bag.rush_td) || 0) + (Number(bag.rec_td) || 0);
@@ -5075,6 +5087,99 @@ async function playerLogs(id) {
   window.__PLOGS[id] = rows;
   return rows;
 }
+
+const DK_KEYS = {
+  "Total Passing Yards (incl. overtime)": "pass_yds",
+  "Total Passing Touchdowns (incl. overtime)": "pass_td",
+  "Total Passing Attempts (incl. overtime)": "pass_att",
+  "Total Pass Completions (incl. overtime)": "cmp",
+  "Total Rushing Yards (incl. overtime)": "rush_yds",
+  "Total Carries (incl. overtime)": "rush_att",
+  "Total Receiving Yards (incl. overtime)": "rec_yds",
+  "Total Receptions (incl. overtime)": "rec"
+};
+function dkLine(p, key) {
+  const book = (window.__DK || {})[String(p.game_id || "")] || {};
+  const row = book[String(p.id)] || {};
+  return row[key] != null ? row[key] : null;
+}
+async function loadDkForGame(gameId) {
+  window.__DK = window.__DK || {};
+  const id = String(gameId || "");
+  if (!id) return {};
+  if (window.__DK[id]) return window.__DK[id];
+  const bag = {};
+  try {
+    const payload = await getJSON("https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/" + id + "/competitions/" + id + "/odds/100/propBets?lang=en&region=us&limit=1000");
+    (payload.items || []).forEach((it) => {
+      const key = DK_KEYS[(it.type || {}).name];
+      if (!key) return;
+      const ref = (it.athlete && it.athlete.$ref) || "";
+      const m = ref.match(/athletes\/(\d+)/);
+      const tgt = it.current && it.current.target && it.current.target.value;
+      if (!m || tgt == null) return;
+      bag[m[1]] = bag[m[1]] || {};
+      if (bag[m[1]][key] == null) bag[m[1]][key] = Number(tgt);
+    });
+  } catch (e) {}
+  window.__DK[id] = bag;
+  return bag;
+}
+function halfPpr(r) {
+  const n = (k) => Number(r[k]) || 0;
+  return n("pass_yds") / 25 + n("pass_td") * 4 - n("pass_int") * 2 + n("rush_yds") / 10 + n("rush_td") * 6 + n("rec") * 0.5 + n("rec_yds") / 10 + n("rec_td") * 6 - n("fum_lost") * 2;
+}
+function cell(v, digits) {
+  if (v == null || v === "" || Number.isNaN(Number(v))) return "—";
+  const n = Number(v);
+  if (!Number.isFinite(n)) return "—";
+  return digits == null ? String(Math.round(n)) : n.toFixed(digits);
+}
+function paint(v, line) {
+  const n = Number(v);
+  if (!Number.isFinite(n) || line == null) return cell(v, Number.isInteger(n) ? 0 : 1);
+  const cls = n > line ? "up" : "dn";
+  return `<span class="${cls}">${cell(v, Number.isInteger(n) ? 0 : 1)}</span>`;
+}
+function gameLogTable(p, rows) {
+  const year = new Date().getFullYear();
+  const season = rows.filter((r) => r.season === year).slice().sort((a, b) => Number(a.week || 0) - Number(b.week || 0));
+  const dkPass = dkLine(p, "pass_yds");
+  const dkRush = dkLine(p, "rush_yds");
+  const head = p.pos === "QB"
+    ? `<tr><th></th><th></th><th colspan="2" class="grp">FANTASY</th><th colspan="5" class="grp">PASS</th><th colspan="4" class="grp">RUSHING</th><th class="grp">SACKED</th><th colspan="2" class="grp">FUMBLE</th></tr>
+       <tr><th>WK</th><th>OPP</th><th>PROJ</th><th>PTS</th><th>ATT</th><th>CMP</th><th>YD</th><th>TD</th><th>INT</th><th>ATT</th><th>YD</th><th>YPC</th><th>TD</th><th>SK</th><th>FUM</th><th>LOST</th></tr>`
+    : `<tr><th></th><th></th><th colspan="2" class="grp">FANTASY</th><th colspan="4" class="grp">RUSHING</th><th colspan="4" class="grp">RECEIVING</th><th colspan="2" class="grp">FUMBLE</th></tr>
+       <tr><th>WK</th><th>OPP</th><th>PROJ</th><th>PTS</th><th>ATT</th><th>YD</th><th>YPC</th><th>TD</th><th>REC</th><th>TGT</th><th>YD</th><th>TD</th><th>FUM</th><th>LOST</th></tr>`;
+  const qbRow = (r, proj) => `<tr>
+      <td>${r.week || "—"}</td><td class="l">${r.opp || "—"}</td>
+      <td>${proj ? cell(p.fp, 1) : "—"}</td><td class="${proj ? "" : "up"}">${proj ? "—" : cell(halfPpr(r), 1)}</td>
+      <td>${proj ? "—" : cell(r.pass_att)}</td><td>${proj ? "—" : cell(r.cmp)}</td>
+      <td>${proj ? cell(p.pass_yds, 0) : paint(r.pass_yds, dkPass != null ? dkPass : p.pass_yds)}</td>
+      <td>${proj ? cell(p.pass_td, 1) : cell(r.pass_td)}</td><td>${proj ? cell(p.pass_int, 1) : cell(r.pass_int)}</td>
+      <td>${proj ? cell(p.rush_att, 1) : cell(r.rush_att)}</td>
+      <td>${proj ? cell(p.rush_yds, 0) : paint(r.rush_yds, dkRush != null ? dkRush : p.rush_yds)}</td>
+      <td>${proj ? "—" : cell(r.ypc, 1)}</td><td>${proj ? cell(p.rush_td, 1) : cell(r.rush_td)}</td>
+      <td>${proj ? "—" : cell(r.sacks)}</td><td>${proj ? "—" : cell(r.fum)}</td><td>${proj ? "—" : cell(r.fum_lost)}</td>
+    </tr>`;
+  const skRow = (r, proj) => `<tr>
+      <td>${r.week || "—"}</td><td class="l">${r.opp || "—"}</td>
+      <td>${proj ? cell(p.fp, 1) : "—"}</td><td>${proj ? "—" : cell(halfPpr(r), 1)}</td>
+      <td>${proj ? cell(p.rush_att, 1) : cell(r.rush_att)}</td>
+      <td>${proj ? cell(p.rush_yds, 0) : paint(r.rush_yds, dkLine(p, "rush_yds") != null ? dkLine(p, "rush_yds") : p.rush_yds)}</td>
+      <td>${proj ? "—" : cell(r.ypc, 1)}</td><td>${proj ? cell(p.rush_td, 1) : cell(r.rush_td)}</td>
+      <td>${proj ? cell(p.rec, 1) : cell(r.rec)}</td><td>${proj ? "—" : cell(r.targets)}</td>
+      <td>${proj ? cell(p.rec_yds, 0) : paint(r.rec_yds, dkLine(p, "rec_yds") != null ? dkLine(p, "rec_yds") : p.rec_yds)}</td>
+      <td>${proj ? cell(p.rec_td, 1) : cell(r.rec_td)}</td>
+      <td>${proj ? "—" : cell(r.fum)}</td><td>${proj ? "—" : cell(r.fum_lost)}</td>
+    </tr>`;
+  const rowFn = p.pos === "QB" ? qbRow : skRow;
+  const body = [rowFn({ week: "Now", opp: p.opp }, true)].concat(season.map((r) => rowFn(r, false))).join("");
+  return `<h3 style="margin:18px 0 6px">Game log</h3>
+    <p class="subn" style="margin:0 0 8px">Same layout as a weekly sheet. Green means he beat the DraftKings line. Snap rate and sack yards are not in the feed, so those cells are left off instead of guessed. Past weeks have no saved projection.</p>
+    <div class="log-wrap"><table class="log"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
+}
+
 function findProp(id, gameId) {
   let hit = null;
   (DATA.games || []).forEach((g) => (g.props || []).forEach((p) => {
@@ -5092,7 +5197,9 @@ function ladderTable(m, season, vs) {
     const fmtH = (h) => h ? `${h.hits}/${h.n}` : "—";
     return `<tr><td>${side} ${line}</td><td>${fmtH(yr)}</td><td>${fmtH(opp)}</td><td>${Math.round(chance * 100)}%</td></tr>`;
   }).join("");
-  return `<h3 style="margin:14px 0 0">${m.label}</h3><p class="subn" style="margin:4px 0 0">Double Gs number: <b>${Number(m.mean).toFixed(m.kind === "count" ? 2 : 1)}</b></p>${head}${body}</tbody></table>`;
+  const dk = typeof dkLine === "function" ? dkLine(m.player || {}, m.key) : null;
+  const dkTxt = dk != null ? `DraftKings <b>${dk}</b>` : "DraftKings line not posted";
+  return `<h3 style="margin:14px 0 0">${m.label}</h3><p class="subn" style="margin:4px 0 0">Double Gs <b>${Number(m.mean).toFixed(1)}</b> · ${dkTxt}. The book price, like -115, is not in this feed.</p>${head}${body}</tbody></table>`;
 }
 function bestDoubleG(markets, season, vs) {
   let best = null;
@@ -5111,7 +5218,7 @@ function bestDoubleG(markets, season, vs) {
 async function openPlayer(id, gameId) {
   const p = findProp(id, gameId);
   if (!p) return;
-  const markets = marketsFor(p);
+  const markets = marketsFor(p).map((m) => Object.assign(m, { player: p }));
   $("#modal").innerHTML = `
     <div class="modal-head">
       <div class="who-row">${faceHtml(p.id, p.name, 64, "nfl")}<div>
@@ -5126,7 +5233,7 @@ async function openPlayer(id, gameId) {
   $("#closeModal").onclick = closeModal;
   let rows = [];
   let err = "";
-  try { rows = await playerLogs(p.id); }
+  try { [rows] = await Promise.all([playerLogs(p.id), loadDkForGame(p.game_id)]); }
   catch (e) { err = "ESPN did not return his game log."; }
   const year = new Date().getFullYear();
   const season = rows.filter((r) => r.season === year);
@@ -5148,6 +5255,7 @@ async function openPlayer(id, gameId) {
     </div>
     <p class="subn">${err || seasonLine}</p>
     ${markets.map((m) => ladderTable(m, season, vs)).join("")}
+    ${gameLogTable(p, rows)}
     <div class="dg-box">
       <div class="lbl">Double Gs</div>
       ${bestHtml}
@@ -5315,9 +5423,10 @@ function renderProps() {
       ? `${fmt.n(p.rush_yds,0)} rush · ${fmt.n(p.rec,1)} rec · ${fmt.n(p.rec_yds,0)} rec yds`
       : `${fmt.n(p.rec,1)} rec · ${fmt.n(p.rec_yds,0)} yds · ${fmt.n(p.rec_td,1)} TD`;
     const inj = p.injury && p.injury !== "ACTIVE" ? `<span class="inj">${p.injury}</span>` : "";
-    const markets = marketsFor(p);
+    const markets = marketsFor(p).map((m) => Object.assign(m, { player: p }));
     const best = bestDoubleG(markets, [], []);
     const main = markets[0];
+    const dk = main ? dkLine(p, main.key) : null;
     const ladder = main ? `<table class="ladder"><thead><tr><th>${main.label}</th><th>Our chance</th></tr></thead><tbody>${main.lines.map((ln) => `<tr><td>${main.under ? "under" : "over"} ${ln}</td><td>${Math.round(ourChance(main.mean, ln, main.key, main.under) * 100)}%</td></tr>`).join("")}</tbody></table>` : "";
     const pick = best ? `${best.m.under ? "Under" : "Over"} ${best.line} ${best.m.label.toLowerCase()}` : "No strong lean";
     return `<article class="prop-card" data-id="${p.game_id}" data-player="${p.id}">
@@ -5336,7 +5445,7 @@ function renderProps() {
         <div><span class="lbl">Weather</span><b>${p.indoor ? "Dome" : (p.weather || "—")}${p.temp_f != null && !p.indoor ? " · " + Math.round(p.temp_f) + "°" : ""}</b></div>
       </div>
       ${ladder}
-      <div class="dg-box"><div class="lbl">Double Gs</div><b>${pick}</b><p class="subn" style="margin:6px 0 0">Tap for this year and vs ${p.opp}.</p></div>
+      <div class="dg-box"><div class="lbl">Double Gs</div><b>${pick}</b><p class="subn" style="margin:6px 0 0">DraftKings ${dk != null ? dk : "loading the line"} · tap for the weekly log and vs ${p.opp}.</p></div>
     </article>`;
   }).join("");
   $$("#propBoard .prop-card").forEach((el) => el.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); openPlayer(el.dataset.player, el.dataset.id); }));
