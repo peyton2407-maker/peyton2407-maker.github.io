@@ -2137,6 +2137,34 @@ function pctile(xs, q) {
   const i = Math.min(ys.length - 1, Math.max(0, Math.round(q * (ys.length - 1))));
   return ys[i];
 }
+function poissonDraw(lam, rand) {
+  if (lam <= 0) return 0;
+  if (lam < 25) {
+    const L = Math.exp(-lam);
+    let k = 0, p = 1;
+    do { k++; p *= rand(); } while (p > L && k < 40);
+    return k - 1;
+  }
+  return Math.max(0, Math.round(lam + gauss(rand) * Math.sqrt(lam)));
+}
+function footballScore(mu, rand, nfl) {
+  mu = Math.max(0, Number(mu) || 0);
+  const tdShare = nfl ? 0.72 : 0.70;
+  const lamTD = (mu * tdShare) / 6.94;
+  const lamFG = (mu * (1 - tdShare)) / 3;
+  const tds = poissonDraw(lamTD, rand);
+  const fgs = poissonDraw(lamFG, rand);
+  let pts = 3 * fgs;
+  for (let i = 0; i < tds; i++) {
+    const u = rand();
+    if (u < 0.055) pts += 6;
+    else if (u < 0.075) pts += 8;
+    else pts += 7;
+  }
+  if (rand() < 0.018) pts += 2;
+  if (rand() < 0.03) pts += 7;
+  return pts;
+}
 function simulateGame(game) {
   const p = game.proj || {};
   const o = game.odds || {};
@@ -2144,8 +2172,6 @@ function simulateGame(game) {
   const nfl = game.league === "nfl";
   const sigmaM = nfl ? LIVE.NFL_SIGMA : LIVE.CFB_SIGMA;
   const sigmaT = nfl ? 10.5 : 13.5;
-  const shockM = nfl ? 14 : 21;
-  const shockT = nfl ? 9 : 12;
   const lowCut = nfl ? 30 : 35;
   const highCut = nfl ? 55 : 70;
   const blow = nfl ? 17 : 21;
@@ -2153,51 +2179,55 @@ function simulateGame(game) {
   const n = live ? 8000 : (nfl ? (LIVE.SIM_N_NFL || 30000) : (LIVE.SIM_N_CFB || 12000));
   const rand = mulberry32(Number(String(game.id || "1").slice(-9)) || 1);
   const home = [], away = [], tots = [];
+  const pair = Object.create(null);
   let ch = 0, ca = 0, ps = 0, ov = 0, un = 0, pt = 0, hw = 0, bh = 0, ba = 0, lo = 0, hi = 0;
+  const hs0 = Number(game.home && game.home.score) || 0;
+  const as0 = Number(game.away && game.away.score) || 0;
+  const remF = live && !game.completed ? Math.max(0.08, remainingSeconds(game) / 3600) : 1;
   for (let i = 0; i < n; i++) {
-    const u = rand();
-    let m, t;
-    if (u < 0.02) {
-      m = p.blended_margin + gauss(rand) * sigmaM * 1.35;
-      t = p.hashmark_total + gauss(rand) * sigmaT * 1.25;
+    const shock = rand() < 0.035;
+    const m = p.blended_margin + gauss(rand) * sigmaM * (shock ? 1.25 : 0.88);
+    let t = p.hashmark_total + gauss(rand) * sigmaT * (shock ? 1.15 : 0.84);
+    t = Math.max(17, t);
+    const hpExp = Math.max(0, (t + m) / 2);
+    const apExp = Math.max(0, (t - m) / 2);
+    let hp, ap;
+    if (game.completed) {
+      hp = hs0; ap = as0;
+    } else if (live) {
+      hp = hs0 + footballScore(hpExp * remF, rand, nfl);
+      ap = as0 + footballScore(apExp * remF, rand, nfl);
     } else {
-      m = p.blended_margin + gauss(rand) * sigmaM * 0.82;
-      t = p.hashmark_total + gauss(rand) * sigmaT * 0.78;
-    }
-    t = Math.max(16, t);
-    let hp = Math.max(0, (t + m) / 2);
-    let ap = Math.max(0, (t - m) / 2);
-    if (typeof isLiveGame === "function" && (isLiveGame(game) || game.completed)) {
-      const hs0 = Number(game.home && game.home.score) || 0;
-      const as0 = Number(game.away && game.away.score) || 0;
-      const remF = remainingSeconds(game) / 3600;
-      if (game.completed) { hp = hs0; ap = as0; }
-      else {
-        hp = hs0 + Math.max(0, hp * remF);
-        ap = as0 + Math.max(0, ap * remF);
-      }
+      hp = footballScore(hpExp, rand, nfl);
+      ap = footballScore(apExp, rand, nfl);
     }
     home.push(hp); away.push(ap); tots.push(hp + ap);
+    const k = ap + "-" + hp;
+    pair[k] = (pair[k] || 0) + 1;
     if (hp > ap) hw++;
     if (hp - ap >= blow) bh++;
     if (ap - hp >= blow) ba++;
     if (hp + ap <= lowCut) lo++;
     if (hp + ap >= highCut) hi++;
     if (o.home_spread != null) {
-      const diff = hp - ap + o.home_spread;
-      if (Math.abs(diff) < 0.25) ps++;
+      const diff = hp - ap + Number(o.home_spread);
+      if (Math.abs(diff) < 1e-9) ps++;
       else if (diff > 0) ch++;
       else ca++;
     }
     if (o.total != null) {
-      if (Math.abs(hp + ap - o.total) < 0.25) pt++;
-      else if (hp + ap > o.total) ov++;
+      const tot = hp + ap;
+      if (Math.abs(tot - Number(o.total)) < 1e-9) pt++;
+      else if (tot > Number(o.total)) ov++;
       else un++;
     }
   }
   const mean = (arr) => arr.reduce((s, x) => s + x, 0) / (arr.length || 1);
+  let modeKey = "0-0", modeN = 0;
+  for (const k in pair) if (pair[k] > modeN) { modeN = pair[k]; modeKey = k; }
+  const modeParts = modeKey.split("-");
   return {
-    n,
+    n, realistic: true,
     home_win: +(hw / n).toFixed(3), away_win: +((1 - hw / n)).toFixed(3),
     cover_home: o.home_spread == null ? null : +(ch / n).toFixed(3),
     cover_away: o.home_spread == null ? null : +(ca / n).toFixed(3),
@@ -2208,6 +2238,7 @@ function simulateGame(game) {
     blowout_home: +(bh / n).toFixed(3), blowout_away: +(ba / n).toFixed(3),
     low_scoring: +(lo / n).toFixed(3), high_scoring: +(hi / n).toFixed(3),
     away_avg: +mean(away).toFixed(1), home_avg: +mean(home).toFixed(1), total_avg: +mean(tots).toFixed(1),
+    away_mode: Number(modeParts[0]), home_mode: Number(modeParts[1]),
     away_p10: +pctile(away, 0.1).toFixed(1), away_p90: +pctile(away, 0.9).toFixed(1),
     home_p10: +pctile(home, 0.1).toFixed(1), home_p90: +pctile(home, 0.9).toFixed(1),
     away_p25: +pctile(away, 0.25).toFixed(1), away_p75: +pctile(away, 0.75).toFixed(1),
@@ -3581,13 +3612,14 @@ function simStrip(g) {
   const away = s.away_avg ?? g.proj?.away_points;
   const home = s.home_avg ?? g.proj?.home_points;
   const tot = s.total_avg ?? g.proj?.hashmark_total;
+  const likely = (s.away_mode != null && s.home_mode != null) ? `${g.away.abbr} ${s.away_mode} – ${g.home.abbr} ${s.home_mode}` : "";
   return `<div class="simgrid">
     <div><span class="lbl">Average score</span><b>${g.away.abbr} ${away ?? "—"} – ${g.home.abbr} ${home ?? "—"}</b></div>
-    <div><span class="lbl">${g.away.abbr} cover</span><b>${pct01(s.cover_away)}</b></div>
+    <div><span class="lbl">Most likely score</span><b>${likely || "—"}</b></div>
     <div><span class="lbl">${g.home.abbr} cover</span><b>${pct01(s.cover_home)}</b></div>
     <div><span class="lbl">Over / under</span><b>${pct01(s.over)} / ${pct01(s.under)}</b></div>
   </div>
-  <div class="simtails">Average total ${tot ?? "—"} · mean score after simulating the game thousands of times</div>`;
+  <div class="simtails">Each sim is a real football score (touchdowns and field goals), then we average them. Average total ${tot ?? "—"}</div>`;
 }
 
 function deskPanelHtml(g) {
@@ -3889,7 +3921,7 @@ function openGame(id) {
       <div class="kv"><div class="lbl">Rushing / catching yards</div><b>${g.away.abbr} ${fmt.n(g.box?.away_rush_yds,0)} / ${fmt.n(g.box?.away_rec_yds,0)}</b><div class="subn">${g.home.abbr} ${fmt.n(g.box?.home_rush_yds,0)} rush / ${fmt.n(g.box?.home_rec_yds,0)} rec</div></div>
       <div class="kv"><div class="lbl">Weather effect</div><b>${fmt.signed(p.weather_adj_total)}</b><div class="subn">${(g.weather_impact && g.weather_impact.note) || (g.indoor ? "Played inside — weather doesn't matter" : "Outdoor forecast")}</div></div>
       <div class="kv"><div class="lbl">Injuries & travel</div><b>spread ${fmt.signed(g.situational && g.situational.margin_adj)} · total ${fmt.signed(g.situational && g.situational.total_adj)}</b><div class="subn">${((g.situational && g.situational.notes) || []).join(" · ") || "No extra change"}</div></div>
-      <div class="kv"><div class="lbl">Average score</div><b>${g.away.abbr} ${g.sim?.away_avg ?? g.proj?.away_points ?? "—"} – ${g.home.abbr} ${g.sim?.home_avg ?? g.proj?.home_points ?? "—"}</b><div class="subn">Average total ${g.sim?.total_avg ?? g.proj?.hashmark_total ?? "—"} · ${g.away.abbr} covers ${pct01(g.sim?.cover_away)} · ${g.home.abbr} covers ${pct01(g.sim?.cover_home)} · over ${pct01(g.sim?.over)}</div></div>
+      <div class="kv"><div class="lbl">Average score</div><b>${g.away.abbr} ${g.sim?.away_avg ?? g.proj?.away_points ?? "—"} – ${g.home.abbr} ${g.sim?.home_avg ?? g.proj?.home_points ?? "—"}</b><div class="subn">Most likely ${g.away.abbr} ${g.sim?.away_mode ?? "—"} – ${g.home.abbr} ${g.sim?.home_mode ?? "—"} · average total ${g.sim?.total_avg ?? "—"}</div></div>
       <div class="kv"><div class="lbl">Weird-game chances</div><b>Very low scoring ${pct01(g.sim?.low_scoring)} · shootout ${pct01(g.sim?.high_scoring)}</b><div class="subn">Blowout ${g.home.abbr} ${pct01(g.sim?.blowout_home)} · ${g.away.abbr} ${pct01(g.sim?.blowout_away)}</div></div>
     </div>
     <div class="card" style="margin-top:14px">
