@@ -451,14 +451,14 @@ option { background: #12201a; color: #e9f3ec; }
         <div class="mark">GG</div>
         <div>
           <h1>DOUBLE GS</h1>
-          <p>Night-kickoff desk. Same board — lines, weather, injuries, EPA, steam.</p>
+          <p>Simple football picks. Who wins, the score, the weather, and who might score.</p>
         </div>
       </div>
       <div class="meta-chip">
         <span class="pill" id="stamp">Loading…</span>
-        <span class="pill">FPI + market + live weather</span>
-        <button class="refresh-btn" id="refreshBtn" type="button">Refresh lines + weather + injuries</button>
-        <button class="refresh-btn" id="downloadBtn" type="button">Download this board</button>
+        <span class="pill">Rankings + Vegas + weather</span>
+        <button class="refresh-btn" id="refreshBtn" type="button">Update scores & weather</button>
+        <button class="refresh-btn" id="downloadBtn" type="button">Save this page</button>
       </div>
     </header>
 
@@ -466,19 +466,19 @@ option { background: #12201a; color: #e9f3ec; }
       <button class="tabs-arrow" id="tabsPrev" type="button" aria-label="Slide tabs left">‹</button>
       <nav class="tabs" id="tabBar">
       <button class="tab active" data-view="nfl">NFL Week 3</button>
-      <button class="tab" data-view="live">Live projector</button>
-      <button class="tab" data-view="cfb">CFB Weeks 4–5</button>
-      <button class="tab" data-view="all">Full slate</button>
-      <button class="tab" data-view="props">NFL props</button>
-      <button class="tab" data-view="tds">TD scorers</button>
-      <button class="tab" data-view="value">Value dogs</button>
-      <button class="tab" data-view="cfbpicks">CFB picks</button>
+      <button class="tab" data-view="live">Live scores</button>
+      <button class="tab" data-view="cfb">College football</button>
+      <button class="tab" data-view="all">All games</button>
+      <button class="tab" data-view="props">Player stats</button>
+      <button class="tab" data-view="tds">Who scores TDs</button>
+      <button class="tab" data-view="value">Underdogs</button>
+      <button class="tab" data-view="cfbpicks">College picks</button>
       <button class="tab" data-view="nflwx">NFL weather</button>
-      <button class="tab" data-view="cfbwx">CFB weather</button>
+      <button class="tab" data-view="cfbwx">College weather</button>
       <button class="tab" data-view="nflinj">NFL injuries</button>
-      <button class="tab" data-view="cfbinj">CFB injuries</button>
-      <button class="tab" data-view="ratings">Power ratings</button>
-      <button class="tab" data-view="model">Model & desk</button>
+      <button class="tab" data-view="cfbinj">College injuries</button>
+      <button class="tab" data-view="ratings">Team rankings</button>
+      <button class="tab" data-view="model">How it works</button>
       </nav>
       <button class="tabs-arrow" id="tabsNext" type="button" aria-label="Slide tabs right">›</button>
     </div>
@@ -487,10 +487,10 @@ option { background: #12201a; color: #e9f3ec; }
     <section id="injSection" style="display:none">
       <div class="controls">
         <select id="injStatus">
-          <option value="impact">Out / IR / Doubtful / Questionable</option>
-          <option value="gameday">Game-day designations</option>
-          <option value="out">Out + IR + inactive</option>
-          <option value="all">Include active notes</option>
+          <option value="impact">Hurt enough to matter</option>
+          <option value="gameday">Out / doubtful / questionable</option>
+          <option value="out">Won't play</option>
+          <option value="all">Everyone listed</option>
         </select>
         <select id="injPos">
           <option value="ALL">All positions</option>
@@ -526,11 +526,11 @@ option { background: #12201a; color: #e9f3ec; }
           <option value="all">All upcoming</option>
         </select>
         <select id="valKind">
-          <option value="mix">All value dogs</option>
-          <option value="td">Anytime / 2+ TD</option>
+          <option value="mix">All underdogs</option>
+          <option value="td">Touchdown longshots</option>
           <option value="over">Overs</option>
           <option value="under">Unders</option>
-          <option value="spread">Spread / total dogs</option>
+          <option value="spread">Game winners / totals</option>
         </select>
         <select id="valPos">
           <option value="ALL">NFL + CFB</option>
@@ -543,7 +543,7 @@ option { background: #12201a; color: #e9f3ec; }
         </select>
         <input id="valQ" placeholder="Search a player or game…"/>
       </div>
-      <p class="subn" id="valStamp" style="margin:0 0 10px">Plus-money and unloved sides we still give a real shot — props, TDs, spreads, totals.</p>
+      <p class="subn" id="valStamp" style="margin:0 0 10px">These are the underdogs. Vegas isn't in love with them. We still think they have a real chance.</p>
       <div class="parlay-hero" id="parlayHero"></div>
       <div class="stat-row" id="valStats"></div>
       <div class="prop-board" id="valBoard"></div>
@@ -552,10 +552,10 @@ option { background: #12201a; color: #e9f3ec; }
     <section id="tdSection" style="display:none">
       <div class="controls props-controls">
         <select id="tdMarket" class="lg-select">
-          <option value="anytime">Anytime TD</option>
-          <option value="first">First TD scorer</option>
-          <option value="two">2+ TDs</option>
-          <option value="mix">All three markets</option>
+          <option value="anytime">Scores a TD</option>
+          <option value="first">Scores the first TD</option>
+          <option value="two">Scores 2 or more TDs</option>
+          <option value="mix">All three</option>
         </select>
         <select id="tdPos" class="lg-select">
           <option value="ALL">All scorers</option>
@@ -572,7 +572,7 @@ option { background: #12201a; color: #e9f3ec; }
         </select>
         <input id="tdQ" placeholder="Search player, team, game…" />
       </div>
-      <p class="subn" id="tdStamp" style="margin:0 0 10px">Poisson TD model · team totals + goal-line share + injuries + weather.</p>
+      <p class="subn" id="tdStamp" style="margin:0 0 10px">Chance each player scores. First TD = the first touchdown of the whole game. 2+ = they score twice.</p>
       <div class="td-hero" id="tdHero"></div>
       <div class="stat-row" id="tdStats"></div>
       <div class="prop-board td-board" id="tdBoard"></div>
@@ -1701,7 +1701,7 @@ function epaInfo(g) {
   m = Math.max(-cap, Math.min(cap, m));
   t = Math.max(-2.8, Math.min(2.8, t));
   const notes = [];
-  if (h.n || a.n) notes.push(`EPA rebuild ${g.home.abbr} off ${hOff.toFixed(1)} / ${g.away.abbr} off ${aOff.toFixed(1)} (${(h.n || 0) + (a.n || 0)} games of PBP)`);
+  if (h.n || a.n) notes.push(`${g.home.abbr} and ${g.away.abbr} recent games: one side has been scoring more than expected`);
   return { m: +m.toFixed(2), t: +t.toFixed(2), notes, home: h, away: a };
 }
 function parseLine(v) {
@@ -1719,10 +1719,10 @@ function steamInfo(g) {
     const move = Number(nowSp) - Number(openSp);
     if (Math.abs(move) >= 0.5) {
       m += -0.38 * move;
-      notes.push(`Steam: opened ${g.home.abbr} ${fmt.signed(openSp)} → now ${fmt.signed(nowSp)} (${move > 0 ? "toward " + g.away.abbr : "toward " + g.home.abbr})`);
+      notes.push(`The Vegas line moved: opened ${g.home.abbr} ${fmt.signed(openSp)}, now ${fmt.signed(nowSp)} (shifted toward ${move > 0 ? g.away.abbr : g.home.abbr})`);
       if ((desk.favorite_at_open && move > 1.0) || (!desk.favorite_at_open && move < -1.0)) {
         m += move > 0 ? -0.35 : 0.35;
-        notes.push("Reverse line movement — sharp money on the dog");
+        notes.push("Big money is on the underdog — the line moved their way");
       }
     }
   }
@@ -1739,12 +1739,12 @@ function steamInfo(g) {
   }
   const hj = desk.home_juice, aj = desk.away_juice;
   if (hj != null && aj != null && hj !== aj) {
-    if (hj < aj - 5) { m -= 0.2; notes.push(`Public juice on ${g.home.abbr} (${hj} / ${aj}) — slight fade`); }
-    else if (aj < hj - 5) { m += 0.2; notes.push(`Public juice on ${g.away.abbr} (${aj} / ${hj}) — slight fade`); }
+    if (hj < aj - 5) { m -= 0.2; notes.push(`Most casual bets are on ${g.home.abbr} — we shade a bit the other way`); }
+    else if (aj < hj - 5) { m += 0.2; notes.push(`Most casual bets are on ${g.away.abbr} — we shade a bit the other way`); }
   }
   if (desk.open_total != null && desk.total != null && Math.abs(desk.total - desk.open_total) >= 0.5) {
     t += 0.22 * (desk.total - desk.open_total);
-    notes.push(`Total steam ${desk.open_total} → ${desk.total}`);
+    notes.push(`The over/under moved from ${desk.open_total} to ${desk.total}`);
   }
   if (desk.predictor_home != null && nowSp != null) {
     const predM = (Number(desk.predictor_home) - 50) / 4.2;
@@ -2598,8 +2598,8 @@ function buildGameTdModel(g) {
     if (r.inj >= 1) whyBits.push("injury desk has them out — λ zeroed");
     else if (r.inj > 0) whyBits.push("doubtful/questionable tax on λ");
     if (rushTilt > 1 && pl.pos === "RB") whyBits.push("weather tilts goal-line to the run");
-    if (pl.pos === "RB" && Number(pl.rush_att || 0) >= 14) whyBits.push("workhorse — extra goal-line share");
-    if (pl.pos === "WR") whyBits.push("opening-drive passing bump on first TD");
+    if (pl.pos === "RB" && Number(pl.rush_att || 0) >= 14) whyBits.push("gets most of the runs near the goal line");
+    if (pl.pos === "WR") whyBits.push("more likely to catch the first TD of the game");
     return {
       id: pl.id, name: pl.name, pos: pl.pos, team: pl.team, opp: pl.opp,
       game: pl.game || g.short_name, game_id: g.id, date: g.date, side: r.side,
@@ -2641,7 +2641,7 @@ function renderTdDesk() {
       if (m === "two" && hit < 0.04) return;
       expand.push({
         ...r, market: m, hit,
-        label: m === "first" ? "First TD" : m === "two" ? "2+ TDs" : "Anytime TD",
+        label: m === "first" ? "First TD of the game" : m === "two" ? "Scores 2+ TDs" : "Scores a TD",
         fair: m === "first" ? r.fairFirst : m === "two" ? r.fairTwo : r.fairAny
       });
     });
@@ -2655,7 +2655,7 @@ function renderTdDesk() {
     return b.hit - a.hit;
   });
   const stamp = document.getElementById("tdStamp");
-  if (stamp) stamp.textContent = "Team TDs from our projected score · player share from ESPN TDs + goal-line/workhorse · Poisson for anytime and 2+ · first TD = who scores first in the game, not just a TD.";
+  if (stamp) stamp.textContent = "Chance they score. First TD = first score of the game. 2+ = they score twice.";
   const stats = document.getElementById("tdStats");
   if (stats) {
     const any = collectTdBoard().sort((a, b) => b.anytime - a.anytime)[0];
@@ -2670,9 +2670,9 @@ function renderTdDesk() {
   const firsts = collectTdBoard().slice().sort((a, b) => b.first - a.first);
   const twos = collectTdBoard().slice().sort((a, b) => b.two - a.two);
   const heroes = [
-    chalk[0] && { ...chalk[0], market: "anytime", hit: chalk[0].anytime, label: "Anytime TD", fair: chalk[0].fairAny },
-    firsts[0] && { ...firsts[0], market: "first", hit: firsts[0].first, label: "First TD", fair: firsts[0].fairFirst },
-    twos[0] && { ...twos[0], market: "two", hit: twos[0].two, label: "2+ TDs", fair: twos[0].fairTwo }
+    chalk[0] && { ...chalk[0], market: "anytime", hit: chalk[0].anytime, label: "Scores a TD", fair: chalk[0].fairAny },
+    firsts[0] && { ...firsts[0], market: "first", hit: firsts[0].first, label: "First TD of the game", fair: firsts[0].fairFirst },
+    twos[0] && { ...twos[0], market: "two", hit: twos[0].two, label: "Scores 2+ TDs", fair: twos[0].fairTwo }
   ].filter(Boolean);
   if (hero) {
     hero.innerHTML = heroes.map((r) => `
@@ -2702,10 +2702,10 @@ function renderTdDesk() {
       </div>
       <div class="td-bar"><span style="width:${Math.min(100, Math.max(6, r.hit * 100))}%"></span></div>
       <div class="prop-stats">
-        <div><span class="lbl">Fair odds</span><b>${r.fair}</b></div>
-        <div><span class="lbl">Projected TDs</span><b>${r.lam.toFixed(2)}</b></div>
-        <div><span class="lbl">Anytime / 2+</span><b>${Math.round(r.anytime * 100)}% · ${Math.round(r.two * 100)}%</b></div>
-        <div><span class="lbl">First TD</span><b>${Math.round(r.first * 100)}%</b></div>
+        <div><span class="lbl">Payout if it hits</span><b>${r.fair}</b></div>
+        <div><span class="lbl">Expected TDs</span><b>${r.lam.toFixed(2)}</b></div>
+        <div><span class="lbl">Scores / scores twice</span><b>${Math.round(r.anytime * 100)}% · ${Math.round(r.two * 100)}%</b></div>
+        <div><span class="lbl">First TD of game</span><b>${Math.round(r.first * 100)}%</b></div>
       </div>
       <p class="subn" style="margin:8px 0 0">${r.why}</p>
     </article>`).join("");
@@ -2837,7 +2837,7 @@ function collectValueDogs() {
             name: r.name, pos: r.pos, team: r.team, opp: r.opp, game: r.game, game_id: r.game_id, date: r.date, league: "nfl",
             side: "YES", market: "anytime TD", line: null, proj: +r.lam.toFixed(2),
             hit: +r.anytime.toFixed(3), odds, source: "TD desk",
-            why: `${r.lam.toFixed(2)} projected TDs · ${Math.round(r.anytime*100)}% anytime · still plus money.`,
+            why: `${Math.round(r.anytime*100)}% chance they score at least once. Vegas still has them as a longshot.`,
             kind: "td", score: r.anytime * 110 + 8
           });
         }
@@ -2849,7 +2849,7 @@ function collectValueDogs() {
             name: r.name, pos: r.pos, team: r.team, opp: r.opp, game: r.game, game_id: r.game_id, date: r.date, league: "nfl",
             side: "YES", market: "2+ TDs", line: null, proj: +r.lam.toFixed(2),
             hit: +r.two.toFixed(3), odds, source: "TD desk",
-            why: `${Math.round(r.two*100)}% to score twice. Longshot ticket, still a real shot.`,
+            why: `${Math.round(r.two*100)}% chance they score twice. Longshot, but not a dart throw.`,
             kind: "td", score: r.two * 95
           });
         }
@@ -2948,9 +2948,9 @@ function buildParlays() {
 }
 function parlayCardHtml(r) {
   return `<article class="parlay-card">
-    <div class="td-mkt">${r.title} · best board</div>
+    <div class="td-mkt">${r.title} parlay</div>
     <div class="parlay-odds">${r.label}</div>
-    <div class="subn">Combined hit ${Math.round(r.p * 100)}% · fair parlay price</div>
+    <div class="subn">${Math.round(r.p * 100)}% chance all of these hit · payout if they do</div>
     <ul class="parlay-legs">${r.legs.map((l) => `<li><b>${l.label}</b><div class="subn">${l.detail} · ${Math.round(l.hit * 100)}% · ${l.odds > 0 ? "+" : ""}${l.odds}</div></li>`).join("")}</ul>
   </article>`;
 }
@@ -2965,7 +2965,7 @@ function valueTileHtml(r) {
   return `<article class="prop-card value-tile" data-id="${r.game_id}">
     <div class="who">
       <div>
-        <div class="side">${r.kind === "td" ? "ANYTIME TD · PLUS MONEY" : r.side + " · NOT THE FAVORITE"}</div>
+        <div class="side">${r.kind === "td" ? "TOUCHDOWN UNDERDOG" : r.kind === "spread" ? "GAME UNDERDOG" : "NOT THE POPULAR PICK"}</div>
         <h4>${r.name}</h4>
         <div class="prop-meta">${r.pos} · ${r.team} vs ${r.opp} · ${r.game}</div>
       </div>
@@ -2984,8 +2984,8 @@ function valueStripHtml() {
   const rows = collectValueDogs().slice(0, 10);
   if (!rows.length) return "";
   return `<div class="card board-card" style="margin-bottom:14px">
-    <h3 style="margin:0 0 8px">Value dogs · good shot, not the favorite</h3>
-    <p class="subn" style="margin:0 0 10px">Plus-money TDs, unloved overs/unders, and dog spreads.</p>
+    <h3 style="margin:0 0 8px">Underdogs we still like</h3>
+    <p class="subn" style="margin:0 0 10px">Not the popular pick. We still think they can cash.</p>
     <div class="value-strip">${rows.map(valueTileHtml).join("")}</div>
   </div>`;
 }
@@ -3016,7 +3016,7 @@ function renderValueDogs() {
     <div class="stat"><b>${rows.filter(r=>r.kind==="spread").length}</b><span>spread / dog sides</span></div>
     <div class="stat"><b>${rows[0] ? (rows[0].odds>0?"+"+rows[0].odds:rows[0].odds) : "—"}</b><span>top ticket price</span></div>`;
   const stamp = document.getElementById("valStamp");
-  if (stamp) stamp.textContent = "Anytime TDs, 2+ TDs, overs/unders, and plus-money spreads/totals. DK when posted; otherwise vs a typical number. Parlays use different games.";
+  if (stamp) stamp.textContent = "These are underdogs. Vegas isn't in love with them. We still think they have a real chance.";
   box.innerHTML = rows.slice(0, 72).map(valueTileHtml).join("") || `<div class="empty">No value dogs in this filter. Flip NFL + CFB or All upcoming.</div>`;
   box.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
@@ -3411,8 +3411,8 @@ function renderInjuries(league){
     <div class="stat"><b>${qst}</b><span>questionable</span></div>`;
   const stamp=document.getElementById("injStamp");
   if(stamp) stamp.textContent = league === "cfb"
-    ? `College has no NFL-style IR. This desk is coach quotes + ESPN news (and any official listings) · pulled ${when}`
-    : `ESPN injury report · pulled ${when} · refreshes daily (and on Refresh)`;
+    ? `College teams don't post a full NFL-style list. This is what coaches and reporters are saying · ${when}`
+    : `Who's hurt · updated ${when}. Hit Update to refresh.`;
   box.innerHTML = rows.slice(0,240).map(r=>{
     const rep = r.reporter ? `${r.reporter.name}${r.reporter.outlet? " · "+r.reporter.outlet:""}` : "ESPN injury report";
     const quote = r.long || r.short || "No reporter note posted yet.";
@@ -3586,13 +3586,13 @@ function deskPanelHtml(g) {
   const s = g.situational || { margin_adj: 0, total_adj: 0, notes: [] };
   const notes = (s.notes && s.notes.length)
     ? s.notes
-    : ["Desk overlay is on — injury, rest, travel, ref, EPA, and steam all sit at 0 on this card."];
+    : ["Nothing extra moved this line — injuries, rest, and weather are all normal."];
   const epa = s.epa || {};
   const stm = s.steam || {};
   return `<div class="desk-panel">
-    <div class="lbl">Injury · rest · travel · ref · EPA · steam (already in this pick)</div>
+    <div class="lbl">Why we moved this line</div>
     <div class="desk-nums"><b>Spread ${fmt.signed(s.margin_adj)}</b><b>Total ${fmt.signed(s.total_adj)}</b></div>
-    <div class="desk-nums" style="font-size:13px"><span>EPA ${fmt.signed(epa.m)} / tot ${fmt.signed(epa.t)}</span><span>Steam ${fmt.signed(stm.m)} / tot ${fmt.signed(stm.t)}</span></div>
+    <div class="desk-nums" style="font-size:13px"><span>Recent form ${fmt.signed(epa.m)}</span><span>Betting line ${fmt.signed(stm.m)}</span></div>
     <ul class="desk-notes">${notes.map((n) => `<li>${n}</li>`).join("")}</ul>
   </div>`;
 }
@@ -3602,10 +3602,10 @@ function deskStripHtml(games) {
     .sort((a, b) => Math.abs(b.situational.margin_adj || 0) - Math.abs(a.situational.margin_adj || 0))
     .slice(0, 10);
   return `<div class="card desk-strip" style="margin-bottom:14px">
-    <h3>Injury / rest / travel / ref / EPA / steam — already in these picks</h3>
-    <p class="subn" style="margin:0 0 10px">Official injuries, rest & travel, referee, play-by-play EPA rebuild, and multi-book steam / reverse line movement. Tap a row for the full breakdown.</p>
-    ${!rows.length ? "<p>Desk overlay is on — no extra tax on this filter yet.</p>" : `<table>
-      <thead><tr><th>Game</th><th>Spread move</th><th>Total move</th><th>Why</th></tr></thead>
+    <h3>What changed our number</h3>
+    <p class="subn" style="margin:0 0 10px">Hurt players, short rest, long flights, and a moving Vegas line. Tap a row to see the game.</p>
+    ${!rows.length ? "<p>Nothing extra is moving these games.</p>" : `<table>
+      <thead><tr><th>Game</th><th>Spread change</th><th>Total change</th><th>Why</th></tr></thead>
       <tbody>${rows.map((g) => `<tr data-id="${g.id}">
         <td>${g.away.abbr} @ ${g.home.abbr}</td>
         <td><b>${fmt.signed(g.situational.margin_adj)}</b></td>
@@ -3772,22 +3772,16 @@ function renderModel() {
   const n = DATA.notes;
   $("#modelWrap").innerHTML = `
     <div class="card">
-      <h3>How Double Gs prices a game</h3>
+      <h3>How Double Gs works — in plain English</h3>
       <ol>
-        <li>Start with ESPN Football Power Index — expected point margin vs an average opponent on a neutral field, built from EPA-style efficiency.</li>
-        <li>Add home-field (${n.hfa.nfl} NFL / ${n.hfa.cfb} CFB). International sites get a reduced bump.</li>
-        <li>Blend with the live DraftKings number ESPN is showing (${n.nfl_blend || "86% market"} NFL, ${n.cfb_blend || "78% market"} CFB). The market is the prior; FPI and injuries only move us when they disagree by real points.</li>
-        <li>Pull a kickoff-hour forecast from Open-Meteo (temp, wind/gusts, precip probability + accumulation, weather code, humidity) for the stadium city. Domes stay at a 72° climate with zero weather tax.</li>
-        <li>Translate that forecast into a total adjustment (capped around −7.5 pts) plus rush/pass yard multipliers: wind and rain suppress passing first; snow and extreme cold tax both sides; heat can slow late-game pace.</li>
-        <li>Convert margin to win probability with a normal curve (σ ${n.sigma.nfl} NFL / ${n.sigma.cfb} CFB).</li>
-        <li>Split the total into team points, then project rush / receiving yards from team stats + opponent yards allowed + game script.</li>
-        <li>NFL player props start from ESPN fantasy projections and are scaled so they roughly sum to the team yard totals.</li>
-        <li>After every final, Double Gs stores a fading residual for each team (margin, total, offense, defense). Those residuals shift the remaining board so projections improve as the weekend completes.</li>
-        <li>Official injury reports overlay the line: QB / OL / skill outs and doubtfuls are a real point tax, not a footnote.</li>
-        <li>Travel, rest, and referee: miles and west-to-east body clock, short weeks vs byes, and NFL crew tendencies on totals and home whistle.</li>
-        <li>Play-by-play EPA rebuild from ESPN drives (nflfastR-style expected points vs actual drive result). Team off/def EPA from this season’s finals shift the remaining board.</li>
-        <li>Anytime / first / 2+ TD scorers: team TDs from the projected score, player share from ESPN TDs plus goal-line and workhorse usage, injuries and weather. Anytime and 2+ use Poisson; first TD is who scores the game’s first touchdown (opening-drive pass bump).</li>
-        <li>Multi-book steam: opening vs current line, juice, reverse line movement. We follow sharp steam and fade heavy public juice.</li>
+        <li>We look at how good each team is (ESPN rankings) and who is at home.</li>
+        <li>We look at the Vegas line. If we disagree by enough, we pick a side.</li>
+        <li>We check the weather at kickoff. Wind, rain, and snow usually mean fewer points. Indoor games skip this.</li>
+        <li>Hurt players, short rest, and long flights can move the number.</li>
+        <li>If Vegas is moving toward the underdog, big bettors probably like that underdog.</li>
+        <li>We guess the score, then guess who scores the touchdowns.</li>
+        <li>After games finish, we learn from the misses so next week is a little better.</li>
+        <li>None of this is betting advice. It's a scoreboard of our best guess.</li>
       </ol>
       <p>${n.disclaimer}</p>
       <p class="subn">Generated ${fmt.when(DATA.generated_at)} · ${n.model}</p>
@@ -3861,13 +3855,13 @@ function openGame(id) {
       <div class="side">
         <img src="${g.away.logo}" alt="">
         <h2>${g.away.rank ? "#" + g.away.rank + " " : ""}${g.away.name}</h2>
-        <div class="subn">${g.away.record || ""} · FPI ${fmt.n(p.away_fpi, 2)} (#${fmt.n(p.away_fpi_rank, 0)})</div>
+        <div class="subn">${g.away.record || ""} · ranking ${fmt.n(p.away_fpi, 2)} (#${fmt.n(p.away_fpi_rank, 0)})</div>
       </div>
       <div class="lbl">AT</div>
       <div class="side">
         <img src="${g.home.logo}" alt="">
         <h2>${g.home.rank ? "#" + g.home.rank + " " : ""}${g.home.name}</h2>
-        <div class="subn">${g.home.record || ""} · FPI ${fmt.n(p.home_fpi, 2)} (#${fmt.n(p.home_fpi_rank, 0)})</div>
+        <div class="subn">${g.home.record || ""} · ranking ${fmt.n(p.home_fpi, 2)} (#${fmt.n(p.home_fpi_rank, 0)})</div>
       </div>
     </div>
     ${deskPanelHtml(g)}
@@ -3879,16 +3873,16 @@ function openGame(id) {
       ${p.pregame_home_points != null ? `<p class="subn">Pregame was ${p.pregame_away_points}–${p.pregame_home_points} (tot ${p.pregame_total}). Live re-simulates remaining possessions from the current score, clock, and who has the ball.</p>` : ""}
     </div>` : ""}
     <div class="grid2">
-      <div class="kv"><div class="lbl">Market</div><b>${o.details || "—"}</b><div class="subn">Total ${o.total ?? "—"} · ${o.book || ""} · ML ${o.away_ml || "—"} / ${o.home_ml || "—"}</div></div>
-      <div class="kv"><div class="lbl">Double Gs line</div><b>${g.home.abbr} ${fmt.signed(p.hashmark_home_spread)}</b><div class="subn">Model raw ${g.home.abbr} ${fmt.signed(p.model_home_spread)} · HFA ${fmt.n(p.hfa)}</div></div>
-      <div class="kv"><div class="lbl">Win probability</div><b>${g.away.abbr} ${fmt.pct(p.win_prob_away)} / ${g.home.abbr} ${fmt.pct(p.win_prob_home)}</b></div>
-      <div class="kv"><div class="lbl">Projected score</div><b>${p.away_points ?? "—"} – ${p.home_points ?? "—"}</b><div class="subn">Total ${p.hashmark_total ?? "—"} · market ${o.total ?? "—"} · ${p.total_pick || ""}</div></div>
-      <div class="kv"><div class="lbl">Spread lean</div><b>${p.pick_line || p.pick || "aligned"}</b><div class="subn">Edge ${fmt.signed(p.edge_spread)} · confidence ${p.confidence || 0}</div></div>
-      <div class="kv"><div class="lbl">Rush / receiving yards</div><b>${g.away.abbr} ${fmt.n(g.box?.away_rush_yds,0)} / ${fmt.n(g.box?.away_rec_yds,0)}</b><div class="subn">${g.home.abbr} ${fmt.n(g.box?.home_rush_yds,0)} rush / ${fmt.n(g.box?.home_rec_yds,0)} rec</div></div>
-      <div class="kv"><div class="lbl">Weather adj</div><b>${fmt.signed(p.weather_adj_total)}</b><div class="subn">${(g.weather_impact && g.weather_impact.note) || (g.indoor ? "Dome" : "Forecast overlay")}</div></div>
-      <div class="kv"><div class="lbl">Injury / rest / travel / ref</div><b>spread ${fmt.signed(g.situational && g.situational.margin_adj)} · total ${fmt.signed(g.situational && g.situational.total_adj)}</b><div class="subn">${((g.situational && g.situational.notes) || []).join(" · ") || "No extra desk tax on this card"}</div></div>
-      <div class="kv"><div class="lbl">150,000 sims</div><b>${g.away.abbr} ${g.sim?.away_p10 ?? "—"}–${g.sim?.away_p90 ?? "—"} / ${g.home.abbr} ${g.sim?.home_p10 ?? "—"}–${g.sim?.home_p90 ?? "—"}</b><div class="subn">Cover ${g.away.abbr} ${pct01(g.sim?.cover_away)} · ${g.home.abbr} ${pct01(g.sim?.cover_home)} · O/U ${pct01(g.sim?.over)}/${pct01(g.sim?.under)}</div></div>
-      <div class="kv"><div class="lbl">Outlier tails</div><b>Low ${pct01(g.sim?.low_scoring)} · high ${pct01(g.sim?.high_scoring)}</b><div class="subn">Blowout ${g.home.abbr} ${pct01(g.sim?.blowout_home)} · ${g.away.abbr} ${pct01(g.sim?.blowout_away)}</div></div>
+      <div class="kv"><div class="lbl">Vegas line</div><b>${o.details || "—"}</b><div class="subn">Over/under ${o.total ?? "—"} · ${o.book || ""} · moneyline ${o.away_ml || "—"} / ${o.home_ml || "—"}</div></div>
+      <div class="kv"><div class="lbl">Our line</div><b>${g.home.abbr} ${fmt.signed(p.hashmark_home_spread)}</b><div class="subn">Raw ranking ${g.home.abbr} ${fmt.signed(p.model_home_spread)} · home-field ${fmt.n(p.hfa)}</div></div>
+      <div class="kv"><div class="lbl">Who wins?</div><b>${g.away.abbr} ${fmt.pct(p.win_prob_away)} / ${g.home.abbr} ${fmt.pct(p.win_prob_home)}</b></div>
+      <div class="kv"><div class="lbl">Projected score</div><b>${p.away_points ?? "—"} – ${p.home_points ?? "—"}</b><div class="subn">Our total ${p.hashmark_total ?? "—"} · Vegas ${o.total ?? "—"} · ${p.total_pick || ""}</div></div>
+      <div class="kv"><div class="lbl">Who we like</div><b>${p.pick_line || p.pick || "too close to call"}</b><div class="subn">How far off Vegas ${fmt.signed(p.edge_spread)}</div></div>
+      <div class="kv"><div class="lbl">Rushing / catching yards</div><b>${g.away.abbr} ${fmt.n(g.box?.away_rush_yds,0)} / ${fmt.n(g.box?.away_rec_yds,0)}</b><div class="subn">${g.home.abbr} ${fmt.n(g.box?.home_rush_yds,0)} rush / ${fmt.n(g.box?.home_rec_yds,0)} rec</div></div>
+      <div class="kv"><div class="lbl">Weather effect</div><b>${fmt.signed(p.weather_adj_total)}</b><div class="subn">${(g.weather_impact && g.weather_impact.note) || (g.indoor ? "Played inside — weather doesn't matter" : "Outdoor forecast")}</div></div>
+      <div class="kv"><div class="lbl">Injuries & travel</div><b>spread ${fmt.signed(g.situational && g.situational.margin_adj)} · total ${fmt.signed(g.situational && g.situational.total_adj)}</b><div class="subn">${((g.situational && g.situational.notes) || []).join(" · ") || "No extra change"}</div></div>
+      <div class="kv"><div class="lbl">Likely score range</div><b>${g.away.abbr} ${g.sim?.away_p10 ?? "—"}–${g.sim?.away_p90 ?? "—"} / ${g.home.abbr} ${g.sim?.home_p10 ?? "—"}–${g.sim?.home_p90 ?? "—"}</b><div class="subn">Cover ${g.away.abbr} ${pct01(g.sim?.cover_away)} · ${g.home.abbr} ${pct01(g.sim?.cover_home)} · over/under ${pct01(g.sim?.over)}/${pct01(g.sim?.under)}</div></div>
+      <div class="kv"><div class="lbl">Weird-game chances</div><b>Very low scoring ${pct01(g.sim?.low_scoring)} · shootout ${pct01(g.sim?.high_scoring)}</b><div class="subn">Blowout ${g.home.abbr} ${pct01(g.sim?.blowout_home)} · ${g.away.abbr} ${pct01(g.sim?.blowout_away)}</div></div>
     </div>
     <div class="card" style="margin-top:14px">
       <h3 style="margin:0 0 8px">Kickoff weather</h3>
