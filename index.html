@@ -592,11 +592,11 @@ option { background: #12201a; color: #e9f3ec; }
           <div class="slide-wrap">
             <button class="slide-btn" type="button" data-slide="cfbTiles" data-dir="-1" aria-label="College tiles left">‹</button>
             <div class="tile-row slide" id="cfbTiles">
+              <a class="tab" href="#recruit" data-view="recruit">Recruiting</a>
               <a class="tab" href="#cfb" data-view="cfb">College football</a>
               <a class="tab" href="#cfbpicks" data-view="cfbpicks">College picks</a>
               <a class="tab" href="#cfbwx" data-view="cfbwx">College weather</a>
               <a class="tab" href="#cfbinj" data-view="cfbinj">College injuries</a>
-              <a class="tab" href="#recruit" data-view="recruit">Recruiting</a>
             </div>
             <button class="slide-btn" type="button" data-slide="cfbTiles" data-dir="1" aria-label="College tiles right">›</button>
           </div>
@@ -6313,7 +6313,8 @@ function renderHome() {
       <a class="home-jump" href="#parlay" data-jump="parlay"><b>Parlays</b><span>Game tickets and player props, all in one place</span></a>
       <a class="home-jump" href="#card" data-jump="card"><b>This week's card</b><span>${(card.legs || []).length} plays ready to lock</span></a>
       <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l : "0-0"} locked this season</span></a>
-      <a class="home-jump" href="#nfl" data-jump="nfl"><b>NFL board</b><span>Week 3 sides, totals, weather</span></a>`;
+      <a class="home-jump" href="#nfl" data-jump="nfl"><b>NFL board</b><span>Week 3 sides, totals, weather</span></a>
+      <a class="home-jump hot" href="#recruit" data-jump="recruit"><b>Recruiting</b><span>On3 classes, the portal, and our board</span></a>`;
     // clicks handled globally via href + hash
   }
   const feat = document.getElementById("homeFeature");
