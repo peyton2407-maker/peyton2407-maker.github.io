@@ -604,9 +604,7 @@ option { background: #12201a; color: #e9f3ec; }
           <div id="homeBoard"></div>
         </div>
         <div>
-          <div class="home-label">Parlays</div>
-          <div id="homeParlay"></div>
-          <div class="home-label" style="margin-top:18px">This week's card</div>
+          <div class="home-label">This week's card</div>
           <article class="share-card" id="homeCardTeaser"></article>
         </div>
       </div>
@@ -722,18 +720,6 @@ option { background: #12201a; color: #e9f3ec; }
       </div>
       <p class="subn" id="parlayStamp" style="margin:0 0 10px">Parlays live here only. NFL and college are separate so a 3-leg isn’t mixing Buffalo with Ohio State.</p>
       <div class="parlay-hero" id="parlayHero"></div>
-    </section>
-
-    <section id="propParlaySection" style="display:none">
-      <div class="controls">
-        <select id="propParlaySize">
-          <option value="mix">2-leg + 3-leg</option>
-          <option value="2">2-leg only</option>
-          <option value="3">3-leg only</option>
-        </select>
-      </div>
-      <p class="subn" id="propParlayStamp" style="margin:0 0 10px">Player props only. We keep tickets that are plus-money and still have a real chance to cash — not longshot junk.</p>
-      <div class="parlay-hero" id="propParlayHero"></div>
     </section>
 
     <section id="tdSection" style="display:none">
@@ -5385,8 +5371,6 @@ function renderHome() {
   syncDesk();
   const tally = scoreTally("all", "all");
   const card = ensureWeeklyCard(false);
-  const nflP = (typeof buildParlays === "function" ? buildParlays("nfl") : [])[0];
-  const cfbP = (typeof buildParlays === "function" ? buildParlays("cfb") : [])[0];
   const jumps = document.getElementById("homeJumps");
   if (jumps) {
     jumps.innerHTML = `
@@ -5420,18 +5404,6 @@ function renderHome() {
       <div class="home-pick"><b>${pick}</b><span class="subn">${(p.total_pick && p.total_pick !== "NO PLAY") ? p.total_pick : ""}</span></div>`;
     feat.onclick = () => openGame(g.id);
   } else if (feat) feat.className = "home-feature";
-  const hp = document.getElementById("homeParlay");
-  if (hp) {
-    const tile = (lg, row) => {
-      if (!row) return `<a class="home-parlay" href="#parlay" data-jump="parlay"><b>${lg} parlays</b><div class="subn">Open the parlay desk</div></a>`;
-      return `<a class="home-parlay" href="#parlay" data-jump="parlay" data-lg="${lg === "College" ? "cfb" : "nfl"}">
-        <div class="lbl">${lg} · ${row.title}</div>
-        <div class="odds">${row.label}</div>
-        <div class="subn">${row.legs.map((l) => l.label).join(" · ")}</div>
-      </a>`;
-    };
-    hp.innerHTML = tile("NFL", nflP) + tile("College", cfbP);
-  }
   const teaser = document.getElementById("homeCardTeaser");
   if (teaser) {
     teaser.innerHTML = `
@@ -5569,9 +5541,7 @@ function setView(next) {
   const valS = document.getElementById("valueSection");
   if (valS) valS.style.display = next === "value" ? "" : "none";
   const parS = document.getElementById("parlaySection");
-  if (parS) parS.style.display = (next === "parlay" || next === "propp") ? "" : "none";
-  const ppS = document.getElementById("propParlaySection");
-  if (ppS) ppS.style.display = "none";
+  if (parS) parS.style.display = next === "parlay" ? "" : "none";
   const tdS = document.getElementById("tdSection");
   if (tdS) tdS.style.display = next === "tds" ? "" : "none";
   if (board) renderBoard();
