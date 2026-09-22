@@ -1362,27 +1362,8 @@ function getResiduals() {
   DATA.residuals.cfb_scale = DATA.residuals.cfb_scale || { n: 0, off: 0.34, def: 0.30 };
   return DATA.residuals;
 }
-function loadResiduals() {
-  try {
-    const c = JSON.parse(localStorage.getItem("doublegs-learn") || "null");
-    if (!c) return;
-    const res = getResiduals();
-    if (c.cfb_buckets) res.cfb_buckets = Object.assign(res.cfb_buckets || {}, c.cfb_buckets);
-    if (c.cfb_scale && c.cfb_scale.n) res.cfb_scale = c.cfb_scale;
-    if (c.nfl) res.nfl = Object.assign(res.nfl || {}, c.nfl);
-    if (c.cfb) res.cfb = Object.assign(res.cfb || {}, c.cfb);
-    if (c.games_learned) res.games_learned = Object.assign(c.games_learned, res.games_learned);
-    if (Array.isArray(c.history) && c.history.length) res.history = c.history.slice(-80);
-  } catch (e) {}
-}
-function saveResiduals() {
-  try {
-    const res = getResiduals();
-    localStorage.setItem("doublegs-learn", JSON.stringify({
-      cfb: res.cfb, nfl: res.nfl, cfb_buckets: res.cfb_buckets || {}, cfb_scale: res.cfb_scale || { n: 0, off: 0.34, def: 0.30 }, games_learned: res.games_learned, history: (res.history || []).slice(-80), saved: Date.now()
-    }));
-  } catch (e) {}
-}
+function loadResiduals() {}
+function saveResiduals() {}
 
 function residualFor(league, teamId) {
   const r = getResiduals()[league] || {};
@@ -4298,7 +4279,7 @@ async function fetchInjuries(force){
     next.day = today;
     window.__INJ = next;
     if (typeof DATA === "object" && DATA) DATA.injuries = next;
-    try { localStorage.setItem("doublegs-inj-cache", JSON.stringify({ day: today, fetched: Date.now(), nfl: next.nfl, cfb: next.cfb })); } catch (e) {}
+    /* injuries stay on the shared feed, not on this phone */
     attachInjuriesToGames();
     if (typeof renderBoard === "function") renderBoard();
   } catch (e) { console.warn("injuries", e); }
@@ -5482,21 +5463,9 @@ const DESK_KEY = "doublegs-desk-v1";
 function emptyDesk() { return { plays: {}, card: null, alerts: [], watch: {}, notif: false }; }
 function loadDesk() {
   window.__DESK = window.__DESK || emptyDesk();
-  try {
-    const c = JSON.parse(localStorage.getItem(DESK_KEY) || "null");
-    if (c && typeof c === "object") {
-      window.__DESK.plays = Object.assign({}, window.__DESK.plays, c.plays || {});
-      if (c.card) window.__DESK.card = c.card;
-      window.__DESK.alerts = Array.isArray(c.alerts) ? c.alerts : [];
-      window.__DESK.watch = Object.assign({}, c.watch || {});
-      window.__DESK.notif = !!c.notif;
-    }
-  } catch (e) {}
   return window.__DESK;
 }
-function saveDesk() {
-  try { localStorage.setItem(DESK_KEY, JSON.stringify(window.__DESK)); } catch (e) {}
-}
+function saveDesk() {}
 function deskWeekKey() {
   const m = (DATA && DATA.meta) || {};
   return `nfl-${m.nfl_week || 3}|cfb-${(m.cfb_weeks || [4, 5]).join("-")}`;
@@ -5553,46 +5522,28 @@ function buildWeeklyLegs(games) {
   }
   return legs.slice(0, 10);
 }
-function ensureWeeklyCard(force) {
+function ensureWeeklyCard() {
   const desk = loadDesk();
-  const key = deskWeekKey();
-  if (!force && desk.card && desk.card.weekKey === key && desk.card.frozen && (desk.card.legs || []).length) return desk.card;
-  if (!force && desk.card && desk.card.weekKey === key && desk.card.frozen) return desk.card;
   const legs = buildWeeklyLegs(DATA.games || []);
   desk.card = {
-    weekKey: key, frozen: !!force || !!(desk.card && desk.card.frozen && desk.card.weekKey === key),
-    lockedAt: Date.now(),
+    weekKey: deskWeekKey(), frozen: false, lockedAt: null,
     title: "Double Gs weekly card",
     legs
   };
-  saveDesk();
   return desk.card;
 }
 function lockUpcomingPlays() {
   const desk = loadDesk();
-  const now = Date.now();
+  desk.plays = {};
   (DATA.games || []).forEach((g) => {
-    if (!isPlay(g.proj)) return;
-    const kick = g.date ? new Date(g.date).getTime() : 0;
+    if (!g || !g.proj || !isPlay(g.proj)) return;
     const id = String(g.id);
-    if (g.completed && !desk.plays[id]) return;
-    if (!desk.plays[id]) {
-      if (g.completed) return;
-      if (kick && kick - now > 60 * 3600 * 1000 && g.league === "cfb") return;
-      desk.plays[id] = snapPlay(g);
-    } else if (!desk.plays[id].graded && !g.completed && kick - now > 2 * 3600 * 1000) {
-      if (!desk.plays[id].frozenSoft) {
-        const age = now - (desk.plays[id].lockedAt || 0);
-        if (age < 6 * 3600 * 1000) desk.plays[id] = Object.assign(desk.plays[id], snapPlay(g), { lockedAt: desk.plays[id].lockedAt });
-      }
-    }
-    const lock = desk.plays[id];
-    if (lock && (g.completed || (typeof isLiveGame === "function" && isLiveGame(g)))) {
-      if (lock.close_spread == null && g.odds && g.odds.home_spread != null) lock.close_spread = g.odds.home_spread;
-      if (lock.close_total == null && g.odds && g.odds.total != null) lock.close_total = g.odds.total;
-    }
+    const row = snapPlay(g);
+    if (g.odds && g.odds.home_spread != null) row.close_spread = g.odds.home_spread;
+    if (g.odds && g.odds.total != null) row.close_total = g.odds.total;
+    desk.plays[id] = row;
+    if (g.completed) gradeLock(row, g);
   });
-  saveDesk();
 }
 function gradeLock(lock, g) {
   if (!lock || !g || !g.completed) return lock;
