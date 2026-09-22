@@ -108,7 +108,8 @@ button { touch-action: manipulation; cursor: pointer; }
 .home-feature .logos{display:flex;align-items:center;gap:10px}
 .home-feature img{width:46px;height:46px}
 .home-feature h3{margin:0;font-family:Syne,sans-serif;font-size:22px}
-.home-split{display:grid;gap:18px}
+.home-prop-banner{margin:0 0 18px}
+.home-prop-banner .parlay-hero{margin:8px 0 0}
 .home-label{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
 .home-game{
   display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;
@@ -563,7 +564,7 @@ option { background: #12201a; color: #e9f3ec; }
       <nav class="tabs" id="tabBar">
       <a class="tab active" href="#home" data-view="home">Home</a>
       <a class="tab" href="#parlay" data-view="parlay">Parlays</a>
-      <a class="tab" href="#propp" data-view="propp">Prop parlays</a>
+      <a class="tab" href="#propp" data-view="propp">Player prop parlays</a>
       <a class="tab" href="#card" data-view="card">This week's card</a>
       <a class="tab" href="#score" data-view="score">Scorecard</a>
       <a class="tab" href="#alerts" data-view="alerts">Alerts</a>
@@ -594,6 +595,7 @@ option { background: #12201a; color: #e9f3ec; }
       </div>
       <div class="home-jumps" id="homeJumps"></div>
       <article class="home-feature" id="homeFeature"></article>
+      <div class="home-prop-banner" id="homePropBanner"></div>
       <div class="home-split">
         <div>
           <div class="home-label">Today and up next</div>
@@ -713,6 +715,7 @@ option { background: #12201a; color: #e9f3ec; }
         <div class="tabs" id="parlayTabs" style="flex:1">
           <button class="ptab active" type="button" data-parlay="nfl">NFL parlays</button>
           <button class="ptab" type="button" data-parlay="cfb">College parlays</button>
+          <button class="ptab" type="button" data-parlay="props">Player prop parlays</button>
         </div>
       </div>
       <p class="subn" id="parlayStamp" style="margin:0 0 10px">Parlays live here only. NFL and college are separate so a 3-leg isn’t mixing Buffalo with Ohio State.</p>
@@ -3461,28 +3464,28 @@ function renderPropParlays() {
   hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 function renderParlays() {
-  const league = window.__parlayLg || "nfl";
+  let league = window.__parlayLg || "nfl";
+  if (league === "propp") league = "props";
   $$("#parlayTabs .ptab").forEach((t) => t.classList.toggle("active", t.dataset.parlay === league));
   const stamp = document.getElementById("parlayStamp");
-  if (stamp) stamp.textContent = league === "nfl"
-    ? "NFL game parlays first, then 2-leg and 3-leg player prop parlays under that."
-    : "College game parlays. Player prop parlays are NFL — college books don’t post enough player numbers.";
   const hero = document.getElementById("parlayHero");
   if (!hero) return;
-  const games = parlayHeroHtml(league) || `<div class="empty">Not enough ${league === "nfl" ? "NFL" : "college"} game legs yet.</div>`;
-  let props = "";
-  if (league === "nfl") {
+  if (league === "props") {
+    if (stamp) stamp.textContent = "Player prop parlays — 2-leg and 3-leg. Plus-money only. NFL players.";
     const rows = typeof buildPropParlays === "function" ? buildPropParlays() : [];
     const twos = rows.filter((r) => r.n === 2);
     const threes = rows.filter((r) => r.n === 3);
-    if (twos.length || threes.length) {
-      props = `<div class="home-label" style="grid-column:1/-1;margin-top:6px">2-leg player prop parlays</div>` +
-        twos.map(propParlayCardHtml).join("") +
-        `<div class="home-label" style="grid-column:1/-1;margin-top:10px">3-leg player prop parlays</div>` +
-        threes.map(propParlayCardHtml).join("");
-    }
+    hero.innerHTML =
+      (twos.length ? `<div class="home-label" style="grid-column:1/-1">2-leg player props</div>` + twos.map(propParlayCardHtml).join("") : "") +
+      (threes.length ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">3-leg player props</div>` + threes.map(propParlayCardHtml).join("") : "") ||
+      `<div class="empty">No plus-money player prop parlays cleared the bar.</div>`;
+    hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
+    return;
   }
-  hero.innerHTML = games + props;
+  if (stamp) stamp.textContent = league === "nfl"
+    ? "NFL game parlays. Player props are on the Player prop parlays tab."
+    : "College game parlays. Player props are NFL-only — college books don’t post enough player numbers.";
+  hero.innerHTML = parlayHeroHtml(league) || `<div class="empty">Not enough ${league === "nfl" ? "NFL" : "college"} game legs yet.</div>`;
   hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 function valueTileHtml(r) {
@@ -5337,7 +5340,7 @@ function renderHome() {
   if (jumps) {
     jumps.innerHTML = `
       <a class="home-jump hot" href="#parlay" data-jump="parlay"><b>Parlays</b><span>Tap here — NFL and college tickets</span></a>
-      <a class="home-jump hot" href="#propp" data-jump="propp"><b>Prop parlays</b><span>Player props that can hit and pay plus-money</span></a>
+      <a class="home-jump hot" href="#parlay" data-jump="parlay" data-lg="props"><b>Player prop parlays</b><span>2-leg and 3-leg player tickets — tap here</span></a>
       <a class="home-jump" href="#card" data-jump="card"><b>This week's card</b><span>${(card.legs || []).length} plays ready to lock</span></a>
       <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l : "0-0"} locked this season</span></a>
       <a class="home-jump" href="#nfl" data-jump="nfl"><b>NFL board</b><span>Week 3 sides, totals, weather</span></a>`;
@@ -5367,6 +5370,20 @@ function renderHome() {
       <div class="home-pick"><b>${pick}</b><span class="subn">${(p.total_pick && p.total_pick !== "NO PLAY") ? p.total_pick : ""}</span></div>`;
     feat.onclick = () => openGame(g.id);
   } else if (feat) feat.className = "home-feature";
+  const banner = document.getElementById("homePropBanner");
+  if (banner && typeof buildPropParlays === "function") {
+    const rows = buildPropParlays();
+    const twos = rows.filter((r) => r.n === 2).slice(0, 2);
+    const threes = rows.filter((r) => r.n === 3).slice(0, 2);
+    banner.innerHTML = `<div class="home-label">Player prop parlays <a href="#parlay" data-jump="parlay" data-lg="props" style="color:var(--turf)">see all →</a></div>
+      <div class="parlay-hero">${[...twos, ...threes].map(propParlayCardHtml).join("")}</div>`;
+    banner.querySelectorAll("[data-jump]").forEach((el) => el.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.__parlayLg = "props";
+      setView("parlay");
+    }));
+    banner.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
+  }
   const hp = document.getElementById("homeParlay");
   if (hp) {
     const tile = (lg, row) => {
@@ -5514,9 +5531,9 @@ function setView(next) {
   const valS = document.getElementById("valueSection");
   if (valS) valS.style.display = next === "value" ? "" : "none";
   const parS = document.getElementById("parlaySection");
-  if (parS) parS.style.display = next === "parlay" ? "" : "none";
+  if (parS) parS.style.display = (next === "parlay" || next === "propp") ? "" : "none";
   const ppS = document.getElementById("propParlaySection");
-  if (ppS) ppS.style.display = next === "propp" ? "" : "none";
+  if (ppS) ppS.style.display = "none";
   const tdS = document.getElementById("tdSection");
   if (tdS) tdS.style.display = next === "tds" ? "" : "none";
   if (board) renderBoard();
@@ -5525,8 +5542,8 @@ function setView(next) {
   if (next === "score") renderScorecard();
   if (next === "alerts") renderAlerts();
   if (next === "value") renderValueDogs();
-  if (next === "parlay") renderParlays();
-  if (next === "propp") renderPropParlays();
+  if (next === "parlay") { if (!window.__parlayLg || window.__parlayLg === "props") window.__parlayLg = "nfl"; renderParlays(); }
+  if (next === "propp") { window.__parlayLg = "props"; renderParlays(); }
   if (next === "tds") renderTdDesk();
   if (next === "nflinj" || next === "cfbinj") {
     const lg = next === "nflinj" ? "nfl" : "cfb";
