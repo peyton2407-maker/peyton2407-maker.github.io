@@ -400,6 +400,20 @@ option { background: #12201a; color: #e9f3ec; }
   border-radius:20px;padding:16px 18px;cursor:default;
 }
 .parlay-card h3{margin:0 0 6px;font-family:Syne,sans-serif;color:var(--sun)}
+.rank-hero{display:grid;grid-template-columns:1fr;gap:12px;margin:0 0 16px}
+.rank-card{
+  background:linear-gradient(165deg,#1a2814,#101c16 55%,#182016);
+  border:1px solid var(--line);border-radius:20px;padding:16px 18px;
+}
+.rank-card .rk{font-family:Syne,sans-serif;font-size:42px;color:var(--sun);line-height:1}
+.rank-card h3{margin:6px 0 4px;font-family:Syne,sans-serif;font-size:22px}
+.rank-move.up{color:var(--turf)} .rank-move.down{color:var(--rose)}
+.rank-tiers{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.rank-tiers span{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--ink-soft)}
+.rteam{display:flex;align-items:center;gap:8px}
+.rteam img{width:28px;height:28px}
+.ratings td.why{font-size:12px;color:var(--ink-soft);max-width:280px}
+@media (min-width:800px){.rank-hero{grid-template-columns:1fr 1fr 1fr}}
 .parlay-odds{
   font-family:Syne,sans-serif;font-weight:800;font-size:clamp(36px,8vw,56px);
   letter-spacing:-.04em;color:var(--turf);line-height:1;
@@ -741,10 +755,27 @@ option { background: #12201a; color: #e9f3ec; }
     <section id="ratingsSection" style="display:none">
       <div class="controls">
         <select id="ratingLeague">
-          <option value="nfl">NFL FPI</option>
-          <option value="cfb">FBS FPI</option>
+          <option value="nfl">NFL</option>
+          <option value="cfb">College football</option>
         </select>
+        <select id="ratingView">
+          <option value="board">Our board</option>
+          <option value="top25">Top 25</option>
+          <option value="all">Everyone</option>
+        </select>
+        <select id="ratingSort">
+          <option value="gg">Best team right now</option>
+          <option value="hot">Hottest</option>
+          <option value="hurt">Most banged up</option>
+          <option value="off">Best offense</option>
+          <option value="def">Best defense</option>
+          <option value="espn">ESPN rank</option>
+        </select>
+        <input id="ratingQ" placeholder="Search a team…" />
       </div>
+      <p class="subn" id="ratingStamp" style="margin:0 0 10px">Not just ESPN. We blend rankings with Vegas, how they’ve actually played, and who’s hurt.</p>
+      <div class="stat-row" id="ratingStats"></div>
+      <div class="rank-hero" id="ratingHero"></div>
       <div class="card" id="ratingsWrap"></div>
     </section>
 
@@ -2252,6 +2283,144 @@ function ratingsList(map) {
   return Object.values(map).filter((r) => r.fpi != null).sort((a, b) => b.fpi - a.fpi)
     .map((r, i) => ({ ...r, board_rank: i + 1 }));
 }
+function letterGrade(z) {
+  if (z >= 1.6) return "A+";
+  if (z >= 1.1) return "A";
+  if (z >= 0.6) return "B+";
+  if (z >= 0.2) return "B";
+  if (z >= -0.2) return "C";
+  if (z >= -0.7) return "D";
+  return "F";
+}
+function powerRecord(teamId, league) {
+  const games = (DATA.games || []).filter((g) => g.league === league && (String(g.home.id) === String(teamId) || String(g.away.id) === String(teamId)));
+  let w = 0, l = 0, pf = 0, pa = 0, rec = "";
+  games.forEach((g) => {
+    const home = String(g.home.id) === String(teamId);
+    const me = home ? g.home : g.away;
+    if (me.record) rec = me.record;
+    if (!g.completed) return;
+    const ms = Number(me.score) || 0;
+    const os = Number((home ? g.away : g.home).score) || 0;
+    pf += ms; pa += os;
+    if (ms > os) w++; else if (ms < os) l++;
+  });
+  const next = games.filter((g) => !g.completed).sort((a, b) => String(a.date).localeCompare(String(b.date)))[0];
+  const last = games.filter((g) => g.completed).sort((a, b) => String(b.date).localeCompare(String(a.date)))[0];
+  return { w, l, pf, pa, rec: rec || (w + l ? `${w}-${l}` : "—"), next, last };
+}
+function marketImpliedRating(teamId, league, fpiOf) {
+  const vals = [];
+  const hfa0 = league === "nfl" ? 2.15 : 2.75;
+  (DATA.games || []).forEach((g) => {
+    if (g.league !== league || g.completed || !g.odds || g.odds.home_spread == null) return;
+    const home = String(g.home.id) === String(teamId);
+    const away = String(g.away.id) === String(teamId);
+    if (!home && !away) return;
+    const opp = home ? g.away : g.home;
+    const oppF = fpiOf(opp.id);
+    if (oppF == null) return;
+    const hfa = g.neutral ? 0 : hfa0;
+    const mkt = -Number(g.odds.home_spread);
+    if (home) vals.push(mkt - hfa + oppF);
+    else vals.push(oppF + hfa - mkt);
+  });
+  if (!vals.length) return null;
+  return vals.reduce((a, b) => a + b, 0) / vals.length;
+}
+function formRating(teamId, league) {
+  let s = 0, n = 0;
+  const bag = (((DATA.residuals || {})[league] || {})[teamId]) || (((DATA.residuals || {})[league] || {})[String(teamId)]);
+  if (bag && bag.margin != null) { s += Number(bag.margin); n += 2; }
+  (DATA.games || []).forEach((g) => {
+    if (g.league !== league || !g.completed) return;
+    const home = String(g.home.id) === String(teamId);
+    const away = String(g.away.id) === String(teamId);
+    if (!home && !away) return;
+    const actual = home ? Number(g.home.score) - Number(g.away.score) : Number(g.away.score) - Number(g.home.score);
+    const pred = g.proj && g.proj.blended_margin != null ? (home ? Number(g.proj.blended_margin) : -Number(g.proj.blended_margin)) : 0;
+    s += (actual - pred) * 0.4;
+    n += 1;
+  });
+  if (!n) return 0;
+  return Math.max(-7, Math.min(7, s / n));
+}
+function injuryRatingHit(teamId, league) {
+  const next = (DATA.games || []).filter((g) => g.league === league && !g.completed && (String(g.home.id) === String(teamId) || String(g.away.id) === String(teamId)))
+    .sort((a, b) => String(a.date).localeCompare(String(b.date)))[0];
+  if (!next || typeof injuryTaxFor !== "function") return 0;
+  const side = String(next.home.id) === String(teamId) ? "home" : "away";
+  return Number(injuryTaxFor(next, side) || 0) * 0.7;
+}
+function enrichPowerRankings() {
+  if (!DATA || !DATA.ratings) return;
+  ["nfl", "cfb"].forEach((league) => {
+    const rows = DATA.ratings[league] || [];
+    const fpiOf = (id) => {
+      const r = rows.find((x) => String(x.id) === String(id));
+      return r && r.fpi != null ? Number(r.fpi) : null;
+    };
+    const offs = rows.map((r) => Number(r.off || 0));
+    const defs = rows.map((r) => Number(r.def || 0));
+    const mean = (a) => a.reduce((s, x) => s + x, 0) / (a.length || 1);
+    const sd = (a, m) => Math.sqrt(a.reduce((s, x) => s + (x - m) * (x - m), 0) / (a.length || 1)) || 1;
+    const mo = mean(offs), so = sd(offs, mo), md = mean(defs), sdD = sd(defs, md);
+    rows.forEach((r) => {
+      const rec = powerRecord(r.id, league);
+      const mkt = marketImpliedRating(r.id, league, fpiOf);
+      let form = formRating(r.id, league);
+      const gp = (rec.w || 0) + (rec.l || 0);
+      form *= gp <= 0 ? 0.2 : gp === 1 ? 0.45 : gp === 2 ? 0.7 : 1;
+      const inj = injuryRatingHit(r.id, league);
+      const fpi = Number(r.fpi || 0);
+      const mktW = mkt == null ? 0 : 0.28;
+      const fpiW = mkt == null ? 0.72 : 0.50;
+      r.gg = +(fpiW * fpi + mktW * mkt + 0.22 * form - inj).toFixed(2);
+      r.form = +form.toFixed(2);
+      r.injury_hit = +inj.toFixed(2);
+      r.market_r = mkt == null ? null : +mkt.toFixed(2);
+      r.record = rec.rec;
+      r.next = rec.next;
+      r.last = rec.last;
+      r.div = league === "nfl"
+        ? (typeof nflDiv === "function" ? nflDiv(r.abbr) : "")
+        : (typeof cfbConf === "function" ? cfbConf(r.name) : "");
+      const offZ = (Number(r.off || 0) - mo) / so;
+      const defZ = (Number(r.def || 0) - md) / sdD;
+      r.off_grade = letterGrade(offZ);
+      r.def_grade = letterGrade(defZ);
+      const bits = [];
+      if (rec.rec && rec.rec !== "—") bits.push(rec.rec);
+      if (form >= 2) bits.push("playing better than the ranking");
+      else if (form <= -2) bits.push("coming in cold");
+      if (inj >= 2.5) bits.push("missing key pieces");
+      if (mkt != null && mkt - fpi >= 2) bits.push("Vegas likes them more than ESPN");
+      else if (mkt != null && fpi - mkt >= 2) bits.push("Vegas is lower than ESPN");
+      if (rec.next) bits.push("next: " + (String(rec.next.home.id) === String(r.id) ? "vs " + rec.next.away.abbr : "@ " + rec.next.home.abbr));
+      r.why = bits.join(" · ") || "ESPN ranking with no extra shift yet";
+    });
+    rows.sort((a, b) => b.gg - a.gg);
+    rows.forEach((r, i) => {
+      r.gg_rank = i + 1;
+      r.move = (Number(r.fpi_rank) || i + 1) - (i + 1);
+    });
+  });
+}
+function powerTier(r, league) {
+  const x = r.gg;
+  if (league === "nfl") {
+    if (x >= 5.5) return "Title tier";
+    if (x >= 2.5) return "Contender";
+    if (x >= 0) return "In the mix";
+    if (x >= -3) return "On the bubble";
+    return "Rebuilding";
+  }
+  if (x >= 20) return "Playoff lock";
+  if (x >= 12) return "New Year's 6";
+  if (x >= 6) return "Bowl favorite";
+  if (x >= 0) return "Bubble";
+  return "Looking up";
+}
 
 function statVal(cats, cat, name) {
   const c = (cats || []).find((x) => x.name === cat);
@@ -2420,6 +2589,7 @@ async function liveRefresh() {
   DATA.live = true;
   DATA.games = games;
   DATA.ratings = { nfl: ratingsList(nflR), cfb: ratingsList(cfbR) };
+  if (typeof enrichPowerRankings === "function") enrichPowerRankings();
   DATA.news = DATA.news || { nfl: [], cfb: [] };
   DATA.notes = DATA.notes || {};
   DATA.app = "Double Gs";
@@ -3786,26 +3956,71 @@ function renderBoard() {
 }
 
 function renderRatings() {
-  const league = $("#ratingLeague").value;
-  const rows = DATA.ratings[league] || [];
+  if (typeof enrichPowerRankings === "function") enrichPowerRankings();
+  const league = ($("#ratingLeague") && $("#ratingLeague").value) || "nfl";
+  const viewMode = ($("#ratingView") && $("#ratingView").value) || "board";
+  const sort = ($("#ratingSort") && $("#ratingSort").value) || "gg";
+  const q = (($("#ratingQ") && $("#ratingQ").value) || "").toLowerCase();
+  let rows = ((DATA.ratings || {})[league] || []).slice();
+  if (viewMode === "top25" || (viewMode === "board" && league === "cfb")) {
+    rows = rows.slice().sort((a, b) => (a.gg_rank || 99) - (b.gg_rank || 99)).slice(0, 25);
+  }
+  if (q) rows = rows.filter((r) => `${r.name} ${r.abbr} ${r.div || ""} ${r.why || ""}`.toLowerCase().includes(q));
+  rows.sort((a, b) => {
+    if (sort === "hot") return (b.form || 0) - (a.form || 0);
+    if (sort === "hurt") return (b.injury_hit || 0) - (a.injury_hit || 0);
+    if (sort === "off") return Number(b.off || 0) - Number(a.off || 0);
+    if (sort === "def") return Number(b.def || 0) - Number(a.def || 0);
+    if (sort === "espn") return Number(a.fpi_rank || 99) - Number(b.fpi_rank || 99);
+    return (a.gg_rank || 99) - (b.gg_rank || 99);
+  });
+  const stamp = document.getElementById("ratingStamp");
+  if (stamp) stamp.textContent = "Our rank = ESPN ranking + Vegas + how they’ve actually played + who’s hurt. Tap a team to open their next game.";
+  const stats = document.getElementById("ratingStats");
+  const top = rows[0];
+  const riser = rows.slice().sort((a, b) => (b.move || 0) - (a.move || 0))[0];
+  if (stats) stats.innerHTML = `
+    <div class="stat"><b>${rows.length}</b><span>teams on this board</span></div>
+    <div class="stat"><b>${top ? top.abbr : "—"}</b><span>No. 1 right now</span></div>
+    <div class="stat"><b>${riser && riser.move > 0 ? riser.abbr + " +" + riser.move : "—"}</b><span>biggest riser vs ESPN</span></div>
+    <div class="stat"><b>${rows.filter((r) => (r.injury_hit || 0) >= 3.2).length}</b><span>banged-up this week</span></div>`;
+  const hero = document.getElementById("ratingHero");
+  if (hero) {
+    hero.innerHTML = rows.slice(0, 3).map((r) => {
+      const mv = r.move > 0 ? `<span class="rank-move up">↑${r.move} vs ESPN</span>` : r.move < 0 ? `<span class="rank-move down">↓${Math.abs(r.move)} vs ESPN</span>` : `<span class="subn">same as ESPN</span>`;
+      return `<article class="rank-card" data-id="${r.next ? r.next.id : ""}">
+        <div class="rk">#${r.gg_rank}</div>
+        <div class="rteam"><img src="${r.logo || ""}" alt=""><h3>${r.name}</h3></div>
+        <div class="subn">${r.record || ""} · ${powerTier(r, league)} · rating ${r.gg}</div>
+        <div>${mv}</div>
+        <p class="subn" style="margin:8px 0 0">${r.why}</p>
+      </article>`;
+    }).join("");
+    hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => { if (el.dataset.id) openGame(el.dataset.id); }));
+  }
   $("#ratingsWrap").innerHTML = `
     <table class="ratings">
       <thead><tr>
-        <th>#</th><th>Team</th><th>FPI</th><th>Off</th><th>Def</th><th>Proj W</th><th>Playoff</th>
+        <th>#</th><th>Team</th><th>Our rating</th><th>ESPN</th><th>Record</th><th>Off</th><th>Def</th><th>Form</th><th>Why</th>
       </tr></thead>
       <tbody>
-        ${rows.map((r) => `
-          <tr>
-            <td>${r.board_rank}</td>
-            <td><div class="rteam"><img src="${r.logo}" alt=""><span>${r.name}</span></div></td>
-            <td>${fmt.n(r.fpi, 2)}</td>
-            <td>${fmt.n(r.off, 2)}</td>
-            <td>${fmt.n(r.def, 2)}</td>
-            <td>${fmt.n(r.proj_wins, 1)}</td>
-            <td>${r.playoff_pct == null ? "—" : fmt.n(r.playoff_pct, 1) + (league === "cfb" ? "%" : "")}</td>
-          </tr>`).join("")}
+        ${rows.map((r) => {
+          const mv = r.move > 0 ? ` <span class="rank-move up">↑${r.move}</span>` : r.move < 0 ? ` <span class="rank-move down">↓${Math.abs(r.move)}</span>` : "";
+          return `<tr data-id="${r.next ? r.next.id : ""}">
+            <td><b>${r.gg_rank}</b></td>
+            <td><div class="rteam"><img src="${r.logo || ""}" alt=""><span>${r.name}${r.div ? `<div class="subn">${r.div}</div>` : ""}</span></div></td>
+            <td><b>${fmt.n(r.gg, 1)}</b></td>
+            <td>#${fmt.n(r.fpi_rank, 0)}${mv}</td>
+            <td>${r.record || "—"}</td>
+            <td>${r.off_grade || "—"}</td>
+            <td>${r.def_grade || "—"}</td>
+            <td>${fmt.signed(r.form)}</td>
+            <td class="why">${r.why}</td>
+          </tr>`;
+        }).join("")}
       </tbody>
     </table>`;
+  $$("#ratingsWrap tr[data-id]").forEach((el) => el.addEventListener("click", () => { if (el.dataset.id) openGame(el.dataset.id); }));
 }
 
 function renderModel() {
@@ -4443,6 +4658,7 @@ async function boot() {
     if (!DATA) throw lastErr || new Error("snapshot.json not found");
   }
   $("#stamp").textContent = `Snapshot ${fmt.when(DATA.generated_at)}`;
+  try { if (typeof enrichPowerRankings === "function") enrichPowerRankings(); } catch (e) {}
   $$(".tab").forEach((t) => t.addEventListener("click", () => setView(t.dataset.view)));
   document.addEventListener("click", (e) => {
     const tab = e.target.closest(".tab");
@@ -4459,6 +4675,8 @@ async function boot() {
   $("#openOnly").addEventListener("change", renderBoard);
   $("#sortKey").addEventListener("change", () => { sortKey = $("#sortKey").value; renderBoard(); });
   $("#ratingLeague").addEventListener("change", renderRatings);
+  ["ratingView","ratingSort"].forEach((id) => document.getElementById(id)?.addEventListener("change", renderRatings));
+  document.getElementById("ratingQ")?.addEventListener("input", renderRatings);
   ["propDay","propPos","propSort"].forEach((id) => {
     const el = document.getElementById(id);
     if (el) el.addEventListener("change", renderProps);
@@ -4494,6 +4712,7 @@ async function boot() {
   try { loadResiduals(); } catch (e) {}
   try { if (typeof repriceCfbBoard === "function") repriceCfbBoard(); } catch (e) { console.warn(e); }
   try { seedInjuriesFromSnap(); } catch (e) {}
+  try { if (typeof enrichPowerRankings === "function") enrichPowerRankings(); } catch (e) {}
   try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) { console.warn(e); }
   if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games || []);
   try {
