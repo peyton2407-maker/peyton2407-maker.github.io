@@ -1205,31 +1205,103 @@ function applyWeatherToGame(g) {
   g.weather_impact = impact;
   if (!g.proj) return g;
   g.proj.weather_adj_total = impact.adj;
-  if (g.proj.hashmark_total != null && !g._wxApplied) {
-    const tot = Number(g.proj.hashmark_total) + impact.adj;
-    g.proj.hashmark_total = +tot.toFixed(1);
-    if (g.proj.blended_margin != null) {
-      g.proj.home_points = +Math.max(3, (tot + Number(g.proj.blended_margin)) / 2).toFixed(1);
-      g.proj.away_points = +Math.max(3, (tot - Number(g.proj.blended_margin)) / 2).toFixed(1);
-    }
-    if (g.box) {
-      g.box.total_points = g.proj.hashmark_total;
-      g.box.home_points = g.proj.home_points;
-      g.box.away_points = g.proj.away_points;
-      if (g.box.home_rush_yds != null) g.box.home_rush_yds = +(g.box.home_rush_yds * impact.rush_mult).toFixed(1);
-      if (g.box.away_rush_yds != null) g.box.away_rush_yds = +(g.box.away_rush_yds * impact.rush_mult).toFixed(1);
-      if (g.box.home_rec_yds != null) g.box.home_rec_yds = +(g.box.home_rec_yds * impact.rec_mult).toFixed(1);
-      if (g.box.away_rec_yds != null) g.box.away_rec_yds = +(g.box.away_rec_yds * impact.rec_mult).toFixed(1);
-    }
-    if (g.odds?.total != null) {
-      g.proj.edge_total = +(g.proj.hashmark_total - Number(g.odds.total)).toFixed(2);
-      if (Math.abs(g.proj.edge_total) < 0.8) g.proj.total_pick = "NO PLAY";
-      else g.proj.total_pick = g.proj.edge_total > 0 ? `OVER ${g.odds.total}` : `UNDER ${g.odds.total}`;
-    }
-    g._wxApplied = true;
+  if (g.box && !g._wxYards) {
+    g._wxYards = true;
+    if (g.box.home_rush_yds != null) g.box.home_rush_yds = +(g.box.home_rush_yds * impact.rush_mult).toFixed(1);
+    if (g.box.away_rush_yds != null) g.box.away_rush_yds = +(g.box.away_rush_yds * impact.rush_mult).toFixed(1);
+    if (g.box.home_rec_yds != null) g.box.home_rec_yds = +(g.box.home_rec_yds * impact.rec_mult).toFixed(1);
+    if (g.box.away_rec_yds != null) g.box.away_rec_yds = +(g.box.away_rec_yds * impact.rec_mult).toFixed(1);
   }
   return g;
 }
+function weeklyShift(g) {
+  const ht = injuryTaxFor(g, "home");
+  const at = injuryTaxFor(g, "away");
+  const rh = restInfo(g, "home");
+  const ra = restInfo(g, "away");
+  const rth = restTaxPts(rh, g.league);
+  const rta = restTaxPts(ra, g.league);
+  const tr = travelInfo(g);
+  const ref = typeof refereeInfo === "function" ? refereeInfo(g) : { home: 0, tot: 0 };
+  const mRaw = -ht + at - rth + rta - (tr.homeTax || 0) + (tr.awayTax || 0) + (ref.home || 0);
+  const tRaw = -0.24 * (ht + at) - 0.32 * (Math.max(0, rth) + Math.max(0, rta)) + (tr.tot || 0) + (ref.tot || 0);
+  const capM = g.league === "nfl" ? 6.5 : 8;
+  const capT = g.league === "nfl" ? 4.5 : 5.5;
+  return { m: Math.max(-capM, Math.min(capM, mRaw)), t: Math.max(-capT, Math.min(capT, tRaw)), ht, at, tr, ref };
+}
+function writeSettledLine(g, margin, total) {
+  const p = g.proj;
+  if (margin == null || total == null || !Number.isFinite(margin) || !Number.isFinite(total)) return g;
+  p.blended_margin = +margin.toFixed(2);
+  p.hashmark_home_spread = +(-margin).toFixed(1);
+  p.hashmark_total = +total.toFixed(1);
+  p.home_points = +Math.max(3, (total + margin) / 2).toFixed(1);
+  p.away_points = +Math.max(3, (total - margin) / 2).toFixed(1);
+  const sigma = g.league === "nfl" ? LIVE.NFL_SIGMA : (typeof cfbSigma === "function" ? cfbSigma(margin) : LIVE.CFB_SIGMA);
+  if (typeof normCdf === "function") {
+    p.win_prob_home = +normCdf(margin / sigma).toFixed(4);
+    p.win_prob_away = +(1 - p.win_prob_home).toFixed(4);
+  }
+  if (g.league === "cfb") {
+    p.cfb_sigma = sigma;
+    const band = sigma * 0.5;
+    p.score_low_home = Math.max(0, Math.round(p.home_points - band));
+    p.score_high_home = Math.round(p.home_points + band);
+    p.score_low_away = Math.max(0, Math.round(p.away_points - band));
+    p.score_high_away = Math.round(p.away_points + band);
+  }
+  if (g.odds && g.odds.home_spread != null) p.edge_spread = +(margin - (-Number(g.odds.home_spread))).toFixed(2);
+  if (g.odds && g.odds.total != null) p.edge_total = +(Number(p.hashmark_total) - Number(g.odds.total)).toFixed(2);
+  if (g.box) {
+    g.box.home_points = p.home_points;
+    g.box.away_points = p.away_points;
+    g.box.total_points = p.hashmark_total;
+  }
+  return g;
+}
+function settleNfl(g) {
+  if (!g || g.league !== "nfl" || !g.proj || g.completed) return g;
+  const p = g.proj;
+  const hfa = g.neutral ? 0 : LIVE.NFL_HFA;
+  const model = (p.home_fpi != null && p.away_fpi != null) ? Number(p.home_fpi) - Number(p.away_fpi) + hfa : null;
+  const mkt = g.odds && g.odds.home_spread != null ? -Number(g.odds.home_spread) : null;
+  const mw = LIVE.MARKET_WEIGHT_NFL;
+  let margin = null;
+  if (model != null && mkt != null) margin = mw * mkt + (1 - mw) * model;
+  else margin = model != null ? model : mkt;
+  let total = p.model_total != null ? Number(p.model_total) : null;
+  const mktT = g.odds && g.odds.total != null ? Number(g.odds.total) : null;
+  if (total != null && mktT != null) total = mw * mktT + (1 - mw) * total;
+  else total = total != null ? total : mktT;
+  const learnN = p.learned ? (Number(p.learned.home_n) || 0) + (Number(p.learned.away_n) || 0) : 0;
+  const learnCap = learnN <= 2 ? 1.25 : learnN <= 6 ? 2.25 : 4;
+  const learnM = Math.max(-learnCap, Math.min(learnCap, p.learned ? Number(p.learned.margin_shift) || 0 : 0));
+  const learnT = Math.max(-1.5, Math.min(1.5, p.learned ? Number(p.learned.total_shift) || 0 : 0));
+  const wx = Number(p.weather_adj_total) || 0;
+  if (margin == null || total == null) return g;
+  writeSettledLine(g, margin + learnM, total + learnT + wx);
+  const edge = p.edge_spread;
+  if (edge != null && g.odds && g.odds.home_spread != null) {
+    const sp = Number(g.odds.home_spread);
+    if (Math.abs(edge) < 1.8) { p.pick = "NO PLAY"; p.pick_line = null; }
+    else if (edge > 0) { p.pick = g.home.abbr; p.pick_line = g.home.abbr + " " + (sp >= 0 ? "+" : "") + sp.toFixed(1); }
+    else { p.pick = g.away.abbr; p.pick_line = g.away.abbr + " " + ((-sp) >= 0 ? "+" : "") + (-sp).toFixed(1); }
+  }
+  if (p.edge_total != null && g.odds && g.odds.total != null) {
+    if (Math.abs(p.edge_total) < 1.6) p.total_pick = "NO PLAY";
+    else p.total_pick = p.edge_total > 0 ? "OVER " + g.odds.total : "UNDER " + g.odds.total;
+  }
+  p.settle_note = "Same line for everyone: 86% Vegas and 14% team rating plus home field. Finished games can nudge it, but one game cannot move it more than 1.25 points. Injuries are already in the Vegas number, so they are not added again. Weather can still move the total.";
+  return g;
+}
+function settleBoard() {
+  (DATA.games || []).forEach((g) => {
+    if (!g || !g.proj || g.completed) return;
+    if (g.league === "cfb" && typeof cfbLockPick === "function") cfbLockPick(g);
+    else settleNfl(g);
+  });
+}
+window.settleBoard = settleBoard;
 
 async function fetchOpenMeteo(lat, lon, iso) {
   const kick = iso ? new Date(iso) : new Date();
@@ -1877,8 +1949,8 @@ function applySituationalToGame(g) {
   const ref = refereeInfo(g);
   const epa = typeof epaInfo === "function" ? epaInfo(g) : { m: 0, t: 0, notes: [] };
   const stm = typeof steamInfo === "function" ? steamInfo(g) : { m: 0, t: 0, notes: [] };
-  const mAdj = -ht + at - rth + rta - (tr.homeTax || 0) + (tr.awayTax || 0) + (ref.home || 0) + (epa.m || 0) + (stm.m || 0);
-  const tAdj = -0.24 * (ht + at) - 0.32 * (Math.max(0, rth) + Math.max(0, rta)) + (tr.tot || 0) + (ref.tot || 0) + (epa.t || 0) + (stm.t || 0);
+  const mAdj = -ht + at - rth + rta - (tr.homeTax || 0) + (tr.awayTax || 0) + (ref.home || 0);
+  const tAdj = -0.24 * (ht + at) - 0.32 * (Math.max(0, rth) + Math.max(0, rta)) + (tr.tot || 0) + (ref.tot || 0);
   const capM = g.league === "nfl" ? 6.5 : 8;
   const capT = g.league === "nfl" ? 4.5 : 5.5;
   const m = Math.max(-capM, Math.min(capM, mAdj));
@@ -2404,11 +2476,13 @@ function cfbLockPick(g) {
   const qbAdd = qb.pts ? (qb.side === "home" ? -qb.pts : qb.pts) : 0;
   const learnedShift = p.learned && Number.isFinite(Number(p.learned.margin_shift)) ? Number(p.learned.margin_shift) : 0;
   const learnedTotal = p.learned && Number.isFinite(Number(p.learned.total_shift)) ? Number(p.learned.total_shift) : 0;
+  const week = typeof weeklyShift === "function" ? weeklyShift(g) : { m: 0, t: 0 };
+  const wx = Number(p.weather_adj_total) || 0;
   let margin = p.rating_blend != null ? Number(p.rating_blend) : (p.blended_margin != null ? Number(p.blended_margin) : null);
-  if (margin != null) margin += qbAdd + learnedShift;
+  if (margin != null) margin += qbAdd + learnedShift + week.m;
   p._qbApplied = qbAdd;
   let total = p.unit_total != null ? Number(p.unit_total) : (p.hashmark_total != null ? Number(p.hashmark_total) : null);
-  if (total != null) total += learnedTotal;
+  if (total != null) total += learnedTotal + week.t + wx;
   if (margin != null && total != null) {
     p.blended_margin = +margin.toFixed(2);
     p.hashmark_home_spread = +(-margin).toFixed(1);
@@ -2481,7 +2555,7 @@ function cfbLockPick(g) {
     qb.line,
     cfbCoordinator(g),
     p.learn_note || "No conference correction yet.",
-    `Recent scoring bumps and line moves stay in the notes. They do not override the team rating.`,
+    `Our line is the same for everyone: team rating, home field, 44% of Vegas, the quarterback, other injuries, rest, travel, weather on the total, and finished games of this type. Recent scoring and line-move notes are not added a second time.`,
     `${miles} ${(travel.notes || []).join(" ")}`.trim(),
     sigma ? `This is not a tight score. Likely range is about ${p.score_low_away}–${p.score_high_away} for ${g.away.abbr} and ${p.score_low_home}–${p.score_high_home} for ${g.home.abbr}. The average is ${p.away_points}–${p.home_points}.` : ""
   ].filter(Boolean);
@@ -2615,13 +2689,6 @@ function repriceCfbGame(g) {
     p._gradeSnap = { offH: fresh.home_off, defH: fresh.home_def, offA: fresh.away_off, defA: fresh.away_def, hfa: fresh.hfa };
   }
   p.weather_adj_total = wx;
-  if (wx && p.hashmark_total != null) {
-    p.hashmark_total = +(Number(p.hashmark_total) + wx).toFixed(1);
-    if (p.blended_margin != null) {
-      p.home_points = +Math.max(3, (Number(p.hashmark_total) + Number(p.blended_margin)) / 2).toFixed(1);
-      p.away_points = +Math.max(3, (Number(p.hashmark_total) - Number(p.blended_margin)) / 2).toFixed(1);
-    }
-  }
   p._cfbV2 = true;
   delete p._baseMargin; delete p._baseTotal; delete p._preLearnMargin; delete p._preLearnTotal;
   if (typeof cfbLockPick === "function") cfbLockPick(g);
@@ -4208,21 +4275,6 @@ async function fetchInjuries(force){
   const pack = seedInjuriesFromSnap();
   const cfbThin = !((pack.cfb || []).length >= 24);
   if (!force && pack.day === today && pack.fetched && Date.now() - pack.fetched < 20 * 60 * 1000 && (pack.nfl || []).length && !cfbThin) return pack;
-  if (!force) {
-    try {
-      const c = JSON.parse(localStorage.getItem("doublegs-inj-cache") || "null");
-      if (c && c.day === today && (c.nfl || []).length && (c.cfb || []).length >= 24) {
-        pack.nfl = c.nfl;
-        pack.cfb = c.cfb || pack.cfb || [];
-        pack.fetched = c.fetched || Date.now();
-        pack.day = c.day;
-        window.__INJ = pack;
-        if (typeof DATA === "object" && DATA) DATA.injuries = pack;
-        attachInjuriesToGames();
-        return pack;
-      }
-    } catch (e) {}
-  }
   try {
     const [nfl, cfb, newsC] = await Promise.all([
       getJSON(injEndpoint("/apis/site/v2/sports/football/nfl/injuries")),
@@ -5404,6 +5456,7 @@ async function pullLiveScores() {
     try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) {}
     const learned = typeof rebuildSharedLearning === "function" ? rebuildSharedLearning(DATA.games || []) : 0;
     (DATA.games || []).forEach((g) => applyLearningToGame(g));
+    if (typeof settleBoard === "function") settleBoard();
     if (newFinals) {
       if (typeof repriceCfbBoard === "function") { /* residuals already applied */ }
       if (DATA.notes) {
@@ -6031,6 +6084,7 @@ async function boot() {
     const apply = window.applyLearningToGame || applyLearningToGame;
     const n = typeof learn === "function" ? learn(DATA.games || []) : 0;
     if (typeof apply === "function") (DATA.games || []).forEach(apply);
+    if (typeof settleBoard === "function") settleBoard();
     if (DATA.notes && n) DATA.notes.learning = `Same record for everyone. ${n} finished games are in the next line.`;
   } catch (e) {}
   try { if (typeof syncDesk === "function") syncDesk(); } catch (e) {}
@@ -6042,6 +6096,7 @@ async function boot() {
   fetchInjuries(false).then(()=>{
     try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) {}
     (DATA.games || []).forEach((g) => { if (typeof applyLearningToGame === "function") applyLearningToGame(g); });
+    if (typeof settleBoard === "function") settleBoard();
     if (typeof renderBoard==="function") renderBoard();
     if (typeof syncDesk === "function") { syncDesk(); if (view === "home") renderHome(); }
   });
@@ -6057,6 +6112,7 @@ async function boot() {
     try {
       setStamp("Loading stadium forecasts…", true);
       await attachWeather(DATA.games || []);
+      if (typeof settleBoard === "function") settleBoard();
       if (typeof renderBoard === "function") renderBoard();
       setStamp(`Weather ${new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`, true);
     } catch (err) {
