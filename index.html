@@ -507,7 +507,7 @@ option { background: #12201a; color: #e9f3ec; }
 }
 .parlay-legs b{color:var(--ink)}
 @media (min-width:760px){
-  .parlay-hero{grid-template-columns:1.15fr 1fr 1fr}
+  .parlay-hero{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
 }
 
 .td-hero{display:grid;grid-template-columns:1fr;gap:12px;margin:0 0 16px}
@@ -3383,51 +3383,81 @@ function propParlayEV(bag) {
   const ev = fair > 0 ? p / fair - 1 : 0;
   return { p, odds, ev, label: odds > 0 ? "+" + odds : String(odds) };
 }
+function uniquePropCombos(legs, n, limit) {
+  const out = [];
+  const seen = new Set();
+  for (let i = 0; i < legs.length; i++) {
+    const bag = [];
+    const usedP = new Set(), usedG = new Set();
+    const order = legs.slice(i).concat(legs.slice(0, i));
+    for (const l of order) {
+      if (usedP.has(l.player) || usedG.has(l.game_id)) continue;
+      usedP.add(l.player);
+      usedG.add(l.game_id);
+      bag.push(l);
+      if (bag.length >= n) break;
+    }
+    if (bag.length < n) continue;
+    const k = bag.map((x) => x.key).sort().join("|");
+    if (seen.has(k)) continue;
+    seen.add(k);
+    const m = propParlayEV(bag);
+    if (!(m.odds > 0)) continue;
+    if (n === 2 && m.p < 0.28) continue;
+    if (n === 3 && m.p < 0.16) continue;
+    if (m.ev < 0.04) continue;
+    out.push({ title: n + "-leg #" + (out.length + 1), n, legs: bag, p: m.p, odds: m.odds, label: m.label, ev: m.ev, money: true });
+    if (out.length >= limit) break;
+  }
+  return out;
+}
 function buildPropParlays() {
   const legs = collectPropParlayLegs();
   const cash = legs.filter((l) => l.hit >= 0.56);
   const twoPool = cash.filter((l) => l.hit <= 0.67);
-  const pack = (title, bag, need) => {
-    if (!bag || bag.length < need) return null;
+  const same = (function () {
+    const bag = pickPropBag(twoPool, 2, true);
+    if (!bag || bag.length < 2) return [];
     const m = propParlayEV(bag);
-    if (!(m.odds > 0)) return null;
-    if (need === 2 && m.p < 0.28) return null;
-    if (need === 3 && m.p < 0.16) return null;
-    if (m.ev < 0.04) return null;
-    return { title, legs: bag, p: m.p, odds: m.odds, label: m.label, ev: m.ev, money: true };
-  };
-  const rows = [
-    pack("Safest 2-leg", pickPropBag(twoPool, 2, false), 2),
-    pack("Plus-money 3-leg", pickPropBag(cash, 3, false), 3),
-    pack("Same-game 2-leg", pickPropBag(twoPool, 2, true), 2)
-  ].filter(Boolean);
+    if (!(m.odds > 0) || m.p < 0.28) return [];
+    return [{ title: "Same-game 2-leg", n: 2, legs: bag, p: m.p, odds: m.odds, label: m.label, ev: m.ev, money: true }];
+  })();
+  const twos = uniquePropCombos(twoPool, 2, 5);
+  const threes = uniquePropCombos(cash, 3, 4);
   const seen = new Set();
-  return rows.filter((r) => {
+  return [...twos, ...threes, ...same].filter((r) => {
     const k = r.legs.map((l) => l.key).sort().join("|");
     if (seen.has(k)) return false;
     seen.add(k);
     return true;
   });
 }
+function propParlayCardHtml(r) {
+  return `<article class="parlay-card">
+    <div class="td-mkt">${r.title}</div>
+    <div class="parlay-odds">${r.label}</div>
+    <div class="subn">${Math.round(r.p * 100)}% chance it cashes · plus-money if it does</div>
+    <ul class="parlay-legs">${r.legs.map((l) => `<li data-id="${l.game_id}"><b>${l.label}</b><div class="subn">${l.detail} · ${Math.round(l.hit * 100)}% · ${l.odds > 0 ? "+" : ""}${l.odds}</div></li>`).join("")}</ul>
+  </article>`;
+}
 function renderPropParlays() {
   const size = (document.getElementById("propParlaySize") || {}).value || "mix";
   let rows = buildPropParlays();
-  if (size === "2") rows = rows.filter((r) => r.legs.length === 2);
-  if (size === "3") rows = rows.filter((r) => r.legs.length === 3);
+  if (size === "2") rows = rows.filter((r) => r.n === 2);
+  if (size === "3") rows = rows.filter((r) => r.n === 3);
   const stamp = document.getElementById("propParlayStamp");
-  if (stamp) stamp.textContent = "Only player props. Each ticket is plus-money and we still give it a real chance to hit. Not betting advice.";
+  if (stamp) stamp.textContent = "2-leg and 3-leg player props only. Plus-money tickets with a real chance to hit. Not betting advice.";
   const hero = document.getElementById("propParlayHero");
   if (!hero) return;
+  const twos = rows.filter((r) => r.n === 2);
+  const threes = rows.filter((r) => r.n === 3);
   if (!rows.length) {
-    hero.innerHTML = `<div class="empty">No prop parlays cleared the bar. We only show plus-money tickets with a real hit chance.</div>`;
+    hero.innerHTML = `<div class="empty">No prop parlays cleared the bar.</div>`;
     return;
   }
-  hero.innerHTML = rows.map((r) => `<article class="parlay-card">
-    <div class="td-mkt">${r.title} · +EV</div>
-    <div class="parlay-odds">${r.label}</div>
-    <div class="subn">${Math.round(r.p * 100)}% chance it cashes · about ${Math.round(r.ev * 100)}% extra value vs a typical price</div>
-    <ul class="parlay-legs">${r.legs.map((l) => `<li data-id="${l.game_id}"><b>${l.label}</b><div class="subn">${l.detail} · ${Math.round(l.hit * 100)}% · ${l.odds > 0 ? "+" : ""}${l.odds} · ${l.source || ""}</div></li>`).join("")}</ul>
-  </article>`).join("");
+  hero.innerHTML =
+    (twos.length ? `<div class="home-label" style="grid-column:1/-1">2-leg player props</div>` + twos.map(propParlayCardHtml).join("") : "") +
+    (threes.length ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">3-leg player props</div>` + threes.map(propParlayCardHtml).join("") : "");
   hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 function renderParlays() {
@@ -3435,11 +3465,24 @@ function renderParlays() {
   $$("#parlayTabs .ptab").forEach((t) => t.classList.toggle("active", t.dataset.parlay === league));
   const stamp = document.getElementById("parlayStamp");
   if (stamp) stamp.textContent = league === "nfl"
-    ? "NFL only. 2-leg, 3-leg, and 4-leg from this week's best sides and totals."
-    : "College only. 2-leg, 3-leg, and 4-leg from this week's best sides and totals.";
+    ? "NFL game parlays first, then 2-leg and 3-leg player prop parlays under that."
+    : "College game parlays. Player prop parlays are NFL — college books don’t post enough player numbers.";
   const hero = document.getElementById("parlayHero");
   if (!hero) return;
-  hero.innerHTML = parlayHeroHtml(league) || `<div class="empty">Not enough ${league === "nfl" ? "NFL" : "college"} legs yet. Need two clean plays in the same league.</div>`;
+  const games = parlayHeroHtml(league) || `<div class="empty">Not enough ${league === "nfl" ? "NFL" : "college"} game legs yet.</div>`;
+  let props = "";
+  if (league === "nfl") {
+    const rows = typeof buildPropParlays === "function" ? buildPropParlays() : [];
+    const twos = rows.filter((r) => r.n === 2);
+    const threes = rows.filter((r) => r.n === 3);
+    if (twos.length || threes.length) {
+      props = `<div class="home-label" style="grid-column:1/-1;margin-top:6px">2-leg player prop parlays</div>` +
+        twos.map(propParlayCardHtml).join("") +
+        `<div class="home-label" style="grid-column:1/-1;margin-top:10px">3-leg player prop parlays</div>` +
+        threes.map(propParlayCardHtml).join("");
+    }
+  }
+  hero.innerHTML = games + props;
   hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 function valueTileHtml(r) {
