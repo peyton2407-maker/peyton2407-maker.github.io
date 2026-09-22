@@ -1317,6 +1317,67 @@ function residualFor(league, teamId) {
   return r[String(teamId)] || { n: 0, margin: 0, total: 0, off: 0, def: 0 };
 }
 
+function freezePublishedLines(games) {
+  (games || []).forEach((g) => {
+    if (!g || g._pub) return;
+    const p = g.proj || {};
+    g._pub = {
+      margin: p.blended_margin != null ? Number(p.blended_margin) : (p.market_margin != null ? Number(p.market_margin) : null),
+      total: p.hashmark_total != null ? Number(p.hashmark_total) : (g.odds && g.odds.total != null ? Number(g.odds.total) : null),
+      snap: p.home_off != null ? { offH: p.home_off, defH: p.home_def, offA: p.away_off, defA: p.away_def, hfa: p.hfa } : null
+    };
+  });
+}
+function previewLearnShift(g) {
+  const res = getResiduals();
+  const lg = g.league === "nfl" ? "nfl" : "cfb";
+  if (lg === "cfb") {
+    const conf = (typeof cfbConf === "function" ? cfbConf(g.home && g.home.name) : "") || "Other";
+    const sp = g.odds && g.odds.home_spread != null ? Math.abs(Number(g.odds.home_spread)) : Math.abs(Number(g.proj && g.proj.market_margin) || 0);
+    const bucket = sp >= 17 ? "blowout" : sp >= 7 ? "big" : "close";
+    const brow = (res.cfb_buckets || {})[conf + "|" + bucket];
+    if (brow && brow.n >= 6) {
+      return { m: Math.max(-3, Math.min(3, brow.margin * 0.5)), t: Math.max(-3, Math.min(3, brow.total * 0.4)) };
+    }
+    return { m: 0, t: 0 };
+  }
+  const hr = (res.nfl || {})[String(g.home.id)] || { n: 0, margin: 0, total: 0 };
+  const ar = (res.nfl || {})[String(g.away.id)] || { n: 0, margin: 0, total: 0 };
+  const nGames = (hr.n || 0) + (ar.n || 0);
+  const confw = nGames <= 0 ? 0 : nGames === 1 ? 0.62 : nGames <= 3 ? 0.82 : 1;
+  return {
+    m: Math.max(-4.5, Math.min(4.5, 0.55 * confw * ((hr.margin || 0) - (ar.margin || 0)))),
+    t: Math.max(-4, Math.min(4, 0.35 * confw * (((hr.total || 0) + (ar.total || 0)) / 2)))
+  };
+}
+function rebuildSharedLearning(games) {
+  freezePublishedLines(games);
+  const res = getResiduals();
+  res.nfl = {};
+  res.cfb = {};
+  res.cfb_buckets = {};
+  res.cfb_scale = { n: 0, off: 0.34, def: 0.30 };
+  res.games_learned = {};
+  res.history = [];
+  const ordered = (games || []).filter((g) => g && g.completed && g.home && g.away && Number.isFinite(Number(g.home.score)) && Number.isFinite(Number(g.away.score)))
+    .slice()
+    .sort((a, b) => String(a.date).localeCompare(String(b.date)) || String(a.id).localeCompare(String(b.id)));
+  let n = 0;
+  ordered.forEach((g) => {
+    const pub = g._pub || {};
+    const p = g.proj || (g.proj = {});
+    const shift = previewLearnShift(g);
+    if (pub.margin != null) p._preLearnMargin = +(Number(pub.margin) + shift.m).toFixed(2);
+    if (pub.total != null) p._preLearnTotal = +(Number(pub.total) + shift.t).toFixed(2);
+    if (pub.snap) p._gradeSnap = pub.snap;
+    n += learnFromFinals([g]);
+  });
+  if (typeof DATA !== "undefined" && DATA && DATA.notes) DATA.notes.learning = `Same record for everyone. ${n} finished games are in the next line.`;
+  return n;
+}
+window.rebuildSharedLearning = rebuildSharedLearning;
+window.freezePublishedLines = freezePublishedLines;
+
 function learnFromFinals(games) {
   const res = getResiduals();
   let learned = 0;
@@ -5341,9 +5402,9 @@ async function pullLiveScores() {
     });
     if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games);
     try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) {}
-    const learned = typeof learnFromFinals === "function" ? learnFromFinals(DATA.games || []) : 0;
+    const learned = typeof rebuildSharedLearning === "function" ? rebuildSharedLearning(DATA.games || []) : 0;
     (DATA.games || []).forEach((g) => applyLearningToGame(g));
-    if (learned || newFinals) {
+    if (newFinals) {
       if (typeof repriceCfbBoard === "function") { /* residuals already applied */ }
       if (DATA.notes) {
         const n = Object.values((getResiduals().games_learned) || {}).filter((x) => x.league === "cfb").length;
@@ -5354,7 +5415,7 @@ async function pullLiveScores() {
     if (view === "cfbpicks" && typeof renderCfbPicks === "function") renderCfbPicks();
     const liveN = (DATA.games || []).filter((g) => typeof isLiveGame === "function" && isLiveGame(g)).length;
     if (liveN) setStamp(liveN + " live · rest-of-game on", true);
-    else if (learned) setStamp("Learned " + learned + " new finals", true);
+    else if (newFinals) setStamp("New finals are in. The line is the same for everyone.", true);
     if (typeof syncDesk === "function") {
       syncDesk();
       if (view === "home") renderHome();
@@ -5846,6 +5907,7 @@ async function boot() {
     if (!DATA) throw lastErr || new Error("snapshot.json not found");
   }
   $("#stamp").textContent = `Snapshot ${fmt.when(DATA.generated_at)}`;
+  try { if (typeof freezePublishedLines === "function") freezePublishedLines(DATA.games || []); } catch (e) {}
   try { if (typeof enrichPowerRankings === "function") enrichPowerRankings(); } catch (e) {}
   $$(".tab").forEach((t) => t.addEventListener("click", (e) => {
     e.preventDefault();
@@ -5956,7 +6018,6 @@ async function boot() {
   });
   $("#overlay").addEventListener("click", (e) => { if (e.target.id === "overlay") closeModal(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
-  try { loadResiduals(); } catch (e) {}
   try { if (typeof repriceCfbBoard === "function") repriceCfbBoard(); } catch (e) { console.warn(e); }
   try { seedInjuriesFromSnap(); } catch (e) {}
   try { if (typeof enrichPowerRankings === "function") enrichPowerRankings(); } catch (e) {}
@@ -5966,11 +6027,11 @@ async function boot() {
   setView((location.hash || "").replace("#","") || "home");
   if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games || []);
   try {
-    const learn = window.learnFromFinals || learnFromFinals;
+    const learn = window.rebuildSharedLearning || rebuildSharedLearning;
     const apply = window.applyLearningToGame || applyLearningToGame;
     const n = typeof learn === "function" ? learn(DATA.games || []) : 0;
     if (typeof apply === "function") (DATA.games || []).forEach(apply);
-    if (n) setStamp("Learned " + n + " finals", true);
+    if (DATA.notes && n) DATA.notes.learning = `Same record for everyone. ${n} finished games are in the next line.`;
   } catch (e) {}
   try { if (typeof syncDesk === "function") syncDesk(); } catch (e) {}
   if (view === "home" && typeof renderHome === "function") renderHome();
@@ -6004,12 +6065,11 @@ async function boot() {
     }
   };
   try {
-    const learn = window.learnFromFinals || learnFromFinals;
+    const learn = window.rebuildSharedLearning || (typeof rebuildSharedLearning === "function" ? rebuildSharedLearning : null);
     const apply = window.applyLearningToGame || applyLearningToGame;
-    const n = typeof learn === "function" ? learn(DATA.games || []) : 0;
+    if (typeof learn === "function") learn(DATA.games || []);
     if (typeof apply === "function") (DATA.games || []).forEach(apply);
     if (typeof renderBoard === "function") renderBoard();
-    if (n) setStamp(`Learned ${n} finals`, true);
   } catch (e) { console.warn(e); }
   if (typeof attachWeather === "function") doWx();
   $("#refreshBtn")?.addEventListener("click", () => {
