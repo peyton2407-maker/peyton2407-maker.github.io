@@ -82,7 +82,51 @@ button { touch-action: manipulation; cursor: pointer; }
   color: var(--ink);
   line-height: .95;
 }
-.brand p { margin: 6px 0 0; color: var(--muted); font-size: 14px; max-width: 46ch; }
+.brand p { margin: 6px 0 0; color: var(--muted); font-size: 14px; max-width: 52ch; }
+
+.home-hero{
+  display:grid;gap:12px;margin:0 0 16px;
+}
+.home-strip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.home-stat{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;
+}
+.home-stat b{display:block;font-family:Syne,sans-serif;font-size:22px;color:var(--turf)}
+.home-stat span{color:var(--muted);font-size:12px}
+.home-game{
+  display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 16px;cursor:pointer;
+}
+.home-game:hover{border-color:var(--line-2)}
+.home-game .kick{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.home-game h3{margin:4px 0;font-size:16px;font-family:Syne,sans-serif}
+.home-pick{text-align:right}
+.home-pick b{display:block;color:var(--sun);font-size:15px}
+.result-hit{color:var(--turf)!important}
+.result-miss{color:var(--rose)!important}
+.result-push{color:var(--sun)!important}
+.share-card{
+  background:linear-gradient(165deg,#1a2814,#101c16 55%,#182016);
+  border:1px solid rgba(240,180,41,.4);border-radius:22px;padding:18px;
+}
+.share-card h2{margin:0 0 4px;font-family:Syne,sans-serif}
+.share-legs{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px}
+.share-legs li{
+  display:flex;justify-content:space-between;gap:10px;align-items:center;
+  background:rgba(7,17,14,.45);border:1px solid var(--line);border-radius:12px;padding:10px 12px;
+}
+.alert-row{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 8px;
+}
+.alert-row.hot{border-color:rgba(255,122,104,.45)}
+.alert-bell{
+  position:sticky;top:8px;z-index:5;display:none;
+  background:#1a120c;border:1px solid rgba(240,180,41,.45);border-radius:14px;padding:10px 14px;margin:0 0 12px;
+}
+@media (min-width:800px){
+  .home-hero{grid-template-columns:1.4fr .8fr}
+  .home-strip{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
 
 .meta-chip { display: flex; gap: 8px; flex-wrap: wrap; }
 .pill, .refresh-btn {
@@ -479,7 +523,11 @@ option { background: #12201a; color: #e9f3ec; }
     <div class="tabs-wrap">
       <button class="tabs-arrow" id="tabsPrev" type="button" aria-label="Slide tabs left">‹</button>
       <nav class="tabs" id="tabBar">
-      <button class="tab active" data-view="nfl">NFL Week 3</button>
+      <button class="tab active" data-view="home">Home</button>
+      <button class="tab" data-view="card">This week's card</button>
+      <button class="tab" data-view="score">Scorecard</button>
+      <button class="tab" data-view="alerts">Alerts</button>
+      <button class="tab" data-view="nfl">NFL Week 3</button>
       <button class="tab" data-view="live">Live scores</button>
       <button class="tab" data-view="cfb">College football</button>
       <button class="tab" data-view="all">All games</button>
@@ -497,6 +545,54 @@ option { background: #12201a; color: #e9f3ec; }
       <button class="tabs-arrow" id="tabsNext" type="button" aria-label="Slide tabs right">›</button>
     </div>
 
+    <div id="alertBell" class="alert-bell"></div>
+
+    <section id="homeSection">
+      <div class="home-hero">
+        <div>
+          <p class="subn" style="margin:0 0 8px">Today’s games. Pick, score, who’s hurt — that’s it.</p>
+          <div class="home-strip" id="homeStrip"></div>
+        </div>
+        <article class="share-card" id="homeCardTeaser"></article>
+      </div>
+      <div id="homeBoard"></div>
+    </section>
+
+    <section id="cardSection" style="display:none">
+      <div class="controls">
+        <button class="refresh-btn" id="freezeCardBtn" type="button">Lock this week's card</button>
+        <button class="refresh-btn" id="copyCardBtn" type="button">Copy the card</button>
+        <button class="refresh-btn" id="shareCardBtn" type="button">Share</button>
+      </div>
+      <p class="subn" id="cardStamp" style="margin:0 0 10px">8–12 plays, frozen before kickoff. This is what we like this week.</p>
+      <div id="cardWrap"></div>
+    </section>
+
+    <section id="scoreSection" style="display:none">
+      <div class="controls">
+        <select id="scoreLeague">
+          <option value="all">NFL + college</option>
+          <option value="nfl">NFL only</option>
+          <option value="cfb">College only</option>
+        </select>
+        <select id="scoreKind">
+          <option value="all">Spreads + totals</option>
+          <option value="spread">Spreads only</option>
+          <option value="total">Totals only</option>
+        </select>
+      </div>
+      <p class="subn" id="scoreStamp" style="margin:0 0 10px">Picks lock before kickoff. After the game we mark hit, miss, or push — and whether we beat the closing line.</p>
+      <div class="stat-row" id="scoreStats"></div>
+      <div class="card" id="scoreWrap"></div>
+    </section>
+
+    <section id="alertsSection" style="display:none">
+      <div class="controls">
+        <button class="refresh-btn" id="notifBtn" type="button">Turn on phone alerts</button>
+      </div>
+      <p class="subn" style="margin:0 0 10px">We watch QB news, line jumps, and weather that would change a pick. Alerts fire on this phone while the site is open. Texts/emails need a later setup.</p>
+      <div id="alertsWrap"></div>
+    </section>
 
     <section id="injSection" style="display:none">
       <div class="controls">
@@ -592,7 +688,7 @@ option { background: #12201a; color: #e9f3ec; }
       <div class="prop-board td-board" id="tdBoard"></div>
     </section>
 
-    <section id="boardSection">
+    <section id="boardSection" style="display:none">
       <div class="controls">
         <input id="q" placeholder="Search team, venue, abbr…" />
         <select id="openOnly">
@@ -2730,7 +2826,7 @@ if (typeof learnFromFinals !== "function") {
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
 let DATA = null;
-let view = "nfl";
+let view = "home";
 let sortKey = "kick";
 
 function toAmerican(p) {
@@ -4183,6 +4279,7 @@ function renderModel() {
         <li>If Vegas is moving toward the underdog, big bettors probably like that underdog.</li>
         <li>We guess the score, then guess who scores the touchdowns.</li>
         <li>After games finish, we learn from the misses so next week is a little better.</li>
+        <li>Picks freeze on This week's card. The scorecard keeps hit / miss / vs the closing line.</li>
         <li>None of this is betting advice. It's a scoreboard of our best guess.</li>
       </ol>
       <p>${n.disclaimer}</p>
@@ -4745,7 +4842,382 @@ async function pullLiveScores() {
     const liveN = (DATA.games || []).filter((g) => typeof isLiveGame === "function" && isLiveGame(g)).length;
     if (liveN) setStamp(liveN + " live · rest-of-game on", true);
     else if (learned) setStamp("Learned " + learned + " new finals", true);
+    if (typeof syncDesk === "function") {
+      syncDesk();
+      if (view === "home") renderHome();
+      if (view === "score") renderScorecard();
+      if (view === "alerts") renderAlerts();
+    }
   } catch (e) { console.warn("live scores", e); }
+}
+
+const DESK_KEY = "doublegs-desk-v1";
+function emptyDesk() { return { plays: {}, card: null, alerts: [], watch: {}, notif: false }; }
+function loadDesk() {
+  window.__DESK = window.__DESK || emptyDesk();
+  try {
+    const c = JSON.parse(localStorage.getItem(DESK_KEY) || "null");
+    if (c && typeof c === "object") {
+      window.__DESK.plays = Object.assign({}, window.__DESK.plays, c.plays || {});
+      if (c.card) window.__DESK.card = c.card;
+      window.__DESK.alerts = Array.isArray(c.alerts) ? c.alerts : [];
+      window.__DESK.watch = Object.assign({}, c.watch || {});
+      window.__DESK.notif = !!c.notif;
+    }
+  } catch (e) {}
+  return window.__DESK;
+}
+function saveDesk() {
+  try { localStorage.setItem(DESK_KEY, JSON.stringify(window.__DESK)); } catch (e) {}
+}
+function deskWeekKey() {
+  const m = (DATA && DATA.meta) || {};
+  return `nfl-${m.nfl_week || 3}|cfb-${(m.cfb_weeks || [4, 5]).join("-")}`;
+}
+function isPlay(p) {
+  return p && ((p.pick && p.pick !== "NO PLAY") || (p.total_pick && p.total_pick !== "NO PLAY"));
+}
+function snapPlay(g) {
+  const p = g.proj || {};
+  const o = g.odds || {};
+  return {
+    id: String(g.id), league: g.league, week: g.week, name: g.name, short: g.short_name,
+    home: g.home.abbr, away: g.away.abbr, date: g.date,
+    lockedAt: Date.now(),
+    pick: p.pick || null, pick_line: p.pick_line || null,
+    total_pick: p.total_pick || null,
+    edge_spread: p.edge_spread, edge_total: p.edge_total,
+    spread_line: o.home_spread, total_line: o.total,
+    close_spread: null, close_total: null,
+    proj_home: p.home_points, proj_away: p.away_points,
+    ats: null, ou: null, clv: null, graded: false
+  };
+}
+function playScore(g) {
+  const p = g.proj || {};
+  const s = g.sim || {};
+  let n = Math.abs(Number(p.edge_spread) || 0);
+  if (p.pick && p.pick !== "NO PLAY") n += (p.pick === g.home.abbr ? Number(s.cover_home) || 0.55 : Number(s.cover_away) || 0.55);
+  if (p.total_pick && p.total_pick !== "NO PLAY") n += Math.abs(Number(p.edge_total) || 0) * 0.35;
+  return n;
+}
+function buildWeeklyLegs(games) {
+  const upcoming = (games || []).filter((g) => !g.completed && isPlay(g.proj));
+  upcoming.sort((a, b) => playScore(b) - playScore(a));
+  const legs = [];
+  const seen = new Set();
+  for (const g of upcoming) {
+    if (legs.length >= 12) break;
+    const p = g.proj || {};
+    const key = String(g.id);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const parts = [];
+    if (p.pick && p.pick !== "NO PLAY") parts.push(p.pick_line || p.pick);
+    if (p.total_pick && p.total_pick !== "NO PLAY") parts.push(p.total_pick);
+    legs.push({
+      id: key, league: g.league, short: g.short_name, date: g.date,
+      home: g.home.abbr, away: g.away.abbr,
+      text: parts.join(" · "),
+      pick: p.pick_line || p.pick, total: p.total_pick,
+      proj: `${g.away.abbr} ${p.away_points ?? "—"} – ${g.home.abbr} ${p.home_points ?? "—"}`,
+      edge: p.edge_spread
+    });
+  }
+  return legs.slice(0, 10);
+}
+function ensureWeeklyCard(force) {
+  const desk = loadDesk();
+  const key = deskWeekKey();
+  if (!force && desk.card && desk.card.weekKey === key && desk.card.frozen && (desk.card.legs || []).length) return desk.card;
+  if (!force && desk.card && desk.card.weekKey === key && desk.card.frozen) return desk.card;
+  const legs = buildWeeklyLegs(DATA.games || []);
+  desk.card = {
+    weekKey: key, frozen: !!force || !!(desk.card && desk.card.frozen && desk.card.weekKey === key),
+    lockedAt: Date.now(),
+    title: "Double Gs weekly card",
+    legs
+  };
+  saveDesk();
+  return desk.card;
+}
+function lockUpcomingPlays() {
+  const desk = loadDesk();
+  const now = Date.now();
+  (DATA.games || []).forEach((g) => {
+    if (!isPlay(g.proj)) return;
+    const kick = g.date ? new Date(g.date).getTime() : 0;
+    const id = String(g.id);
+    if (g.completed && !desk.plays[id]) return;
+    if (!desk.plays[id]) {
+      if (g.completed) return;
+      if (kick && kick - now > 60 * 3600 * 1000 && g.league === "cfb") return;
+      desk.plays[id] = snapPlay(g);
+    } else if (!desk.plays[id].graded && !g.completed && kick - now > 2 * 3600 * 1000) {
+      if (!desk.plays[id].frozenSoft) {
+        const age = now - (desk.plays[id].lockedAt || 0);
+        if (age < 6 * 3600 * 1000) desk.plays[id] = Object.assign(desk.plays[id], snapPlay(g), { lockedAt: desk.plays[id].lockedAt });
+      }
+    }
+    const lock = desk.plays[id];
+    if (lock && (g.completed || (typeof isLiveGame === "function" && isLiveGame(g)))) {
+      if (lock.close_spread == null && g.odds && g.odds.home_spread != null) lock.close_spread = g.odds.home_spread;
+      if (lock.close_total == null && g.odds && g.odds.total != null) lock.close_total = g.odds.total;
+    }
+  });
+  saveDesk();
+}
+function gradeLock(lock, g) {
+  if (!lock || !g || !g.completed) return lock;
+  const hs = Number(g.home.score), as = Number(g.away.score);
+  if (!Number.isFinite(hs) || !Number.isFinite(as)) return lock;
+  const margin = hs - as;
+  if (lock.pick && lock.pick !== "NO PLAY" && lock.spread_line != null) {
+    const diff = margin + Number(lock.spread_line);
+    if (Math.abs(diff) < 1e-9) lock.ats = "PUSH";
+    else if (lock.pick === g.home.abbr) lock.ats = diff > 0 ? "HIT" : "MISS";
+    else lock.ats = diff < 0 ? "HIT" : "MISS";
+  }
+  if (lock.total_pick && lock.total_pick !== "NO PLAY" && lock.total_line != null) {
+    const tot = hs + as;
+    const line = Number(lock.total_line);
+    if (Math.abs(tot - line) < 1e-9) lock.ou = "PUSH";
+    else if (String(lock.total_pick).startsWith("OVER")) lock.ou = tot > line ? "HIT" : "MISS";
+    else lock.ou = tot < line ? "HIT" : "MISS";
+  }
+  if (lock.spread_line != null && lock.close_spread != null && lock.pick && lock.pick !== "NO PLAY") {
+    const open = Number(lock.spread_line), close = Number(lock.close_spread);
+    lock.clv = lock.pick === g.home.abbr ? +(open - close).toFixed(1) : +(close - open).toFixed(1);
+  }
+  lock.final = `${g.away.abbr} ${as} – ${g.home.abbr} ${hs}`;
+  lock.graded = true;
+  return lock;
+}
+function gradeFinished() {
+  const desk = loadDesk();
+  (DATA.games || []).forEach((g) => {
+    const lock = desk.plays[String(g.id)];
+    if (lock && g.completed) gradeLock(lock, g);
+  });
+  saveDesk();
+}
+function watchSnapshot(g) {
+  const p = g.proj || {};
+  const o = g.odds || {};
+  const qb = (g.injuries || []).filter((r) => /QB/i.test(r.pos || "") && /OUT|IR|INACTIVE|DOUBT/i.test(r.tag || r.status || ""));
+  return {
+    spread: o.home_spread, total: o.total,
+    pick: p.pick, total_pick: p.total_pick,
+    wx: (g.weather_impact && g.weather_impact.adj) || 0,
+    qb: qb.map((r) => r.name).join(", ")
+  };
+}
+function pushAlert(kind, title, body, hot) {
+  const desk = loadDesk();
+  const sig = kind + "|" + title + "|" + body;
+  if ((desk.alerts || []).some((a) => a.sig === sig)) return;
+  const row = { t: Date.now(), kind, title, body, hot: !!hot, sig };
+  desk.alerts.unshift(row);
+  desk.alerts = desk.alerts.slice(0, 40);
+  saveDesk();
+  if (desk.notif && typeof Notification !== "undefined" && Notification.permission === "granted") {
+    try { new Notification(title, { body, silent: false }); } catch (e) {}
+  }
+  const bell = document.getElementById("alertBell");
+  if (bell) {
+    bell.style.display = "block";
+    bell.textContent = title + " — " + body;
+    setTimeout(() => { if (bell.textContent.indexOf(title) === 0) bell.style.display = "none"; }, 8000);
+  }
+}
+function scanAlerts() {
+  const desk = loadDesk();
+  const seedOnly = !window.__watchReady;
+  (DATA.games || []).forEach((g) => {
+    if (g.completed) return;
+    const id = String(g.id);
+    const now = watchSnapshot(g);
+    const prev = desk.watch[id];
+    desk.watch[id] = now;
+    if (seedOnly || !prev) return;
+    if (prev.spread != null && now.spread != null && Math.abs(Number(now.spread) - Number(prev.spread)) >= 1) {
+      pushAlert("line", g.short_name + " line moved", `${g.home.abbr} ${prev.spread} → ${now.spread}`, true);
+    }
+    if (prev.total != null && now.total != null && Math.abs(Number(now.total) - Number(prev.total)) >= 1.5) {
+      pushAlert("total", g.short_name + " total moved", `${prev.total} → ${now.total}`, false);
+    }
+    if ((now.qb || "") && now.qb !== (prev.qb || "")) {
+      pushAlert("injury", "QB news · " + g.short_name, now.qb + " is on the report", true);
+    }
+    if (prev.pick && now.pick && prev.pick !== now.pick) {
+      pushAlert("pick", "We flipped a pick · " + g.short_name, `${prev.pick} → ${now.pick}`, true);
+    }
+    if (prev.wx != null && now.wx != null && Math.abs(Number(now.wx) - Number(prev.wx)) >= 1.5) {
+      pushAlert("wx", "Weather flipped the total · " + g.short_name, `weather tax ${prev.wx} → ${now.wx}`, false);
+    }
+  });
+  window.__watchReady = true;
+  saveDesk();
+}
+function syncDesk() {
+  try {
+    loadDesk();
+    lockUpcomingPlays();
+    gradeFinished();
+    ensureWeeklyCard(false);
+    scanAlerts();
+  } catch (e) { console.warn("desk", e); }
+}
+function injLine(g) {
+  const rows = (g.injuries || []).filter((r) => /OUT|IR|INACTIVE|DOUBT/i.test(r.tag || r.status || ""));
+  if (!rows.length) return "no key injuries";
+  return rows.slice(0, 2).map((r) => `${r.name} ${r.tag || r.status}`).join(" · ");
+}
+function todayGames() {
+  const start = new Date(); start.setHours(0, 0, 0, 0);
+  const end = new Date(start); end.setDate(end.getDate() + 1);
+  const live = (DATA.games || []).filter((g) => typeof isLiveGame === "function" && isLiveGame(g));
+  const today = (DATA.games || []).filter((g) => {
+    if (!g.date) return false;
+    const t = new Date(g.date);
+    return t >= start && t < end;
+  });
+  const ids = new Set(today.map((g) => g.id));
+  live.forEach((g) => { if (!ids.has(g.id)) today.unshift(g); });
+  if (today.length) return today.sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  const soon = (DATA.games || []).filter((g) => !g.completed).sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  return soon.slice(0, 8);
+}
+function scoreTally(league, kind) {
+  const desk = loadDesk();
+  const rows = Object.values(desk.plays || {}).filter((p) => !league || league === "all" || p.league === league);
+  let w = 0, l = 0, psh = 0;
+  const items = [];
+  rows.forEach((r) => {
+    const wantS = kind !== "total";
+    const wantT = kind !== "spread";
+    if (wantS && r.ats) {
+      if (r.ats === "HIT") w++; else if (r.ats === "MISS") l++; else psh++;
+      items.push(r);
+    }
+    if (wantT && r.ou) {
+      if (r.ou === "HIT") w++; else if (r.ou === "MISS") l++; else psh++;
+      items.push(r);
+    }
+  });
+  const pending = rows.filter((r) => !r.graded);
+  const clv = rows.filter((r) => r.clv != null);
+  const clvAvg = clv.length ? clv.reduce((s, r) => s + Number(r.clv), 0) / clv.length : 0;
+  return { w, l, psh, pending: pending.length, clvAvg, n: w + l, rows, items };
+}
+function renderHome() {
+  syncDesk();
+  const tally = scoreTally("all", "all");
+  const card = ensureWeeklyCard(false);
+  const strip = document.getElementById("homeStrip");
+  if (strip) strip.innerHTML = `
+    <div class="home-stat"><b>${tally.n ? tally.w + "-" + tally.l : "0-0"}</b><span>locked picks this season</span></div>
+    <div class="home-stat"><b>${tally.pending}</b><span>waiting on kickoff</span></div>
+    <div class="home-stat"><b>${(card.legs || []).length}</b><span>plays on this week's card</span></div>
+    <div class="home-stat"><b>${tally.clvAvg ? (tally.clvAvg > 0 ? "+" : "") + tally.clvAvg.toFixed(1) : "—"}</b><span>avg vs closing line</span></div>`;
+  const teaser = document.getElementById("homeCardTeaser");
+  if (teaser) teaser.innerHTML = `
+    <div class="lbl">This week's card</div>
+    <h3 style="margin:4px 0 8px">${(card.legs || []).length} locked plays</h3>
+    <ul class="share-legs">${(card.legs || []).slice(0, 4).map((L) => `<li><span>${L.short}</span><b>${L.text}</b></li>`).join("")}</ul>
+    <p class="subn" style="margin:10px 0 0">Open “This week's card” to copy or share the whole list.</p>`;
+  const games = todayGames();
+  const board = document.getElementById("homeBoard");
+  if (!board) return;
+  const upcoming = (DATA.games || []).filter((g) => !g.completed && !games.some((x) => x.id === g.id))
+    .sort((a, b) => String(a.date).localeCompare(String(b.date))).slice(0, 6);
+  const block = (list, title) => {
+    if (!list.length) return "";
+    return `<p class="subn" style="margin:16px 0 8px">${title}</p>` + list.map((g) => {
+      const p = g.proj || {};
+      const pick = (p.pick && p.pick !== "NO PLAY") ? (p.pick_line || p.pick) : "no side";
+      const tot = (p.total_pick && p.total_pick !== "NO PLAY") ? p.total_pick : "";
+      const live = typeof isLiveGame === "function" && isLiveGame(g);
+      return `<article class="home-game" data-id="${g.id}">
+        <div>
+          <div class="kick">${g.league.toUpperCase()} · ${live ? "LIVE" : fmt.when(g.date)}</div>
+          <h3>${g.away.abbr} @ ${g.home.abbr}</h3>
+          <div class="subn">${p.away_points ?? "—"} – ${p.home_points ?? "—"} · ${injLine(g)}</div>
+        </div>
+        <div class="home-pick"><b>${pick}</b><span class="subn">${tot}</span></div>
+      </article>`;
+    }).join("");
+  };
+  board.innerHTML = block(games, games.length ? "Today" : "") + block(upcoming, "Up next");
+  if (!games.length && !upcoming.length) board.innerHTML = `<div class="empty">No games on the board.</div>`;
+  board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
+}
+function cardShareText() {
+  const card = ensureWeeklyCard(false);
+  const lines = ["DOUBLE GS — THIS WEEK'S CARD", ""];
+  (card.legs || []).forEach((L, i) => lines.push(`${i + 1}. ${L.short} — ${L.text}`));
+  lines.push("", "Not betting advice.", "https://peyton2407-maker.github.io/#card");
+  return lines.join("\n");
+}
+function renderWeeklyCard() {
+  const card = ensureWeeklyCard(false);
+  const stamp = document.getElementById("cardStamp");
+  if (stamp) stamp.textContent = card.frozen
+    ? "This card is locked. It will not change even if the model moves."
+    : "Preview — hit “Lock this week's card” to freeze it before kickoff.";
+  const wrap = document.getElementById("cardWrap");
+  if (!wrap) return;
+  wrap.innerHTML = `<article class="share-card">
+    <h2>This week's card</h2>
+    <p class="subn">${card.frozen ? "LOCKED" : "NOT LOCKED YET"} · ${(card.legs || []).length} plays</p>
+    <ul class="share-legs">${(card.legs || []).map((L, i) => `<li data-id="${L.id}"><span>${i + 1}. ${L.away} @ ${L.home}<div class="subn">${L.proj}</div></span><b>${L.text}</b></li>`).join("")}</ul>
+  </article>`;
+  wrap.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
+}
+function renderScorecard() {
+  syncDesk();
+  const league = (document.getElementById("scoreLeague") || {}).value || "all";
+  const kind = (document.getElementById("scoreKind") || {}).value || "all";
+  const t = scoreTally(league, kind);
+  const pct = t.n ? Math.round(100 * t.w / t.n) : 0;
+  const stats = document.getElementById("scoreStats");
+  if (stats) stats.innerHTML = `
+    <div class="stat"><b>${t.w}-${t.l}${t.psh ? "-" + t.psh : ""}</b><span>locked record</span></div>
+    <div class="stat"><b>${t.n ? pct + "%" : "—"}</b><span>hit rate</span></div>
+    <div class="stat"><b>${t.pending}</b><span>still live / upcoming</span></div>
+    <div class="stat"><b>${t.clvAvg ? (t.clvAvg > 0 ? "+" : "") + t.clvAvg.toFixed(1) : "—"}</b><span>avg vs close</span></div>`;
+  const wrap = document.getElementById("scoreWrap");
+  const desk = loadDesk();
+  let rows = Object.values(desk.plays || {}).filter((p) => league === "all" || p.league === league);
+  rows.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  if (!wrap) return;
+  if (!rows.length) { wrap.innerHTML = `<div class="empty">No locked picks yet. They freeze automatically as games get close to kickoff.</div>`; return; }
+  wrap.innerHTML = `<table class="ratings"><thead><tr><th>Game</th><th>Locked pick</th><th>Spread</th><th>Total</th><th>vs close</th></tr></thead><tbody>
+    ${rows.map((r) => {
+      const ats = r.ats ? `<span class="result-${r.ats.toLowerCase()}">${r.ats}</span>` : "pending";
+      const ou = r.ou ? `<span class="result-${r.ou.toLowerCase()}">${r.ou}</span>` : (r.total_pick && r.total_pick !== "NO PLAY" ? "pending" : "—");
+      const showS = kind !== "total";
+      const showT = kind !== "spread";
+      if (kind === "spread" && !(r.pick && r.pick !== "NO PLAY")) return "";
+      if (kind === "total" && !(r.total_pick && r.total_pick !== "NO PLAY")) return "";
+      return `<tr data-id="${r.id}">
+        <td><b>${r.short || (r.away + " @ " + r.home)}</b><div class="subn">${r.league.toUpperCase()} · ${r.final || fmt.when(r.date)}</div></td>
+        <td>${r.pick_line || r.pick || "—"}<div class="subn">${r.total_pick && r.total_pick !== "NO PLAY" ? r.total_pick : ""}</div></td>
+        <td>${showS ? ats : "—"}</td>
+        <td>${showT ? ou : "—"}</td>
+        <td>${r.clv == null ? "—" : ((r.clv > 0 ? "+" : "") + r.clv)}</td>
+      </tr>`;
+    }).join("")}
+  </tbody></table>`;
+  wrap.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
+}
+function renderAlerts() {
+  const desk = loadDesk();
+  const wrap = document.getElementById("alertsWrap");
+  if (!wrap) return;
+  const rows = desk.alerts || [];
+  if (!rows.length) { wrap.innerHTML = `<div class="empty">Quiet for now. We’ll flag QB news, 1+ point line moves, and weather flips.</div>`; return; }
+  wrap.innerHTML = rows.map((a) => `<article class="alert-row ${a.hot ? "hot" : ""}"><div class="lbl">${new Date(a.t).toLocaleString()}</div><b>${a.title}</b><div class="subn">${a.body}</div></article>`).join("");
 }
 
 function setView(next) {
@@ -4756,6 +5228,14 @@ function setView(next) {
   $$(".tab").forEach((t) => t.classList.toggle("active", t.dataset.view === next));
   const board = next === "nfl" || next === "cfb" || next === "all" || next === "live";
   $("#boardSection").style.display = board ? "" : "none";
+  const homeS = document.getElementById("homeSection");
+  if (homeS) homeS.style.display = next === "home" ? "" : "none";
+  const cardS = document.getElementById("cardSection");
+  if (cardS) cardS.style.display = next === "card" ? "" : "none";
+  const scoreS = document.getElementById("scoreSection");
+  if (scoreS) scoreS.style.display = next === "score" ? "" : "none";
+  const alertS = document.getElementById("alertsSection");
+  if (alertS) alertS.style.display = next === "alerts" ? "" : "none";
   $("#propsSection").style.display = next === "props" ? "" : "none";
   $("#cfbPicksSection").style.display = next === "cfbpicks" ? "" : "none";
   $("#nflWxSection").style.display = next === "nflwx" ? "" : "none";
@@ -4769,6 +5249,10 @@ function setView(next) {
   const tdS = document.getElementById("tdSection");
   if (tdS) tdS.style.display = next === "tds" ? "" : "none";
   if (board) renderBoard();
+  if (next === "home") renderHome();
+  if (next === "card") renderWeeklyCard();
+  if (next === "score") renderScorecard();
+  if (next === "alerts") renderAlerts();
   if (next === "value") renderValueDogs();
   if (next === "tds") renderTdDesk();
   if (next === "nflinj" || next === "cfbinj") {
@@ -4853,14 +5337,47 @@ async function boot() {
   const rerenderTd = () => renderTdDesk();
   ["tdMarket","tdPos","tdSort"].forEach((id) => document.getElementById(id)?.addEventListener("change", rerenderTd));
   document.getElementById("tdQ")?.addEventListener("input", rerenderTd);
+  document.getElementById("scoreLeague")?.addEventListener("change", renderScorecard);
+  document.getElementById("scoreKind")?.addEventListener("change", renderScorecard);
+  document.getElementById("freezeCardBtn")?.addEventListener("click", () => {
+    ensureWeeklyCard(true);
+    const desk = loadDesk();
+    if (desk.card) desk.card.frozen = true;
+    saveDesk();
+    renderWeeklyCard();
+    if (view === "home") renderHome();
+  });
+  document.getElementById("copyCardBtn")?.addEventListener("click", async () => {
+    const txt = cardShareText();
+    try { await navigator.clipboard.writeText(txt); setStamp("Card copied", true); }
+    catch (e) { prompt("Copy this week's card", txt); }
+  });
+  document.getElementById("shareCardBtn")?.addEventListener("click", async () => {
+    const txt = cardShareText();
+    if (navigator.share) {
+      try { await navigator.share({ title: "Double Gs weekly card", text: txt, url: "https://peyton2407-maker.github.io/#card" }); return; } catch (e) {}
+    }
+    try { await navigator.clipboard.writeText(txt); setStamp("Card copied", true); } catch (e) { prompt("Copy this week's card", txt); }
+  });
+  document.getElementById("notifBtn")?.addEventListener("click", async () => {
+    try {
+      const perm = await Notification.requestPermission();
+      const desk = loadDesk();
+      desk.notif = perm === "granted";
+      saveDesk();
+      setStamp(desk.notif ? "Phone alerts on" : "Alerts stayed off", true);
+    } catch (e) { setStamp("This browser blocked alerts", true); }
+  });
   $("#overlay").addEventListener("click", (e) => { if (e.target.id === "overlay") closeModal(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
-  setView("nfl");
   try { loadResiduals(); } catch (e) {}
   try { if (typeof repriceCfbBoard === "function") repriceCfbBoard(); } catch (e) { console.warn(e); }
   try { seedInjuriesFromSnap(); } catch (e) {}
   try { if (typeof enrichPowerRankings === "function") enrichPowerRankings(); } catch (e) {}
   try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) { console.warn(e); }
+  if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games || []);
+  try { if (typeof syncDesk === "function") syncDesk(); } catch (e) {}
+  setView((location.hash || "").replace("#","") === "card" ? "card" : ((location.hash || "").replace("#","") === "score" ? "score" : "home"));
   if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games || []);
   try {
     const learn = window.learnFromFinals || learnFromFinals;
@@ -4869,6 +5386,8 @@ async function boot() {
     if (typeof apply === "function") (DATA.games || []).forEach(apply);
     if (n) setStamp("Learned " + n + " finals", true);
   } catch (e) {}
+  try { if (typeof syncDesk === "function") syncDesk(); } catch (e) {}
+  if (view === "home" && typeof renderHome === "function") renderHome();
   if (typeof renderBoard === "function") renderBoard();
   pullLiveScores();
   if (!window.__livePoll) window.__livePoll = setInterval(pullLiveScores, 40000);
@@ -4877,6 +5396,7 @@ async function boot() {
     try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) {}
     (DATA.games || []).forEach((g) => { if (typeof applyLearningToGame === "function") applyLearningToGame(g); });
     if (typeof renderBoard==="function") renderBoard();
+    if (typeof syncDesk === "function") { syncDesk(); if (view === "home") renderHome(); }
   });
   pullDkLines().then(()=>{ if (typeof renderBoard==="function") renderBoard(); if (view==="value") renderValueDogs(); });
   pullEpaAndMarkets();
