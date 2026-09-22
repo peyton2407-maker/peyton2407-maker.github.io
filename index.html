@@ -5242,14 +5242,19 @@ function dkOdds(p, key, line, under) {
   return money(n);
 }
 function ladderLines(m) {
-  const lines = (m.lines || []).slice();
   const book = ((window.__DKODDS || {})[String((m.player || {}).game_id || "")] || {})[oddsKey((m.player || {}).name)] || {};
-  (book[m.key] || []).forEach((x) => {
-    const asLine = Math.abs(x.line - Math.round(x.line)) < 0.01 ? x.line - 0.5 : x.line;
-    if (asLine < 0.5) return;
-    if (!lines.some((n) => Math.abs(n - asLine) < 0.2 || Math.abs(n - x.line) < 0.2)) lines.push(asLine);
-  });
-  return lines.sort((a, b) => a - b);
+  return (book[m.key] || []).slice().sort((a, b) => a.line - b.line);
+}
+function dkRowLabel(line) {
+  if (Math.abs(line - Math.round(line)) < 0.01) return Math.round(line) + "+";
+  return "over " + line;
+}
+function hitDk(rows, key, line) {
+  const vals = (rows || []).map((r) => Number(r[key])).filter((v) => Number.isFinite(v));
+  if (!vals.length) return null;
+  const mile = Math.abs(line - Math.round(line)) < 0.01;
+  const hits = vals.filter((v) => mile ? v >= line : v > line).length;
+  return { hits, n: vals.length };
 }
 
 function halfPpr(r) {
@@ -5435,16 +5440,17 @@ function findProp(id, gameId) {
   return hit;
 }
 function ladderTable(m, season, vs) {
-  const head = `<table class="ladder"><thead><tr><th>${m.label}</th><th>This year</th><th>Vs opponent</th><th>Our chance</th><th>DraftKings</th><th>DK odds</th></tr></thead><tbody>`;
-  const body = ladderLines(m).map((line) => {
-    const yr = hitRate(season, m.key, line, m.under);
-    const opp = hitRate(vs, m.key, line, m.under);
-    const chance = ourChance(m.mean, line, m.key, m.under);
-    const side = m.under ? "under" : "over";
+  const rows = ladderLines(m);
+  if (!rows.length) return `<h3 style="margin:14px 0 0">${m.label}</h3><p class="subn">DraftKings has not posted this one.</p>`;
+  const head = `<table class="ladder"><thead><tr><th>DraftKings</th><th>This year</th><th>Vs opponent</th><th>Our chance</th><th>DK odds</th></tr></thead><tbody>`;
+  const body = rows.map((x) => {
+    const line = x.line;
+    const mile = Math.abs(line - Math.round(line)) < 0.01;
+    const yr = hitDk(season, m.key, line);
+    const opp = hitDk(vs, m.key, line);
+    const chance = ourChance(m.mean, mile ? line - 0.5 : line, m.key, false);
     const fmtH = (h) => h ? `${h.hits}/${h.n}` : "—";
-    const book = dkAlt(m.player || {}, m.key, line);
-    const price = dkOdds(m.player || {}, m.key, line, m.under);
-    return `<tr><td>${side} ${line}</td><td>${fmtH(yr)}</td><td>${fmtH(opp)}</td><td>${Math.round(chance * 100)}%</td><td>${book}</td><td>${price}</td></tr>`;
+    return `<tr><td>${dkRowLabel(line)}</td><td>${fmtH(yr)}</td><td>${fmtH(opp)}</td><td>${Math.round(chance * 100)}%</td><td>${money(x.over)}</td></tr>`;
   }).join("");
   return `<h3 style="margin:14px 0 0">${m.label}</h3>${head}${body}</tbody></table>`;
 }
