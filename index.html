@@ -1287,6 +1287,7 @@ function getResiduals() {
   DATA.residuals.games_learned = DATA.residuals.games_learned || {};
   DATA.residuals.history = DATA.residuals.history || [];
   DATA.residuals.cfb_buckets = DATA.residuals.cfb_buckets || {};
+  DATA.residuals.cfb_scale = DATA.residuals.cfb_scale || { n: 0, off: 0.34, def: 0.30 };
   return DATA.residuals;
 }
 function loadResiduals() {
@@ -1295,6 +1296,7 @@ function loadResiduals() {
     if (!c) return;
     const res = getResiduals();
     if (c.cfb_buckets) res.cfb_buckets = Object.assign(res.cfb_buckets || {}, c.cfb_buckets);
+    if (c.cfb_scale && c.cfb_scale.n) res.cfb_scale = c.cfb_scale;
     if (c.nfl) res.nfl = Object.assign(res.nfl || {}, c.nfl);
     if (c.games_learned) res.games_learned = Object.assign(c.games_learned, res.games_learned);
     if (Array.isArray(c.history) && c.history.length) res.history = c.history.slice(-80);
@@ -1304,7 +1306,7 @@ function saveResiduals() {
   try {
     const res = getResiduals();
     localStorage.setItem("doublegs-learn", JSON.stringify({
-      cfb: res.cfb, nfl: res.nfl, cfb_buckets: res.cfb_buckets || {}, games_learned: res.games_learned, history: (res.history || []).slice(-80), saved: Date.now()
+      cfb: res.cfb, nfl: res.nfl, cfb_buckets: res.cfb_buckets || {}, cfb_scale: res.cfb_scale || { n: 0, off: 0.34, def: 0.30 }, games_learned: res.games_learned, history: (res.history || []).slice(-80), saved: Date.now()
     }));
   } catch (e) {}
 }
@@ -1368,6 +1370,7 @@ function learnFromFinals(games) {
       brow.margin = +(brow.margin * (1 - ba) + errM * ba).toFixed(3);
       brow.total = +(brow.total * (1 - ba) + errT * ba).toFixed(3);
       res.cfb_buckets[key] = brow;
+      learnCfbPointScale(g, hs, as);
     }
     res.history.push({
       id: hid, name: g.short_name || g.name, league: lg,
@@ -2213,10 +2216,38 @@ function applyLiveBoard(games) {
   });
 }
 
+function cfbPointScale() {
+  const res = typeof getResiduals === "function" ? getResiduals() : null;
+  const sc = (res && res.cfb_scale) || { n: 0, off: 0.34, def: 0.30 };
+  const n = sc.n || 0;
+  if (n < 8) return { n, off: 0.34, def: 0.30, live: false };
+  return { n, off: sc.off, def: sc.def, live: true };
+}
 function cfbSidePoints(off, defAgainst, fieldShare) {
-  const offPts = (Number(off) - 50) * 0.34;
-  const defPts = (Number(defAgainst) - 60) * 0.30;
+  const sc = cfbPointScale();
+  const offPts = (Number(off) - 50) * sc.off;
+  const defPts = (Number(defAgainst) - 60) * sc.def;
   return LIVE.CFB_AVG_TOTAL / 2 + offPts - defPts + (Number(fieldShare) || 0);
+}
+function learnCfbPointScale(g, hs, as) {
+  const snap = g.proj && g.proj._gradeSnap;
+  if (!snap || snap.offH == null || snap.defA == null) return;
+  const res = getResiduals();
+  const sc = res.cfb_scale || (res.cfb_scale = { n: 0, off: 0.34, def: 0.30 });
+  const hfa = Number(snap.hfa) || 0;
+  [[snap.offH, snap.defA, hfa * 0.62, hs], [snap.offA, snap.defH, -hfa * 0.38, as]].forEach(([off, defA, field, actual]) => {
+    if (off == null || defA == null || !Number.isFinite(actual)) return;
+    const pred = LIVE.CFB_AVG_TOTAL / 2 + sc.off * (off - 50) - sc.def * (defA - 60) + field;
+    const err = actual - pred;
+    const lr = 0.00004;
+    sc.off = Math.max(0.15, Math.min(0.5, sc.off + lr * err * (off - 50)));
+    sc.def = Math.max(0.12, Math.min(0.45, sc.def - lr * err * (defA - 60)));
+  });
+  const pull = 8 / (8 + (sc.n || 0) + 1);
+  sc.off = +(sc.off * (1 - pull) + 0.34 * pull).toFixed(4);
+  sc.def = +(sc.def * (1 - pull) + 0.30 * pull).toFixed(4);
+  sc.n = (sc.n || 0) + 1;
+  res.cfb_scale = sc;
 }
 function cfbSigma(margin) {
   return Math.min(24, +(13.2 + Math.abs(Number(margin) || 0) * 0.32).toFixed(2));
@@ -2308,12 +2339,11 @@ function cfbLockPick(g) {
   const p = g.proj;
   const qb = cfbQb(g);
   const field = g._cfbField || cfbField(g);
-  let margin = p.blended_margin != null ? Number(p.blended_margin) : null;
-  if (margin != null && p._qbApplied) margin -= Number(p._qbApplied);
   const qbAdd = qb.pts ? (qb.side === "home" ? -qb.pts : qb.pts) : 0;
+  let margin = p.rating_blend != null ? Number(p.rating_blend) : (p.blended_margin != null ? Number(p.blended_margin) : null);
   if (margin != null) margin += qbAdd;
   p._qbApplied = qbAdd;
-  const total = p.hashmark_total != null ? Number(p.hashmark_total) : null;
+  const total = p.unit_total != null ? Number(p.unit_total) : (p.hashmark_total != null ? Number(p.hashmark_total) : null);
   if (margin != null && total != null) {
     p.blended_margin = +margin.toFixed(2);
     p.hashmark_home_spread = +(-margin).toFixed(1);
@@ -2335,59 +2365,64 @@ function cfbLockPick(g) {
   }
   const mktM = p.market_margin != null ? Number(p.market_margin) : null;
   const mktT = g.odds && g.odds.total != null ? Number(g.odds.total) : null;
-  const unitGap = p.model_margin != null && mktM != null && Math.abs(Number(p.model_margin) - mktM) >= 6;
-  const totalGap = p.model_total != null && mktT != null && Math.abs(Number(p.model_total) - mktT) >= 6;
+  const ratingM = p.model_margin != null ? Number(p.model_margin) : null;
+  const matchM = p.matchup_margin != null ? Number(p.matchup_margin) : null;
+  const ratingEdge = ratingM != null && mktM != null ? ratingEdgeSafe(ratingM, mktM) : null;
+  const matchEdge = matchM != null && mktM != null ? ratingEdgeSafe(matchM, mktM) : null;
+  const agree = ratingEdge != null && matchEdge != null && ratingEdge * matchEdge > 0 && Math.abs(ratingEdge) >= 2 && Math.abs(matchEdge) >= 2;
   const travel = typeof travelInfo === "function" ? travelInfo(g) : { miles: 0, notes: [] };
   const longTrip = (travel.miles || 0) >= 1200;
-  const disagree = qb.pts >= 7 || longTrip || field.body || field.altitude || unitGap || totalGap;
+  const scale = cfbPointScale();
   const reasons = [];
+  if (agree) reasons.push("team rating and the matchup score agree");
   if (qb.pts >= 7) reasons.push("quarterback report");
   if (longTrip) reasons.push(`road trip about ${Math.round(travel.miles)} miles`);
   if (field.body) reasons.push("early body-clock kickoff");
   if (field.altitude) reasons.push("altitude");
-  if (unitGap) reasons.push("offense-versus-defense gap versus the Vegas side");
-  if (totalGap) reasons.push("offense-versus-defense total versus the Vegas total");
   if (g.odds && g.odds.home_spread != null && margin != null) {
     p.edge_spread = +(margin - (-Number(g.odds.home_spread))).toFixed(2);
   }
   if (mktT != null && total != null) p.edge_total = +(total - mktT).toFixed(2);
-  if (!disagree) {
+  const sideOk = agree && p.edge_spread != null && Math.abs(p.edge_spread) >= 1.6;
+  if (!sideOk) {
     p.pick = "NO PLAY";
     p.pick_line = null;
-    p.total_pick = "NO PLAY";
-    p.cfb_call = "Stay with Vegas. Quarterback news, travel, altitude, and the offense-defense gap did not move this game enough to fade the line.";
-  } else if (g.odds && g.odds.home_spread != null && p.edge_spread != null) {
-    if (Math.abs(p.edge_spread) < 1.6) {
-      p.pick = "NO PLAY";
-      p.pick_line = null;
-      p.cfb_call = `Something real moved (${reasons.join(", ")}), but the side is still inside 1.6 points of Vegas. We stay with the line.`;
-    } else if (p.edge_spread > 0) {
-      p.pick = g.home.abbr;
-      p.pick_line = `${g.home.abbr} ${Number(g.odds.home_spread) >= 0 ? "+" : ""}${Number(g.odds.home_spread).toFixed(1)}`;
-      p.cfb_call = `We disagree with Vegas because of: ${reasons.join(", ")}.`;
-    } else {
-      p.pick = g.away.abbr;
-      p.pick_line = `${g.away.abbr} ${(-Number(g.odds.home_spread)) >= 0 ? "+" : ""}${(-Number(g.odds.home_spread)).toFixed(1)}`;
-      p.cfb_call = `We disagree with Vegas because of: ${reasons.join(", ")}.`;
-    }
-    if (mktT != null && p.edge_total != null && Math.abs(p.edge_total) >= 1.5 && (totalGap || field.altitude)) {
-      p.total_pick = p.edge_total > 0 ? `OVER ${mktT}` : `UNDER ${mktT}`;
-    } else p.total_pick = "NO PLAY";
+    p.cfb_call = agree
+      ? "The rating and the matchup agree, but the number is still inside 1.6 points of Vegas. Stay with the line."
+      : "Stay with Vegas. The team rating and the offense-defense score do not agree on the side, so we do not fade the line.";
+  } else if (p.edge_spread > 0) {
+    p.pick = g.home.abbr;
+    p.pick_line = `${g.home.abbr} ${Number(g.odds.home_spread) >= 0 ? "+" : ""}${Number(g.odds.home_spread).toFixed(1)}`;
+    p.cfb_call = `Both the team rating and the matchup score like ${g.home.abbr}. ${reasons.join(", ")}.`;
+  } else {
+    p.pick = g.away.abbr;
+    p.pick_line = `${g.away.abbr} ${(-Number(g.odds.home_spread)) >= 0 ? "+" : ""}${(-Number(g.odds.home_spread)).toFixed(1)}`;
+    p.cfb_call = `Both the team rating and the matchup score like ${g.away.abbr}. ${reasons.join(", ")}.`;
   }
+  const totalGap = p.model_total != null && mktT != null && Math.abs(Number(p.model_total) - mktT) >= 4;
+  if (mktT != null && p.edge_total != null && Math.abs(p.edge_total) >= 1.5 && totalGap) {
+    p.total_pick = p.edge_total > 0 ? `OVER ${mktT}` : `UNDER ${mktT}`;
+  } else p.total_pick = "NO PLAY";
   const miles = travel.miles != null ? `About ${Math.round(travel.miles)} miles for the visitor.` : "Travel miles are not available for this game.";
+  const scLine = scale.live
+    ? `Point scale is measured from ${scale.n} finished games. Each offense grade point is worth ${Number(scale.off).toFixed(2)} points. Each defense grade point is worth ${Number(scale.def).toFixed(2)} points.`
+    : `Point scale is still the starting scale. ${scale.n} finished games measured, and we wait for 8 before it changes a score. Offense 0.34. Defense 0.30.`;
   p.cfb_lines = [
-    `Offense versus defense: ${g.away.abbr} offense grade ${p.away_off ?? "—"} against ${g.home.abbr} defense ${p.home_def ?? "—"}. ${g.home.abbr} offense ${p.home_off ?? "—"} against ${g.away.abbr} defense ${p.away_def ?? "—"}. That builds the score before Vegas is mixed in.`,
+    `Team rating: ${g.home.abbr} ${p.home_fpi ?? "—"}, ${g.away.abbr} ${p.away_fpi ?? "—"}. With home field, the rating says ${ratingM == null ? "no number" : (ratingM >= 0 ? g.home.abbr + " by " + ratingM.toFixed(1) : g.away.abbr + " by " + Math.abs(ratingM).toFixed(1))}. That decides who is better.`,
+    `Matchup score: ${g.home.abbr} offense ${p.home_off ?? "—"} vs ${g.away.abbr} defense ${p.away_def ?? "—"}. ${g.away.abbr} offense ${p.away_off ?? "—"} vs ${g.home.abbr} defense ${p.home_def ?? "—"}. That score says ${matchM == null ? "no number" : (matchM >= 0 ? g.home.abbr + " by " + matchM.toFixed(1) : g.away.abbr + " by " + Math.abs(matchM).toFixed(1))}. It splits the points. It does not flip the side by itself.`,
+    p.cfb_call || "",
+    scLine,
     field.lines.join(" "),
     qb.line,
     cfbCoordinator(g),
     p.learn_note || "No conference correction yet.",
-    `Pace: plays per game are not in this feed, so pace does not move the number.`,
+    `Recent scoring bumps and line moves stay in the notes. They do not override the team rating.`,
     `${miles} ${(travel.notes || []).join(" ")}`.trim(),
-    p.cfb_call || "",
     sigma ? `This is not a tight score. Likely range is about ${p.score_low_away}–${p.score_high_away} for ${g.away.abbr} and ${p.score_low_home}–${p.score_high_home} for ${g.home.abbr}. The average is ${p.away_points}–${p.home_points}.` : ""
   ].filter(Boolean);
   return g;
 }
+function ratingEdgeSafe(model, market) { return Number(model) - Number(market); }
 function cfbReadHtml(g) {
   const lines = (g.proj && g.proj.cfb_lines) || [];
   if (g.league !== "cfb" || !lines.length) return "";
@@ -2416,6 +2451,7 @@ function projectGame(game, ratings) {
   const sigma = league === "nfl" ? LIVE.NFL_SIGMA : LIVE.CFB_SIGMA;
   const winHome = blendedMargin != null ? normCdf(blendedMargin / sigma) : null;
   let modelTotal = null;
+  let matchupMargin = null;
   if (league === "nfl" && hr.off != null && ar.off != null) {
     const homePts = LIVE.NFL_AVG_TOTAL / 2 + (hr.off || 0) - (ar.def || 0) + 0.45 * hfa;
     const awayPts = LIVE.NFL_AVG_TOTAL / 2 + (ar.off || 0) - (hr.def || 0) - 0.45 * hfa;
@@ -2426,18 +2462,13 @@ function projectGame(game, ratings) {
       const homePts = cfbSidePoints(offH, defA, hfa * 0.62);
       const awayPts = cfbSidePoints(offA, defH, -hfa * 0.38);
       modelTotal = homePts + awayPts;
-      modelMargin = homePts - awayPts;
+      matchupMargin = homePts - awayPts;
     } else if (modelMargin != null) {
       modelTotal = LIVE.CFB_AVG_TOTAL;
     }
   } else if (modelMargin != null) {
     const gap = Math.abs((hr.fpi || 0) - (ar.fpi || 0));
     modelTotal = LIVE.CFB_AVG_TOTAL + Math.min(6, gap * 0.08);
-  }
-  if (league === "cfb" && modelMargin != null && mktMargin != null) {
-    blendedMargin = mw * mktMargin + (1 - mw) * modelMargin;
-  } else if (league === "cfb" && modelMargin != null) {
-    blendedMargin = modelMargin;
   }
   const mktTotal = odds.total;
   const tw = league === "cfb" ? (LIVE.CFB_TOTAL_MARKET || 0.52) : mw;
@@ -2468,8 +2499,11 @@ function projectGame(game, ratings) {
     home_off: hr.off, home_def: hr.def, away_off: ar.off, away_def: ar.def,
     hfa: +hfa.toFixed(2),
     model_margin: modelMargin != null ? +modelMargin.toFixed(2) : null,
+    matchup_margin: matchupMargin != null ? +matchupMargin.toFixed(2) : null,
     market_margin: mktMargin != null ? +mktMargin.toFixed(2) : null,
     blended_margin: blendedMargin != null ? +blendedMargin.toFixed(2) : null,
+    rating_blend: league === "cfb" && blendedMargin != null ? +blendedMargin.toFixed(2) : null,
+    unit_total: league === "cfb" && blendedTotal != null ? +Number(blendedTotal).toFixed(1) : null,
     model_home_spread: modelMargin != null ? +(-modelMargin).toFixed(1) : null,
     hashmark_home_spread: blendedMargin != null ? +(-blendedMargin).toFixed(1) : null,
     win_prob_home: winHome != null ? +winHome.toFixed(4) : null,
@@ -2512,6 +2546,9 @@ function repriceCfbGame(g) {
   });
   const fresh = projectGame(g, ratings);
   Object.assign(p, fresh);
+  if (!p._gradeSnap && fresh.home_off != null && fresh.away_off != null) {
+    p._gradeSnap = { offH: fresh.home_off, defH: fresh.home_def, offA: fresh.away_off, defA: fresh.away_def, hfa: fresh.hfa };
+  }
   p.weather_adj_total = wx;
   if (wx && p.hashmark_total != null) {
     p.hashmark_total = +(Number(p.hashmark_total) + wx).toFixed(1);
