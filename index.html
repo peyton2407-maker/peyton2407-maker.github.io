@@ -393,7 +393,26 @@ option { background: #12201a; color: #e9f3ec; }
 .value-tile:hover{border-color:var(--turf)}
 .value-tile .odds{font-weight:800;color:var(--turf);font-size:18px}
 .value-tile .side{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--rose)}
-.value-tile h4{margin:4px 0 2px;font-size:16px;color:var(--ink)}
+.parlay-hero{display:grid;grid-template-columns:1fr;gap:12px;margin:0 0 16px}
+.parlay-card{
+  background:linear-gradient(160deg,#1d2a12 0%,#12201a 48%,#1a2418 100%);
+  border:1px solid rgba(240,180,41,.45);
+  border-radius:20px;padding:16px 18px;cursor:default;
+}
+.parlay-card h3{margin:0 0 6px;font-family:Syne,sans-serif;color:var(--sun)}
+.parlay-odds{
+  font-family:Syne,sans-serif;font-weight:800;font-size:clamp(36px,8vw,56px);
+  letter-spacing:-.04em;color:var(--turf);line-height:1;
+}
+.parlay-legs{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:6px}
+.parlay-legs li{
+  background:rgba(7,17,14,.45);border:1px solid var(--line);border-radius:12px;
+  padding:8px 10px;font-size:13px;color:var(--ink-soft);
+}
+.parlay-legs b{color:var(--ink)}
+@media (min-width:760px){
+  .parlay-hero{grid-template-columns:1.15fr 1fr 1fr}
+}
 
 .td-hero{display:grid;grid-template-columns:1fr;gap:12px;margin:0 0 16px}
 .td-hero-card{
@@ -502,18 +521,21 @@ option { background: #12201a; color: #e9f3ec; }
     <section id="valueSection" style="display:none">
       <div class="controls">
         <select id="valWhen">
-          <option value="soon">Tonight / this week</option>
+          <option value="soon">This week</option>
           <option value="mnf">Monday night only</option>
-          <option value="all">All upcoming NFL</option>
+          <option value="all">All upcoming</option>
         </select>
         <select id="valKind">
-          <option value="mix">Yards + anytime TD</option>
-          <option value="over">Overs the book is not on</option>
-          <option value="under">Unders the public is on</option>
-          <option value="td">Anytime TD plus-money</option>
+          <option value="mix">All value dogs</option>
+          <option value="td">Anytime / 2+ TD</option>
+          <option value="over">Overs</option>
+          <option value="under">Unders</option>
+          <option value="spread">Spread / total dogs</option>
         </select>
         <select id="valPos">
-          <option value="ALL">All positions</option>
+          <option value="ALL">NFL + CFB</option>
+          <option value="NFL">NFL only</option>
+          <option value="CFB">CFB only</option>
           <option value="QB">QB</option>
           <option value="RB">RB</option>
           <option value="WR">WR</option>
@@ -521,7 +543,8 @@ option { background: #12201a; color: #e9f3ec; }
         </select>
         <input id="valQ" placeholder="Search a player or game…"/>
       </div>
-      <p class="subn" id="valStamp" style="margin:0 0 10px">Props we give a real shot — books still posting them as dogs.</p>
+      <p class="subn" id="valStamp" style="margin:0 0 10px">Plus-money and unloved sides we still give a real shot — props, TDs, spreads, totals.</p>
+      <div class="parlay-hero" id="parlayHero"></div>
       <div class="stat-row" id="valStats"></div>
       <div class="prop-board" id="valBoard"></div>
     </section>
@@ -2707,69 +2730,234 @@ function dkFor(gameId, playerId) {
   const g = pack[String(gameId)] || {};
   return g[String(playerId)] || {};
 }
+function roundHalf(n) {
+  return Math.round(Number(n) * 2) / 2;
+}
+function coverHit(g, side) {
+  const p = g.proj || {};
+  const s = g.sim || {};
+  if (side === "home") return Number(s.cover_home != null ? s.cover_home : p.win_prob_home) || 0.5;
+  return Number(s.cover_away != null ? s.cover_away : p.win_prob_away) || 0.5;
+}
 function collectValueDogs() {
   const out = [];
+  const push = (r) => out.push(r);
   (DATA.games || []).forEach((g) => {
-    if (g.league !== "nfl" || g.completed) return;
-    (g.props || []).forEach((p) => {
-      if (p.pos === "K") return;
-      if (p.injury && p.injury !== "ACTIVE") return;
-      const dk = dkFor(g.id, p.id);
-      const star = isStarProp(p);
-      const tds = Number(p.rush_td || 0) + Number(p.rec_td || 0);
-      const pTd = 1 - Math.exp(-Math.max(0, tds));
-      if (pTd >= 0.32 && pTd <= 0.48) {
-        const mkt = toAmerican(Math.min(0.47, pTd * 0.9));
-        if (mkt >= 100) {
-          out.push({
-            name: p.name, pos: p.pos, team: p.team, opp: p.opp, game: g.short_name, game_id: g.id, date: g.date,
-            side: "YES", market: "anytime TD", line: null, proj: +tds.toFixed(2),
-            hit: +pTd.toFixed(3), odds: mkt, source: "model vs typical plus-money",
-            why: `${p.name} projects ${tds.toFixed(2)} TDs (${Math.round(pTd*100)}% to score). Anytime is still plus money — not the chalk.`,
-            kind: "td", score: pTd * 100 + mkt / 12
-          });
-        }
+    if (g.completed) return;
+    const p = g.proj || {};
+    const o = g.odds || {};
+    const league = g.league;
+
+    if (o.home_spread != null && p.edge_spread != null) {
+      const homeSp = Number(o.home_spread);
+      const awaySp = -homeSp;
+      const homeDog = homeSp > 0;
+      const awayDog = awaySp > 0;
+      const ch = coverHit(g, "home");
+      const ca = coverHit(g, "away");
+      if (homeDog && (p.edge_spread >= 0.35 || ch >= 0.52)) {
+        push({
+          name: `${g.home.abbr} ${homeSp > 0 ? "+" : ""}${homeSp}`, pos: "TEAM", team: g.home.abbr, opp: g.away.abbr,
+          game: g.short_name, game_id: g.id, date: g.date, league,
+          side: "DOG", market: "spread", line: homeSp, proj: p.hashmark_home_spread,
+          hit: +Math.max(0.51, ch).toFixed(3), odds: toAmerican(Math.min(0.49, Math.max(0.38, ch - 0.04))),
+          source: o.book || "market", why: `${g.home.abbr} are plus-money dogs. Edge ${fmt.signed ? fmt.signed(p.edge_spread) : p.edge_spread} · cover ${Math.round(ch*100)}%.`,
+          kind: "spread", score: ch * 90 + Math.abs(p.edge_spread || 0) * 8
+        });
       }
+      if (awayDog && (p.edge_spread <= -0.35 || ca >= 0.52)) {
+        push({
+          name: `${g.away.abbr} ${awaySp > 0 ? "+" : ""}${awaySp}`, pos: "TEAM", team: g.away.abbr, opp: g.home.abbr,
+          game: g.short_name, game_id: g.id, date: g.date, league,
+          side: "DOG", market: "spread", line: awaySp, proj: p.hashmark_home_spread != null ? -p.hashmark_home_spread : null,
+          hit: +Math.max(0.51, ca).toFixed(3), odds: toAmerican(Math.min(0.49, Math.max(0.38, ca - 0.04))),
+          source: o.book || "market", why: `${g.away.abbr} plus-money on the road. Cover ${Math.round(ca*100)}%.`,
+          kind: "spread", score: ca * 90 + Math.abs(p.edge_spread || 0) * 8
+        });
+      }
+    }
+    if (o.total != null && p.edge_total != null && Math.abs(p.edge_total) >= 0.6) {
+      const over = p.edge_total > 0;
+      const hit = over ? (g.sim && g.sim.over) || 0.5 + Math.min(0.12, p.edge_total / 20) : (g.sim && g.sim.under) || 0.5 + Math.min(0.12, -p.edge_total / 20);
+      if (hit >= 0.53) {
+        push({
+          name: `${over ? "OVER" : "UNDER"} ${o.total}`, pos: "TEAM", team: g.home.abbr, opp: g.away.abbr,
+          game: g.short_name, game_id: g.id, date: g.date, league,
+          side: over ? "OVER" : "UNDER", market: "total", line: Number(o.total), proj: p.hashmark_total,
+          hit: +hit.toFixed(3), odds: toAmerican(Math.min(0.49, hit - 0.03)),
+          source: o.book || "market", why: `Market ${o.total}, we have ${p.hashmark_total}. ${over ? "Over" : "Under"} is the unloved number.`,
+          kind: over ? "over" : "under", score: hit * 85 + Math.abs(p.edge_total) * 6
+        });
+      }
+    }
+
+    if (league !== "nfl") return;
+    (g.props || []).forEach((pl) => {
+      if (pl.pos === "K") return;
+      if (pl.injury && /OUT|IR|INACTIVE|SUSP|DOUBT/.test(String(pl.injury).toUpperCase())) return;
+      const dk = dkFor(g.id, pl.id);
+      const star = isStarProp(pl);
       Object.keys(VAL_SIG).forEach((k) => {
-        const mu = Number(p[k] || 0);
+        const mu = Number(pl[k] || 0);
         if (mu <= 0) return;
-        const line = dk[k];
-        if (line == null) return;
-        const po = pOver(mu, Number(line), VAL_SIG[k]);
+        const line = dk[k] != null ? Number(dk[k]) : roundHalf(mu) - (k === "rec" ? 0.5 : 0.5);
+        const hasDk = dk[k] != null;
+        const po = pOver(mu, line, VAL_SIG[k]);
         const pu = 1 - po;
-        const overDog = !star;
-        const underDog = star;
-        if (overDog && po >= 0.55 && po <= 0.70) {
-          const odds = toAmerican(0.46);
-          out.push({
-            name: p.name, pos: p.pos, team: p.team, opp: p.opp, game: g.short_name, game_id: g.id, date: g.date,
-            side: "OVER", market: VAL_LBL[k], line: Number(line), proj: +mu.toFixed(1),
-            hit: +po.toFixed(3), odds, source: "DraftKings",
-            why: `DK ${line} ${VAL_LBL[k]}. We have ${mu.toFixed(1)}. Not a star market — over is the dog, we still give it ${Math.round(po*100)}%.`,
-            kind: "over", score: po * 100 + 8
+        if (po >= 0.53 && po <= 0.74 && (!star || hasDk)) {
+          push({
+            name: pl.name, pos: pl.pos, team: pl.team, opp: pl.opp, game: g.short_name, game_id: g.id, date: g.date, league,
+            side: "OVER", market: VAL_LBL[k], line, proj: +mu.toFixed(1),
+            hit: +po.toFixed(3), odds: toAmerican(Math.min(0.49, po - 0.06)),
+            source: hasDk ? "DraftKings" : "vs typical number",
+            why: `${hasDk ? "DK" : "Typical"} ${line} ${VAL_LBL[k]}. We have ${mu.toFixed(1)} (${Math.round(po*100)}% over).`,
+            kind: "over", score: po * 100 + (hasDk ? 6 : 0)
           });
         }
-        if (underDog && pu >= 0.55 && pu <= 0.72) {
-          const odds = toAmerican(0.45);
-          out.push({
-            name: p.name, pos: p.pos, team: p.team, opp: p.opp, game: g.short_name, game_id: g.id, date: g.date,
-            side: "UNDER", market: VAL_LBL[k], line: Number(line), proj: +mu.toFixed(1),
-            hit: +pu.toFixed(3), odds, source: "DraftKings",
-            why: `Public leans ${p.name} over ${line} ${VAL_LBL[k]}. We project ${mu.toFixed(1)}, so the under is the unloved side at plus money.`,
-            kind: "under", score: pu * 100 + 10
+        if (pu >= 0.54 && pu <= 0.74 && (star || hasDk)) {
+          push({
+            name: pl.name, pos: pl.pos, team: pl.team, opp: pl.opp, game: g.short_name, game_id: g.id, date: g.date, league,
+            side: "UNDER", market: VAL_LBL[k], line, proj: +mu.toFixed(1),
+            hit: +pu.toFixed(3), odds: toAmerican(Math.min(0.49, pu - 0.06)),
+            source: hasDk ? "DraftKings" : "vs typical number",
+            why: `Public leans the over on ${pl.name}. We project ${mu.toFixed(1)} vs ${line} — under ${Math.round(pu*100)}%.`,
+            kind: "under", score: pu * 100 + 4
           });
         }
       });
     });
   });
+
+  if (typeof collectTdBoard === "function") {
+    collectTdBoard().forEach((r) => {
+      if (r.anytime >= 0.18 && r.anytime <= 0.55) {
+        const odds = toAmerican(Math.min(0.49, r.anytime * 0.92));
+        if (odds >= 100) {
+          push({
+            name: r.name, pos: r.pos, team: r.team, opp: r.opp, game: r.game, game_id: r.game_id, date: r.date, league: "nfl",
+            side: "YES", market: "anytime TD", line: null, proj: +r.lam.toFixed(2),
+            hit: +r.anytime.toFixed(3), odds, source: "TD desk",
+            why: `${r.lam.toFixed(2)} projected TDs · ${Math.round(r.anytime*100)}% anytime · still plus money.`,
+            kind: "td", score: r.anytime * 110 + 8
+          });
+        }
+      }
+      if (r.two >= 0.12 && r.two <= 0.42) {
+        const odds = toAmerican(Math.min(0.45, r.two * 0.9));
+        if (odds >= 140) {
+          push({
+            name: r.name, pos: r.pos, team: r.team, opp: r.opp, game: r.game, game_id: r.game_id, date: r.date, league: "nfl",
+            side: "YES", market: "2+ TDs", line: null, proj: +r.lam.toFixed(2),
+            hit: +r.two.toFixed(3), odds, source: "TD desk",
+            why: `${Math.round(r.two*100)}% to score twice. Longshot ticket, still a real shot.`,
+            kind: "td", score: r.two * 95
+          });
+        }
+      }
+    });
+  }
+
   out.sort((a, b) => b.score - a.score);
   const seen = new Set();
   return out.filter((r) => {
-    const k = r.name + r.side + r.market;
+    const k = `${r.name}|${r.side}|${r.market}|${r.game_id}`;
     if (seen.has(k)) return false;
     seen.add(k);
     return true;
   });
+}
+function collectParlayLegs() {
+  const legs = [];
+  (DATA.games || []).forEach((g) => {
+    if (g.completed) return;
+    const p = g.proj || {};
+    const o = g.odds || {};
+    if (p.pick && p.pick !== "NO PLAY" && Math.abs(p.edge_spread || 0) >= 0.7) {
+      const side = p.pick === g.home.abbr ? "home" : "away";
+      const hit = Math.max(0.54, coverHit(g, side));
+      legs.push({
+        label: p.pick_line || `${p.pick} spread`,
+        detail: `${g.away.abbr} @ ${g.home.abbr}`,
+        game_id: g.id, game: g.short_name, date: g.date,
+        hit, odds: toAmerican(Math.min(0.58, hit)),
+        key: "spread:" + g.id, score: Math.abs(p.edge_spread) * 10 + hit * 40
+      });
+    }
+    if (p.total_pick && p.total_pick !== "NO PLAY" && Math.abs(p.edge_total || 0) >= 0.9) {
+      const over = String(p.total_pick).startsWith("OVER");
+      const hit = over ? Number(g.sim?.over || 0.54) : Number(g.sim?.under || 0.54);
+      if (hit >= 0.54) {
+        legs.push({
+          label: p.total_pick,
+          detail: `${g.away.abbr} @ ${g.home.abbr} total`,
+          game_id: g.id, game: g.short_name, date: g.date,
+          hit, odds: toAmerican(Math.min(0.56, hit)),
+          key: "total:" + g.id, score: Math.abs(p.edge_total) * 8 + hit * 36
+        });
+      }
+    }
+  });
+  collectValueDogs().filter((r) => r.kind === "td" && r.hit >= 0.28 && r.hit <= 0.52).slice(0, 16).forEach((r) => {
+    legs.push({
+      label: `${r.name} ${r.market}`,
+      detail: r.game, game_id: r.game_id, game: r.game, date: r.date,
+      hit: r.hit, odds: r.odds, key: "td:" + r.name, score: r.score
+    });
+  });
+  collectValueDogs().filter((r) => (r.kind === "over" || r.kind === "under") && r.hit >= 0.57 && r.source === "DraftKings").slice(0, 12).forEach((r) => {
+    legs.push({
+      label: `${r.name} ${r.side} ${r.line} ${r.market}`,
+      detail: r.game, game_id: r.game_id, game: r.game, date: r.date,
+      hit: r.hit, odds: r.odds, key: "prop:" + r.name + r.market, score: r.score
+    });
+  });
+  legs.sort((a, b) => b.score - a.score);
+  const seen = new Set();
+  return legs.filter((l) => {
+    if (seen.has(l.key) || seen.has(l.game_id + l.label)) return false;
+    seen.add(l.key);
+    return true;
+  });
+}
+function parlayPayout(hits) {
+  const p = hits.reduce((a, h) => a * h, 1);
+  return { p, odds: toAmerican(Math.min(0.85, Math.max(0.04, p))) };
+}
+function buildParlays() {
+  const legs = collectParlayLegs();
+  const pickDiverse = (n) => {
+    const used = new Set();
+    const bag = [];
+    for (const l of legs) {
+      if (used.has(l.game_id) || used.has(l.key)) continue;
+      used.add(l.game_id);
+      bag.push(l);
+      if (bag.length >= n) break;
+    }
+    return bag;
+  };
+  const two = pickDiverse(2);
+  const three = pickDiverse(3);
+  const four = pickDiverse(4);
+  const pack = (title, bag) => {
+    if (bag.length < 2) return null;
+    const { p, odds } = parlayPayout(bag.map((l) => l.hit));
+    return { title, legs: bag, p, odds, label: odds > 0 ? "+" + odds : String(odds) };
+  };
+  return [pack("2-leg", two), pack("3-leg", three), pack("4-leg", four)].filter(Boolean);
+}
+function parlayCardHtml(r) {
+  return `<article class="parlay-card">
+    <div class="td-mkt">${r.title} · best board</div>
+    <div class="parlay-odds">${r.label}</div>
+    <div class="subn">Combined hit ${Math.round(r.p * 100)}% · fair parlay price</div>
+    <ul class="parlay-legs">${r.legs.map((l) => `<li><b>${l.label}</b><div class="subn">${l.detail} · ${Math.round(l.hit * 100)}% · ${l.odds > 0 ? "+" : ""}${l.odds}</div></li>`).join("")}</ul>
+  </article>`;
+}
+function parlayHeroHtml() {
+  const rows = buildParlays();
+  if (!rows.length) return "";
+  return rows.map(parlayCardHtml).join("");
 }
 function valueTileHtml(r) {
   const line = r.line == null ? r.market : `${r.side} ${r.line} ${r.market}`;
@@ -2793,11 +2981,11 @@ function valueTileHtml(r) {
   </article>`;
 }
 function valueStripHtml() {
-  const rows = collectValueDogs().slice(0, 6);
+  const rows = collectValueDogs().slice(0, 10);
   if (!rows.length) return "";
   return `<div class="card board-card" style="margin-bottom:14px">
     <h3 style="margin:0 0 8px">Value dogs · good shot, not the favorite</h3>
-    <p class="subn" style="margin:0 0 10px">DraftKings numbers vs our projection. These are plus-money / unloved sides we still give 55%+.</p>
+    <p class="subn" style="margin:0 0 10px">Plus-money TDs, unloved overs/unders, and dog spreads.</p>
     <div class="value-strip">${rows.map(valueTileHtml).join("")}</div>
   </div>`;
 }
@@ -2811,23 +2999,29 @@ function renderValueDogs() {
   const now = Date.now();
   let rows = collectValueDogs();
   if (when === "mnf") rows = rows.filter((r) => new Date(r.date).getDay() === 1 || /NYG @ LAR/.test(r.game));
-  if (when === "soon") rows = rows.filter((r) => new Date(r.date) - now < 5 * 86400000);
-  if (kind !== "mix") rows = rows.filter((r) => r.kind === kind || (kind === "td" && r.kind === "td"));
-  if (pos !== "ALL") rows = rows.filter((r) => r.pos === pos);
+  if (when === "soon") rows = rows.filter((r) => new Date(r.date) - now < 9 * 86400000);
+  if (kind === "td") rows = rows.filter((r) => r.kind === "td");
+  else if (kind === "spread") rows = rows.filter((r) => r.kind === "spread" || r.market === "total");
+  else if (kind !== "mix") rows = rows.filter((r) => r.kind === kind);
+  if (pos === "NFL") rows = rows.filter((r) => (r.league || "nfl") === "nfl");
+  else if (pos === "CFB") rows = rows.filter((r) => r.league === "cfb");
+  else if (pos !== "ALL") rows = rows.filter((r) => r.pos === pos);
   if (q) rows = rows.filter((r) => `${r.name} ${r.team} ${r.game} ${r.market}`.toLowerCase().includes(q));
+  const hero = document.getElementById("parlayHero");
+  if (hero) hero.innerHTML = parlayHeroHtml() || `<div class="empty">Parlay desk is building from this week's best legs.</div>`;
   const stats = document.getElementById("valStats");
   if (stats) stats.innerHTML = `
-    <div class="stat"><b>${rows.length}</b><span>value dogs in this filter</span></div>
-    <div class="stat"><b>${rows.filter(r=>r.kind==="td").length}</b><span>anytime TD plus-money</span></div>
-    <div class="stat"><b>${rows.filter(r=>r.source==="DraftKings").length}</b><span>live DK numbers</span></div>
-    <div class="stat"><b>${rows[0] ? rows[0].name.split(" ").slice(-1)[0] : "—"}</b><span>top unloved play</span></div>`;
+    <div class="stat"><b>${rows.length}</b><span>value tickets in this filter</span></div>
+    <div class="stat"><b>${rows.filter(r=>r.kind==="td").length}</b><span>TD plus-money</span></div>
+    <div class="stat"><b>${rows.filter(r=>r.kind==="spread").length}</b><span>spread / dog sides</span></div>
+    <div class="stat"><b>${rows[0] ? (rows[0].odds>0?"+"+rows[0].odds:rows[0].odds) : "—"}</b><span>top ticket price</span></div>`;
   const stamp = document.getElementById("valStamp");
-  if (stamp) stamp.textContent = "Hit chance 55–70% · market still plus money / not the public favorite. DK lines on posted games; anytime TDs from our TD projection.";
-  box.innerHTML = rows.slice(0, 36).map(valueTileHtml).join("") || `<div class="empty">No plus-money value props in this filter yet. DK posts player numbers closer to kickoff.</div>`;
+  if (stamp) stamp.textContent = "Anytime TDs, 2+ TDs, overs/unders, and plus-money spreads/totals. DK when posted; otherwise vs a typical number. Parlays use different games.";
+  box.innerHTML = rows.slice(0, 72).map(valueTileHtml).join("") || `<div class="empty">No value dogs in this filter. Flip NFL + CFB or All upcoming.</div>`;
   box.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 async function pullDkLines() {
-  const games = (DATA.games || []).filter((g) => g.league === "nfl" && !g.completed).slice(0, 6);
+  const games = (DATA.games || []).filter((g) => g.league === "nfl" && !g.completed);
   const KEEP = {
     "Total Passing Yards (incl. overtime)": "pass_yds",
     "Total Rushing Yards (incl. overtime)": "rush_yds",
@@ -3540,10 +3734,11 @@ function renderBoard() {
     return;
   }
   const table = projectionTable(games);
+  const parlays = (view === "nfl" || view === "live" || view === "cfb") ? `<div class="board-card">${parlayHeroHtml()}</div>` : "";
   const desk = (view === "nfl" || view === "cfb" || view === "live") ? deskStripHtml(games) : "";
   const cards = (view === "cfb" ? games.slice(0, 25) : games).map(card).join("");
-  const dogs = (view === "nfl" || view === "live") ? valueStripHtml() : "";
-  $("#board").innerHTML = table + desk + dogs + cards;
+  const dogs = (view === "nfl" || view === "live" || view === "cfb") ? valueStripHtml() : "";
+  $("#board").innerHTML = table + parlays + desk + dogs + cards;
   $$("#board .game").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
   $$("#board .boardtable tr[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
   $$("#board .desk-strip tr[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
