@@ -528,6 +528,10 @@ option { background: #12201a; color: #e9f3ec; }
 .log td.l{text-align:left;font-weight:700}
 .log .up{color:#8dcea0;font-weight:800}
 .log .dn{color:#e08b8b;font-weight:800}
+.side-top{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 0}
+.side-top div{padding:10px 12px;border-radius:12px;background:#162016;border:1px solid var(--line)}
+.side-top b{display:block;margin-top:2px;font-size:18px}
+
 
 
 .cfb-read{margin-top:12px;display:grid;gap:8px}
@@ -5245,6 +5249,35 @@ function paceOf(rows, key) {
   if (!vals.length) return null;
   return vals.reduce((s, n) => s + n, 0) / vals.length;
 }
+
+function sideBySide(p) {
+  const g = (DATA.games || []).find((x) => String(x.id) === String(p.game_id));
+  const proj = (g && g.proj) || {};
+  const price = (window.__PRICE || {})[String(p.game_id)] || null;
+  const dk = (key) => { const n = dkLine(p, key); return n != null ? n : "—"; };
+  const rows = [];
+  const add = (label, ours, book) => rows.push(`<tr><td class="l">${label}</td><td><b>${ours}</b></td><td><b>${book}</b></td></tr>`);
+  if (p.pos === "QB") {
+    add("Pass yards", cell(p.pass_yds, 0), dk("pass_yds"));
+    add("Pass touchdowns", cell(p.pass_td, 1), dk("pass_td"));
+    add("Rush yards", cell(p.rush_yds, 0), dk("rush_yds"));
+    add("Interceptions", cell(p.pass_int, 1), dk("pass_int"));
+  } else if (p.pos === "RB") {
+    add("Rush yards", cell(p.rush_yds, 0), dk("rush_yds"));
+    add("Rush attempts", cell(p.rush_att, 1), dk("rush_att"));
+    add("Receiving yards", cell(p.rec_yds, 0), dk("rec_yds"));
+    add("Receptions", cell(p.rec, 1), dk("rec"));
+  } else {
+    add("Receiving yards", cell(p.rec_yds, 0), dk("rec_yds"));
+    add("Receptions", cell(p.rec, 1), dk("rec"));
+  }
+  if (g) {
+    add("Spread", `${g.home.abbr} ${fmt.signed(proj.hashmark_home_spread)}`, price ? `${price.spread || "—"} (${american(price.homeSpread) || "—"})` : "—");
+    add("Total", cell(proj.hashmark_total, 1), price ? `${price.total ?? "—"} · over ${american(price.over) || "—"} · under ${american(price.under) || "—"}` : "—");
+  }
+  return `<table class="ladder"><thead><tr><th></th><th>Double Gs</th><th>DraftKings</th></tr></thead><tbody>${rows.join("")}</tbody></table>`;
+}
+
 function unplayedTable(p, sched, season) {
   const left = (sched || []).filter((g) => !g.played);
   if (!left.length) return "";
@@ -5265,11 +5298,10 @@ function unplayedTable(p, sched, season) {
     } else {
       proj = `2026 pace ${cell(paceOf(season, "rush_yds"), 0)} rush · ${cell(paceOf(season, "rec"), 1)} rec · ${cell(paceOf(season, "rec_yds"), 0)} rec yds`;
     }
-    return `<tr><td>${g.week || "—"}</td><td class="l">${g.home ? g.opp : "@" + g.opp}</td><td>${fmt.when(g.date)}</td><td>${book}</td><td class="l">${proj}</td></tr>`;
+    return `<tr><td>${g.week || "—"}</td><td class="l">${g.home ? g.opp : "@" + g.opp}</td><td>${fmt.when(g.date)}</td></tr>`;
   }).join("");
   return `<h3 style="margin:18px 0 6px">Unplayed games</h3>
-    <p class="subn" style="margin:0 0 8px">The DraftKings price is the real spread and total for that game. Double Gs is the full projection for the week on this board. Later weeks use his 2026 average so far. That is not a new matchup number.</p>
-    <div class="log-wrap"><table class="log"><thead><tr><th>WK</th><th>OPP</th><th>WHEN</th><th>DRAFTKINGS PRICE</th><th>PROJECTION</th></tr></thead><tbody>${body}</tbody></table></div>`;
+    <div class="log-wrap"><table class="log"><thead><tr><th>WK</th><th>OPP</th><th>WHEN</th></tr></thead><tbody>${body}</tbody></table></div>`;
 }
 
 function findProp(id, gameId) {
@@ -5289,9 +5321,7 @@ function ladderTable(m, season, vs) {
     const fmtH = (h) => h ? `${h.hits}/${h.n}` : "—";
     return `<tr><td>${side} ${line}</td><td>${fmtH(yr)}</td><td>${fmtH(opp)}</td><td>${Math.round(chance * 100)}%</td></tr>`;
   }).join("");
-  const dk = typeof dkLine === "function" ? dkLine(m.player || {}, m.key) : null;
-  const dkTxt = dk != null ? `DraftKings <b>${dk}</b>` : "DraftKings line not posted";
-  return `<h3 style="margin:14px 0 0">${m.label}</h3><p class="subn" style="margin:4px 0 0">Double Gs <b>${Number(m.mean).toFixed(1)}</b> · ${dkTxt}. Game prices are in the unplayed table. The prop juice is not posted with the yard line.</p>${head}${body}</tbody></table>`;
+  return `<h3 style="margin:14px 0 0">${m.label}</h3>${head}${body}</tbody></table>`;
 }
 function bestDoubleG(markets, season, vs) {
   let best = null;
@@ -5350,6 +5380,7 @@ async function openPlayer(id, gameId) {
       </div></div>
       <button class="close" id="closeModal">Close</button>
     </div>
+    ${sideBySide(p)}
     <p class="subn">${err || seasonLine}</p>
     ${markets.map((m) => ladderTable(m, season, vs)).join("")}
     ${gameLogTable(p, rows)}
@@ -5538,12 +5569,11 @@ function renderProps() {
         </div>
         <div class="pick-score">${p._score.toFixed(1)}</div>
       </div>
-      <div class="prop-stats">
-        <div><span class="lbl">This week</span><b>${line}</b></div>
-        <div><span class="lbl">Weather</span><b>${p.indoor ? "Dome" : (p.weather || "—")}${p.temp_f != null && !p.indoor ? " · " + Math.round(p.temp_f) + "°" : ""}</b></div>
+      <div class="side-top">
+        <div><span class="lbl">Double Gs</span><b>${line}</b></div>
+        <div><span class="lbl">DraftKings</span><b>${dk != null ? dk : "—"}</b></div>
       </div>
-      ${ladder}
-      <div class="dg-box"><div class="lbl">Double Gs</div><b>${pick}</b><p class="subn" style="margin:6px 0 0">DraftKings ${dk != null ? dk : "loading the line"} · tap for the weekly log and vs ${p.opp}.</p></div>
+      <div class="dg-box"><div class="lbl">Double Gs</div><b>${pick}</b></div>
     </article>`;
   }).join("");
   $$("#propBoard .prop-card").forEach((el) => el.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); openPlayer(el.dataset.player, el.dataset.id); }));
