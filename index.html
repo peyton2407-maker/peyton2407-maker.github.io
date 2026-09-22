@@ -193,10 +193,24 @@ button { touch-action: manipulation; cursor: pointer; }
   min-height:52px;
   font-weight:700;
   line-height:1.2;
+  text-decoration:none;
+  display:flex;align-items:center;
+  cursor:pointer;
 }
 #tabBar .tab.active{background:var(--turf);color:#08110e;border-color:var(--turf);font-weight:800}
+.slide-wrap{display:grid;grid-template-columns:36px minmax(0,1fr) 36px;gap:8px;align-items:center}
+.tile-row.slide{
+  display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:var(--turf) transparent;
+  padding:2px 2px 8px;-webkit-overflow-scrolling:touch;
+}
+.tile-row.slide .tab{flex:0 0 150px;scroll-snap-align:start}
+.slide-btn{
+  width:36px;height:36px;border-radius:999px;border:1px solid var(--line);
+  background:var(--card);color:var(--ink);font-size:22px;line-height:1;
+}
+.slide-btn:hover{border-color:var(--turf);color:var(--turf)}
 #parlayTabs.tabs{display:flex;flex-wrap:wrap;gap:8px;overflow:visible;padding:0}
-.home-jumps{align-items:stretch}
 .home-jump{display:flex;flex-direction:column;justify-content:space-between;min-height:96px}
 @media (min-width:760px){
   .tile-row{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -535,44 +549,42 @@ option { background: #12201a; color: #e9f3ec; }
     <div class="tabs-wrap">
       <nav class="tabs" id="tabBar">
         <div class="tile-group">
-          <p class="tile-label">Start</p>
+          <p class="tile-label">NFL</p>
+          <div class="slide-wrap">
+            <button class="slide-btn" type="button" data-slide="nflTiles" data-dir="-1" aria-label="NFL tiles left">‹</button>
+            <div class="tile-row slide" id="nflTiles">
+              <a class="tab" href="#nfl" data-view="nfl">NFL Week 3</a>
+              <a class="tab" href="#live" data-view="live">Live scores</a>
+              <a class="tab" href="#props" data-view="props">Player stats</a>
+              <a class="tab" href="#tds" data-view="tds">Who scores TDs</a>
+              <a class="tab" href="#value" data-view="value">Underdogs</a>
+              <a class="tab" href="#nflwx" data-view="nflwx">NFL weather</a>
+              <a class="tab" href="#nflinj" data-view="nflinj">NFL injuries</a>
+            </div>
+            <button class="slide-btn" type="button" data-slide="nflTiles" data-dir="1" aria-label="NFL tiles right">›</button>
+          </div>
+        </div>
+        <div class="tile-group">
+          <p class="tile-label">College</p>
+          <div class="slide-wrap">
+            <button class="slide-btn" type="button" data-slide="cfbTiles" data-dir="-1" aria-label="College tiles left">‹</button>
+            <div class="tile-row slide" id="cfbTiles">
+              <a class="tab" href="#cfb" data-view="cfb">College football</a>
+              <a class="tab" href="#cfbpicks" data-view="cfbpicks">College picks</a>
+              <a class="tab" href="#cfbwx" data-view="cfbwx">College weather</a>
+              <a class="tab" href="#cfbinj" data-view="cfbinj">College injuries</a>
+            </div>
+            <button class="slide-btn" type="button" data-slide="cfbTiles" data-dir="1" aria-label="College tiles right">›</button>
+          </div>
+        </div>
+        <div class="tile-group">
+          <p class="tile-label">Both</p>
           <div class="tile-row">
             <a class="tab active" href="#home" data-view="home">Home</a>
             <a class="tab" href="#parlay" data-view="parlay">Parlays</a>
             <a class="tab" href="#card" data-view="card">This week's card</a>
             <a class="tab" href="#score" data-view="score">Scorecard</a>
-          </div>
-        </div>
-        <div class="tile-group">
-          <p class="tile-label">Games</p>
-          <div class="tile-row">
-            <a class="tab" href="#nfl" data-view="nfl">NFL Week 3</a>
-            <a class="tab" href="#live" data-view="live">Live scores</a>
-            <a class="tab" href="#cfb" data-view="cfb">College football</a>
             <a class="tab" href="#all" data-view="all">All games</a>
-          </div>
-        </div>
-        <div class="tile-group">
-          <p class="tile-label">Picks</p>
-          <div class="tile-row">
-            <a class="tab" href="#props" data-view="props">Player stats</a>
-            <a class="tab" href="#tds" data-view="tds">Who scores TDs</a>
-            <a class="tab" href="#value" data-view="value">Underdogs</a>
-            <a class="tab" href="#cfbpicks" data-view="cfbpicks">College picks</a>
-          </div>
-        </div>
-        <div class="tile-group">
-          <p class="tile-label">Reports</p>
-          <div class="tile-row">
-            <a class="tab" href="#nflwx" data-view="nflwx">NFL weather</a>
-            <a class="tab" href="#cfbwx" data-view="cfbwx">College weather</a>
-            <a class="tab" href="#nflinj" data-view="nflinj">NFL injuries</a>
-            <a class="tab" href="#cfbinj" data-view="cfbinj">College injuries</a>
-          </div>
-        </div>
-        <div class="tile-group">
-          <p class="tile-label">More</p>
-          <div class="tile-row trio">
             <a class="tab" href="#alerts" data-view="alerts">Alerts</a>
             <a class="tab" href="#ratings" data-view="ratings">Team rankings</a>
             <a class="tab" href="#model" data-view="model">How it works</a>
@@ -5819,11 +5831,14 @@ async function boot() {
     if (h && h !== view) setView(h);
   });
   (function bindTabSlider() {
-    const bar = document.getElementById("tabBar");
-    if (!bar) return;
-    const go = (dir) => bar.scrollBy({ left: dir * Math.min(280, bar.clientWidth * 0.55), behavior: "smooth" });
-    document.getElementById("tabsPrev")?.addEventListener("click", () => go(-1));
-    document.getElementById("tabsNext")?.addEventListener("click", () => go(1));
+    document.querySelectorAll(".slide-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const row = document.getElementById(btn.getAttribute("data-slide"));
+        if (!row) return;
+        const dir = Number(btn.getAttribute("data-dir")) || 1;
+        row.scrollBy({ left: dir * Math.min(320, row.clientWidth * 0.8), behavior: "smooth" });
+      });
+    });
   })();
   $("#q").addEventListener("input", renderBoard);
   $("#openOnly").addEventListener("change", renderBoard);
