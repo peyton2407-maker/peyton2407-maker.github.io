@@ -568,7 +568,6 @@ option { background: #12201a; color: #e9f3ec; }
       <nav class="tabs" id="tabBar">
       <a class="tab active" href="#home" data-view="home">Home</a>
       <a class="tab" href="#parlay" data-view="parlay">Parlays</a>
-      <a class="tab" href="#propp" data-view="propp">Player prop parlays</a>
       <a class="tab" href="#card" data-view="card">This week's card</a>
       <a class="tab" href="#score" data-view="score">Scorecard</a>
       <a class="tab" href="#alerts" data-view="alerts">Alerts</a>
@@ -599,7 +598,6 @@ option { background: #12201a; color: #e9f3ec; }
       </div>
       <div class="home-jumps" id="homeJumps"></div>
       <article class="home-feature" id="homeFeature"></article>
-      <div class="home-prop-banner" id="homePropBanner"></div>
       <div class="home-split">
         <div>
           <div class="home-label">Today and up next</div>
@@ -3533,7 +3531,7 @@ function renderParlays() {
     return;
   }
   if (stamp) stamp.textContent = league === "nfl"
-    ? "NFL game parlays. Player props are on the Player prop parlays tab."
+    ? "NFL game parlays. Switch to Player prop parlays on this same page for 2-leg and 3-leg player tickets."
     : "College game parlays. Player props are NFL-only — college books don’t post enough player numbers.";
   hero.innerHTML = parlayHeroHtml(league) || `<div class="empty">Not enough ${league === "nfl" ? "NFL" : "college"} game legs yet.</div>`;
   hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
@@ -5392,8 +5390,7 @@ function renderHome() {
   const jumps = document.getElementById("homeJumps");
   if (jumps) {
     jumps.innerHTML = `
-      <a class="home-jump hot" href="#parlay" data-jump="parlay"><b>Parlays</b><span>Tap here — NFL and college tickets</span></a>
-      <a class="home-jump hot" href="#parlay" data-jump="parlay" data-lg="props"><b>Player prop parlays</b><span>2-leg and 3-leg player tickets — tap here</span></a>
+      <a class="home-jump hot" href="#parlay" data-jump="parlay"><b>Parlays</b><span>Game tickets and player props, all in one place</span></a>
       <a class="home-jump" href="#card" data-jump="card"><b>This week's card</b><span>${(card.legs || []).length} plays ready to lock</span></a>
       <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l : "0-0"} locked this season</span></a>
       <a class="home-jump" href="#nfl" data-jump="nfl"><b>NFL board</b><span>Week 3 sides, totals, weather</span></a>`;
@@ -5423,20 +5420,6 @@ function renderHome() {
       <div class="home-pick"><b>${pick}</b><span class="subn">${(p.total_pick && p.total_pick !== "NO PLAY") ? p.total_pick : ""}</span></div>`;
     feat.onclick = () => openGame(g.id);
   } else if (feat) feat.className = "home-feature";
-  const banner = document.getElementById("homePropBanner");
-  if (banner && typeof buildPropParlays === "function") {
-    const rows = buildPropParlays();
-    const twos = rows.filter((r) => r.n === 2).slice(0, 2);
-    const threes = rows.filter((r) => r.n === 3).slice(0, 2);
-    banner.innerHTML = `<div class="home-label">Player prop parlays <a href="#parlay" data-jump="parlay" data-lg="props" style="color:var(--turf)">see all →</a></div>
-      <div class="parlay-hero">${[...twos, ...threes].map(propParlayCardHtml).join("")}</div>`;
-    banner.querySelectorAll("[data-jump]").forEach((el) => el.addEventListener("click", (e) => {
-      e.preventDefault();
-      window.__parlayLg = "props";
-      setView("parlay");
-    }));
-    banner.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
-  }
   const hp = document.getElementById("homeParlay");
   if (hp) {
     const tile = (lg, row) => {
@@ -5557,6 +5540,8 @@ function renderAlerts() {
 function setView(next) {
   const allowed = {home:1,parlay:1,propp:1,card:1,score:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1};
   if (!allowed[next]) next = "home";
+  const wantProps = next === "propp";
+  if (wantProps) { window.__parlayLg = "props"; next = "parlay"; }
   view = next;
   try { if (location.hash.replace("#","") !== next) history.replaceState(null, "", "#" + next); } catch (e) {}
   if (next === "cfb" && $("#openOnly").value === "upcoming") {
@@ -5595,8 +5580,11 @@ function setView(next) {
   if (next === "score") renderScorecard();
   if (next === "alerts") renderAlerts();
   if (next === "value") renderValueDogs();
-  if (next === "parlay") { if (!window.__parlayLg || window.__parlayLg === "props") window.__parlayLg = "nfl"; renderParlays(); }
-  if (next === "propp") { window.__parlayLg = "props"; renderParlays(); }
+  if (next === "parlay") {
+    if (wantProps) window.__parlayLg = "props";
+    else if (!window.__parlayLg) window.__parlayLg = "nfl";
+    renderParlays();
+  }
   if (next === "tds") renderTdDesk();
   if (next === "nflinj" || next === "cfbinj") {
     const lg = next === "nflinj" ? "nfl" : "cfb";
@@ -5633,16 +5621,25 @@ async function boot() {
   }
   $("#stamp").textContent = `Snapshot ${fmt.when(DATA.generated_at)}`;
   try { if (typeof enrichPowerRankings === "function") enrichPowerRankings(); } catch (e) {}
-  $$(".tab").forEach((t) => t.addEventListener("click", (e) => { e.preventDefault(); setView(t.dataset.view); }));
+  $$(".tab").forEach((t) => t.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (t.dataset.view === "parlay") window.__parlayLg = "nfl";
+    setView(t.dataset.view);
+  }));
   document.addEventListener("click", (e) => {
     const jump = e.target.closest("[data-jump]");
     if (jump && jump.getAttribute("data-jump")) {
       if (jump.getAttribute("data-lg")) window.__parlayLg = jump.getAttribute("data-lg");
+      else if (jump.getAttribute("data-jump") === "parlay") window.__parlayLg = "nfl";
       setView(jump.getAttribute("data-jump"));
       return;
     }
     const tab = e.target.closest(".tab");
-    if (tab && tab.dataset.view) { e.preventDefault(); setView(tab.dataset.view); }
+    if (tab && tab.dataset.view) {
+      e.preventDefault();
+      if (tab.dataset.view === "parlay") window.__parlayLg = "nfl";
+      setView(tab.dataset.view);
+    }
   });
   window.addEventListener("hashchange", () => {
     const h = (location.hash || "").replace("#","");
