@@ -5102,10 +5102,35 @@ const DK_KEYS = {
   "Total Receiving Yards (incl. overtime)": "rec_yds",
   "Total Receptions (incl. overtime)": "rec"
 };
+const DK_MILE = {
+  "Passing Yards Milestones": "pass_yds",
+  "Passing Touchdown Milestones": "pass_td",
+  "Rushing Yards Milestones": "rush_yds",
+  "Receiving Yards Milestones": "rec_yds",
+  "Receptions Milestones": "rec",
+  "Rushing Attempts Milestones": "rush_att",
+  "Passing Attempts Milestones": "pass_att",
+  "Passing Completions Milestones": "cmp"
+};
 function dkLine(p, key) {
   const book = (window.__DK || {})[String(p.game_id || "")] || {};
   const row = book[String(p.id)] || {};
-  return row[key] != null ? row[key] : null;
+  return row[key] != null && typeof row[key] !== "object" ? row[key] : null;
+}
+function dkAlt(p, key, line) {
+  const book = (window.__DK || {})[String(p.game_id || "")] || {};
+  const row = book[String(p.id)] || {};
+  const main = typeof row[key] !== "object" ? row[key] : null;
+  if (main != null && Math.abs(Number(main) - Number(line)) < 0.6) return String(main);
+  const alts = (row.alts && row.alts[key]) || [];
+  const target = Number(line) + 0.5;
+  let best = null, gap = 99;
+  alts.forEach((v) => {
+    const d = Math.abs(Number(v) - target);
+    if (d < gap) { gap = d; best = Number(v); }
+  });
+  if (best == null || gap > (key === "pass_yds" || key === "rush_yds" || key === "rec_yds" ? 8 : 0.6)) return "—";
+  return Math.abs(best - Math.round(best)) < 0.01 ? Math.round(best) + "+" : String(best);
 }
 async function loadDkForGame(gameId) {
   window.__DK = window.__DK || {};
@@ -5116,14 +5141,20 @@ async function loadDkForGame(gameId) {
   try {
     const payload = await getJSON("https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/" + id + "/competitions/" + id + "/odds/100/propBets?lang=en&region=us&limit=1000");
     (payload.items || []).forEach((it) => {
-      const key = DK_KEYS[(it.type || {}).name];
+      const name = (it.type || {}).name;
+      const key = DK_KEYS[name] || DK_MILE[name];
       if (!key) return;
       const ref = (it.athlete && it.athlete.$ref) || "";
       const m = ref.match(/athletes\/(\d+)/);
       const tgt = it.current && it.current.target && it.current.target.value;
       if (!m || tgt == null) return;
       bag[m[1]] = bag[m[1]] || {};
-      if (bag[m[1]][key] == null) bag[m[1]][key] = Number(tgt);
+      if (DK_KEYS[name] && bag[m[1]][key] == null) bag[m[1]][key] = Number(tgt);
+      if (DK_MILE[name]) {
+        bag[m[1]].alts = bag[m[1]].alts || {};
+        bag[m[1]].alts[key] = bag[m[1]].alts[key] || [];
+        bag[m[1]].alts[key].push(Number(tgt));
+      }
     });
   } catch (e) {}
   window.__DK[id] = bag;
@@ -5312,14 +5343,15 @@ function findProp(id, gameId) {
   return hit;
 }
 function ladderTable(m, season, vs) {
-  const head = `<table class="ladder"><thead><tr><th>${m.label}</th><th>This year</th><th>Vs opponent</th><th>Our chance</th></tr></thead><tbody>`;
+  const head = `<table class="ladder"><thead><tr><th>${m.label}</th><th>This year</th><th>Vs opponent</th><th>Our chance</th><th>DraftKings</th></tr></thead><tbody>`;
   const body = m.lines.map((line) => {
     const yr = hitRate(season, m.key, line, m.under);
     const opp = hitRate(vs, m.key, line, m.under);
     const chance = ourChance(m.mean, line, m.key, m.under);
     const side = m.under ? "under" : "over";
     const fmtH = (h) => h ? `${h.hits}/${h.n}` : "—";
-    return `<tr><td>${side} ${line}</td><td>${fmtH(yr)}</td><td>${fmtH(opp)}</td><td>${Math.round(chance * 100)}%</td></tr>`;
+    const book = dkAlt(m.player || {}, m.key, line);
+    return `<tr><td>${side} ${line}</td><td>${fmtH(yr)}</td><td>${fmtH(opp)}</td><td>${Math.round(chance * 100)}%</td><td>${book}</td></tr>`;
   }).join("");
   return `<h3 style="margin:14px 0 0">${m.label}</h3>${head}${body}</tbody></table>`;
 }
