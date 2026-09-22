@@ -515,6 +515,12 @@ option { background: #12201a; color: #e9f3ec; }
 .face-ph{position:absolute;inset:0;display:grid;place-items:center;font-family:Syne,sans-serif;font-weight:800;color:var(--turf);font-size:18px}
 .who-row{display:flex;gap:10px;align-items:center}
 .prop-why{margin:8px 0 0;color:var(--ink);font-size:15px;line-height:1.45}
+.ladder{width:100%;border-collapse:collapse;margin:8px 0 16px}
+.ladder th,.ladder td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);font-size:14px}
+.ladder th{color:var(--muted);font-size:12px;font-weight:700}
+.dg-box{margin-top:8px;padding:14px;border-radius:16px;border:1px solid rgba(240,180,41,.45);background:#1a2214}
+.dg-box h3{margin:0 0 6px;font-family:Syne,sans-serif}
+
 .cfb-read{margin-top:12px;display:grid;gap:8px}
 .cfb-read p{margin:0;font-size:16px;line-height:1.45;color:var(--ink)}
 .cfb-read b{color:var(--turf)}
@@ -4970,6 +4976,186 @@ function propsTable(g) {
     </div>`;
 }
 
+
+function propSigma(key) {
+  if (key === "pass_yds") return 62;
+  if (key === "rush_yds") return 24;
+  if (key === "rec_yds") return 26;
+  if (key === "rec") return 1.6;
+  if (key === "pass_int") return 0.7;
+  return 0.85;
+}
+function yardLines(mean) {
+  const mid = Math.round(Number(mean) / 10) * 10 - 0.5;
+  return [-40, -20, 0, 20, 40].map((d) => mid + d).filter((n) => n >= 9.5);
+}
+function countLines(mean) {
+  const mid = Math.max(0.5, Math.round(Number(mean)) - 0.5);
+  return [mid - 1, mid, mid + 1].filter((n) => n >= 0.5);
+}
+function marketsFor(p) {
+  const rows = [];
+  const yards = (key, label, mean) => { if (Number(mean) >= 8) rows.push({ key, label, mean: Number(mean), lines: yardLines(mean), under: false }); };
+  const counts = (key, label, mean, lines) => { if (Number(mean) > 0.05) rows.push({ key, label, mean: Number(mean), lines, under: key === "pass_int" }); };
+  if (p.pos === "QB") {
+    yards("pass_yds", "Pass yards", p.pass_yds);
+    counts("pass_td", "Pass touchdowns", p.pass_td, [0.5, 1.5, 2.5]);
+    yards("rush_yds", "Rush yards", p.rush_yds);
+    counts("pass_int", "Interceptions", p.pass_int, [0.5, 1.5]);
+  } else if (p.pos === "RB") {
+    yards("rush_yds", "Rush yards", p.rush_yds);
+    yards("rec_yds", "Receiving yards", p.rec_yds);
+    counts("rec", "Receptions", p.rec, countLines(p.rec || 0));
+    counts("td", "Anytime touchdown", Number(p.rush_td || 0) + Number(p.rec_td || 0), [0.5]);
+  } else {
+    yards("rec_yds", "Receiving yards", p.rec_yds);
+    counts("rec", "Receptions", p.rec, countLines(p.rec || 0));
+    counts("td", "Anytime touchdown", Number(p.rec_td || 0) + Number(p.rush_td || 0), [0.5]);
+  }
+  return rows;
+}
+function parseGamelog(d, season) {
+  const cats = d.categories || [];
+  const events = d.events || {};
+  const rows = [];
+  (d.seasonTypes || []).forEach((st) => {
+    (st.categories || []).forEach((cat) => {
+      if (cat.type && cat.type !== "event") return;
+      (cat.events || []).forEach((ev) => {
+        const meta = events[String(ev.eventId)] || {};
+        const stats = ev.stats || [];
+        const bag = { id: String(ev.eventId), season, opp: (meta.opponent && meta.opponent.abbreviation) || "", week: meta.week, date: meta.gameDate || "" };
+        let i = 0;
+        cats.forEach((c) => {
+          const slice = stats.slice(i, i + (c.count || 0));
+          const num = (idx) => { const n = parseFloat(slice[idx]); return Number.isFinite(n) ? n : null; };
+          if (c.name === "passing") { bag.pass_yds = num(2); bag.pass_td = num(5); bag.pass_int = num(6); }
+          else if (c.name === "rushing") { bag.rush_yds = num(1); bag.rush_td = num(3); }
+          else if (c.name === "receiving") { bag.rec = num(0); bag.rec_yds = num(2); bag.rec_td = num(4); }
+          i += c.count || 0;
+        });
+        bag.td = (Number(bag.rush_td) || 0) + (Number(bag.rec_td) || 0);
+        rows.push(bag);
+      });
+    });
+  });
+  return rows;
+}
+function sameOpp(a, b) {
+  const map = { WSH: "WAS", JAC: "JAX" };
+  const n = (x) => map[String(x || "").toUpperCase()] || String(x || "").toUpperCase();
+  return n(a) && n(a) === n(b);
+}
+function hitRate(rows, key, line, under) {
+  const vals = rows.map((r) => Number(r[key])).filter((v) => Number.isFinite(v));
+  if (!vals.length) return null;
+  const hits = vals.filter((v) => under ? v < line : v > line).length;
+  return { hits, n: vals.length, pct: hits / vals.length };
+}
+function ourChance(mean, line, key, under) {
+  const z = (line - Number(mean)) / propSigma(key);
+  const over = 1 - (typeof normCdf === "function" ? normCdf(z) : 0.5);
+  return under ? 1 - over : over;
+}
+async function playerLogs(id) {
+  window.__PLOGS = window.__PLOGS || {};
+  if (window.__PLOGS[id]) return window.__PLOGS[id];
+  const year = new Date().getFullYear();
+  const years = [];
+  for (let y = year; y >= year - 6; y--) years.push(y);
+  const packs = await Promise.all(years.map((y) => getJSON("https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/" + id + "/gamelog?season=" + y).then((d) => ({ y, d })).catch(() => ({ y, d: null }))));
+  const seen = new Set();
+  const rows = [];
+  packs.forEach(({ y, d }) => {
+    if (!d) return;
+    parseGamelog(d, y).forEach((r) => { if (seen.has(r.id)) return; seen.add(r.id); rows.push(r); });
+  });
+  rows.sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  window.__PLOGS[id] = rows;
+  return rows;
+}
+function findProp(id, gameId) {
+  let hit = null;
+  (DATA.games || []).forEach((g) => (g.props || []).forEach((p) => {
+    if (String(p.id) === String(id) && (!gameId || String(p.game_id) === String(gameId) || String(g.id) === String(gameId))) hit = p;
+  }));
+  return hit;
+}
+function ladderTable(m, season, vs) {
+  const head = `<table class="ladder"><thead><tr><th>${m.label}</th><th>This year</th><th>Vs opponent</th><th>Our chance</th></tr></thead><tbody>`;
+  const body = m.lines.map((line) => {
+    const yr = hitRate(season, m.key, line, m.under);
+    const opp = hitRate(vs, m.key, line, m.under);
+    const chance = ourChance(m.mean, line, m.key, m.under);
+    const side = m.under ? "under" : "over";
+    const fmtH = (h) => h ? `${h.hits}/${h.n}` : "—";
+    return `<tr><td>${side} ${line}</td><td>${fmtH(yr)}</td><td>${fmtH(opp)}</td><td>${Math.round(chance * 100)}%</td></tr>`;
+  }).join("");
+  return `<h3 style="margin:14px 0 0">${m.label}</h3><p class="subn" style="margin:4px 0 0">Double Gs number: <b>${Number(m.mean).toFixed(m.kind === "count" ? 2 : 1)}</b></p>${head}${body}</tbody></table>`;
+}
+function bestDoubleG(markets, season, vs) {
+  let best = null;
+  markets.forEach((m) => m.lines.forEach((line) => {
+    const ours = ourChance(m.mean, line, m.key, m.under);
+    if (ours < 0.56 || ours > 0.78) return;
+    const yr = hitRate(season, m.key, line, m.under);
+    let score = ours;
+    if (yr && yr.n) score += (yr.pct - 0.5) * 0.35;
+    const opp = hitRate(vs, m.key, line, m.under);
+    if (opp && opp.n >= 2) score += (opp.pct - 0.5) * 0.2;
+    if (!best || score > best.score) best = { m, line, ours, yr, opp, score };
+  }));
+  return best;
+}
+async function openPlayer(id, gameId) {
+  const p = findProp(id, gameId);
+  if (!p) return;
+  const markets = marketsFor(p);
+  $("#modal").innerHTML = `
+    <div class="modal-head">
+      <div class="who-row">${faceHtml(p.id, p.name, 64, "nfl")}<div>
+        <div class="lbl">${p.pos} · ${p.team} vs ${p.opp}</div>
+        <h2 style="margin:4px 0">${p.name}</h2>
+        <div class="subn">${p.game || ""} · ${fmt.when(p.date || p.kick)}</div>
+      </div></div>
+      <button class="close" id="closeModal">Close</button>
+    </div>
+    <p class="subn">Pulling his real games from ESPN…</p>`;
+  $("#overlay").classList.add("show");
+  $("#closeModal").onclick = closeModal;
+  let rows = [];
+  let err = "";
+  try { rows = await playerLogs(p.id); }
+  catch (e) { err = "ESPN did not return his game log."; }
+  const year = new Date().getFullYear();
+  const season = rows.filter((r) => r.season === year);
+  const vs = rows.filter((r) => sameOpp(r.opp, p.opp));
+  const best = bestDoubleG(markets, season, vs);
+  const seasonLine = season.length ? season.map((r) => `Wk ${r.week || "?"} ${r.opp} ${r.pass_yds != null ? r.pass_yds + " pass" : (r.rush_yds != null ? r.rush_yds + " rush" : "")}`).join(" · ") : "No " + year + " games posted yet.";
+  const bestHtml = best
+    ? `<h3>${best.m.under ? "Under" : "Over"} ${best.line} ${best.m.label.toLowerCase()}</h3>
+       <p>Our chance this week is ${Math.round(best.ours * 100)}%. Our number is ${Number(best.m.mean).toFixed(1)}. ${best.yr ? `This year he has cleared that in ${best.yr.hits} of ${best.yr.n} games.` : "No games this year to check."} ${best.opp && best.opp.n ? `Against ${p.opp} it is ${best.opp.hits} of ${best.opp.n} all time in the log.` : `No logged games against ${p.opp}.`}</p>`
+    : `<h3>No strong lean</h3><p>None of the numbers are far enough from a coin flip. The projection is still the yard line above. We would not force a bet.</p>`;
+  $("#modal").innerHTML = `
+    <div class="modal-head">
+      <div class="who-row">${faceHtml(p.id, p.name, 64, "nfl")}<div>
+        <div class="lbl">${p.pos} · ${p.team} vs ${p.opp}</div>
+        <h2 style="margin:4px 0">${p.name}</h2>
+        <div class="subn">${p.game || ""} · ${fmt.when(p.date || p.kick)}</div>
+      </div></div>
+      <button class="close" id="closeModal">Close</button>
+    </div>
+    <p class="subn">${err || seasonLine}</p>
+    ${markets.map((m) => ladderTable(m, season, vs)).join("")}
+    <div class="dg-box">
+      <div class="lbl">Double Gs</div>
+      ${bestHtml}
+      <h3 style="margin-top:12px">What we would still add</h3>
+      <p>Red-zone and goal-line share, how many snaps and routes he gets, and how this defense has played against his position this year. A teammate being out belongs here too. Those are not in this feed, so they are not inside the number. The projection is his yards and scores from Double Gs, checked against the real games ESPN lists.</p>
+    </div>`;
+  $("#closeModal").onclick = closeModal;
+}
+
 function openGame(id) {
   const g = DATA.games.find((x) => String(x.id) === String(id));
   if (!g) return;
@@ -5128,7 +5314,7 @@ function renderProps() {
       ? `${fmt.n(p.rush_yds,0)} rush · ${fmt.n(p.rec,1)} rec · ${fmt.n(p.rec_yds,0)} rec yds`
       : `${fmt.n(p.rec,1)} rec · ${fmt.n(p.rec_yds,0)} yds · ${fmt.n(p.rec_td,1)} TD`;
     const inj = p.injury && p.injury !== "ACTIVE" ? `<span class="inj">${p.injury}</span>` : "";
-    return `<article class="prop-card" data-id="${p.game_id}">
+    return `<article class="prop-card" data-id="${p.game_id}" data-player="${p.id}">
       <div class="who">
         <div class="who-row">
           ${faceHtml(p.id, p.name, 48, "nfl")}
@@ -5146,7 +5332,7 @@ function renderProps() {
       </div>
     </article>`;
   }).join("");
-  $$("#propBoard .prop-card").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
+  $$("#propBoard .prop-card").forEach((el) => el.addEventListener("click", () => openPlayer(el.dataset.player, el.dataset.id)));
 }
 
 
