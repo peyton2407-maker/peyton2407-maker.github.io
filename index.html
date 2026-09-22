@@ -437,6 +437,12 @@ option { background: #12201a; color: #e9f3ec; }
 .value-tile:hover{border-color:var(--turf)}
 .value-tile .odds{font-weight:800;color:var(--turf);font-size:18px}
 .value-tile .side{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--rose)}
+.ptab{
+  flex:none;border:0;background:transparent;color:var(--muted);
+  padding:10px 4px 12px;margin:0 14px 0 0;font-weight:700;font-size:14px;
+  border-bottom:2px solid transparent;
+}
+.ptab.active{color:var(--turf);border-bottom-color:var(--turf)}
 .parlay-hero{display:grid;grid-template-columns:1fr;gap:12px;margin:0 0 16px}
 .parlay-card{
   background:linear-gradient(160deg,#1d2a12 0%,#12201a 48%,#1a2418 100%);
@@ -533,6 +539,7 @@ option { background: #12201a; color: #e9f3ec; }
       <button class="tab" data-view="all">All games</button>
       <button class="tab" data-view="props">Player stats</button>
       <button class="tab" data-view="tds">Who scores TDs</button>
+      <button class="tab" data-view="parlay">Parlays</button>
       <button class="tab" data-view="value">Underdogs</button>
       <button class="tab" data-view="cfbpicks">College picks</button>
       <button class="tab" data-view="nflwx">NFL weather</button>
@@ -654,9 +661,19 @@ option { background: #12201a; color: #e9f3ec; }
         <input id="valQ" placeholder="Search a player or game…"/>
       </div>
       <p class="subn" id="valStamp" style="margin:0 0 10px">These are the underdogs. Vegas isn't in love with them. We still think they have a real chance.</p>
-      <div class="parlay-hero" id="parlayHero"></div>
       <div class="stat-row" id="valStats"></div>
       <div class="prop-board" id="valBoard"></div>
+    </section>
+
+    <section id="parlaySection" style="display:none">
+      <div class="controls">
+        <div class="tabs" id="parlayTabs" style="flex:1">
+          <button class="ptab active" type="button" data-parlay="nfl">NFL parlays</button>
+          <button class="ptab" type="button" data-parlay="cfb">College parlays</button>
+        </div>
+      </div>
+      <p class="subn" id="parlayStamp" style="margin:0 0 10px">Parlays live here only. NFL and college are separate so a 3-leg isn’t mixing Buffalo with Ohio State.</p>
+      <div class="parlay-hero" id="parlayHero"></div>
     </section>
 
     <section id="tdSection" style="display:none">
@@ -3187,7 +3204,7 @@ function collectParlayLegs() {
       legs.push({
         label: p.pick_line || `${p.pick} spread`,
         detail: `${g.away.abbr} @ ${g.home.abbr}`,
-        game_id: g.id, game: g.short_name, date: g.date,
+        game_id: g.id, game: g.short_name, date: g.date, league: g.league,
         hit, odds: toAmerican(Math.min(0.58, hit)),
         key: "spread:" + g.id, score: Math.abs(p.edge_spread) * 10 + hit * 40
       });
@@ -3199,7 +3216,7 @@ function collectParlayLegs() {
         legs.push({
           label: p.total_pick,
           detail: `${g.away.abbr} @ ${g.home.abbr} total`,
-          game_id: g.id, game: g.short_name, date: g.date,
+          game_id: g.id, game: g.short_name, date: g.date, league: g.league,
           hit, odds: toAmerican(Math.min(0.56, hit)),
           key: "total:" + g.id, score: Math.abs(p.edge_total) * 8 + hit * 36
         });
@@ -3210,14 +3227,14 @@ function collectParlayLegs() {
     legs.push({
       label: `${r.name} ${r.market}`,
       detail: r.game, game_id: r.game_id, game: r.game, date: r.date,
-      hit: r.hit, odds: r.odds, key: "td:" + r.name, score: r.score
+      hit: r.hit, odds: r.odds, key: "td:" + r.name, score: r.score, league: r.league || "nfl"
     });
   });
   collectValueDogs().filter((r) => (r.kind === "over" || r.kind === "under") && r.hit >= 0.57 && r.source === "DraftKings").slice(0, 12).forEach((r) => {
     legs.push({
       label: `${r.name} ${r.side} ${r.line} ${r.market}`,
       detail: r.game, game_id: r.game_id, game: r.game, date: r.date,
-      hit: r.hit, odds: r.odds, key: "prop:" + r.name + r.market, score: r.score
+      hit: r.hit, odds: r.odds, key: "prop:" + r.name + r.market, score: r.score, league: r.league || "nfl"
     });
   });
   legs.sort((a, b) => b.score - a.score);
@@ -3232,8 +3249,8 @@ function parlayPayout(hits) {
   const p = hits.reduce((a, h) => a * h, 1);
   return { p, odds: toAmerican(Math.min(0.85, Math.max(0.04, p))) };
 }
-function buildParlays() {
-  const legs = collectParlayLegs();
+function buildParlays(league) {
+  const legs = collectParlayLegs().filter((l) => !league || l.league === league);
   const pickDiverse = (n) => {
     const used = new Set();
     const bag = [];
@@ -3260,13 +3277,25 @@ function parlayCardHtml(r) {
     <div class="td-mkt">${r.title} parlay</div>
     <div class="parlay-odds">${r.label}</div>
     <div class="subn">${Math.round(r.p * 100)}% chance all of these hit · payout if they do</div>
-    <ul class="parlay-legs">${r.legs.map((l) => `<li><b>${l.label}</b><div class="subn">${l.detail} · ${Math.round(l.hit * 100)}% · ${l.odds > 0 ? "+" : ""}${l.odds}</div></li>`).join("")}</ul>
+    <ul class="parlay-legs">${r.legs.map((l) => `<li data-id="${l.game_id}"><b>${l.label}</b><div class="subn">${l.detail} · ${Math.round(l.hit * 100)}% · ${l.odds > 0 ? "+" : ""}${l.odds}</div></li>`).join("")}</ul>
   </article>`;
 }
-function parlayHeroHtml() {
-  const rows = buildParlays();
+function parlayHeroHtml(league) {
+  const rows = buildParlays(league);
   if (!rows.length) return "";
   return rows.map(parlayCardHtml).join("");
+}
+function renderParlays() {
+  const league = window.__parlayLg || "nfl";
+  $$("#parlayTabs .ptab").forEach((t) => t.classList.toggle("active", t.dataset.parlay === league));
+  const stamp = document.getElementById("parlayStamp");
+  if (stamp) stamp.textContent = league === "nfl"
+    ? "NFL only. 2-leg, 3-leg, and 4-leg from this week's best sides and totals."
+    : "College only. 2-leg, 3-leg, and 4-leg from this week's best sides and totals.";
+  const hero = document.getElementById("parlayHero");
+  if (!hero) return;
+  hero.innerHTML = parlayHeroHtml(league) || `<div class="empty">Not enough ${league === "nfl" ? "NFL" : "college"} legs yet. Need two clean plays in the same league.</div>`;
+  hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 function valueTileHtml(r) {
   const line = r.line == null ? r.market : `${r.side} ${r.line} ${r.market}`;
@@ -3316,8 +3345,6 @@ function renderValueDogs() {
   else if (pos === "CFB") rows = rows.filter((r) => r.league === "cfb");
   else if (pos !== "ALL") rows = rows.filter((r) => r.pos === pos);
   if (q) rows = rows.filter((r) => `${r.name} ${r.team} ${r.game} ${r.market}`.toLowerCase().includes(q));
-  const hero = document.getElementById("parlayHero");
-  if (hero) hero.innerHTML = parlayHeroHtml() || `<div class="empty">Parlay desk is building from this week's best legs.</div>`;
   const stats = document.getElementById("valStats");
   if (stats) stats.innerHTML = `
     <div class="stat"><b>${rows.length}</b><span>value tickets in this filter</span></div>
@@ -4047,11 +4074,10 @@ function renderBoard() {
     return;
   }
   const table = projectionTable(games);
-  const parlays = (view === "nfl" || view === "live" || view === "cfb") ? `<div class="board-card">${parlayHeroHtml()}</div>` : "";
   const desk = (view === "nfl" || view === "cfb" || view === "live") ? deskStripHtml(games) : "";
   const cards = (view === "cfb" ? games.slice(0, 25) : games).map(card).join("");
   const dogs = (view === "nfl" || view === "live" || view === "cfb") ? valueStripHtml() : "";
-  $("#board").innerHTML = table + parlays + desk + dogs + cards;
+  $("#board").innerHTML = table + desk + dogs + cards;
   $$("#board .game").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
   $$("#board .boardtable tr[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
   $$("#board .desk-strip tr[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
@@ -5246,6 +5272,8 @@ function setView(next) {
   if (injS) injS.style.display = (next === "nflinj" || next === "cfbinj") ? "" : "none";
   const valS = document.getElementById("valueSection");
   if (valS) valS.style.display = next === "value" ? "" : "none";
+  const parS = document.getElementById("parlaySection");
+  if (parS) parS.style.display = next === "parlay" ? "" : "none";
   const tdS = document.getElementById("tdSection");
   if (tdS) tdS.style.display = next === "tds" ? "" : "none";
   if (board) renderBoard();
@@ -5254,6 +5282,7 @@ function setView(next) {
   if (next === "score") renderScorecard();
   if (next === "alerts") renderAlerts();
   if (next === "value") renderValueDogs();
+  if (next === "parlay") renderParlays();
   if (next === "tds") renderTdDesk();
   if (next === "nflinj" || next === "cfbinj") {
     const lg = next === "nflinj" ? "nfl" : "cfb";
@@ -5334,6 +5363,12 @@ async function boot() {
   document.getElementById("valKind")?.addEventListener("change", rerenderVal);
   document.getElementById("valPos")?.addEventListener("change", rerenderVal);
   document.getElementById("valQ")?.addEventListener("input", rerenderVal);
+  document.getElementById("parlayTabs")?.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-parlay]");
+    if (!btn) return;
+    window.__parlayLg = btn.dataset.parlay;
+    renderParlays();
+  });
   const rerenderTd = () => renderTdDesk();
   ["tdMarket","tdPos","tdSort"].forEach((id) => document.getElementById(id)?.addEventListener("change", rerenderTd));
   document.getElementById("tdQ")?.addEventListener("input", rerenderTd);
