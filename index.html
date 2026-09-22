@@ -560,9 +560,9 @@ option { background: #12201a; color: #e9f3ec; }
           <div class="slide-wrap">
             <button class="slide-btn" type="button" data-slide="nflTiles" data-dir="-1" aria-label="NFL tiles left">‹</button>
             <div class="tile-row slide" id="nflTiles">
+              <a class="tab" href="#props" data-view="props">Player props</a>
               <a class="tab" href="#nfl" data-view="nfl">NFL Week 3</a>
               <a class="tab" href="#live" data-view="live">Live scores</a>
-              <a class="tab" href="#props" data-view="props">Player stats</a>
               <a class="tab" href="#tds" data-view="tds">Who scores TDs</a>
               <a class="tab" href="#value" data-view="value">Underdogs</a>
               <a class="tab" href="#nflwx" data-view="nflwx">NFL weather</a>
@@ -812,6 +812,7 @@ option { background: #12201a; color: #e9f3ec; }
         </select>
         <input id="propQ" placeholder="Search a player or team…" />
       </div>
+      <p class="subn" style="margin:8px 0 0">Every card has the yard lines and the Double Gs pick. Tap a player for this year's hit rate and his history against that team.</p>
       <div class="stat-row" id="propStats"></div>
       <div class="prop-board" id="propBoard"></div>
     </section>
@@ -5314,25 +5315,31 @@ function renderProps() {
       ? `${fmt.n(p.rush_yds,0)} rush · ${fmt.n(p.rec,1)} rec · ${fmt.n(p.rec_yds,0)} rec yds`
       : `${fmt.n(p.rec,1)} rec · ${fmt.n(p.rec_yds,0)} yds · ${fmt.n(p.rec_td,1)} TD`;
     const inj = p.injury && p.injury !== "ACTIVE" ? `<span class="inj">${p.injury}</span>` : "";
+    const markets = marketsFor(p);
+    const best = bestDoubleG(markets, [], []);
+    const main = markets[0];
+    const ladder = main ? `<table class="ladder"><thead><tr><th>${main.label}</th><th>Our chance</th></tr></thead><tbody>${main.lines.map((ln) => `<tr><td>${main.under ? "under" : "over"} ${ln}</td><td>${Math.round(ourChance(main.mean, ln, main.key, main.under) * 100)}%</td></tr>`).join("")}</tbody></table>` : "";
+    const pick = best ? `${best.m.under ? "Under" : "Over"} ${best.line} ${best.m.label.toLowerCase()}` : "No strong lean";
     return `<article class="prop-card" data-id="${p.game_id}" data-player="${p.id}">
       <div class="who">
         <div class="who-row">
           ${faceHtml(p.id, p.name, 48, "nfl")}
           <div>
           <h4>${p.name}${inj}</h4>
-          <div class="prop-meta">${p.pos} · ${p.team} vs ${p.opp} · ${p.game || ""} · ${fmt.when(p.date)}</div>
+          <div class="prop-meta">${p.pos} · ${p.team} vs ${p.opp} · ${p.game || ""} · ${fmt.when(p.date || p.kick)}</div>
           </div>
         </div>
         <div class="pick-score">${p._score.toFixed(1)}</div>
       </div>
       <div class="prop-stats">
-        <div><span class="lbl">Headline</span><b>${line}</b></div>
-        <div><span class="lbl">Half-PPR</span><b>${fmt.n(p.fp,1)}</b></div>
+        <div><span class="lbl">This week</span><b>${line}</b></div>
         <div><span class="lbl">Weather</span><b>${p.indoor ? "Dome" : (p.weather || "—")}${p.temp_f != null && !p.indoor ? " · " + Math.round(p.temp_f) + "°" : ""}</b></div>
       </div>
+      ${ladder}
+      <div class="dg-box"><div class="lbl">Double Gs</div><b>${pick}</b><p class="subn" style="margin:6px 0 0">Tap for this year and vs ${p.opp}.</p></div>
     </article>`;
   }).join("");
-  $$("#propBoard .prop-card").forEach((el) => el.addEventListener("click", () => openPlayer(el.dataset.player, el.dataset.id)));
+  $$("#propBoard .prop-card").forEach((el) => el.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); openPlayer(el.dataset.player, el.dataset.id); }));
 }
 
 
@@ -5916,7 +5923,8 @@ function renderHome() {
   const jumps = document.getElementById("homeJumps");
   if (jumps) {
     jumps.innerHTML = `
-      <a class="home-jump hot" href="#parlay" data-jump="parlay"><b>Parlays</b><span>Game tickets and player props, all in one place</span></a>
+      <a class="home-jump hot" href="#props" data-jump="props"><b>Player props</b><span>Yard lines, hit rates, and the Double Gs pick</span></a>
+      <a class="home-jump" href="#parlay" data-jump="parlay"><b>Parlays</b><span>Game tickets and player props, all in one place</span></a>
       <a class="home-jump" href="#card" data-jump="card"><b>This week's card</b><span>${(card.legs || []).length} plays ready to lock</span></a>
       <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l : "0-0"} locked this season</span></a>
       <a class="home-jump" href="#nfl" data-jump="nfl"><b>NFL board</b><span>Week 3 sides, totals, weather</span></a>`;
