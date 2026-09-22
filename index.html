@@ -84,24 +84,52 @@ button { touch-action: manipulation; cursor: pointer; }
 }
 .brand p { margin: 6px 0 0; color: var(--muted); font-size: 14px; max-width: 52ch; }
 
-.home-hero{
-  display:grid;gap:12px;margin:0 0 16px;
+.home-intro{margin:0 0 16px}
+.home-kicker{margin:0 0 4px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--turf)}
+.home-intro h2{margin:0;font-family:Syne,sans-serif;font-size:clamp(22px,4vw,34px);letter-spacing:-.03em;line-height:1.1}
+.home-jumps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 0 18px}
+.home-jump{
+  border:1px solid var(--line);background:var(--card);border-radius:18px;padding:14px 14px 12px;
+  text-align:left;min-height:86px;
 }
-.home-strip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.home-stat{
-  background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;
+.home-jump:hover{border-color:var(--turf);transform:translateY(-1px)}
+.home-jump.hot{background:linear-gradient(160deg,#243016,#152016);border-color:rgba(240,180,41,.5)}
+.home-jump b{display:block;font-family:Syne,sans-serif;font-size:18px;color:var(--ink)}
+.home-jump.hot b{color:var(--sun)}
+.home-jump span{display:block;margin-top:4px;color:var(--muted);font-size:12px;line-height:1.35}
+.home-feature{
+  display:none;grid-template-columns:1fr auto;gap:12px;align-items:center;
+  background:linear-gradient(165deg,#1c2a14,#101c16);border:1px solid var(--line-2);
+  border-radius:22px;padding:16px 18px;margin:0 0 18px;cursor:pointer;
 }
-.home-stat b{display:block;font-family:Syne,sans-serif;font-size:22px;color:var(--turf)}
-.home-stat span{color:var(--muted);font-size:12px}
+.home-feature.on{display:grid}
+.home-feature .kick{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--sun)}
+.home-feature .logos{display:flex;align-items:center;gap:10px}
+.home-feature img{width:46px;height:46px}
+.home-feature h3{margin:0;font-family:Syne,sans-serif;font-size:22px}
+.home-split{display:grid;gap:18px}
+.home-label{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
 .home-game{
-  display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;
-  background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 16px;cursor:pointer;
+  display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;cursor:pointer;margin:0 0 8px;
 }
 .home-game:hover{border-color:var(--line-2)}
 .home-game .kick{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
-.home-game h3{margin:4px 0;font-size:16px;font-family:Syne,sans-serif}
+.home-game h3{margin:2px 0 0;font-size:16px;font-family:Syne,sans-serif}
+.home-game .mini{display:flex;gap:6px;align-items:center}
+.home-game .mini img{width:26px;height:26px}
 .home-pick{text-align:right}
-.home-pick b{display:block;color:var(--sun);font-size:15px}
+.home-pick b{display:block;color:var(--sun);font-size:14px}
+.home-parlay{
+  background:linear-gradient(160deg,#1d2a12,#12201a);border:1px solid rgba(240,180,41,.4);
+  border-radius:18px;padding:14px 16px;cursor:pointer;margin:0 0 10px;
+}
+.home-parlay:hover{border-color:var(--sun)}
+.home-parlay .odds{font-family:Syne,sans-serif;font-size:28px;color:var(--turf);line-height:1}
+@media (min-width:860px){
+  .home-jumps{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .home-split{grid-template-columns:1.35fr .9fr}
+}
 .result-hit{color:var(--turf)!important}
 .result-miss{color:var(--rose)!important}
 .result-push{color:var(--sun)!important}
@@ -125,7 +153,6 @@ button { touch-action: manipulation; cursor: pointer; }
 }
 @media (min-width:800px){
   .home-hero{grid-template-columns:1.4fr .8fr}
-  .home-strip{grid-template-columns:repeat(4,minmax(0,1fr))}
 }
 
 .meta-chip { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -530,6 +557,7 @@ option { background: #12201a; color: #e9f3ec; }
       <button class="tabs-arrow" id="tabsPrev" type="button" aria-label="Slide tabs left">‹</button>
       <nav class="tabs" id="tabBar">
       <button class="tab active" data-view="home">Home</button>
+      <button class="tab" data-view="parlay">Parlays</button>
       <button class="tab" data-view="card">This week's card</button>
       <button class="tab" data-view="score">Scorecard</button>
       <button class="tab" data-view="alerts">Alerts</button>
@@ -539,7 +567,6 @@ option { background: #12201a; color: #e9f3ec; }
       <button class="tab" data-view="all">All games</button>
       <button class="tab" data-view="props">Player stats</button>
       <button class="tab" data-view="tds">Who scores TDs</button>
-      <button class="tab" data-view="parlay">Parlays</button>
       <button class="tab" data-view="value">Underdogs</button>
       <button class="tab" data-view="cfbpicks">College picks</button>
       <button class="tab" data-view="nflwx">NFL weather</button>
@@ -555,14 +582,24 @@ option { background: #12201a; color: #e9f3ec; }
     <div id="alertBell" class="alert-bell"></div>
 
     <section id="homeSection">
-      <div class="home-hero">
-        <div>
-          <p class="subn" style="margin:0 0 8px">Today’s games. Pick, score, who’s hurt — that’s it.</p>
-          <div class="home-strip" id="homeStrip"></div>
-        </div>
-        <article class="share-card" id="homeCardTeaser"></article>
+      <div class="home-intro">
+        <p class="home-kicker">Tonight’s desk</p>
+        <h2>Who we like, the score, and the parlays.</h2>
       </div>
-      <div id="homeBoard"></div>
+      <div class="home-jumps" id="homeJumps"></div>
+      <article class="home-feature" id="homeFeature"></article>
+      <div class="home-split">
+        <div>
+          <div class="home-label">Today and up next</div>
+          <div id="homeBoard"></div>
+        </div>
+        <div>
+          <div class="home-label">Parlays</div>
+          <div id="homeParlay"></div>
+          <div class="home-label" style="margin-top:18px">This week's card</div>
+          <article class="share-card" id="homeCardTeaser"></article>
+        </div>
+      </div>
     </section>
 
     <section id="cardSection" style="display:none">
@@ -5140,18 +5177,67 @@ function renderHome() {
   syncDesk();
   const tally = scoreTally("all", "all");
   const card = ensureWeeklyCard(false);
-  const strip = document.getElementById("homeStrip");
-  if (strip) strip.innerHTML = `
-    <div class="home-stat"><b>${tally.n ? tally.w + "-" + tally.l : "0-0"}</b><span>locked picks this season</span></div>
-    <div class="home-stat"><b>${tally.pending}</b><span>waiting on kickoff</span></div>
-    <div class="home-stat"><b>${(card.legs || []).length}</b><span>plays on this week's card</span></div>
-    <div class="home-stat"><b>${tally.clvAvg ? (tally.clvAvg > 0 ? "+" : "") + tally.clvAvg.toFixed(1) : "—"}</b><span>avg vs closing line</span></div>`;
+  const nflP = (typeof buildParlays === "function" ? buildParlays("nfl") : [])[0];
+  const cfbP = (typeof buildParlays === "function" ? buildParlays("cfb") : [])[0];
+  const jumps = document.getElementById("homeJumps");
+  if (jumps) {
+    jumps.innerHTML = `
+      <button class="home-jump hot" type="button" data-jump="parlay"><b>Parlays</b><span>NFL and college tickets, on their own page</span></button>
+      <button class="home-jump" type="button" data-jump="card"><b>This week's card</b><span>${(card.legs || []).length} plays ready to lock</span></button>
+      <button class="home-jump" type="button" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l : "0-0"} locked this season</span></button>
+      <button class="home-jump" type="button" data-jump="nfl"><b>NFL board</b><span>Week 3 sides, totals, weather</span></button>`;
+    jumps.querySelectorAll("[data-jump]").forEach((el) => el.addEventListener("click", () => setView(el.dataset.jump)));
+  }
+  const feat = document.getElementById("homeFeature");
+  const liveOrNext = (DATA.games || []).filter((g) => typeof isLiveGame === "function" && isLiveGame(g))[0]
+    || todayGames()[0]
+    || (DATA.games || []).filter((g) => !g.completed).sort((a, b) => String(a.date).localeCompare(String(b.date)))[0];
+  if (feat && liveOrNext) {
+    const g = liveOrNext;
+    const p = g.proj || {};
+    const live = typeof isLiveGame === "function" && isLiveGame(g);
+    const pick = (p.pick && p.pick !== "NO PLAY") ? (p.pick_line || p.pick) : "market aligned";
+    feat.className = "home-feature on";
+    feat.dataset.id = g.id;
+    feat.innerHTML = `
+      <div>
+        <div class="kick">${live ? "LIVE NOW" : g.league.toUpperCase() + " · " + fmt.when(g.date)}</div>
+        <div class="logos" style="margin-top:8px">
+          <img src="${g.away.logo || ""}" alt="">
+          <h3>${g.away.abbr} @ ${g.home.abbr}</h3>
+          <img src="${g.home.logo || ""}" alt="">
+        </div>
+        <div class="subn" style="margin-top:6px">${p.away_points ?? "—"} – ${p.home_points ?? "—"} · ${injLine(g)}</div>
+      </div>
+      <div class="home-pick"><b>${pick}</b><span class="subn">${(p.total_pick && p.total_pick !== "NO PLAY") ? p.total_pick : ""}</span></div>`;
+    feat.onclick = () => openGame(g.id);
+  } else if (feat) feat.className = "home-feature";
+  const hp = document.getElementById("homeParlay");
+  if (hp) {
+    const tile = (lg, row) => {
+      if (!row) return `<article class="home-parlay" data-jump="parlay"><b>${lg} parlays</b><div class="subn">Open the parlay desk</div></article>`;
+      return `<article class="home-parlay" data-jump="parlay">
+        <div class="lbl">${lg} · ${row.title}</div>
+        <div class="odds">${row.label}</div>
+        <div class="subn">${row.legs.map((l) => l.label).join(" · ")}</div>
+      </article>`;
+    };
+    hp.innerHTML = tile("NFL", nflP) + tile("College", cfbP);
+    hp.querySelectorAll("[data-jump]").forEach((el) => el.addEventListener("click", () => {
+      window.__parlayLg = el.textContent.toLowerCase().includes("college") ? "cfb" : "nfl";
+      setView("parlay");
+    }));
+  }
   const teaser = document.getElementById("homeCardTeaser");
-  if (teaser) teaser.innerHTML = `
-    <div class="lbl">This week's card</div>
-    <h3 style="margin:4px 0 8px">${(card.legs || []).length} locked plays</h3>
-    <ul class="share-legs">${(card.legs || []).slice(0, 4).map((L) => `<li><span>${L.short}</span><b>${L.text}</b></li>`).join("")}</ul>
-    <p class="subn" style="margin:10px 0 0">Open “This week's card” to copy or share the whole list.</p>`;
+  if (teaser) {
+    teaser.innerHTML = `
+      <div class="lbl">Locked list</div>
+      <h3 style="margin:4px 0 8px">${(card.legs || []).length} plays</h3>
+      <ul class="share-legs">${(card.legs || []).slice(0, 5).map((L) => `<li><span>${L.short}</span><b>${L.text}</b></li>`).join("")}</ul>
+      <p class="subn" style="margin:10px 0 0">Tap to open the full card.</p>`;
+    teaser.style.cursor = "pointer";
+    teaser.onclick = () => setView("card");
+  }
   const games = todayGames();
   const board = document.getElementById("homeBoard");
   if (!board) return;
@@ -5159,22 +5245,23 @@ function renderHome() {
     .sort((a, b) => String(a.date).localeCompare(String(b.date))).slice(0, 6);
   const block = (list, title) => {
     if (!list.length) return "";
-    return `<p class="subn" style="margin:16px 0 8px">${title}</p>` + list.map((g) => {
+    return (title ? `<div class="home-label">${title}</div>` : "") + list.map((g) => {
       const p = g.proj || {};
       const pick = (p.pick && p.pick !== "NO PLAY") ? (p.pick_line || p.pick) : "no side";
       const tot = (p.total_pick && p.total_pick !== "NO PLAY") ? p.total_pick : "";
       const live = typeof isLiveGame === "function" && isLiveGame(g);
       return `<article class="home-game" data-id="${g.id}">
+        <div class="mini"><img src="${g.away.logo || ""}" alt=""><img src="${g.home.logo || ""}" alt=""></div>
         <div>
           <div class="kick">${g.league.toUpperCase()} · ${live ? "LIVE" : fmt.when(g.date)}</div>
           <h3>${g.away.abbr} @ ${g.home.abbr}</h3>
-          <div class="subn">${p.away_points ?? "—"} – ${p.home_points ?? "—"} · ${injLine(g)}</div>
+          <div class="subn">${p.away_points ?? "—"} – ${p.home_points ?? "—"}</div>
         </div>
         <div class="home-pick"><b>${pick}</b><span class="subn">${tot}</span></div>
       </article>`;
     }).join("");
   };
-  board.innerHTML = block(games, games.length ? "Today" : "") + block(upcoming, "Up next");
+  board.innerHTML = block(games, "") + block(upcoming, games.length ? "Up next" : "");
   if (!games.length && !upcoming.length) board.innerHTML = `<div class="empty">No games on the board.</div>`;
   board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
