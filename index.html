@@ -563,6 +563,7 @@ option { background: #12201a; color: #e9f3ec; }
       <nav class="tabs" id="tabBar">
       <a class="tab active" href="#home" data-view="home">Home</a>
       <a class="tab" href="#parlay" data-view="parlay">Parlays</a>
+      <a class="tab" href="#propp" data-view="propp">Prop parlays</a>
       <a class="tab" href="#card" data-view="card">This week's card</a>
       <a class="tab" href="#score" data-view="score">Scorecard</a>
       <a class="tab" href="#alerts" data-view="alerts">Alerts</a>
@@ -716,6 +717,18 @@ option { background: #12201a; color: #e9f3ec; }
       </div>
       <p class="subn" id="parlayStamp" style="margin:0 0 10px">Parlays live here only. NFL and college are separate so a 3-leg isn’t mixing Buffalo with Ohio State.</p>
       <div class="parlay-hero" id="parlayHero"></div>
+    </section>
+
+    <section id="propParlaySection" style="display:none">
+      <div class="controls">
+        <select id="propParlaySize">
+          <option value="mix">2-leg + 3-leg</option>
+          <option value="2">2-leg only</option>
+          <option value="3">3-leg only</option>
+        </select>
+      </div>
+      <p class="subn" id="propParlayStamp" style="margin:0 0 10px">Player props only. We keep tickets that are plus-money and still have a real chance to cash — not longshot junk.</p>
+      <div class="parlay-hero" id="propParlayHero"></div>
     </section>
 
     <section id="tdSection" style="display:none">
@@ -3265,20 +3278,6 @@ function collectParlayLegs() {
       }
     }
   });
-  collectValueDogs().filter((r) => r.kind === "td" && r.hit >= 0.28 && r.hit <= 0.52).slice(0, 16).forEach((r) => {
-    legs.push({
-      label: `${r.name} ${r.market}`,
-      detail: r.game, game_id: r.game_id, game: r.game, date: r.date,
-      hit: r.hit, odds: r.odds, key: "td:" + r.name, score: r.score, league: r.league || "nfl"
-    });
-  });
-  collectValueDogs().filter((r) => (r.kind === "over" || r.kind === "under") && r.hit >= 0.57 && r.source === "DraftKings").slice(0, 12).forEach((r) => {
-    legs.push({
-      label: `${r.name} ${r.side} ${r.line} ${r.market}`,
-      detail: r.game, game_id: r.game_id, game: r.game, date: r.date,
-      hit: r.hit, odds: r.odds, key: "prop:" + r.name + r.market, score: r.score, league: r.league || "nfl"
-    });
-  });
   legs.sort((a, b) => b.score - a.score);
   const seen = new Set();
   return legs.filter((l) => {
@@ -3326,6 +3325,110 @@ function parlayHeroHtml(league) {
   const rows = buildParlays(league);
   if (!rows.length) return "";
   return rows.map(parlayCardHtml).join("");
+}
+function collectPropParlayLegs() {
+  const rows = (typeof collectValueDogs === "function" ? collectValueDogs() : []).filter((r) => {
+    if ((r.league || "nfl") !== "nfl") return false;
+    if (r.pos === "TEAM") return false;
+    if (r.kind === "td") return r.hit >= 0.38 && r.hit <= 0.55 && Number(r.odds) >= 100;
+    if (r.kind === "over" || r.kind === "under") {
+      if (r.hit < 0.56 || r.hit > 0.73) return false;
+      if (r.source === "DraftKings") return true;
+      return r.hit >= 0.62;
+    }
+    return false;
+  });
+  rows.sort((a, b) => (b.hit + (Number(b.odds) > 0 ? 0.04 : 0) + (b.source === "DraftKings" ? 0.02 : 0)) - (a.hit + (Number(a.odds) > 0 ? 0.04 : 0)));
+  const seen = new Set();
+  return rows.filter((r) => {
+    const k = (r.name || "") + "|" + r.market;
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  }).slice(0, 24).map((r) => ({
+    label: r.kind === "td" ? `${r.name} ${r.market}` : `${r.name} ${r.side} ${r.line} ${r.market}`,
+    detail: `${r.pos} · ${r.game}`,
+    game_id: r.game_id, player: r.name, game: r.game, date: r.date,
+    hit: r.hit, odds: r.odds, source: r.source,
+    key: r.name + r.market + r.side, score: r.score, why: r.why
+  }));
+}
+function pickPropBag(legs, n, sameGame) {
+  if (sameGame) {
+    const byG = {};
+    legs.forEach((l) => { (byG[l.game_id] = byG[l.game_id] || []).push(l); });
+    const group = Object.values(byG).find((arr) => {
+      const names = new Set();
+      return arr.filter((x) => { if (names.has(x.player)) return false; names.add(x.player); return true; }).length >= n;
+    });
+    if (!group) return [];
+    const names = new Set();
+    return group.filter((x) => { if (names.has(x.player)) return false; names.add(x.player); return true; }).slice(0, n);
+  }
+  const usedP = new Set(), usedG = new Set();
+  const bag = [];
+  for (const l of legs) {
+    if (usedP.has(l.player) || usedG.has(l.game_id)) continue;
+    usedP.add(l.player);
+    usedG.add(l.game_id);
+    bag.push(l);
+    if (bag.length >= n) break;
+  }
+  return bag;
+}
+function propParlayEV(bag) {
+  const p = bag.reduce((a, l) => a * l.hit, 1);
+  const { odds } = parlayPayout(bag.map((l) => l.hit));
+  const fair = Math.pow(0.5238, bag.length);
+  const ev = fair > 0 ? p / fair - 1 : 0;
+  return { p, odds, ev, label: odds > 0 ? "+" + odds : String(odds) };
+}
+function buildPropParlays() {
+  const legs = collectPropParlayLegs();
+  const cash = legs.filter((l) => l.hit >= 0.56);
+  const twoPool = cash.filter((l) => l.hit <= 0.67);
+  const pack = (title, bag, need) => {
+    if (!bag || bag.length < need) return null;
+    const m = propParlayEV(bag);
+    if (!(m.odds > 0)) return null;
+    if (need === 2 && m.p < 0.28) return null;
+    if (need === 3 && m.p < 0.16) return null;
+    if (m.ev < 0.04) return null;
+    return { title, legs: bag, p: m.p, odds: m.odds, label: m.label, ev: m.ev, money: true };
+  };
+  const rows = [
+    pack("Safest 2-leg", pickPropBag(twoPool, 2, false), 2),
+    pack("Plus-money 3-leg", pickPropBag(cash, 3, false), 3),
+    pack("Same-game 2-leg", pickPropBag(twoPool, 2, true), 2)
+  ].filter(Boolean);
+  const seen = new Set();
+  return rows.filter((r) => {
+    const k = r.legs.map((l) => l.key).sort().join("|");
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
+}
+function renderPropParlays() {
+  const size = (document.getElementById("propParlaySize") || {}).value || "mix";
+  let rows = buildPropParlays();
+  if (size === "2") rows = rows.filter((r) => r.legs.length === 2);
+  if (size === "3") rows = rows.filter((r) => r.legs.length === 3);
+  const stamp = document.getElementById("propParlayStamp");
+  if (stamp) stamp.textContent = "Only player props. Each ticket is plus-money and we still give it a real chance to hit. Not betting advice.";
+  const hero = document.getElementById("propParlayHero");
+  if (!hero) return;
+  if (!rows.length) {
+    hero.innerHTML = `<div class="empty">No prop parlays cleared the bar. We only show plus-money tickets with a real hit chance.</div>`;
+    return;
+  }
+  hero.innerHTML = rows.map((r) => `<article class="parlay-card">
+    <div class="td-mkt">${r.title} · +EV</div>
+    <div class="parlay-odds">${r.label}</div>
+    <div class="subn">${Math.round(r.p * 100)}% chance it cashes · about ${Math.round(r.ev * 100)}% extra value vs a typical price</div>
+    <ul class="parlay-legs">${r.legs.map((l) => `<li data-id="${l.game_id}"><b>${l.label}</b><div class="subn">${l.detail} · ${Math.round(l.hit * 100)}% · ${l.odds > 0 ? "+" : ""}${l.odds} · ${l.source || ""}</div></li>`).join("")}</ul>
+  </article>`).join("");
+  hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 function renderParlays() {
   const league = window.__parlayLg || "nfl";
@@ -5188,6 +5291,7 @@ function renderHome() {
   if (jumps) {
     jumps.innerHTML = `
       <a class="home-jump hot" href="#parlay" data-jump="parlay"><b>Parlays</b><span>Tap here — NFL and college tickets</span></a>
+      <a class="home-jump hot" href="#propp" data-jump="propp"><b>Prop parlays</b><span>Player props that can hit and pay plus-money</span></a>
       <a class="home-jump" href="#card" data-jump="card"><b>This week's card</b><span>${(card.legs || []).length} plays ready to lock</span></a>
       <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l : "0-0"} locked this season</span></a>
       <a class="home-jump" href="#nfl" data-jump="nfl"><b>NFL board</b><span>Week 3 sides, totals, weather</span></a>`;
@@ -5335,7 +5439,7 @@ function renderAlerts() {
 }
 
 function setView(next) {
-  const allowed = {home:1,parlay:1,card:1,score:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1};
+  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1};
   if (!allowed[next]) next = "home";
   view = next;
   try { if (location.hash.replace("#","") !== next) history.replaceState(null, "", "#" + next); } catch (e) {}
@@ -5365,6 +5469,8 @@ function setView(next) {
   if (valS) valS.style.display = next === "value" ? "" : "none";
   const parS = document.getElementById("parlaySection");
   if (parS) parS.style.display = next === "parlay" ? "" : "none";
+  const ppS = document.getElementById("propParlaySection");
+  if (ppS) ppS.style.display = next === "propp" ? "" : "none";
   const tdS = document.getElementById("tdSection");
   if (tdS) tdS.style.display = next === "tds" ? "" : "none";
   if (board) renderBoard();
@@ -5374,6 +5480,7 @@ function setView(next) {
   if (next === "alerts") renderAlerts();
   if (next === "value") renderValueDogs();
   if (next === "parlay") renderParlays();
+  if (next === "propp") renderPropParlays();
   if (next === "tds") renderTdDesk();
   if (next === "nflinj" || next === "cfbinj") {
     const lg = next === "nflinj" ? "nfl" : "cfb";
@@ -5470,6 +5577,7 @@ async function boot() {
     window.__parlayLg = btn.dataset.parlay;
     renderParlays();
   });
+  document.getElementById("propParlaySize")?.addEventListener("change", renderPropParlays);
   const rerenderTd = () => renderTdDesk();
   ["tdMarket","tdPos","tdSort"].forEach((id) => document.getElementById(id)?.addEventListener("change", rerenderTd));
   document.getElementById("tdQ")?.addEventListener("input", rerenderTd);
