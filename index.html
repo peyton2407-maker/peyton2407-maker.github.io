@@ -87,10 +87,11 @@ button { touch-action: manipulation; cursor: pointer; }
 .home-intro{margin:0 0 16px}
 .home-kicker{margin:0 0 4px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--turf)}
 .home-intro h2{margin:0;font-family:Syne,sans-serif;font-size:clamp(22px,4vw,34px);letter-spacing:-.03em;line-height:1.1}
-.home-jumps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 0 18px}
+.home-jumps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 0 18px;position:relative;z-index:8}
 .home-jump{
   border:1px solid var(--line);background:var(--card);border-radius:18px;padding:14px 14px 12px;
-  text-align:left;min-height:86px;
+  text-align:left;min-height:88px;cursor:pointer;pointer-events:auto;text-decoration:none;color:inherit;
+  display:block;position:relative;z-index:8;touch-action:manipulation;-webkit-tap-highlight-color:rgba(182,232,90,.25);
 }
 .home-jump:hover{border-color:var(--turf);transform:translateY(-1px)}
 .home-jump.hot{background:linear-gradient(160deg,#243016,#152016);border-color:rgba(240,180,41,.5)}
@@ -122,7 +123,8 @@ button { touch-action: manipulation; cursor: pointer; }
 .home-pick b{display:block;color:var(--sun);font-size:14px}
 .home-parlay{
   background:linear-gradient(160deg,#1d2a12,#12201a);border:1px solid rgba(240,180,41,.4);
-  border-radius:18px;padding:14px 16px;cursor:pointer;margin:0 0 10px;
+  border-radius:18px;padding:14px 16px;cursor:pointer;margin:0 0 10px;display:block;text-decoration:none;color:inherit;
+  pointer-events:auto;position:relative;z-index:8;touch-action:manipulation;
 }
 .home-parlay:hover{border-color:var(--sun)}
 .home-parlay .odds{font-family:Syne,sans-serif;font-size:28px;color:var(--turf);line-height:1}
@@ -190,14 +192,14 @@ button { touch-action: manipulation; cursor: pointer; }
   -webkit-overflow-scrolling: touch;
   scroll-snap-type: x proximity;
   overscroll-behavior-x: contain;
-  touch-action: pan-x;
+  touch-action: auto;
   cursor: default;
 }
 .tabs::-webkit-scrollbar { display: block; height: 8px; }
 .tabs::-webkit-scrollbar-track { background: var(--paper-2); border-radius: 99px; }
 .tabs::-webkit-scrollbar-thumb { background: #2a4738; border-radius: 99px; }
 .tabs::-webkit-scrollbar-thumb:hover { background: var(--turf); }
-.tab {
+.tab, a.tab {
   background: transparent;
   border: 1px solid var(--line);
   padding: 10px 15px;
@@ -209,10 +211,13 @@ button { touch-action: manipulation; cursor: pointer; }
   scroll-snap-align: start;
   touch-action: manipulation;
   pointer-events: auto;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(182,232,90,.25);
   position: relative;
   z-index: 2;
   min-height: 44px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
 }
 .tab.active {
   background: var(--turf);
@@ -556,25 +561,25 @@ option { background: #12201a; color: #e9f3ec; }
     <div class="tabs-wrap">
       <button class="tabs-arrow" id="tabsPrev" type="button" aria-label="Slide tabs left">‹</button>
       <nav class="tabs" id="tabBar">
-      <button class="tab active" data-view="home">Home</button>
-      <button class="tab" data-view="parlay">Parlays</button>
-      <button class="tab" data-view="card">This week's card</button>
-      <button class="tab" data-view="score">Scorecard</button>
-      <button class="tab" data-view="alerts">Alerts</button>
-      <button class="tab" data-view="nfl">NFL Week 3</button>
-      <button class="tab" data-view="live">Live scores</button>
-      <button class="tab" data-view="cfb">College football</button>
-      <button class="tab" data-view="all">All games</button>
-      <button class="tab" data-view="props">Player stats</button>
-      <button class="tab" data-view="tds">Who scores TDs</button>
-      <button class="tab" data-view="value">Underdogs</button>
-      <button class="tab" data-view="cfbpicks">College picks</button>
-      <button class="tab" data-view="nflwx">NFL weather</button>
-      <button class="tab" data-view="cfbwx">College weather</button>
-      <button class="tab" data-view="nflinj">NFL injuries</button>
-      <button class="tab" data-view="cfbinj">College injuries</button>
-      <button class="tab" data-view="ratings">Team rankings</button>
-      <button class="tab" data-view="model">How it works</button>
+      <a class="tab active" href="#home" data-view="home">Home</a>
+      <a class="tab" href="#parlay" data-view="parlay">Parlays</a>
+      <a class="tab" href="#card" data-view="card">This week's card</a>
+      <a class="tab" href="#score" data-view="score">Scorecard</a>
+      <a class="tab" href="#alerts" data-view="alerts">Alerts</a>
+      <a class="tab" href="#nfl" data-view="nfl">NFL Week 3</a>
+      <a class="tab" href="#live" data-view="live">Live scores</a>
+      <a class="tab" href="#cfb" data-view="cfb">College football</a>
+      <a class="tab" href="#all" data-view="all">All games</a>
+      <a class="tab" href="#props" data-view="props">Player stats</a>
+      <a class="tab" href="#tds" data-view="tds">Who scores TDs</a>
+      <a class="tab" href="#value" data-view="value">Underdogs</a>
+      <a class="tab" href="#cfbpicks" data-view="cfbpicks">College picks</a>
+      <a class="tab" href="#nflwx" data-view="nflwx">NFL weather</a>
+      <a class="tab" href="#cfbwx" data-view="cfbwx">College weather</a>
+      <a class="tab" href="#nflinj" data-view="nflinj">NFL injuries</a>
+      <a class="tab" href="#cfbinj" data-view="cfbinj">College injuries</a>
+      <a class="tab" href="#ratings" data-view="ratings">Team rankings</a>
+      <a class="tab" href="#model" data-view="model">How it works</a>
       </nav>
       <button class="tabs-arrow" id="tabsNext" type="button" aria-label="Slide tabs right">›</button>
     </div>
@@ -5182,11 +5187,11 @@ function renderHome() {
   const jumps = document.getElementById("homeJumps");
   if (jumps) {
     jumps.innerHTML = `
-      <button class="home-jump hot" type="button" data-jump="parlay"><b>Parlays</b><span>NFL and college tickets, on their own page</span></button>
-      <button class="home-jump" type="button" data-jump="card"><b>This week's card</b><span>${(card.legs || []).length} plays ready to lock</span></button>
-      <button class="home-jump" type="button" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l : "0-0"} locked this season</span></button>
-      <button class="home-jump" type="button" data-jump="nfl"><b>NFL board</b><span>Week 3 sides, totals, weather</span></button>`;
-    jumps.querySelectorAll("[data-jump]").forEach((el) => el.addEventListener("click", () => setView(el.dataset.jump)));
+      <a class="home-jump hot" href="#parlay" data-jump="parlay"><b>Parlays</b><span>Tap here — NFL and college tickets</span></a>
+      <a class="home-jump" href="#card" data-jump="card"><b>This week's card</b><span>${(card.legs || []).length} plays ready to lock</span></a>
+      <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l : "0-0"} locked this season</span></a>
+      <a class="home-jump" href="#nfl" data-jump="nfl"><b>NFL board</b><span>Week 3 sides, totals, weather</span></a>`;
+    // clicks handled globally via href + hash
   }
   const feat = document.getElementById("homeFeature");
   const liveOrNext = (DATA.games || []).filter((g) => typeof isLiveGame === "function" && isLiveGame(g))[0]
@@ -5215,18 +5220,14 @@ function renderHome() {
   const hp = document.getElementById("homeParlay");
   if (hp) {
     const tile = (lg, row) => {
-      if (!row) return `<article class="home-parlay" data-jump="parlay"><b>${lg} parlays</b><div class="subn">Open the parlay desk</div></article>`;
-      return `<article class="home-parlay" data-jump="parlay">
+      if (!row) return `<a class="home-parlay" href="#parlay" data-jump="parlay"><b>${lg} parlays</b><div class="subn">Open the parlay desk</div></a>`;
+      return `<a class="home-parlay" href="#parlay" data-jump="parlay" data-lg="${lg === "College" ? "cfb" : "nfl"}">
         <div class="lbl">${lg} · ${row.title}</div>
         <div class="odds">${row.label}</div>
         <div class="subn">${row.legs.map((l) => l.label).join(" · ")}</div>
-      </article>`;
+      </a>`;
     };
     hp.innerHTML = tile("NFL", nflP) + tile("College", cfbP);
-    hp.querySelectorAll("[data-jump]").forEach((el) => el.addEventListener("click", () => {
-      window.__parlayLg = el.textContent.toLowerCase().includes("college") ? "cfb" : "nfl";
-      setView("parlay");
-    }));
   }
   const teaser = document.getElementById("homeCardTeaser");
   if (teaser) {
@@ -5234,9 +5235,9 @@ function renderHome() {
       <div class="lbl">Locked list</div>
       <h3 style="margin:4px 0 8px">${(card.legs || []).length} plays</h3>
       <ul class="share-legs">${(card.legs || []).slice(0, 5).map((L) => `<li><span>${L.short}</span><b>${L.text}</b></li>`).join("")}</ul>
-      <p class="subn" style="margin:10px 0 0">Tap to open the full card.</p>`;
+      <p class="subn" style="margin:10px 0 0"><a href="#card" style="color:var(--turf);font-weight:800">Open the full card →</a></p>`;
     teaser.style.cursor = "pointer";
-    teaser.onclick = () => setView("card");
+    teaser.onclick = () => { location.hash = "card"; };
   }
   const games = todayGames();
   const board = document.getElementById("homeBoard");
@@ -5334,7 +5335,10 @@ function renderAlerts() {
 }
 
 function setView(next) {
+  const allowed = {home:1,parlay:1,card:1,score:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1};
+  if (!allowed[next]) next = "home";
   view = next;
+  try { if (location.hash.replace("#","") !== next) history.replaceState(null, "", "#" + next); } catch (e) {}
   if (next === "cfb" && $("#openOnly").value === "upcoming") {
     $("#openOnly").value = "projected";
   }
@@ -5406,10 +5410,20 @@ async function boot() {
   }
   $("#stamp").textContent = `Snapshot ${fmt.when(DATA.generated_at)}`;
   try { if (typeof enrichPowerRankings === "function") enrichPowerRankings(); } catch (e) {}
-  $$(".tab").forEach((t) => t.addEventListener("click", () => setView(t.dataset.view)));
+  $$(".tab").forEach((t) => t.addEventListener("click", (e) => { e.preventDefault(); setView(t.dataset.view); }));
   document.addEventListener("click", (e) => {
+    const jump = e.target.closest("[data-jump]");
+    if (jump && jump.getAttribute("data-jump")) {
+      if (jump.getAttribute("data-lg")) window.__parlayLg = jump.getAttribute("data-lg");
+      setView(jump.getAttribute("data-jump"));
+      return;
+    }
     const tab = e.target.closest(".tab");
-    if (tab && tab.dataset.view) setView(tab.dataset.view);
+    if (tab && tab.dataset.view) { e.preventDefault(); setView(tab.dataset.view); }
+  });
+  window.addEventListener("hashchange", () => {
+    const h = (location.hash || "").replace("#","");
+    if (h && h !== view) setView(h);
   });
   (function bindTabSlider() {
     const bar = document.getElementById("tabBar");
@@ -5499,7 +5513,7 @@ async function boot() {
   try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) { console.warn(e); }
   if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games || []);
   try { if (typeof syncDesk === "function") syncDesk(); } catch (e) {}
-  setView((location.hash || "").replace("#","") === "card" ? "card" : ((location.hash || "").replace("#","") === "score" ? "score" : "home"));
+  setView((location.hash || "").replace("#","") || "home");
   if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games || []);
   try {
     const learn = window.learnFromFinals || learnFromFinals;
