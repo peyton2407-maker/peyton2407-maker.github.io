@@ -208,6 +208,7 @@ button { touch-action: manipulation; cursor: pointer; }
 .cat-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
 .cat-row button{flex:0 0 auto;border:1px solid var(--line);background:#162016;color:inherit;border-radius:999px;padding:8px 12px;font-weight:800;cursor:pointer}
 .cat-row button.on{background:var(--turf);color:#07120b;border-color:transparent}
+#recruitConf{min-width:220px;font-weight:800}
 .recruit-log{min-width:0}
 .commit-btn{background:none;border:0;color:inherit;font:inherit;font-weight:800;cursor:pointer;padding:10px 0;min-height:44px;text-align:left;touch-action:manipulation}
 .commit-btn:hover{color:var(--turf)}
@@ -982,15 +983,17 @@ option { background: #12201a; color: #e9f3ec; }
         <button type="button" data-cat="ggclass">Our classes</button>
         <button type="button" data-cat="ggportal">Our portal</button>
       </div>
-      <div class="cat-row" id="recruitConfs">
-        <button type="button" data-conf="all">All</button>
-        <button type="button" data-conf="SEC">SEC</button>
-        <button type="button" data-conf="B1G">Big Ten</button>
-        <button type="button" data-conf="ACC">ACC</button>
-        <button type="button" data-conf="Big 12">Big 12</button>
-        <button type="button" data-conf="IND">Independent</button>
+      <div class="controls" id="recruitFilters">
+        <select id="recruitConf" aria-label="Conference">
+          <option value="all">All conferences</option>
+          <option value="SEC">SEC</option>
+          <option value="B1G">Big Ten</option>
+          <option value="ACC">ACC</option>
+          <option value="Big 12">Big 12</option>
+          <option value="IND">Independent</option>
+        </select>
+        <input id="recruitQ" placeholder="Search a school…" />
       </div>
-      <input id="recruitQ" placeholder="Search a school…" style="max-width:280px;margin:0 0 10px" />
       <p class="subn" id="recruitNote" style="margin:0 0 10px"></p>
       <div class="card" id="recruitBoard"></div>
     </section>
@@ -6513,16 +6516,18 @@ function renderRecruit() {
       const tr = e.target.closest("tr[data-team]");
       if (tr) openCommits(tr.getAttribute("data-team"));
     });
-    $$("#recruitConfs button").forEach((b) => b.addEventListener("click", () => {
-      window.__recruitConf = b.dataset.conf;
+    const confSel = document.getElementById("recruitConf");
+    if (confSel) confSel.addEventListener("change", () => {
+      window.__recruitConf = confSel.value;
       renderRecruit();
-    }));
+    });
   }
   const cat = window.__recruitCat || "on3class";
   $$("#recruitCats button").forEach((b) => b.classList.toggle("on", b.dataset.cat === cat));
   const q = (($("#recruitQ") && $("#recruitQ").value) || "").trim().toLowerCase();
-  const conf = window.__recruitConf || "all";
-  $$("#recruitConfs button").forEach((b) => b.classList.toggle("on", b.dataset.conf === conf));
+  const confSel = document.getElementById("recruitConf");
+  const conf = (confSel && confSel.value) || window.__recruitConf || "all";
+  if (confSel && confSel.value !== conf) confSel.value = conf;
   const keep = (r) => (conf === "all" || r.conf === conf) && (!q || `${r.team} ${r.conf}`.toLowerCase().includes(q));
   const note = $("#recruitNote");
   let rows = "";
