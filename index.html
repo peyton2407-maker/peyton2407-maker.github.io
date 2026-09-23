@@ -1272,7 +1272,7 @@ function weatherImpact(wx, indoor) {
 function applyWeatherToGame(g) {
   const impact = weatherImpact(g.weather, g.indoor);
   g.weather_impact = impact;
-  if (!g.proj) return g;
+  if (!g.proj || g._lineLocked) return g;
   g.proj.weather_adj_total = impact.adj;
   if (g.box && !g._wxYards) {
     g._wxYards = true;
@@ -1987,7 +1987,7 @@ function refereeInfo(g) {
   return { name: null, tot: 0, home: 0, note: "Referee TBD — crew shift lands when ESPN lists the official" };
 }
 function applySituationalToGame(g) {
-  if (!g || !g.proj || g.completed) return g;
+  if (!g || !g.proj || g.completed || g._lineLocked) return g;
   const p = g.proj;
   if (p._baseMargin == null && p.blended_margin != null) p._baseMargin = Number(p.blended_margin);
   if (p._baseTotal == null && p.hashmark_total != null) p._baseTotal = Number(p.hashmark_total);
@@ -6972,10 +6972,8 @@ async function boot() {
   pullLiveScores();
   if (!window.__livePoll) window.__livePoll = setInterval(pullLiveScores, 40000);
   seedInjuriesFromSnap();
+  (DATA.games || []).forEach((g) => { g._lineLocked = true; });
   fetchInjuries(false).then(()=>{
-    try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) {}
-    (DATA.games || []).forEach((g) => { if (typeof applyLearningToGame === "function") applyLearningToGame(g); });
-    if (typeof settleBoard === "function") settleBoard();
     if (view === "nflinj") renderInjuries("nfl");
     else if (view === "cfbinj") renderInjuries("cfb");
     else if (typeof renderBoard==="function") renderBoard();
@@ -6991,7 +6989,6 @@ async function boot() {
     try {
       setStamp("Loading stadium forecasts…", true);
       await attachWeather(DATA.games || []);
-      if (typeof settleBoard === "function") settleBoard();
       if (typeof renderBoard === "function") renderBoard();
       setStamp(`Weather ${new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`, true);
     } catch (err) {
