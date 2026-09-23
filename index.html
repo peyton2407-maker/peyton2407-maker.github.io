@@ -3649,8 +3649,9 @@ function renderTdDesk() {
       <div class="prop-stats">
         <div><span class="lbl">Payout if it hits</span><b>${r.fair}</b></div>
         <div><span class="lbl">Expected TDs</span><b>${r.lam.toFixed(2)}</b></div>
-        <div><span class="lbl">Scores / scores twice</span><b>${Math.round(r.anytime * 100)}% · ${Math.round(r.two * 100)}%</b></div>
-        <div><span class="lbl">First TD of game</span><b>${Math.round(r.first * 100)}%</b></div>
+        <div><span class="lbl">Percentage to score</span><b>${Math.round(r.anytime * 100)}%</b></div>
+        <div><span class="lbl">Percentage to score twice</span><b>${Math.round(r.two * 100)}%</b></div>
+        <div><span class="lbl">Percentage to score first TD</span><b>${Math.round(r.first * 100)}%</b></div>
       </div>
       <p class="subn" style="margin:8px 0 0">${r.why}</p>
     </article>`).join("");
