@@ -1272,7 +1272,7 @@ function weatherImpact(wx, indoor) {
 function applyWeatherToGame(g) {
   const impact = weatherImpact(g.weather, g.indoor);
   g.weather_impact = impact;
-  if (!g.proj || g._lineLocked) return g;
+  if (!g.proj) return g;
   g.proj.weather_adj_total = impact.adj;
   if (g.box && !g._wxYards) {
     g._wxYards = true;
@@ -1987,7 +1987,7 @@ function refereeInfo(g) {
   return { name: null, tot: 0, home: 0, note: "Referee TBD — crew shift lands when ESPN lists the official" };
 }
 function applySituationalToGame(g) {
-  if (!g || !g.proj || g.completed || g._lineLocked) return g;
+  if (!g || !g.proj || g.completed) return g;
   const p = g.proj;
   if (p._baseMargin == null && p.blended_margin != null) p._baseMargin = Number(p.blended_margin);
   if (p._baseTotal == null && p.hashmark_total != null) p._baseTotal = Number(p.hashmark_total);
@@ -2301,6 +2301,14 @@ async function pullEpaAndMarkets() {
     if (typeof applyLearningToGame === "function") (DATA.games || []).forEach(applyLearningToGame);
     if (typeof renderBoard === "function") renderBoard();
     if (view === "cfbpicks" && typeof renderCfbPicks === "function") renderCfbPicks();
+    if (view === "parlay" && typeof renderParlays === "function") renderParlays();
+    if (view === "props" && typeof renderProps === "function") renderProps();
+    if (view === "value" && typeof renderValueDogs === "function") renderValueDogs();
+    if (view === "nflwx" && typeof renderNflWeather === "function") renderNflWeather();
+    if (view === "cfbwx" && typeof renderCfbWeather === "function") renderCfbWeather();
+    if (view === "tds" && typeof renderTdDesk === "function") renderTdDesk();
+    if (view === "nflinj") renderInjuries("nfl");
+    if (view === "cfbinj") renderInjuries("cfb");
     const nEpa = Object.keys(window.EPA_PACK.nfl || {}).length + Object.keys(window.EPA_PACK.cfb || {}).length;
     setStamp(`EPA ${nEpa} teams · steam on ${Object.keys(window.MARKET_DESK).length} games`, true);
   } catch (e) { console.warn("epa/steam", e); }
@@ -4553,11 +4561,11 @@ function renderInjuries(league){
   const stamp=document.getElementById("injStamp");
   if(stamp) stamp.textContent = league === "cfb"
     ? (pack.cfbLive === "covers"
-      ? `Live college report · ${when}. Covers lists who is out, doubtful, or questionable. Refreshes every 10 minutes.`
+      ? `Live college report · ${when}. Covers lists who is out, doubtful, or questionable. Refreshes every 2 minutes.`
       : pack.cfbLive === "desk"
-      ? `College report pulled Sep 23 from Covers · ${all.length} players. This page refreshes it every 10 minutes.`
+      ? `College report pulled Sep 23 from Covers · ${all.length} players. This page refreshes it every 2 minutes.`
       : `College report · ${when}. The full desk did not answer, so this is the latest ESPN injury news.`)
-    : `Live NFL report · ${when}. ESPN's list. Out, doubtful, and questionable are at the top. Refreshes every 10 minutes.`;
+    : `Live NFL report · ${when}. ESPN's list. Out, doubtful, and questionable are at the top. Refreshes every 2 minutes.`;
   box.innerHTML = rows.slice(0,240).map(r=>{
     const rep = r.reporter ? `${r.reporter.name}${r.reporter.outlet? " · "+r.reporter.outlet:""}` : "ESPN injury report";
     const quote = r.long || r.short || "No reporter note posted yet.";
@@ -6972,7 +6980,6 @@ async function boot() {
   pullLiveScores();
   if (!window.__livePoll) window.__livePoll = setInterval(pullLiveScores, 40000);
   seedInjuriesFromSnap();
-  (DATA.games || []).forEach((g) => { g._lineLocked = true; });
   fetchInjuries(false).then(()=>{
     if (view === "nflinj") renderInjuries("nfl");
     else if (view === "cfbinj") renderInjuries("cfb");
@@ -6981,9 +6988,37 @@ async function boot() {
   });
   pullDkLines().then(()=>{ if (typeof renderBoard==="function") renderBoard(); if (view==="value") renderValueDogs(); });
   pullEpaAndMarkets();
-  if (!window.__injLive) window.__injLive = setInterval(()=>{
-    fetchInjuries(true).then(()=>{ if(view==="nflinj") renderInjuries("nfl"); if(view==="cfbinj") renderInjuries("cfb"); });
-  }, 10*60*1000);
+  async function refreshLiveBoard() {
+    if (window.__refreshing) return;
+    window.__refreshing = true;
+    try {
+      await Promise.all([
+        fetchInjuries(true).catch(() => {}),
+        (typeof attachWeather === "function" ? attachWeather(DATA.games || []) : Promise.resolve()).catch(() => {}),
+        (typeof pullDkLines === "function" ? pullDkLines() : Promise.resolve()).catch(() => {})
+      ]);
+      try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) {}
+      if (typeof rebuildSharedLearning === "function") rebuildSharedLearning(DATA.games || []);
+      (DATA.games || []).forEach((g) => { if (typeof applyLearningToGame === "function") applyLearningToGame(g); });
+      if (typeof settleBoard === "function") settleBoard();
+      if (typeof renderBoard === "function") renderBoard();
+      if (view === "home" && typeof renderHome === "function") renderHome();
+      if (view === "parlay") renderParlays();
+      if (view === "props") renderProps();
+      if (view === "value") renderValueDogs();
+      if (view === "nflwx") renderNflWeather();
+      if (view === "cfbwx") renderCfbWeather();
+      if (view === "cfbpicks") renderCfbPicks();
+      if (view === "tds") renderTdDesk();
+      if (view === "nflinj") renderInjuries("nfl");
+      if (view === "cfbinj") renderInjuries("cfb");
+      if (view === "ratings" && typeof renderRatings === "function") renderRatings();
+      if (view === "card" && typeof renderWeeklyCard === "function") renderWeeklyCard();
+      setStamp("Updated " + new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) + " · same feed for everyone", true);
+    } finally { window.__refreshing = false; }
+  }
+  window.refreshLiveBoard = refreshLiveBoard;
+  if (!window.__liveAll) window.__liveAll = setInterval(refreshLiveBoard, 2 * 60 * 1000);
   const fromFile = location.protocol === "file:";
   const doWx = async () => {
     try {
