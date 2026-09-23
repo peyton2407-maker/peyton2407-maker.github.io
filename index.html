@@ -272,7 +272,7 @@ option { background: #12201a; color: #e9f3ec; }
   padding: 16px;
   box-shadow: var(--shadow);
 }
-.game { display: grid; gap: 12px; cursor: pointer; position: relative; z-index: 2; touch-action: manipulation; }
+button.game{width:100%;text-align:left;font:inherit;color:inherit;display:grid;gap:12px;cursor:pointer;position:relative;z-index:3;touch-action:manipulation;-webkit-tap-highlight-color:rgba(182,232,90,.35)}
 .home-game, .home-feature.on, #board tr[data-id], .desk-strip tr[data-id] { cursor: pointer; touch-action: manipulation; }
 .overlay:not(.show) { display: none !important; pointer-events: none !important; visibility: hidden !important; }
 body > iframe { display: none !important; width: 0 !important; height: 0 !important; pointer-events: none !important; }
@@ -5340,7 +5340,7 @@ function deskStripHtml(games) {
     <p class="subn" style="margin:0 0 10px">Hurt players, short rest, long flights, and a moving Vegas line. Tap a row to see the game.</p>
     ${!rows.length ? "<p>Nothing extra is moving these games.</p>" : `<table>
       <thead><tr><th>Game</th><th>Spread change</th><th>Total change</th></tr></thead>
-      <tbody>${rows.map((g) => `<tr data-id="${g.id}" onclick="openGame(this.dataset.id)">
+      <tbody>${rows.map((g) => `<tr data-open-game="${g.id}" data-id="${g.id}">
         <td>${g.away.abbr} @ ${g.home.abbr}</td>
         <td><b>${fmt.signed(g.situational.margin_adj)}</b></td>
         <td><b>${fmt.signed(g.situational.total_adj)}</b></td>
@@ -5365,7 +5365,7 @@ function card(g) {
     ? `<span class="badge ${String(p.total_pick).startsWith("OVER") ? "over" : "under"}">${p.total_pick}</span>`
     : "";
   return `
-    <article class="game ${g.completed ? "done" : ""}" data-id="${g.id}" onclick="openGame(this.dataset.id)">
+    <button type="button" class="game ${g.completed ? "done" : ""}" data-open-game="${g.id}">
       <div class="matchup">
         <div class="kick">${g.league.toUpperCase()} · ${fmt.when(g.date)} ${g.broadcasts?.[0] ? "· " + g.broadcasts[0] : ""}</div>
         ${teamLine(g.away, o.away_favorite ? o.details : "")}
@@ -5399,7 +5399,7 @@ function card(g) {
         ${pickBadge}
         ${cfbReadHtml(g)}
       </div>
-    </article>`;
+    </button>`;
 }
 
 function projectionTable(games) {
@@ -5435,7 +5435,7 @@ function projectionTable(games) {
             const wp = g.completed && Number.isFinite(hs) && Number.isFinite(as)
               ? (hs === as ? "TIE" : (hs > as ? g.home.abbr : g.away.abbr) + " 100%")
               : (p.win_prob_home != null ? `${g.away.abbr} ${fmt.pct(p.win_prob_away)}` : "—");
-            return `<tr data-id="${g.id}" onclick="openGame(this.dataset.id)" class="${(typeof isLiveGame==="function" && isLiveGame(g)) ? "live-row" : ""}">
+            return `<tr data-open-game="${g.id}" data-id="${g.id}" class="${(typeof isLiveGame==="function" && isLiveGame(g)) ? "live-row" : ""}">
               <td>${(typeof isLiveGame==="function" && isLiveGame(g)) ? `<span class="live-pill">LIVE</span> <span class="live-clock">${g.status_detail||g.clock||""}</span>` : fmt.when(g.date)}</td>
               <td>${g.away.abbr} @ ${g.home.abbr}</td>
               <td>${now}</td>
@@ -6261,8 +6261,16 @@ async function openPlayer(id, gameId) {
 }
 
 function openGame(id) {
-  const g = DATA.games.find((x) => String(x.id) === String(id));
-  if (!g) return;
+  const g = (DATA.games || []).find((x) => String(x.id) === String(id));
+  const ov = document.getElementById("overlay");
+  const modal = document.getElementById("modal");
+  if (!g || !ov || !modal) return;
+  ov.classList.add("show");
+  ov.style.display = "flex";
+  ov.style.visibility = "visible";
+  ov.style.pointerEvents = "auto";
+  ov.style.zIndex = "200";
+  try {
   const p = g.proj || {};
   const o = g.odds || {};
   const wx = g.weather;
@@ -6322,6 +6330,11 @@ function openGame(id) {
   ov.style.zIndex = "80";
   const closer = document.getElementById("closeModal");
   if (closer) closer.onclick = closeModal;
+  } catch (err) {
+    modal.innerHTML = `<div class="modal-head"><div><div class="lbl">${g.league.toUpperCase()}</div><h2>${g.away.abbr} @ ${g.home.abbr}</h2></div><button class="close" id="closeModal" type="button">Close</button></div><p>${g.away.name} at ${g.home.name}</p>`;
+    const closer2 = document.getElementById("closeModal");
+    if (closer2) closer2.onclick = closeModal;
+  }
 }
 window.openInjury = openInjury;
 document.addEventListener("click", function (e) {
@@ -6340,14 +6353,19 @@ function closeModal() {
   ov.style.zIndex = "";
 }
 document.addEventListener("click", function (e) {
-  const t = e.target;
+  const t = e.target && e.target.nodeType === 1 ? e.target : (e.target && e.target.parentElement);
   if (!t || !t.closest) return;
-  if (t.closest("a, button, input, select, textarea, #overlay")) return;
-  const hit = t.closest(".game, .home-game, .home-feature.on, #board tr[data-id], #cfbPickBoard .prop-card, #nflWxBoard .prop-card, #cfbWxBoard .prop-card");
+  const tab = t.closest("#tabBar a.tab");
+  if (tab && tab.dataset.view) {
+    e.preventDefault();
+    setView(tab.dataset.view);
+    return;
+  }
+  const hit = t.closest("[data-open-game]");
   if (!hit) return;
-  const id = hit.getAttribute("data-id");
-  if (id) openGame(id);
-});
+  e.preventDefault();
+  openGame(hit.getAttribute("data-open-game"));
+}, true);
 
 function propScore(p) {
   const pass = Number(p.pass_yds || 0);
@@ -7119,7 +7137,7 @@ function renderHome() {
       const pick = (p.pick && p.pick !== "NO PLAY") ? (p.pick_line || p.pick) : "no side";
       const tot = (p.total_pick && p.total_pick !== "NO PLAY") ? p.total_pick : "";
       const live = typeof isLiveGame === "function" && isLiveGame(g);
-      return `<article class="home-game" data-id="${g.id}" onclick="openGame(this.dataset.id)">
+      return `<article class="home-game" data-open-game="${g.id}" data-id="${g.id}">
         <div class="mini"><img src="${g.away.logo || ""}" alt=""><img src="${g.home.logo || ""}" alt=""></div>
         <div>
           <div class="kick">${g.league.toUpperCase()} · ${live ? "LIVE" : fmt.when(g.date)}</div>
