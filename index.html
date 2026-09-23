@@ -982,6 +982,14 @@ option { background: #12201a; color: #e9f3ec; }
         <button type="button" data-cat="ggclass">Our classes</button>
         <button type="button" data-cat="ggportal">Our portal</button>
       </div>
+      <div class="cat-row" id="recruitConfs">
+        <button type="button" data-conf="all">All</button>
+        <button type="button" data-conf="SEC">SEC</button>
+        <button type="button" data-conf="B1G">Big Ten</button>
+        <button type="button" data-conf="ACC">ACC</button>
+        <button type="button" data-conf="Big 12">Big 12</button>
+        <button type="button" data-conf="IND">Independent</button>
+      </div>
       <input id="recruitQ" placeholder="Search a school…" style="max-width:280px;margin:0 0 10px" />
       <p class="subn" id="recruitNote" style="margin:0 0 10px"></p>
       <div class="card" id="recruitBoard"></div>
@@ -6505,21 +6513,28 @@ function renderRecruit() {
       const tr = e.target.closest("tr[data-team]");
       if (tr) openCommits(tr.getAttribute("data-team"));
     });
+    $$("#recruitConfs button").forEach((b) => b.addEventListener("click", () => {
+      window.__recruitConf = b.dataset.conf;
+      renderRecruit();
+    }));
   }
   const cat = window.__recruitCat || "on3class";
   $$("#recruitCats button").forEach((b) => b.classList.toggle("on", b.dataset.cat === cat));
   const q = (($("#recruitQ") && $("#recruitQ").value) || "").trim().toLowerCase();
+  const conf = window.__recruitConf || "all";
+  $$("#recruitConfs button").forEach((b) => b.classList.toggle("on", b.dataset.conf === conf));
+  const keep = (r) => (conf === "all" || r.conf === conf) && (!q || `${r.team} ${r.conf}`.toLowerCase().includes(q));
   const note = $("#recruitNote");
   let rows = "";
   if (cat === "on3class") {
     note.textContent = "On3’s 2026 team recruiting rankings, pulled September 22, 2026. The score is the number they published. We did not change it. Tap a school to see the commits.";
     rows = `<table class="log recruit-log"><thead><tr><th>#</th><th>Team</th><th>Conf</th><th>5 / 4 / 3</th><th>Commits</th><th>Avg</th><th>On3</th></tr></thead><tbody>`
-      + ON3_CLASS.map((r, i) => ({ r, i })).filter((x) => !q || `${x.r.team} ${x.r.conf}`.toLowerCase().includes(q)).map((x) => `<tr data-team="${x.r.team}"><td>${x.i + 1}</td><td class="l">${teamBtn(x.r.team)}</td><td>${x.r.conf}</td><td>${x.r.s5} / ${x.r.s4} / ${x.r.s3}</td><td>${x.r.n}</td><td>${x.r.avg.toFixed(2)}</td><td>${x.r.on3.toFixed(3)}</td></tr>`).join("")
+      + ON3_CLASS.map((r, i) => ({ r, i })).filter((x) => keep(x.r)).map((x) => `<tr data-team="${x.r.team}"><td>${x.i + 1}</td><td class="l">${teamBtn(x.r.team)}</td><td>${x.r.conf}</td><td>${x.r.s5} / ${x.r.s4} / ${x.r.s3}</td><td>${x.r.n}</td><td>${x.r.avg.toFixed(2)}</td><td>${x.r.on3.toFixed(3)}</td></tr>`).join("")
       + `</tbody></table>`;
   } else if (cat === "on3portal") {
     note.textContent = "On3’s 2026 transfer portal team index, pulled September 22, 2026. Their index is how the portal class looks against that school’s own roster, not a raw talent total. Tap a school that is also in the class to see those high school commits.";
     rows = `<table class="log recruit-log"><thead><tr><th>#</th><th>Team</th><th>In</th><th>In avg</th><th>Out</th><th>Out avg</th><th>Stars in</th><th>On3</th></tr></thead><tbody>`
-      + ON3_PORTAL.map((r, i) => ({ r, i })).filter((x) => !q || `${x.r.team} ${x.r.conf}`.toLowerCase().includes(q)).map((x) => `<tr data-team="${x.r.team}"><td>${x.i + 1}</td><td class="l">${teamBtn(x.r.team)}</td><td>${x.r.inn}</td><td>${x.r.inAvg.toFixed(2)}</td><td>${x.r.out}</td><td>${x.r.outAvg.toFixed(2)}</td><td>${x.r.s5} / ${x.r.s4} / ${x.r.s3}</td><td>${x.r.on3}</td></tr>`).join("")
+      + ON3_PORTAL.map((r, i) => ({ r, i })).filter((x) => keep(x.r)).map((x) => `<tr data-team="${x.r.team}"><td>${x.i + 1}</td><td class="l">${teamBtn(x.r.team)}</td><td>${x.r.inn}</td><td>${x.r.inAvg.toFixed(2)}</td><td>${x.r.out}</td><td>${x.r.outAvg.toFixed(2)}</td><td>${x.r.s5} / ${x.r.s4} / ${x.r.s3}</td><td>${x.r.on3}</td></tr>`).join("")
       + `</tbody></table>`;
   } else if (cat === "ggclass") {
     note.textContent = "Our class board. Same On3 schools, our order. Tap a school to see the commits.";
@@ -6527,7 +6542,7 @@ function renderRecruit() {
     const on3Rank = {};
     ON3_CLASS.forEach((r, i) => { on3Rank[r.team] = i + 1; });
     rows = `<table class="log recruit-log"><thead><tr><th>#</th><th>Team</th><th>On3</th><th>Avg</th><th>5-stars</th><th>Commits</th><th>Ours</th></tr></thead><tbody>`
-      + ranked.filter((r) => !q || `${r.team} ${r.conf}`.toLowerCase().includes(q)).map((r) => `<tr data-team="${r.team}"><td>${r.rank}</td><td class="l">${teamBtn(r.team)}</td><td>${on3Rank[r.team]}</td><td>${r.avg.toFixed(2)}</td><td>${r.s5}</td><td>${r.n}</td><td>${r.gg.toFixed(2)}</td></tr>`).join("")
+      + ranked.filter((r) => keep(r)).map((r) => `<tr data-team="${r.team}"><td>${r.rank}</td><td class="l">${teamBtn(r.team)}</td><td>${on3Rank[r.team]}</td><td>${r.avg.toFixed(2)}</td><td>${r.s5}</td><td>${r.n}</td><td>${r.gg.toFixed(2)}</td></tr>`).join("")
       + `</tbody></table>`;
   } else {
     note.textContent = "Our portal board. Same On3 schools, our order. Tap a school that is also in the class to see those commits.";
@@ -6535,7 +6550,7 @@ function renderRecruit() {
     const on3Rank = {};
     ON3_PORTAL.forEach((r, i) => { on3Rank[r.team] = i + 1; });
     rows = `<table class="log recruit-log"><thead><tr><th>#</th><th>Team</th><th>On3</th><th>Net</th><th>In avg</th><th>Out avg</th><th>Ours</th></tr></thead><tbody>`
-      + ranked.filter((r) => !q || `${r.team} ${r.conf}`.toLowerCase().includes(q)).map((r) => `<tr data-team="${r.team}"><td>${r.rank}</td><td class="l">${teamBtn(r.team)}</td><td>${on3Rank[r.team]}</td><td>${r.inn - r.out > 0 ? "+" : ""}${r.inn - r.out}</td><td>${r.inAvg.toFixed(1)}</td><td>${r.outAvg.toFixed(1)}</td><td>${Math.round(r.gg)}</td></tr>`).join("")
+      + ranked.filter((r) => keep(r)).map((r) => `<tr data-team="${r.team}"><td>${r.rank}</td><td class="l">${teamBtn(r.team)}</td><td>${on3Rank[r.team]}</td><td>${r.inn - r.out > 0 ? "+" : ""}${r.inn - r.out}</td><td>${r.inAvg.toFixed(1)}</td><td>${r.outAvg.toFixed(1)}</td><td>${Math.round(r.gg)}</td></tr>`).join("")
       + `</tbody></table>`;
   }
   $("#recruitBoard").innerHTML = `<div class="log-wrap">${rows}</div>`;
