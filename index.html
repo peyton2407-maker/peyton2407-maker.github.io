@@ -280,7 +280,7 @@ button.game{width:100%;text-align:left;font:inherit;color:inherit;display:grid;g
 body > iframe { display: none !important; width: 0 !important; height: 0 !important; pointer-events: none !important; }
 .game:hover, .prop-card:hover { transform: translateY(-2px); border-color: var(--line-2); }
 .game.done { opacity: .72; }
-.prop-card { cursor: pointer; }
+.prop-card { cursor: pointer; touch-action: manipulation; }
 button.prop-card{width:100%;text-align:left;font:inherit;color:inherit;display:block;touch-action:manipulation;-webkit-tap-highlight-color:rgba(182,232,90,.3)}
 button.prop-card.inj-open .reporter{display:block;-webkit-line-clamp:unset;overflow:visible}
 .report-full{display:none;margin-top:10px}
@@ -376,7 +376,7 @@ button.prop-card.inj-open .report-full{display:block}
   display: none; align-items: flex-end; justify-content: center; z-index: -1;
   visibility: hidden;
 }
-.overlay.show { display: flex; pointer-events: auto !important; z-index: 40; visibility: visible; }
+.overlay.show { display: flex !important; pointer-events: auto !important; z-index: 40; visibility: visible !important; }
 .modal {
   width: 100%; max-height: 92vh; overflow: auto;
   background: #12201a;
@@ -890,6 +890,7 @@ button.prop-card.inj-open .report-full{display:block}
       </div>
       <p class="subn" style="margin:8px 0 0">Every card has the yard lines and the Double Gs pick. Tap a player for this year's hit rate and his history against that team.</p>
       <div class="stat-row" id="propStats"></div>
+      <div id="propSheet" style="display:none"></div>
       <div class="prop-board" id="propBoard"></div>
     </section>
 
@@ -5156,11 +5157,7 @@ function openInjury(i, el) {
       <button class="close" id="closeModal" type="button">Close</button>
     </div>
     ${blocks || "<p>No full note was posted.</p>"}`;
-  ov.classList.add("show");
-  ov.style.display = "flex";
-  ov.style.visibility = "visible";
-  ov.style.pointerEvents = "auto";
-  ov.style.zIndex = "80";
+  placeOverlay(ov);
   const closer = document.getElementById("closeModal");
   if (closer) closer.onclick = closeModal;
 }
@@ -6219,8 +6216,11 @@ async function openPlayer(id, gameId) {
       <button class="close" id="closeModal">Close</button>
     </div>
     <p class="subn">Pulling his real games from ESPN…</p>`;
-  $("#overlay").classList.add("show");
-  $("#closeModal").onclick = closeModal;
+  const ov = document.getElementById("overlay");
+  placeOverlay(ov);
+  showPropSheet($("#modal").innerHTML);
+  const closer0 = document.getElementById("closeModal");
+  if (closer0) closer0.onclick = closeModal;
   let rows = [];
   let err = "";
   let sched = [];
@@ -6260,7 +6260,9 @@ async function openPlayer(id, gameId) {
       <h3 style="margin-top:12px">What we would still add</h3>
       <p>Red-zone and goal-line share, how many snaps and routes he gets, and how this defense has played against his position this year. A teammate being out belongs here too. Those are not in this feed, so they are not inside the number. The projection is his yards and scores from Double Gs, checked against the real games ESPN lists.</p>
     </div>`;
-  $("#closeModal").onclick = closeModal;
+  showPropSheet($("#modal").innerHTML);
+  const closer1 = document.getElementById("closeModal");
+  if (closer1) closer1.onclick = closeModal;
 }
 
 function placeOverlay(ov) {
@@ -6277,12 +6279,21 @@ function placeOverlay(ov) {
   ov.style.pointerEvents = "auto";
   ov.style.zIndex = "9999";
 }
+function showPropSheet(html) {
+  const sheet = document.getElementById("propSheet");
+  if (!sheet) return;
+  sheet.style.display = "block";
+  sheet.innerHTML = `<div class="game-sheet">${html}</div>`;
+  const closer = sheet.querySelector(".close");
+  if (closer) closer.onclick = function (e) { e.preventDefault(); e.stopPropagation(); closeModal(); };
+  try { sheet.scrollIntoView({ block: "start" }); } catch (e) {}
+}
 function showGameSheet(html) {
   const sheet = document.getElementById("gameSheet");
   if (!sheet) return;
   sheet.style.display = "block";
   sheet.innerHTML = `<div class="game-sheet">${html}</div>`;
-  const closer = sheet.querySelector("#closeModal");
+  const closer = sheet.querySelector(".close");
   if (closer) closer.onclick = function (e) { e.preventDefault(); e.stopPropagation(); closeModal(); };
   try { sheet.scrollIntoView({ block: "start" }); } catch (e) {}
 }
@@ -6371,16 +6382,21 @@ function closeModal() {
   const ov = document.getElementById("overlay");
   if (ov) {
     ov.classList.remove("show");
-    ov.style.display = "none";
-    ov.style.visibility = "hidden";
-    ov.style.pointerEvents = "none";
+    ov.style.display = "";
+    ov.style.visibility = "";
+    ov.style.pointerEvents = "";
     ov.style.zIndex = "";
     ov.style.position = "";
     ov.style.top = "";
     ov.style.height = "";
+    ov.style.width = "";
+    ov.style.left = "";
+    ov.style.right = "";
   }
   const sheet = document.getElementById("gameSheet");
   if (sheet) { sheet.style.display = "none"; sheet.innerHTML = ""; }
+  const prop = document.getElementById("propSheet");
+  if (prop) { prop.style.display = "none"; prop.innerHTML = ""; }
 }
 document.addEventListener("click", function (e) {
   const t = e.target && e.target.nodeType === 1 ? e.target : (e.target && e.target.parentElement);
@@ -6389,6 +6405,14 @@ document.addEventListener("click", function (e) {
   if (tab && tab.dataset.view) {
     e.preventDefault();
     setView(tab.dataset.view);
+    return;
+  }
+  if (t.closest("select, input, textarea, .slide-btn, .close")) return;
+  const player = t.closest("#propBoard [data-player]");
+  if (player) {
+    e.preventDefault();
+    e.stopPropagation();
+    openPlayer(player.getAttribute("data-player"), player.getAttribute("data-id"));
     return;
   }
   const hit = t.closest("[data-open-game]");
@@ -7349,11 +7373,9 @@ function openCommits(team) {
       <button class="close" id="closeModal">Close</button>
     </div>
     ${body}`;
-  ov.classList.add("show");
-  ov.style.display = "flex";
-  ov.style.visibility = "visible";
-  ov.style.pointerEvents = "auto";
-  ov.style.zIndex = "80";
+  const ov = document.getElementById("overlay");
+  if (!ov) return;
+  placeOverlay(ov);
   const closer = document.getElementById("closeModal");
   if (closer) closer.onclick = closeModal;
 }
