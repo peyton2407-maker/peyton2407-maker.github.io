@@ -834,6 +834,13 @@ option { background: #12201a; color: #e9f3ec; }
           <option value="rec">Sort: receiving yards</option>
           <option value="td">Sort: touchdowns</option>
         </select>
+        <select id="propHit" class="lg-select" aria-label="Our hit rate">
+          <option value="all">Our hit rate: all</option>
+          <option value="best">Best projected hit rate</option>
+          <option value="60">60% and up</option>
+          <option value="65">65% and up</option>
+          <option value="70">70% and up</option>
+        </select>
         <input id="propQ" placeholder="Search a player or team…" />
       </div>
       <p class="subn" style="margin:8px 0 0">Every card has the yard lines and the Double Gs pick. Tap a player for this year's hit rate and his history against that team.</p>
@@ -5727,8 +5734,19 @@ function renderProps() {
   if (q) {
     rows = rows.filter((p) => `${p.name} ${p.team} ${p.opp} ${p.game}`.toLowerCase().includes(q));
   }
-  rows.forEach((p) => { p._score = propScore(p); p._td = Number(p.pass_td || 0) + Number(p.rush_td || 0) + Number(p.rec_td || 0); });
+  const hitCut = ($("#propHit") && $("#propHit").value) || "all";
+  rows.forEach((p) => {
+    p._score = propScore(p);
+    p._td = Number(p.pass_td || 0) + Number(p.rush_td || 0) + Number(p.rec_td || 0);
+    p._lean = bestDoubleG(marketsFor(p), [], []);
+    p._hit = p._lean ? p._lean.ours : 0;
+  });
+  if (hitCut === "60" || hitCut === "65" || hitCut === "70") {
+    const min = Number(hitCut) / 100;
+    rows = rows.filter((p) => p._hit >= min);
+  }
   rows.sort((a, b) => {
+    if (hitCut === "best" || hitCut === "60" || hitCut === "65" || hitCut === "70") return (b._hit || 0) - (a._hit || 0) || b._score - a._score;
     if (sort === "fp") return (b.fp || 0) - (a.fp || 0);
     if (sort === "pass") return (b.pass_yds || 0) - (a.pass_yds || 0);
     if (sort === "rush") return (b.rush_yds || 0) - (a.rush_yds || 0);
@@ -5736,13 +5754,13 @@ function renderProps() {
     if (sort === "td") return b._td - a._td;
     return b._score - a._score;
   });
-  const best = day === "best" ? rows.slice(0, 18) : rows.slice(0, 48);
+  const best = (day === "best" && hitCut === "all") ? rows.slice(0, 18) : rows.slice(0, 72);
   const qbs = best.filter((p) => p.pos === "QB").length;
   $("#propStats").innerHTML = `
     <div class="stat"><b>${best.length}</b><span>${day === "best" ? "featured picks" : "props on this filter"}</span></div>
     <div class="stat"><b>${rows.length}</b><span>matching NFL players</span></div>
     <div class="stat"><b>${qbs}</b><span>QBs in this list</span></div>
-    <div class="stat"><b>${best[0] ? best[0].name.split(" ").slice(-1)[0] : "—"}</b><span>top name right now</span></div>`;
+    <div class="stat"><b>${best[0] && best[0]._hit ? Math.round(best[0]._hit * 100) + "%" : "—"}</b><span>best our hit rate</span></div>`;
   if (!best.length) {
     $("#propBoard").innerHTML = `<div class="empty">No NFL props in this filter. Switch the first dropdown to “Whole NFL week”.</div>`;
     return;
@@ -5755,7 +5773,7 @@ function renderProps() {
       : `${fmt.n(p.rec,1)} rec · ${fmt.n(p.rec_yds,0)} yds · ${fmt.n(p.rec_td,1)} TD`;
     const inj = p.injury && p.injury !== "ACTIVE" ? `<span class="inj">${p.injury}</span>` : "";
     const markets = marketsFor(p).map((m) => Object.assign(m, { player: p }));
-    const best = bestDoubleG(markets, [], []);
+    const best = p._lean || bestDoubleG(markets, [], []);
     const main = markets[0];
     const dk = main ? dkLine(p, main.key) : null;
     const ladder = main ? `<table class="ladder"><thead><tr><th>${main.label}</th><th>Our chance</th></tr></thead><tbody>${main.lines.map((ln) => `<tr><td>${main.under ? "under" : "over"} ${ln}</td><td>${Math.round(ourChance(main.mean, ln, main.key, main.under) * 100)}%</td></tr>`).join("")}</tbody></table>` : "";
@@ -5769,13 +5787,13 @@ function renderProps() {
           <div class="prop-meta">${p.pos} · ${p.team} vs ${p.opp} · ${p.game || ""} · ${fmt.when(p.date || p.kick)}</div>
           </div>
         </div>
-        <div class="pick-score">${p._score.toFixed(1)}</div>
+        <div class="pick-score">${p._hit ? Math.round(p._hit * 100) + "%" : "—"}</div>
       </div>
       <div class="side-top">
         <div><span class="lbl">Double Gs</span><b>${line}</b></div>
         <div><span class="lbl">DraftKings</span><b>${dk != null ? dk : "—"}</b></div>
       </div>
-      <div class="dg-box"><div class="lbl">Double Gs</div><b>${pick}</b></div>
+      <div class="dg-box"><div class="lbl">Our hit rate</div><b>${p._hit ? Math.round(p._hit * 100) + "% · " : ""}${pick}</b></div>
     </article>`;
   }).join("");
   $$("#propBoard .prop-card").forEach((el) => el.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); openPlayer(el.dataset.player, el.dataset.id); }));
@@ -6787,7 +6805,7 @@ async function boot() {
   $("#ratingLeague").addEventListener("change", renderRatings);
   ["ratingView","ratingSort","ratingPoll"].forEach((id) => document.getElementById(id)?.addEventListener("change", renderRatings));
   document.getElementById("ratingQ")?.addEventListener("input", renderRatings);
-  ["propDay","propPos","propSort"].forEach((id) => {
+  ["propDay","propPos","propSort","propHit"].forEach((id) => {
     const el = document.getElementById(id);
     if (el) el.addEventListener("change", renderProps);
   });
