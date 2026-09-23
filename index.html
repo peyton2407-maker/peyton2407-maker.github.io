@@ -431,7 +431,10 @@ option { background: #12201a; color: #e9f3ec; }
 .gd-DOUBTFUL{background:rgba(240,180,41,.2);color:#f0b429}
 .gd-QUESTIONABLE,.gd-Q{background:rgba(240,180,41,.12);color:#e8c56a}
 .gd-ACTIVE,.gd-PLAYING{background:rgba(232,196,122,.18);color:#e8c47a}
-.reporter{margin-top:10px;padding:10px 12px;background:rgba(7,17,14,.5);border-left:3px solid var(--turf);border-radius:0 12px 12px 0;font-size:13px;line-height:1.45;color:var(--ink-soft)}
+.reporter{margin-top:10px;padding:10px 12px;background:rgba(7,17,14,.5);border-left:3px solid var(--turf);border-radius:0 12px 12px 0;font-size:13px;line-height:1.45;color:var(--ink-soft);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.inj-more{margin-top:8px;font-size:13px;color:var(--turf)}
+.report-block{margin:12px 0;padding:12px 14px;background:rgba(7,17,14,.45);border-radius:14px;line-height:1.5}
+.report-block p{margin:8px 0 0;white-space:pre-wrap}
 .reporter b{display:block;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
 .inj-rank{font-size:11px;font-weight:800;color:var(--turf);margin-top:4px}
 .inj-game{font-size:12.5px;font-weight:700;color:var(--ink);margin-top:6px}
@@ -4416,6 +4419,9 @@ function parseInjuryFeed(payload, league){
         gameWhen: game ? game.date : ""
       };
       row.score = posWeight(pos) + statusWeight(tag) + (reporter ? 8 : 0) + (game && !game.completed ? 12 : 0);
+      row.reports = [];
+      if (long) row.reports.push({ label: reporter ? reporter.name : "Full report", text: long });
+      if (short && short !== long) row.reports.push({ label: "Update", text: short });
       const blob = `${short} ${long} ${row.type}`.toLowerCase();
       const hurt = /(shoulder|knee|ankle|hamstring|groin|concussion|rib|foot|calf|hip|wrist|finger|quad|illness|pectoral|achilles|toe|neck|oblique|thumb|elbow|back|hand)/.test(blob);
       if (tag === "ACTIVE") return;
@@ -4533,6 +4539,7 @@ function sleeperInjuryRows(players){
       short: bit || (p.full_name + " is " + p.injury_status + "."),
       long: bit || (p.injury_status + (p.injury_body_part ? " · " + p.injury_body_part : "")),
       reporter: { name: "Sleeper", outlet: "Sleeper" },
+      reports: [{ label: "Sleeper", text: bit || (p.full_name + " is " + p.injury_status + ".") }],
       source: "Sleeper",
       gameLabel: game ? game.away.abbr + " @ " + game.home.abbr : "",
       gameWhen: game ? game.date : ""
@@ -4581,6 +4588,8 @@ function applyRapoport(rows, articles){
     const hit = list.find((r) => r.name && r.name.length > 5 && (low.includes(r.name.toLowerCase())));
     if (hit) {
       hit.reporter = { name: "Ian Rapoport", outlet: "NFL Network" };
+      hit.reports = hit.reports || [];
+      hit.reports.unshift({ label: "Ian Rapoport · NFL Network", text: d ? (h + "\n\n" + d) : h });
       hit.short = h;
       hit.long = d || h;
       hit.date = a.published || hit.date;
@@ -4625,7 +4634,10 @@ async function fetchInjuries(force){
     parsedN.forEach((r) => {
       const cur = nflMerged.find((x) => (x.name || "").toLowerCase() === (r.name || "").toLowerCase());
       if (!cur) { if (r.tag !== "ACTIVE" && r.tag !== "PLAYING") nflMerged.push(r); return; }
-      if ((cur.long || "").length < 50 && r.long) cur.long = r.short || r.long;
+      cur.reports = cur.reports || [];
+      const note = r.long || r.short || "";
+      if (note && !cur.reports.some((x) => x.text === note)) cur.reports.push({ label: "ESPN", text: note });
+      if ((cur.long || "").length < 50 && note) cur.long = note;
     });
     if (nflMerged.length) { next.nfl = nflMerged; next.live = true; next.nflLive = fromSleeper.length ? "sleeper" : "espn"; }
     const mergedC = [];
@@ -4697,12 +4709,14 @@ function renderInjuries(league){
       ? `College report pulled Sep 23 from Covers · ${all.length} players. This page refreshes it every 2 minutes.`
       : `College report · ${when}. The full desk did not answer, so this is the latest ESPN injury news.`)
     : `Live NFL report · ${when}. Sleeper has the designation. Ian Rapoport notes are on the card when he has reported it. Refreshes every 2 minutes.`;
-  box.innerHTML = rows.slice(0,240).map(r=>{
+  const shown = rows.slice(0,240);
+  window.__INJVIEW = shown;
+  box.innerHTML = shown.map((r, i)=>{
     const rep = r.reporter ? `${r.reporter.name}${r.reporter.outlet? " · "+r.reporter.outlet:""}` : "ESPN injury report";
     const quote = r.long || r.short || "No reporter note posted yet.";
     const gd = r.tag || "—";
     const whenGame = r.gameWhen && typeof fmt!=="undefined" ? fmt.when(r.gameWhen) : "";
-    return `<article class="prop-card">
+    return `<article class="prop-card" data-inj="${i}">
       <div class="who">
         <div class="who-row">
           ${faceHtml(r.id, r.name, 56, r.league || league)}
@@ -4715,9 +4729,37 @@ function renderInjuries(league){
         <span class="gd-chip gd-${gd}">${gd}</span>
       </div>
       ${r.gameLabel?`<div class="inj-game">This week: ${r.gameLabel}${whenGame? " · "+whenGame:""}${r.returnDate? " · listed return "+r.returnDate:""}</div>`:(r.returnDate?`<div class="inj-game">Listed return ${r.returnDate}</div>`:"")}
-      <div class="reporter"><b>${rep}</b>${quote}</div>
+      <div class="reporter"><b>${rep}</b> ${quote}</div>
+      <div class="inj-more">Read the full report</div>
     </article>`;
-  }).join("") || `<div class="empty">No injuries in this filter. Tap Refresh to pull ESPN again.</div>`;
+  }).join("") || `<div class="empty">No injuries in this filter.</div>`;
+  box.querySelectorAll("[data-inj]").forEach((el) => el.addEventListener("click", () => openInjury(Number(el.dataset.inj))));
+}
+function openInjury(i) {
+  const r = (window.__INJVIEW || [])[i];
+  if (!r || !$("#modal")) return;
+  const clean = (t) => String(t || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  const bits = (r.reports && r.reports.length) ? r.reports : [{ label: r.reporter ? r.reporter.name : "Report", text: r.long || r.short || "No full note was posted." }];
+  const seen = new Set();
+  const blocks = bits.map((b) => {
+    const text = clean(b.text);
+    if (!text || seen.has(text)) return "";
+    seen.add(text);
+    return `<div class="report-block"><b>${escHtml(b.label || "Report")}</b><p>${escHtml(text)}</p></div>`;
+  }).join("");
+  const whenGame = r.gameWhen && typeof fmt !== "undefined" ? fmt.when(r.gameWhen) : "";
+  $("#modal").innerHTML = `
+    <div class="modal-head">
+      <div class="who-row">${faceHtml(r.id, r.name, 64, r.league || "nfl")}<div>
+        <div class="lbl">${escHtml(r.team || "")} · ${escHtml(r.pos || "")} · ${escHtml(r.tag || "")}</div>
+        <h2 style="margin:4px 0">${escHtml(r.name)}</h2>
+        <div class="subn">${escHtml(r.type || r.body || "Undisclosed")}${r.gameLabel ? " · " + escHtml(r.gameLabel) : ""}${whenGame ? " · " + escHtml(whenGame) : ""}</div>
+      </div></div>
+      <button class="close" id="closeModal" type="button">Close</button>
+    </div>
+    ${blocks || "<p>No full note was posted.</p>"}`;
+  $("#overlay").classList.add("show");
+  $("#closeModal").onclick = closeModal;
 }
 
 
