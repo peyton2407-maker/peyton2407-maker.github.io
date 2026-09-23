@@ -576,6 +576,7 @@ button.prop-card.inj-open .report-full{display:block}
         <span class="pill" id="stamp">Loading…</span>
         <span class="pill">Rankings + Vegas + weather</span>
         <button class="refresh-btn" id="refreshBtn" type="button">Update scores & weather</button>
+        <button class="refresh-btn" id="injRefreshBtn" type="button">Update injuries</button>
         <button class="refresh-btn" id="downloadBtn" type="button">Save this page</button>
       </div>
     </header>
@@ -7260,6 +7261,15 @@ async function boot() {
     if (typeof renderBoard === "function") renderBoard();
   } catch (e) { console.warn(e); }
   if (typeof attachWeather === "function") doWx();
+  document.getElementById("injRefreshBtn")?.addEventListener("click", () => {
+    setStamp("Updating injuries…", true);
+    fetchInjuries(true).then(() => {
+      if (view === "nflinj") renderInjuries("nfl");
+      else if (view === "cfbinj") renderInjuries("cfb");
+      else if (typeof renderBoard === "function") renderBoard();
+      setStamp("Injuries " + new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }), true);
+    }).catch(() => setStamp("Injury update failed", false));
+  });
   $("#refreshBtn")?.addEventListener("click", () => {
     fetchInjuries(true).then(()=>{ if(view==="nflinj") renderInjuries("nfl"); if(view==="cfbinj") renderInjuries("cfb"); if(typeof renderBoard==="function") renderBoard(); });
     if (fromFile) { doWx(); return; }
