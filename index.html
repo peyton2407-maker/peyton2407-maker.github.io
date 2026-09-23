@@ -275,6 +275,10 @@ option { background: #12201a; color: #e9f3ec; }
 .game:hover, .prop-card:hover { transform: translateY(-2px); border-color: var(--line-2); }
 .game.done { opacity: .72; }
 .prop-card { cursor: pointer; }
+button.prop-card{width:100%;text-align:left;font:inherit;color:inherit;display:block;touch-action:manipulation;-webkit-tap-highlight-color:rgba(182,232,90,.3)}
+button.prop-card.inj-open .reporter{display:block;-webkit-line-clamp:unset;overflow:visible}
+.report-full{display:none;margin-top:10px}
+button.prop-card.inj-open .report-full{display:block}
 
 .scorebox, .yardgrid > div, .simgrid > div, .wxbar > div, .kv, .prop-stats div {
   background: rgba(7, 17, 14, .55);
@@ -4716,28 +4720,36 @@ function renderInjuries(league){
     const quote = r.long || r.short || "No reporter note posted yet.";
     const gd = r.tag || "—";
     const whenGame = r.gameWhen && typeof fmt!=="undefined" ? fmt.when(r.gameWhen) : "";
-    return `<article class="prop-card" data-inj="${i}">
+    const full = ((r.reports && r.reports.length) ? r.reports : [{ label: rep, text: quote }]).map((b) => {
+      const text = String(b.text || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+      return text ? `<div class="report-block"><b>${escHtml(b.label || "Report")}</b><p>${escHtml(text)}</p></div>` : "";
+    }).join("");
+    return `<button type="button" class="prop-card" data-inj="${i}" onclick="window.openInjury(${i}, this)">
       <div class="who">
         <div class="who-row">
           ${faceHtml(r.id, r.name, 56, r.league || league)}
           <div>
-          <h4>${r.name}</h4>
-          <div class="prop-meta">${r.team} · ${r.pos||"—"} · ${r.type||"undisclosed"}${r.body? " · "+r.body:""}</div>
-          <div class="inj-rank">Team-crucial ${Math.round(r.score)}</div>
+          <h4>${escHtml(r.name)}</h4>
+          <div class="prop-meta">${escHtml(r.team)} · ${escHtml(r.pos||"—")} · ${escHtml(r.type||"undisclosed")}${r.body? " · "+escHtml(r.body):""}</div>
+          <div class="inj-rank">Team-crucial ${Math.round(r.score||0)}</div>
           </div>
         </div>
-        <span class="gd-chip gd-${gd}">${gd}</span>
+        <span class="gd-chip gd-${escHtml(gd)}">${escHtml(gd)}</span>
       </div>
-      ${r.gameLabel?`<div class="inj-game">This week: ${r.gameLabel}${whenGame? " · "+whenGame:""}${r.returnDate? " · listed return "+r.returnDate:""}</div>`:(r.returnDate?`<div class="inj-game">Listed return ${r.returnDate}</div>`:"")}
-      <div class="reporter"><b>${rep}</b> ${quote}</div>
+      ${r.gameLabel?`<div class="inj-game">This week: ${escHtml(r.gameLabel)}${whenGame? " · "+escHtml(whenGame):""}${r.returnDate? " · listed return "+escHtml(r.returnDate):""}</div>`:(r.returnDate?`<div class="inj-game">Listed return ${escHtml(r.returnDate)}</div>`:"")}
+      <div class="reporter"><b>${escHtml(rep)}</b> ${escHtml(quote)}</div>
       <div class="inj-more">Read the full report</div>
-    </article>`;
+      <div class="report-full">${full}</div>
+    </button>`;
   }).join("") || `<div class="empty">No injuries in this filter.</div>`;
-  box.querySelectorAll("[data-inj]").forEach((el) => el.addEventListener("click", () => openInjury(Number(el.dataset.inj))));
 }
-function openInjury(i) {
+function openInjury(i, el) {
+  const card = el || document.querySelector('#injBoard [data-inj="' + i + '"]');
+  if (card) card.classList.toggle("inj-open");
   const r = (window.__INJVIEW || [])[i];
-  if (!r || !$("#modal")) return;
+  const modal = document.getElementById("modal");
+  const ov = document.getElementById("overlay");
+  if (!r || !modal || !ov) return;
   const clean = (t) => String(t || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
   const bits = (r.reports && r.reports.length) ? r.reports : [{ label: r.reporter ? r.reporter.name : "Report", text: r.long || r.short || "No full note was posted." }];
   const seen = new Set();
@@ -4758,9 +4770,15 @@ function openInjury(i) {
       <button class="close" id="closeModal" type="button">Close</button>
     </div>
     ${blocks || "<p>No full note was posted.</p>"}`;
-  $("#overlay").classList.add("show");
-  $("#closeModal").onclick = closeModal;
+  ov.classList.add("show");
+  ov.style.display = "flex";
+  ov.style.visibility = "visible";
+  ov.style.pointerEvents = "auto";
+  ov.style.zIndex = "80";
+  const closer = document.getElementById("closeModal");
+  if (closer) closer.onclick = closeModal;
 }
+window.openInjury = openInjury;
 
 
 
@@ -5914,11 +5932,30 @@ function openGame(id) {
     ${propsTable(g)}
     <p class="subn" style="margin-top:14px">${(g.broadcasts || []).join(" · ")} ${(g.notes || []).map(n => "· " + n).join(" ")}</p>
   `;
-  $("#overlay").classList.add("show");
-  $("#closeModal").onclick = closeModal;
+  ov.classList.add("show");
+  ov.style.display = "flex";
+  ov.style.visibility = "visible";
+  ov.style.pointerEvents = "auto";
+  ov.style.zIndex = "80";
+  const closer = document.getElementById("closeModal");
+  if (closer) closer.onclick = closeModal;
 }
+window.openInjury = openInjury;
+document.addEventListener("click", function (e) {
+  const el = e.target && e.target.closest ? e.target.closest("#injBoard [data-inj]") : null;
+  if (!el || el.classList.contains("inj-open")) return;
+  openInjury(Number(el.getAttribute("data-inj")), el);
+}, true);
 
-function closeModal() { $("#overlay").classList.remove("show"); }
+function closeModal() {
+  const ov = document.getElementById("overlay");
+  if (!ov) return;
+  ov.classList.remove("show");
+  ov.style.display = "";
+  ov.style.visibility = "";
+  ov.style.pointerEvents = "";
+  ov.style.zIndex = "";
+}
 
 function propScore(p) {
   const pass = Number(p.pass_yds || 0);
@@ -6872,9 +6909,20 @@ function openCommits(team) {
       <button class="close" id="closeModal">Close</button>
     </div>
     ${body}`;
-  $("#overlay").classList.add("show");
-  $("#closeModal").onclick = closeModal;
+  ov.classList.add("show");
+  ov.style.display = "flex";
+  ov.style.visibility = "visible";
+  ov.style.pointerEvents = "auto";
+  ov.style.zIndex = "80";
+  const closer = document.getElementById("closeModal");
+  if (closer) closer.onclick = closeModal;
 }
+window.openInjury = openInjury;
+document.addEventListener("click", function (e) {
+  const el = e.target && e.target.closest ? e.target.closest("#injBoard [data-inj]") : null;
+  if (!el || el.classList.contains("inj-open")) return;
+  openInjury(Number(el.getAttribute("data-inj")), el);
+}, true);
 
 function renderRecruit() {
   if (!window.__recruitBound) {
