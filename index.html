@@ -32,7 +32,7 @@
 }
 
 * { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
+html, body { margin: 0; padding: 0; overflow-x: hidden; }
 html { -webkit-text-size-adjust: 100%; }
 body {
   font-family: Outfit, "Segoe UI", sans-serif;
@@ -259,8 +259,9 @@ option { background: #12201a; color: #e9f3ec; }
 
 .board, .prop-board {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 14px;
+  min-width: 0;
 }
 .board-card { grid-column: 1 / -1; }
 
@@ -394,7 +395,10 @@ button.prop-card.inj-open .report-full{display:block}
 .inj { color: var(--rose); font-size: 10px; font-weight: 800; margin-left: 6px; }
 .empty { color: var(--muted); padding: 48px 12px; text-align: center; }
 
-.prop-card .who { display: flex; justify-content: space-between; gap: 8px; }
+.prop-card .who { display: flex; justify-content: space-between; gap: 8px; min-width: 0; }
+.who-row, .who-row > div, .prop-card h4, .prop-meta, .inj-game, .reporter, #injSection, #injBoard, #rapXBox, button.prop-card { min-width: 0; max-width: 100%; }
+.prop-card h4, .prop-meta, .inj-game, .reporter { overflow-wrap: anywhere; }
+#rapXBox, #rapXBox iframe { max-width: 100% !important; overflow: hidden; }
 .prop-card h4 { margin: 0; font-size: 17px; color: var(--ink); }
 .pick-score {
   background: var(--turf-soft); color: var(--turf);
@@ -413,7 +417,7 @@ button.prop-card.inj-open .report-full{display:block}
   .tablewrap { display: block; }
   .tabs-wrap { margin: 0 0 18px; }
   .tabs { padding: 4px 2px 14px; }
-  .prop-board { grid-template-columns: 1fr 1fr; }
+  .prop-board { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
 
 @media (max-width: 759px) {
@@ -422,7 +426,7 @@ button.prop-card.inj-open .report-full{display:block}
 }
 @media (min-width: 1100px) {
   .board { grid-template-columns: 1fr 1fr; }
-  .prop-board { grid-template-columns: 1fr 1fr 1fr; }
+  .prop-board { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); }
   .model, .news { grid-template-columns: 1.15fr .85fr; }
 }
 
@@ -4953,16 +4957,19 @@ function renderInjuries(league){
       ? `College report pulled Sep 23 from Covers · ${all.length} players. This page refreshes it every 2 minutes.`
       : `College report · ${when}. The full desk did not answer, so this is the latest ESPN injury news.`)
     : `Live NFL report · ${when}. @RapSheet on X is checked first, then Sleeper and ESPN. Tap a player to read what each one is saying.`;
-  try { renderRapX(); } catch (e) {}
+  const rap = document.getElementById("rapXBox");
+  if (rap) rap.style.display = league === "nfl" ? "" : "none";
+  if (league === "nfl") { try { renderRapX(); } catch (e) {} }
   const shown = rows.slice(0,240);
   window.__INJVIEW = shown;
   box.innerHTML = shown.map((r, i)=>{
     const rep = r.reporter ? `${r.reporter.name}${r.reporter.outlet? " · "+r.reporter.outlet:""}` : "ESPN injury report";
-    const quote = r.long || r.short || "No reporter note posted yet.";
+    const tidy = (t) => String(t || "").replace(/<[^>]+>/g, " ").replace(/class="collapse"[^>]*>/gi, "").replace(/injuryCollapse[A-Za-z0-9]+/g, "").replace(/\s+/g, " ").trim();
+    const quote = tidy(r.long || r.short) || "No reporter note posted yet.";
     const gd = r.tag || "—";
     const whenGame = r.gameWhen && typeof fmt!=="undefined" ? fmt.when(r.gameWhen) : "";
     const full = ((r.reports && r.reports.length) ? r.reports : [{ label: rep, text: quote }]).map((b) => {
-      const text = String(b.text || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+      const text = tidy(b.text);
       if (!text || /double gs/i.test(b.label || "") || /double gs/i.test(text)) return "";
       if (/onion|babylon bee|clickhole|satire|parody/i.test((b.label || "") + " " + text)) return "";
       return `<div class="report-block"><b>${escHtml(b.label || "Report")}</b><p>${escHtml(text)}</p></div>`;
