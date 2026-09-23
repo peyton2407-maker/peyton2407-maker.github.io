@@ -705,7 +705,7 @@ option { background: #12201a; color: #e9f3ec; }
         </select>
         <input id="injQ" placeholder="Search player, team, reporter…"/>
       </div>
-      <p class="subn" id="injStamp" style="margin:0 0 10px">ESPN injury desk · updates daily</p>
+      <p class="subn" id="injStamp" style="margin:0 0 10px">Live injury reports. NFL from ESPN. College from the current desk. Refreshes while this page is open.</p>
       <div class="stat-row" id="injStats"></div>
       <div class="prop-board" id="injBoard"></div>
     </section>
@@ -1690,14 +1690,12 @@ function erf(x) {
 }
 function normCdf(x) { return 0.5 * (1 + erf(x / Math.sqrt(2))); }
 
-async function getJSON(url, headers) {
-  const opts = { headers: headers || { Accept: "application/json" } };
+async function fetchText(url) {
   try {
-    const res = await fetch(url, opts);
-    if (res.ok) return res.json();
-    throw new Error(`${res.status} ${url}`);
+    const res = await fetch(url, { headers: { Accept: "text/html,application/json" } });
+    if (res.ok) return res.text();
+    throw new Error(res.status + " " + url);
   } catch (err) {
-    if (!/espn\.com|actionnetwork\.com/i.test(url)) throw err;
     const proxies = [
       "https://corsproxy.io/?" + encodeURIComponent(url),
       "https://api.allorigins.win/raw?url=" + encodeURIComponent(url)
@@ -1705,11 +1703,15 @@ async function getJSON(url, headers) {
     for (const p of proxies) {
       try {
         const res = await fetch(p);
-        if (res.ok) return res.json();
+        if (res.ok) return res.text();
       } catch (e) {}
     }
     throw err;
   }
+}
+async function getJSON(url, headers) {
+  const text = await fetchText(url);
+  return JSON.parse(text);
 }
 
 function parseAmerican(odds) {
@@ -4309,6 +4311,47 @@ function newsArticlesToCfbInj(articles) {
   });
   return rows;
 }
+
+function parseCoversInjuries(html) {
+  const rows = [];
+  String(html || "").split('<a id="').forEach((sec) => {
+    const teamM = sec.match(/covers-CoversMatchups-teamName[\s\S]*?<a[^>]*>\s*([^<]+)/);
+    if (!teamM) return;
+    const team = teamM[1].replace(/\s+/g, " ").trim();
+    let last = null;
+    sec.split("<tr").forEach((b) => {
+      if (/covers-CoversMatchups-injuryCopy/.test(b) && last) {
+        last.long = b.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+        return;
+      }
+      const playerM = b.match(/player-link'>\s*([\s\S]*?)<\/span>/);
+      if (!playerM) return;
+      const name = playerM[1].replace(/\s+/g, " ").trim();
+      if (!name || /no injuries/i.test(name)) return;
+      const posM = b.match(/<\/span>\s*<\/td>\s*<td>([^<]+)<\/td>/i) || b.match(/<td>([A-Z]{1,3})<\/td>/);
+      const stM = b.match(/<b>([^<]+)<\/b>/);
+      const dtM = b.match(/\(\s*([^)<]+)\s*\)/);
+      const statusLine = (stM && stM[1] || "").trim();
+      const kind = statusLine.split("-")[0].trim() || "Questionable";
+      const type = (statusLine.split("-").slice(1).join("-") || "").trim();
+      const tag = /out|reserve|\bIR\b/i.test(kind) ? "OUT" : /doubt/i.test(kind) ? "DOUBTFUL" : "QUESTIONABLE";
+      const game = matchInjuryGame(team, "cfb");
+      last = {
+        league: "cfb", team, name, pos: posM ? posM[1].trim() : "",
+        status: kind, tag, type, body: type, returnDate: "",
+        date: dtM ? dtM[1].replace(/\s+/g, " ").trim() : "",
+        short: statusLine, long: "",
+        reporter: { name: "Covers desk", outlet: "Covers" },
+        source: "Covers injury report",
+        gameLabel: game ? game.away.abbr + " @ " + game.home.abbr : "",
+        gameWhen: game ? game.date : ""
+      };
+      last.score = posWeight(last.pos) + statusWeight(last.tag) + (game && !game.completed ? 14 : 0) + 8;
+      rows.push(last);
+    });
+  });
+  return rows;
+}
 async function pullCfbInjuryNews() {
   const bag = [];
   const eat = (payload) => {
@@ -4333,16 +4376,6 @@ async function pullCfbInjuryNews() {
     try { eat(await getJSON(injEndpoint("/apis/search/v2?query=" + encodeURIComponent(q) + "&limit=20"))); } catch (e) {}
   }
   return newsArticlesToCfbInj(bag);
-}
-function parseInjuryFeed(payload, league){
-  const t = (team || "").toLowerCase().trim();
-  if (!t || !DATA) return null;
-  return (DATA.games || []).find(g => {
-    if (league && g.league !== league) return false;
-    const home = (g.home.name || "").toLowerCase();
-    const away = (g.away.name || "").toLowerCase();
-    return t === home || t === away || t.includes(home) || t.includes(away) || home.includes(t) || away.includes(t);
-  }) || null;
 }
 function parseInjuryFeed(payload, league){
   const rows=[];
@@ -4429,33 +4462,39 @@ async function fetchInjuries(force){
   const today = new Date().toISOString().slice(0, 10);
   const pack = seedInjuriesFromSnap();
   const cfbThin = !((pack.cfb || []).length >= 24);
-  if (!force && pack.day === today && pack.fetched && Date.now() - pack.fetched < 20 * 60 * 1000 && (pack.nfl || []).length && !cfbThin) return pack;
+  if (!force && pack.day === today && pack.fetched && Date.now() - pack.fetched < 10 * 60 * 1000 && (pack.nfl || []).length && !cfbThin && pack.live) return pack;
+  const stamp = document.getElementById("injStamp");
+  if (stamp && (view === "nflinj" || view === "cfbinj")) stamp.textContent = "Pulling the live injury report…";
   try {
-    const [nfl, cfb, newsC] = await Promise.all([
+    const [nfl, cfb, newsC, coversHtml] = await Promise.all([
       getJSON(injEndpoint("/apis/site/v2/sports/football/nfl/injuries")),
       getJSON(injEndpoint("/apis/site/v2/sports/football/college-football/injuries")),
-      pullCfbInjuryNews()
+      pullCfbInjuryNews(),
+      fetchText("https://www.covers.com/sport/football/ncaaf/injuries").catch(() => "")
     ]);
     const next = ensureInjPack();
     const parsedN = parseInjuryFeed(nfl, "nfl");
     const parsedC = parseInjuryFeed(cfb, "cfb");
-    if (parsedN.length) next.nfl = parsedN;
+    const coversC = parseCoversInjuries(coversHtml);
+    if (parsedN.length) { next.nfl = parsedN; next.live = true; }
     const mergedC = [];
     const seen = new Set();
-    (newsC || []).concat(parsedC).forEach((r) => {
+    coversC.concat(newsC || []).concat(parsedC).forEach((r) => {
       const k = `${(r.name || "").toLowerCase()}|${(r.team || "").toLowerCase()}`;
       if (seen.has(k)) return;
       seen.add(k);
       mergedC.push(r);
     });
-    if (mergedC.length) next.cfb = mergedC;
+    if (mergedC.length) {
+      next.cfb = mergedC;
+      next.cfbLive = coversC.length ? "covers" : "news";
+    }
     next.fetched = Date.now();
     next.day = today;
     window.__INJ = next;
     if (typeof DATA === "object" && DATA) DATA.injuries = next;
-    /* injuries stay on the shared feed, not on this phone */
     attachInjuriesToGames();
-    if (typeof renderBoard === "function") renderBoard();
+    if (typeof renderBoard === "function" && view !== "nflinj" && view !== "cfbinj") renderBoard();
   } catch (e) { console.warn("injuries", e); }
   return ensureInjPack();
 }
@@ -4496,8 +4535,10 @@ function renderInjuries(league){
     <div class="stat"><b>${qst}</b><span>questionable</span></div>`;
   const stamp=document.getElementById("injStamp");
   if(stamp) stamp.textContent = league === "cfb"
-    ? `College teams don't post a full NFL-style list. This is what coaches and reporters are saying · ${when}`
-    : `Who's hurt · updated ${when}. Hit Update to refresh.`;
+    ? (pack.cfbLive === "covers"
+      ? `Live college report · ${when}. Covers lists who is out, doubtful, or questionable. ESPN notes are mixed in. Refreshes every 10 minutes.`
+      : `College report · ${when}. The full desk did not answer, so this is the latest ESPN injury news.`)
+    : `Live NFL report · ${when}. ESPN's list. Out, doubtful, and questionable are at the top. Refreshes every 10 minutes.`;
   box.innerHTML = rows.slice(0,240).map(r=>{
     const rep = r.reporter ? `${r.reporter.name}${r.reporter.outlet? " · "+r.reporter.outlet:""}` : "ESPN injury report";
     const quote = r.long || r.short || "No reporter note posted yet.";
@@ -6916,16 +6957,16 @@ async function boot() {
     try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) {}
     (DATA.games || []).forEach((g) => { if (typeof applyLearningToGame === "function") applyLearningToGame(g); });
     if (typeof settleBoard === "function") settleBoard();
-    if (typeof renderBoard==="function") renderBoard();
+    if (view === "nflinj") renderInjuries("nfl");
+    else if (view === "cfbinj") renderInjuries("cfb");
+    else if (typeof renderBoard==="function") renderBoard();
     if (typeof syncDesk === "function") { syncDesk(); if (view === "home") renderHome(); }
   });
   pullDkLines().then(()=>{ if (typeof renderBoard==="function") renderBoard(); if (view==="value") renderValueDogs(); });
   pullEpaAndMarkets();
-  if (!window.__injDaily) window.__injDaily = setInterval(()=>{
-    const d = new Date().toISOString().slice(0,10);
-    const pack = (DATA && DATA.injuries) || window.__INJ || {};
-    if (pack.day !== d) fetchInjuries(true).then(()=>{ if(view==="nflinj") renderInjuries("nfl"); if(view==="cfbinj") renderInjuries("cfb"); });
-  }, 30*60*1000);
+  if (!window.__injLive) window.__injLive = setInterval(()=>{
+    fetchInjuries(true).then(()=>{ if(view==="nflinj") renderInjuries("nfl"); if(view==="cfbinj") renderInjuries("cfb"); });
+  }, 10*60*1000);
   const fromFile = location.protocol === "file:";
   const doWx = async () => {
     try {
