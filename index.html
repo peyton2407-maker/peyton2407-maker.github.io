@@ -612,6 +612,7 @@ button.prop-card.inj-open .report-full{display:block}
               <a class="tab" href="#cfbpicks" data-view="cfbpicks">College picks</a>
               <a class="tab" href="#cfbwx" data-view="cfbwx">College weather</a>
               <a class="tab" href="#cfbinj" data-view="cfbinj">College injuries</a>
+              <a class="tab" href="#heisman" data-view="heisman">Heisman odds</a>
               <a class="tab" href="#recruit" data-view="recruit">Recruiting</a>
             </div>
             <button class="slide-btn" type="button" data-slide="cfbTiles" data-dir="1" aria-label="College tiles right">›</button>
@@ -1011,6 +1012,11 @@ button.prop-card.inj-open .report-full{display:block}
       <div class="card" id="ratingsWrap"></div>
     </section>
 
+
+    <section id="heismanSection" style="display:none">
+      <p class="subn" id="heismanStamp" style="margin:0 0 12px">Heisman odds.</p>
+      <div id="heismanBoard"></div>
+    </section>
 
     <section id="recruitSection" style="display:none">
       <div class="cat-row" id="recruitCats">
@@ -7336,8 +7342,47 @@ function renderRecruit() {
   $("#recruitBoard").innerHTML = `<div class="log-wrap">${rows}</div>`;
 }
 
+
+const HEISMAN_BOARD = [
+  { name: "Darian Mensah", id: "5121169", pos: "QB", team: "Miami", odds: 600, book: "DraftKings" },
+  { name: "Jeremiah Smith", id: "5079720", pos: "WR", team: "Ohio State", odds: 975, book: "Caesars" },
+  { name: "Arch Manning", id: "4870906", pos: "QB", team: "Texas", odds: 1200, book: "FanDuel" },
+  { name: "Trinidad Chambliss", id: "4911529", pos: "QB", team: "Ole Miss", odds: 1300, book: "DraftKings" },
+  { name: "CJ Carr", id: "5079369", pos: "QB", team: "Notre Dame", odds: 1400, book: "bet365" },
+  { name: "Malachi Toney", id: "5159175", pos: "WR", team: "Miami", odds: 1500, book: "FanDuel" },
+  { name: "Keelon Russell", id: "5141629", pos: "QB", team: "Alabama", odds: 2500, book: "bet365" },
+  { name: "Julian Sayin", id: "5079712", pos: "QB", team: "Ohio State", odds: 3000, book: "BetMGM" },
+  { name: "Josh Hoover", id: "4685401", pos: "QB", team: "Indiana", odds: 3500, book: "BetMGM" },
+  { name: "Jayden Maiava", id: "4685454", pos: "QB", team: "USC", odds: 4000, book: "BetMGM" }
+];
+function renderHeisman() {
+  const box = document.getElementById("heismanBoard");
+  const stamp = document.getElementById("heismanStamp");
+  if (!box) return;
+  if (stamp) stamp.textContent = "Top 10 to win the 2026 Heisman, shortest price first. Best number on Sept 23 across DraftKings, Caesars, FanDuel, bet365, and BetMGM.";
+  const rows = HEISMAN_BOARD.slice().sort((a, b) => a.odds - b.odds).slice(0, 10);
+  box.innerHTML = rows.map((p, i) => {
+    const imp = 100 / (p.odds + 100);
+    return `<article class="prop-card" style="cursor:default">
+      <div class="who">
+        <div class="who-row">
+          <b style="font-family:Syne,sans-serif;font-size:22px;width:28px">${i + 1}</b>
+          ${faceHtml(p.id, p.name, 56, "cfb")}
+          <div>
+            <h4>${escHtml(p.name)}</h4>
+            <div class="prop-meta">${escHtml(p.team)} · ${escHtml(p.pos)}</div>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <b style="font-family:Syne,sans-serif;font-size:28px;color:var(--sun)">+${p.odds}</b>
+          <div class="prop-meta">${escHtml(p.book)} · ${imp.toFixed(1)}%</div>
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+}
 function setView(next) {
-  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1};
+  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,heisman:1};
   if (!allowed[next]) next = "home";
   const wantProps = next === "propp";
   if (wantProps) { window.__parlayLg = "props"; next = "parlay"; }
@@ -7363,6 +7408,8 @@ function setView(next) {
   $("#cfbWxSection").style.display = next === "cfbwx" ? "" : "none";
   $("#ratingsSection").style.display = next === "ratings" ? "" : "none";
   $("#modelSection").style.display = next === "model" ? "" : "none";
+  const heiS = document.getElementById("heismanSection");
+  if (heiS) heiS.style.display = next === "heisman" ? "" : "none";
   const recS = document.getElementById("recruitSection");
   if (recS) recS.style.display = next === "recruit" ? "" : "none";
   const injS = document.getElementById("injSection");
@@ -7396,6 +7443,7 @@ function setView(next) {
   if (next === "cfbwx") renderCfbWeather();
   if (next === "ratings") renderRatings();
   if (next === "model") renderModel();
+  if (next === "heisman") renderHeisman();
   if (next === "recruit") renderRecruit();
 }
 
