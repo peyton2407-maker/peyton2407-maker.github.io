@@ -446,7 +446,14 @@ button.prop-card.inj-open .report-full{display:block}
 .reporter b{display:block;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
 .inj-rank{font-size:11px;font-weight:800;color:var(--turf);margin-top:4px}
 .inj-game{font-size:12.5px;font-weight:700;color:var(--ink);margin-top:6px}
-.book-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.award-board-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;max-width:100%}
+.award-board{width:100%;border-collapse:collapse}
+.award-board th,.award-board td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
+.award-board th{font-size:12px;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+.award-board td.player{text-align:left;white-space:normal}
+.award-board .price{font-family:Syne,sans-serif;font-size:18px}
+.award-board .best{color:var(--turf)}
+.award-who{display:flex;align-items:center;gap:10px;min-width:0}
 .book-row div{background:rgba(7,17,14,.55);border:1px solid var(--line);border-radius:14px;padding:10px 12px;min-width:0}
 .book-row span{display:block;color:var(--muted);font-size:12px;font-weight:700}
 .book-row b{display:block;margin-top:2px;font-family:Syne,sans-serif;font-size:22px}
@@ -7382,35 +7389,30 @@ function renderHeisman() {
   const box = document.getElementById("heismanBoard");
   const stamp = document.getElementById("heismanStamp");
   if (!box) return;
-  if (stamp) stamp.textContent = "Top 10 to win the 2026 Heisman, shortest price first. BetMGM and Caesars are the books with a posted number. DraftKings, FanDuel, and bet365 are not on this board, so they are left off instead of guessed.";
-  const price = (p) => {
-    const vals = HEISMAN_BOOKS.map((b) => p.books[b]).filter((n) => Number.isFinite(n)).sort((a, b) => a - b);
-    return vals;
-  };
+  if (stamp) stamp.textContent = "Ranking board for the 2026 Heisman. Shortest price is first. Each column is one betting app. The green number is the shorter price on that row.";
+  const price = (p) => HEISMAN_BOOKS.map((b) => p.books[b]).filter((n) => Number.isFinite(n)).sort((a, b) => a - b);
   const rows = HEISMAN_BOARD.slice().sort((a, b) => {
     const pa = price(a), pb = price(b);
     return (pa[0] - pb[0]) || ((pa[1] || pa[0]) - (pb[1] || pb[0]));
   }).slice(0, 10);
-  box.innerHTML = rows.map((p, i) => {
-    const vals = price(p);
-    const best = vals[0];
+  const head = HEISMAN_BOOKS.map((b) => `<th>${escHtml(b)}</th>`).join("");
+  const body = rows.map((p, i) => {
+    const best = price(p)[0];
     const cells = HEISMAN_BOOKS.map((b) => {
       const n = p.books[b];
       const shown = Number.isFinite(n) ? "+" + n : "—";
-      return `<div class="${n === best ? "best" : ""}"><span>${escHtml(b)}</span><b>${shown}</b></div>`;
+      return `<td class="price${n === best ? " best" : ""}">${shown}</td>`;
     }).join("");
-    return `<article class="prop-card" style="cursor:default">
-      <div class="who-row">
-        <b style="font-family:Syne,sans-serif;font-size:22px;width:28px">${i + 1}</b>
-        ${faceHtml(p.id, p.name, 56, "cfb")}
-        <div>
-          <h4>${escHtml(p.name)}</h4>
-          <div class="prop-meta">${escHtml(p.team)} · ${escHtml(p.pos)}</div>
-        </div>
-      </div>
-      <div class="book-row">${cells}</div>
-    </article>`;
+    return `<tr>
+      <td>${i + 1}</td>
+      <td class="player"><div class="award-who">${faceHtml(p.id, p.name, 40, "cfb")}<div><b>${escHtml(p.name)}</b><div class="prop-meta">${escHtml(p.team)} · ${escHtml(p.pos)}</div></div></div></td>
+      ${cells}
+    </tr>`;
   }).join("");
+  box.innerHTML = `<div class="award-board-wrap"><table class="award-board"><thead>
+    <tr><th rowspan="2">#</th><th rowspan="2">Player</th><th colspan="${HEISMAN_BOOKS.length}">Betting apps</th></tr>
+    <tr>${head}</tr>
+  </thead><tbody>${body}</tbody></table></div>`;
 }
 
 const NFL_AWARDS = {
