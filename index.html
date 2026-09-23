@@ -604,6 +604,7 @@ button.prop-card.inj-open .report-full{display:block}
               <a class="tab" href="#value" data-view="value">Underdogs</a>
               <a class="tab" href="#nflwx" data-view="nflwx">NFL weather</a>
               <a class="tab" href="#nflinj" data-view="nflinj">NFL injuries</a>
+              <a class="tab" href="#awards" data-view="awards">All awards</a>
             </div>
             <button class="slide-btn" type="button" data-slide="nflTiles" data-dir="1" aria-label="NFL tiles right">›</button>
           </div>
@@ -1017,6 +1018,22 @@ button.prop-card.inj-open .report-full{display:block}
       <div class="card" id="ratingsWrap"></div>
     </section>
 
+
+    <section id="awardsSection" style="display:none">
+      <div class="controls">
+        <select id="awardPick" aria-label="Yearly award">
+          <option value="mvp">MVP</option>
+          <option value="opoy">Offensive Player of the Year</option>
+          <option value="dpoy">Defensive Player of the Year</option>
+          <option value="oroy">Offensive Rookie of the Year</option>
+          <option value="droy">Defensive Rookie of the Year</option>
+          <option value="cpoy">Comeback Player of the Year</option>
+          <option value="coy">Coach of the Year</option>
+        </select>
+      </div>
+      <p class="subn" id="awardStamp" style="margin:0 0 12px">DraftKings award odds.</p>
+      <div id="awardBoard"></div>
+    </section>
 
     <section id="heismanSection" style="display:none">
       <p class="subn" id="heismanStamp" style="margin:0 0 12px">Heisman odds.</p>
@@ -7395,8 +7412,62 @@ function renderHeisman() {
     </article>`;
   }).join("");
 }
+
+const NFL_AWARDS = {
+  mvp: {
+    note: "DraftKings, Sept 22. Shortest price first.",
+    rows: [
+      { name: "Josh Allen", id: "3918298", pos: "QB", team: "BUF", odds: 290 },
+      { name: "Brock Purdy", id: "4361741", pos: "QB", team: "SF", odds: 800 },
+      { name: "Patrick Mahomes", id: "3139477", pos: "QB", team: "KC", odds: 800 },
+      { name: "Joe Burrow", id: "3915511", pos: "QB", team: "CIN", odds: 850 },
+      { name: "Lamar Jackson", id: "3916387", pos: "QB", team: "BAL", odds: 850 }
+    ]
+  },
+  cpoy: {
+    note: "DraftKings, Sept 22. Only the posted favorite is shown.",
+    rows: [
+      { name: "Patrick Mahomes", id: "3139477", pos: "QB", team: "KC", odds: -220 }
+    ]
+  }
+};
+function renderNflAwards() {
+  const box = document.getElementById("awardBoard");
+  const stamp = document.getElementById("awardStamp");
+  const sel = document.getElementById("awardPick");
+  if (!box) return;
+  const key = (sel && sel.value) || "mvp";
+  const pack = NFL_AWARDS[key];
+  if (!pack || !pack.rows || !pack.rows.length) {
+    if (stamp) stamp.textContent = "DraftKings did not have a board we could read for this award. No number is filled in.";
+    box.innerHTML = `<div class="empty">No DraftKings price is posted here for this award.</div>`;
+    return;
+  }
+  if (stamp) stamp.textContent = pack.note;
+  const rows = pack.rows.slice().sort((a, b) => a.odds - b.odds);
+  box.innerHTML = rows.map((p, i) => {
+    const price = p.odds > 0 ? "+" + p.odds : String(p.odds);
+    return `<article class="prop-card" style="cursor:default">
+      <div class="who">
+        <div class="who-row">
+          <b style="font-family:Syne,sans-serif;font-size:22px;width:28px">${i + 1}</b>
+          ${faceHtml(p.id, p.name, 56, "nfl")}
+          <div>
+            <h4>${escHtml(p.name)}</h4>
+            <div class="prop-meta">${escHtml(p.team)} · ${escHtml(p.pos)}</div>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <b style="font-family:Syne,sans-serif;font-size:28px;color:var(--sun)">${price}</b>
+          <div class="prop-meta">DraftKings</div>
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+}
 function setView(next) {
-  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,heisman:1};
+
+  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,heisman:1,awards:1};
   if (!allowed[next]) next = "home";
   const wantProps = next === "propp";
   if (wantProps) { window.__parlayLg = "props"; next = "parlay"; }
@@ -7422,6 +7493,8 @@ function setView(next) {
   $("#cfbWxSection").style.display = next === "cfbwx" ? "" : "none";
   $("#ratingsSection").style.display = next === "ratings" ? "" : "none";
   $("#modelSection").style.display = next === "model" ? "" : "none";
+  const awS = document.getElementById("awardsSection");
+  if (awS) awS.style.display = next === "awards" ? "" : "none";
   const heiS = document.getElementById("heismanSection");
   if (heiS) heiS.style.display = next === "heisman" ? "" : "none";
   const recS = document.getElementById("recruitSection");
@@ -7457,6 +7530,7 @@ function setView(next) {
   if (next === "cfbwx") renderCfbWeather();
   if (next === "ratings") renderRatings();
   if (next === "model") renderModel();
+  if (next === "awards") renderNflAwards();
   if (next === "heisman") renderHeisman();
   if (next === "recruit") renderRecruit();
 }
@@ -7684,6 +7758,7 @@ async function boot() {
       setStamp("Injuries " + new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }), true);
     }).catch(() => setStamp("Injury update failed", false));
   });
+  document.getElementById("awardPick")?.addEventListener("change", () => { if (view === "awards") renderNflAwards(); });
   $("#refreshBtn")?.addEventListener("click", () => {
     fetchInjuries(true).then(()=>{ if(view==="nflinj") renderInjuries("nfl"); if(view==="cfbinj") renderInjuries("cfb"); if(typeof renderBoard==="function") renderBoard(); });
     if (fromFile) { doWx(); return; }
