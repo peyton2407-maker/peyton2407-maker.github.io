@@ -451,6 +451,11 @@ button.prop-card.inj-open .report-full{display:block}
 .reporter b{display:block;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
 .inj-rank{font-size:11px;font-weight:800;color:var(--turf);margin-top:4px}
 .inj-game{font-size:12.5px;font-weight:700;color:var(--ink);margin-top:6px}
+.chart-games{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin:0 0 12px}
+.chart-games button{flex:none;border:1px solid var(--line);background:var(--card);color:inherit;border-radius:999px;padding:8px 12px;font-size:13px;cursor:pointer}
+.chart-games button.on{border-color:var(--turf);color:var(--turf)}
+.chart-wrap{overflow-x:auto;margin:8px 0 16px}
+.chart-wrap .ladder{min-width:560px;width:100%}
 .inj-next{margin-top:8px;padding:8px 10px;border-radius:12px;background:rgba(182,232,90,.1);border:1px solid rgba(182,232,90,.35);font-size:13.5px;line-height:1.4}
 .inj-next b{color:var(--turf)}
 .award-board-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;max-width:100%}
@@ -613,6 +618,7 @@ button.prop-card.inj-open .report-full{display:block}
             <div class="tile-row slide" id="nflTiles">
               <a class="tab" href="#nfl" data-view="nfl">NFL Week 3</a>
               <a class="tab" href="#props" data-view="props">Player props</a>
+              <a class="tab" href="#charts" data-view="charts">Game charts</a>
               <a class="tab" href="#live" data-view="live">Live scores</a>
               <a class="tab" href="#tds" data-view="tds">Who scores TDs</a>
               <a class="tab" href="#value" data-view="value">Underdogs</a>
@@ -1040,6 +1046,12 @@ button.prop-card.inj-open .report-full{display:block}
       <div class="card" id="ratingsWrap"></div>
     </section>
 
+
+    <section id="chartsSection" style="display:none">
+      <p class="subn" style="margin:0 0 10px">One chart per NFL game. This year and versus that opponent come from the ESPN game log. Our chance is the Double Gs number. DraftKings is their posted line.</p>
+      <div class="chart-games" id="chartGames"></div>
+      <div id="chartBoard"></div>
+    </section>
 
     <section id="awardsSection" style="display:none">
       <div class="controls">
@@ -6379,6 +6391,55 @@ function ladderTable(m, season, vs) {
   }).join("");
   return `<h3 style="margin:14px 0 0">${m.label}</h3>${head}${body}</tbody></table>`;
 }
+function chartPlayers(g) {
+  return (g.props || []).filter((p) => {
+    if (!p || p.pos === "K") return false;
+    if (/OUT|IR/i.test(p.injury || "")) return false;
+    return (Number(p.pass_yds) || 0) + (Number(p.rush_yds) || 0) + (Number(p.rec_yds) || 0) >= 25;
+  }).sort((a, b) => (b.fp || 0) - (a.fp || 0)).slice(0, 6);
+}
+function chartTable(p, m, season, vs) {
+  const lines = (m.lines || []).slice(0, 5);
+  if (!lines.length) return "";
+  const body = lines.map((line) => {
+    const yr = hitRate(season || [], m.key === "td" ? "td" : m.key, line, false);
+    const opp = hitRate(vs || [], m.key === "td" ? "td" : m.key, line, false);
+    const chance = ourChance(m.mean, line, m.key, false);
+    const dk = typeof dkAlt === "function" ? dkAlt(p, m.key, line) : "—";
+    const fmtH = (h) => h ? `${h.hits}/${h.n}` : "—";
+    return `<tr><td>over ${line}</td><td>${fmtH(yr)}</td><td>${fmtH(opp)}</td><td>${Math.round(chance * 100)}%</td><td>${dk}</td></tr>`;
+  }).join("");
+  return `<h3 style="margin:16px 0 6px">${m.label}</h3><div class="chart-wrap"><table class="ladder"><thead><tr><th>${m.label}</th><th>This year</th><th>Vs opponent</th><th>Our chance</th><th>DraftKings</th></tr></thead><tbody>${body}</tbody></table></div>`;
+}
+function renderGameCharts() {
+  const box = document.getElementById("chartBoard");
+  const picks = document.getElementById("chartGames");
+  if (!box || !picks || !DATA) return;
+  const games = (DATA.games || []).filter((g) => g.league === "nfl" && !g.completed).sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  if (!games.length) { box.innerHTML = `<div class="empty">No upcoming NFL games.</div>`; picks.innerHTML = ""; return; }
+  if (!games.some((g) => String(g.id) === String(window.__chartGame))) window.__chartGame = games[0].id;
+  const g = games.find((x) => String(x.id) === String(window.__chartGame));
+  picks.innerHTML = games.map((row) => `<button type="button" class="${String(row.id) === String(g.id) ? "on" : ""}" data-chart-game="${row.id}">${row.away.abbr} @ ${row.home.abbr}</button>`).join("");
+  const players = chartPlayers(g);
+  const blocks = players.map((p) => {
+    const logs = (window.__PLOGS && window.__PLOGS[p.id]) || null;
+    const year = new Date().getFullYear();
+    const season = logs ? logs.filter((r) => r.season === year) : null;
+    const vs = logs ? logs.filter((r) => sameOpp(r.opp, p.opp)) : null;
+    const tables = marketsFor(p).map((m) => chartTable(p, m, season, vs)).join("");
+    const waiting = logs ? "" : `<p class="subn">Pulling this year's games and the games against ${p.opp}…</p>`;
+    return `<article class="card" style="margin-bottom:14px"><div class="who-row">${faceHtml(p.id, p.name, 48, "nfl")}<div><h3 style="margin:0">${p.name}</h3><div class="prop-meta">${p.pos} · ${p.team} vs ${p.opp} · ${g.away.abbr} @ ${g.home.abbr}</div></div></div>${waiting}${tables}</article>`;
+  }).join("");
+  box.innerHTML = `<h2 style="margin:0 0 10px">${g.away.name} at ${g.home.name}</h2><p class="subn" style="margin:0 0 12px">${fmt.when(g.date)}${g.venue ? " · " + g.venue : ""}</p>${blocks || `<div class="empty">No skill-player lines on this game.</div>`}`;
+  const token = (window.__chartToken = (window.__chartToken || 0) + 1);
+  const missing = players.filter((p) => !window.__PLOGS || !window.__PLOGS[p.id]);
+  const dkReady = window.__DK && window.__DK[String(g.id)];
+  const jobs = missing.map((p) => playerLogs(p.id).catch(() => []));
+  if (!dkReady) jobs.push(loadDkForGame(g.id).catch(() => ({})));
+  if (jobs.length) Promise.all(jobs).then(() => {
+    if (token === window.__chartToken && view === "charts") renderGameCharts();
+  });
+}
 function bestDoubleG(markets, season, vs) {
   let best = null;
   markets.forEach((m) => m.lines.forEach((line) => {
@@ -7739,7 +7800,7 @@ function renderNflAwards() {
 }
 function setView(next) {
 
-  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,heisman:1,awards:1};
+  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,heisman:1,awards:1,charts:1};
   if (!allowed[next]) next = "home";
   const wantProps = next === "propp";
   if (wantProps) { window.__parlayLg = "props"; next = "parlay"; }
@@ -7767,6 +7828,8 @@ function setView(next) {
   $("#modelSection").style.display = next === "model" ? "" : "none";
   const awS = document.getElementById("awardsSection");
   if (awS) awS.style.display = next === "awards" ? "" : "none";
+  const chS = document.getElementById("chartsSection");
+  if (chS) chS.style.display = next === "charts" ? "" : "none";
   const heiS = document.getElementById("heismanSection");
   if (heiS) heiS.style.display = next === "heisman" ? "" : "none";
   const recS = document.getElementById("recruitSection");
@@ -7803,6 +7866,7 @@ function setView(next) {
   if (next === "ratings") renderRatings();
   if (next === "model") renderModel();
   if (next === "awards") renderNflAwards();
+  if (next === "charts") renderGameCharts();
   if (next === "heisman") renderHeisman();
   if (next === "recruit") renderRecruit();
 }
@@ -8031,6 +8095,12 @@ async function boot() {
     }).catch(() => setStamp("Injury update failed", false));
   });
   document.getElementById("awardPick")?.addEventListener("change", () => { if (view === "awards") renderNflAwards(); });
+  document.getElementById("chartGames")?.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-chart-game]");
+    if (!btn) return;
+    window.__chartGame = btn.getAttribute("data-chart-game");
+    renderGameCharts();
+  });
   $("#refreshBtn")?.addEventListener("click", () => {
     fetchInjuries(true).then(()=>{ if(view==="nflinj") renderInjuries("nfl"); if(view==="cfbinj") renderInjuries("cfb"); if(typeof renderBoard==="function") renderBoard(); });
     if (fromFile) { doWx(); return; }
