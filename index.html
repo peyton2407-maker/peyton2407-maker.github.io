@@ -32,7 +32,7 @@
 }
 
 * { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; overflow-x: hidden; }
+html, body { margin: 0; padding: 0; }
 html { -webkit-text-size-adjust: 100%; }
 body {
   font-family: Outfit, "Segoe UI", sans-serif;
@@ -52,6 +52,7 @@ button { touch-action: manipulation; cursor: pointer; }
   width: min(1380px, 100%);
   margin: 0 auto;
   padding: 18px 16px calc(32px + var(--safe-b));
+  overflow-x: clip;
 }
 
 .topbar {
@@ -273,6 +274,7 @@ option { background: #12201a; color: #e9f3ec; }
   box-shadow: var(--shadow);
 }
 button.game{width:100%;text-align:left;font:inherit;color:inherit;display:grid;gap:12px;cursor:pointer;position:relative;z-index:3;touch-action:manipulation;-webkit-tap-highlight-color:rgba(182,232,90,.35)}
+.game-sheet{margin:0 0 14px;background:#12201a;border:1px solid var(--line-2);border-radius:22px;padding:16px;position:relative;z-index:5}
 .home-game, .home-feature.on, #board tr[data-id], .desk-strip tr[data-id] { cursor: pointer; touch-action: manipulation; }
 .overlay:not(.show) { display: none !important; pointer-events: none !important; visibility: hidden !important; }
 body > iframe { display: none !important; width: 0 !important; height: 0 !important; pointer-events: none !important; }
@@ -846,6 +848,7 @@ button.prop-card.inj-open .report-full{display:block}
         </select>
       </div>
       <div class="stat-row" id="stats"></div>
+      <div id="gameSheet" style="display:none"></div>
       <div class="board" id="board"></div>
     </section>
 
@@ -6260,16 +6263,35 @@ async function openPlayer(id, gameId) {
   $("#closeModal").onclick = closeModal;
 }
 
+function placeOverlay(ov) {
+  const y = window.scrollY || document.documentElement.scrollTop || 0;
+  ov.classList.add("show");
+  ov.style.position = "absolute";
+  ov.style.top = y + "px";
+  ov.style.left = "0";
+  ov.style.right = "0";
+  ov.style.width = "100%";
+  ov.style.height = (window.innerHeight || 700) + "px";
+  ov.style.display = "flex";
+  ov.style.visibility = "visible";
+  ov.style.pointerEvents = "auto";
+  ov.style.zIndex = "9999";
+}
+function showGameSheet(html) {
+  const sheet = document.getElementById("gameSheet");
+  if (!sheet) return;
+  sheet.style.display = "block";
+  sheet.innerHTML = `<div class="game-sheet">${html}</div>`;
+  const closer = sheet.querySelector("#closeModal");
+  if (closer) closer.onclick = function (e) { e.preventDefault(); e.stopPropagation(); closeModal(); };
+  try { sheet.scrollIntoView({ block: "start" }); } catch (e) {}
+}
 function openGame(id) {
   const g = (DATA.games || []).find((x) => String(x.id) === String(id));
   const ov = document.getElementById("overlay");
   const modal = document.getElementById("modal");
   if (!g || !ov || !modal) return;
-  ov.classList.add("show");
-  ov.style.display = "flex";
-  ov.style.visibility = "visible";
-  ov.style.pointerEvents = "auto";
-  ov.style.zIndex = "200";
+  placeOverlay(ov);
   try {
   const p = g.proj || {};
   const o = g.odds || {};
@@ -6330,10 +6352,12 @@ function openGame(id) {
   ov.style.zIndex = "80";
   const closer = document.getElementById("closeModal");
   if (closer) closer.onclick = closeModal;
+  showGameSheet(modal.innerHTML);
   } catch (err) {
     modal.innerHTML = `<div class="modal-head"><div><div class="lbl">${g.league.toUpperCase()}</div><h2>${g.away.abbr} @ ${g.home.abbr}</h2></div><button class="close" id="closeModal" type="button">Close</button></div><p>${g.away.name} at ${g.home.name}</p>`;
     const closer2 = document.getElementById("closeModal");
     if (closer2) closer2.onclick = closeModal;
+    showGameSheet(modal.innerHTML);
   }
 }
 window.openInjury = openInjury;
@@ -6345,12 +6369,18 @@ document.addEventListener("click", function (e) {
 
 function closeModal() {
   const ov = document.getElementById("overlay");
-  if (!ov) return;
-  ov.classList.remove("show");
-  ov.style.display = "";
-  ov.style.visibility = "";
-  ov.style.pointerEvents = "";
-  ov.style.zIndex = "";
+  if (ov) {
+    ov.classList.remove("show");
+    ov.style.display = "none";
+    ov.style.visibility = "hidden";
+    ov.style.pointerEvents = "none";
+    ov.style.zIndex = "";
+    ov.style.position = "";
+    ov.style.top = "";
+    ov.style.height = "";
+  }
+  const sheet = document.getElementById("gameSheet");
+  if (sheet) { sheet.style.display = "none"; sheet.innerHTML = ""; }
 }
 document.addEventListener("click", function (e) {
   const t = e.target && e.target.nodeType === 1 ? e.target : (e.target && e.target.parentElement);
