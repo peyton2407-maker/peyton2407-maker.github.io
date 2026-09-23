@@ -427,7 +427,7 @@ option { background: #12201a; color: #e9f3ec; }
 .boardtable tr.live-row td{background:rgba(240,180,41,.12)}
 
 .gd-chip{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.04em;padding:4px 9px;border-radius:999px;white-space:nowrap}
-.gd-OUT,.gd-IR,.gd-INACTIVE,.gd-SUSP{background:rgba(255,122,104,.2);color:#ffb0a4}
+.gd-OUT,.gd-IR,.gd-PUP,.gd-INACTIVE,.gd-SUSP{background:rgba(255,122,104,.2);color:#ffb0a4}
 .gd-DOUBTFUL{background:rgba(240,180,41,.2);color:#f0b429}
 .gd-QUESTIONABLE,.gd-Q{background:rgba(240,180,41,.12);color:#e8c56a}
 .gd-ACTIVE,.gd-PLAYING{background:rgba(232,196,122,.18);color:#e8c47a}
@@ -4215,6 +4215,7 @@ function statusWeight(tag){
   if (t === "DOUBTFUL") return 52;
   if (t === "QUESTIONABLE" || t === "Q") return 28;
   if (t === "PLAYING") return 8;
+  if (t === "PUP") return 74;
   return 0;
 }
 function ensureInjPack(){
@@ -4497,6 +4498,108 @@ function seedInjuriesFromSnap(){
   } catch (e) { console.warn("injury snap", e); }
   return pack;
 }
+
+function sleeperTag(st){
+  const t = String(st || "").toUpperCase();
+  if (t === "OUT") return "OUT";
+  if (t === "DOUBTFUL") return "DOUBTFUL";
+  if (t === "QUESTIONABLE") return "QUESTIONABLE";
+  if (t === "IR") return "IR";
+  if (t === "PUP") return "PUP";
+  if (t === "SUS") return "SUSP";
+  return "";
+}
+function sleeperInjuryRows(players){
+  const abbr = {};
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.league !== "nfl") return;
+    if (g.home) abbr[g.home.abbr] = g.home.name;
+    if (g.away) abbr[g.away.abbr] = g.away.name;
+  });
+  const rows = [];
+  Object.values(players || {}).forEach((p) => {
+    const tag = sleeperTag(p.injury_status);
+    if (!tag || !p.full_name || !p.team) return;
+    const team = abbr[p.team] || p.team;
+    const when = p.news_updated ? new Date(Number(p.news_updated)).toISOString() : "";
+    const bit = [p.injury_body_part, p.injury_notes].filter(Boolean).join(" · ");
+    const game = matchInjuryGame(team, "nfl");
+    const row = {
+      league: "nfl", team, teamId: "", id: p.espn_id || "",
+      name: p.full_name, pos: p.position || "",
+      status: p.injury_status, tag,
+      type: p.injury_body_part || "", body: p.injury_body_part || "",
+      returnDate: "", date: when,
+      short: bit || (p.full_name + " is " + p.injury_status + "."),
+      long: bit || (p.injury_status + (p.injury_body_part ? " · " + p.injury_body_part : "")),
+      reporter: { name: "Sleeper", outlet: "Sleeper" },
+      source: "Sleeper",
+      gameLabel: game ? game.away.abbr + " @ " + game.home.abbr : "",
+      gameWhen: game ? game.date : ""
+    };
+    row.score = posWeight(row.pos) + statusWeight(tag) + (game && !game.completed ? 12 : 0) + 16;
+    rows.push(row);
+  });
+  return rows;
+}
+async function pullRapoportArticles(){
+  const bag = [];
+  const eat = (payload) => {
+    ((payload && payload.articles) || []).forEach((a) => bag.push(a));
+    ((payload && payload.results) || []).forEach((block) => {
+      (block.contents || []).forEach((c) => bag.push({
+        headline: c.headline || c.displayName || "",
+        description: c.description || "",
+        published: c.published || c.date || "",
+        byline: c.byline || "Ian Rapoport"
+      }));
+    });
+  };
+  try { eat(await getJSON(injEndpoint("/apis/site/v2/sports/football/nfl/news?limit=40"))); } catch (e) {}
+  try { eat(await getJSON(injEndpoint("/apis/search/v2?query=" + encodeURIComponent("Ian Rapoport injury") + "&limit=12"))); } catch (e) {}
+  const seen = new Set();
+  return bag.filter((a) => {
+    const h = a.headline || "";
+    if (!h || seen.has(h)) return false;
+    const blob = h + " " + (a.description || "") + " " + (a.byline || "");
+    if (!/rapoport|rapsheet/i.test(blob)) return false;
+    seen.add(h);
+    return true;
+  });
+}
+function applyRapoport(rows, articles){
+  const list = rows.slice();
+  (articles || []).forEach((a) => {
+    const h = a.headline || "";
+    const d = a.description || "";
+    const low = (h + " " + d).toLowerCase();
+    let tag = "";
+    if (/injured reserve|\bon ir\b|placed on ir/.test(low)) tag = "IR";
+    else if (/ruled out|out for|will miss|extended period|sideline/.test(low)) tag = "OUT";
+    else if (/doubtful/.test(low)) tag = "DOUBTFUL";
+    else if (/questionable|week to week|week-to-week|has a chance|could start|could play/.test(low)) tag = "QUESTIONABLE";
+    const hit = list.find((r) => r.name && r.name.length > 5 && (low.includes(r.name.toLowerCase())));
+    if (hit) {
+      hit.reporter = { name: "Ian Rapoport", outlet: "NFL Network" };
+      hit.short = h;
+      hit.long = d || h;
+      hit.date = a.published || hit.date;
+      if (tag && statusWeight(tag) >= statusWeight(hit.tag)) hit.tag = tag;
+      hit.score = (hit.score || 0) + 46;
+      return;
+    }
+    list.unshift({
+      league: "nfl", team: "NFL Network", name: h.length > 92 ? h.slice(0, 90) + "…" : h,
+      pos: "NEWS", status: tag || "Report", tag: tag || "QUESTIONABLE",
+      type: "Rapoport", body: "", returnDate: "", date: a.published || "",
+      short: h, long: d || h,
+      reporter: { name: "Ian Rapoport", outlet: "NFL Network" },
+      source: "Rapoport", gameLabel: "", gameWhen: "",
+      score: 220
+    });
+  });
+  return list;
+}
 async function fetchInjuries(force){
   const today = new Date().toISOString().slice(0, 10);
   const pack = seedInjuriesFromSnap();
@@ -4505,17 +4608,26 @@ async function fetchInjuries(force){
   const stamp = document.getElementById("injStamp");
   if (stamp && (view === "nflinj" || view === "cfbinj")) stamp.textContent = "Pulling the live injury report…";
   try {
-    const [nfl, cfb, newsC, coversHtml] = await Promise.all([
+    const [nfl, cfb, newsC, coversHtml, sleeper, rap] = await Promise.all([
       getJSON(injEndpoint("/apis/site/v2/sports/football/nfl/injuries")),
       getJSON(injEndpoint("/apis/site/v2/sports/football/college-football/injuries")),
       pullCfbInjuryNews(),
-      fetchText("https://www.covers.com/sport/football/ncaaf/injuries").catch(() => "")
+      fetchText("https://www.covers.com/sport/football/ncaaf/injuries").catch(() => ""),
+      getJSON("https://api.sleeper.app/v1/players/nfl").catch(() => null),
+      pullRapoportArticles().catch(() => [])
     ]);
     const next = ensureInjPack();
     const parsedN = parseInjuryFeed(nfl, "nfl");
+    const fromSleeper = sleeperInjuryRows(sleeper);
     const parsedC = parseInjuryFeed(cfb, "cfb");
     const coversC = parseCoversInjuries(coversHtml);
-    if (parsedN.length) { next.nfl = parsedN; next.live = true; }
+    const nflMerged = applyRapoport(fromSleeper.length ? fromSleeper : parsedN, rap);
+    parsedN.forEach((r) => {
+      const cur = nflMerged.find((x) => (x.name || "").toLowerCase() === (r.name || "").toLowerCase());
+      if (!cur) { if (r.tag !== "ACTIVE" && r.tag !== "PLAYING") nflMerged.push(r); return; }
+      if ((cur.long || "").length < 50 && r.long) cur.long = r.short || r.long;
+    });
+    if (nflMerged.length) { next.nfl = nflMerged; next.live = true; next.nflLive = fromSleeper.length ? "sleeper" : "espn"; }
     const mergedC = [];
     const seen = new Set();
     const cfbPool = coversC.length ? coversC.concat(newsC || []) : (newsC || []).concat(parsedC);
@@ -4584,7 +4696,7 @@ function renderInjuries(league){
       : pack.cfbLive === "desk"
       ? `College report pulled Sep 23 from Covers · ${all.length} players. This page refreshes it every 2 minutes.`
       : `College report · ${when}. The full desk did not answer, so this is the latest ESPN injury news.`)
-    : `Live NFL report · ${when}. ESPN's list. Out, doubtful, and questionable are at the top. Refreshes every 2 minutes.`;
+    : `Live NFL report · ${when}. Sleeper has the designation. Ian Rapoport notes are on the card when he has reported it. Refreshes every 2 minutes.`;
   box.innerHTML = rows.slice(0,240).map(r=>{
     const rep = r.reporter ? `${r.reporter.name}${r.reporter.outlet? " · "+r.reporter.outlet:""}` : "ESPN injury report";
     const quote = r.long || r.short || "No reporter note posted yet.";
