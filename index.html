@@ -1886,7 +1886,7 @@ function fpiMap(payload, league) {
 
 const SEASON_QB_OUT = [
   { name: "Jaxson Dart", team: "New York Giants", abbr: "NYG", backup: "Jameis Winston", margin: 5.5, total: -2.4,
-    note: "Ian Rapoport on X: Dart is expected to have knee surgery that ends his 2026 season. The ACL is intact. Jameis Winston is the quarterback, so the Giants figure to score less, and a long season without Dart can take some confidence out of the whole team." }
+    note: "#Giants QB Jaxson Dart is expected to have knee surgery that will lead to a full recovery but end his 2026 season, sources told me and @MikeGarafolo. The ACL is intact. Surgery is coming. — Ian Rapoport on X" }
 ];
 function seasonQbName(name) {
   return SEASON_QB_OUT.some((q) => String(name || "").toLowerCase() === q.name.toLowerCase());
@@ -3418,8 +3418,7 @@ function playerContext(pl, g) {
     if (pl.last_rec_yds) bits.push(`last game ${Number(pl.last_rec_yds).toFixed(0)} receiving yards`);
     if (wind >= 18) bits.push("windy, fewer long throws");
   }
-  if (pl.qbNote) bits.push(pl.qbNote);
-  if (pl.injury && String(pl.injury).toUpperCase() !== "ACTIVE") bits.push("injury report: " + pl.injury);
+  if (pl.injury && String(pl.injury).toUpperCase() !== "ACTIVE" && !/double gs/i.test(String(pl.injury))) bits.push("injury report: " + pl.injury);
   return bits.join(". ");
 }
 function toAmerican(p) {
@@ -4511,9 +4510,9 @@ function lockSeasonQbs() {
     row.short = q.note;
     row.long = q.note;
     row.team = q.team;
-    row.reporter = { name: "Double Gs", outlet: "Injury desk" };
-    row.reports = row.reports || [];
-    if (!row.reports.some((x) => x.label === "Double Gs")) row.reports.unshift({ label: "Double Gs", text: q.note });
+    row.reporter = { name: "Ian Rapoport", outlet: "X @RapSheet" };
+    row.reports = (row.reports || []).filter((x) => !/double gs/i.test(x.label || "") && !/double gs/i.test(x.text || ""));
+    if (!row.reports.some((x) => /rapoport/i.test(x.label || "") && (x.text || "").includes("surgery"))) row.reports.unshift({ label: "Ian Rapoport · X", text: q.note });
     row.score = 260;
   });
 }
@@ -4528,7 +4527,6 @@ function reshapeSeasonQbProps() {
         if (!p._dartBase) p._dartBase = { pass_yds: p.pass_yds, pass_td: p.pass_td, rush_yds: p.rush_yds, rush_td: p.rush_td };
         p.injury = "OUT FOR THE YEAR";
         p.pass_yds = 0; p.pass_td = 0; p.rush_yds = 0; p.rush_td = 0; p.rush_att = 0;
-        p.qbNote = "Out for the year. He is not in this game.";
         return;
       }
       if (p._qbScaled) return;
@@ -4542,22 +4540,8 @@ function reshapeSeasonQbProps() {
         p.rush_att = +((p.rush_att || 0) * 1.04).toFixed(1);
         p.rec = +((p.rec || 0) * 1.08).toFixed(1);
         p.rec_yds = +((p.rec_yds || 0) * 1.06).toFixed(1);
-      } else if (p.pos === "QB") {
-        p.pass_yds = +Math.max(p.pass_yds || 0, 175).toFixed(1);
       }
-      p.qbNote = "Dart is out for the year. This is Winston's offense, not Dart's.";
     });
-    if (!g.props.some((p) => p.side === sq.side && /winston/i.test(p.name || ""))) {
-      const dart = g.props.find((p) => seasonQbName(p.name));
-      const base = (dart && dart._dartBase) || { pass_yds: 210, pass_td: 1.1, rush_yds: 20, rush_td: 0.2 };
-      g.props.push({
-        id: "winston", name: sq.backup, pos: "QB", team: sq.abbr, side: sq.side, injury: "",
-        pass_yds: +(base.pass_yds * 0.9).toFixed(1), pass_td: +(base.pass_td * 0.92).toFixed(2),
-        rush_yds: +Math.max(4, base.rush_yds * 0.35).toFixed(1), rush_td: +(base.rush_td * 0.4).toFixed(2),
-        rush_att: 2.5, rec: 0, rec_yds: 0, rec_td: 0,
-        qbNote: "Starting quarterback with Dart out for the year. He still throws, but there are more turnovers and fewer designed runs."
-      });
-    }
   });
 }
 function attachInjuriesToGames(){
@@ -4687,6 +4671,7 @@ async function pullRapoportArticles(){
     const h = a.headline || "";
     if (!h || seen.has(h)) return false;
     const blob = h + " " + (a.description || "") + " " + (a.byline || "");
+    if (/onion|babylon bee|clickhole|satire|parody|hard times|the duffel|waterford/i.test(blob)) return false;
     if (!/rapoport|rapsheet/i.test(blob)) return false;
     seen.add(h);
     return true;
@@ -4840,7 +4825,7 @@ async function pullRapoportX() {
       if (text && text.length > 60) { raw = text; break; }
     } catch (e) {}
   }
-  if (!raw) return rapoportXPosts();
+  if (!raw || !/RapSheet|Ian Rapoport/i.test(raw)) return rapoportXPosts();
   const found = [];
   const re = /"full_text":"((?:\\.|[^"\\])*)"/g;
   let m;
@@ -4978,7 +4963,9 @@ function renderInjuries(league){
     const whenGame = r.gameWhen && typeof fmt!=="undefined" ? fmt.when(r.gameWhen) : "";
     const full = ((r.reports && r.reports.length) ? r.reports : [{ label: rep, text: quote }]).map((b) => {
       const text = String(b.text || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
-      return text ? `<div class="report-block"><b>${escHtml(b.label || "Report")}</b><p>${escHtml(text)}</p></div>` : "";
+      if (!text || /double gs/i.test(b.label || "") || /double gs/i.test(text)) return "";
+      if (/onion|babylon bee|clickhole|satire|parody/i.test((b.label || "") + " " + text)) return "";
+      return `<div class="report-block"><b>${escHtml(b.label || "Report")}</b><p>${escHtml(text)}</p></div>`;
     }).join("");
     return `<button type="button" class="prop-card" data-inj="${i}" onclick="window.openInjury(${i}, this)">
       <div class="who">
@@ -5012,6 +4999,8 @@ function openInjury(i, el) {
   const blocks = bits.map((b) => {
     const text = clean(b.text);
     if (!text || seen.has(text)) return "";
+    if (/double gs/i.test(b.label || "") || /double gs/i.test(text)) return "";
+    if (/onion|babylon bee|clickhole|satire|parody/i.test((b.label || "") + " " + text)) return "";
     seen.add(text);
     return `<div class="report-block"><b>${escHtml(b.label || "Report")}</b><p>${escHtml(text)}</p></div>`;
   }).join("");
