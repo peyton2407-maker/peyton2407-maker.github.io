@@ -447,7 +447,7 @@ button.prop-card.inj-open .report-full{display:block}
 .inj-rank{font-size:11px;font-weight:800;color:var(--turf);margin-top:4px}
 .inj-game{font-size:12.5px;font-weight:700;color:var(--ink);margin-top:6px}
 .award-board-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;max-width:100%}
-.award-board{width:100%;border-collapse:collapse}
+.award-board{width:100%;min-width:640px;border-collapse:collapse}
 .award-board th,.award-board td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
 .award-board th{font-size:12px;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
 .award-board td.player{text-align:left;white-space:normal}
@@ -7372,24 +7372,24 @@ function renderRecruit() {
 }
 
 
-const HEISMAN_BOOKS = ["BetMGM", "Caesars"];
+const HEISMAN_BOOKS = ["DraftKings", "BetMGM", "Caesars"];
 const HEISMAN_BOARD = [
-  { name: "Trinidad Chambliss", id: "4911529", pos: "QB", team: "Ole Miss", books: { BetMGM: 325, Caesars: 300 } },
-  { name: "Darian Mensah", id: "5121169", pos: "QB", team: "Miami", books: { BetMGM: 325, Caesars: 350 } },
-  { name: "Jeremiah Smith", id: "5079720", pos: "WR", team: "Ohio State", books: { BetMGM: 1000, Caesars: 975 } },
-  { name: "Arch Manning", id: "4870906", pos: "QB", team: "Texas", books: { BetMGM: 1000, Caesars: 1000 } },
+  { name: "Trinidad Chambliss", id: "4911529", pos: "QB", team: "Ole Miss", books: { DraftKings: 290, BetMGM: 325, Caesars: 300 } },
+  { name: "Darian Mensah", id: "5121169", pos: "QB", team: "Miami", books: { DraftKings: 370, BetMGM: 325, Caesars: 350 } },
+  { name: "Jeremiah Smith", id: "5079720", pos: "WR", team: "Ohio State", books: { DraftKings: 1050, BetMGM: 1000, Caesars: 975 } },
+  { name: "Arch Manning", id: "4870906", pos: "QB", team: "Texas", books: { DraftKings: 1400, BetMGM: 1000, Caesars: 1000 } },
   { name: "Kamario Taylor", id: "5177084", pos: "QB", team: "Mississippi State", books: { BetMGM: 1000, Caesars: 1100 } },
-  { name: "Malachi Toney", id: "5159175", pos: "WR", team: "Miami", books: { BetMGM: 1000, Caesars: 1200 } },
-  { name: "CJ Carr", id: "5079369", pos: "QB", team: "Notre Dame", books: { BetMGM: 1400, Caesars: 1200 } },
-  { name: "Keelon Russell", id: "5141629", pos: "QB", team: "Alabama", books: { BetMGM: 2500, Caesars: 2500 } },
-  { name: "Josh Hoover", id: "4685401", pos: "QB", team: "Indiana", books: { BetMGM: 3500, Caesars: 2500 } },
-  { name: "Julian Sayin", id: "5079712", pos: "QB", team: "Ohio State", books: { BetMGM: 3000, Caesars: 3000 } }
+  { name: "Malachi Toney", id: "5159175", pos: "WR", team: "Miami", books: { DraftKings: 1300, BetMGM: 1000, Caesars: 1200 } },
+  { name: "CJ Carr", id: "5079369", pos: "QB", team: "Notre Dame", books: { DraftKings: 1500, BetMGM: 1400, Caesars: 1200 } },
+  { name: "Keelon Russell", id: "5141629", pos: "QB", team: "Alabama", books: { DraftKings: 2500, BetMGM: 2500, Caesars: 2500 } },
+  { name: "Josh Hoover", id: "4685401", pos: "QB", team: "Indiana", books: { DraftKings: 2500, BetMGM: 3500, Caesars: 2500 } },
+  { name: "Julian Sayin", id: "5079712", pos: "QB", team: "Ohio State", books: { DraftKings: 2500, BetMGM: 3000, Caesars: 3000 } }
 ];
 function renderHeisman() {
   const box = document.getElementById("heismanBoard");
   const stamp = document.getElementById("heismanStamp");
   if (!box) return;
-  if (stamp) stamp.textContent = "Ranking board for the 2026 Heisman. Shortest price is first. Each column is one betting app. The green number is the shorter price on that row.";
+  if (stamp) stamp.textContent = "Ranking board for the 2026 Heisman. DraftKings is their Sept 21 price. BetMGM and Caesars are the other posted prices. A dash means that app did not list him.";
   const price = (p) => HEISMAN_BOOKS.map((b) => p.books[b]).filter((n) => Number.isFinite(n)).sort((a, b) => a - b);
   const rows = HEISMAN_BOARD.slice().sort((a, b) => {
     const pa = price(a), pb = price(b);
