@@ -4425,8 +4425,9 @@ function parseInjuryFeed(payload, league){
       };
       row.score = posWeight(pos) + statusWeight(tag) + (reporter ? 8 : 0) + (game && !game.completed ? 12 : 0);
       row.reports = [];
-      if (long) row.reports.push({ label: reporter ? reporter.name : "Full report", text: long });
-      if (short && short !== long) row.reports.push({ label: "Update", text: short });
+      const who = reporter ? (reporter.name + (reporter.outlet ? " · " + reporter.outlet : " · ESPN")) : "ESPN";
+      if (long) row.reports.push({ label: who, text: long });
+      if (short && short !== long) row.reports.push({ label: "ESPN", text: short });
       const blob = `${short} ${long} ${row.type}`.toLowerCase();
       const hurt = /(shoulder|knee|ankle|hamstring|groin|concussion|rib|foot|calf|hip|wrist|finger|quad|illness|pectoral|achilles|toe|neck|oblique|thumb|elbow|back|hand)/.test(blob);
       if (tag === "ACTIVE") return;
@@ -4569,6 +4570,7 @@ async function pullRapoportArticles(){
   };
   try { eat(await getJSON(injEndpoint("/apis/site/v2/sports/football/nfl/news?limit=40"))); } catch (e) {}
   try { eat(await getJSON(injEndpoint("/apis/search/v2?query=" + encodeURIComponent("Ian Rapoport injury") + "&limit=12"))); } catch (e) {}
+  window.__NFLNEWS = bag.slice();
   const seen = new Set();
   return bag.filter((a) => {
     const h = a.headline || "";
@@ -4614,6 +4616,29 @@ function applyRapoport(rows, articles){
   });
   return list;
 }
+function addInjuryNote(row, label, text) {
+  const t = String(text || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  if (!row || !t) return;
+  row.reports = row.reports || [];
+  if (row.reports.some((x) => x.text === t)) return;
+  row.reports.push({ label: label || "Report", text: t });
+}
+function applyDeskNews(rows) {
+  (window.__NFLNEWS || []).forEach((a) => {
+    const h = a.headline || "";
+    const d = a.description || "";
+    const low = (h + " " + d).toLowerCase();
+    if (!/injur|ruled out|questionable|doubtful|hamstring|concussion|reserve|\bout\b|knee|ankle|shoulder/.test(low)) return;
+    const by = a.byline || "ESPN";
+    const label = /rapoport|rapsheet/i.test(by + " " + h) ? "Ian Rapoport · NFL Network" : (by + " · ESPN");
+    (rows || []).forEach((r) => {
+      if (!r.name || r.name.length < 6 || r.pos === "NEWS") return;
+      if (!low.includes(String(r.name).toLowerCase())) return;
+      addInjuryNote(r, label, d ? (h + ". " + d) : h);
+    });
+  });
+  return rows;
+}
 async function fetchInjuries(force){
   const today = new Date().toISOString().slice(0, 10);
   const pack = seedInjuriesFromSnap();
@@ -4641,17 +4666,24 @@ async function fetchInjuries(force){
       if (!cur) { if (r.tag !== "ACTIVE" && r.tag !== "PLAYING") nflMerged.push(r); return; }
       cur.reports = cur.reports || [];
       const note = r.long || r.short || "";
-      if (note && !cur.reports.some((x) => x.text === note)) cur.reports.push({ label: "ESPN", text: note });
+      (r.reports && r.reports.length ? r.reports : [{ label: "ESPN", text: note }]).forEach((bit) => addInjuryNote(cur, bit.label || "ESPN", bit.text));
       if ((cur.long || "").length < 50 && note) cur.long = note;
     });
+    applyDeskNews(nflMerged);
     if (nflMerged.length) { next.nfl = nflMerged; next.live = true; next.nflLive = fromSleeper.length ? "sleeper" : "espn"; }
     const mergedC = [];
     const seen = new Set();
     const cfbPool = coversC.length ? coversC.concat(newsC || []) : (newsC || []).concat(parsedC);
     cfbPool.forEach((r) => {
       const k = `${(r.name || "").toLowerCase()}|${(r.team || "").toLowerCase()}`;
-      if (seen.has(k)) return;
+      const label = r.reporter ? (r.reporter.name + (r.reporter.outlet ? " · " + r.reporter.outlet : "")) : (r.source || "Report");
+      if (seen.has(k)) {
+        const cur = mergedC.find((x) => `${(x.name || "").toLowerCase()}|${(x.team || "").toLowerCase()}` === k);
+        addInjuryNote(cur, label, r.long || r.short);
+        return;
+      }
       seen.add(k);
+      addInjuryNote(r, label, r.long || r.short);
       mergedC.push(r);
     });
     if (coversC.length) {
@@ -4713,7 +4745,7 @@ function renderInjuries(league){
       : pack.cfbLive === "desk"
       ? `College report pulled Sep 23 from Covers · ${all.length} players. This page refreshes it every 2 minutes.`
       : `College report · ${when}. The full desk did not answer, so this is the latest ESPN injury news.`)
-    : `Live NFL report · ${when}. Sleeper has the designation. Ian Rapoport notes are on the card when he has reported it. Refreshes every 2 minutes.`;
+    : `Live NFL report · ${when}. Sleeper, ESPN, and Ian Rapoport. Tap a player to read what each one is saying.`;
   const shown = rows.slice(0,240);
   window.__INJVIEW = shown;
   box.innerHTML = shown.map((r, i)=>{
@@ -4739,7 +4771,7 @@ function renderInjuries(league){
       </div>
       ${r.gameLabel?`<div class="inj-game">This week: ${escHtml(r.gameLabel)}${whenGame? " · "+escHtml(whenGame):""}${r.returnDate? " · listed return "+escHtml(r.returnDate):""}</div>`:(r.returnDate?`<div class="inj-game">Listed return ${escHtml(r.returnDate)}</div>`:"")}
       <div class="reporter"><b>${escHtml(rep)}</b> ${escHtml(quote)}</div>
-      <div class="inj-more">Read the full report</div>
+      <div class="inj-more">${(r.reports && r.reports.length > 1) ? (r.reports.length + " reports · tap to read what everyone is saying") : "Tap to read the full report"}</div>
       <div class="report-full">${full}</div>
     </button>`;
   }).join("") || `<div class="empty">No injuries in this filter.</div>`;
@@ -4766,7 +4798,7 @@ function openInjury(i, el) {
       <div class="who-row">${faceHtml(r.id, r.name, 64, r.league || "nfl")}<div>
         <div class="lbl">${escHtml(r.team || "")} · ${escHtml(r.pos || "")} · ${escHtml(r.tag || "")}</div>
         <h2 style="margin:4px 0">${escHtml(r.name)}</h2>
-        <div class="subn">${escHtml(r.type || r.body || "Undisclosed")}${r.gameLabel ? " · " + escHtml(r.gameLabel) : ""}${whenGame ? " · " + escHtml(whenGame) : ""}</div>
+        <div class="subn">What everyone is saying${r.gameLabel ? " · " + escHtml(r.gameLabel) : ""}${whenGame ? " · " + escHtml(whenGame) : ""}</div>
       </div></div>
       <button class="close" id="closeModal" type="button">Close</button>
     </div>
