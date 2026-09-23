@@ -734,6 +734,13 @@ option { background: #12201a; color: #e9f3ec; }
           <option value="WR">WR</option>
           <option value="TE">TE</option>
         </select>
+        <select id="valHit" aria-label="Our hit rate">
+          <option value="all">Our hit rate: all</option>
+          <option value="best">Best projected hit rate</option>
+          <option value="55">55% and up</option>
+          <option value="60">60% and up</option>
+          <option value="65">65% and up</option>
+        </select>
         <input id="valQ" placeholder="Search a player or game…"/>
       </div>
       <p class="subn" id="valStamp" style="margin:0 0 10px">These are the underdogs. Vegas isn't in love with them. We still think they have a real chance.</p>
@@ -4093,15 +4100,23 @@ function renderValueDogs() {
   else if (pos === "CFB") rows = rows.filter((r) => r.league === "cfb");
   else if (pos !== "ALL") rows = rows.filter((r) => r.pos === pos);
   if (q) rows = rows.filter((r) => `${r.name} ${r.team} ${r.game} ${r.market}`.toLowerCase().includes(q));
+  const hitCut = (document.getElementById("valHit") || {}).value || "all";
+  if (hitCut === "55" || hitCut === "60" || hitCut === "65") {
+    const min = Number(hitCut) / 100;
+    rows = rows.filter((r) => Number(r.hit) >= min);
+  }
+  if (hitCut === "best" || hitCut === "55" || hitCut === "60" || hitCut === "65") {
+    rows.sort((a, b) => Number(b.hit) - Number(a.hit) || (b.score || 0) - (a.score || 0));
+  }
   const stats = document.getElementById("valStats");
   if (stats) stats.innerHTML = `
     <div class="stat"><b>${rows.length}</b><span>value tickets in this filter</span></div>
     <div class="stat"><b>${rows.filter(r=>r.kind==="td").length}</b><span>TD plus-money</span></div>
     <div class="stat"><b>${rows.filter(r=>r.kind==="spread").length}</b><span>spread / dog sides</span></div>
-    <div class="stat"><b>${rows[0] ? (rows[0].odds>0?"+"+rows[0].odds:rows[0].odds) : "—"}</b><span>top ticket price</span></div>`;
+    <div class="stat"><b>${rows[0] ? Math.round(rows[0].hit * 100) + "%" : "—"}</b><span>best our hit rate</span></div>`;
   const stamp = document.getElementById("valStamp");
   if (stamp) stamp.textContent = "These are underdogs. Vegas isn't in love with them. We still think they have a real chance.";
-  box.innerHTML = rows.slice(0, 72).map(valueTileHtml).join("") || `<div class="empty">No value dogs in this filter. Flip NFL + CFB or All upcoming.</div>`;
+  box.innerHTML = rows.slice(0, 72).map(valueTileHtml).join("") || `<div class="empty">Nothing in this hit-rate filter. Try Best projected hit rate, or drop the percent.</div>`;
   box.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 async function pullDkLines() {
@@ -6830,6 +6845,7 @@ async function boot() {
   document.getElementById("valWhen")?.addEventListener("change", rerenderVal);
   document.getElementById("valKind")?.addEventListener("change", rerenderVal);
   document.getElementById("valPos")?.addEventListener("change", rerenderVal);
+  document.getElementById("valHit")?.addEventListener("change", rerenderVal);
   document.getElementById("valQ")?.addEventListener("input", rerenderVal);
   document.getElementById("parlayTabs")?.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-parlay]");
