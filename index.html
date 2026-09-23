@@ -4458,7 +4458,12 @@ function parseInjuryFeed(payload, league){
       const tag=gameDayTag(x);
       const game=matchInjuryGame(teamName, league);
       const row={
-        league, team:teamName, teamId:team.id, id:a.id||x.id||"",
+        league, team:teamName, teamId:team.id, id:(() => {
+          if (a.id) return String(a.id);
+          const href = (a.headshot && a.headshot.href) || "";
+          const m = String(href).match(/(\d+)\.png/) || JSON.stringify(a.links || []).match(/\/id\/(\d+)/);
+          return m ? m[1] : (x.id || "");
+        })(),
         name:a.displayName||a.shortName||x.name||"Unknown",
         pos, status:x.status||"", tag,
         type: det.type || (x.type && (x.type.description||x.type.name)) || x.type || "",
@@ -4851,7 +4856,10 @@ async function fetchInjuries(force){
   const today = new Date().toISOString().slice(0, 10);
   const pack = seedInjuriesFromSnap();
   const cfbThin = !((pack.cfb || []).length >= 24);
-  if (!force && pack.day === today && pack.fetched && Date.now() - pack.fetched < 10 * 60 * 1000 && (pack.nfl || []).length && !cfbThin && pack.live) return pack;
+  if (!force && pack.day === today && pack.fetched && Date.now() - pack.fetched < 10 * 60 * 1000 && (pack.nfl || []).length && !cfbThin && pack.live) {
+    loadCfbFaces().catch(() => {});
+    return pack;
+  }
   const stamp = document.getElementById("injStamp");
   if (stamp && (view === "nflinj" || view === "cfbinj")) stamp.textContent = "Pulling the live injury report…";
   try {
@@ -4908,11 +4916,104 @@ async function fetchInjuries(force){
     window.__INJ = next;
     if (typeof DATA === "object" && DATA) DATA.injuries = next;
     attachInjuriesToGames();
+    loadCfbFaces().catch(() => {});
     if (typeof renderBoard === "function" && view !== "nflinj" && view !== "cfbinj") renderBoard();
   } catch (e) { console.warn("injuries", e); }
   return ensureInjPack();
 }
 function injImpact(r){ return statusWeight(r.tag || r.status); }
+
+function cfbTeamKey(name) {
+  return String(name || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+function stampCfbFaces() {
+  const pack = (DATA && DATA.injuries) || window.__INJ || {};
+  const byTeam = window.__CFB_ROSTER || {};
+  (pack.cfb || []).forEach((r) => {
+    if (r.id) return;
+    const tid = (window.__CFB_TEAM_IDS || {})[cfbTeamKey(r.team)];
+    const guys = (tid && byTeam[tid]) || [];
+    const key = faceKey(r.name);
+    let hit = guys.find((p) => faceKey(p.name) === key || faceKey(p.short) === key);
+    if (!hit) {
+      const parts = String(r.name || "").trim().split(/\s+/);
+      if (parts.length >= 2 && /^[A-Za-z]\.?$/.test(parts[0])) {
+        const last = faceKey(parts.slice(1).join(" "));
+        const initial = parts[0][0].toLowerCase();
+        const hits = guys.filter((p) => faceKey(p.last) === last && String(p.first || "")[0].toLowerCase() === initial);
+        if (hits.length === 1) hit = hits[0];
+      }
+    }
+    if (hit) r.id = hit.id;
+  });
+  window.__FACES = null;
+}
+async function loadCfbFaces() {
+  if (window.__CFB_FACE_PROMISE) return window.__CFB_FACE_PROMISE;
+  window.__CFB_FACE_PROMISE = (async () => {
+    const pack = (DATA && DATA.injuries) || window.__INJ || {};
+    const idByName = {};
+    (DATA.games || []).forEach((g) => {
+      if (!g || g.league !== "cfb") return;
+      [g.home, g.away].forEach((t) => {
+        if (t && t.id && t.name) idByName[cfbTeamKey(t.name)] = String(t.id);
+      });
+    });
+    try {
+      const data = await getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/teams?limit=500");
+      const arr = ((((data.sports || [])[0] || {}).leagues || [])[0] || {}).teams || [];
+      arr.forEach((row) => {
+        const t = row.team || row;
+        const id = String(t.id || "");
+        if (!id) return;
+        [t.displayName, t.shortDisplayName, t.name, t.location, t.nickname, t.abbreviation].forEach((n) => {
+          if (n) idByName[cfbTeamKey(n)] = id;
+        });
+      });
+    } catch (e) {}
+    window.__CFB_TEAM_IDS = idByName;
+    const need = [];
+    (pack.cfb || []).forEach((r) => {
+      const k = cfbTeamKey(r.team);
+      let id = idByName[k];
+      if (!id && k.length > 5) {
+        Object.keys(idByName).forEach((key) => {
+          if (id) return;
+          if (key.length > 5 && (key.includes(k) || k.includes(key))) id = idByName[key];
+        });
+      }
+      if (id) need.push(id);
+    });
+    const ids = [...new Set(need)].slice(0, 90);
+    const byTeam = window.__CFB_ROSTER || {};
+    await poolMap(ids, 4, async (id) => {
+      if (byTeam[id]) return;
+      try {
+        const ros = await getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/teams/" + id + "/roster");
+        const guys = [];
+        (ros.athletes || []).forEach((group) => {
+          (group.items || []).forEach((pl) => {
+            if (!pl || !pl.id) return;
+            guys.push({
+              id: String(pl.id),
+              name: pl.displayName || pl.fullName || "",
+              short: pl.shortName || "",
+              first: pl.firstName || "",
+              last: pl.lastName || ""
+            });
+          });
+        });
+        byTeam[id] = guys;
+      } catch (e) {}
+    });
+    window.__CFB_ROSTER = byTeam;
+    stampCfbFaces();
+    try { attachInjuriesToGames(); } catch (e) {}
+    if (view === "cfbinj") renderInjuries("cfb");
+    else if (typeof renderBoard === "function") renderBoard();
+  })().catch((e) => { window.__CFB_FACE_PROMISE = null; console.warn(e); });
+  return window.__CFB_FACE_PROMISE;
+}
 function renderInjuries(league){
   const box=document.getElementById("injBoard");
   if(!box) return;
