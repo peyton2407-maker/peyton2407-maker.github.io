@@ -272,7 +272,10 @@ option { background: #12201a; color: #e9f3ec; }
   padding: 16px;
   box-shadow: var(--shadow);
 }
-.game { display: grid; gap: 12px; cursor: pointer; }
+.game { display: grid; gap: 12px; cursor: pointer; position: relative; z-index: 2; touch-action: manipulation; }
+.home-game, .home-feature.on, #board tr[data-id], .desk-strip tr[data-id] { cursor: pointer; touch-action: manipulation; }
+.overlay:not(.show) { display: none !important; pointer-events: none !important; visibility: hidden !important; }
+body > iframe { display: none !important; width: 0 !important; height: 0 !important; pointer-events: none !important; }
 .game:hover, .prop-card:hover { transform: translateY(-2px); border-color: var(--line-2); }
 .game.done { opacity: .72; }
 .prop-card { cursor: pointer; }
@@ -4846,16 +4849,7 @@ function renderRapX() {
     const href = p.id ? "https://x.com/RapSheet/status/" + p.id : "https://x.com/RapSheet";
     return `<a class="news-item" href="${href}" target="_blank" rel="noopener" style="display:block;text-decoration:none"><b>${escHtml(p.text)}</b><small>${escHtml(when)} · @RapSheet</small></a>`;
   }).join("") || `<p class="subn">Waiting on @RapSheet.</p>`;
-  if (!window.__twWidget) {
-    window.__twWidget = true;
-    const sc = document.createElement("script");
-    sc.async = true;
-    sc.src = "https://platform.twitter.com/widgets.js";
-    sc.charset = "utf-8";
-    document.body.appendChild(sc);
-  } else if (window.twttr && window.twttr.widgets) {
-    try { window.twttr.widgets.load(); } catch (e) {}
-  }
+  if (!window.__twWidget) window.__twWidget = true;
 }
 async function pullRapoportX() {
   const urls = [
@@ -5346,7 +5340,7 @@ function deskStripHtml(games) {
     <p class="subn" style="margin:0 0 10px">Hurt players, short rest, long flights, and a moving Vegas line. Tap a row to see the game.</p>
     ${!rows.length ? "<p>Nothing extra is moving these games.</p>" : `<table>
       <thead><tr><th>Game</th><th>Spread change</th><th>Total change</th></tr></thead>
-      <tbody>${rows.map((g) => `<tr data-id="${g.id}">
+      <tbody>${rows.map((g) => `<tr data-id="${g.id}" onclick="openGame(this.dataset.id)">
         <td>${g.away.abbr} @ ${g.home.abbr}</td>
         <td><b>${fmt.signed(g.situational.margin_adj)}</b></td>
         <td><b>${fmt.signed(g.situational.total_adj)}</b></td>
@@ -5371,7 +5365,7 @@ function card(g) {
     ? `<span class="badge ${String(p.total_pick).startsWith("OVER") ? "over" : "under"}">${p.total_pick}</span>`
     : "";
   return `
-    <article class="game ${g.completed ? "done" : ""}" data-id="${g.id}">
+    <article class="game ${g.completed ? "done" : ""}" data-id="${g.id}" onclick="openGame(this.dataset.id)">
       <div class="matchup">
         <div class="kick">${g.league.toUpperCase()} · ${fmt.when(g.date)} ${g.broadcasts?.[0] ? "· " + g.broadcasts[0] : ""}</div>
         ${teamLine(g.away, o.away_favorite ? o.details : "")}
@@ -5441,7 +5435,7 @@ function projectionTable(games) {
             const wp = g.completed && Number.isFinite(hs) && Number.isFinite(as)
               ? (hs === as ? "TIE" : (hs > as ? g.home.abbr : g.away.abbr) + " 100%")
               : (p.win_prob_home != null ? `${g.away.abbr} ${fmt.pct(p.win_prob_away)}` : "—");
-            return `<tr data-id="${g.id}" class="${(typeof isLiveGame==="function" && isLiveGame(g)) ? "live-row" : ""}">
+            return `<tr data-id="${g.id}" onclick="openGame(this.dataset.id)" class="${(typeof isLiveGame==="function" && isLiveGame(g)) ? "live-row" : ""}">
               <td>${(typeof isLiveGame==="function" && isLiveGame(g)) ? `<span class="live-pill">LIVE</span> <span class="live-clock">${g.status_detail||g.clock||""}</span>` : fmt.when(g.date)}</td>
               <td>${g.away.abbr} @ ${g.home.abbr}</td>
               <td>${now}</td>
@@ -6345,6 +6339,15 @@ function closeModal() {
   ov.style.pointerEvents = "";
   ov.style.zIndex = "";
 }
+document.addEventListener("click", function (e) {
+  const t = e.target;
+  if (!t || !t.closest) return;
+  if (t.closest("a, button, input, select, textarea, #overlay")) return;
+  const hit = t.closest(".game, .home-game, .home-feature.on, #board tr[data-id], #cfbPickBoard .prop-card, #nflWxBoard .prop-card, #cfbWxBoard .prop-card");
+  if (!hit) return;
+  const id = hit.getAttribute("data-id");
+  if (id) openGame(id);
+});
 
 function propScore(p) {
   const pass = Number(p.pass_yds || 0);
@@ -6549,7 +6552,7 @@ function renderCfbPicks() {
     else if (market === "td") headline = `${g.away.abbr} ${awayTd ?? "—"} TD · ${g.home.abbr} ${homeTd ?? "—"} TD`;
     else headline = [p.pick_line || p.pick, p.total_pick].filter((x) => x && x !== "NO PLAY").join(" · ") || "market aligned";
     const wx = g.indoor ? "Dome" : ((g.weather && g.weather.condition) || "Outdoor");
-    return `<article class="prop-card" data-id="${g.id}">
+    return `<article class="prop-card" data-id="${g.id}" onclick="openGame(this.dataset.id)">
       <div class="who">
         <div>
           <h4>${g.away.abbr} @ ${g.home.abbr}</h4>
@@ -6730,7 +6733,7 @@ function renderWeatherDesk(opts) {
     const range = (!g.indoor && (wx.temp_min_f != null || wx.temp_max_f != null))
       ? `${wx.temp_min_f != null ? Math.round(wx.temp_min_f) : "—"}° / ${wx.temp_max_f != null ? Math.round(wx.temp_max_f) : "—"}°`
       : (g.indoor ? "72° climate" : "—");
-    return `<article class="prop-card" data-id="${g.id}">
+    return `<article class="prop-card" data-id="${g.id}" onclick="openGame(this.dataset.id)">
       <div class="who">
         <div>
           <h4>${g.away.abbr} @ ${g.home.abbr}</h4>
@@ -7116,7 +7119,7 @@ function renderHome() {
       const pick = (p.pick && p.pick !== "NO PLAY") ? (p.pick_line || p.pick) : "no side";
       const tot = (p.total_pick && p.total_pick !== "NO PLAY") ? p.total_pick : "";
       const live = typeof isLiveGame === "function" && isLiveGame(g);
-      return `<article class="home-game" data-id="${g.id}">
+      return `<article class="home-game" data-id="${g.id}" onclick="openGame(this.dataset.id)">
         <div class="mini"><img src="${g.away.logo || ""}" alt=""><img src="${g.home.logo || ""}" alt=""></div>
         <div>
           <div class="kick">${g.league.toUpperCase()} · ${live ? "LIVE" : fmt.when(g.date)}</div>
