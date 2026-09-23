@@ -451,6 +451,8 @@ button.prop-card.inj-open .report-full{display:block}
 .reporter b{display:block;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
 .inj-rank{font-size:11px;font-weight:800;color:var(--turf);margin-top:4px}
 .inj-game{font-size:12.5px;font-weight:700;color:var(--ink);margin-top:6px}
+.inj-next{margin-top:8px;padding:8px 10px;border-radius:12px;background:rgba(182,232,90,.1);border:1px solid rgba(182,232,90,.35);font-size:13.5px;line-height:1.4}
+.inj-next b{color:var(--turf)}
 .award-board-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;max-width:100%}
 .award-board{width:100%;min-width:640px;border-collapse:collapse}
 .award-board th,.award-board td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
@@ -742,6 +744,12 @@ button.prop-card.inj-open .report-full{display:block}
         <p class="subn" style="margin:0 0 8px">@RapSheet, read here before the articles. New posts show on his timeline first.</p>
         <div id="rapXList"></div>
         <a class="twitter-timeline" data-height="380" data-theme="dark" data-chrome="nofooter" href="https://x.com/RapSheet">Posts by Ian Rapoport</a>
+      </div>
+      <div class="card" id="schefXBox" style="margin:0 0 14px">
+        <h3 style="margin:0 0 4px">Adam Schefter on X</h3>
+        <p class="subn" style="margin:0 0 8px">@AdamSchefter. When he says a player is out, the card names who is playing and that player's projected line.</p>
+        <div id="schefXList"></div>
+        <a class="twitter-timeline" data-height="380" data-theme="dark" data-chrome="nofooter" href="https://x.com/AdamSchefter">Posts by Adam Schefter</a>
       </div>
       <div class="stat-row" id="injStats"></div>
       <div class="prop-board" id="injBoard"></div>
@@ -4568,6 +4576,27 @@ function lockSeasonQbs() {
     row.score = 260;
   });
 }
+function promoteStartingQbs() {
+  if (typeof DATA === "undefined" || !DATA) return;
+  const moves = [
+    { out: "Jayden Daniels", name: "Marcus Mariota", role: "Starting this week. Daniels is out." },
+    { out: "Tua Tagovailoa", name: "Michael Penix Jr.", role: "Starting Thursday. Penix is back." }
+  ];
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.completed || g.league !== "nfl" || !g.props) return;
+    moves.forEach((spec) => {
+      const out = g.props.find((p) => p.name === spec.out);
+      const qb = g.props.find((p) => p.name === spec.name);
+      if (!qb) return;
+      if (out) {
+        out.injury = "OUT";
+        out.pass_yds = 0; out.pass_td = 0; out.pass_int = 0; out.rush_yds = 0; out.rush_td = 0; out.rush_att = 0;
+      }
+      qb.injury = "";
+      qb.role = spec.role;
+    });
+  });
+}
 function reshapeSeasonQbProps() {
   if (typeof seasonQbFor !== "function" || typeof DATA === "undefined" || !DATA) return;
   (DATA.games || []).forEach((g) => {
@@ -4578,7 +4607,7 @@ function reshapeSeasonQbProps() {
       if (seasonQbName(p.name)) {
         if (!p._dartBase) p._dartBase = { pass_yds: p.pass_yds, pass_td: p.pass_td, rush_yds: p.rush_yds, rush_td: p.rush_td };
         p.injury = "OUT FOR THE YEAR";
-        p.pass_yds = 0; p.pass_td = 0; p.rush_yds = 0; p.rush_td = 0; p.rush_att = 0;
+        p.pass_yds = 0; p.pass_td = 0; p.rush_yds = 0; p.rush_td = 0; p.rush_att = 0; p.pass_int = 0;
         return;
       }
       if (p._qbScaled) return;
@@ -4594,7 +4623,26 @@ function reshapeSeasonQbProps() {
         p.rec_yds = +((p.rec_yds || 0) * 1.06).toFixed(1);
       }
     });
+    const starter = (g.props || []).find((p) => p.side === sq.side && seasonQbName(p.name));
+    const base = (starter && starter._dartBase) || {};
+    const backup = (g.props || []).find((p) => p.side === sq.side && String(p.name) === sq.backup);
+    if (backup && !backup._backupFilled && (base.pass_yds || 0) > 40) {
+      backup._backupFilled = true;
+      const pass = +((base.pass_yds || 0) * 0.9).toFixed(1);
+      const td = +((base.pass_td || 0) * 0.78).toFixed(2);
+      const ints = +Math.max(0.7, (base.pass_int || 0.55) * 1.4).toFixed(2);
+      backup.pass_yds = pass;
+      backup.pass_td = td;
+      backup.pass_int = ints;
+      backup.rush_att = 1.6;
+      backup.rush_yds = 4.2;
+      backup.rush_td = 0.04;
+      backup.fp = +(pass / 25 + td * 4 - ints * 2 + 4.2 / 10 + 0.04 * 6).toFixed(2);
+      backup.injury = "";
+      backup.role = "Starting. " + sq.name.split(" ").slice(-1)[0] + " is out for the year.";
+    }
   });
+  promoteStartingQbs();
 }
 function attachInjuriesToGames(){
   try { lockSeasonQbs(); } catch (e) {}
@@ -4886,6 +4934,137 @@ async function pullRapoportX() {
   if (found.length) window.__RAP_X = found.slice(0, 12).concat(window.__RAP_X || []);
   return rapoportXPosts();
 }
+const SCHEF_X = [
+  { id: "2102806128350630311", when: "2026-09-23T17:03:43Z", text: "Cardinals placed cornerback Will Johnson on injured reserve due to his neck injury." },
+  { id: "2102784958347841915", when: "2026-09-23T15:39:36Z", text: "Colts HC Shane Steichen told reporters that WR Alec Pierce is being placed on injured reserve due to his heel injury. Pierce now will miss a minimum of four games." },
+  { id: "2102755497417814043", when: "2026-09-23T13:42:32Z", text: "Panthers officially placed RB Jonathon Brooks on injured reserve due to his core muscle injury." },
+  { id: "2102493150904467643", when: "2026-09-22T20:20:04Z", text: "Patriots officially placed OL Mike Onwenu on injured reserve." },
+  { id: "2102467323315560526", when: "2026-09-22T18:37:26Z", text: "Breaking: Further testing today revealed Giants QB Jaxson Dart’s knee injury is worse than initially thought, and the team and Dart now are facing the possibility of season-ending knee surgery, sources tell ESPN." },
+  { id: "2102443161155190941", when: "2026-09-22T17:01:25Z", text: "Falcons placed CB A.J. Terrell Jr. on injured reserve." }
+];
+function schefterXPosts() {
+  const seen = new Set();
+  const all = (window.__SCHEF_X || []).concat(SCHEF_X);
+  return all.filter((p) => {
+    if (!p || !p.text || seen.has(p.id || p.text)) return false;
+    seen.add(p.id || p.text);
+    return true;
+  });
+}
+function nameInReport(name, text) {
+  const n = String(name || "").toLowerCase().replace(/\b(jr\.?|sr\.?|iii|ii)\b/g, "").replace(/\s+/g, " ").trim();
+  const t = String(text || "").toLowerCase();
+  return n.length >= 5 && t.includes(n);
+}
+function applySchefterX(rows) {
+  const posts = schefterXPosts();
+  (rows || []).forEach((r) => {
+    if (!r || !r.name || r.name.length < 5 || r.pos === "NEWS") return;
+    posts.forEach((post) => {
+      if (!nameInReport(r.name, post.text)) return;
+      addInjuryNote(r, "Adam Schefter · X", post.text);
+      r.reporter = { name: "Adam Schefter", outlet: "X @AdamSchefter" };
+      r.short = post.text;
+      r.date = post.when || r.date;
+      const tag = tagFromRapoport(post.text);
+      if (tag === "IR") r.tag = "IR";
+      else if (tag && statusWeight(tag) >= statusWeight(r.tag)) r.tag = tag;
+      r.score = (r.score || 0) + 55;
+    });
+  });
+  posts.forEach((post) => {
+    const named = (rows || []).some((r) => r.name && r.pos !== "NEWS" && nameInReport(r.name, post.text));
+    if (named) return;
+    if ((rows || []).some((r) => r.id === "sx-" + post.id)) return;
+    rows.unshift({
+      league: "nfl", team: "From X", name: post.text.length > 92 ? post.text.slice(0, 90) + "…" : post.text,
+      pos: "NEWS", status: "X", tag: tagFromRapoport(post.text) || "OUT",
+      type: "Schefter", short: post.text, long: post.text, date: post.when || "",
+      id: "sx-" + post.id,
+      reporter: { name: "Adam Schefter", outlet: "X @AdamSchefter" },
+      reports: [{ label: "Adam Schefter · X", text: post.text }],
+      score: 240, gameLabel: "", gameWhen: ""
+    });
+  });
+  return rows;
+}
+function renderSchefX() {
+  const box = document.getElementById("schefXList");
+  if (!box) return;
+  const posts = schefterXPosts().slice(0, 6);
+  box.innerHTML = posts.map((p) => {
+    const when = p.when ? new Date(p.when).toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : "";
+    const href = p.id ? "https://x.com/AdamSchefter/status/" + p.id : "https://x.com/AdamSchefter";
+    return `<a class="news-item" href="${href}" target="_blank" rel="noopener" style="display:block;text-decoration:none"><b>${escHtml(p.text)}</b><small>${escHtml(when)} · @AdamSchefter</small></a>`;
+  }).join("") || `<p class="subn">Waiting on @AdamSchefter.</p>`;
+}
+async function pullSchefterX() {
+  const urls = [
+    "https://syndication.twitter.com/srv/timeline-profile/screen-name/AdamSchefter",
+    "https://cdn.syndication.twimg.com/timeline/profile?screen_name=AdamSchefter"
+  ];
+  let raw = "";
+  for (const u of urls) {
+    try {
+      const res = await fetch(u, { credentials: "omit" });
+      const text = await res.text();
+      if (text && text.length > 60) { raw = text; break; }
+    } catch (e) {}
+  }
+  if (!raw || !/AdamSchefter|Adam Schefter/i.test(raw)) return schefterXPosts();
+  const found = [];
+  const re = /"full_text":"((?:\\.|[^"\\])*)"/g;
+  let m;
+  while ((m = re.exec(raw))) {
+    const text = m[1].replace(/\\n/g, " ").replace(/\\"/g, '"').replace(/\\u([0-9a-fA-F]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)));
+    if (text.length > 40) found.push({ id: "", when: "", text });
+  }
+  if (found.length) window.__SCHEF_X = found.slice(0, 12).concat(window.__SCHEF_X || []);
+  return schefterXPosts();
+}
+function teamSide(g, team) {
+  const t = String(team || "").toLowerCase();
+  if (!t || t === "from x" || t.length < 3 || !g) return "";
+  const hn = String(g.home && g.home.name || "").toLowerCase();
+  const an = String(g.away && g.away.name || "").toLowerCase();
+  const home = `${hn} ${g.home && g.home.abbr || ""}`.toLowerCase();
+  const away = `${an} ${g.away && g.away.abbr || ""}`.toLowerCase();
+  if (hn && (home.includes(t) || t.includes(hn))) return "home";
+  if (an && (away.includes(t) || t.includes(an))) return "away";
+  return "";
+}
+function replacementFor(r) {
+  if (!r || !DATA || r.pos === "NEWS") return null;
+  if (!/OUT|IR|INACTIVE|DOUBT/.test(String(r.tag || "").toUpperCase())) return null;
+  const pos = String(r.pos || "").toUpperCase();
+  if (!pos) return null;
+  let best = null;
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.completed || g.league !== "nfl") return;
+    const side = teamSide(g, r.team);
+    if (!side) return;
+    (g.props || []).forEach((p) => {
+      if (p.side !== side || String(p.pos || "").toUpperCase() !== pos) return;
+      if (String(p.name || "").toLowerCase() === String(r.name || "").toLowerCase()) return;
+      if (/OUT|IR/i.test(p.injury || "")) return;
+      const stat = pos === "QB" ? Number(p.pass_yds || 0) : pos === "RB" ? Number(p.rush_yds || 0) : Number(p.rec_yds || p.rush_yds || 0);
+      if (stat < 8) return;
+      if (!best || stat > best.stat) best = { p, stat };
+    });
+  });
+  return best;
+}
+function replacementLine(p) {
+  if (!p) return "";
+  if (p.pos === "QB") return `${Math.round(p.pass_yds || 0)} pass yards · ${Number(p.pass_td || 0).toFixed(1)} pass TD · ${Math.round(p.rush_yds || 0)} rush`;
+  if (p.pos === "RB") return `${Math.round(p.rush_yds || 0)} rush yards · ${Number(p.rec || 0).toFixed(1)} catches · ${Math.round(p.rec_yds || 0)} rec yards`;
+  return `${Number(p.rec || 0).toFixed(1)} catches · ${Math.round(p.rec_yds || 0)} rec yards · ${Number(p.rec_td || 0).toFixed(1)} rec TD`;
+}
+function replacementHtml(r) {
+  const hit = replacementFor(r);
+  if (!hit) return "";
+  return `<div class="inj-next"><b>Now playing</b> ${escHtml(hit.p.name)} · ${escHtml(replacementLine(hit.p))}</div>`;
+}
 async function fetchInjuries(force){
   const today = new Date().toISOString().slice(0, 10);
   const pack = seedInjuriesFromSnap();
@@ -4904,7 +5083,8 @@ async function fetchInjuries(force){
       fetchText("https://www.covers.com/sport/football/ncaaf/injuries").catch(() => ""),
       getJSON("https://api.sleeper.app/v1/players/nfl").catch(() => null),
       pullRapoportArticles().catch(() => []),
-      pullRapoportX().catch(() => [])
+      pullRapoportX().catch(() => []),
+      pullSchefterX().catch(() => [])
     ]);
     const next = ensureInjPack();
     const parsedN = parseInjuryFeed(nfl, "nfl");
@@ -4922,6 +5102,7 @@ async function fetchInjuries(force){
     });
     applyDeskNews(nflMerged);
     applyRapoportX(nflMerged);
+    applySchefterX(nflMerged);
     if (nflMerged.length) { next.nfl = nflMerged; next.live = true; next.nflLive = "x"; }
     const mergedC = [];
     const seen = new Set();
@@ -5052,7 +5233,10 @@ function renderInjuries(league){
   const box=document.getElementById("injBoard");
   if(!box) return;
   const pack=(DATA&&DATA.injuries)||window.__INJ||{};
-  if (league === "nfl" && pack.nfl) { try { applyRapoportX(pack.nfl); } catch (e) {} }
+  if (league === "nfl" && pack.nfl) {
+    try { applyRapoportX(pack.nfl); } catch (e) {}
+    try { applySchefterX(pack.nfl); } catch (e) {}
+  }
   const all=(pack[league]||[]).slice();
   const status=($("#injStatus")&&$("#injStatus").value)||"impact";
   const pos=($("#injPos")&&$("#injPos").value)||"ALL";
@@ -5091,10 +5275,15 @@ function renderInjuries(league){
       : pack.cfbLive === "desk"
       ? `College report pulled Sep 23 from Covers · ${all.length} players. This page refreshes it every 2 minutes.`
       : `College report · ${when}. The full desk did not answer, so this is the latest ESPN injury news.`)
-    : `Live NFL report · ${when}. @RapSheet on X is checked first, then Sleeper and ESPN. Tap a player to read what each one is saying.`;
+    : `Live NFL report · ${when}. @AdamSchefter and @RapSheet are checked first, then Sleeper and ESPN. If a player is out, the card names who is playing and his projected line.`;
   const rap = document.getElementById("rapXBox");
   if (rap) rap.style.display = league === "nfl" ? "" : "none";
-  if (league === "nfl") { try { renderRapX(); } catch (e) {} }
+  const schef = document.getElementById("schefXBox");
+  if (schef) schef.style.display = league === "nfl" ? "" : "none";
+  if (league === "nfl") {
+    try { renderRapX(); } catch (e) {}
+    try { renderSchefX(); } catch (e) {}
+  }
   const shown = rows.slice(0,240);
   window.__INJVIEW = shown;
   box.innerHTML = shown.map((r, i)=>{
@@ -5122,6 +5311,7 @@ function renderInjuries(league){
         <span class="gd-chip gd-${escHtml(gd)}">${escHtml(gd)}</span>
       </div>
       ${r.gameLabel?`<div class="inj-game">This week: ${escHtml(r.gameLabel)}${whenGame? " · "+escHtml(whenGame):""}${r.returnDate? " · listed return "+escHtml(r.returnDate):""}</div>`:(r.returnDate?`<div class="inj-game">Listed return ${escHtml(r.returnDate)}</div>`:"")}
+      ${replacementHtml(r)}
       <div class="reporter"><b>${escHtml(rep)}</b> ${escHtml(quote)}</div>
       <div class="inj-more">${(r.reports && r.reports.length > 1) ? (r.reports.length + " reports · tap to read what everyone is saying") : "Tap to read the full report"}</div>
       <div class="report-full">${full}</div>
@@ -5156,6 +5346,7 @@ function openInjury(i, el) {
       </div></div>
       <button class="close" id="closeModal" type="button">Close</button>
     </div>
+    ${replacementHtml(r)}
     ${blocks || "<p>No full note was posted.</p>"}`;
   placeOverlay(ov);
   const closer = document.getElementById("closeModal");
@@ -5250,7 +5441,7 @@ function propPreview(g) {
   const rows = (g.props || []).filter((p) => p.pos !== "K");
   if (!rows.length) return "";
   const bits = [];
-  const qb = rows.find((p) => p.pos === "QB");
+  const qb = rows.filter((p) => p.pos === "QB" && !/OUT/i.test(p.injury || "")).sort((a, b) => (b.pass_yds || 0) - (a.pass_yds || 0))[0];
   const rb = rows.find((p) => p.pos === "RB");
   const wr = rows.find((p) => p.pos === "WR" || p.pos === "TE");
   if (qb) bits.push(`${qb.name.split(" ").slice(-1)[0]} ${fmt.n(qb.pass_yds, 0)} pass`);
@@ -6511,6 +6702,10 @@ function renderProps() {
     if (sort === "td") return b._td - a._td;
     return b._score - a._score;
   });
+  if (day === "best" || day === "week") {
+    const nowStarting = rows.filter((p) => p.role);
+    rows = nowStarting.concat(rows.filter((p) => !p.role));
+  }
   const best = (day === "best" && hitCut === "all") ? rows.slice(0, 18) : rows.slice(0, 72);
   const qbs = best.filter((p) => p.pos === "QB").length;
   $("#propStats").innerHTML = `
@@ -6541,6 +6736,7 @@ function renderProps() {
           ${faceHtml(p.id, p.name, 48, "nfl")}
           <div>
           <h4>${p.name}${inj}</h4>
+          ${p.role ? `<div class="prop-meta">${p.role}</div>` : ""}
           <div class="prop-meta">${p.pos} · ${p.team} vs ${p.opp} · ${p.game || ""} · ${fmt.when(p.date || p.kick)}</div>
           </div>
         </div>
@@ -7866,5 +8062,6 @@ boot().catch((err) => {
   $("#board").innerHTML = `<div class="empty">Could not load snapshot.json. Run <code>python3 refresh.py</code> then serve the folder.<br>${err}</div>`;
 });
 </script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>
