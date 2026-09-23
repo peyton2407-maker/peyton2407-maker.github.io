@@ -714,6 +714,12 @@ button.prop-card.inj-open .report-full{display:block}
         <input id="injQ" placeholder="Search player, team, reporter…"/>
       </div>
       <p class="subn" id="injStamp" style="margin:0 0 10px">Live injury reports. NFL from ESPN. College from the current desk. Refreshes while this page is open.</p>
+      <div class="card" id="rapXBox" style="margin:0 0 14px">
+        <h3 style="margin:0 0 4px">Ian Rapoport on X</h3>
+        <p class="subn" style="margin:0 0 8px">@RapSheet, read here before the articles. New posts show on his timeline first.</p>
+        <div id="rapXList"></div>
+        <a class="twitter-timeline" data-height="380" data-theme="dark" data-chrome="nofooter" href="https://x.com/RapSheet">Posts by Ian Rapoport</a>
+      </div>
       <div class="stat-row" id="injStats"></div>
       <div class="prop-board" id="injBoard"></div>
     </section>
@@ -1880,7 +1886,7 @@ function fpiMap(payload, league) {
 
 const SEASON_QB_OUT = [
   { name: "Jaxson Dart", team: "New York Giants", abbr: "NYG", backup: "Jameis Winston", margin: 5.5, total: -2.4,
-    note: "Jaxson Dart is out for the year with a knee injury. Jameis Winston is the quarterback. The offense was built for Dart, so the Giants figure to score less, and a long season without him can take some confidence out of the whole team." }
+    note: "Ian Rapoport on X: Dart is expected to have knee surgery that ends his 2026 season. The ACL is intact. Jameis Winston is the quarterback, so the Giants figure to score less, and a long season without Dart can take some confidence out of the whole team." }
 ];
 function seasonQbName(name) {
   return SEASON_QB_OUT.some((q) => String(name || "").toLowerCase() === q.name.toLowerCase());
@@ -4744,6 +4750,114 @@ function applyDeskNews(rows) {
   });
   return rows;
 }
+
+const RAP_X = [
+  { id: "2102789091805004092", when: "2026-09-23T15:56:02Z", text: "#Giants QB Jaxson Dart is expected to have knee surgery that will lead to a full recovery but end his 2026 season, sources told me and @MikeGarafolo. Dart has been soliciting opinions on the injury. And the ACL is intact. But surgery is coming." },
+  { id: "2102755606063182054", when: "2026-09-23T13:42:58Z", text: "The #Panthers have now placed Jonathon Brooks on IR and promoted safety Isaiah Simmons from the practice squad." },
+  { id: "2102722949186977966", when: "2026-09-23T11:33:12Z", text: "#Panthers RB Jonathon Brooks, who left Sunday's win early, is expected to have surgery today to repair a core muscle injury that will land him on Injured Reserve, sources say. Brooks is out at least 6 weeks, but should return with plenty of time to contribute down the stretch." },
+  { id: "2102518734619394272", when: "2026-09-22T22:01:43Z", text: "#Jets TE Mason Taylor, who suffered a thumb injury, is considered week-to-week, sources say. He'll likely miss this week vs the #Lions." }
+];
+function rapoportXPosts() {
+  const seen = new Set();
+  const all = (window.__RAP_X || []).concat(RAP_X);
+  return all.filter((p) => {
+    if (!p || !p.text || seen.has(p.id || p.text)) return false;
+    seen.add(p.id || p.text);
+    return true;
+  });
+}
+function tagFromRapoport(text) {
+  const low = String(text || "").toLowerCase();
+  if (/end his \d{4} season|out for the (year|season)|season-ending|surgery that will/.test(low) && /season/.test(low)) return "OUT";
+  if (/placed .+ on ir|injured reserve|\bon ir\b/.test(low)) return "IR";
+  if (/ruled out|will not play|likely miss/.test(low)) return "OUT";
+  if (/doubtful/.test(low)) return "DOUBTFUL";
+  if (/questionable|week-to-week|week to week/.test(low)) return "QUESTIONABLE";
+  return "";
+}
+function applyRapoportX(rows) {
+  const posts = rapoportXPosts();
+  (rows || []).forEach((r) => {
+    if (!r || !r.name || r.name.length < 5 || r.pos === "NEWS") return;
+    posts.forEach((post) => {
+      if (!post.text.toLowerCase().includes(r.name.toLowerCase())) return;
+      const label = "Ian Rapoport · X";
+      addInjuryNote(r, label, post.text);
+      r.reporter = { name: "Ian Rapoport", outlet: "X @RapSheet" };
+      r.short = post.text;
+      r.date = post.when || r.date;
+      const tag = tagFromRapoport(post.text);
+      if (tag && statusWeight(tag) >= statusWeight(r.tag)) r.tag = tag;
+      r.score = (r.score || 0) + 50;
+    });
+  });
+  posts.forEach((post) => {
+    const named = (rows || []).some((r) => r.name && r.name.length > 5 && post.text.toLowerCase().includes(r.name.toLowerCase()));
+    if (named) return;
+    if ((rows || []).some((r) => r.id === "x-" + post.id)) return;
+    rows.unshift({
+      league: "nfl", team: "From X", name: post.text.length > 92 ? post.text.slice(0, 90) + "…" : post.text,
+      pos: "NEWS", status: "X", tag: tagFromRapoport(post.text) || "QUESTIONABLE",
+      type: "Rapoport", short: post.text, long: post.text, date: post.when || "",
+      id: "x-" + post.id,
+      reporter: { name: "Ian Rapoport", outlet: "X @RapSheet" },
+      reports: [{ label: "Ian Rapoport · X", text: post.text }],
+      score: 230, gameLabel: "", gameWhen: ""
+    });
+  });
+  return rows;
+}
+function renderRapX() {
+  const box = document.getElementById("rapXList");
+  if (!box) return;
+  const posts = rapoportXPosts().slice(0, 6);
+  box.innerHTML = posts.map((p) => {
+    const when = p.when ? new Date(p.when).toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : "";
+    const href = p.id ? "https://x.com/RapSheet/status/" + p.id : "https://x.com/RapSheet";
+    return `<a class="news-item" href="${href}" target="_blank" rel="noopener" style="display:block;text-decoration:none"><b>${escHtml(p.text)}</b><small>${escHtml(when)} · @RapSheet</small></a>`;
+  }).join("") || `<p class="subn">Waiting on @RapSheet.</p>`;
+  if (!window.__twWidget) {
+    window.__twWidget = true;
+    const sc = document.createElement("script");
+    sc.async = true;
+    sc.src = "https://platform.twitter.com/widgets.js";
+    sc.charset = "utf-8";
+    document.body.appendChild(sc);
+  } else if (window.twttr && window.twttr.widgets) {
+    try { window.twttr.widgets.load(); } catch (e) {}
+  }
+}
+async function pullRapoportX() {
+  const urls = [
+    "https://syndication.twitter.com/srv/timeline-profile/screen-name/RapSheet",
+    "https://cdn.syndication.twimg.com/timeline/profile?screen_name=RapSheet"
+  ];
+  let raw = "";
+  for (const u of urls) {
+    try {
+      const res = await fetch(u, { credentials: "omit" });
+      const text = await res.text();
+      if (text && text.length > 60) { raw = text; break; }
+    } catch (e) {}
+  }
+  if (!raw) return rapoportXPosts();
+  const found = [];
+  const re = /"full_text":"((?:\\.|[^"\\])*)"/g;
+  let m;
+  while ((m = re.exec(raw))) {
+    const text = m[1].replace(/\\n/g, " ").replace(/\\"/g, '"').replace(/\\u([0-9a-fA-F]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)));
+    if (text.length > 40) found.push({ id: "", when: "", text });
+  }
+  if (!found.length) {
+    const re2 = /timeline-Tweet-text[^>]*>([\s\S]*?)<\/p>/g;
+    while ((m = re2.exec(raw))) {
+      const text = m[1].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+      if (text.length > 40) found.push({ id: "", when: "", text });
+    }
+  }
+  if (found.length) window.__RAP_X = found.slice(0, 12).concat(window.__RAP_X || []);
+  return rapoportXPosts();
+}
 async function fetchInjuries(force){
   const today = new Date().toISOString().slice(0, 10);
   const pack = seedInjuriesFromSnap();
@@ -4758,7 +4872,8 @@ async function fetchInjuries(force){
       pullCfbInjuryNews(),
       fetchText("https://www.covers.com/sport/football/ncaaf/injuries").catch(() => ""),
       getJSON("https://api.sleeper.app/v1/players/nfl").catch(() => null),
-      pullRapoportArticles().catch(() => [])
+      pullRapoportArticles().catch(() => []),
+      pullRapoportX().catch(() => [])
     ]);
     const next = ensureInjPack();
     const parsedN = parseInjuryFeed(nfl, "nfl");
@@ -4775,7 +4890,8 @@ async function fetchInjuries(force){
       if ((cur.long || "").length < 50 && note) cur.long = note;
     });
     applyDeskNews(nflMerged);
-    if (nflMerged.length) { next.nfl = nflMerged; next.live = true; next.nflLive = fromSleeper.length ? "sleeper" : "espn"; }
+    applyRapoportX(nflMerged);
+    if (nflMerged.length) { next.nfl = nflMerged; next.live = true; next.nflLive = "x"; }
     const mergedC = [];
     const seen = new Set();
     const cfbPool = coversC.length ? coversC.concat(newsC || []) : (newsC || []).concat(parsedC);
@@ -4812,6 +4928,7 @@ function renderInjuries(league){
   const box=document.getElementById("injBoard");
   if(!box) return;
   const pack=(DATA&&DATA.injuries)||window.__INJ||{};
+  if (league === "nfl" && pack.nfl) { try { applyRapoportX(pack.nfl); } catch (e) {} }
   const all=(pack[league]||[]).slice();
   const status=($("#injStatus")&&$("#injStatus").value)||"impact";
   const pos=($("#injPos")&&$("#injPos").value)||"ALL";
@@ -4850,7 +4967,8 @@ function renderInjuries(league){
       : pack.cfbLive === "desk"
       ? `College report pulled Sep 23 from Covers · ${all.length} players. This page refreshes it every 2 minutes.`
       : `College report · ${when}. The full desk did not answer, so this is the latest ESPN injury news.`)
-    : `Live NFL report · ${when}. Sleeper, ESPN, and Ian Rapoport. Tap a player to read what each one is saying.`;
+    : `Live NFL report · ${when}. @RapSheet on X is checked first, then Sleeper and ESPN. Tap a player to read what each one is saying.`;
+  try { renderRapX(); } catch (e) {}
   const shown = rows.slice(0,240);
   window.__INJVIEW = shown;
   box.innerHTML = shown.map((r, i)=>{
