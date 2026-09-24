@@ -1193,13 +1193,13 @@ button.prop-card.inj-open .report-full{display:block}
   <script>/* Live refresh: pull ESPN + fantasy on every open, then re-project. */
 const LIVE = {
   NFL_HFA: 2.15,
-  CFB_HFA: 3.15,
+  CFB_HFA: 2.75,
   NFL_SIGMA: 13.0,
-  CFB_SIGMA: 16.4,
+  CFB_SIGMA: 15.8,
   NFL_AVG_TOTAL: 45.6,
-  CFB_AVG_TOTAL: 54.2,
+  CFB_AVG_TOTAL: 53.8,
   MARKET_WEIGHT_NFL: 0.86,
-  MARKET_WEIGHT_CFB: 0.44,
+  MARKET_WEIGHT_CFB: 0.52,
   CFB_TOTAL_MARKET: 0.52,
   SIM_N: 30000,
   SIM_N_NFL: 30000,
@@ -1532,8 +1532,7 @@ function settleNfl(g) {
 function settleBoard() {
   (DATA.games || []).forEach((g) => {
     if (!g || !g.proj || g.completed) return;
-    if (g.league === "cfb" && typeof cfbLockPick === "function") cfbLockPick(g);
-    else settleNfl(g);
+    if (g.league === "nfl") settleNfl(g);
   });
 }
 function finishProjections() {
@@ -1745,6 +1744,7 @@ function learnFromFinals(games) {
 
 function applyLearningToGame(g) {
   if (!g || !g.proj || g.completed) return g;
+  if (g.league === "cfb") return g;
   const lg = g.league === "nfl" ? "nfl" : "cfb";
   const hr = residualFor(lg, g.home.id);
   const ar = residualFor(lg, g.away.id);
@@ -2214,6 +2214,7 @@ function refereeInfo(g) {
 }
 function applySituationalToGame(g) {
   if (!g || !g.proj || g.completed) return g;
+  if (g.league === "cfb") return g;
   applyThursdayReport(g);
   const p = g.proj;
   if (p._baseMargin == null && p.blended_margin != null) p._baseMargin = Number(p.blended_margin);
@@ -2812,6 +2813,7 @@ function cfbCoordinator(g) {
   return "";
 }
 function cfbLockPick(g) {
+  return g;
   if (!g || g.league !== "cfb" || !g.proj || g.completed) return g;
   const p = g.proj;
   const qb = cfbQb(g);
@@ -2900,18 +2902,12 @@ function projectGame(game, ratings) {
   const hr = ratings[game.home.id] || {};
   const ar = ratings[game.away.id] || {};
   let hfa = game.neutral ? 0 : (league === "nfl" ? LIVE.NFL_HFA : LIVE.CFB_HFA);
-  if (league === "cfb") {
-    const field = cfbField(game);
-    hfa = field.hfa;
-    game._cfbField = field;
-  }
   if (game.country && !["", "USA", "US", "United States"].includes(game.country) && !game.neutral) hfa *= 0.35;
   let modelMargin = (hr.fpi != null && ar.fpi != null) ? Number(hr.fpi) - Number(ar.fpi) + hfa : null;
   const odds = game.odds || {};
   const mktHomeSpread = odds.home_spread;
   const mktMargin = mktHomeSpread != null ? -mktHomeSpread : null;
-  let mw = league === "nfl" ? LIVE.MARKET_WEIGHT_NFL : LIVE.MARKET_WEIGHT_CFB;
-  if (league === "cfb" && (hr.fpi == null || ar.fpi == null)) mw = 0.88;
+  const mw = league === "nfl" ? LIVE.MARKET_WEIGHT_NFL : LIVE.MARKET_WEIGHT_CFB;
   let blendedMargin = null;
   if (modelMargin != null && mktMargin != null) blendedMargin = mw * mktMargin + (1 - mw) * modelMargin;
   else blendedMargin = modelMargin ?? mktMargin;
@@ -2923,22 +2919,12 @@ function projectGame(game, ratings) {
     const homePts = LIVE.NFL_AVG_TOTAL / 2 + (hr.off || 0) - (ar.def || 0) + 0.45 * hfa;
     const awayPts = LIVE.NFL_AVG_TOTAL / 2 + (ar.off || 0) - (hr.def || 0) - 0.45 * hfa;
     modelTotal = homePts + awayPts;
-  } else if (league === "cfb") {
-    const offH = hr.off, offA = ar.off, defH = hr.def, defA = ar.def;
-    if (offH != null && offA != null && defH != null && defA != null) {
-      const homePts = cfbSidePoints(offH, defA, hfa * 0.62);
-      const awayPts = cfbSidePoints(offA, defH, -hfa * 0.38);
-      modelTotal = homePts + awayPts;
-      matchupMargin = homePts - awayPts;
-    } else if (modelMargin != null) {
-      modelTotal = LIVE.CFB_AVG_TOTAL;
-    }
   } else if (modelMargin != null) {
     const gap = Math.abs((hr.fpi || 0) - (ar.fpi || 0));
-    modelTotal = LIVE.CFB_AVG_TOTAL + Math.min(6, gap * 0.08);
+    modelTotal = (league === "nfl" ? LIVE.NFL_AVG_TOTAL : LIVE.CFB_AVG_TOTAL) + Math.min(6, gap * 0.08);
   }
   const mktTotal = odds.total;
-  const tw = league === "cfb" ? (LIVE.CFB_TOTAL_MARKET || 0.52) : mw;
+  const tw = mw;
   let blendedTotal = null;
   if (modelTotal != null && mktTotal != null) blendedTotal = tw * Number(mktTotal) + (1 - tw) * modelTotal;
   else blendedTotal = modelTotal ?? mktTotal;
@@ -2946,13 +2932,13 @@ function projectGame(game, ratings) {
   const edgeTotal = blendedTotal != null && mktTotal != null ? blendedTotal - Number(mktTotal) : null;
   let pick = null, pickLine = null;
   if (edgeSpread != null && mktHomeSpread != null) {
-    if (Math.abs(edgeSpread) < (league === "nfl" ? 1.8 : 1.6)) pick = "NO PLAY";
+    if (Math.abs(edgeSpread) < (league === "nfl" ? 1.8 : 0.6)) pick = "NO PLAY";
     else if (edgeSpread > 0) { pick = game.home.abbr; pickLine = `${game.home.abbr} ${mktHomeSpread >= 0 ? "+" : ""}${mktHomeSpread.toFixed(1)}`; }
     else { pick = game.away.abbr; pickLine = `${game.away.abbr} ${(-mktHomeSpread) >= 0 ? "+" : ""}${(-mktHomeSpread).toFixed(1)}`; }
   }
   let totalPick = null;
   if (edgeTotal != null && mktTotal != null) {
-    if (Math.abs(edgeTotal) < (league === "nfl" ? 1.6 : 1.5)) totalPick = "NO PLAY";
+    if (Math.abs(edgeTotal) < (league === "nfl" ? 1.6 : 0.8)) totalPick = "NO PLAY";
     else totalPick = edgeTotal > 0 ? `OVER ${mktTotal}` : `UNDER ${mktTotal}`;
   }
   let homePoints = null, awayPoints = null;
@@ -3013,10 +2999,7 @@ function repriceCfbGame(g) {
   });
   const fresh = projectGame(g, ratings);
   Object.assign(p, fresh);
-  if (!p._gradeSnap && fresh.home_off != null && fresh.away_off != null) {
-    p._gradeSnap = { offH: fresh.home_off, defH: fresh.home_def, offA: fresh.away_off, defA: fresh.away_def, hfa: fresh.hfa };
-  }
-  p.weather_adj_total = wx;
+  p.weather_adj_total = 0;
   p._cfbV2 = true;
   delete p._baseMargin; delete p._baseTotal; delete p._preLearnMargin; delete p._preLearnTotal;
   if (typeof cfbLockPick === "function") cfbLockPick(g);
