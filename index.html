@@ -766,6 +766,7 @@ button.prop-card.inj-open .report-full{display:block}
       <div class="controls">
         <select id="valWhen">
           <option value="soon">This week</option>
+          <option value="tnf">Thursday night only</option>
           <option value="mnf">Monday night only</option>
           <option value="all">All upcoming</option>
         </select>
@@ -4299,6 +4300,11 @@ function valueStripHtml() {
     <div class="value-strip">${rows.map(valueTileHtml).join("")}</div>
   </div>`;
 }
+function etWeekday(iso) {
+  try {
+    return new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short" }).format(new Date(iso));
+  } catch (e) { return ""; }
+}
 function renderValueDogs() {
   const box = document.getElementById("valBoard");
   if (!box) return;
@@ -4308,7 +4314,8 @@ function renderValueDogs() {
   const q = ((document.getElementById("valQ") || {}).value || "").toLowerCase();
   const now = Date.now();
   let rows = collectValueDogs();
-  if (when === "mnf") rows = rows.filter((r) => new Date(r.date).getDay() === 1 || /NYG @ LAR/.test(r.game));
+  if (when === "tnf") rows = rows.filter((r) => etWeekday(r.date) === "Thu");
+  if (when === "mnf") rows = rows.filter((r) => etWeekday(r.date) === "Mon");
   if (when === "soon") rows = rows.filter((r) => new Date(r.date) - now < 9 * 86400000);
   if (kind === "td") rows = rows.filter((r) => r.kind === "td");
   else if (kind === "spread") rows = rows.filter((r) => r.kind === "spread" || r.market === "total");
@@ -4332,7 +4339,13 @@ function renderValueDogs() {
     <div class="stat"><b>${rows.filter(r=>r.kind==="spread").length}</b><span>spread / dog sides</span></div>
     <div class="stat"><b>${rows[0] ? Math.round(rows[0].hit * 100) + "%" : "—"}</b><span>best our hit rate</span></div>`;
   const stamp = document.getElementById("valStamp");
-  if (stamp) stamp.textContent = "These are underdogs. Vegas isn't in love with them. We still think they have a real chance.";
+  if (stamp) {
+    stamp.textContent = when === "tnf"
+      ? "Thursday night underdogs only. Kickoff is on Eastern time."
+      : when === "mnf"
+        ? "Monday night underdogs only. Kickoff is on Eastern time."
+        : "These are underdogs. Vegas isn't in love with them. We still think they have a real chance.";
+  }
   box.innerHTML = rows.slice(0, 72).map(valueTileHtml).join("") || `<div class="empty">Nothing in this hit-rate filter. Try Best projected hit rate, or drop the percent.</div>`;
   box.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
