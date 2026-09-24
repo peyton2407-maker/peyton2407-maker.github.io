@@ -109,11 +109,31 @@ function book(g) {
   const fav = g.spread < 0 ? g.home : g.away;
   return { text: fav.abbr + " -" + num(g.spread), ou };
 }
-function fpiText(g) {
+function proj(g) {
   const m = modelMargin(g);
-  if (m == null) return "FPI lean isn't posted for this game.";
-  const fav = m >= 0 ? g.home : g.away;
-  return "FPI lean " + fav.abbr + " -" + num(m);
+  const mkt = g.spread != null ? -Number(g.spread) : null;
+  let margin = null;
+  if (m != null && mkt != null) margin = 0.52 * mkt + 0.48 * m;
+  else margin = m != null ? m : mkt;
+  const gap = Math.abs((g.fpiH || 0) - (g.fpiA || 0));
+  const modelTotal = m != null ? 53.8 + Math.min(6, gap * 0.08) : null;
+  let total = null;
+  if (modelTotal != null && g.total != null) total = 0.52 * Number(g.total) + 0.48 * modelTotal;
+  else total = modelTotal != null ? modelTotal : (g.total != null ? Number(g.total) : null);
+  if (margin == null || total == null) return null;
+  return {
+    away: +Math.max(3, (total - margin) / 2).toFixed(1),
+    home: +Math.max(3, (total + margin) / 2).toFixed(1),
+    total: +total.toFixed(1),
+    line: +(-margin).toFixed(1)
+  };
+}
+function signed(v) {
+  const x = Number(v);
+  if (!Number.isFinite(x)) return "—";
+  const r = Math.round(x * 10) / 10;
+  const t = Math.abs(r - Math.round(r)) < 0.05 ? String(Math.round(r)) : r.toFixed(1);
+  return (r > 0 ? "+" : r < 0 ? "−" : "") + (r < 0 ? t.slice(1) : t);
 }
 function sheet(g) {
   const m = modelMargin(g);
@@ -155,15 +175,18 @@ function teamRow(t, home) {
 }
 function card(g) {
   const b = book(g);
+  const p = proj(g);
   const color = `linear-gradient(90deg,#${g.away.color || "8bd16a"},#${g.home.color || "d7f34a"})`;
+  const score = p ? `${g.away.abbr} ${p.away}–${p.home} ${g.home.abbr}` : "No score";
+  const our = p ? `${g.home.abbr} ${signed(p.line)}` : "—";
   return `<article class="card">
     <div class="bar" style="background:${color}"></div>
     <div class="body">
       <div class="when">${when(g.date)}</div>
       ${teamRow(g.away, false)}
       ${teamRow(g.home, true)}
-      <div class="line"><span>${b.text}</span><span class="ou">${b.ou}</span></div>
-      <div class="fpi">${fpiText(g)}</div>
+      <div class="line"><span>${score}</span><span class="ou">${p ? "O/U " + p.total : ""}</span></div>
+      <div class="fpi">Our line ${our}${b.text && b.text !== "No line" ? " · Book " + b.text : ""}${b.ou ? " · Book " + b.ou : ""}</div>
       ${mode === "sheet" ? sheet(g) : ""}
     </div>
   </article>`;

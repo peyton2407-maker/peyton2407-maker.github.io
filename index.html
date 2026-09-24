@@ -3006,6 +3006,7 @@ function repriceCfbGame(g) {
   });
   const fresh = projectGame(g, ratings);
   Object.assign(p, fresh);
+  delete p.score_low_away; delete p.score_high_away; delete p.score_low_home; delete p.score_high_home;
   p.weather_adj_total = 0;
   p._cfbV2 = true;
   delete p._baseMargin; delete p._baseTotal; delete p._preLearnMargin; delete p._preLearnTotal;
@@ -5777,11 +5778,11 @@ function card(g) {
       </div>
       <div class="scorebox">
         <div class="lbl">Projected score</div>
-        ${g.league === "cfb" && p.score_low_away != null ? `<div class="score-range">${g.away.abbr} ${p.score_low_away}–${p.score_high_away}<span class="score-dash"> to </span>${g.home.abbr} ${p.score_low_home}–${p.score_high_home}</div><div class="total-line">Average <b>${awayPts ?? "—"}–${homePts ?? "—"}</b></div>` : `<div class="scoreline">
+        <div class="scoreline">
           <span>${g.away.abbr} <b>${awayPts ?? "—"}</b></span>
           <span class="score-dash">–</span>
           <span><b>${homePts ?? "—"}</b> ${g.home.abbr}</span>
-        </div>`}
+        </div>
         <div class="total-line">Total <b>${tot ?? "—"}</b> <span>market ${o.total ?? "—"}</span> ${p.weather_adj_total ? `<span>wx ${fmt.signed(p.weather_adj_total)}</span>` : ""}${(g.situational && (g.situational.margin_adj || g.situational.total_adj)) ? `<span>desk ${fmt.signed(g.situational.margin_adj)} / tot ${fmt.signed(g.situational.total_adj)}</span>` : ""}</div>
         ${totPick}
       </div>
