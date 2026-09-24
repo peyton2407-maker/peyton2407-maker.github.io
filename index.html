@@ -1307,31 +1307,35 @@ function weatherImpact(wx, indoor) {
   let adj = 0;
   let rush = 1, rec = 1;
   const bits = [];
-  // Wind: passing/kicking suffer first
-  if (gust >= 25 || wind >= 18) {
-    const w = Math.min(5.2, (Math.max(wind, gust * 0.72) - 14) * 0.28);
+  // Sustained wind is what stays on the field. A forecast gust is a short spike, not the game.
+  if (wind >= 20) {
+    const extra = gust >= wind + 15 ? 0.5 : 0;
+    const w = Math.min(4.2, (wind - 16) * 0.32 + extra);
     adj -= w;
     rec *= 1 - Math.min(0.12, w * 0.018);
     rush *= 1 + Math.min(0.06, w * 0.01);
-    bits.push(`Wind ${Math.round(wind)} mph (gust ${Math.round(gust)}) cuts the total ~${w.toFixed(1)}`);
-  } else if (wind >= 12) {
-    adj -= 0.6;
-    bits.push("Breezy enough to nudge deep shots down.");
+    bits.push(`Wind ${Math.round(wind)} mph cuts the total ${w.toFixed(1)}.`);
+  } else if (wind >= 15) {
+    adj -= 0.7;
+    bits.push(`Wind ${Math.round(wind)} mph takes a little off deep throws.`);
   }
-  // Precip / field
-  const wet = precip >= 40 || inch >= 0.08 || (code >= 61 && code <= 86) || (code >= 51 && code <= 57 && precip >= 30);
+  // Rain. Snow codes are not in here. A shower is not a snow game.
+  const rainCode = (code >= 61 && code <= 67) || (code >= 80 && code <= 82) || code >= 95;
+  const drizzle = code >= 51 && code <= 57;
+  const wet = precip >= 45 || inch >= 0.08 || rainCode || (drizzle && (precip >= 40 || inch >= 0.03));
   if (wet) {
-    const rainHit = Math.min(3.8, 0.8 + precip / 40 + inch * 2.4);
+    const rainHit = Math.min(3.2, (precip >= 45 || rainCode ? 0.5 : 0) + precip / 55 + inch * 3);
     adj -= rainHit;
     rec *= 0.94;
     rush *= 1.04;
-    bits.push(`Precip ${precip}% / ${inch.toFixed(2)}" — expect shorter throws and more run.`);
+    bits.push(`Rain chance ${precip}%${inch >= 0.02 ? ", " + inch.toFixed(2) + " in already" : ""}. Shorter throws, more runs.`);
   }
-  if (code >= 71 && code <= 86) {
+  const snow = (code >= 71 && code <= 77) || code === 85 || code === 86;
+  if (snow && (!Number.isFinite(t) || t <= 36)) {
     adj -= 1.4;
     rec *= 0.93;
     rush *= 0.98;
-    bits.push("Snow/wintry mix: footing and ball handling tax both sides.");
+    bits.push("Snow: footing and the ball are worse for both teams.");
   }
   if (code >= 95) {
     adj -= 1.1;
@@ -8297,6 +8301,7 @@ async function boot() {
   try {
     const learn = window.rebuildSharedLearning || (typeof rebuildSharedLearning === "function" ? rebuildSharedLearning : null);
     if (typeof learn === "function") learn(DATA.games || []);
+    (DATA.games || []).forEach((g) => { if ((g.weather || g.indoor) && typeof applyWeatherToGame === "function") applyWeatherToGame(g); });
     if (typeof finishProjections === "function") finishProjections();
     if (typeof renderBoard === "function") renderBoard();
   } catch (e) { console.warn(e); }
