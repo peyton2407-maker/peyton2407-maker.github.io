@@ -1450,7 +1450,17 @@ function settleBoard() {
     else settleNfl(g);
   });
 }
-window.settleBoard = settleBoard;
+function finishProjections() {
+  (DATA.games || []).forEach((g) => { if (typeof applyLearningToGame === "function") applyLearningToGame(g); });
+  if (typeof settleBoard === "function") settleBoard();
+  (DATA.games || []).forEach((g) => {
+    if (!g || !g.proj || g.completed) return;
+    delete g.proj._baseMargin;
+    delete g.proj._baseTotal;
+  });
+  if (typeof applySituationalBoard === "function") applySituationalBoard();
+}
+window.finishProjections = finishProjections;
 
 async function fetchOpenMeteo(lat, lon, iso) {
   const kick = iso ? new Date(iso) : new Date();
@@ -2141,8 +2151,8 @@ function applySituationalToGame(g) {
   if (g.odds && g.odds.total != null && p.hashmark_total != null) {
     p.edge_total = +(p.hashmark_total - Number(g.odds.total)).toFixed(2);
   }
-  p._preLearnMargin = p.blended_margin;
-  p._preLearnTotal = p.hashmark_total;
+  if (p._preLearnMargin == null && p._baseMargin != null) p._preLearnMargin = p._baseMargin;
+  if (p._preLearnTotal == null && p._baseTotal != null) p._preLearnTotal = p._baseTotal;
   const notes = [];
   if (sq) notes.push(sq.note);
   if (ht) notes.push(`${g.home.abbr} injury −${ht.toFixed(1)}`);
@@ -2412,8 +2422,7 @@ async function pullEpaAndMarkets() {
         } catch (e) {}
       }
     });
-    if (typeof applySituationalBoard === "function") applySituationalBoard();
-    if (typeof applyLearningToGame === "function") (DATA.games || []).forEach(applyLearningToGame);
+    if (typeof finishProjections === "function") finishProjections();
     if (typeof renderBoard === "function") renderBoard();
     if (view === "cfbpicks" && typeof renderCfbPicks === "function") renderCfbPicks();
     if (view === "parlay" && typeof renderParlays === "function") renderParlays();
@@ -2649,16 +2658,23 @@ function cfbLockPick(g) {
   const qbAdd = qb.pts ? (qb.side === "home" ? -qb.pts : qb.pts) : 0;
   const learnedShift = p.learned && Number.isFinite(Number(p.learned.margin_shift)) ? Number(p.learned.margin_shift) : 0;
   const learnedTotal = p.learned && Number.isFinite(Number(p.learned.total_shift)) ? Number(p.learned.total_shift) : 0;
-  const week = typeof weeklyShift === "function" ? weeklyShift(g) : { m: 0, t: 0 };
   const wx = Number(p.weather_adj_total) || 0;
   let margin = p.rating_blend != null ? Number(p.rating_blend) : (p.blended_margin != null ? Number(p.blended_margin) : null);
-  if (margin != null) margin += qbAdd + learnedShift + week.m;
+  if (margin != null) margin += qbAdd + learnedShift;
   p._qbApplied = qbAdd;
   let total = p.unit_total != null ? Number(p.unit_total) : (p.hashmark_total != null ? Number(p.hashmark_total) : null);
-  if (total != null) total += learnedTotal + week.t + wx;
+  if (total != null) total += learnedTotal + wx;
+  if ((margin == null || total == null) && g.odds && g.odds.home_spread != null && g.odds.total != null) {
+    margin = -Number(g.odds.home_spread);
+    total = Number(g.odds.total) + wx;
+    p.missing_ratings = true;
+    p.pick = "NO PLAY";
+    p.pick_line = null;
+  }
   if (margin != null && total != null) {
     p.blended_margin = +margin.toFixed(2);
     p.hashmark_home_spread = +(-margin).toFixed(1);
+    p.hashmark_total = +total.toFixed(1);
     p.home_points = +Math.max(3, (total + margin) / 2).toFixed(1);
     p.away_points = +Math.max(3, (total - margin) / 2).toFixed(1);
   }
@@ -7141,10 +7157,8 @@ async function pullLiveScores() {
       if (!wasDone && g.completed && g.league === "cfb") newFinals++;
     });
     if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games);
-    try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) {}
-    const learned = typeof rebuildSharedLearning === "function" ? rebuildSharedLearning(DATA.games || []) : 0;
-    (DATA.games || []).forEach((g) => applyLearningToGame(g));
-    if (typeof settleBoard === "function") settleBoard();
+    if (typeof rebuildSharedLearning === "function") rebuildSharedLearning(DATA.games || []);
+    if (typeof finishProjections === "function") finishProjections();
     if (newFinals) {
       if (typeof repriceCfbBoard === "function") { /* residuals already applied */ }
       if (DATA.notes) {
@@ -8024,10 +8038,9 @@ async function boot() {
     const learn = window.rebuildSharedLearning || rebuildSharedLearning;
     const apply = window.applyLearningToGame || applyLearningToGame;
     const n = typeof learn === "function" ? learn(DATA.games || []) : 0;
-    if (typeof apply === "function") (DATA.games || []).forEach(apply);
-    if (typeof settleBoard === "function") settleBoard();
+    if (typeof finishProjections === "function") finishProjections();
     if (DATA.notes && n) DATA.notes.learning = `Same record for everyone. ${n} finished games are in the next line.`;
-  } catch (e) {}
+  } catch (e) { console.warn("finish", e); }
   try { if (typeof syncDesk === "function") syncDesk(); } catch (e) {}
   if (view === "home" && typeof renderHome === "function") renderHome();
   if (typeof renderBoard === "function") renderBoard();
@@ -8051,10 +8064,8 @@ async function boot() {
         (typeof attachWeather === "function" ? attachWeather(DATA.games || []) : Promise.resolve()).catch(() => {}),
         (typeof pullDkLines === "function" ? pullDkLines() : Promise.resolve()).catch(() => {})
       ]);
-      try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) {}
       if (typeof rebuildSharedLearning === "function") rebuildSharedLearning(DATA.games || []);
-      (DATA.games || []).forEach((g) => { if (typeof applyLearningToGame === "function") applyLearningToGame(g); });
-      if (typeof settleBoard === "function") settleBoard();
+      if (typeof finishProjections === "function") finishProjections();
       if (typeof renderBoard === "function") renderBoard();
       if (view === "home" && typeof renderHome === "function") renderHome();
       if (view === "parlay") renderParlays();
@@ -8078,6 +8089,7 @@ async function boot() {
     try {
       setStamp("Loading stadium forecasts…", true);
       await attachWeather(DATA.games || []);
+      if (typeof finishProjections === "function") finishProjections();
       if (typeof renderBoard === "function") renderBoard();
       setStamp(`Weather ${new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`, true);
     } catch (err) {
@@ -8087,9 +8099,8 @@ async function boot() {
   };
   try {
     const learn = window.rebuildSharedLearning || (typeof rebuildSharedLearning === "function" ? rebuildSharedLearning : null);
-    const apply = window.applyLearningToGame || applyLearningToGame;
     if (typeof learn === "function") learn(DATA.games || []);
-    if (typeof apply === "function") (DATA.games || []).forEach(apply);
+    if (typeof finishProjections === "function") finishProjections();
     if (typeof renderBoard === "function") renderBoard();
   } catch (e) { console.warn(e); }
   if (typeof attachWeather === "function") doWx();
