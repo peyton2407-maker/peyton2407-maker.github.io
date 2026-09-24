@@ -206,6 +206,15 @@ button { touch-action: manipulation; cursor: pointer; }
   padding:2px 2px 8px;-webkit-overflow-scrolling:touch;
 }
 .tile-row.slide .tab{flex:0 0 150px;scroll-snap-align:start}
+.prime-grid{display:grid;gap:14px}
+.prime-card{display:flex;flex-direction:column;gap:8px;text-align:left;width:100%;cursor:pointer;color:inherit;font:inherit}
+.prime-kicker{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:800}
+.prime-score{font-size:28px;font-weight:800;letter-spacing:-.03em}
+.prime-best{font-size:20px;font-weight:800;color:var(--sun)}
+.prime-why{color:var(--ink);font-size:15px;line-height:1.45;margin:0}
+@media (min-width:980px){
+  .prime-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}
+}
 .cat-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
 .cat-row button{flex:0 0 auto;border:1px solid var(--line);background:#162016;color:inherit;border-radius:999px;padding:8px 12px;font-weight:800;cursor:pointer}
 .cat-row button.on{background:var(--turf);color:#07120b;border-color:transparent}
@@ -617,6 +626,7 @@ button.prop-card.inj-open .report-full{display:block}
             <button class="slide-btn" type="button" data-slide="nflTiles" data-dir="-1" aria-label="NFL tiles left">‹</button>
             <div class="tile-row slide" id="nflTiles">
               <a class="tab" href="#nfl" data-view="nfl">NFL Week 3</a>
+              <a class="tab" href="#prime" data-view="prime">TNF · SNF · MNF</a>
               <a class="tab" href="#props" data-view="props">Player props</a>
               <a class="tab" href="#charts" data-view="charts">Game charts</a>
               <a class="tab" href="#live" data-view="live">Live scores</a>
@@ -1047,6 +1057,11 @@ button.prop-card.inj-open .report-full{display:block}
       <div class="card" id="ratingsWrap"></div>
     </section>
 
+
+    <section id="primeSection" style="display:none">
+      <p class="subn" id="primeStamp" style="margin:0 0 12px">Thursday night, Sunday night, and Monday night. The best pick is the one furthest from the market. If we are too close, it says no play.</p>
+      <div class="prime-grid" id="primeBoard"></div>
+    </section>
 
     <section id="chartsSection" style="display:none">
       <p class="subn" style="margin:0 0 10px">One chart per NFL game. This year and versus that opponent come from the ESPN game log. Our chance is the Double Gs number. DraftKings is their posted line.</p>
@@ -7908,9 +7923,99 @@ function renderNflAwards() {
     </article>`;
   }).join("");
 }
+function primeSlot(g) {
+  if (!g || g.league !== "nfl") return "";
+  const wd = etWeekday(g.date);
+  let hour = 12;
+  try {
+    hour = Number(new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", hour: "numeric", hourCycle: "h23" }).format(new Date(g.date)));
+  } catch (e) {}
+  const net = (g.broadcasts || []).join(" ").toUpperCase();
+  if (wd === "Thu" && hour >= 18) return "tnf";
+  if (wd === "Mon" && hour >= 18) return "mnf";
+  if (wd === "Sun" && (hour >= 19 || /\bNBC\b/.test(net))) return "snf";
+  return "";
+}
+function bestPropLean(g) {
+  let best = null;
+  (g.props || []).forEach((pl) => {
+    if (pl.injury && /OUT|IR|INACTIVE|SUSP|DOUBT/.test(String(pl.injury).toUpperCase())) return;
+    const dk = typeof dkFor === "function" ? dkFor(g.id, pl.id) : {};
+    Object.keys(VAL_SIG).forEach((k) => {
+      if (dk[k] == null) return;
+      const mu = Number(pl[k] || 0);
+      if (mu <= 0) return;
+      const line = Number(dk[k]);
+      const over = pOver(mu, line, VAL_SIG[k]);
+      const side = over >= 0.5 ? "OVER" : "UNDER";
+      const hit = side === "OVER" ? over : 1 - over;
+      if (hit < 0.56 || hit > 0.74) return;
+      if (!best || hit > best.hit) best = { name: pl.name, pos: pl.pos, side, market: VAL_LBL[k], line, proj: mu, hit };
+    });
+  });
+  return best;
+}
+function primePlays(g) {
+  const p = g.proj || {};
+  const o = g.odds || {};
+  const plays = [];
+  if (p.pick && p.pick !== "NO PLAY" && p.pick_line) {
+    plays.push({
+      rank: Math.abs(Number(p.edge_spread) || 0),
+      label: p.pick_line,
+      kind: "Side",
+      why: "We have " + (Number(p.hashmark_home_spread) <= 0 ? g.home.abbr : g.away.abbr) + " by " + Math.abs(Number(p.hashmark_home_spread)).toFixed(1) + ". The market is " + (o.details || "—") + "."
+    });
+  }
+  if (p.total_pick && p.total_pick !== "NO PLAY") {
+    plays.push({
+      rank: Math.abs(Number(p.edge_total) || 0),
+      label: p.total_pick,
+      kind: "Total",
+      why: "Our total is " + p.hashmark_total + ". The market is " + (o.total != null ? o.total : "—") + "."
+    });
+  }
+  plays.sort((a, b) => b.rank - a.rank);
+  return plays;
+}
+function renderPrimetime() {
+  const box = document.getElementById("primeBoard");
+  if (!box) return;
+  const titles = { tnf: "Thursday night", snf: "Sunday night", mnf: "Monday night" };
+  const buckets = { tnf: [], snf: [], mnf: [] };
+  (DATA.games || []).forEach((g) => {
+    if (g.completed || g.league !== "nfl") return;
+    const slot = primeSlot(g);
+    if (slot) buckets[slot].push(g);
+  });
+  box.innerHTML = ["tnf", "snf", "mnf"].map((slot) => {
+    const games = buckets[slot].sort((a, b) => String(a.date).localeCompare(String(b.date)));
+    if (!games.length) {
+      return `<article class="card prime-card"><div class="prime-kicker">${titles[slot]}</div><p class="prime-why">No game on that night this week.</p></article>`;
+    }
+    return games.map((g) => {
+      const p = g.proj || {};
+      const plays = primePlays(g);
+      const best = plays[0];
+      const rest = plays.slice(1);
+      const prop = bestPropLean(g);
+      const outs = (g.injuries || []).filter((r) => /OUT|IR/.test(String(r.tag || r.status || "").toUpperCase())).slice(0, 3);
+      return `<button type="button" class="card prime-card" data-open-game="${g.id}">
+        <div class="prime-kicker">${titles[slot]} · ${fmt.when(g.date)} · ${(g.broadcasts || []).join(" / ") || "National"}</div>
+        <div class="prime-score">${g.away.abbr} ${p.away_points ?? "—"} – ${p.home_points ?? "—"} ${g.home.abbr}</div>
+        <div class="prime-why">${g.away.name} at ${g.home.name}. Market ${(g.odds && g.odds.details) || "—"}, total ${(g.odds && g.odds.total) != null ? g.odds.total : "—"}.</div>
+        <div class="prime-best">${best ? best.kind + ": " + best.label : "No side. No total."}</div>
+        <p class="prime-why">${best ? best.why : "We are too close to the market to take either number."}</p>
+        ${rest.map((r) => `<p class="prime-why">Also ${r.kind.toLowerCase()}: <b>${r.label}</b>. ${r.why}</p>`).join("")}
+        <p class="prime-why">${prop ? "Best player number with a DraftKings price: " + prop.name + " " + prop.side + " " + prop.line + " " + prop.market + ". We have " + prop.proj.toFixed(1) + " (" + Math.round(prop.hit * 100) + "%)." : "No DraftKings player price is far enough off our number to add."}</p>
+        ${outs.length ? `<p class="prime-why">Out: ${outs.map((r) => r.name).join(", ")}.</p>` : ""}
+      </button>`;
+    }).join("");
+  }).join("");
+}
 function setView(next) {
 
-  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,heisman:1,awards:1,charts:1};
+  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,heisman:1,awards:1,charts:1,prime:1};
   if (!allowed[next]) next = "home";
   const wantProps = next === "propp";
   if (wantProps) { window.__parlayLg = "props"; next = "parlay"; }
@@ -7940,6 +8045,8 @@ function setView(next) {
   if (awS) awS.style.display = next === "awards" ? "" : "none";
   const chS = document.getElementById("chartsSection");
   if (chS) chS.style.display = next === "charts" ? "" : "none";
+  const primeS = document.getElementById("primeSection");
+  if (primeS) primeS.style.display = next === "prime" ? "" : "none";
   const heiS = document.getElementById("heismanSection");
   if (heiS) heiS.style.display = next === "heisman" ? "" : "none";
   const recS = document.getElementById("recruitSection");
@@ -7977,6 +8084,7 @@ function setView(next) {
   if (next === "model") renderModel();
   if (next === "awards") renderNflAwards();
   if (next === "charts") renderGameCharts();
+  if (next === "prime") renderPrimetime();
   if (next === "heisman") renderHeisman();
   if (next === "recruit") renderRecruit();
 }
@@ -8141,7 +8249,7 @@ async function boot() {
     else if (typeof renderBoard==="function") renderBoard();
     if (typeof syncDesk === "function") { syncDesk(); if (view === "home") renderHome(); }
   });
-  pullDkLines().then(()=>{ if (typeof renderBoard==="function") renderBoard(); if (view==="value") renderValueDogs(); });
+  pullDkLines().then(()=>{ if (typeof renderBoard==="function") renderBoard(); if (view==="value") renderValueDogs(); if (view==="prime") renderPrimetime(); });
   pullEpaAndMarkets();
   async function refreshLiveBoard() {
     if (window.__refreshing) return;
@@ -8159,6 +8267,7 @@ async function boot() {
       if (view === "parlay") renderParlays();
       if (view === "props") renderProps();
       if (view === "value") renderValueDogs();
+      if (view === "prime" && typeof renderPrimetime === "function") renderPrimetime();
       if (view === "nflwx") renderNflWeather();
       if (view === "cfbwx") renderCfbWeather();
       if (view === "cfbpicks") renderCfbPicks();
