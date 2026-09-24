@@ -2983,26 +2983,17 @@ window.HM_CFB = {"ratings":{"194":{"fpi":30.418,"off":92.685,"def":89.63,"rank":
 function repriceCfbGame(g) {
   if (!g || g.league !== "cfb" || !g.proj || g.completed) return g;
   const p = g.proj;
-  const pack = window.HM_CFB || { ratings: {}, games: {} };
-  const src = pack.games[String(g.id)];
-  if (src) {
-    g.odds = Object.assign({}, g.odds || {}, {
-      home_spread: src.spread,
-      total: src.total,
-      details: src.details || "",
-      home_favorite: src.spread != null && Number(src.spread) < 0,
-      away_favorite: src.spread != null && Number(src.spread) > 0
-    });
-  }
   const map = cfbRatingsMap();
-  const hr = pack.ratings[String(g.home.id)] || {};
-  const ar = pack.ratings[String(g.away.id)] || {};
   const ratings = {};
-  ratings[g.home.id] = Object.assign({}, map[String(g.home.id)] || {}, hr, {
-    fpi: hr.fpi != null ? hr.fpi : (p.home_fpi != null ? p.home_fpi : (map[String(g.home.id)] || {}).fpi)
+  ratings[g.home.id] = Object.assign({}, map[String(g.home.id)] || {}, {
+    fpi: p.home_fpi != null ? p.home_fpi : (map[String(g.home.id)] || {}).fpi,
+    off: p.home_off != null ? p.home_off : (map[String(g.home.id)] || {}).off,
+    def: p.home_def != null ? p.home_def : (map[String(g.home.id)] || {}).def
   });
-  ratings[g.away.id] = Object.assign({}, map[String(g.away.id)] || {}, ar, {
-    fpi: ar.fpi != null ? ar.fpi : (p.away_fpi != null ? p.away_fpi : (map[String(g.away.id)] || {}).fpi)
+  ratings[g.away.id] = Object.assign({}, map[String(g.away.id)] || {}, {
+    fpi: p.away_fpi != null ? p.away_fpi : (map[String(g.away.id)] || {}).fpi,
+    off: p.away_off != null ? p.away_off : (map[String(g.away.id)] || {}).off,
+    def: p.away_def != null ? p.away_def : (map[String(g.away.id)] || {}).def
   });
   const fresh = projectGame(g, ratings);
   Object.assign(p, fresh);
@@ -3019,17 +3010,6 @@ function repriceCfbGame(g) {
   return g;
 }
 function repriceCfbBoard() {
-  const pack = window.HM_CFB;
-  if (pack && DATA && DATA.ratings && DATA.ratings.cfb) {
-    DATA.ratings.cfb.forEach((r) => {
-      const src = pack.ratings[String(r.id)];
-      if (!src) return;
-      if (src.fpi != null) r.fpi = src.fpi;
-      if (src.off != null) r.off = src.off;
-      if (src.def != null) r.def = src.def;
-      if (src.rank != null) r.fpi_rank = src.rank;
-    });
-  }
   (DATA.games || []).filter((g) => g.league === "cfb").forEach(repriceCfbGame);
   if (DATA.notes) {
   }
