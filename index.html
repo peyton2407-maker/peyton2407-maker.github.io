@@ -2098,8 +2098,8 @@ function applySituationalToGame(g) {
   const ref = refereeInfo(g);
   const epa = typeof epaInfo === "function" ? epaInfo(g) : { m: 0, t: 0, notes: [] };
   const stm = typeof steamInfo === "function" ? steamInfo(g) : { m: 0, t: 0, notes: [] };
-  const mAdj = -ht + at - rth + rta - (tr.homeTax || 0) + (tr.awayTax || 0) + (ref.home || 0);
-  const tAdj = -0.24 * (ht + at) - 0.32 * (Math.max(0, rth) + Math.max(0, rta)) + (tr.tot || 0) + (ref.tot || 0);
+  const mAdj = -ht + at - rth + rta - (tr.homeTax || 0) + (tr.awayTax || 0) + (ref.home || 0) + (epa.m || 0) + (stm.m || 0);
+  const tAdj = -0.24 * (ht + at) - 0.32 * (Math.max(0, rth) + Math.max(0, rta)) + (tr.tot || 0) + (ref.tot || 0) + (epa.t || 0) + (stm.t || 0);
   const capM = g.league === "nfl" ? 6.5 : 8;
   const capT = g.league === "nfl" ? 4.5 : 5.5;
   const m = Math.max(-capM, Math.min(capM, mAdj));
@@ -5526,10 +5526,18 @@ function deskPanelHtml(g) {
     : ["Nothing extra moved this line — injuries, rest, and weather are all normal."];
   const epa = s.epa || {};
   const stm = s.steam || {};
+  const inj = s.injury || {};
+  const bits = [];
+  const injM = -Number(inj.home || 0) + Number(inj.away || 0);
+  if (injM) bits.push(`Injuries ${fmt.signed(injM)}`);
+  if (epa.m) bits.push(`Recent form ${fmt.signed(epa.m)}`);
+  if (stm.m) bits.push(`Betting line ${fmt.signed(stm.m)}`);
+  if (epa.t) bits.push(`Form on the total ${fmt.signed(epa.t)}`);
+  if (stm.t) bits.push(`Total move ${fmt.signed(stm.t)}`);
   return `<div class="desk-panel">
     <div class="lbl">Why we moved this line</div>
     <div class="desk-nums"><b>Spread ${fmt.signed(s.margin_adj)}</b><b>Total ${fmt.signed(s.total_adj)}</b></div>
-    <div class="desk-nums" style="font-size:13px"><span>Recent form ${fmt.signed(epa.m)}</span><span>Betting line ${fmt.signed(stm.m)}</span></div>
+    ${bits.length ? `<div class="desk-nums" style="font-size:13px">${bits.map((b) => `<span>${b}</span>`).join("")}</div>` : ""}
     <ul class="desk-notes">${notes.map((n) => `<li>${n}</li>`).join("")}</ul>
   </div>`;
 }
