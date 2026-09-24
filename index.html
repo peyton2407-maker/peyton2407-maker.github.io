@@ -1975,6 +1975,39 @@ function seasonQbFor(g) {
   }
   return null;
 }
+function applyThursdayReport(g) {
+  if (!g || g.short_name !== "ATL @ GB") return;
+  const playing = ["michael penix jr.", "tua tagovailoa", "benjamin st-juste", "bo melton", "edgerrin cooper", "brandon dorlus", "brian robinson", "nick muse", "jawaan taylor", "lacale london", "brandon cisse", "anthony belton", "donovan jennings"];
+  const official = [
+    { name: "Zach Bako-Bewele", side: "home", pos: "RT", tag: "OUT", type: "Knee" },
+    { name: "Aaron Banks", side: "home", pos: "G", tag: "OUT", type: "Knee" },
+    { name: "Warren Brinson", side: "home", pos: "DT", tag: "OUT", type: "Calf" },
+    { name: "Jayden Reed", side: "home", pos: "WR", tag: "OUT", type: "Neck" },
+    { name: "Samson Ebukam", side: "away", pos: "DE", tag: "OUT", type: "Hamstring" },
+    { name: "A.J. Terrell Jr.", side: "away", pos: "CB", tag: "IR", type: "Groin" },
+    { name: "Billy Bowman Jr.", side: "away", pos: "CB", tag: "QUESTIONABLE", type: "Achilles" },
+    { name: "Anthony Campbell", side: "home", pos: "DT", tag: "QUESTIONABLE", type: "Ankle" },
+    { name: "Javon Hargrave", side: "home", pos: "DT", tag: "QUESTIONABLE", type: "Knee" }
+  ];
+  const drop = new Set(playing.concat(official.map((r) => r.name.toLowerCase())));
+  g.injuries = (g.injuries || []).filter((r) => !drop.has(String(r.name || "").toLowerCase()));
+  official.forEach((m) => {
+    g.injuries.push({
+      name: m.name, side: m.side, pos: m.pos, tag: m.tag, status: m.tag,
+      team: m.side === "home" ? g.home.name : g.away.name,
+      short: "Final Thursday report: " + m.name + " is " + m.tag.toLowerCase() + " (" + m.type.toLowerCase() + ")."
+    });
+  });
+  const pack = (typeof DATA === "object" && DATA && DATA.injuries && DATA.injuries.nfl) || [];
+  pack.forEach((r) => {
+    const n = String(r.name || "").toLowerCase();
+    if (playing.includes(n) && /OUT|IR|DOUBT|QUESTION/.test(String(r.tag || "").toUpperCase())) {
+      r.tag = "PLAYING";
+      r.status = "Playing";
+      r.short = "Final Thursday report: no injury designation. He is playing.";
+    }
+  });
+}
 function injuryTaxFor(game, side) {
   const rows = (game.injuries || []).filter((r) => r.side === side || ((r.team || "").toLowerCase().includes((game[side].name || "").toLowerCase())));
   let tax = 0;
@@ -2095,6 +2128,7 @@ function refereeInfo(g) {
 }
 function applySituationalToGame(g) {
   if (!g || !g.proj || g.completed) return g;
+  applyThursdayReport(g);
   const p = g.proj;
   if (p._baseMargin == null && p.blended_margin != null) p._baseMargin = Number(p.blended_margin);
   if (p._baseTotal == null && p.hashmark_total != null) p._baseTotal = Number(p.hashmark_total);
@@ -2150,6 +2184,18 @@ function applySituationalToGame(g) {
   }
   if (g.odds && g.odds.total != null && p.hashmark_total != null) {
     p.edge_total = +(p.hashmark_total - Number(g.odds.total)).toFixed(2);
+  }
+  if (g.odds && g.odds.home_spread != null && p.edge_spread != null) {
+    const sp = Number(g.odds.home_spread);
+    const need = g.league === "cfb" ? 1.6 : 1.8;
+    if (Math.abs(p.edge_spread) < need) { p.pick = "NO PLAY"; p.pick_line = null; }
+    else if (p.edge_spread > 0) { p.pick = g.home.abbr; p.pick_line = g.home.abbr + " " + (sp >= 0 ? "+" : "") + sp.toFixed(1); }
+    else { p.pick = g.away.abbr; p.pick_line = g.away.abbr + " " + ((-sp) >= 0 ? "+" : "") + (-sp).toFixed(1); }
+  }
+  if (p.edge_total != null && g.odds && g.odds.total != null) {
+    const needT = g.league === "cfb" ? 1.5 : 1.6;
+    if (Math.abs(p.edge_total) < needT) p.total_pick = "NO PLAY";
+    else p.total_pick = p.edge_total > 0 ? "OVER " + g.odds.total : "UNDER " + g.odds.total;
   }
   if (p._preLearnMargin == null && p._baseMargin != null) p._preLearnMargin = p._baseMargin;
   if (p._preLearnTotal == null && p._baseTotal != null) p._preLearnTotal = p._baseTotal;
