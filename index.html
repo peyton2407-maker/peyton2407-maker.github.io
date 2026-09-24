@@ -481,7 +481,7 @@ button.prop-card.inj-open .report-full{display:block}
 }
 .desk-panel .desk-nums,.desk-card .desk-nums{display:flex;gap:16px;flex-wrap:wrap;margin:6px 0 8px}
 .desk-panel .desk-nums b,.desk-card .desk-nums b{font-size:16px;color:var(--turf)}
-.desk-notes{margin:4px 0 0;padding-left:18px;color:var(--ink-soft);font-size:13px;line-height:1.45}
+.desk-notes{margin:4px 0 0;padding-left:18px;color:var(--ink);font-size:15px;line-height:1.45}
 .desk-strip h3{margin:0 0 6px;color:var(--ink)}
 .desk-strip table{width:100%;border-collapse:collapse;font-size:13px}
 .desk-strip td,.desk-strip th{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;color:var(--ink-soft)}
@@ -2200,15 +2200,44 @@ function applySituationalToGame(g) {
   if (p._preLearnMargin == null && p._baseMargin != null) p._preLearnMargin = p._baseMargin;
   if (p._preLearnTotal == null && p._baseTotal != null) p._preLearnTotal = p._baseTotal;
   const notes = [];
-  if (sq) notes.push(sq.note);
-  if (ht) notes.push(`${g.home.abbr} injury −${ht.toFixed(1)}`);
-  if (at) notes.push(`${g.away.abbr} injury −${at.toFixed(1)}`);
-  if (rh.kind === "short" || rh.kind === "bye" || rh.kind === "extra") notes.push(`${g.home.abbr} rest ${rh.kind} (${rh.days ? rh.days.toFixed(1) : "—"}d)`);
-  if (ra.kind === "short" || ra.kind === "bye" || ra.kind === "extra") notes.push(`${g.away.abbr} rest ${ra.kind} (${ra.days ? ra.days.toFixed(1) : "—"}d)`);
-  (tr.notes || []).forEach((n) => notes.push(n));
-  if (ref.name) notes.push(ref.note);
-  (epa.notes || []).forEach((n) => notes.push(n));
+  const piece = (mv, tv, text) => {
+    if (!text) return;
+    if (Math.abs(mv) < 0.05 && Math.abs(tv) < 0.05) return;
+    const bits = [];
+    if (Math.abs(mv) >= 0.05) bits.push("spread " + fmt.signed(mv));
+    if (Math.abs(tv) >= 0.05) bits.push("total " + fmt.signed(tv));
+    notes.push(text + " (" + bits.join(", ") + ").");
+  };
+  const restLine = (abbr, info) => {
+    const d = info.days ? info.days.toFixed(1) : "—";
+    if (info.kind === "short") return abbr + " is on a short week (" + d + " days)";
+    if (info.kind === "shortish") return abbr + " has a little less than a full week (" + d + " days)";
+    if (info.kind === "bye") return abbr + " is coming off a bye (" + d + " days)";
+    if (info.kind === "extra") return abbr + " has extra rest (" + d + " days)";
+    return "";
+  };
+  if (sq) piece(seasonM, seasonT, sq.name + " is out for the year. " + sq.backup + " starts");
+  piece(-ht, -0.24 * ht, g.home.abbr + " injuries");
+  piece(at, -0.24 * at, g.away.abbr + " injuries");
+  piece(-rth, -0.32 * Math.max(0, rth), restLine(g.home.abbr, rh));
+  piece(rta, -0.32 * Math.max(0, rta), restLine(g.away.abbr, ra));
+  piece(-(tr.homeTax || 0) + (tr.awayTax || 0), tr.tot || 0, (tr.notes || []).join(". ") || "Travel");
+  piece(ref.home || 0, ref.tot || 0, ref.name ? ref.note : "");
+  piece(epa.m || 0, epa.t || 0, "Recent games");
+  piece(stm.m || 0, stm.t || 0, "Where the betting line has moved");
   (stm.notes || []).forEach((n) => notes.push(n));
+  if (Math.abs(mAdj - m) > 0.05 || Math.abs(tAdj - t) > 0.05) {
+    notes.push("Those pieces add up to more than we allow. The spread above is capped at " + fmt.signed(m) + " and the total at " + fmt.signed(t) + ".");
+  }
+  if (!(epa.m || epa.t) && !(window.EPA_PACK && window.EPA_PACK.pulled)) {
+    notes.push("Recent form is not in yet, so that piece is 0.");
+  }
+  const wxPts = Number(p.weather_adj_total) || 0;
+  const learnM = p.learned ? Number(p.learned.margin_shift) || 0 : 0;
+  const learnT = p.learned ? Number(p.learned.total_shift) || 0 : 0;
+  if (Math.abs(wxPts) >= 0.05) notes.push("Weather is already inside the score: total " + fmt.signed(wxPts) + ". It is not part of the two numbers above.");
+  if (Math.abs(learnM) >= 0.05 || Math.abs(learnT) >= 0.05) notes.push("Finished games are already inside the score: spread " + fmt.signed(learnM) + ", total " + fmt.signed(learnT) + ".");
+  if (!notes.length) notes.push("Nothing extra moved this line. Injuries, rest, travel, and weather are all normal.");
   g.situational = {
     injury: { home: +ht.toFixed(2), away: +at.toFixed(2) },
     rest: { home: rh, away: ra },
@@ -5612,7 +5641,7 @@ function deskStripHtml(games) {
     <h3>What changed our number</h3>
     <p class="subn" style="margin:0 0 10px">Hurt players, short rest, long flights, and a moving Vegas line. Tap a row to see the game.</p>
     ${!rows.length ? "<p>Nothing extra is moving these games.</p>" : `<table>
-      <thead><tr><th>Game</th><th>Spread change</th><th>Total change</th></tr></thead>
+      <thead><tr><th>Game</th><th>Spread change</th><th>Total change</th><th>Why</th></tr></thead>
       <tbody>${rows.map((g) => `<tr data-open-game="${g.id}" data-id="${g.id}">
         <td>${g.away.abbr} @ ${g.home.abbr}</td>
         <td><b>${fmt.signed(g.situational.margin_adj)}</b></td>
