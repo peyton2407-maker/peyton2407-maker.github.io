@@ -615,8 +615,43 @@ button.prop-card.inj-open .report-full{display:block}
   .td-hero{grid-template-columns:1.2fr 1fr 1fr}
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .game:hover, .prop-card:hover { transform: none; }
+#boomSection h3 { margin: 18px 0 8px; color: #eef3ea; }
+#boomSection .hm {
+  background: #141a13;
+  border: 1px solid #2a3528;
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: grid;
+  gap: 10px;
+  margin: 0 0 10px;
+  cursor: pointer;
+  color: #eef3ea;
+  text-align: left;
+  width: 100%;
+  font: inherit;
+}
+#boomSection .hm-score, #boomSection .hm-yards > div, #boomSection .hm-line {
+  background: #0c100b;
+  border: 1px solid #2a3528;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+#boomSection .hm-yards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+#boomSection .hm-nums { display: flex; justify-content: center; gap: 10px; align-items: baseline; }
+#boomSection .hm-nums b, #boomSection .hm-yards b, #boomSection .hm-num { color: #f3d48a; font-weight: 800; }
+#boomSection .hm-num { font-size: 18px; margin-top: 2px; }
+#boomSection .hm-tot, #boomSection .hm-kick, #boomSection .hm-sub { color: #9aa894; font-size: 12px; }
+#boomSection .hm-tot b { color: #eef3ea; }
+#boomSection .hm-team { display: grid; grid-template-columns: 28px 1fr; gap: 8px; align-items: center; margin-top: 6px; }
+#boomSection .hm-team img { width: 28px; height: 28px; object-fit: contain; }
+#boomSection .hm-team span { display: block; color: #6b7367; font-size: 12px; }
+#boomSection .hm-badge {
+  display: inline-block; margin-top: 6px; padding: 3px 8px; border-radius: 999px;
+  background: rgba(139, 209, 106, .16); color: #8bd16a; font-size: 11px; font-weight: 700;
+}
+@media (min-width: 901px) {
+  #boomSection .hm { grid-template-columns: 1.25fr .9fr 1.15fr .8fr; align-items: center; }
+  #boomSection .hm-yards { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
@@ -8075,31 +8110,51 @@ function renderBoom() {
   yards.sort((a, b) => b.gap - a.gap);
   const tds = (typeof collectTdBoard === "function" ? collectTdBoard() : [])
     .filter((r) => r.anytime >= 0.28).sort((a, b) => b.anytime - a.anytime).slice(0, 6);
-  const card = (title, rows, empty) => `<div class="card" style="margin-bottom:14px"><h3 style="margin:0 0 8px">${title}</h3>${rows || `<p class="prime-why">${empty}</p>`}</div>`;
-  const sideHtml = sides.map((g) => `<button type="button" class="prime-card" data-open-game="${g.id}" style="margin-bottom:8px">
-      <div class="prime-kicker">${g.league.toUpperCase()} · ${g.short_name}</div>
-      <div class="prime-best">${g.proj.pick_line}</div>
-      <p class="prime-why">Score ${g.proj.away_points}–${g.proj.home_points}. Market ${g.odds && g.odds.details ? g.odds.details : "—"}. Edge ${fmt.signed(g.proj.edge_spread)}.</p>
-    </button>`).join("");
-  const totHtml = tots.map((g) => `<button type="button" class="prime-card" data-open-game="${g.id}" style="margin-bottom:8px">
-      <div class="prime-kicker">${g.league.toUpperCase()} · ${g.short_name}</div>
-      <div class="prime-best">${g.proj.total_pick}</div>
-      <p class="prime-why">Our total ${g.proj.hashmark_total}. Market ${g.odds && g.odds.total != null ? g.odds.total : "—"}.</p>
-    </button>`).join("");
-  const yardHtml = yards.slice(0, 8).map((r) => `<button type="button" class="prime-card" data-open-game="${r.id}" style="margin-bottom:8px">
-      <div class="prime-kicker">${r.game} · ${r.team}</div>
-      <div class="prime-best">${r.name} over ${r.line} ${r.label}</div>
-      <p class="prime-why">We have ${r.mu.toFixed(1)}. DraftKings is ${r.line}. Chance it clears: ${Math.round(r.hit * 100)}%.</p>
-    </button>`).join("");
-  const tdHtml = tds.map((r) => `<button type="button" class="prime-card" data-open-game="${r.game_id}" style="margin-bottom:8px">
-      <div class="prime-kicker">${r.game} · ${r.team} · ${r.pos}</div>
-      <div class="prime-best">${r.name} scores · ${Math.round(r.anytime * 100)}%</div>
-      <p class="prime-why">Twice: ${Math.round(r.two * 100)}%. First score of the game: ${Math.round(r.first * 100)}%.</p>
-    </button>`).join("");
-  box.innerHTML = card("Biggest side leans", sideHtml, "No side is far enough off the market.")
-    + card("Biggest totals", totHtml, "No total is far enough off the market.")
-    + card("Yard booms with a DraftKings price", yardHtml, "No player is far enough over a posted DraftKings number.")
-    + card("Most likely to score", tdHtml, "No touchdown lean is up yet.");
+  const hm = (g, badge, sub) => {
+    const p = g.proj || {};
+    const o = g.odds || {};
+    const b = g.box || {};
+    const wx = g.weather && g.weather.temp_f != null ? `${Math.round(g.weather.temp_f)}°F · wind ${Math.round(g.weather.wind_mph || 0)}` : (g.indoor ? "Indoor" : "");
+    return `<button type="button" class="hm" data-open-game="${g.id}">
+      <div class="hm-match">
+        <div class="hm-kick">${g.league.toUpperCase()} · ${fmt.when(g.date)} ${wx ? "· " + wx : ""}</div>
+        <div class="hm-team"><img src="${g.away.logo || ""}" alt=""><div><b>${g.away.name}</b><span>${g.away.abbr}</span></div></div>
+        <div class="hm-team"><img src="${g.home.logo || ""}" alt=""><div><b>${g.home.name}</b><span>${g.home.abbr}</span></div></div>
+      </div>
+      <div class="hm-score">
+        <div class="lbl">Projected score</div>
+        <div class="hm-nums"><span>${g.away.abbr} <b>${p.away_points ?? "—"}</b></span><span>–</span><span><b>${p.home_points ?? "—"}</b> ${g.home.abbr}</span></div>
+        <div class="hm-tot">Total <b>${p.hashmark_total ?? "—"}</b> <span>market ${o.total ?? "—"}</span></div>
+      </div>
+      <div class="hm-yards">
+        <div><span class="lbl">${g.away.abbr} rush</span><b>${fmt.n(b.away_rush_yds, 0)}</b></div>
+        <div><span class="lbl">${g.away.abbr} rec</span><b>${fmt.n(b.away_rec_yds, 0)}</b></div>
+        <div><span class="lbl">${g.home.abbr} rush</span><b>${fmt.n(b.home_rush_yds, 0)}</b></div>
+        <div><span class="lbl">${g.home.abbr} rec</span><b>${fmt.n(b.home_rec_yds, 0)}</b></div>
+      </div>
+      <div class="hm-line">
+        <div class="lbl">Boom</div>
+        <div class="hm-num">${badge}</div>
+        <div class="hm-sub">${sub}</div>
+        <span class="hm-badge">${o.details || "No line"}</span>
+      </div>
+    </button>`;
+  };
+  const byId = (id) => games.find((g) => String(g.id) === String(id));
+  box.innerHTML = `<h3>Biggest side leans</h3>`
+    + (sides.map((g) => hm(g, g.proj.pick_line, "Edge " + fmt.signed(g.proj.edge_spread))).join("") || `<p class="hm-sub">No side is far enough off the market.</p>`)
+    + `<h3>Biggest totals</h3>`
+    + (tots.map((g) => hm(g, g.proj.total_pick, "Our total " + g.proj.hashmark_total + ". Market " + (g.odds && g.odds.total != null ? g.odds.total : "—") + ".")).join("") || `<p class="hm-sub">No total is far enough off the market.</p>`)
+    + `<h3>Yard booms with a DraftKings price</h3>`
+    + (yards.slice(0, 8).map((r) => {
+      const g = byId(r.id);
+      return g ? hm(g, r.name + " over " + r.line, "We have " + r.mu.toFixed(1) + " " + r.label + ". Chance it clears: " + Math.round(r.hit * 100) + "%.") : "";
+    }).join("") || `<p class="hm-sub">No player is far enough over a posted DraftKings number.</p>`)
+    + `<h3>Most likely to score</h3>`
+    + (tds.map((r) => {
+      const g = byId(r.game_id);
+      return g ? hm(g, r.name + " scores", Math.round(r.anytime * 100) + "% to score. Twice: " + Math.round(r.two * 100) + "%. First score: " + Math.round(r.first * 100) + "%.") : "";
+    }).join("") || `<p class="hm-sub">No touchdown lean is up yet.</p>`);
 }
 function setView(next) {
 
