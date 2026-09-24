@@ -8098,7 +8098,7 @@ function renderSplit() {
       let away, home, tot, ar, ac, hr, hc;
       if (g.league === "cfb") {
         const line = hashmarkCfbLine(g);
-        if (!line) return `<tr data-open-game="${g.id}"><td>${fmt.when(g.date)}</td><td>${g.away.abbr} @ ${g.home.abbr}</td><td colspan="7">No rating and no posted line. Left blank.</td></tr>`;
+        if (!line) return `<tr data-open-game="${g.id}"><td>${fmt.when(g.date)}</td><td>${g.away.abbr} @ ${g.home.abbr}</td><td colspan="7">FCS opponent and no posted line, so the score stays blank.</td></tr>`;
         away = line.away; home = line.home; tot = line.total;
         ar = line.awayRush; ac = line.awayRec; hr = line.homeRush; hc = line.homeRec;
       } else {
