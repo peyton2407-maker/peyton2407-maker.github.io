@@ -63,6 +63,28 @@ button { touch-action: manipulation; cursor: pointer; }
   padding-bottom: 16px;
   border-bottom: 1px solid var(--line);
 }
+.desk-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid rgba(182, 232, 90, .28);
+  border-radius: 999px;
+  background: rgba(6, 16, 12, .72);
+}
+.desk-switch a {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 12px 16px;
+  font-weight: 800;
+  color: #d7e7da;
+}
+.desk-switch a.on {
+  background: #c6ef63;
+  color: #12210f;
+}
 .brand { display: flex; gap: 14px; align-items: center; }
 .mark {
   width: 56px; height: 56px; border-radius: 14px;
@@ -602,6 +624,10 @@ button.prop-card.inj-open .report-full{display:block}
 
   <div class="app">
     <header class="topbar">
+      <nav class="desk-switch" aria-label="Which desk">
+        <a class="on" href="./">Double Gs</a>
+        <a href="./hashmark.html">The Split</a>
+      </nav>
       <div class="brand">
         <div class="mark">GG</div>
         <div>
