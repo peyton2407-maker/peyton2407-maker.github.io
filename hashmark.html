@@ -436,7 +436,7 @@ function card(g){
   </article>`;
 }
 function table(rows){
-  return `<div class="card board-card"><h3 style="margin:0 0 10px">${view==="nfl"?"NFL":view==="cfb"?"College":"Full"} projection board</h3>
+  return `<div class="card board-card"><h3 style="margin:0 0 10px">All games</h3>
     <div class="tablewrap"><table class="boardtable"><thead><tr>
       <th>Kick</th><th>Matchup</th><th>Proj score</th><th>Tot</th>
       <th>Away rush</th><th>Away rec</th><th>Home rush</th><th>Home rec</th><th>Line</th>
@@ -454,8 +454,8 @@ function render(){
     <div class="stat"><b>${priced.length}</b><span>with score + yard projections</span></div>
     <div class="stat"><b>${priced.filter(g=>shown(g)&&Math.abs(shown(g).edge||0)>=0.6).length}</b><span>spread leans ≥ 0.6 pts</span></div>
     <div class="stat"><b>${rows.filter(g=>g.league==="cfb").length}</b><span>college games in view</span></div>`;
-  const cards=(view==="cfb"?rows.slice(0,25):rows).map(card).join("");
-  $("#board").innerHTML=table(rows)+`<div class="board">${cards}</div>`;
+  const cards=rows.map(card).join("");
+  $("#board").innerHTML=`<div class="board">${cards}</div>`+table(rows);
 }
 function openGame(id){
   const g=DATA.games.find(x=>String(x.id)===String(id));
