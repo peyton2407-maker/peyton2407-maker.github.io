@@ -323,7 +323,6 @@ button.prop-card.inj-open .report-full{display:block}
 .prop-preview { color: var(--turf); font-size: 13px; font-weight: 800; }
 
 .tablewrap { overflow-x: auto; display: none; }
-.split-wrap { overflow-x: auto; display: block; }
 .boardtable, .ratings, .props { width: 100%; border-collapse: collapse; }
 .boardtable { min-width: 720px; }
 .boardtable th, .boardtable td,
@@ -663,7 +662,6 @@ button.prop-card.inj-open .report-full{display:block}
             <a class="tab" href="#card" data-view="card">This week's card</a>
             <a class="tab" href="#score" data-view="score">Scorecard</a>
             <a class="tab" href="#all" data-view="all">All games</a>
-            <a class="tab" href="#split" data-view="split">The Split</a>
             <a class="tab" href="#boom" data-view="boom">Boom Boom Room</a>
             <a class="tab" href="#alerts" data-view="alerts">Alerts</a>
             <a class="tab" href="#ratings" data-view="ratings">Team rankings</a>
@@ -1064,18 +1062,6 @@ button.prop-card.inj-open .report-full{display:block}
     <section id="primeSection" style="display:none">
       <p class="subn" id="primeStamp" style="margin:0 0 12px">Thursday night, Sunday night, and Monday night. The best pick is the one furthest from the market. If we are too close, it says no play.</p>
       <div class="prime-grid" id="primeBoard"></div>
-    </section>
-
-    <section id="splitSection" style="display:none">
-      <div class="controls">
-        <select id="splitLg">
-          <option value="cfb">College</option>
-          <option value="nfl">NFL</option>
-          <option value="all">Both</option>
-        </select>
-      </div>
-      <p class="subn" id="splitStamp" style="margin:0 0 12px">The yard split. College on this tab uses the HASHMARK formula. The rest of Double Gs does not change.</p>
-      <div class="card"><div class="split-wrap" id="splitBoard"></div></div>
     </section>
 
     <section id="boomSection" style="display:none">
@@ -8036,91 +8022,6 @@ function renderPrimetime() {
     }).join("");
   }).join("");
 }
-function hashmarkCfbLine(g) {
-  const map = {};
-  (((DATA && DATA.ratings) || {}).cfb || []).forEach((r) => { if (r && r.id) map[String(r.id)] = r; });
-  const hr = map[String(g.home.id)] || {};
-  const ar = map[String(g.away.id)] || {};
-  const hf = hr.fpi != null ? Number(hr.fpi) : (g.proj && g.proj.home_fpi != null ? Number(g.proj.home_fpi) : null);
-  const af = ar.fpi != null ? Number(ar.fpi) : (g.proj && g.proj.away_fpi != null ? Number(g.proj.away_fpi) : null);
-  let hfa = g.neutral ? 0 : 2.75;
-  if (g.country && !["", "USA", "US", "United States"].includes(g.country) && !g.neutral) hfa *= 0.35;
-  const model = (hf != null && af != null) ? hf - af + hfa : null;
-  const odds = g.odds || {};
-  const mkt = odds.home_spread != null ? -Number(odds.home_spread) : null;
-  const mw = 0.52;
-  let margin = null;
-  if (model != null && mkt != null) margin = mw * mkt + (1 - mw) * model;
-  else margin = model != null ? model : mkt;
-  const gap = Math.abs((hf || 0) - (af || 0));
-  const modelTotal = model != null ? 53.8 + Math.min(6, gap * 0.08) : null;
-  const mktT = odds.total != null ? Number(odds.total) : null;
-  let total = null;
-  if (modelTotal != null && mktT != null) total = mw * mktT + (1 - mw) * modelTotal;
-  else total = modelTotal != null ? modelTotal : mktT;
-  if (margin == null || total == null) return null;
-  const home = Math.max(3, (total + margin) / 2);
-  const away = Math.max(3, (total - margin) / 2);
-  const b = g.box || {};
-  const p = g.proj || {};
-  let awayRush = null, awayRec = null, homeRush = null, homeRec = null;
-  if (b.home_rush_yds != null && p.home_points && p.away_points) {
-    const kH = home / Number(p.home_points);
-    const kA = away / Number(p.away_points);
-    homeRush = +(b.home_rush_yds * kH).toFixed(1);
-    homeRec = +(b.home_rec_yds * kH).toFixed(1);
-    awayRush = +(b.away_rush_yds * kA).toFixed(1);
-    awayRec = +(b.away_rec_yds * kA).toFixed(1);
-  } else {
-    const fake = { league: "cfb", home: g.home, away: g.away, proj: { blended_margin: margin, hashmark_total: total } };
-    const box = typeof projectBox === "function" ? projectBox(fake, {}) : null;
-    if (box) { awayRush = box.away_rush_yds; awayRec = box.away_rec_yds; homeRush = box.home_rush_yds; homeRec = box.home_rec_yds; }
-  }
-  return {
-    away: +away.toFixed(1), home: +home.toFixed(1), total: +total.toFixed(1),
-    awayRush, awayRec, homeRush, homeRec
-  };
-}
-function renderSplit() {
-  const box = document.getElementById("splitBoard");
-  if (!box) return;
-  const lg = (document.getElementById("splitLg") || {}).value || "cfb";
-  const games = (DATA.games || []).filter((g) => !g.completed && (lg === "all" || g.league === lg))
-    .slice().sort((a, b) => String(a.date).localeCompare(String(b.date)));
-  if (!games.length) { box.innerHTML = `<div class="empty">No games in this split.</div>`; return; }
-  box.innerHTML = `<table class="boardtable">
-    <thead><tr>
-      <th>Kick</th><th>Matchup</th><th>Proj score</th><th>Tot</th>
-      <th>Away rush</th><th>Away rec</th><th>Home rush</th><th>Home rec</th><th>Line</th>
-    </tr></thead>
-    <tbody>${games.map((g) => {
-      const o = g.odds || {};
-      let away, home, tot, ar, ac, hr, hc;
-      if (g.league === "cfb") {
-        const line = hashmarkCfbLine(g);
-        if (!line) return `<tr data-open-game="${g.id}"><td>${fmt.when(g.date)}</td><td>${g.away.abbr} @ ${g.home.abbr}</td><td colspan="7">FCS opponent and no posted line, so the score stays blank.</td></tr>`;
-        away = line.away; home = line.home; tot = line.total;
-        ar = line.awayRush; ac = line.awayRec; hr = line.homeRush; hc = line.homeRec;
-      } else {
-        const p = g.proj || {};
-        const b = g.box || {};
-        away = p.away_points ?? b.away_points; home = p.home_points ?? b.home_points;
-        tot = p.hashmark_total ?? b.total_points;
-        ar = b.away_rush_yds; ac = b.away_rec_yds; hr = b.home_rush_yds; hc = b.home_rec_yds;
-      }
-      return `<tr data-open-game="${g.id}">
-        <td>${fmt.when(g.date)}</td>
-        <td>${g.away.abbr} @ ${g.home.abbr}</td>
-        <td><b>${away ?? "—"}–${home ?? "—"}</b></td>
-        <td>${tot ?? "—"}</td>
-        <td>${fmt.n(ar, 0)}</td>
-        <td>${fmt.n(ac, 0)}</td>
-        <td>${fmt.n(hr, 0)}</td>
-        <td>${fmt.n(hc, 0)}</td>
-        <td>${o.details || "—"}</td>
-      </tr>`;
-    }).join("")}</tbody></table>`;
-}
 function renderBoom() {
   const box = document.getElementById("boomBoard");
   if (!box) return;
@@ -8176,7 +8077,7 @@ function renderBoom() {
 }
 function setView(next) {
 
-  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,heisman:1,awards:1,charts:1,prime:1,split:1,boom:1};
+  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,heisman:1,awards:1,charts:1,prime:1,boom:1};
   if (!allowed[next]) next = "home";
   const wantProps = next === "propp";
   if (wantProps) { window.__parlayLg = "props"; next = "parlay"; }
@@ -8208,8 +8109,6 @@ function setView(next) {
   if (chS) chS.style.display = next === "charts" ? "" : "none";
   const primeS = document.getElementById("primeSection");
   if (primeS) primeS.style.display = next === "prime" ? "" : "none";
-  const splitS = document.getElementById("splitSection");
-  if (splitS) splitS.style.display = next === "split" ? "" : "none";
   const boomS = document.getElementById("boomSection");
   if (boomS) boomS.style.display = next === "boom" ? "" : "none";
   const heiS = document.getElementById("heismanSection");
@@ -8250,7 +8149,6 @@ function setView(next) {
   if (next === "awards") renderNflAwards();
   if (next === "charts") renderGameCharts();
   if (next === "prime") renderPrimetime();
-  if (next === "split") renderSplit();
   if (next === "boom") renderBoom();
   if (next === "heisman") renderHeisman();
   if (next === "recruit") renderRecruit();
@@ -8435,7 +8333,6 @@ async function boot() {
       if (view === "props") renderProps();
       if (view === "value") renderValueDogs();
       if (view === "prime" && typeof renderPrimetime === "function") renderPrimetime();
-      if (view === "split" && typeof renderSplit === "function") renderSplit();
       if (view === "boom" && typeof renderBoom === "function") renderBoom();
       if (view === "nflwx") renderNflWeather();
       if (view === "cfbwx") renderCfbWeather();
@@ -8481,7 +8378,6 @@ async function boot() {
     }).catch(() => setStamp("Injury update failed", false));
   });
   document.getElementById("awardPick")?.addEventListener("change", () => { if (view === "awards") renderNflAwards(); });
-  document.getElementById("splitLg")?.addEventListener("change", () => { if (view === "split") renderSplit(); });
   document.getElementById("chartGames")?.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-chart-game]");
     if (!btn) return;
