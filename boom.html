@@ -6370,7 +6370,11 @@ const DK_MILE = {
   "Passing Completions Milestones": "cmp"
 };
 function dkShort(name) {
-  const n = String(name || "");
+  const raw = String(name || "");
+  let prefix = "";
+  if (/1st Quarter/i.test(raw)) prefix = "1Q ";
+  else if (/1st Half/i.test(raw)) prefix = "1H ";
+  const n = raw.replace(/ - 1st Quarter/ig, "").replace(/ - 1st Half/ig, "").replace(/1st Quarter /ig, "").replace(/1st Half /ig, "");
   const rows = [
     [/1st Half Total Passing Yards/, "1H pass"],
     [/1st Quarter Total Passing Yards/, "1Q pass"],
@@ -6418,7 +6422,11 @@ function dkShort(name) {
     [/Total Extra Points Made/, "XP"]
   ];
   for (let i = 0; i < rows.length; i++) {
-    if (rows[i][0].test(n)) return { label: rows[i][1], mile: /Milestones/.test(n), score: /Scorer|touchdowns/.test(n) && !/Passing Touchdown|Total/.test(n) };
+    if (rows[i][0].test(n)) {
+      const label = rows[i][1];
+      const tagged = prefix && !/^(1H|1Q) /.test(label) ? prefix + label : label;
+      return { label: tagged, mile: /Milestones/.test(raw), score: /Scorer|touchdowns/.test(n) && !/Passing Touchdown|Total/.test(n) };
+    }
   }
   return null;
 }
@@ -6466,6 +6474,26 @@ function dkTileText(p) {
   }).filter(Boolean);
   if (bits.length) return bits.join(" · ");
   return window.__DK && window.__DK[String(p.game_id)] ? "No DraftKings number" : "Pulling DraftKings…";
+}
+function dkBoardHtml(p) {
+  const row = ((window.__DK || {})[String(p.game_id || "")] || {})[String(p.id)] || {};
+  const list = row.list || [];
+  if (!list.length) return `<p class="subn">DraftKings has no posted props for this player yet.</p>`;
+  const groups = {};
+  list.forEach((item) => {
+    const g = groups[item.label] || (groups[item.label] = { line: null, miles: [], score: false });
+    if (item.mile && item.value != null) g.miles.push(item.value);
+    else if (item.value != null && g.line == null) g.line = item.value;
+    else if (item.score) g.score = true;
+  });
+  const body = Object.keys(groups).map((label) => {
+    const g = groups[label];
+    let book = "Posted";
+    if (g.line != null) book = String(g.line);
+    else if (g.miles.length) book = [...new Set(g.miles)].sort((a, b) => a - b).map((v) => (Math.abs(v - Math.round(v)) < 0.01 ? Math.round(v) : v) + "+").join(" · ");
+    return `<tr><td class="l">${label}</td><td><b>${book}</b></td></tr>`;
+  }).join("");
+  return `<h3 style="margin:16px 0 6px">Every DraftKings prop</h3><div class="log-wrap"><table class="ladder"><thead><tr><th>Prop</th><th>DraftKings</th></tr></thead><tbody>${body}</tbody></table></div>`;
 }
 function ensureNflDk(rows) {
   const ids = [...new Set((rows || []).map((p) => String(p.game_id || "")).filter(Boolean))];
@@ -6901,6 +6929,7 @@ async function openPlayer(id, gameId) {
       <button class="close" id="closeModal">Close</button>
     </div>
     ${sideBySide(p)}
+    ${dkBoardHtml(p)}
     <p class="subn">${err || seasonLine}</p>
     ${markets.map((m) => ladderTable(m, season, vs)).join("")}
     ${gameLogTable(p, rows)}
