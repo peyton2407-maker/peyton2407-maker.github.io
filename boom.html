@@ -590,8 +590,9 @@ option { background: #12201a; color: #e9f3ec; }
 
 
 .gg-apps{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0 0 14px;padding:4px;border:1px solid var(--line);border-radius:999px;background:#0c1a15;position:sticky;top:0;z-index:40}
-.gg-apps a{display:grid;place-items:center;min-height:44px;border-radius:999px;text-decoration:none;font-weight:700;color:var(--muted)}
+.gg-apps a{display:grid;place-items:center;min-height:48px;border-radius:999px;text-decoration:none;font-weight:800;font-size:16px;color:#e9f3ec}
 .gg-apps a.on{background:var(--turf);color:#08110e}
+.gg-apps a.star{box-shadow:inset 0 0 0 2px #f0b429;color:#ffe7a3}
 .share-card{display:block;width:100%;height:auto;margin:0 0 14px;border-radius:18px;border:1px solid var(--line)}
 
 
@@ -1021,6 +1022,27 @@ button.prop-card.inj-open .report-full{display:block}
   #boomSection .hm-yards { grid-template-columns: 1fr 1fr; }
 }
 
+
+body{font-size:17px;line-height:1.45}
+:root{--muted:#d2e0d5;--faint:#b7c8bb;--ink-soft:#edf6ef}
+.brand p,.subn,.team .sub,.kick,.prop-meta,.simtails,.stat span,.home-jump span,.total-line,.home-label{
+  color:#e7f2ea;font-size:15px;line-height:1.45;
+}
+.tile-label{font-size:13px;letter-spacing:.12em;color:#e4ff8a}
+.home-jump b{font-size:20px}
+#tabBar .tab,#tabBar a.tab{font-size:16px;color:#f4f7f1}
+.home-jump.hot,#tabBar a.tab.star{
+  background:linear-gradient(165deg,#35481a,#1c2a12);
+  border:2px solid #f0b429;
+  box-shadow:0 0 0 1px rgba(240,180,41,.28),0 12px 26px rgba(0,0,0,.3);
+  color:#fff8e6;
+}
+#tabBar a.tab.star.active{background:var(--turf);color:#08110e;border-color:var(--turf)}
+#tabBar a.tab.star.active::after{color:#3d4a12}
+.home-jump.hot b{color:#ffe08a;font-size:21px}
+.home-jump.hot span{color:#f6edd4}
+#tabBar a.tab.star::after{content:" · tap";font-weight:800;color:#ffe08a}
+#boomSection .hm-sub,#boomSection .hm-kick,#boomSection .hm-team span{color:#d5e3d8;font-size:14px}
 </style>
 </head>
 <body>
@@ -1029,7 +1051,7 @@ button.prop-card.inj-open .report-full{display:block}
 
     <nav class="gg-apps" aria-label="Apps">
       <a class="on" href="/boom.html">Double Gs</a>
-      <a href="/split/">The Split</a>
+      <a class="star" href="/split/">The Split</a>
     </nav>
     <img class="share-card" src="/og.jpg?v=3" alt="Double G's The Split" />
     <header class="topbar">
@@ -1056,9 +1078,9 @@ button.prop-card.inj-open .report-full{display:block}
           <div class="slide-wrap">
             <button class="slide-btn" type="button" data-slide="nflTiles" data-dir="-1" aria-label="NFL tiles left">‹</button>
             <div class="tile-row slide" id="nflTiles">
-              <a class="tab" href="#nfl" data-view="nfl">NFL Week 3</a>
+              <a class="tab star" href="#nfl" data-view="nfl">NFL Week 3</a>
               <a class="tab" href="#prime" data-view="prime">TNF · SNF · MNF</a>
-              <a class="tab" href="#props" data-view="props">Player props</a>
+              <a class="tab star" href="#props" data-view="props">Player props</a>
               <a class="tab" href="#charts" data-view="charts">Game charts</a>
               <a class="tab" href="#live" data-view="live">Live scores</a>
               <a class="tab" href="#tds" data-view="tds">Who scores TDs</a>
@@ -1076,7 +1098,7 @@ button.prop-card.inj-open .report-full{display:block}
             <button class="slide-btn" type="button" data-slide="cfbTiles" data-dir="-1" aria-label="College tiles left">‹</button>
             <div class="tile-row slide" id="cfbTiles">
               <a class="tab" href="#cfb" data-view="cfb">CFB Weeks 4–5</a>
-              <a class="tab" href="#cfbpicks" data-view="cfbpicks">College picks</a>
+              <a class="tab star" href="#cfbpicks" data-view="cfbpicks">College picks</a>
               <a class="tab" href="#cfbwx" data-view="cfbwx">College weather</a>
               <a class="tab" href="#cfbinj" data-view="cfbinj">College injuries</a>
               <a class="tab" href="#heisman" data-view="heisman">Heisman odds</a>
@@ -1089,8 +1111,8 @@ button.prop-card.inj-open .report-full{display:block}
           <p class="tile-label">Both</p>
           <div class="tile-row">
             <a class="tab active" href="#home" data-view="home">Home</a>
-            <a class="tab" href="#parlay" data-view="parlay">The Boom Boom Room</a>
-            <a class="tab" href="#card" data-view="card">This week's card</a>
+            <a class="tab star" href="#parlay" data-view="parlay">The Boom Boom Room</a>
+            <a class="tab star" href="#card" data-view="card">This week's card</a>
             <a class="tab" href="#score" data-view="score">Scorecard</a>
             <a class="tab" href="#all" data-view="all">All games</a>
             <a class="tab" href="#alerts" data-view="alerts">Alerts</a>
@@ -7580,12 +7602,12 @@ function renderHome() {
   const jumps = document.getElementById("homeJumps");
   if (jumps) {
     jumps.innerHTML = `
-      <a class="home-jump hot" href="#props" data-jump="props"><b>Player props</b><span>Yard lines, hit rates, and the HASHMARK pick</span></a>
-      <a class="home-jump" href="#parlay" data-jump="parlay"><b>The Boom Boom Room</b><span>Game tickets and player props, all in one place</span></a>
-      <a class="home-jump" href="#card" data-jump="card"><b>This week's card</b><span>${(card.legs || []).length} plays ready to lock</span></a>
+      <a class="home-jump hot" href="#parlay" data-jump="parlay"><b>The Boom Boom Room</b><span>Start here. Game tickets and player props.</span></a>
+      <a class="home-jump hot" href="#props" data-jump="props"><b>Player props</b><span>Yard lines, hit rates, and the pick</span></a>
+      <a class="home-jump hot" href="#card" data-jump="card"><b>This week's card</b><span>${(card.legs || []).length} plays ready to lock</span></a>
+      <a class="home-jump hot" href="#nfl" data-jump="nfl"><b>NFL board</b><span>Week 3 sides, totals, weather</span></a>
       <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l : "0-0"} locked this season</span></a>
-      <a class="home-jump" href="#nfl" data-jump="nfl"><b>NFL board</b><span>Week 3 sides, totals, weather</span></a>
-      <a class="home-jump hot" href="#recruit" data-jump="recruit"><b>Recruiting</b><span>On3 classes, the portal, and our board</span></a>`;
+      <a class="home-jump" href="#recruit" data-jump="recruit"><b>Recruiting</b><span>On3 classes, the portal, and our board</span></a>`;
     // clicks handled globally via href + hash
   }
   const feat = document.getElementById("homeFeature");
