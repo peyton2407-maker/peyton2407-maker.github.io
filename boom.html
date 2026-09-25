@@ -4761,8 +4761,34 @@ function parlayCardHtml(r) {
     <div class="td-mkt">${r.title} parlay</div>
     <div class="parlay-odds">${r.label}</div>
     <div class="subn">${Math.round(r.p * 100)}% chance all of these hit · payout if they do</div>
+    ${r.thought ? `<p class="subn" style="color:var(--ink);margin:8px 0 10px">${r.thought}</p>` : ""}
     <ul class="parlay-legs">${r.legs.map((l) => `<li data-id="${l.game_id}"><b>${l.label}</b><div class="subn">${l.detail} · ${Math.round(l.hit * 100)}% · ${l.odds > 0 ? "+" : ""}${l.odds}</div>${l.why ? `<div class="prop-why">${l.why}</div>` : ""}</li>`).join("")}</ul>
   </article>`;
+}
+function lockedUnderdogParlays() {
+  const id = (away, home) => {
+    const g = (DATA.games || []).find((x) => x.league === "nfl" && x.away && x.home && x.away.abbr === away && x.home.abbr === home);
+    return g ? g.id : "";
+  };
+  const leg = (label, away, home, hit, odds, cover) => ({
+    label,
+    detail: `${away} @ ${home}`,
+    game_id: id(away, home),
+    hit,
+    odds,
+    why: `${label.split(" ")[0]} is getting ${Number(label.split("+")[1]).toFixed(1)}. Our score has them covering by ${cover.toFixed(1)} points. That is not enough to bet them alone. It is enough to put on an underdog ticket.`
+  });
+  const ind = leg("IND +2.5", "HOU", "IND", 0.50, -101, 1.4);
+  const dal = leg("DAL +3.0", "BAL", "DAL", 0.49, 103, 1.3);
+  const ne = leg("NE +3.0", "NE", "JAX", 0.46, 116, 1.1);
+  const ten = leg("TEN +6.0", "TEN", "NYG", 0.47, 113, 1.1);
+  const two = "These underdogs did not clear the single-game bar, so we would not bet them by themselves. Our score still has each one covering by at least a point. This 2-leg is the underdog ticket. It is a lean, not a lock.";
+  const more = "Same leans, more legs. The chance they all cover drops fast. Read the 2-leg first.";
+  return [
+    { title: "2-leg", legs: [ind, dal], p: 0.25, label: "+304", thought: two },
+    { title: "3-leg", legs: [ind, dal, ne], p: 0.11, label: "+777", thought: more },
+    { title: "4-leg", legs: [ind, dal, ne, ten], p: 0.05, label: "+1150", thought: more }
+  ];
 }
 function parlayHeroHtml(league) {
   const rows = buildParlays(league);
@@ -5292,7 +5318,11 @@ function renderParlays() {
   };
   if (themed[league]) {
     if (stamp) stamp.textContent = "Built off the board. Tap a leg for the why. NFL and college stay in their own tabs so a ticket never mixes the two.";
-    hero.innerHTML = themed[league].rows.map(parlayCardHtml).join("") || `<div class="empty">${themed[league].empty}</div>`;
+    hero.innerHTML = themed[league].rows.map(parlayCardHtml).join("")
+      + (league === "dogs"
+        ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">This week's underdog ticket</div>` + lockedUnderdogParlays().map(parlayCardHtml).join("")
+        : "")
+      || `<div class="empty">${themed[league].empty}</div>`;
     hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
     return;
   }
