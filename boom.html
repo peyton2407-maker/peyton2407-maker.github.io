@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta property="og:title" content="Double Gs · The Split" />
   <meta property="og:description" content="Double Gs picks desk and The Split college matchup sheets." />
@@ -1147,7 +1148,7 @@ body{font-size:17px;line-height:1.45}
 
     <section id="cardSection" style="display:none">
       <div class="controls">
-        <button class="refresh-btn" id="freezeCardBtn" type="button" disabled>This week's card is locked</button>
+        <button class="refresh-btn" id="freezeCardBtn" type="button">Lock this week's card</button>
         <button class="refresh-btn" id="copyCardBtn" type="button">Copy the card</button>
         <button class="refresh-btn" id="shareCardBtn" type="button">Share</button>
       </div>
@@ -7372,10 +7373,19 @@ async function pullLiveScores() {
 const DESK_KEY = "doublegs-desk-v1";
 function emptyDesk() { return { plays: {}, card: null, alerts: [], watch: {}, notif: false }; }
 function loadDesk() {
-  window.__DESK = window.__DESK || emptyDesk();
+  if (!window.__DESK) {
+    try {
+      const raw = localStorage.getItem(DESK_KEY);
+      window.__DESK = raw ? JSON.parse(raw) : emptyDesk();
+    } catch (e) {
+      window.__DESK = emptyDesk();
+    }
+  }
   return window.__DESK;
 }
-function saveDesk() {}
+function saveDesk() {
+  try { localStorage.setItem(DESK_KEY, JSON.stringify(window.__DESK || emptyDesk())); } catch (e) {}
+}
 function deskWeekKey() {
   const m = (DATA && DATA.meta) || {};
   return `nfl-${m.nfl_week || 3}|cfb-${(m.cfb_weeks || [4, 5]).join("-")}`;
@@ -7434,14 +7444,26 @@ function buildWeeklyLegs(games) {
 }
 const LOCKED_CARD = {"weekKey":"nfl-3|cfb-4-5","frozen":true,"lockedAt":"2026-09-25T14:12:00Z","title":"HASHMARK weekly card","legs":[{"id":"401862779","league":"cfb","short":"ARMY @ TEM","date":"2026-09-25T20:00Z","home":"TEM","away":"ARMY","text":"TEM +3.0 · OVER 47.5","pick":"TEM +3.0","total":"OVER 47.5","proj":"ARMY 31.6 – TEM 30.8","edge":2.1},{"id":"401858478","league":"cfb","short":"WASH @ USC","date":"2026-10-03T04:00Z","home":"USC","away":"WASH","text":"USC -10.0 · OVER 57.5","pick":"USC -10.0","total":"OVER 57.5","proj":"WASH 28.1 – USC 40.9","edge":2.88},{"id":"401858249","league":"cfb","short":"MIA @ CLEM","date":"2026-10-03T04:00Z","home":"CLEM","away":"MIA","text":"CLEM +17.5 · OVER 50.5","pick":"CLEM +17.5","total":"OVER 50.5","proj":"MIA 32.2 – CLEM 20.4","edge":5.75},{"id":"401858245","league":"cfb","short":"PITT @ VT","date":"2026-10-02T23:00Z","home":"VT","away":"PITT","text":"PITT +6.0 · OVER 56.5","pick":"PITT +6.0","total":"OVER 56.5","proj":"PITT 29.9 – VT 31.9","edge":-4.02},{"id":"401858248","league":"cfb","short":"LOU @ NCSU","date":"2026-10-03T04:00Z","home":"NCSU","away":"LOU","text":"LOU -7.5 · OVER 59.5","pick":"LOU -7.5","total":"OVER 59.5","proj":"LOU 40.1 – NCSU 30.9","edge":-1.65},{"id":"401858466","league":"cfb","short":"WIS @ PSU","date":"2026-09-26T21:00Z","home":"PSU","away":"WIS","text":"PSU -10.0 · OVER 44.5","pick":"PSU -10.0","total":"OVER 44.5","proj":"WIS 18.5 – PSU 31.6","edge":3.18},{"id":"401856707","league":"cfb","short":"ALA @ MSST","date":"2026-10-03T04:00Z","home":"MSST","away":"ALA","text":"ALA -3.5 · OVER 58.5","pick":"ALA -3.5","total":"OVER 58.5","proj":"ALA 36.2 – MSST 30.5","edge":-2.13},{"id":"401861970","league":"cfb","short":"CONN @ M-OH","date":"2026-09-26T19:30Z","home":"M-OH","away":"CONN","text":"CONN +3.5 · OVER 51.5","pick":"CONN +3.5","total":"OVER 51.5","proj":"CONN 29.1 – M-OH 30.5","edge":-2.01},{"id":"401860896","league":"cfb","short":"CSU @ UTSA","date":"2026-09-26T16:00Z","home":"UTSA","away":"CSU","text":"CSU +14.0 · OVER 56.5","pick":"CSU +14.0","total":"OVER 56.5","proj":"CSU 24.1 – UTSA 34","edge":-4.16},{"id":"401866429","league":"cfb","short":"MASS @ SAC","date":"2026-09-27T01:00Z","home":"SAC","away":"MASS","text":"MASS -4.5 · UNDER 48.5","pick":"MASS -4.5","total":"UNDER 48.5","proj":"MASS 26.8 – SAC 18.6","edge":-3.63}]};
 window.LOCKED_CARD = LOCKED_CARD;
-function ensureWeeklyCard() {
+function ensureWeeklyCard(force) {
   const desk = loadDesk();
   const key = deskWeekKey();
-  if (window.LOCKED_CARD && window.LOCKED_CARD.weekKey === key && window.LOCKED_CARD.frozen) {
+  if (force) {
+    const legs = (desk.card && desk.card.weekKey === key && (desk.card.legs || []).length)
+      ? desk.card.legs
+      : buildWeeklyLegs(DATA.games || []);
+    desk.card = {
+      weekKey: key, frozen: true, lockedAt: new Date().toISOString(),
+      title: "HASHMARK weekly card", legs
+    };
+    window.LOCKED_CARD = desk.card;
+    saveDesk();
+    return desk.card;
+  }
+  if (window.LOCKED_CARD && window.LOCKED_CARD.frozen && (window.LOCKED_CARD.legs || []).length) {
     desk.card = window.LOCKED_CARD;
     return desk.card;
   }
-  if (desk.card && desk.card.frozen && desk.card.weekKey === key) return desk.card;
+  if (desk.card && desk.card.frozen && desk.card.weekKey === key && (desk.card.legs || []).length) return desk.card;
   const legs = buildWeeklyLegs(DATA.games || []);
   desk.card = {
     weekKey: key, frozen: false, lockedAt: null,
@@ -7649,7 +7671,7 @@ function renderHome() {
   const teaser = document.getElementById("homeCardTeaser");
   if (teaser) {
     teaser.innerHTML = `
-      <div class="lbl">Locked list</div>
+      <div class="lbl">${card.frozen ? "LOCKED" : "Not locked yet"}</div>
       <h3 style="margin:4px 0 8px">${(card.legs || []).length} plays</h3>
       <ul class="share-legs">${(card.legs || []).slice(0, 5).map((L) => `<li><span>${L.short}</span><b>${L.text}</b></li>`).join("")}</ul>
       <p class="subn" style="margin:10px 0 0"><a href="#card" style="color:var(--turf);font-weight:800">Open the full card →</a></p>`;
@@ -7697,11 +7719,13 @@ function renderWeeklyCard() {
   if (stamp) stamp.textContent = card.frozen
     ? "This card is locked. It will not change even if the model moves."
     : "Preview — hit “Lock this week's card” to freeze it before kickoff.";
+  const btn = document.getElementById("freezeCardBtn");
+  if (btn && card.frozen) btn.textContent = "Locked";
   const wrap = document.getElementById("cardWrap");
   if (!wrap) return;
   wrap.innerHTML = `<article class="share-card">
     <h2>This week's card</h2>
-    <p class="subn">${card.frozen ? "LOCKED" : "NOT LOCKED YET"} · ${(card.legs || []).length} plays</p>
+    <p class="subn" style="font-size:18px;font-weight:800;color:${card.frozen ? "var(--turf)" : "var(--sun)"}">${card.frozen ? "LOCKED" : "NOT LOCKED YET"} · ${(card.legs || []).length} plays</p>
     <ul class="share-legs">${(card.legs || []).map((L, i) => `<li data-id="${L.id}"><span>${i + 1}. ${L.away} @ ${L.home}<div class="subn">${L.proj}</div></span><b>${L.text}</b></li>`).join("")}</ul>
   </article>`;
   wrap.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
@@ -9240,12 +9264,12 @@ async function boot() {
   document.getElementById("scoreLeague")?.addEventListener("change", renderScorecard);
   document.getElementById("scoreKind")?.addEventListener("change", renderScorecard);
   document.getElementById("freezeCardBtn")?.addEventListener("click", () => {
-    ensureWeeklyCard(true);
-    const desk = loadDesk();
-    if (desk.card) desk.card.frozen = true;
-    saveDesk();
+    const card = ensureWeeklyCard(true);
+    const btn = document.getElementById("freezeCardBtn");
+    if (btn) btn.textContent = "Locked";
     renderWeeklyCard();
     if (view === "home") renderHome();
+    setStamp("Card locked. " + (card.legs || []).length + " plays will not move.", true);
   });
   document.getElementById("copyCardBtn")?.addEventListener("click", async () => {
     const txt = cardShareText();
