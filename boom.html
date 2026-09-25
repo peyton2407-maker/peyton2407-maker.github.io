@@ -3634,6 +3634,57 @@ function cfbStarterNudge(g) {
   const total = Math.max(-0.45, Math.min(0, -Math.min(0.45, (home + away) * 0.22)));
   return { margin: +margin.toFixed(2), total: +total.toFixed(2), names: names.slice(0, 3) };
 }
+function cfbHomeFit(g, side) {
+  const id = String((g[side] && g[side].id) || "");
+  const homeG = (DATA.games || []).find((x) => x && x.league === "cfb" && x.home && String(x.home.id) === id);
+  const xy = homeG && typeof coordsForGame === "function" ? coordsForGame(homeG) : (side === "home" && typeof coordsForGame === "function" ? coordsForGame(g) : null);
+  if (!xy) return { cold: 0.45, wind: 0.4, wet: 0.45, heat: 0.45 };
+  const lat = Number(xy[0]);
+  const lon = Number(xy[1]);
+  const cold = Math.max(0.05, Math.min(1, (lat - 27) / 20));
+  const heat = Math.max(0.05, Math.min(1, (42 - lat) / 18));
+  let wet = 0.4;
+  if (lon <= -122) wet = 0.9;
+  else if (lat < 34 && lon > -92) wet = 0.7;
+  else if (lon < -108 && lat < 38) wet = 0.12;
+  else if (lat > 41 && lon < -104) wet = 0.28;
+  const wind = lat >= 41 || (lon < -104 && lat > 37) ? 0.75 : 0.35;
+  return { cold, wind, wet, heat };
+}
+function cfbWeatherNudge(g) {
+  if (!g || g.indoor || !g.weather || g.weather.temp_f == null) return { margin: 0, total: 0, note: "" };
+  const wx = g.weather;
+  const impact = g.weather_impact || (typeof weatherImpact === "function" ? weatherImpact(wx, false) : { adj: 0, wet: false });
+  const total = Math.max(-0.9, Math.min(0.1, +((Number(impact.adj) || 0) * 0.16).toFixed(2)));
+  const t = Number(wx.temp_f);
+  const wind = Math.max(Number(wx.wind_mph) || 0, (Number(wx.wind_gust_mph) || 0) * 0.85);
+  const snow = Number(wx.weather_code) >= 71 && Number(wx.weather_code) <= 86;
+  const parts = [];
+  if (snow || (Number.isFinite(t) && t <= 45)) parts.push(["cold", snow ? 1 : t <= 32 ? 0.8 : 0.45]);
+  if (impact.wet) parts.push(["wet", 0.55]);
+  if (wind >= 15) parts.push(["wind", wind >= 22 ? 0.7 : 0.4]);
+  if (Number.isFinite(t) && t >= 88) parts.push(["heat", t >= 96 ? 0.7 : 0.4]);
+  const h = cfbHomeFit(g, "home");
+  const a = cfbHomeFit(g, "away");
+  let edge = 0;
+  let word = "";
+  parts.forEach(([k, sev]) => {
+    edge += (h[k] - a[k]) * sev;
+    if (!word && Math.abs(h[k] - a[k]) >= 0.22) word = k === "wet" ? "rain" : k;
+  });
+  edge = Math.max(-0.8, Math.min(0.8, edge));
+  if (Math.abs(edge) < 0.18) edge = 0;
+  const cond = [Number.isFinite(t) ? Math.round(t) + "°F" : "", wind ? "wind " + Math.round(wind) : "", wx.condition || ""].filter(Boolean).join(", ");
+  const bits = [];
+  if (cond) bits.push("Live weather: " + cond + ".");
+  if (edge) {
+    const fav = edge > 0 ? g.home.abbr : g.away.abbr;
+    const other = edge > 0 ? g.away.abbr : g.home.abbr;
+    bits.push(fav + " is used to this " + (word || "weather") + ". " + other + " is not.");
+  }
+  if (Math.abs(total) >= 0.15) bits.push("Conditions move the total " + (total > 0 ? "+" : "") + total.toFixed(1) + ".");
+  return { margin: +edge.toFixed(2), total: +total.toFixed(2), note: bits.join(" ") };
+}
 function applySplitDesk() {
   const rows = window.SPLIT_DESK || [];
   if (!rows.length || typeof DATA === "undefined" || !DATA) return;
@@ -3669,21 +3720,21 @@ function applySplitDesk() {
     p.split_margin = p.blended_margin;
     p.split_total = p.hashmark_total;
     const nudge = cfbStarterNudge(g);
-    if (Math.abs(nudge.margin) >= 0.12 || Math.abs(nudge.total) >= 0.08) {
-      const dgMargin = +(p.blended_margin + nudge.margin).toFixed(2);
-      const dgTotal = +Math.max(20, p.hashmark_total + nudge.total).toFixed(1);
+    const wxn = cfbWeatherNudge(g);
+    const moveM = Math.max(-1.6, Math.min(1.6, +(nudge.margin + wxn.margin).toFixed(2)));
+    const moveT = Math.max(-1.1, Math.min(0.15, +(nudge.total + wxn.total).toFixed(2)));
+    if (Math.abs(moveM) >= 0.12 || Math.abs(moveT) >= 0.08) {
+      const dgMargin = +(p.blended_margin + moveM).toFixed(2);
+      const dgTotal = +Math.max(20, p.hashmark_total + moveT).toFixed(1);
       p.blended_margin = dgMargin;
       p.hashmark_total = dgTotal;
       p.hashmark_home_spread = +(-dgMargin).toFixed(1);
       p.home_points = +Math.max(0, (dgTotal + dgMargin) / 2).toFixed(1);
       p.away_points = +Math.max(0, (dgTotal - dgMargin) / 2).toFixed(1);
-      if (g.box) {
-        g.box.away_points = p.away_points;
-        g.box.home_points = p.home_points;
-        g.box.total_points = dgTotal;
-      }
     }
     p.gg_injury = nudge;
+    p.gg_weather = wxn;
+    p.weather_adj_total = wxn.total;
     if (typeof normCdf === "function" && typeof cfbSigma === "function") {
       const sigma = cfbSigma(p.blended_margin);
       p.cfb_sigma = sigma;
@@ -3698,9 +3749,12 @@ function applySplitDesk() {
     const pack = (window.SPLIT_NOTES || {})[String(g.id)];
     const why = ((pack && pack.notes) || []).map((n) => n.edge + ". " + n.line);
     g.situational = {
-      margin_adj: nudge.margin,
-      total_adj: nudge.total,
-      notes: (why.length ? why : ["Same score as The Split."]).concat(nudge.names.length ? ["Double Gs only. Starters out: " + nudge.names.join(", ") + ". Moved " + (nudge.margin > 0 ? "+" : "") + nudge.margin.toFixed(1) + " on the spread."] : ["Double Gs matches The Split. No starter who matters is out."])
+      margin_adj: moveM,
+      total_adj: moveT,
+      notes: (why.length ? why : ["Same score as The Split."]).concat([
+        nudge.names.length ? "Double Gs injuries. Starters out: " + nudge.names.join(", ") + ". Moved " + (nudge.margin > 0 ? "+" : "") + nudge.margin.toFixed(1) + "." : "No starter who matters is out.",
+        wxn.note ? "Double Gs weather. " + wxn.note : "Weather is calm, or the forecast is not in yet."
+      ])
     };
   });
 }
@@ -8698,6 +8752,7 @@ function scheduleDeskRefresh(force) {
       }
       if (wantLines && typeof pullDkLines === "function") extra.push(pullDkLines().catch(() => {}));
       await Promise.all(extra);
+      if (typeof applySplitDesk === "function") applySplitDesk();
       __deskFreshAt = Date.now();
       paintDesk();
       const liveN = (DATA.games || []).filter((g) => typeof isLiveGame === "function" && isLiveGame(g)).length;
