@@ -2922,7 +2922,7 @@ function epaInfo(g) {
   const pack = (window.EPA_PACK && window.EPA_PACK[g.league]) || {};
   const h = pack[String(g.home.id)] || { off: 0, def: 0, n: 0 };
   const a = pack[String(g.away.id)] || { off: 0, def: 0, n: 0 };
-  if (!h.n && !a.n) return { m: 0, t: 0, notes: window.EPA_PACK.pulled ? [] : ["Play-by-play EPA loading…"] };
+  if (!h.n && !a.n) return { m: 0, t: 0, notes: [] };
   const hOff = h.n ? h.off / h.n : 0;
   const aOff = a.n ? a.off / a.n : 0;
   const hDef = h.n ? h.def / h.n : 0;
@@ -4649,13 +4649,26 @@ function collectParlayLegs() {
       const sp = o.home_spread == null ? null : Number(o.home_spread);
       const dog = sp == null || sp === 0 ? "" : (sp > 0 ? g.home.abbr : g.away.abbr);
       const edge = Math.abs(Number(p.edge_spread) || 0);
-      const sit = ((g.situational && g.situational.notes) || []).slice();
+      const sit = ((g.situational && g.situational.notes) || []).filter((n) => !/loading/i.test(String(n)));
       const wx = (!g.indoor && g.weather_impact && g.weather_impact.note) ? String(g.weather_impact.note) : "";
       if (wx) sit.push(wx);
-      const line = p.pick_line || (p.pick + " spread");
-      const why = ["Our number is " + edge.toFixed(1) + " points off " + line + "."].concat(sit).join(" ");
+      const liveEdge = (sp != null && p.blended_margin != null)
+        ? Math.abs(Number(p.blended_margin) - (-sp))
+        : edge;
+      const dogPts = sp == null ? null : Math.abs(sp);
+      const line = (dog && p.pick === dog && dogPts != null)
+        ? `${p.pick} +${dogPts.toFixed(1)}`
+        : (p.pick_line || (p.pick + " spread"));
+      const where = side === "home" ? g.home.abbr + " is at home." : g.away.abbr + " is on the road.";
+      const why = [
+        dog && p.pick === dog && dogPts != null
+          ? p.pick + " is getting " + dogPts.toFixed(1) + ". That is the underdog."
+          : p.pick + " is the side.",
+        "Our number is " + liveEdge.toFixed(1) + " points off the current line.",
+        where
+      ].concat(sit).filter(Boolean).join(" ");
       legs.push({
-        label: p.pick_line || `${p.pick} spread`,
+        label: line,
         detail: `${g.away.abbr} @ ${g.home.abbr}`,
         game_id: g.id, game: g.short_name, date: g.date, league: g.league,
         hit, odds: toAmerican(Math.min(0.58, hit)),
