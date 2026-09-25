@@ -2558,6 +2558,7 @@ function fpiMap(payload, league) {
 function injuryTaxFor(game, side) {
   const rows = (game.injuries || []).filter((r) => r.side === side || ((r.team || "").toLowerCase().includes((game[side].name || "").toLowerCase())));
   let tax = 0;
+  let defTax = 0;
   let olOut = 0;
   const who = [];
   const cfb = game.league === "cfb";
@@ -2594,12 +2595,13 @@ function injuryTaxFor(game, side) {
   rows.forEach((r) => {
     const tag = (r.tag || r.status || "").toUpperCase();
     const pos = (r.pos || "").toUpperCase();
-    if (["CB", "DB", "S", "FS", "SS", "SAF", "LB", "ILB", "OLB", "MLB", "DE", "DT", "NT", "DL", "EDGE"].includes(pos)) return;
     const out = /OUT|IR|INACTIVE|SUSP|INJURED RESERVE/.test(tag);
     const dbt = /DOUBT/.test(tag);
     const q = /QUESTION|^Q$/.test(tag);
+    const defense = ["CB", "DB", "S", "FS", "SS", "SAF", "LB", "ILB", "OLB", "MLB", "DE", "DT", "NT", "DL", "EDGE"].includes(pos);
+    if (defense && !out) return;
     const role = roleOf(r);
-    const mult = role === "star" ? 1.55 : role === "starter" ? 1 : role === "rotation" ? 0.3 : role === "bench" ? 0.06 : 0.4;
+    const mult = defense ? 1 : role === "star" ? 1.55 : role === "starter" ? 1 : role === "rotation" ? 0.3 : role === "bench" ? 0.06 : 0.4;
     let hit = 0;
     if (pos === "QB") {
       if (!cfb && out) hit = 5.2;
@@ -2616,16 +2618,20 @@ function injuryTaxFor(game, side) {
       else if (dbt) hit = 0.45;
       else if (q) hit = 0.15;
     } else if (pos === "TE" && out) hit = 0.7;
-    else if (["CB", "EDGE", "DE"].includes(pos) && out) hit = 0.7;
-    else if (["DT", "NT", "S", "LB"].includes(pos) && out) hit = 0.4;
+    else if (["CB", "EDGE", "DE"].includes(pos) && out) hit = 1.15;
+    else if (["DT", "NT", "S", "LB", "DB", "DL", "FS", "SS", "SAF", "ILB", "OLB", "MLB"].includes(pos) && out) hit = 0.55;
     else if (out) hit = 0.22;
-    tax += hit * mult;
-    if (hit * mult >= 0.45 && (role === "star" || role === "starter")) {
+    if (defense) defTax += hit;
+    else tax += hit * mult;
+    if (!defense && hit * mult >= 0.45 && (role === "star" || role === "starter")) {
       const last = String(r.name || "").split(" ").slice(-1)[0];
       if (last) who.push(last + (role === "star" ? " top 10" : ""));
     }
   });
   if (olOut >= 2) tax += 0.35;
+  defTax = Math.min(defTax, 2.3);
+  if (defTax >= 0.5) who.push("defense");
+  tax += defTax;
   game._injWho = game._injWho || {};
   game._injWho[side] = who;
   return Math.min(cfb ? 9 : 7.8, tax);
