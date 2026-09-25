@@ -271,7 +271,7 @@ function guideView() {
       return `<div><button type="button" class="statbtn" data-open="${esc(e.id)}"><div class="ghead"><span class="display gname">${esc(e.name)}</span><span class="live">${e.live ? "Live" : "Guide"}</span></div><p class="note" style="margin-top:4px">${esc(e.gist)}</p></button>${expanded ? explain(e.id) : ""}</div>`;
     }).join("")}</div></section>`;
   }).join("");
-  return `${header()}<div class="guide" style="margin-top:16px"><p class="lede" style="margin:0">Same data points as the matchup sheet. On a game, the pill under a number is that team’s rank among FBS. Green is a top-30 rank and 1 is best. A gray pill is not a grade: 1 just means they do it the most. The middle of that sheet is one offense against the other defense, not two offenses. Live numbers come from ESPN. Play-by-play grades are explained here and left blank rather than invented.</p>
+  return `${header()}<div class="guide" style="margin-top:16px"><p class="lede" style="margin:0">Same data points as the matchup sheet. Open a game and the play grades are filled from this season's real plays. Rank 1 is best. A gray pill is not a grade. Recruiting talent and the coordinator names are not in a public feed, so those stay unnamed.</p>
     <input class="search" id="gq" placeholder="Search PPA, havoc, red zone…" value="${esc(guideQuery)}" />
     ${sections}${rows.length ? "" : `<p class="empty">Nothing under that name. Try “success” or “spread.”</p>`}</div>${footer()}`;
 }
@@ -281,12 +281,144 @@ function statCell(cell, align) {
   const pill = textIsRank ? "" : (cell.rank == null ? "" : `<span class="${pillClass(cell.rank, cell.flatRank === true)}" title="${cell.flatRank ? "#" + cell.rank + " among FBS, most to least" : "#" + cell.rank + " among FBS, 1 is best"}">#${cell.rank}</span>`);
   return `<div class="cell ${align}"><div class="display num ${tone}">${esc(cell.text)}</div><div class="cap">${pill}<span>${esc(cell.caption || "")}</span></div></div>`;
 }
+let ADV = null;
+const OPENLINE = {};
+function loadOpen(id) {
+  if (OPENLINE[id]) return;
+  OPENLINE[id] = "Loading the open line…";
+  fetch("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=" + id)
+    .then((res) => res.json())
+    .then((data) => {
+      const pc = (data.pickcenter || [])[0] || {};
+      const open = pc.pointSpread && pc.pointSpread.home && pc.pointSpread.home.open && pc.pointSpread.home.open.line;
+      const now = pc.details || "";
+      OPENLINE[id] = open ? "Opened " + open + (now ? " · now " + now : "") : (now || "No open line posted");
+      if (String(sheetId) === String(id)) render();
+    })
+    .catch(() => { OPENLINE[id] = "Open line did not load"; });
+}
+function advFmt(kind, value) {
+  if (value == null || Number.isNaN(Number(value))) return "—";
+  if (kind === "pct") return Math.round(Number(value) * 100) + "%";
+  if (kind === "yd") return Number(value).toFixed(1);
+  if (kind === "raw") return String(value);
+  return Number(value).toFixed(2);
+}
+function advBit(team, row, key, kind) {
+  if (!row || row[key] == null || row[key] === "") return team.abbrev + " —";
+  const rank = row[key + "_r"];
+  return team.abbrev + " " + advFmt(kind, row[key]) + (rank ? " (#" + rank + ")" : "");
+}
+function advPair(sheet, key, kind) {
+  const teams = (ADV && ADV.teams) || {};
+  return advBit(sheet.away, teams[sheet.away.id], key, kind) + " · " + advBit(sheet.home, teams[sheet.home.id], key, kind);
+}
+function advNet(sheet) {
+  const teams = (ADV && ADV.teams) || {};
+  const bit = (team) => {
+    const row = teams[team.id];
+    if (!row || row.ppd == null || row.def_ppd == null) return team.abbrev + " —";
+    return team.abbrev + " " + (row.ppd - row.def_ppd).toFixed(2);
+  };
+  return bit(sheet.away) + " · " + bit(sheet.home);
+}
+function advHalf(sheet) {
+  const teams = (ADV && ADV.teams) || {};
+  const bit = (team) => {
+    const row = teams[team.id];
+    if (!row) return team.abbrev + " —";
+    const sign = (n) => (n > 0 ? "+" : "") + Number(n).toFixed(1);
+    return team.abbrev + " " + sign(row.h1) + " / " + sign(row.h2);
+  };
+  return bit(sheet.away) + " · " + bit(sheet.home);
+}
+function adjScore(sheet) {
+  const teams = (ADV && ADV.teams) || {};
+  const a = teams[sheet.away.id];
+  const h = teams[sheet.home.id];
+  if (!a || !h || a.ppd == null || h.def_ppd == null || h.ppd == null || a.def_ppd == null) return "Need both teams' drives.";
+  const drives = ((a.drives_pg || 12) + (h.drives_pg || 12)) / 2;
+  let away = ((a.ppd + h.def_ppd) / 2) * drives - 1.25;
+  let home = ((h.ppd + a.def_ppd) / 2) * drives + 1.25;
+  away = Math.max(3, away);
+  home = Math.max(3, home);
+  const margin = home - away;
+  const fav = margin >= 0 ? sheet.home.abbrev : sheet.away.abbrev;
+  return sheet.away.abbrev + " " + away.toFixed(1) + " · " + sheet.home.abbrev + " " + home.toFixed(1) + " · " + fav + " -" + Math.abs(margin).toFixed(1) + " · total " + (away + home).toFixed(1);
+}
+function unitRow(sheet, offKey, defKey, offKind, defKind, offLabel, defLabel) {
+  const teams = (ADV && ADV.teams) || {};
+  const a = teams[sheet.away.id];
+  const h = teams[sheet.home.id];
+  const bit = (off, def, offTeam, defTeam) => {
+    if (!off || !def) return offTeam.abbrev + " —";
+    return offTeam.abbrev + " " + offLabel + " " + advFmt(offKind, off[offKey]) + " vs " + defTeam.abbrev + " " + defLabel + " " + advFmt(defKind, def[defKey]);
+  };
+  return bit(a, h, sheet.away, sheet.home) + " · " + bit(h, a, sheet.home, sheet.away);
+}
+function advancedBlock(sheet) {
+  if (!ADV) return `<section class="sec"><h2 class="display">From the plays</h2><p class="note">Loading this season's plays…</p></section>`;
+  const row = (label, value) => `<div><div class="statbtn"><div class="lbl">${label}</div><div class="display val">${value}</div></div></div>`;
+  const groups = [
+    ["The line, from the plays", [
+      ["Stats projected spread and total", adjScore(sheet)],
+      ["Spread when the game opened", OPENLINE[sheet.id] || "Loading the open line…"],
+    ]],
+    ["Passing", [
+      ["PPA per pass", advPair(sheet, "ppa_pass", "num")],
+      ["Pass success rate", advPair(sheet, "pass_success", "pct")],
+      ["Pass explosiveness", advPair(sheet, "pass_expl", "yd")],
+      ["Havoc rate", advPair(sheet, "havoc", "pct")],
+      ["Passing-downs PPA", advPair(sheet, "pd_ppa", "num")],
+      ["Passing-downs rate", advPair(sheet, "pd_rate", "pct")],
+      ["Passing-downs success", advPair(sheet, "pd_success", "pct")],
+    ]],
+    ["Rushing", [
+      ["PPA per rush", advPair(sheet, "ppa_rush", "num")],
+      ["Rush success rate", advPair(sheet, "rush_success", "pct")],
+      ["Rush explosiveness", advPair(sheet, "rush_expl", "yd")],
+      ["Line yards", advPair(sheet, "line_yards", "num")],
+      ["Stuff rate", advPair(sheet, "stuff_rate", "pct")],
+      ["Standard-downs PPA", advPair(sheet, "sd_ppa", "num")],
+      ["Standard-downs rate", advPair(sheet, "sd_rate", "pct")],
+      ["Standard-downs success", advPair(sheet, "sd_success", "pct")],
+    ]],
+    ["Downs and finishing", [
+      ["Average field position", advPair(sheet, "field", "yd")],
+      ["Scoring opportunities per game", advPair(sheet, "opps", "yd")],
+      ["Points per scoring opportunity", advPair(sheet, "ppp", "num")],
+      ["Offensive red-zone conversion", advPair(sheet, "rz", "pct")],
+      ["Defensive red-zone conversion", advPair(sheet, "def_rz", "pct")],
+    ]],
+    ["The side rails", [
+      ["Offensive PPA", advPair(sheet, "ppa", "num")],
+      ["Offensive success rate", advPair(sheet, "success", "pct")],
+      ["Defensive success rate", advPair(sheet, "def_success", "pct")],
+      ["Available yards", advPair(sheet, "available", "pct")],
+      ["Net points per drive", advNet(sheet)],
+      ["Explosiveness", advPair(sheet, "expl", "yd")],
+      ["Opponent penalties per game", advPair(sheet, "pen_pg", "yd")],
+    ]],
+    ["Roster, coaches, the bet", [
+      ["Five factors rank", advPair(sheet, "five_r", "raw")],
+      ["First half / second half margin", advHalf(sheet)],
+      ["Head coach", advPair(sheet, "coach", "raw")],
+      ["Against the spread", advPair(sheet, "ats", "raw")],
+      ["OL versus the other DL", unitRow(sheet, "line_yards", "stuff_rate", "num", "pct", "line yards", "stuff")],
+      ["RB versus the other front", unitRow(sheet, "rush_success", "stuff_rate", "pct", "pct", "rush success", "stuff")],
+      ["Skill versus the other back seven", unitRow(sheet, "pass_success", "havoc", "pct", "pct", "pass success", "havoc")],
+      ["Roster talent rank", "No public recruiting feed. Five factors above is the production rank."],
+    ]],
+  ];
+  return groups.map((group) => `<section class="sec"><h2 class="display">${group[0]}</h2><p class="note">From this season's real plays. (#) is the rank, and 1 is the best. PPA is the sheet's own expected-points curve, not ESPN's number.</p><div class="box">${group[1].map((item) => row(item[0], item[1])).join("")}</div></section>`).join("");
+}
 function sheetView() {
   const sheet = SHEETS[sheetId];
   if (!sheet) {
     return `<a class="back" href="#">Week 4</a><h1 class="display" style="margin-top:16px;text-transform:uppercase">That game isn’t on the sheet</h1><p class="lede">It may be an NFL game. Those stay on Double Gs.</p>`;
   }
   const desk = DESK.get(String(sheet.id));
+  loadOpen(sheet.id);
   const meta = [sheet.when, sheet.tv, sheet.venue].filter(Boolean).join(" · ");
   const pane = (side) => {
     const team = sheet[side];
@@ -321,7 +453,7 @@ function sheetView() {
     <div class="head"><div class="bar" style="background:linear-gradient(90deg,#${sheet.away.color},#${sheet.home.color})"></div><div class="panes">${pane("away")}${pane("home")}</div></div>
     ${deskHtml}
     <div class="toggle"><button type="button" data-smode="game" class="${mode!=="guide"?"on":"off"}">This game</button><button type="button" data-smode="guide" class="${mode==="guide"?"on":"off"}">Every stat</button></div>
-    ${mode==="guide" ? guideView().replace(header(), "") : `${lineHtml}${sections}<p class="lede">PPA, success rate, havoc, explosiveness, line yards, stuff rate, available yards, red zone, five factors, and roster-unit ranks are on the Every stat tab. They are real sheet rows. They are not filled with guesses.</p>`}
+    ${mode==="guide" ? guideView().replace(header(), "") : `${lineHtml}${sections}${advancedBlock(sheet)}`}
     ${footer()}`;
 }
 function render() {
@@ -361,6 +493,7 @@ document.addEventListener("input", (e) => {
 });
 window.addEventListener("hashchange", () => { open = null; render(); });
 render();
+fetch("advanced.json").then((res) => res.json()).then((data) => { ADV = data; render(); }).catch(() => {});
 </script>
 </body>
 </html>
