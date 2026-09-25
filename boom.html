@@ -4802,10 +4802,10 @@ function lockedUnderdogParlays() {
     odds,
     why: `${label.split(" ")[0]} is getting ${Number(label.split("+")[1]).toFixed(1)}. Our score has them covering by ${cover.toFixed(1)} points. That is not enough to bet them alone. It is enough to put on an underdog ticket.`
   });
-  const ind = leg("IND +2.5", "HOU", "IND", 0.50, -101, 1.4);
-  const dal = leg("DAL +3.0", "BAL", "DAL", 0.49, 103, 1.3);
+  const ind = leg("IND +1.5", "HOU", "IND", 0.50, -101, 1.4);
+  const dal = leg("DAL +3.5", "BAL", "DAL", 0.49, 103, 1.3);
   const ne = leg("NE +3.0", "NE", "JAX", 0.46, 116, 1.1);
-  const ten = leg("TEN +6.0", "TEN", "NYG", 0.47, 113, 1.1);
+  const ten = leg("TEN +2.5", "TEN", "NYG", 0.47, 113, 1.1);
   const two = "These underdogs did not clear the single-game bar, so we would not bet them by themselves. Our score still has each one covering by at least a point. This 2-leg is the underdog ticket. It is a lean, not a lock.";
   const more = "Same leans, more legs. The chance they all cover drops fast. Read the 2-leg first.";
   return [
@@ -4856,8 +4856,8 @@ function lockedTotalParlays() {
     why: "We have fewer points than the posted total. The gap is 1.8 points. Breezy enough to nudge deep shots down. Precip 51% / 0.00\" — expect shorter throws and more run."
   };
   const lar = {
-    label: "UNDER 45.5", detail: "LAR @ DEN total", game_id: id("LAR", "DEN"), hit: 0.55, odds: -123,
-    why: "We have fewer points than the posted total. The gap is 1.9 points. Benign conditions — little weather tax."
+    label: "UNDER 43.5", detail: "LAR @ DEN total", game_id: id("LAR", "DEN"), hit: 0.55, odds: -123,
+    why: "The total moved from 45.5 to 43.5. Our number was 1.9 under the old line, so most of that gap is gone. Benign conditions — little weather tax."
   };
   const min = {
     label: "UNDER 42.5", detail: "MIN @ TB total", game_id: id("MIN", "TB"), hit: 0.55, odds: -123,
@@ -5375,16 +5375,16 @@ function lockedCollegeBoard() {
   const usf = ml("USF", "USF", "BGSU", 0.84);
   const rut = ml("RUT", "HOW", "RUT", 0.84);
   const shsu = sp("SHSU", "+34.5", "SHSU", "TTU", 0.61);
-  const clem = sp("CLEM", "+1.5", "CLEM", "CAL", 0.58);
+  const clem = sp("CLEM", "-1.5", "CLEM", "CAL", 0.58);
   const most = sp("MOST", "+34.5", "MOST", "SMU", 0.58);
-  const psu = sp("PSU", "-9.5", "WIS", "PSU", 0.58);
+  const psu = sp("PSU", "-10", "WIS", "PSU", 0.58);
   const mass = sp("MASS", "-4.5", "MASS", "SAC", 0.57);
   const iowa = tot("OVER", "38.5", "IOWA", "MICH", 0.77, "39.9");
-  const uga = tot("OVER", "43.5", "OU", "UGA", 0.68, "49.2");
+  const uga = tot("OVER", "44.5", "OU", "UGA", 0.68, "49.2");
   const rice = tot("OVER", "44.5", "RICE", "FRES", 0.68, "44.9");
   const wpsu = tot("OVER", "44.5", "WIS", "PSU", 0.66, "50.1");
-  const wash = tot("OVER", "46.5", "MINN", "WASH", 0.65, "46.7");
-  const usc = tot("UNDER", "62.5", "ORE", "USC", 0.64, "65.9");
+  const wash = tot("OVER", "45.5", "MINN", "WASH", 0.65, "46.7");
+  const usc = tot("UNDER", "61.5", "ORE", "USC", 0.64, "65.9");
   return {
     ml: [
       ticket("ml", [mia, smu], 0.87, -491),
