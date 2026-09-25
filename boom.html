@@ -6369,7 +6369,86 @@ const DK_MILE = {
   "Passing Attempts Milestones": "pass_att",
   "Passing Completions Milestones": "cmp"
 };
+function dkShort(name) {
+  const n = String(name || "");
+  const rows = [
+    [/1st Half Total Passing Yards/, "1H pass"],
+    [/1st Quarter Total Passing Yards/, "1Q pass"],
+    [/1st Half Total Rushing Yards/, "1H rush"],
+    [/1st Quarter Total Rushing Yards/, "1Q rush"],
+    [/1st Half Total Receiving Yards/, "1H rec yds"],
+    [/1st Quarter Total Receiving Yards/, "1Q rec yds"],
+    [/Total Passing Plus Rushing Yards/, "pass+rush"],
+    [/Passing \+ Rushing Yards Milestones/, "pass+rush"],
+    [/Total Rushing Plus Receiving Yards/, "rush+rec"],
+    [/Rushing \+ Receiving Yards Milestones/, "rush+rec"],
+    [/Total Passing Yards/, "pass"],
+    [/Passing Yards Milestones/, "pass"],
+    [/Total Passing Touchdowns/, "pass TD"],
+    [/Passing Touchdown Milestones/, "pass TD"],
+    [/Total Passing Attempts/, "pass att"],
+    [/Passing Attempts Milestones/, "pass att"],
+    [/Total Pass Completions/, "comp"],
+    [/Passing Completions Milestones/, "comp"],
+    [/Total Passing Interceptions/, "INT"],
+    [/Interceptions Thrown Milestones/, "INT"],
+    [/Longest Passing Completion/, "long pass"],
+    [/Total Rushing Yards/, "rush"],
+    [/Rushing Yards Milestones/, "rush"],
+    [/Total Carries/, "carries"],
+    [/Rushing Attempts Milestones/, "carries"],
+    [/Longest Rush/, "long rush"],
+    [/Total Receiving Yards/, "rec yds"],
+    [/Receiving Yards Milestones/, "rec yds"],
+    [/Total Receptions/, "rec"],
+    [/Receptions Milestones/, "rec"],
+    [/Longest Reception/, "long rec"],
+    [/Anytime Touchdown Scorer/, "anytime TD"],
+    [/First Team Touchdown Scorer/, "first team TD"],
+    [/First Touchdown Scorer/, "first TD"],
+    [/Last Touchdown Scorer/, "last TD"],
+    [/1st Half Touchdown Scorer/, "1H TD"],
+    [/1st Quarter Touchdown Scorer/, "1Q TD"],
+    [/2 or more touchdowns/, "2+ TD"],
+    [/3 or more touchdowns/, "3+ TD"],
+    [/Total Kicking Points/, "kicking pts"],
+    [/Kicking Points Milestones/, "kicking pts"],
+    [/Total Field Goals Made/, "FG"],
+    [/Field Goals Made Milestones/, "FG"],
+    [/Total Extra Points Made/, "XP"]
+  ];
+  for (let i = 0; i < rows.length; i++) {
+    if (rows[i][0].test(n)) return { label: rows[i][1], mile: /Milestones/.test(n), score: /Scorer|touchdowns/.test(n) && !/Passing Touchdown|Total/.test(n) };
+  }
+  return null;
+}
 function dkTileText(p) {
+  const row = ((window.__DK || {})[String(p.game_id || "")] || {})[String(p.id)] || {};
+  const list = row.list || [];
+  if (list.length) {
+    const groups = {};
+    list.forEach((item) => {
+      const g = groups[item.label] || (groups[item.label] = { lines: [], miles: [], score: false });
+      if (item.score && item.value == null) g.score = true;
+      else if (item.mile) g.miles.push(item.value);
+      else if (item.value != null) g.lines.push(item.value);
+    });
+    const order = ["pass", "pass TD", "pass att", "comp", "INT", "pass+rush", "long pass", "rush", "carries", "long rush", "rush+rec", "rec yds", "rec", "long rec", "anytime TD", "first TD", "last TD", "2+ TD", "3+ TD", "1H TD", "1Q TD", "first team TD", "1H pass", "1Q pass", "1H rush", "1Q rush", "1H rec yds", "1Q rec yds", "kicking pts", "FG", "XP"];
+    const bits = Object.keys(groups).sort((a, b) => {
+      const ia = order.indexOf(a), ib = order.indexOf(b);
+      return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+    }).map((label) => {
+      const g = groups[label];
+      if (g.lines.length) return g.lines[0] + " " + label;
+      if (g.miles.length) {
+        const nums = [...new Set(g.miles)].sort((a, b) => a - b).map((v) => (Math.abs(v - Math.round(v)) < 0.01 ? Math.round(v) : v) + "+");
+        return nums.join("/") + " " + label;
+      }
+      if (g.score) return label;
+      return "";
+    }).filter(Boolean);
+    if (bits.length) return bits.join(" · ");
+  }
   const bits = marketsFor(p).map((m) => {
     const line = dkLine(p, m.key);
     if (line == null) return "";
@@ -6392,7 +6471,7 @@ function ensureNflDk(rows) {
   const ids = [...new Set((rows || []).map((p) => String(p.game_id || "")).filter(Boolean))];
   window.__DK = window.__DK || {};
   window.__DK_WAIT = window.__DK_WAIT || {};
-  const fresh = (id) => window.__DK && window.__DK[id] && Date.now() - ((window.__DK_AT || {})[id] || 0) < 2 * 60 * 1000;
+  const fresh = (id) => window.__DK && window.__DK[id] && window.__DK[id].__listed && Date.now() - ((window.__DK_AT || {})[id] || 0) < 2 * 60 * 1000;
   const todo = ids.filter((id) => !fresh(id) && !window.__DK_WAIT[id]);
   if (!todo.length) return;
   todo.forEach((id) => { window.__DK_WAIT[id] = true; });
@@ -6428,7 +6507,7 @@ async function loadDkForGame(gameId) {
   const id = String(gameId || "");
   if (!id) return {};
   window.__DK_AT = window.__DK_AT || {};
-  if (window.__DK[id] && Date.now() - (window.__DK_AT[id] || 0) < 2 * 60 * 1000) return window.__DK[id];
+  if (window.__DK[id] && window.__DK[id].__listed && Date.now() - (window.__DK_AT[id] || 0) < 2 * 60 * 1000) return window.__DK[id];
   const bag = {};
   try {
     const base = "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/" + id + "/competitions/" + id + "/odds/100/propBets?lang=en&region=us&limit=1000&page=";
@@ -6437,23 +6516,29 @@ async function loadDkForGame(gameId) {
       (payload.items || []).forEach((it) => {
         const name = (it.type || {}).name;
         const key = DK_KEYS[name] || DK_MILE[name];
-        if (!key) return;
         const ref = (it.athlete && it.athlete.$ref) || "";
-        const m = ref.match(/athletes\/(\d+)/);
+        const who = ref.match(/athletes\/(\d+)/);
+        if (!who) return;
         const tgt = it.current && it.current.target && it.current.target.value;
-        if (!m || tgt == null) return;
-        bag[m[1]] = bag[m[1]] || {};
-        if (DK_KEYS[name] && bag[m[1]][key] == null) bag[m[1]][key] = Number(tgt);
+        bag[who[1]] = bag[who[1]] || {};
+        const short = typeof dkShort === "function" ? dkShort(name) : null;
+        if (short) {
+          bag[who[1]].list = bag[who[1]].list || [];
+          bag[who[1]].list.push({ label: short.label, value: tgt == null ? null : Number(tgt), mile: !!short.mile, score: !!short.score });
+        }
+        if (!key || tgt == null) return;
+        if (DK_KEYS[name] && bag[who[1]][key] == null) bag[who[1]][key] = Number(tgt);
         if (DK_MILE[name]) {
-          bag[m[1]].alts = bag[m[1]].alts || {};
-          bag[m[1]].alts[key] = bag[m[1]].alts[key] || [];
-          bag[m[1]].alts[key].push(Number(tgt));
+          bag[who[1]].alts = bag[who[1]].alts || {};
+          bag[who[1]].alts[key] = bag[who[1]].alts[key] || [];
+          bag[who[1]].alts[key].push(Number(tgt));
         }
       });
       if (page >= (payload.pageCount || 1)) break;
     }
   } catch (e) {}
   window.__DK[id] = bag;
+  bag.__listed = true;
   window.__DK_AT[id] = Date.now();
   return bag;
 }
