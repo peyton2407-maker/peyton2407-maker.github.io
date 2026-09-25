@@ -3602,6 +3602,38 @@ function repriceCfbBoard() {
 
 window.learnFromFinals = learnFromFinals;
 window.applyLearningToGame = applyLearningToGame;
+function cfbStarterNudge(g) {
+  const worth = { QB: 0.85, RB: 0.32, WR: 0.26, TE: 0.14, OT: 0.28, LT: 0.28, RT: 0.28, T: 0.28, C: 0.18, CB: 0.2, EDGE: 0.2, DE: 0.2 };
+  const best = {};
+  (g.injuries || []).forEach((r) => {
+    const tag = String(r.tag || r.status || "").toUpperCase();
+    if (!/OUT|IR|INACTIVE|DOUBT/.test(tag)) return;
+    const pos = String(r.pos || "").toUpperCase();
+    if (!worth[pos]) return;
+    const blob = String((r.short || "") + " " + (r.name || "")).toLowerCase();
+    if (/backup|third string|qb3|emergency|practice squad|walk-on|walk on/.test(blob)) return;
+    const side = r.side === "home" || r.side === "away" ? r.side : "";
+    if (!side) return;
+    const group = ["LT", "RT", "T", "OT"].includes(pos) ? "OT" : (pos === "DE" ? "EDGE" : pos);
+    const key = side + "|" + group;
+    const score = Number(r.score) || 0;
+    if (!best[key] || score > best[key].score) best[key] = { r, score, side, group, doubt: /DOUBT/.test(tag) };
+  });
+  let home = 0;
+  let away = 0;
+  const names = [];
+  Object.values(best).forEach((item) => {
+    const base = worth[item.r.pos] || worth[item.group] || 0.12;
+    const pts = item.doubt ? base * 0.4 : base;
+    if (item.side === "home") home += pts;
+    else away += pts;
+    const last = String(item.r.name || "").split(" ").slice(-1)[0];
+    if (last) names.push(last);
+  });
+  const margin = Math.max(-1.2, Math.min(1.2, away - home));
+  const total = Math.max(-0.45, Math.min(0, -Math.min(0.45, (home + away) * 0.22)));
+  return { margin: +margin.toFixed(2), total: +total.toFixed(2), names: names.slice(0, 3) };
+}
 function applySplitDesk() {
   const rows = window.SPLIT_DESK || [];
   if (!rows.length || typeof DATA === "undefined" || !DATA) return;
@@ -3632,6 +3664,26 @@ function applySplitDesk() {
       g.odds = Object.assign({}, g.odds || {}, { total: row.totalLine });
     }
     p.split_locked = true;
+    p.split_away = away;
+    p.split_home = home;
+    p.split_margin = p.blended_margin;
+    p.split_total = p.hashmark_total;
+    const nudge = cfbStarterNudge(g);
+    if (Math.abs(nudge.margin) >= 0.12 || Math.abs(nudge.total) >= 0.08) {
+      const dgMargin = +(p.blended_margin + nudge.margin).toFixed(2);
+      const dgTotal = +Math.max(20, p.hashmark_total + nudge.total).toFixed(1);
+      p.blended_margin = dgMargin;
+      p.hashmark_total = dgTotal;
+      p.hashmark_home_spread = +(-dgMargin).toFixed(1);
+      p.home_points = +Math.max(0, (dgTotal + dgMargin) / 2).toFixed(1);
+      p.away_points = +Math.max(0, (dgTotal - dgMargin) / 2).toFixed(1);
+      if (g.box) {
+        g.box.away_points = p.away_points;
+        g.box.home_points = p.home_points;
+        g.box.total_points = dgTotal;
+      }
+    }
+    p.gg_injury = nudge;
     if (typeof normCdf === "function" && typeof cfbSigma === "function") {
       const sigma = cfbSigma(p.blended_margin);
       p.cfb_sigma = sigma;
@@ -3639,18 +3691,16 @@ function applySplitDesk() {
       p.win_prob_away = +(1 - p.win_prob_home).toFixed(4);
     }
     if (g.box) {
-      g.box.away_points = away;
-      g.box.home_points = home;
+      g.box.away_points = p.away_points;
+      g.box.home_points = p.home_points;
       g.box.total_points = p.hashmark_total;
     }
-    const mktM = g.odds && g.odds.home_spread != null ? -Number(g.odds.home_spread) : null;
-    const mktT = row.totalLine != null ? Number(row.totalLine) : (g.odds && g.odds.total != null ? Number(g.odds.total) : null);
     const pack = (window.SPLIT_NOTES || {})[String(g.id)];
     const why = ((pack && pack.notes) || []).map((n) => n.edge + ". " + n.line);
     g.situational = {
-      margin_adj: mktM != null ? +(p.blended_margin - mktM).toFixed(2) : 0,
-      total_adj: mktT != null ? +(p.hashmark_total - mktT).toFixed(2) : 0,
-      notes: why.length ? why : ["Same score as The Split."]
+      margin_adj: nudge.margin,
+      total_adj: nudge.total,
+      notes: (why.length ? why : ["Same score as The Split."]).concat(nudge.names.length ? ["Double Gs only. Starters out: " + nudge.names.join(", ") + ". Moved " + (nudge.margin > 0 ? "+" : "") + nudge.margin.toFixed(1) + " on the spread."] : ["Double Gs matches The Split. No starter who matters is out."])
     };
   });
 }
@@ -6382,7 +6432,7 @@ function card(g) {
       </div>
       <div class="scorebox">
         <div class="lbl">Projected score</div>
-        ${g.league === "cfb" && p.score_low_away != null ? `<div class="score-range">${g.away.abbr} ${p.score_low_away}–${p.score_high_away}<span class="score-dash"> to </span>${g.home.abbr} ${p.score_low_home}–${p.score_high_home}</div><div class="total-line">Average <b>${awayPts ?? "—"}–${homePts ?? "—"}</b></div>` : `<div class="scoreline">
+        ${g.league === "cfb" && p.split_away != null ? `<div class="score-range">${g.away.abbr} ${p.score_low_away}–${p.score_high_away}<span class="score-dash"> to </span>${g.home.abbr} ${p.score_low_home}–${p.score_high_home}</div><div class="total-line">The Split <b>${p.split_away}–${p.split_home}</b></div><div class="total-line">Double Gs <b>${awayPts ?? "—"}–${homePts ?? "—"}</b></div>` : g.league === "cfb" && p.score_low_away != null ? `<div class="score-range">${g.away.abbr} ${p.score_low_away}–${p.score_high_away}<span class="score-dash"> to </span>${g.home.abbr} ${p.score_low_home}–${p.score_high_home}</div><div class="total-line">Average <b>${awayPts ?? "—"}–${homePts ?? "—"}</b></div>` : `<div class="scoreline">
           <span>${g.away.abbr} <b>${awayPts ?? "—"}</b></span>
           <span class="score-dash">–</span>
           <span><b>${homePts ?? "—"}</b> ${g.home.abbr}</span>
