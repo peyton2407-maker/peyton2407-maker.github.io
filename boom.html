@@ -4913,7 +4913,7 @@ function collectPropParlayLegs() {
     if (seen.has(k)) return false;
     seen.add(k);
     return true;
-  }).slice(0, 24).map((r) => ({
+  }).slice(0, 40).map((r) => ({
     label: r.kind === "td" ? `${r.name} ${r.market}` : `${r.name} ${r.side} ${r.line} ${r.market}`,
     detail: `${r.pos} · ${r.game}`,
     game_id: r.game_id, player: r.name, id: r.id, game: r.game, date: r.date,
@@ -4952,37 +4952,50 @@ function propParlayEV(bag) {
   return { p, odds, ev, label: odds > 0 ? "+" + odds : String(odds) };
 }
 function uniquePropCombos(legs, n, limit) {
-  const out = [];
-  const seen = new Set();
-  for (let i = 0; i < legs.length; i++) {
-    const bag = [];
-    const usedP = new Set(), usedG = new Set();
-    const order = legs.slice(i).concat(legs.slice(0, i));
-    for (const l of order) {
-      if (usedP.has(l.player) || usedG.has(l.game_id)) continue;
-      usedP.add(l.player);
-      usedG.add(l.game_id);
-      bag.push(l);
-      if (bag.length >= n) break;
+  const floor = { 1: 0, 2: 0.28, 3: 0.16, 4: 0.08, 5: 0.045, 6: 0.025 }[n] || 0.02;
+  const build = (cap) => {
+    const out = [];
+    const seen = new Set();
+    for (let i = 0; i < legs.length && out.length < limit; i++) {
+      const bag = [];
+      const usedP = new Set(), usedG = new Set();
+      const order = legs.slice(i).concat(legs.slice(0, i));
+      for (const l of order) {
+        if (usedP.has(l.player) || (n > 1 && usedG.has(l.game_id))) continue;
+        usedP.add(l.player);
+        usedG.add(l.game_id);
+        bag.push(l);
+        if (bag.length >= n) break;
+      }
+      if (bag.length < n) continue;
+      const k = bag.map((x) => x.key).sort().join("|");
+      if (seen.has(k)) continue;
+      const players = new Set(bag.map((x) => x.player));
+      if (cap != null && out.some((r) => r.legs.filter((l) => players.has(l.player)).length > cap)) continue;
+      seen.add(k);
+      const m = propParlayEV(bag);
+      if (n > 1 && !(m.odds > 0)) continue;
+      if (m.p < floor) continue;
+      if (n > 1 && m.ev < 0.02) continue;
+      const book = Number(bag[0].odds);
+      out.push({
+        title: n + "-leg #" + (out.length + 1),
+        n, legs: bag, p: m.p, odds: n === 1 ? book : m.odds,
+        label: n === 1 ? (book > 0 ? "+" + book : String(book)) : m.label,
+        ev: m.ev, money: n === 1 ? book > 0 : true
+      });
     }
-    if (bag.length < n) continue;
-    const k = bag.map((x) => x.key).sort().join("|");
-    if (seen.has(k)) continue;
-    seen.add(k);
-    const m = propParlayEV(bag);
-    if (!(m.odds > 0)) continue;
-    if (n === 2 && m.p < 0.28) continue;
-    if (n === 3 && m.p < 0.16) continue;
-    if (m.ev < 0.04) continue;
-    out.push({ title: n + "-leg #" + (out.length + 1), n, legs: bag, p: m.p, odds: m.odds, label: m.label, ev: m.ev, money: true });
-    if (out.length >= limit) break;
-  }
-  return out;
+    return out;
+  };
+  const cap = n <= 2 ? 0 : n === 3 ? 1 : 2;
+  const strict = build(cap);
+  return strict.length >= Math.min(2, limit) ? strict : build(null);
 }
 function buildPropParlays() {
   const legs = collectPropParlayLegs();
   const cash = legs.filter((l) => l.hit >= 0.56);
-  const twoPool = cash.filter((l) => l.hit <= 0.67);
+  const twoPool = cash.filter((l) => l.hit <= 0.72);
+  const plus = legs.filter((l) => Number(l.odds) >= 100);
   const same = (function () {
     const bag = pickPropBag(twoPool, 2, true);
     if (!bag || bag.length < 2) return [];
@@ -4990,21 +5003,42 @@ function buildPropParlays() {
     if (!(m.odds > 0) || m.p < 0.28) return [];
     return [{ title: "Same-game 2-leg", n: 2, legs: bag, p: m.p, odds: m.odds, label: m.label, ev: m.ev, money: true }];
   })();
-  const twos = uniquePropCombos(twoPool, 2, 5);
-  const threes = uniquePropCombos(cash, 3, 4);
+  const rows = [
+    ...uniquePropCombos(cash, 1, 4),
+    ...uniquePropCombos(plus, 1, 2),
+    ...uniquePropCombos(twoPool, 2, 6),
+    ...same,
+    ...uniquePropCombos(cash, 3, 4),
+    ...uniquePropCombos(cash, 4, 3),
+    ...uniquePropCombos(cash, 5, 2),
+    ...uniquePropCombos(cash, 6, 2)
+  ];
   const seen = new Set();
-  return [...twos, ...threes, ...same].filter((r) => {
+  const counts = {};
+  return rows.filter((r) => {
     const k = r.legs.map((l) => l.key).sort().join("|");
     if (seen.has(k)) return false;
     seen.add(k);
+    if (r.title !== "Same-game 2-leg") {
+      counts[r.n] = (counts[r.n] || 0) + 1;
+      r.title = r.n + "-leg #" + counts[r.n];
+    }
     return true;
   });
+}
+function propLadderHtml(rows) {
+  if (!rows.length) return `<div class="empty">No player prop tickets cleared the bar.</div>`;
+  return [1, 2, 3, 4, 5, 6].map((n) => {
+    const bag = rows.filter((r) => r.n === n);
+    if (!bag.length) return "";
+    return `<div class="home-label" style="grid-column:1/-1;margin-top:8px">${n}-leg player props</div>` + bag.map(propParlayCardHtml).join("");
+  }).join("");
 }
 function propParlayCardHtml(r) {
   return `<article class="parlay-card">
     <div class="td-mkt">${r.title}</div>
     <div class="parlay-odds">${r.label}</div>
-    <div class="subn">${Math.round(r.p * 100)}% chance it cashes · plus-money if it does</div>
+    <div class="subn">${Math.round(r.p * 100)}% chance it cashes${r.n === 1 ? (r.money ? " · plus-money single" : " · best single on the board") : " · plus-money if it does"}</div>
     <ul class="parlay-legs">${r.legs.map((l) => `<li data-id="${l.game_id}">
       <div class="who-row">${faceHtml(l.id, l.player || l.label, 48)}<div><b>${l.label}</b><div class="subn">${l.detail} · ${Math.round(l.hit * 100)}% · ${l.odds > 0 ? "+" : ""}${l.odds}</div>${l.why ? `<div class="prop-why">${l.why}</div>` : ""}</div></div>
     </li>`).join("")}</ul>
@@ -5016,18 +5050,14 @@ function renderPropParlays() {
   if (size === "2") rows = rows.filter((r) => r.n === 2);
   if (size === "3") rows = rows.filter((r) => r.n === 3);
   const stamp = document.getElementById("propParlayStamp");
-  if (stamp) stamp.textContent = "2-leg and 3-leg player props only. Plus-money tickets with a real chance to hit. Not betting advice.";
+  if (stamp) stamp.textContent = "1-leg through 6-leg player props. Thursday's game is off the board. Not betting advice.";
   const hero = document.getElementById("propParlayHero");
   if (!hero) return;
-  const twos = rows.filter((r) => r.n === 2);
-  const threes = rows.filter((r) => r.n === 3);
   if (!rows.length) {
     hero.innerHTML = `<div class="empty">No prop parlays cleared the bar.</div>`;
     return;
   }
-  hero.innerHTML =
-    (twos.length ? `<div class="home-label" style="grid-column:1/-1">2-leg player props</div>` + twos.map(propParlayCardHtml).join("") : "") +
-    (threes.length ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">3-leg player props</div>` + threes.map(propParlayCardHtml).join("") : "");
+  hero.innerHTML = propLadderHtml(rows);
   hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 
@@ -5469,14 +5499,9 @@ function renderParlays() {
   const hero = document.getElementById("parlayHero");
   if (!hero) return;
   if (league === "props") {
-    if (stamp) stamp.textContent = "Player prop parlays — 2-leg and 3-leg. Plus-money only. NFL players.";
+    if (stamp) stamp.textContent = "Player props only. 1-leg through 6-leg. Anyone who already played is off the ticket.";
     const rows = typeof buildPropParlays === "function" ? buildPropParlays() : [];
-    const twos = rows.filter((r) => r.n === 2);
-    const threes = rows.filter((r) => r.n === 3);
-    hero.innerHTML =
-      (twos.length ? `<div class="home-label" style="grid-column:1/-1">2-leg player props</div>` + twos.map(propParlayCardHtml).join("") : "") +
-      (threes.length ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">3-leg player props</div>` + threes.map(propParlayCardHtml).join("") : "") ||
-      `<div class="empty">No plus-money player prop parlays cleared the bar.</div>`;
+    hero.innerHTML = typeof propLadderHtml === "function" ? propLadderHtml(rows) : `<div class="empty">No player prop tickets cleared the bar.</div>`;
     hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
     return;
   }
