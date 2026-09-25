@@ -1377,7 +1377,7 @@ body{font-size:17px;line-height:1.45}
         </select>
         <input id="propQ" placeholder="Search a player or team…" />
       </div>
-      <p class="subn" style="margin:8px 0 0">Every card has our number and every DraftKings line for that player. Tap a player for the hit rate.</p>
+      <p class="subn" style="margin:8px 0 0">Every card has our number and every DraftKings line for that player. Those lines refresh every 2 minutes. Tap a player for the hit rate.</p>
       <div class="stat-row" id="propStats"></div>
       <div id="propSheet" style="display:none"></div>
       <div class="prop-board" id="propBoard"></div>
@@ -6392,7 +6392,8 @@ function ensureNflDk(rows) {
   const ids = [...new Set((rows || []).map((p) => String(p.game_id || "")).filter(Boolean))];
   window.__DK = window.__DK || {};
   window.__DK_WAIT = window.__DK_WAIT || {};
-  const todo = ids.filter((id) => !window.__DK[id] && !window.__DK_WAIT[id]);
+  const fresh = (id) => window.__DK && window.__DK[id] && Date.now() - ((window.__DK_AT || {})[id] || 0) < 2 * 60 * 1000;
+  const todo = ids.filter((id) => !fresh(id) && !window.__DK_WAIT[id]);
   if (!todo.length) return;
   todo.forEach((id) => { window.__DK_WAIT[id] = true; });
   Promise.all(todo.map((id) => Promise.all([
@@ -6426,7 +6427,8 @@ async function loadDkForGame(gameId) {
   window.__DK = window.__DK || {};
   const id = String(gameId || "");
   if (!id) return {};
-  if (window.__DK[id]) return window.__DK[id];
+  window.__DK_AT = window.__DK_AT || {};
+  if (window.__DK[id] && Date.now() - (window.__DK_AT[id] || 0) < 2 * 60 * 1000) return window.__DK[id];
   const bag = {};
   try {
     const base = "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/" + id + "/competitions/" + id + "/odds/100/propBets?lang=en&region=us&limit=1000&page=";
@@ -6452,6 +6454,7 @@ async function loadDkForGame(gameId) {
     }
   } catch (e) {}
   window.__DK[id] = bag;
+  window.__DK_AT[id] = Date.now();
   return bag;
 }
 
@@ -6471,7 +6474,9 @@ function addDkPrice(bucket, stat, line, over, under) {
 async function loadAnOdds(p) {
   window.__DKODDS = window.__DKODDS || {};
   const gid = String(p.game_id || "");
-  if (!gid || window.__DKODDS[gid]) return window.__DKODDS[gid];
+  if (!gid) return {};
+  window.__DKODDS_AT = window.__DKODDS_AT || {};
+  if (window.__DKODDS[gid] && Date.now() - (window.__DKODDS_AT[gid] || 0) < 2 * 60 * 1000) return window.__DKODDS[gid];
   const g = (DATA.games || []).find((x) => String(x.id) === gid);
   const bag = {};
   window.__DKODDS[gid] = bag;
@@ -6515,6 +6520,7 @@ async function loadAnOdds(p) {
       });
     });
   } catch (e) {}
+  window.__DKODDS_AT[gid] = Date.now();
   return bag;
 }
 function money(n) {
@@ -9367,6 +9373,10 @@ async function boot() {
   if (typeof pullLiveScores === "function") pullLiveScores();
   if (typeof pullEpaAndMarkets === "function") pullEpaAndMarkets();
   if (!window.__livePoll) window.__livePoll = setInterval(() => scheduleDeskRefresh(false), 45000);
+  if (!window.__dkPoll) window.__dkPoll = setInterval(() => {
+    const ids = (DATA.games || []).filter((g) => g && g.league === "nfl" && !g.completed).map((g) => String(g.id));
+    if (typeof ensureNflDk === "function") ensureNflDk(ids.map((id) => ({ game_id: id })));
+  }, 2 * 60 * 1000);
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") scheduleDeskRefresh(true);
   });
