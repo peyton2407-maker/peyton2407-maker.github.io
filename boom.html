@@ -2309,7 +2309,7 @@ function erf(x) {
 function normCdf(x) { return 0.5 * (1 + erf(x / Math.sqrt(2))); }
 
 function sameOrigin(url) {
-  if (location.protocol === "file:") return url;
+  if (!usesLocalProxy()) return url;
   try {
     const u = new URL(url, location.href);
     const map = {
@@ -6565,9 +6565,14 @@ async function loadDkForGame(gameId) {
       if (page >= (payload.pageCount || 1)) break;
     }
   } catch (e) {}
+  const listed = Object.keys(bag).length > 0;
   window.__DK[id] = bag;
-  bag.__listed = true;
-  window.__DK_AT[id] = Date.now();
+  if (listed) {
+    bag.__listed = true;
+    window.__DK_AT[id] = Date.now();
+  } else {
+    delete window.__DK[id];
+  }
   return bag;
 }
 
