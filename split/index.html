@@ -146,7 +146,7 @@ function explain(id) {
   return `<div class="explain"><p>${esc(e.gist)}</p><p class="gap" style="color:var(--muted)">${esc(e.body)}</p><p class="gap"><span style="color:var(--chalk);font-weight:600">Which way. </span>${esc(e.better)}</p><p class="gap" style="color:var(--muted)"><span style="color:var(--fg);font-weight:600">On a mismatch. </span>${esc(e.mismatch)}</p></div>`;
 }
 function footer() {
-  return `<p class="foot">Lines are the current DraftKings number on ESPN. Power, strength of record, and efficiencies are ESPN’s Football Power Index. Box-score rates are season totals, not opponent-adjusted. This is a reading sheet, not a pick. Picks stay on Double Gs, and only for college games.</p>`;
+  return `<p class="foot">${LINES_STAMP ? esc(LINES_STAMP) + ". " : ""}The betting line refreshes from DraftKings every couple of minutes. Power, strength of record, and efficiencies are ESPN’s Football Power Index. Box-score rates are season totals, not opponent-adjusted. This is a reading sheet, not a pick. Picks stay on Double Gs, and only for college games.</p>`;
 }
 function mark() {
   return `<svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#12140f"/><rect x="6" y="22" width="20" height="2" rx="1" fill="#3dbe78"/><rect x="9" y="8" width="4" height="14" rx="1" fill="#e4ff4a"/><rect x="19" y="8" width="4" height="14" rx="1" fill="#e4ff4a"/></svg>`;
@@ -448,7 +448,7 @@ function sheetView() {
     const deskHref = location.hostname.endsWith("github.io") ? "/boom.html" : "/hashmark.html";
     deskHtml = `<section class="desk"><div class="tag">Double Gs · college pick</div><div class="display pts">${esc(desk.awayAbbr)} ${points(desk.awayPts)}<span style="color:var(--muted)"> – </span>${esc(desk.homeAbbr)} ${points(desk.homePts)}</div><p>${esc(side || "No side on this one.")}${total ? " · " + esc(total) : ""}${desk.conf ? " · " + esc(desk.conf) + " confidence" : ""}</p><a href="${deskHref}" data-desk="${esc(sheet.id)}">Open on Double Gs</a></section>`;
   }
-  const lineHtml = `<section class="lineblock"><h2 class="display">The line</h2><p class="note">${esc(line.fpiNote || "")} The power score is that rating turned into points, with the home team getting its field. The market score is rebuilt from the spread and the total, so a home favorite is no longer flipped to the other side.</p>${rows.map((r) => `<div><button type="button" class="statbtn" data-open="${r[0]}"><div class="lbl">${esc(r[1])}</div><div class="display val">${esc(r[2])}</div></button>${open===r[0]?explain(r[0]):""}</div>`).join("")}</section>`;
+  const lineHtml = `<section class="lineblock"><h2 class="display">The line</h2><p class="note">${esc(line.fpiNote || "")} The power score is that rating turned into points, with the home team getting its field. The betting line is the live DraftKings number, and the implied score is rebuilt from it.</p>${rows.map((r) => `<div><button type="button" class="statbtn" data-open="${r[0]}"><div class="lbl">${esc(r[1])}</div><div class="display val">${esc(r[2])}</div></button>${open===r[0]?explain(r[0]):""}</div>`).join("")}</section>`;
   const sections = (sheet.sections || []).map((section) => `<section class="sec"><h2 class="display">${esc(section.title)}</h2><p class="note">${esc(section.note || "")}</p><div class="box">${section.rows.map((row, index) => {
     const key = section.id + "-" + index;
     const name = (GLOSSARY.get(row.id) || {}).name || row.id;
@@ -467,12 +467,68 @@ function render() {
   else if (hash && SHEETS[hash]) { sheetId = hash; if (mode === "week") mode = "game"; }
   else { sheetId = null; if (mode !== "guide") mode = "week"; }
   const app = document.getElementById("app");
+  const y = window.scrollY;
   const focus = document.activeElement && document.activeElement.id;
   app.innerHTML = sheetId ? sheetView() : (mode === "guide" ? guideView() : listView());
+  if (y) window.scrollTo(0, y);
   if (focus === "q" || focus === "gq") {
     const el = document.getElementById(focus);
     if (el) { el.focus(); const n = el.value.length; el.setSelectionRange(n, n); }
   }
+}
+let LINES_STAMP = "";
+function applyLiveOdds(id, odds) {
+  if (!odds || !odds.details) return false;
+  const sheet = SHEETS[id];
+  const game = GAMES.find((item) => String(item.id) === String(id));
+  const spread = String(odds.details).replace("−", "-");
+  const total = odds.overUnder != null ? String(odds.overUnder) : "";
+  const ps = odds.pointSpread || {};
+  const tot = odds.total || {};
+  const ml = odds.moneyline || {};
+  const awayJuice = ps.away && ps.away.close && ps.away.close.odds;
+  const homeJuice = ps.home && ps.home.close && ps.home.close.odds;
+  const spreadPrice = awayJuice && homeJuice ? awayJuice + " / " + homeJuice : (awayJuice || homeJuice || "");
+  const overPrice = tot.over && tot.over.close && tot.over.close.odds;
+  const underPrice = tot.under && tot.under.close && tot.under.close.odds;
+  const awayMl = ml.away && ml.away.close && ml.away.close.odds;
+  const homeMl = ml.home && ml.home.close && ml.home.close.odds;
+  let changed = false;
+  if (sheet && sheet.line) {
+    if (sheet.line.marketSpread !== spread || (total && String(sheet.line.total) !== total)) changed = true;
+    sheet.line.marketSpread = spread;
+    if (total) sheet.line.total = total;
+    if (spreadPrice) sheet.line.spreadPrice = spreadPrice;
+    if (overPrice) sheet.line.overPrice = "o" + overPrice;
+    if (underPrice) sheet.line.underPrice = "u" + underPrice;
+    if (awayMl) sheet.line.awayMl = awayMl;
+    if (homeMl) sheet.line.homeMl = homeMl;
+  }
+  if (game) {
+    if (game.spread !== spread || (total && String(game.total) !== total)) changed = true;
+    game.spread = spread;
+    if (total) game.total = total;
+  }
+  return changed;
+}
+function refreshLines() {
+  const week = (DATA.slate && DATA.slate.week) || 4;
+  fetch("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=" + week + "&seasontype=2&groups=80&limit=200")
+    .then((res) => res.json())
+    .then((board) => {
+      let changed = !LINES_STAMP;
+      let n = 0;
+      (board.events || []).forEach((ev) => {
+        const comp = (ev.competitions || [])[0] || {};
+        const odds = (comp.odds || []).find((item) => ((item.provider || {}).name || "") === "DraftKings") || (comp.odds || [])[0];
+        if (odds && odds.details) n += 1;
+        if (applyLiveOdds(ev.id, odds)) changed = true;
+      });
+      if (!n) return;
+      LINES_STAMP = "DraftKings · " + n + " lines · " + new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+      if (changed) render();
+    })
+    .catch(() => {});
 }
 document.addEventListener("click", (e) => {
   const desk = e.target.closest("[data-desk]");
@@ -498,6 +554,8 @@ document.addEventListener("input", (e) => {
 });
 window.addEventListener("hashchange", () => { open = null; render(); });
 render();
+refreshLines();
+setInterval(refreshLines, 120000);
 fetch("advanced.json").then((res) => res.json()).then((data) => { ADV = data; render(); }).catch(() => {});
 </script>
 </body>
