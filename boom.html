@@ -1961,7 +1961,9 @@ function settleNfl(g) {
   const learnCap = learnN <= 2 ? 1.25 : learnN <= 6 ? 2.25 : 4;
   const learnM = Math.max(-learnCap, Math.min(learnCap, p.learned ? Number(p.learned.margin_shift) || 0 : 0));
   const learnT = Math.max(-1.5, Math.min(1.5, p.learned ? Number(p.learned.total_shift) || 0 : 0));
-  const wx = Number(p.weather_adj_total) || 0;
+  const wxRaw = Number(g.weather_impact && g.weather_impact.adj) || 0;
+  const wx = Math.max(-2.2, Math.min(0.4, +(wxRaw * 0.4).toFixed(2)));
+  p.weather_adj_total = wx;
   if (margin == null || total == null) return g;
   writeSettledLine(g, margin + learnM, total + learnT + wx);
   const edge = p.edge_spread;
@@ -2686,9 +2688,41 @@ function applySituationalToGame(g) {
   const stm = typeof steamInfo === "function" ? steamInfo(g) : { m: 0, t: 0, notes: [] };
   const mAdj = -ht + at - rth + rta - (tr.homeTax || 0) + (tr.awayTax || 0) + (ref.home || 0);
   const tAdj = -0.24 * (ht + at) - 0.32 * (Math.max(0, rth) + Math.max(0, rta)) + (tr.tot || 0) + (ref.tot || 0);
-  const capM = g.league === "nfl" ? 6.5 : 8;
-  const capT = g.league === "nfl" ? 4.5 : 5.5;
-  const lookedM = Math.max(-capM, Math.min(capM, mAdj));
+  const wxFit = Number(g.weather_impact && g.weather_impact.home_edge) || 0;
+  const scale = g.league === "nfl" ? 0.28 : 0.22;
+  const capM = g.league === "nfl" ? 1.6 : 2;
+  const capT = g.league === "nfl" ? 1.2 : 1.5;
+  const bits = [];
+  const add = (label, raw) => {
+    const v = Number(raw) * scale;
+    if (Math.abs(v) >= 0.1) bits.push({ label, v });
+  };
+  add(g.home.abbr + " injuries", -ht);
+  add(g.away.abbr + " injuries", at);
+  add(g.home.abbr + " rest", -rth);
+  add(g.away.abbr + " rest", rta);
+  add("travel", -(tr.homeTax || 0) + (tr.awayTax || 0));
+  add("referee", ref.home || 0);
+  add("weather fit", wxFit);
+  add("recent games", epa.m || 0);
+  add("betting line", stm.m || 0);
+  const tBits = [];
+  const addT = (label, raw) => {
+    const v = Number(raw) * scale;
+    if (Math.abs(v) >= 0.1) tBits.push({ label, v });
+  };
+  addT("situation on the total", tAdj);
+  addT("recent games on the total", epa.t || 0);
+  addT("total move", stm.t || 0);
+  let m = bits.reduce((s, b) => s + b.v, 0);
+  let t = tBits.reduce((s, b) => s + b.v, 0);
+  m = Math.max(-capM, Math.min(capM, m));
+  t = Math.max(-capT, Math.min(capT, t));
+  if (p._baseMargin != null) {
+    p.blended_margin = +(p._baseMargin + m).toFixed(2);
+    p.hashmark_home_spread = +(-p.blended_margin).toFixed(1);
+  }
+  if (p._baseTotal != null) p.hashmark_total = +(p._baseTotal + t).toFixed(1);
   if (p.blended_margin != null && p.hashmark_total != null) {
     p.home_points = +Math.max(3, (Number(p.hashmark_total) + Number(p.blended_margin)) / 2).toFixed(1);
     p.away_points = +Math.max(3, (Number(p.hashmark_total) - Number(p.blended_margin)) / 2).toFixed(1);
@@ -2706,16 +2740,13 @@ function applySituationalToGame(g) {
   }
   p._preLearnMargin = p.blended_margin;
   p._preLearnTotal = p.hashmark_total;
-  const notes = [];
+  const sign = (v) => (v > 0 ? "+" : "") + Number(v).toFixed(1);
+  const notes = bits.map((b) => `${b.label} ${sign(b.v)}`);
+  tBits.forEach((b) => notes.push(`${b.label} ${sign(b.v)}`));
   const wxPts = Number(p.weather_adj_total) || 0;
-  if (Math.abs(wxPts) >= 0.4) notes.push(`Weather is on the total only, ${wxPts > 0 ? "+" : ""}${wxPts.toFixed(1)}.`);
-  if (ht >= 0.5) notes.push(`${g.home.abbr} injuries are already in the Vegas line. We did not add them again.`);
-  if (at >= 0.5) notes.push(`${g.away.abbr} injuries are already in the Vegas line. We did not add them again.`);
-  if (rh.kind === "short" || rh.kind === "bye") notes.push(`${g.home.abbr} rest is ${rh.kind}. We did not move the line for it.`);
-  if (ra.kind === "short" || ra.kind === "bye") notes.push(`${g.away.abbr} rest is ${ra.kind}. We did not move the line for it.`);
-  if ((tr.miles || 0) >= 1200) notes.push(`Long trip is already in the number. We did not add it again.`);
-  if (g.weather_impact && g.weather_impact.climate_note) notes.push(g.weather_impact.climate_note + " We did not move the spread for it.");
-  if (!notes.length) notes.push("We did not move this line. Injuries, rest, and weather did not change it.");
+  if (Math.abs(wxPts) >= 0.15) notes.push(`Weather on the total ${sign(wxPts)}`);
+  if (Math.abs(m) >= capM - 0.05) notes.push("Spread shade is capped at " + capM.toFixed(1) + ".");
+  if (!notes.length) notes.push("Nothing here was big enough to move the line.");
   g.situational = {
     injury: { home: +ht.toFixed(2), away: +at.toFixed(2) },
     rest: { home: rh, away: ra },
@@ -2723,9 +2754,8 @@ function applySituationalToGame(g) {
     referee: ref,
     epa,
     steam: stm,
-    margin_adj: 0,
-    total_adj: +wxPts.toFixed(2),
-    looked_margin: +lookedM.toFixed(2),
+    margin_adj: +m.toFixed(2),
+    total_adj: +(t + wxPts).toFixed(2),
     notes
   };
   if (g.box) {
