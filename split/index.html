@@ -180,27 +180,46 @@ function sheetRow(sheet, sectionId, rowId) {
   const sec = (sheet.sections || []).find((s) => s.id === sectionId);
   return sec ? (sec.rows || []).find((r) => r.id === rowId) : null;
 }
+function sameSquad(token, abbr) {
+  if (token === abbr) return true;
+  const alias = { AF: "AFA", AFA: "AF", BUF: "BUFF", BUFF: "BUF" };
+  return alias[token] === abbr;
+}
+function impliedFromLine(sheet) {
+  const line = sheet.line || {};
+  const tot = Number(line.total);
+  const sp = String(line.marketSpread || "").replace("−", "-");
+  const m = sp.match(/([A-Z0-9&]+)\s*([+-]?\d+\.?\d*)/);
+  if (!m || !Number.isFinite(tot)) {
+    return line.marketAway && line.marketHome ? sheet.away.abbrev + " " + line.marketAway + " · " + sheet.home.abbrev + " " + line.marketHome : "Needs a spread and a total";
+  }
+  const num = Number(m[2]);
+  let homeSpread = null;
+  if (sameSquad(m[1], sheet.home.abbrev)) homeSpread = num;
+  else if (sameSquad(m[1], sheet.away.abbrev)) homeSpread = -num;
+  if (homeSpread == null) {
+    return line.marketAway && line.marketHome ? sheet.away.abbrev + " " + line.marketAway + " · " + sheet.home.abbrev + " " + line.marketHome : "Needs a spread and a total";
+  }
+  const home = (tot - homeSpread) / 2;
+  const away = (tot + homeSpread) / 2;
+  return sheet.away.abbrev + " " + away.toFixed(1) + " · " + sheet.home.abbrev + " " + home.toFixed(1);
+}
 function statsProjection(sheet) {
   if (!sheet) return null;
-  const off = sheetRow(sheet, "power", "off-efficiency");
-  const def = sheetRow(sheet, "power", "def-efficiency");
-  const st = sheetRow(sheet, "power", "st-efficiency");
-  const ppg = sheetRow(sheet, "rails", "off-ppg");
-  const allowed = sheetRow(sheet, "rails", "def-ppg");
-  if (!off || !def) return null;
-  const ao = cellNum(off.left), ho = cellNum(off.right), ad = cellNum(def.left), hd = cellNum(def.right);
-  if (ao == null || ho == null || ad == null || hd == null) return null;
-  const ast = cellNum(st && st.left) == null ? 50 : cellNum(st.left);
-  const hst = cellNum(st && st.right) == null ? 50 : cellNum(st.right);
-  let away = 24 + (ao - 50) * 0.11 - (hd - 50) * 0.11 + (ast - hst) * 0.02;
-  let home = 24 + (ho - 50) * 0.11 - (ad - 50) * 0.11 + (hst - ast) * 0.02;
-  const appg = cellNum(ppg && ppg.left), hppg = cellNum(ppg && ppg.right);
-  const aall = cellNum(allowed && allowed.left), hall = cellNum(allowed && allowed.right);
-  if (appg != null && hall != null) away = 0.55 * away + 0.45 * ((appg + hall) / 2);
-  if (hppg != null && aall != null) home = 0.55 * home + 0.45 * ((hppg + aall) / 2);
-  home += 2.5;
-  away = Math.max(6, away);
-  home = Math.max(6, home);
+  const power = sheetRow(sheet, "power", "power-rating");
+  const ap = cellNum(power && power.left);
+  const hp = cellNum(power && power.right);
+  const line = sheet.line || {};
+  let away = Number(line.fpiAway);
+  let home = Number(line.fpiHome);
+  if (!Number.isFinite(away) || !Number.isFinite(home)) {
+    if (ap == null || hp == null) return null;
+    const margin = hp - ap + 2.5;
+    const posted = Number(line.total);
+    const tot = Number.isFinite(posted) ? posted : 52;
+    home = (tot + margin) / 2;
+    away = (tot - margin) / 2;
+  }
   const margin = home - away;
   const fav = margin >= 0 ? sheet.home.abbrev : sheet.away.abbrev;
   return { away: away.toFixed(1), home: home.toFixed(1), text: sheet.away.abbrev + " " + away.toFixed(1) + " · " + sheet.home.abbrev + " " + home.toFixed(1) + " · " + fav + " -" + Math.abs(margin).toFixed(1) + " · total " + (away + home).toFixed(1) };
@@ -280,8 +299,8 @@ function sheetView() {
     ["market-spread","DraftKings spread",[line.marketSpread, line.spreadPrice].filter(Boolean).join(" ") || "No number posted"],
     ["market-total","Total", line.total ? `${line.total}  (${[line.overPrice, line.underPrice].filter(Boolean).join(" / ")})` : "No total posted"],
     ["market-price","Moneyline", `${sheet.away.abbrev} ${line.awayMl || "—"} · ${sheet.home.abbrev} ${line.homeMl || "—"}`],
-    ["implied-score","Market implied score", line.marketAway && line.marketHome ? `${sheet.away.abbrev} ${line.marketAway} · ${sheet.home.abbrev} ${line.marketHome}` : "Needs a spread and a total"],
-    ["stats-spread","Stats projection", (statsProjection(sheet) || {}).text || "Not enough offense and defense ratings"],
+    ["implied-score","Market implied score", impliedFromLine(sheet)],
+    ["stats-spread","Power score", (statsProjection(sheet) || {}).text || "No power rating on one of these teams"],
     ["fpi-spread","FPI spread", line.fpiSpread ? `${line.fpiSpread}${line.fpiAway && line.fpiHome ? ` · split ${sheet.away.abbrev} ${line.fpiAway}, ${sheet.home.abbrev} ${line.fpiHome}` : ""}` : "No FPI on one of these teams"],
     ["win-prob","Win probability", line.awayWin && line.homeWin ? `${sheet.away.abbrev} ${line.awayWin} · ${sheet.home.abbrev} ${line.homeWin}` : "Not posted"],
   ];
@@ -292,7 +311,7 @@ function sheetView() {
     const deskHref = location.hostname.endsWith("github.io") ? "/boom.html" : "/hashmark.html";
     deskHtml = `<section class="desk"><div class="tag">Double Gs · college pick</div><div class="display pts">${esc(desk.awayAbbr)} ${points(desk.awayPts)}<span style="color:var(--muted)"> – </span>${esc(desk.homeAbbr)} ${points(desk.homePts)}</div><p>${esc(side || "No side on this one.")}${total ? " · " + esc(total) : ""}${desk.conf ? " · " + esc(desk.conf) + " confidence" : ""}</p><a href="${deskHref}" data-desk="${esc(sheet.id)}">Open on Double Gs</a></section>`;
   }
-  const lineHtml = `<section class="lineblock"><h2 class="display">The line</h2><p class="note">${esc(line.fpiNote || "")} The stats projection uses this offense against that defense, special teams, the points they have scored and allowed, and 2.5 points of home field. It does not use the betting line.</p>${rows.map((r) => `<div><button type="button" class="statbtn" data-open="${r[0]}"><div class="lbl">${esc(r[1])}</div><div class="display val">${esc(r[2])}</div></button>${open===r[0]?explain(r[0]):""}</div>`).join("")}</section>`;
+  const lineHtml = `<section class="lineblock"><h2 class="display">The line</h2><p class="note">${esc(line.fpiNote || "")} The power score is that rating turned into points, with the home team getting its field. The market score is rebuilt from the spread and the total, so a home favorite is no longer flipped to the other side.</p>${rows.map((r) => `<div><button type="button" class="statbtn" data-open="${r[0]}"><div class="lbl">${esc(r[1])}</div><div class="display val">${esc(r[2])}</div></button>${open===r[0]?explain(r[0]):""}</div>`).join("")}</section>`;
   const sections = (sheet.sections || []).map((section) => `<section class="sec"><h2 class="display">${esc(section.title)}</h2><p class="note">${esc(section.note || "")}</p><div class="box">${section.rows.map((row, index) => {
     const key = section.id + "-" + index;
     const name = (GLOSSARY.get(row.id) || {}).name || row.id;
