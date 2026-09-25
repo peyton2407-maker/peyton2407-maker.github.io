@@ -2242,7 +2242,7 @@ function learnFromFinals(games) {
 }
 
 function applyLearningToGame(g) {
-  if (!g || !g.proj || g.completed) return g;
+  if (!g || !g.proj || g.completed || g.league === "cfb") return g;
   const lg = g.league === "nfl" ? "nfl" : "cfb";
   const hr = residualFor(lg, g.home.id);
   const ar = residualFor(lg, g.away.id);
@@ -2742,7 +2742,7 @@ function refereeInfo(g) {
   return { name: null, tot: 0, home: 0, note: "Referee TBD — crew shift lands when ESPN lists the official" };
 }
 function applySituationalToGame(g) {
-  if (!g || !g.proj || g.completed) return g;
+  if (!g || !g.proj || g.completed || g.league === "cfb") return g;
   const p = g.proj;
   if (p._baseMargin == null && p.blended_margin != null) p._baseMargin = Number(p.blended_margin);
   if (p._baseTotal == null && p.hashmark_total != null) p._baseTotal = Number(p.hashmark_total);
@@ -3394,7 +3394,7 @@ function cfbReadHtml(g, full) {
   const pack = (window.SPLIT_NOTES || {})[String(g.id)];
   const notes = (pack && pack.notes) || [];
   if (!notes.length) return "";
-  const show = full ? notes : notes.slice(0, 1);
+  const show = notes;
   return `<div class="split-note">
     <div class="lbl">Matchup · from The Split</div>
     <ul>${show.map((n) => `<li><b>${n.edge}</b> ${n.line}</li>`).join("")}</ul>
@@ -3578,6 +3578,50 @@ function repriceCfbBoard() {
 
 window.learnFromFinals = learnFromFinals;
 window.applyLearningToGame = applyLearningToGame;
+function applySplitDesk() {
+  const rows = window.SPLIT_DESK || [];
+  if (!rows.length || typeof DATA === "undefined" || !DATA) return;
+  const byId = {};
+  rows.forEach((r) => { byId[String(r.id)] = r; });
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.league !== "cfb" || g.completed) return;
+    const row = byId[String(g.id)];
+    if (!row || row.awayPts == null || row.homePts == null) return;
+    const p = g.proj || (g.proj = {});
+    const away = Number(row.awayPts);
+    const home = Number(row.homePts);
+    p.away_points = away;
+    p.home_points = home;
+    p.hashmark_total = +(away + home).toFixed(1);
+    p.blended_margin = +(home - away).toFixed(2);
+    p.hashmark_home_spread = +(-p.blended_margin).toFixed(1);
+    p.confidence = row.conf || 0;
+    if (!row.pick || row.pick === "NO PLAY") {
+      p.pick = "NO PLAY";
+      p.pick_line = null;
+    } else {
+      p.pick_line = row.pick;
+      p.pick = String(row.pick).split(" ")[0];
+    }
+    p.total_pick = row.total || "NO PLAY";
+    if (row.totalLine != null) {
+      g.odds = Object.assign({}, g.odds || {}, { total: row.totalLine });
+    }
+    p.split_locked = true;
+    if (typeof normCdf === "function" && typeof cfbSigma === "function") {
+      const sigma = cfbSigma(p.blended_margin);
+      p.cfb_sigma = sigma;
+      p.win_prob_home = +normCdf(p.blended_margin / sigma).toFixed(4);
+      p.win_prob_away = +(1 - p.win_prob_home).toFixed(4);
+    }
+    if (g.box) {
+      g.box.away_points = away;
+      g.box.home_points = home;
+      g.box.total_points = p.hashmark_total;
+    }
+  });
+}
+window.applySplitDesk = applySplitDesk;
 window.repriceCfbBoard = repriceCfbBoard;
 
 function mulberry32(a) {
@@ -8383,6 +8427,7 @@ function reapplyDeskLine() {
     delete g.proj._baseTotal;
   });
   if (typeof applySituationalBoard === "function") applySituationalBoard();
+  if (typeof applySplitDesk === "function") applySplitDesk();
 }
 function finishProjections() {
   reapplyDeskLine();
@@ -9675,6 +9720,16 @@ async function boot() {
   $("#overlay").addEventListener("click", (e) => { if (e.target.id === "overlay") closeModal(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
   try { if (typeof repriceCfbBoard === "function") repriceCfbBoard(); } catch (e) { console.warn(e); }
+  try {
+    if (!window.SPLIT_DESK) {
+      const deskRes = await fetch("/data/desk-cfb.json");
+      if (deskRes.ok) window.SPLIT_DESK = await deskRes.json();
+    }
+    if (!window.SPLIT_NOTES || !Object.keys(window.SPLIT_NOTES).length) {
+      const noteRes = await fetch("/data/split-notes.json");
+      if (noteRes.ok) window.SPLIT_NOTES = await noteRes.json();
+    }
+  } catch (e) {}
   try { seedInjuriesFromSnap(); } catch (e) {}
   try { if (typeof enrichPowerRankings === "function") enrichPowerRankings(); } catch (e) {}
   try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) { console.warn(e); }
@@ -9688,6 +9743,7 @@ async function boot() {
     const n = typeof learn === "function" ? learn(DATA.games || []) : 0;
     if (typeof apply === "function") (DATA.games || []).forEach(apply);
     if (typeof settleBoard === "function") settleBoard();
+    if (typeof applySplitDesk === "function") applySplitDesk();
     if (DATA.notes && n) DATA.notes.learning = `Same record for everyone. ${n} finished games are in the next line.`;
   } catch (e) {}
   try { if (typeof syncDesk === "function") syncDesk(); } catch (e) {}
