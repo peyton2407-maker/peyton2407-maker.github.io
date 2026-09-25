@@ -2592,6 +2592,19 @@ function injuryTaxFor(game, side) {
     if (lead) return "starter";
     return "rotation";
   };
+  const slots = { CB: 2, S: 2, LB: 3, EDGE: 2, DT: 2, OT: 2, G: 2, C: 1 };
+  const used = {};
+  const slotKey = (pos) => {
+    if (["CB", "DB"].includes(pos)) return "CB";
+    if (["S", "FS", "SS", "SAF"].includes(pos)) return "S";
+    if (["LB", "ILB", "OLB", "MLB"].includes(pos)) return "LB";
+    if (["EDGE", "DE"].includes(pos)) return "EDGE";
+    if (["DT", "NT", "DL"].includes(pos)) return "DT";
+    if (["LT", "RT", "T", "OT"].includes(pos)) return "OT";
+    if (["G", "OG", "OL"].includes(pos)) return "G";
+    if (pos === "C") return "C";
+    return "";
+  };
   rows.forEach((r) => {
     const tag = (r.tag || r.status || "").toUpperCase();
     const pos = (r.pos || "").toUpperCase();
@@ -2601,8 +2614,14 @@ function injuryTaxFor(game, side) {
     const defense = ["CB", "DB", "S", "FS", "SS", "SAF", "LB", "ILB", "OLB", "MLB", "DE", "DT", "NT", "DL", "EDGE"].includes(pos);
     if (defense && !out) return;
     const role = roleOf(r);
-    if (pos === "QB" && role !== "star" && role !== "starter") return;
-    const mult = defense ? 1 : role === "star" ? 1.55 : role === "starter" ? 1 : role === "rotation" ? 0.3 : role === "bench" ? 0.06 : 0.4;
+    if (["QB", "RB", "WR", "TE"].includes(pos) && role !== "star" && role !== "starter") return;
+    const spot = slotKey(pos);
+    if (spot) {
+      used[spot] = used[spot] || 0;
+      if (used[spot] >= slots[spot]) return;
+      used[spot] += 1;
+    }
+    const mult = defense ? 1 : role === "star" ? 1.55 : role === "starter" ? 1 : 0;
     let hit = 0;
     if (pos === "QB") {
       if (!cfb && out) hit = 5.2;
@@ -2621,7 +2640,7 @@ function injuryTaxFor(game, side) {
     } else if (pos === "TE" && out) hit = 0.7;
     else if (["CB", "EDGE", "DE"].includes(pos) && out) hit = 1.15;
     else if (["DT", "NT", "S", "LB", "DB", "DL", "FS", "SS", "SAF", "ILB", "OLB", "MLB"].includes(pos) && out) hit = 0.55;
-    else if (out) hit = 0.22;
+    else if (out) hit = 0;
     if (defense) defTax += hit;
     else tax += hit * mult;
     if (!defense && hit * mult >= 0.45 && (role === "star" || role === "starter")) {
