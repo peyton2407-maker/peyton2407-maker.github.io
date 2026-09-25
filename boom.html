@@ -5508,19 +5508,33 @@ function injPosGroup(pos){
   if(["ILB","OLB","MLB","LB"].includes(p)) return "LB";
   return p;
 }
+function sameSquad(team, tm) {
+  const t = String(team || "").toLowerCase().trim();
+  const full = String((tm && tm.name) || "").toLowerCase().trim();
+  const short = String((tm && tm.short) || "").toLowerCase().trim();
+  const abbr = String((tm && tm.abbr) || "").toLowerCase().trim();
+  if (!t || !full) return false;
+  if (t === full || t === abbr) return true;
+  if (short.length > 3 && (t === short || t.endsWith(" " + short))) return true;
+  const longer = t.length >= full.length ? t : full;
+  const shorter = t.length >= full.length ? full : t;
+  if (!longer.startsWith(shorter + " ")) return false;
+  if (shorter.split(" ").length >= 2) return true;
+  return !!(short && longer.includes(short));
+}
 function attachInjuriesToGames(){
   try { lockSeasonQbs(); } catch (e) {}
   const bag = (DATA && DATA.injuries) || window.__INJ || {};
   (DATA.games||[]).forEach(g=>{
     const pool=g.league==="nfl"?bag.nfl:bag.cfb;
     const hits=(pool||[]).filter(r=>{
-      const t=(r.team||"").toLowerCase();
-      return t.includes((g.home.name||"").toLowerCase()) || t.includes((g.away.name||"").toLowerCase());
+      if (g.league === "cfb" && typeof cfbRowIsNfl === "function" && cfbRowIsNfl(r)) return false;
+      return sameSquad(r.team, g.home) || sameSquad(r.team, g.away);
     }).filter(r=>statusWeight(r.tag)>0);
     hits.sort((a,b)=>b.score-a.score);
     g.injuries=hits.slice(0,8).map(r=>({
       name:r.name, id:r.id, status:r.tag||r.status, pos:r.pos, tag:r.tag, league:r.league||g.league,
-      side: (r.team||"").toLowerCase().includes((g.home.name||"").toLowerCase())?"home":"away",
+      side: sameSquad(r.team, g.home) ? "home" : "away",
       short:r.short, reporter:r.reporter, score:r.score
     }));
     window.__FACES = null;
@@ -5663,6 +5677,22 @@ function cfbRowIsNfl(r) {
   });
   return nflNames.has(name);
 }
+function nflNamesMentioned(text) {
+  const low = String(text || "").toLowerCase();
+  if (low.length < 6 || typeof DATA === "undefined" || !DATA) return false;
+  if (!window.__NFL_NAME_LIST) {
+    const set = new Set();
+    (DATA.games || []).forEach((g) => {
+      if (g.league !== "nfl") return;
+      (g.props || []).forEach((p) => { if (p.name && String(p.name).includes(" ")) set.add(String(p.name).toLowerCase()); });
+    });
+    (((DATA.injuries || {}).nfl) || []).forEach((r) => {
+      if (r && r.name && String(r.name).includes(" ") && r.pos !== "NEWS") set.add(String(r.name).toLowerCase());
+    });
+    window.__NFL_NAME_LIST = [...set];
+  }
+  return window.__NFL_NAME_LIST.some((n) => n.length > 5 && low.includes(n));
+}
 function injImpact(r){ return statusWeight(r.tag || r.status); }
 function renderInjuries(league){
   const box=document.getElementById("injBoard");
@@ -5725,12 +5755,14 @@ function renderInjuries(league){
   box.innerHTML = shown.map((r, i)=>{
     const rep = r.reporter ? `${r.reporter.name}${r.reporter.outlet? " · "+r.reporter.outlet:""}` : "ESPN injury report";
     const tidy = (t) => String(t || "").replace(/<[^>]+>/g, " ").replace(/class="collapse"[^>]*>/gi, "").replace(/injuryCollapse[A-Za-z0-9]+/g, "").replace(/\s+/g, " ").trim();
-    const quote = tidy(r.long || r.short) || "No reporter note posted yet.";
+    const quoteRaw = tidy(r.long || r.short) || "No reporter note posted yet.";
+    const quote = league === "cfb" && nflNamesMentioned(quoteRaw) ? "College report. NFL names are left off this card." : quoteRaw;
     const gd = r.tag || "—";
     const whenGame = r.gameWhen && typeof fmt!=="undefined" ? fmt.when(r.gameWhen) : "";
     const full = ((r.reports && r.reports.length) ? r.reports : [{ label: rep, text: quote }]).map((b) => {
       const text = tidy(b.text);
       if (!text || /double gs/i.test(b.label || "") || /double gs/i.test(text)) return "";
+      if (league === "cfb" && nflNamesMentioned(text)) return "";
       if (/onion|babylon bee|clickhole|satire|parody/i.test((b.label || "") + " " + text)) return "";
       return `<div class="report-block"><b>${escHtml(b.label || "Report")}</b><p>${escHtml(text)}</p></div>`;
     }).join("");
@@ -5747,7 +5779,7 @@ function renderInjuries(league){
         <span class="gd-chip gd-${escHtml(gd)}">${escHtml(gd)}</span>
       </div>
       ${r.gameLabel?`<div class="inj-game">This week: ${escHtml(r.gameLabel)}${whenGame? " · "+escHtml(whenGame):""}${r.returnDate? " · listed return "+escHtml(r.returnDate):""}</div>`:(r.returnDate?`<div class="inj-game">Listed return ${escHtml(r.returnDate)}</div>`:"")}
-      ${replacementHtml(r)}
+      ${league === "nfl" ? replacementHtml(r) : ""}
       <div class="reporter"><b>${escHtml(rep)}</b> ${escHtml(quote)}</div>
       <div class="inj-more">${(r.reports && r.reports.length > 1) ? (r.reports.length + " reports · tap to read what everyone is saying") : "Tap to read the full report"}</div>
       <div class="report-full">${full}</div>
@@ -8799,6 +8831,7 @@ function replacementLine(p) {
 }
 
 function replacementHtml(r) {
+  if (!r || r.league !== "nfl") return "";
   const hit = replacementFor(r);
   if (!hit) return "";
   return `<div class="inj-next"><b>Now playing</b> ${escHtml(hit.p.name)} · ${escHtml(replacementLine(hit.p))}</div>`;
@@ -8911,6 +8944,7 @@ function openInjury(i, el) {
   const blocks = bits.map((b) => {
     const text = clean(b.text);
     if (!text || seen.has(text)) return "";
+    if (r.league === "cfb" && nflNamesMentioned(text)) return "";
     if (/double gs/i.test(b.label || "") || /double gs/i.test(text)) return "";
     if (/onion|babylon bee|clickhole|satire|parody/i.test((b.label || "") + " " + text)) return "";
     seen.add(text);
@@ -8926,7 +8960,7 @@ function openInjury(i, el) {
       </div></div>
       <button class="close" id="closeModal" type="button">Close</button>
     </div>
-    ${replacementHtml(r)}
+    ${r.league === "nfl" ? replacementHtml(r) : ""}
     ${blocks || "<p>No full note was posted.</p>"}`;
   placeOverlay(ov);
   const closer = document.getElementById("closeModal");
