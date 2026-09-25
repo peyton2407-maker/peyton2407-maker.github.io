@@ -4890,9 +4890,14 @@ function parlayHeroHtml(league) {
   return rows.map(parlayCardHtml).join("");
 }
 function collectPropParlayLegs() {
+  const played = /brian robinson|jordan love|kaleb johnson|olamide zaccheaus|austin hooper|jahan dotson/i;
   const rows = (typeof collectValueDogs === "function" ? collectValueDogs() : []).filter((r) => {
     if ((r.league || "nfl") !== "nfl") return false;
     if (r.pos === "TEAM") return false;
+    if (played.test(String(r.name || ""))) return false;
+    const g = (DATA.games || []).find((x) => String(x.id) === String(r.game_id));
+    if (g && (g.completed || (g.date && new Date(g.date).getTime() < Date.now()))) return false;
+    if (/ATL\s*@\s*GB/i.test(String(r.game || ""))) return false;
     if (r.kind === "td") return r.hit >= 0.38 && r.hit <= 0.55 && Number(r.odds) >= 100;
     if (r.kind === "over" || r.kind === "under") {
       if (r.hit < 0.56 || r.hit > 0.73) return false;
