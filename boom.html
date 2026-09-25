@@ -2559,35 +2559,74 @@ function injuryTaxFor(game, side) {
   const rows = (game.injuries || []).filter((r) => r.side === side || ((r.team || "").toLowerCase().includes((game[side].name || "").toLowerCase())));
   let tax = 0;
   let olOut = 0;
+  const who = [];
   const cfb = game.league === "cfb";
+  const flat = (n) => String(n || "").toLowerCase().replace(/[^a-z]/g, "");
+  const statOf = (p) => {
+    if (!p) return 0;
+    if (p.pos === "QB") return Number(p.pass_yds) || 0;
+    if (p.pos === "RB") return (Number(p.rush_yds) || 0) + (Number(p.rec_yds) || 0);
+    return (Number(p.rec_yds) || 0) + (Number(p.rush_yds) || 0);
+  };
+  const roleOf = (r) => {
+    const pos = String(r.pos || "").toUpperCase();
+    if (cfb || !["QB", "RB", "WR", "TE"].includes(pos)) return "normal";
+    const key = flat(r.name);
+    const mine = (game.props || []).find((p) => {
+      const k = flat(p.name);
+      return k && key && (k === key || (k.length > 6 && key.length > 6 && (k.includes(key) || key.includes(k))));
+    });
+    const mineStat = statOf(mine);
+    if (!mine || mineStat < (pos === "QB" ? 40 : 18)) return "bench";
+    const peers = [];
+    (typeof DATA !== "undefined" && DATA.games || []).forEach((g) => {
+      if (!g || g.league !== "nfl") return;
+      (g.props || []).forEach((p) => { if (String(p.pos || "").toUpperCase() === pos) peers.push(statOf(p)); });
+    });
+    peers.sort((a, b) => b - a);
+    const rank = peers.filter((v) => v > mineStat).length + 1;
+    const sideProps = (game.props || []).filter((p) => p.side === mine.side && String(p.pos || "").toUpperCase() === pos);
+    const lead = !sideProps.some((p) => statOf(p) > mineStat + 8);
+    if (rank <= 10) return "star";
+    if (lead) return "starter";
+    return "rotation";
+  };
   rows.forEach((r) => {
     const tag = (r.tag || r.status || "").toUpperCase();
     const pos = (r.pos || "").toUpperCase();
     const out = /OUT|IR|INACTIVE|SUSP|INJURED RESERVE/.test(tag);
     const dbt = /DOUBT/.test(tag);
     const q = /QUESTION|^Q$/.test(tag);
+    const role = roleOf(r);
+    const mult = role === "star" ? 1.55 : role === "starter" ? 1 : role === "rotation" ? 0.3 : role === "bench" ? 0.06 : 0.4;
+    let hit = 0;
     if (pos === "QB") {
-      if (cfb) {
-        /* College quarterback points are applied once in the college score card, not here. */
-      } else if (out) tax += 5.2;
-      else if (dbt) tax += 2.3;
-      else if (q) tax += 0.65;
+      if (!cfb && out) hit = 5.2;
+      else if (!cfb && dbt) hit = 2.3;
+      else if (!cfb && q) hit = 0.65;
     } else if (["LT", "RT", "T", "OT"].includes(pos)) {
-      if (out) { tax += 1.4; olOut++; }
-      else if (dbt) tax += 0.55;
+      if (out) { hit = 1.4; olOut++; }
+      else if (dbt) hit = 0.55;
     } else if (pos === "C") {
-      if (out) { tax += 1.15; olOut++; }
-    } else if (["G", "OG", "OL"].includes(pos) && out) { tax += 0.7; olOut++; }
+      if (out) { hit = 1.15; olOut++; }
+    } else if (["G", "OG", "OL"].includes(pos) && out) { hit = 0.7; olOut++; }
     else if (["WR", "RB"].includes(pos)) {
-      if (out) tax += 1.2;
-      else if (dbt) tax += 0.45;
-      else if (q) tax += 0.15;
-    } else if (pos === "TE" && out) tax += 0.7;
-    else if (["CB", "EDGE", "DE"].includes(pos) && out) tax += 0.7;
-    else if (["DT", "NT", "S", "LB"].includes(pos) && out) tax += 0.4;
-    else if (out) tax += 0.22;
+      if (out) hit = 1.2;
+      else if (dbt) hit = 0.45;
+      else if (q) hit = 0.15;
+    } else if (pos === "TE" && out) hit = 0.7;
+    else if (["CB", "EDGE", "DE"].includes(pos) && out) hit = 0.7;
+    else if (["DT", "NT", "S", "LB"].includes(pos) && out) hit = 0.4;
+    else if (out) hit = 0.22;
+    tax += hit * mult;
+    if (hit * mult >= 0.45 && (role === "star" || role === "starter")) {
+      const last = String(r.name || "").split(" ").slice(-1)[0];
+      if (last) who.push(last + (role === "star" ? " top 10" : ""));
+    }
   });
-  if (olOut >= 2) tax += 0.8;
+  if (olOut >= 2) tax += 0.35;
+  game._injWho = game._injWho || {};
+  game._injWho[side] = who;
   return Math.min(cfb ? 9 : 7.8, tax);
 }
 function haversineMiles(a, b) {
@@ -2697,8 +2736,11 @@ function applySituationalToGame(g) {
     const v = Number(raw) * scale;
     if (Math.abs(v) >= 0.1) bits.push({ label, v });
   };
-  add(g.home.abbr + " injuries", -ht);
-  add(g.away.abbr + " injuries", at);
+  const homeWho = ((g._injWho || {}).home || []).slice(0, 3).join(", ");
+  const awayWho = ((g._injWho || {}).away || []).slice(0, 3).join(", ");
+  add(g.home.abbr + " injuries" + (homeWho ? " (" + homeWho + ")" : ""), -ht);
+  add(g.away.abbr + " injuries" + (awayWho ? " (" + awayWho + ")" : ""), at);
+
   add(g.home.abbr + " rest", -rth);
   add(g.away.abbr + " rest", rta);
   add("travel", -(tr.homeTax || 0) + (tr.awayTax || 0));
