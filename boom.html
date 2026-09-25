@@ -6931,7 +6931,12 @@ function renderProps() {
   const pos = ($("#propPos") && $("#propPos").value) || "ALL";
   const sort = ($("#propSort") && $("#propSort").value) || "best";
   const q = (($("#propQ") && $("#propQ").value) || "").trim().toLowerCase();
-  let rows = collectNflProps().filter((p) => !p.completed && p.pos !== "K");
+  let rows = collectNflProps().filter((p) => {
+    if (p.completed || p.pos === "K") return false;
+    const kick = p.date ? new Date(p.date).getTime() : 0;
+    if (kick && Date.now() - kick > 4 * 60 * 60 * 1000) return false;
+    return true;
+  });
   if (day === "best" || day === "week") {
     /* upcoming week already filtered */
   } else if (day === "thu") {
@@ -6973,7 +6978,7 @@ function renderProps() {
     return b._score - a._score;
   });
   if (day === "best" || day === "week") {
-    const nowStarting = rows.filter((p) => p.role);
+    const nowStarting = rows.filter((p) => p.role && (!p.date || new Date(p.date).getTime() > Date.now()));
     rows = nowStarting.concat(rows.filter((p) => !p.role));
   }
   const best = (day === "best" && hitCut === "all") ? rows.slice(0, 18) : rows.slice(0, 72);
@@ -8164,7 +8169,12 @@ function promoteStartingQbs() {
     { out: "Tua Tagovailoa", name: "Michael Penix Jr.", role: "Starting Thursday. Penix is back." }
   ];
   (DATA.games || []).forEach((g) => {
-    if (!g || g.completed || g.league !== "nfl" || !g.props) return;
+    if (!g || g.league !== "nfl" || !g.props) return;
+    const started = g.completed || (g.date && new Date(g.date).getTime() < Date.now());
+    if (started) {
+      g.props.forEach((p) => { if (p && p.role && /thursday/i.test(p.role)) p.role = ""; });
+      return;
+    }
     moves.forEach((spec) => {
       const out = g.props.find((p) => p.name === spec.out);
       const qb = g.props.find((p) => p.name === spec.name);
