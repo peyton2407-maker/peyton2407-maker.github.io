@@ -3619,6 +3619,15 @@ function applySplitDesk() {
       g.box.home_points = home;
       g.box.total_points = p.hashmark_total;
     }
+    const mktM = g.odds && g.odds.home_spread != null ? -Number(g.odds.home_spread) : null;
+    const mktT = row.totalLine != null ? Number(row.totalLine) : (g.odds && g.odds.total != null ? Number(g.odds.total) : null);
+    const pack = (window.SPLIT_NOTES || {})[String(g.id)];
+    const why = ((pack && pack.notes) || []).map((n) => n.edge + ". " + n.line);
+    g.situational = {
+      margin_adj: mktM != null ? +(p.blended_margin - mktM).toFixed(2) : 0,
+      total_adj: mktT != null ? +(p.hashmark_total - mktT).toFixed(2) : 0,
+      notes: why.length ? why : ["Same score as The Split."]
+    };
   });
 }
 window.applySplitDesk = applySplitDesk;
