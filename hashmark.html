@@ -396,7 +396,9 @@ document.addEventListener("click", (e) => {
 $("#q").addEventListener("input", renderList);
 $("#sq").addEventListener("input", renderSheet);
 $("#back").addEventListener("click", showList);
-renderList();
+const hashId = (location.hash || "").replace("#", "");
+if (hashId && GAMES.some((g) => String(g.id) === hashId)) showSheet(hashId);
+else renderList();
 </script>
 </body>
 </html>
