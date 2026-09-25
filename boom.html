@@ -1877,7 +1877,7 @@ function climateShift(g, impact) {
   const word = kinds.includes("cold") ? "cold" : kinds.includes("wet") ? "rain" : kinds.includes("wind") ? "wind" : "heat";
   return {
     edge: +edge.toFixed(2),
-    note: `${fav} is used to this ${word}. ${other} is not. ${fav} +${Math.abs(edge).toFixed(1)}.`
+    note: `${fav} is used to this ${word}. ${other} is not.`
   };
 }
 function applyWeatherToGame(g) {
@@ -1962,9 +1962,8 @@ function settleNfl(g) {
   const learnM = Math.max(-learnCap, Math.min(learnCap, p.learned ? Number(p.learned.margin_shift) || 0 : 0));
   const learnT = Math.max(-1.5, Math.min(1.5, p.learned ? Number(p.learned.total_shift) || 0 : 0));
   const wx = Number(p.weather_adj_total) || 0;
-  const wxM = Number(g.weather_impact && g.weather_impact.home_edge) || 0;
   if (margin == null || total == null) return g;
-  writeSettledLine(g, margin + learnM + wxM, total + learnT + wx);
+  writeSettledLine(g, margin + learnM, total + learnT + wx);
   const edge = p.edge_spread;
   if (edge != null && g.odds && g.odds.home_spread != null) {
     const sp = Number(g.odds.home_spread);
@@ -2689,13 +2688,7 @@ function applySituationalToGame(g) {
   const tAdj = -0.24 * (ht + at) - 0.32 * (Math.max(0, rth) + Math.max(0, rta)) + (tr.tot || 0) + (ref.tot || 0);
   const capM = g.league === "nfl" ? 6.5 : 8;
   const capT = g.league === "nfl" ? 4.5 : 5.5;
-  const m = Math.max(-capM, Math.min(capM, mAdj));
-  const t = Math.max(-capT, Math.min(capT, tAdj));
-  if (p._baseMargin != null) {
-    p.blended_margin = +(p._baseMargin + m).toFixed(2);
-    p.hashmark_home_spread = +(-p.blended_margin).toFixed(1);
-  }
-  if (p._baseTotal != null) p.hashmark_total = +(p._baseTotal + t).toFixed(1);
+  const lookedM = Math.max(-capM, Math.min(capM, mAdj));
   if (p.blended_margin != null && p.hashmark_total != null) {
     p.home_points = +Math.max(3, (Number(p.hashmark_total) + Number(p.blended_margin)) / 2).toFixed(1);
     p.away_points = +Math.max(3, (Number(p.hashmark_total) - Number(p.blended_margin)) / 2).toFixed(1);
@@ -2714,15 +2707,15 @@ function applySituationalToGame(g) {
   p._preLearnMargin = p.blended_margin;
   p._preLearnTotal = p.hashmark_total;
   const notes = [];
-  if (ht) notes.push(`${g.home.abbr} injury −${ht.toFixed(1)}`);
-  if (at) notes.push(`${g.away.abbr} injury −${at.toFixed(1)}`);
-  if (rh.kind === "short" || rh.kind === "bye" || rh.kind === "extra") notes.push(`${g.home.abbr} rest ${rh.kind} (${rh.days ? rh.days.toFixed(1) : "—"}d)`);
-  if (ra.kind === "short" || ra.kind === "bye" || ra.kind === "extra") notes.push(`${g.away.abbr} rest ${ra.kind} (${ra.days ? ra.days.toFixed(1) : "—"}d)`);
-  (tr.notes || []).forEach((n) => notes.push(n));
-  if (ref.name) notes.push(ref.note);
-  if (g.weather_impact && g.weather_impact.climate_note) notes.push(g.weather_impact.climate_note);
-  (epa.notes || []).forEach((n) => notes.push(n));
-  (stm.notes || []).forEach((n) => notes.push(n));
+  const wxPts = Number(p.weather_adj_total) || 0;
+  if (Math.abs(wxPts) >= 0.4) notes.push(`Weather is on the total only, ${wxPts > 0 ? "+" : ""}${wxPts.toFixed(1)}.`);
+  if (ht >= 0.5) notes.push(`${g.home.abbr} injuries are already in the Vegas line. We did not add them again.`);
+  if (at >= 0.5) notes.push(`${g.away.abbr} injuries are already in the Vegas line. We did not add them again.`);
+  if (rh.kind === "short" || rh.kind === "bye") notes.push(`${g.home.abbr} rest is ${rh.kind}. We did not move the line for it.`);
+  if (ra.kind === "short" || ra.kind === "bye") notes.push(`${g.away.abbr} rest is ${ra.kind}. We did not move the line for it.`);
+  if ((tr.miles || 0) >= 1200) notes.push(`Long trip is already in the number. We did not add it again.`);
+  if (g.weather_impact && g.weather_impact.climate_note) notes.push(g.weather_impact.climate_note + " We did not move the spread for it.");
+  if (!notes.length) notes.push("We did not move this line. Injuries, rest, and weather did not change it.");
   g.situational = {
     injury: { home: +ht.toFixed(2), away: +at.toFixed(2) },
     rest: { home: rh, away: ra },
@@ -2730,8 +2723,9 @@ function applySituationalToGame(g) {
     referee: ref,
     epa,
     steam: stm,
-    margin_adj: +m.toFixed(2),
-    total_adj: +t.toFixed(2),
+    margin_adj: 0,
+    total_adj: +wxPts.toFixed(2),
+    looked_margin: +lookedM.toFixed(2),
     notes
   };
   if (g.box) {
@@ -5944,22 +5938,10 @@ function deskPanelHtml(g) {
   const s = g.situational || { margin_adj: 0, total_adj: 0, notes: [] };
   const notes = (s.notes && s.notes.length)
     ? s.notes
-    : ["Nothing extra moved this line — injuries, rest, and weather are all normal."];
-  const epa = s.epa || {};
-  const stm = s.steam || {};
-  const inj = s.injury || {};
-  const bits = [];
-  const injM = -Number(inj.home || 0) + Number(inj.away || 0);
-  if (injM) bits.push(`Injuries ${fmt.signed(injM)}`);
-  if (epa.m) bits.push(`Recent form ${fmt.signed(epa.m)}`);
-  if (stm.m) bits.push(`Betting line ${fmt.signed(stm.m)}`);
-  if (g.weather_impact && g.weather_impact.home_edge) bits.push(`Weather fit ${fmt.signed(g.weather_impact.home_edge)}`);
-  if (epa.t) bits.push(`Form on the total ${fmt.signed(epa.t)}`);
-  if (stm.t) bits.push(`Total move ${fmt.signed(stm.t)}`);
+    : ["We did not move this line."];
   return `<div class="desk-panel">
     <div class="lbl">Why we moved this line</div>
-    <div class="desk-nums"><b>Spread ${fmt.signed(s.margin_adj)}</b><b>Total ${fmt.signed(s.total_adj)}</b></div>
-    ${bits.length ? `<div class="desk-nums" style="font-size:13px">${bits.map((b) => `<span>${b}</span>`).join("")}</div>` : ""}
+    <div class="desk-nums"><b>Spread ${fmt.signed(s.margin_adj || 0)}</b><b>Total ${fmt.signed(s.total_adj || 0)}</b></div>
     <ul class="desk-notes">${notes.map((n) => `<li>${n}</li>`).join("")}</ul>
   </div>`;
 }
