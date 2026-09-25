@@ -1028,8 +1028,8 @@ button.prop-card.inj-open .report-full{display:block}
   <div class="app">
 
     <nav class="gg-apps" aria-label="Apps">
-      <a class="on" href="/hashmark.html">Double Gs</a>
-      <a href="./hashmark.html">The Split</a>
+      <a class="on" href="/boom.html">Double Gs</a>
+      <a href="/split/">The Split</a>
     </nav>
     <img class="share-card" src="/og.jpg?v=3" alt="Double G's The Split" />
     <header class="topbar">
@@ -3218,7 +3218,7 @@ function cfbReadHtml(g, full) {
   return `<div class="split-note">
     <div class="lbl">Matchup · from The Split</div>
     <ul>${show.map((n) => `<li><b>${n.edge}</b> ${n.line}</li>`).join("")}</ul>
-    <a href="./hashmark.html#${encodeURIComponent(String(g.id))}" onclick="event.stopPropagation()">Open the full sheet</a>
+    <a href="/split/#${encodeURIComponent(String(g.id))}" onclick="event.stopPropagation()">Open the full sheet</a>
   </div>`;
 }
 function projectGame(game, ratings) {
