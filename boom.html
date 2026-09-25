@@ -1957,15 +1957,13 @@ function settleNfl(g) {
   const mktT = g.odds && g.odds.total != null ? Number(g.odds.total) : null;
   if (total != null && mktT != null) total = mw * mktT + (1 - mw) * total;
   else total = total != null ? total : mktT;
-  const learnN = p.learned ? (Number(p.learned.home_n) || 0) + (Number(p.learned.away_n) || 0) : 0;
-  const learnCap = learnN <= 2 ? 1.25 : learnN <= 6 ? 2.25 : 4;
-  const learnM = Math.max(-learnCap, Math.min(learnCap, p.learned ? Number(p.learned.margin_shift) || 0 : 0));
-  const learnT = Math.max(-1.5, Math.min(1.5, p.learned ? Number(p.learned.total_shift) || 0 : 0));
   const wxRaw = Number(g.weather_impact && g.weather_impact.adj) || 0;
   const wx = Math.max(-2.2, Math.min(0.4, +(wxRaw * 0.4).toFixed(2)));
   p.weather_adj_total = wx;
   if (margin == null || total == null) return g;
-  writeSettledLine(g, margin + learnM, total + learnT + wx);
+  p._cleanMargin = margin;
+  p._cleanTotal = +(total + wx).toFixed(2);
+  writeSettledLine(g, p._cleanMargin, p._cleanTotal);
   const edge = p.edge_spread;
   if (edge != null && g.odds && g.odds.home_spread != null) {
     const sp = Number(g.odds.home_spread);
@@ -2251,8 +2249,14 @@ function applyLearningToGame(g) {
   const hm = (hr.margin || 0) - (ar.margin || 0);
   const totShiftBase = ((hr.total || 0) + (ar.total || 0)) / 2;
   const p = g.proj;
-  if (p._preLearnMargin == null && p.blended_margin != null) p._preLearnMargin = Number(p.blended_margin);
-  if (p._preLearnTotal == null && p.hashmark_total != null) p._preLearnTotal = Number(p.hashmark_total);
+  if (p._cleanMargin == null && p.blended_margin != null) {
+    p._cleanMargin = Number(p.blended_margin);
+    p._cleanTotal = Number(p.hashmark_total);
+  }
+  if (p._cleanMargin != null) {
+    p._preLearnMargin = Number(p._cleanMargin);
+    p._preLearnTotal = Number(p._cleanTotal);
+  }
   const nGames = (hr.n || 0) + (ar.n || 0);
   const cfb = lg === "cfb";
   let mShift = 0, totShift = 0, learnNote = "";
@@ -2807,8 +2811,6 @@ function applySituationalToGame(g) {
   if (g.odds && g.odds.total != null && p.hashmark_total != null) {
     p.edge_total = +(p.hashmark_total - Number(g.odds.total)).toFixed(2);
   }
-  p._preLearnMargin = p.blended_margin;
-  p._preLearnTotal = p.hashmark_total;
   const sign = (v) => (v > 0 ? "+" : "") + Number(v).toFixed(1);
   const notes = bits.map((b) => `${b.label} ${sign(b.v)}`);
   tBits.forEach((b) => notes.push(`${b.label} ${sign(b.v)}`));
@@ -7712,10 +7714,8 @@ async function pullLiveScores() {
       if (!wasDone && g.completed && g.league === "cfb") newFinals++;
     });
     if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games);
-    try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) {}
-    const learned = typeof rebuildSharedLearning === "function" ? rebuildSharedLearning(DATA.games || []) : 0;
-    (DATA.games || []).forEach((g) => applyLearningToGame(g));
-    if (typeof settleBoard === "function") settleBoard();
+    if (typeof rebuildSharedLearning === "function") rebuildSharedLearning(DATA.games || []);
+    try { if (typeof reapplyDeskLine === "function") reapplyDeskLine(); } catch (e) {}
     if (newFinals) {
       if (typeof repriceCfbBoard === "function") { /* residuals already applied */ }
       if (DATA.notes) {
@@ -8374,15 +8374,18 @@ function scheduleDeskRefresh(force) {
 }
 
 
-function finishProjections() {
-  (DATA.games || []).forEach((g) => { if (typeof applyLearningToGame === "function") applyLearningToGame(g); });
+function reapplyDeskLine() {
   if (typeof settleBoard === "function") settleBoard();
+  (DATA.games || []).forEach((g) => { if (typeof applyLearningToGame === "function") applyLearningToGame(g); });
   (DATA.games || []).forEach((g) => {
     if (!g || !g.proj || g.completed) return;
     delete g.proj._baseMargin;
     delete g.proj._baseTotal;
   });
   if (typeof applySituationalBoard === "function") applySituationalBoard();
+}
+function finishProjections() {
+  reapplyDeskLine();
 }
 
 async function fetchText(url) {
