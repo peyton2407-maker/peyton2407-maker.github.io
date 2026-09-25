@@ -3603,7 +3603,7 @@ function repriceCfbBoard() {
 window.learnFromFinals = learnFromFinals;
 window.applyLearningToGame = applyLearningToGame;
 function cfbStarterNudge(g) {
-  const worth = { QB: 0.85, RB: 0.32, WR: 0.26, TE: 0.14, OT: 0.28, LT: 0.28, RT: 0.28, T: 0.28, C: 0.18, CB: 0.2, EDGE: 0.2, DE: 0.2 };
+  const worth = { QB: 0.85, RB: 0.32, WR: 0.26, TE: 0.14, OT: 0.28, LT: 0.28, RT: 0.28, T: 0.28, C: 0.18, CB: 0.2, EDGE: 0.2, DE: 0.2, S: 0.18, FS: 0.18, SS: 0.18, SAF: 0.18, LB: 0.18, ILB: 0.18, OLB: 0.18, MLB: 0.18 };
   const best = {};
   (g.injuries || []).forEach((r) => {
     const tag = String(r.tag || r.status || "").toUpperCase();
@@ -3614,7 +3614,7 @@ function cfbStarterNudge(g) {
     if (/backup|third string|qb3|emergency|practice squad|walk-on|walk on/.test(blob)) return;
     const side = r.side === "home" || r.side === "away" ? r.side : "";
     if (!side) return;
-    const group = ["LT", "RT", "T", "OT"].includes(pos) ? "OT" : (pos === "DE" ? "EDGE" : pos);
+    const group = ["LT", "RT", "T", "OT"].includes(pos) ? "OT" : (pos === "DE" ? "EDGE" : (["S", "FS", "SS", "SAF"].includes(pos) ? "S" : (["LB", "ILB", "OLB", "MLB"].includes(pos) ? "LB" : pos)));
     const key = side + "|" + group;
     const score = Number(r.score) || 0;
     if (!best[key] || score > best[key].score) best[key] = { r, score, side, group, doubt: /DOUBT/.test(tag) };
@@ -3632,7 +3632,20 @@ function cfbStarterNudge(g) {
   });
   const margin = Math.max(-1.2, Math.min(1.2, away - home));
   const total = Math.max(-0.45, Math.min(0, -Math.min(0.45, (home + away) * 0.22)));
-  return { margin: +margin.toFixed(2), total: +total.toFixed(2), names: names.slice(0, 3) };
+  return { margin: +margin.toFixed(2), total: +total.toFixed(2), names: names.slice(0, 4) };
+}
+function cfbLearnNudge(g) {
+  const hr = residualFor("cfb", g.home && g.home.id);
+  const ar = residualFor("cfb", g.away && g.away.id);
+  const nGames = (hr.n || 0) + (ar.n || 0);
+  if (!nGames) return { margin: 0, total: 0, note: "" };
+  const confw = nGames === 1 ? 0.62 : nGames <= 3 ? 0.82 : 1;
+  const hm = (hr.margin || 0) - (ar.margin || 0);
+  const totBase = ((hr.total || 0) + (ar.total || 0)) / 2;
+  const margin = Math.max(-4.5, Math.min(4.5, 0.55 * confw * hm));
+  const total = Math.max(-4, Math.min(4, 0.35 * confw * totBase));
+  const note = Math.abs(margin) < 0.08 && Math.abs(total) < 0.08 ? "" : "After " + nGames + " finished college games, next week's line moves " + (margin > 0 ? "+" : "") + margin.toFixed(1) + ".";
+  return { margin: +margin.toFixed(2), total: +total.toFixed(2), note: note };
 }
 function cfbHomeFit(g, side) {
   const id = String((g[side] && g[side].id) || "");
@@ -3721,8 +3734,9 @@ function applySplitDesk() {
     p.split_total = p.hashmark_total;
     const nudge = cfbStarterNudge(g);
     const wxn = cfbWeatherNudge(g);
-    const moveM = Math.max(-1.6, Math.min(1.6, +(nudge.margin + wxn.margin).toFixed(2)));
-    const moveT = Math.max(-1.1, Math.min(0.15, +(nudge.total + wxn.total).toFixed(2)));
+    const learned = cfbLearnNudge(g);
+    const moveM = Math.max(-5.5, Math.min(5.5, +(nudge.margin + wxn.margin + learned.margin).toFixed(2)));
+    const moveT = Math.max(-4.5, Math.min(4.2, +(nudge.total + wxn.total + learned.total).toFixed(2)));
     if (Math.abs(moveM) >= 0.12 || Math.abs(moveT) >= 0.08) {
       const dgMargin = +(p.blended_margin + moveM).toFixed(2);
       const dgTotal = +Math.max(20, p.hashmark_total + moveT).toFixed(1);
@@ -3753,7 +3767,8 @@ function applySplitDesk() {
       total_adj: moveT,
       notes: (why.length ? why : ["Same score as The Split."]).concat([
         nudge.names.length ? "Double Gs injuries. Starters out: " + nudge.names.join(", ") + ". Moved " + (nudge.margin > 0 ? "+" : "") + nudge.margin.toFixed(1) + "." : "No starter who matters is out.",
-        wxn.note ? "Double Gs weather. " + wxn.note : "Weather is calm, or the forecast is not in yet."
+        wxn.note ? "Double Gs weather. " + wxn.note : "Weather is calm, or the forecast is not in yet.",
+        learned.note || "No finished college game has moved this line yet."
       ])
     };
   });
