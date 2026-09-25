@@ -1043,6 +1043,8 @@ body{font-size:17px;line-height:1.45}
 .home-jump.hot span{color:#f6edd4}
 #tabBar a.tab.star::after{content:" · tap";font-weight:800;color:#ffe08a}
 #boomSection .hm-sub,#boomSection .hm-kick,#boomSection .hm-team span{color:#d5e3d8;font-size:14px}
+#parlayTabs .ptab{color:#d7e2d4;font-size:16px;font-weight:700;padding:12px 2px 10px;margin:0 16px 0 0}
+#parlayTabs .ptab.active{color:#d6ff4a;border-bottom-color:#d6ff4a}
 </style>
 </head>
 <body>
@@ -1267,12 +1269,13 @@ body{font-size:17px;line-height:1.45}
       </div>
       <div class="controls">
         <div class="tabs" id="parlayTabs" style="flex:1">
-          <button class="ptab active" type="button" data-parlay="nfl">NFL</button>
-          <button class="ptab" type="button" data-parlay="dogs">underdog</button>
-          <button class="ptab" type="button" data-parlay="favs">favorite</button>
-          <button class="ptab" type="button" data-parlay="totals">totals</button>
-          <button class="ptab" type="button" data-parlay="cfb">college</button>
-          <button class="ptab" type="button" data-parlay="props">prop</button>
+          <button class="ptab active" type="button" data-parlay="nfl">NFL parlays</button>
+          <button class="ptab" type="button" data-parlay="dogs">Underdog parlays</button>
+          <button class="ptab" type="button" data-parlay="favs">Favorite parlays</button>
+          <button class="ptab" type="button" data-parlay="totals">Totals</button>
+          <button class="ptab" type="button" data-parlay="cfb">College parlays</button>
+          <button class="ptab" type="button" data-parlay="cdogs">College dogs</button>
+          <button class="ptab" type="button" data-parlay="props">Player prop parlays</button>
         </div>
       </div>
       <p class="subn" id="parlayStamp" style="margin:0 0 10px">Built off the board. Tap a leg for the why. NFL and college stay in their own tabs so a ticket never mixes the two.</p>
