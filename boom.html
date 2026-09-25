@@ -4822,6 +4822,31 @@ function lockedFavoriteParlays() {
     };
   });
 }
+function lockedTotalParlays() {
+  const id = (away, home) => {
+    const g = (DATA.games || []).find((x) => x.league === "nfl" && x.away && x.home && x.away.abbr === away && x.home.abbr === home);
+    return g ? g.id : "";
+  };
+  const kc = {
+    label: "UNDER 45.5", detail: "KC @ MIA total", game_id: id("KC", "MIA"), hit: 0.65, odds: -127,
+    why: "We have fewer points than the posted total. The gap is 1.8 points. Breezy enough to nudge deep shots down. Precip 51% / 0.00\" — expect shorter throws and more run."
+  };
+  const lar = {
+    label: "UNDER 45.5", detail: "LAR @ DEN total", game_id: id("LAR", "DEN"), hit: 0.55, odds: -123,
+    why: "We have fewer points than the posted total. The gap is 1.9 points. Benign conditions — little weather tax."
+  };
+  const min = {
+    label: "UNDER 42.5", detail: "MIN @ TB total", game_id: id("MIN", "TB"), hit: 0.55, odds: -123,
+    why: "We have fewer points than the posted total. The gap is 1.8 points. Benign conditions — little weather tax."
+  };
+  const two = "Only totals where our score and the posted number disagree by enough to take a side. Different games, so one weather swing does not decide both.";
+  const more = "A longer totals ticket. Read the reason on each leg before you stack them. The 2-leg is the cleaner play.";
+  return [
+    { title: "2-leg", legs: [kc, lar], p: 0.36, label: "+179", thought: two },
+    { title: "3-leg", legs: [kc, lar, min], p: 0.20, label: "+407", thought: more },
+    { title: "4-leg", legs: [kc, lar, min], p: 0.20, label: "+407", thought: more }
+  ];
+}
 function parlayHeroHtml(league) {
   const rows = buildParlays(league);
   if (!rows.length) return "";
@@ -5356,6 +5381,9 @@ function renderParlays() {
         : "")
       + (league === "favs"
         ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">This week's favorite ticket</div>` + lockedFavoriteParlays().map(parlayCardHtml).join("")
+        : "")
+      + (league === "totals"
+        ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">This week's totals ticket</div>` + lockedTotalParlays().map(parlayCardHtml).join("")
         : "")
       || `<div class="empty">${themed[league].empty}</div>`;
     hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
