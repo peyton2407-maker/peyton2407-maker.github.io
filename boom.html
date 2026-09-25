@@ -5623,10 +5623,10 @@ async function fetchInjuries(force){
       mergedC.push(r);
     });
     if (coversC.length) {
-      next.cfb = mergedC;
+      next.cfb = mergedC.filter((r) => !cfbRowIsNfl(r));
       next.cfbLive = "covers";
     } else if (!(next.cfb || []).length && mergedC.length) {
-      next.cfb = mergedC;
+      next.cfb = mergedC.filter((r) => !cfbRowIsNfl(r));
       next.cfbLive = "news";
     }
     next.fetched = Date.now();
@@ -5638,6 +5638,30 @@ async function fetchInjuries(force){
     if (typeof renderBoard === "function" && view !== "nflinj" && view !== "cfbinj") renderBoard();
   } catch (e) { console.warn("injuries", e); }
   return ensureInjPack();
+}
+function nflTeamHit(team) {
+  const t = String(team || "").toLowerCase().trim();
+  if (!t || typeof DATA === "undefined" || !DATA) return false;
+  return (DATA.games || []).some((g) => g.league === "nfl" && [g.home, g.away].some((tm) => {
+    const full = String(tm.name || "").toLowerCase();
+    const abbr = String(tm.abbr || "").toLowerCase();
+    return (full && (t === full || t.includes(full))) || (abbr && t === abbr);
+  }));
+}
+function cfbRowIsNfl(r) {
+  if (!r || r.pos === "NEWS") return false;
+  if (nflTeamHit(r.team)) return true;
+  const name = String(r.name || "").toLowerCase().trim();
+  if (name.length < 5) return false;
+  const nflNames = new Set();
+  (DATA.games || []).forEach((g) => {
+    if (g.league !== "nfl") return;
+    (g.props || []).forEach((p) => { if (p.name) nflNames.add(String(p.name).toLowerCase()); });
+  });
+  (((DATA.injuries || {}).nfl) || []).forEach((x) => {
+    if (x && x.name && x.pos !== "NEWS") nflNames.add(String(x.name).toLowerCase());
+  });
+  return nflNames.has(name);
 }
 function injImpact(r){ return statusWeight(r.tag || r.status); }
 function renderInjuries(league){
@@ -5654,6 +5678,7 @@ function renderInjuries(league){
   const sort=($("#injSort")&&$("#injSort").value)||"crucial";
   const q=(($("#injQ")&&$("#injQ").value)||"").toLowerCase();
   let rows=all.filter(r=>{
+    if (league === "cfb" && cfbRowIsNfl(r)) return false;
     if(r.tag==="ACTIVE") return false;
     if(status==="impact" && injImpact(r)<1) return false;
     if(status==="out" && injImpact(r)<80) return false;
