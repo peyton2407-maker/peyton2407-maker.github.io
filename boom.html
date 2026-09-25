@@ -2594,6 +2594,7 @@ function injuryTaxFor(game, side) {
   rows.forEach((r) => {
     const tag = (r.tag || r.status || "").toUpperCase();
     const pos = (r.pos || "").toUpperCase();
+    if (["CB", "DB", "S", "FS", "SS", "SAF", "LB", "ILB", "OLB", "MLB", "DE", "DT", "NT", "DL", "EDGE"].includes(pos)) return;
     const out = /OUT|IR|INACTIVE|SUSP|INJURED RESERVE/.test(tag);
     const dbt = /DOUBT/.test(tag);
     const q = /QUESTION|^Q$/.test(tag);
@@ -2728,8 +2729,8 @@ function applySituationalToGame(g) {
   const mAdj = -ht + at - rth + rta - (tr.homeTax || 0) + (tr.awayTax || 0) + (ref.home || 0);
   const tAdj = -0.24 * (ht + at) - 0.32 * (Math.max(0, rth) + Math.max(0, rta)) + (tr.tot || 0) + (ref.tot || 0);
   const wxFit = Number(g.weather_impact && g.weather_impact.home_edge) || 0;
-  const scale = g.league === "nfl" ? 0.28 : 0.22;
-  const capM = g.league === "nfl" ? 1.6 : 2;
+  const scale = g.league === "nfl" ? 0.18 : 0.16;
+  const capM = g.league === "nfl" ? 1.1 : 1.5;
   const capT = g.league === "nfl" ? 1.2 : 1.5;
   const bits = [];
   const add = (label, raw) => {
