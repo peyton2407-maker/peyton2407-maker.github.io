@@ -5322,6 +5322,76 @@ function collegeParlayCardHtml(r) {
     <ul class="parlay-legs">${r.legs.map((l) => `<li data-id="${l.game_id}"><b>${kindChip(l.kind)}${l.label}</b><div class="subn">${l.detail} · ${Math.round(l.hit * 100)}%</div>${l.why ? `<div class="prop-why">${l.why}</div>` : ""}</li>`).join("")}</ul>
   </article>`;
 }
+function lockedCollegeBoard() {
+  const id = (away, home) => {
+    const g = (DATA.games || []).find((x) => x.league === "cfb" && x.away && x.home && x.away.abbr === away && x.home.abbr === home);
+    return g ? g.id : "";
+  };
+  const ml = (abbr, away, home, hit) => ({
+    kind: "ml", label: abbr + " ML", detail: away + " @ " + home, game_id: id(away, home), hit,
+    why: abbr + " wins outright in " + Math.round(hit * 100) + "% of our sims. Moneyline only, not the spread."
+  });
+  const sp = (abbr, line, away, home, hit) => ({
+    kind: "spread", label: abbr + " " + line, detail: away + " @ " + home, game_id: id(away, home), hit,
+    why: "Our sims have " + abbr + " covering " + abbr + " " + line + " in " + Math.round(hit * 100) + "% of runs."
+  });
+  const tot = (side, line, away, home, hit, ours) => ({
+    kind: "total", label: side + " " + line, detail: away + " @ " + home + " total", game_id: id(away, home), hit,
+    why: side + " " + line + " hits in " + Math.round(hit * 100) + "% of sims. Our total is " + ours + "."
+  });
+  const ticket = (group, legs, p, price) => {
+    const names = { ml: "Moneyline", spread: "Spread", total: "Total points", mix: "All three" };
+    return { group, groupLabel: names[group] + " · " + legs.length + "-leg", n: legs.length, legs, p, label: price > 0 ? "+" + price : String(price) };
+  };
+  const mia = ml("MIA", "CMU", "MIA", 0.96);
+  const smu = ml("SMU", "MOST", "SMU", 0.91);
+  const ttu = ml("TTU", "SHSU", "TTU", 0.91);
+  const nd = ml("ND", "ND", "PUR", 0.89);
+  const osu = ml("OSU", "ILL", "OSU", 0.89);
+  const usf = ml("USF", "USF", "BGSU", 0.84);
+  const rut = ml("RUT", "HOW", "RUT", 0.84);
+  const shsu = sp("SHSU", "+34.5", "SHSU", "TTU", 0.61);
+  const clem = sp("CLEM", "+1.5", "CLEM", "CAL", 0.58);
+  const most = sp("MOST", "+34.5", "MOST", "SMU", 0.58);
+  const psu = sp("PSU", "-9.5", "WIS", "PSU", 0.58);
+  const mass = sp("MASS", "-4.5", "MASS", "SAC", 0.57);
+  const iowa = tot("OVER", "38.5", "IOWA", "MICH", 0.77, "39.9");
+  const uga = tot("OVER", "43.5", "OU", "UGA", 0.68, "49.2");
+  const rice = tot("OVER", "44.5", "RICE", "FRES", 0.68, "44.9");
+  const wpsu = tot("OVER", "44.5", "WIS", "PSU", 0.66, "50.1");
+  const wash = tot("OVER", "46.5", "MINN", "WASH", 0.65, "46.7");
+  const usc = tot("UNDER", "62.5", "ORE", "USC", 0.64, "65.9");
+  return {
+    ml: [
+      ticket("ml", [mia, smu], 0.87, -491),
+      ticket("ml", [mia, smu, ttu], 0.79, -383),
+      ticket("ml", [mia, smu, ttu, nd], 0.71, -240),
+      ticket("ml", [mia, smu, ttu, nd, osu], 0.63, -167),
+      ticket("ml", [mia, smu, ttu, nd, osu, usf], 0.53, -112),
+      ticket("ml", [mia, smu, ttu, nd, osu, usf, rut], 0.44, 125)
+    ],
+    spread: [
+      ticket("spread", [shsu, clem], 0.36, 179),
+      ticket("spread", [shsu, clem, most], 0.21, 378),
+      ticket("spread", [shsu, clem, most, psu], 0.12, 720),
+      ticket("spread", [shsu, clem, most, psu, mass], 0.07, 1350)
+    ],
+    total: [
+      ticket("total", [iowa, uga], 0.52, -109),
+      ticket("total", [iowa, uga, rice], 0.35, 186),
+      ticket("total", [iowa, uga, rice, wpsu], 0.23, 332),
+      ticket("total", [iowa, uga, rice, wpsu, wash], 0.15, 568),
+      ticket("total", [iowa, uga, rice, wpsu, wash, usc], 0.10, 945)
+    ],
+    mix: [
+      ticket("mix", [mia, iowa], 0.73, -277),
+      ticket("mix", [mia, iowa, shsu], 0.45, 122),
+      ticket("mix", [mia, iowa, shsu, smu], 0.41, 144),
+      ticket("mix", [mia, iowa, shsu, smu, uga], 0.28, 257),
+      ticket("mix", [mia, iowa, shsu, smu, uga, clem], 0.16, 532)
+    ]
+  };
+}
 function renderCollegeParlayBoard() {
   const board = buildCollegeParlayBoard();
   const filter = window.__cfbParlayGroup || "all";
@@ -5335,10 +5405,11 @@ function renderCollegeParlayBoard() {
       <button type="button" data-cgroup="all" class="${filter === "all" ? "on" : ""}">All groups</button>
       ${groups.map((g) => `<button type="button" data-cgroup="${g.id}" class="${filter === g.id ? "on" : ""}">${g.title}</button>`).join("")}
     </div>`;
+  const locked = typeof lockedCollegeBoard === "function" ? lockedCollegeBoard() : {};
   const show = groups.filter((g) => filter === "all" || filter === g.id);
   let html = chips;
   show.forEach((g) => {
-    const rows = board[g.id] || [];
+    const rows = (locked[g.id] && locked[g.id].length) ? locked[g.id] : (board[g.id] || []);
     html += `<div class="home-label parlay-group">${g.title}</div>`;
     html += `<p class="subn" style="grid-column:1/-1;margin:0 0 4px">${g.blurb}</p>`;
     html += rows.length
@@ -5390,8 +5461,14 @@ function renderParlays() {
     return;
   }
   if (league === "cfb") {
-    hero.innerHTML = parlayHeroHtml("cfb") || `<div class="empty">Not enough college legs yet.</div>`;
-    hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
+    if (stamp) stamp.textContent = "College parlays. Moneyline, spread, and totals are separate. All three mixes them. No next-week games.";
+    const board = renderCollegeParlayBoard();
+    hero.innerHTML = board.html;
+    hero.querySelectorAll("[data-cgroup]").forEach((btn) => btn.addEventListener("click", () => {
+      window.__cfbParlayGroup = btn.dataset.cgroup;
+      renderParlays();
+    }));
+    hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => { if (el.dataset.id) openGame(el.dataset.id); }));
     return;
   }
   hero.innerHTML = parlayHeroHtml(league) || `<div class="empty">Not enough NFL game legs yet.</div>`;
