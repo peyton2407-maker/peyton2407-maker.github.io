@@ -4790,6 +4790,38 @@ function lockedUnderdogParlays() {
     { title: "4-leg", legs: [ind, dal, ne, ten], p: 0.05, label: "+1150", thought: more }
   ];
 }
+function lockedFavoriteParlays() {
+  const id = (away, home) => {
+    const g = (DATA.games || []).find((x) => x.league === "nfl" && x.away && x.home && x.away.abbr === away && x.home.abbr === home);
+    return g ? g.id : "";
+  };
+  const sf = { label: "SF -8.5", detail: "ARI @ SF", game_id: id("ARI", "SF"), hit: 0.52, odds: -110, why: "SF is laying 8.5. Our score still makes that number short by 1.6 points." };
+  const buf = { label: "BUF -7.0", detail: "LAC @ BUF", game_id: id("LAC", "BUF"), hit: 0.50, odds: 102, why: "BUF is laying 7.0. Our score still makes that number short by 1.3 points." };
+  const car = { label: "CAR -2.5", detail: "CAR @ CLE", game_id: id("CAR", "CLE"), hit: 0.47, odds: 111, why: "CAR is laying 2.5. Our score still makes that number short by 1.2 points." };
+  const skip = new Set(["GB", "SF", "BUF", "CAR"]);
+  const ranked = typeof leanSideLegs === "function" ? leanSideLegs("nfl", false) : [];
+  const next = ranked.find((l) => !skip.has(String(l.label || "").split(" ")[0]));
+  const lead = next || {
+    label: "DET -6.5",
+    detail: "NYJ @ DET",
+    game_id: id("NYJ", "DET"),
+    hit: 0.54,
+    odds: -115,
+    why: "DET is laying 6.5. Green Bay is off this ticket. Detroit is the next favorite our score likes."
+  };
+  const two = "These favorites are the sides our score likes by at least a point. The payout is smaller because they are supposed to win. The 2-leg is the steadier ticket.";
+  const more = "One favorite miss sinks the longer ticket. Read the 2-leg first.";
+  return [[lead, sf], [lead, sf, buf], [lead, sf, buf, car]].map((bag, i) => {
+    const pay = parlayPayout(bag.map((l) => l.hit));
+    return {
+      title: (bag.length) + "-leg",
+      legs: bag,
+      p: pay.p,
+      label: pay.odds > 0 ? "+" + pay.odds : String(pay.odds),
+      thought: i === 0 ? two : more
+    };
+  });
+}
 function parlayHeroHtml(league) {
   const rows = buildParlays(league);
   if (!rows.length) return "";
@@ -5321,6 +5353,9 @@ function renderParlays() {
     hero.innerHTML = themed[league].rows.map(parlayCardHtml).join("")
       + (league === "dogs"
         ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">This week's underdog ticket</div>` + lockedUnderdogParlays().map(parlayCardHtml).join("")
+        : "")
+      + (league === "favs"
+        ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">This week's favorite ticket</div>` + lockedFavoriteParlays().map(parlayCardHtml).join("")
         : "")
       || `<div class="empty">${themed[league].empty}</div>`;
     hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
