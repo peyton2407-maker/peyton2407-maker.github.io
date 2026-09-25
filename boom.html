@@ -1828,8 +1828,64 @@ function weatherImpact(wx, indoor) {
   };
 }
 
+const TEAM_WEATHER = {
+  GB:{cold:1,wind:0.95,wet:0.75,heat:0.1}, BUF:{cold:1,wind:0.9,wet:0.65,heat:0.1},
+  CHI:{cold:0.95,wind:0.9,wet:0.55,heat:0.15}, NE:{cold:0.9,wind:0.9,wet:0.7,heat:0.15},
+  DEN:{cold:0.85,wind:0.7,wet:0.25,heat:0.2}, CLE:{cold:0.85,wind:0.8,wet:0.6,heat:0.15},
+  PIT:{cold:0.85,wind:0.75,wet:0.65,heat:0.15}, NYG:{cold:0.75,wind:0.7,wet:0.55,heat:0.2},
+  NYJ:{cold:0.75,wind:0.7,wet:0.55,heat:0.2}, PHI:{cold:0.7,wind:0.65,wet:0.5,heat:0.25},
+  BAL:{cold:0.65,wind:0.6,wet:0.5,heat:0.25}, KC:{cold:0.6,wind:0.7,wet:0.35,heat:0.45},
+  CIN:{cold:0.55,wind:0.5,wet:0.45,heat:0.3}, SEA:{cold:0.45,wind:0.55,wet:1,heat:0.15},
+  SF:{cold:0.35,wind:0.4,wet:0.55,heat:0.35}, WSH:{cold:0.4,wind:0.4,wet:0.4,heat:0.4},
+  WAS:{cold:0.4,wind:0.4,wet:0.4,heat:0.4}, TEN:{cold:0.3,wind:0.3,wet:0.4,heat:0.55},
+  CAR:{cold:0.25,wind:0.3,wet:0.4,heat:0.6}, LAC:{cold:0.15,wind:0.2,wet:0.15,heat:0.75},
+  MIA:{cold:0.05,wind:0.35,wet:0.7,heat:1}, TB:{cold:0.1,wind:0.3,wet:0.65,heat:0.95},
+  JAX:{cold:0.1,wind:0.25,wet:0.6,heat:0.95},
+  MIN:{cold:0.35,wind:0.2,wet:0.15,heat:0.2}, DET:{cold:0.4,wind:0.25,wet:0.2,heat:0.2},
+  DAL:{cold:0.2,wind:0.25,wet:0.2,heat:0.7}, ATL:{cold:0.15,wind:0.2,wet:0.25,heat:0.7},
+  NO:{cold:0.1,wind:0.2,wet:0.45,heat:0.85}, HOU:{cold:0.1,wind:0.15,wet:0.4,heat:0.9},
+  IND:{cold:0.2,wind:0.15,wet:0.2,heat:0.35}, LV:{cold:0.1,wind:0.2,wet:0.05,heat:0.95},
+  LAR:{cold:0.15,wind:0.15,wet:0.15,heat:0.7}, ARI:{cold:0.1,wind:0.15,wet:0.05,heat:0.95}
+};
+function teamWeatherFit(abbr) {
+  return TEAM_WEATHER[abbr] || TEAM_WEATHER[String(abbr || "").replace("WSH", "WAS")] || { cold: 0.4, wind: 0.4, wet: 0.4, heat: 0.4 };
+}
+function climateShift(g, impact) {
+  if (!g || g.league !== "nfl" || g.indoor || !g.weather) return { edge: 0, note: "" };
+  const wx = g.weather;
+  const t = Number(wx.temp_f);
+  const wind = Math.max(Number(wx.wind_mph) || 0, (Number(wx.wind_gust_mph) || 0) * 0.85);
+  const snow = Number(wx.weather_code) >= 71 && Number(wx.weather_code) <= 86;
+  const parts = [];
+  if (snow || (Number.isFinite(t) && t <= 40)) parts.push(["cold", snow ? 1.8 : t <= 25 ? 1.6 : t <= 32 ? 1.15 : 0.65]);
+  if (impact && impact.wet) parts.push(["wet", 0.8]);
+  if (wind >= 15) parts.push(["wind", wind >= 22 ? 1.1 : 0.6]);
+  if (Number.isFinite(t) && t >= 90) parts.push(["heat", t >= 98 ? 1 : 0.55]);
+  if (!parts.length) return { edge: 0, note: "" };
+  const h = teamWeatherFit(g.home.abbr);
+  const a = teamWeatherFit(g.away.abbr);
+  let edge = 0;
+  const kinds = [];
+  parts.forEach(([k, sev]) => {
+    edge += (h[k] - a[k]) * sev;
+    if (Math.abs(h[k] - a[k]) >= 0.25) kinds.push(k);
+  });
+  edge = Math.max(-2.4, Math.min(2.4, edge));
+  if (Math.abs(edge) < 0.35) return { edge: 0, note: "" };
+  const fav = edge > 0 ? g.home.abbr : g.away.abbr;
+  const other = edge > 0 ? g.away.abbr : g.home.abbr;
+  const word = kinds.includes("cold") ? "cold" : kinds.includes("wet") ? "rain" : kinds.includes("wind") ? "wind" : "heat";
+  return {
+    edge: +edge.toFixed(2),
+    note: `${fav} is used to this ${word}. ${other} is not. ${fav} +${Math.abs(edge).toFixed(1)}.`
+  };
+}
 function applyWeatherToGame(g) {
   const impact = weatherImpact(g.weather, g.indoor);
+  const climate = climateShift(g, impact);
+  impact.home_edge = climate.edge;
+  impact.climate_note = climate.note;
+  if (climate.note) impact.note = (impact.note ? impact.note + " " : "") + climate.note;
   g.weather_impact = impact;
   if (!g.proj) return g;
   g.proj.weather_adj_total = impact.adj;
@@ -1906,8 +1962,9 @@ function settleNfl(g) {
   const learnM = Math.max(-learnCap, Math.min(learnCap, p.learned ? Number(p.learned.margin_shift) || 0 : 0));
   const learnT = Math.max(-1.5, Math.min(1.5, p.learned ? Number(p.learned.total_shift) || 0 : 0));
   const wx = Number(p.weather_adj_total) || 0;
+  const wxM = Number(g.weather_impact && g.weather_impact.home_edge) || 0;
   if (margin == null || total == null) return g;
-  writeSettledLine(g, margin + learnM, total + learnT + wx);
+  writeSettledLine(g, margin + learnM + wxM, total + learnT + wx);
   const edge = p.edge_spread;
   if (edge != null && g.odds && g.odds.home_spread != null) {
     const sp = Number(g.odds.home_spread);
@@ -2663,6 +2720,7 @@ function applySituationalToGame(g) {
   if (ra.kind === "short" || ra.kind === "bye" || ra.kind === "extra") notes.push(`${g.away.abbr} rest ${ra.kind} (${ra.days ? ra.days.toFixed(1) : "—"}d)`);
   (tr.notes || []).forEach((n) => notes.push(n));
   if (ref.name) notes.push(ref.note);
+  if (g.weather_impact && g.weather_impact.climate_note) notes.push(g.weather_impact.climate_note);
   (epa.notes || []).forEach((n) => notes.push(n));
   (stm.notes || []).forEach((n) => notes.push(n));
   g.situational = {
@@ -5838,6 +5896,7 @@ function deskPanelHtml(g) {
   if (injM) bits.push(`Injuries ${fmt.signed(injM)}`);
   if (epa.m) bits.push(`Recent form ${fmt.signed(epa.m)}`);
   if (stm.m) bits.push(`Betting line ${fmt.signed(stm.m)}`);
+  if (g.weather_impact && g.weather_impact.home_edge) bits.push(`Weather fit ${fmt.signed(g.weather_impact.home_edge)}`);
   if (epa.t) bits.push(`Form on the total ${fmt.signed(epa.t)}`);
   if (stm.t) bits.push(`Total move ${fmt.signed(stm.t)}`);
   return `<div class="desk-panel">
