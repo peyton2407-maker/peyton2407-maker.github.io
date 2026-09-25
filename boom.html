@@ -8755,19 +8755,22 @@ async function pullSchefterX() {
 }
 
 function teamSide(g, team) {
-  const t = String(team || "").toLowerCase();
+  const t = String(team || "").toLowerCase().trim();
   if (!t || t === "from x" || t.length < 3 || !g) return "";
-  const hn = String(g.home && g.home.name || "").toLowerCase();
-  const an = String(g.away && g.away.name || "").toLowerCase();
-  const home = `${hn} ${g.home && g.home.abbr || ""}`.toLowerCase();
-  const away = `${an} ${g.away && g.away.abbr || ""}`.toLowerCase();
-  if (hn && (home.includes(t) || t.includes(hn))) return "home";
-  if (an && (away.includes(t) || t.includes(an))) return "away";
+  const hit = (tm) => {
+    if (!tm) return false;
+    const full = String(tm.name || "").toLowerCase();
+    const short = String(tm.short || "").toLowerCase();
+    const abbr = String(tm.abbr || "").toLowerCase();
+    return t === full || t === short || t === abbr || (full && t.includes(full));
+  };
+  if (hit(g.home)) return "home";
+  if (hit(g.away)) return "away";
   return "";
 }
 
 function replacementFor(r) {
-  if (!r || !DATA || r.pos === "NEWS") return null;
+  if (!r || !DATA || r.pos === "NEWS" || r.league === "cfb") return null;
   if (!/OUT|IR|INACTIVE|DOUBT/.test(String(r.tag || "").toUpperCase())) return null;
   const pos = String(r.pos || "").toUpperCase();
   if (!pos) return null;
