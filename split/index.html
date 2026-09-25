@@ -290,7 +290,7 @@ function guideView() {
       return `<div><button type="button" class="statbtn" data-open="${esc(e.id)}"><div class="ghead"><span class="display gname">${esc(e.name)}</span><span class="live">${e.live ? "Live" : "Guide"}</span></div><p class="note" style="margin-top:4px">${esc(e.gist)}</p></button>${expanded ? explain(e.id) : ""}</div>`;
     }).join("")}</div></section>`;
   }).join("");
-  return `${header()}<div class="guide" style="margin-top:16px"><p class="lede" style="margin:0">Same data points as the matchup sheet. Open a game and the play grades are filled from this season's real plays. Rank 1 is best. A gray pill is not a grade. Recruiting talent and the coordinator names are not in a public feed, so those stay unnamed.</p>
+  return `${header()}<div class="guide" style="margin-top:16px"><p class="lede" style="margin:0">Same data points as the matchup sheet. Open a game and the play grades are filled from this season's real plays. Roster talent is the average ESPN recruiting grade of the 2024 through 2026 signees. Rank 1 is the highest. Coordinators are the 2026 staff.</p>
     <input class="search" id="gq" placeholder="Search PPA, havoc, red zone…" value="${esc(guideQuery)}" />
     ${sections}${rows.length ? "" : `<p class="empty">Nothing under that name. Try “success” or “spread.”</p>`}</div>${footer()}`;
 }
@@ -331,6 +331,16 @@ function advBit(team, row, key, kind) {
 function advPair(sheet, key, kind) {
   const teams = (ADV && ADV.teams) || {};
   return advBit(sheet.away, teams[sheet.away.id], key, kind) + " · " + advBit(sheet.home, teams[sheet.home.id], key, kind);
+}
+function talentLine(sheet) {
+  const teams = (ADV && ADV.teams) || {};
+  const bit = (team) => {
+    const row = teams[team.id];
+    if (!row || row.talent_r == null) return team.abbrev + " —";
+    const grade = row.talent_grade != null ? " · " + Number(row.talent_grade).toFixed(1) : "";
+    return team.abbrev + " #" + row.talent_r + grade;
+  };
+  return bit(sheet.away) + " · " + bit(sheet.home);
 }
 function advNet(sheet) {
   const teams = (ADV && ADV.teams) || {};
@@ -422,14 +432,16 @@ function advancedBlock(sheet) {
       ["Five factors rank", advPair(sheet, "five_r", "raw")],
       ["First half / second half margin", advHalf(sheet)],
       ["Head coach", advPair(sheet, "coach", "raw")],
+      ["Offensive coordinator", advPair(sheet, "oc", "raw")],
+      ["Defensive coordinator", advPair(sheet, "dc", "raw")],
       ["Against the spread", advPair(sheet, "ats", "raw")],
       ["OL versus the other DL", unitRow(sheet, "line_yards", "stuff_rate", "num", "pct", "line yards", "stuff")],
       ["RB versus the other front", unitRow(sheet, "rush_success", "stuff_rate", "pct", "pct", "rush success", "stuff")],
       ["Skill versus the other back seven", unitRow(sheet, "pass_success", "havoc", "pct", "pct", "pass success", "havoc")],
-      ["Roster talent rank", "No public recruiting feed. Five factors above is the production rank."],
+      ["Roster talent rank", talentLine(sheet)],
     ]],
   ];
-  return groups.map((group) => `<section class="sec"><h2 class="display">${group[0]}</h2><p class="note">From this season's real plays. (#) is the rank, and 1 is the best. PPA is the sheet's own expected-points curve, not ESPN's number.</p><div class="box">${group[1].map((item) => row(item[0], item[1])).join("")}</div></section>`).join("");
+  return groups.map((group) => `<section class="sec"><h2 class="display">${group[0]}</h2><p class="note">From this season's real plays. (#) is the rank, and 1 is the best. Roster talent is the average ESPN grade of the 2024–2026 signees. Coordinators are the 2026 staff. PPA is this sheet's expected-points curve, not ESPN's number.</p><div class="box">${group[1].map((item) => row(item[0], item[1])).join("")}</div></section>`).join("");
 }
 function levelLabel(team) {
   const name = { P4: "Power 4", Ind: "Independent", G5: "Group of 5", FCS: "FCS" }[team.level] || team.level || "—";
