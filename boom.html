@@ -2601,6 +2601,7 @@ function injuryTaxFor(game, side) {
     const defense = ["CB", "DB", "S", "FS", "SS", "SAF", "LB", "ILB", "OLB", "MLB", "DE", "DT", "NT", "DL", "EDGE"].includes(pos);
     if (defense && !out) return;
     const role = roleOf(r);
+    if (pos === "QB" && role !== "star" && role !== "starter") return;
     const mult = defense ? 1 : role === "star" ? 1.55 : role === "starter" ? 1 : role === "rotation" ? 0.3 : role === "bench" ? 0.06 : 0.4;
     let hit = 0;
     if (pos === "QB") {
