@@ -1044,6 +1044,8 @@ body{font-size:17px;line-height:1.45}
 .home-jump.hot span{color:#f6edd4}
 #tabBar a.tab.star::after{content:" · tap";font-weight:800;color:#ffe08a}
 #boomSection .hm-sub,#boomSection .hm-kick,#boomSection .hm-team span{color:#d5e3d8;font-size:14px}
+.dk-all{display:block;margin-top:4px;font-size:15px;line-height:1.45;font-weight:700}
+.side-top .dk-wrap{grid-column:1/-1}
 #parlayTabs .ptab{color:#d7e2d4;font-size:16px;font-weight:700;padding:12px 2px 10px;margin:0 16px 0 0}
 #parlayTabs .ptab.active{color:#d6ff4a;border-bottom-color:#d6ff4a}
 </style>
@@ -1375,7 +1377,7 @@ body{font-size:17px;line-height:1.45}
         </select>
         <input id="propQ" placeholder="Search a player or team…" />
       </div>
-      <p class="subn" style="margin:8px 0 0">Every card has the yard lines and the HASHMARK pick. Tap a player for this year's hit rate and his history against that team.</p>
+      <p class="subn" style="margin:8px 0 0">Every card has our number and every DraftKings line for that player. Tap a player for the hit rate.</p>
       <div class="stat-row" id="propStats"></div>
       <div id="propSheet" style="display:none"></div>
       <div class="prop-board" id="propBoard"></div>
@@ -6367,6 +6369,39 @@ const DK_MILE = {
   "Passing Attempts Milestones": "pass_att",
   "Passing Completions Milestones": "cmp"
 };
+function dkTileText(p) {
+  const bits = marketsFor(p).map((m) => {
+    const line = dkLine(p, m.key);
+    if (line == null) return "";
+    const price = typeof dkOdds === "function" ? dkOdds(p, m.key, line, false) : "—";
+    const short = m.label
+      .replace("Pass touchdowns", "pass TD")
+      .replace("Pass yards", "pass")
+      .replace("Rush yards", "rush")
+      .replace("Rush attempts", "carries")
+      .replace("Receiving yards", "rec yds")
+      .replace("Receptions", "rec")
+      .replace("Interceptions", "INT")
+      .replace("Anytime touchdown", "anytime TD");
+    return line + (price && price !== "—" ? " " + price : "") + " " + short;
+  }).filter(Boolean);
+  if (bits.length) return bits.join(" · ");
+  return window.__DK && window.__DK[String(p.game_id)] ? "No DraftKings number" : "Pulling DraftKings…";
+}
+function ensureNflDk(rows) {
+  const ids = [...new Set((rows || []).map((p) => String(p.game_id || "")).filter(Boolean))];
+  window.__DK = window.__DK || {};
+  window.__DK_WAIT = window.__DK_WAIT || {};
+  const todo = ids.filter((id) => !window.__DK[id] && !window.__DK_WAIT[id]);
+  if (!todo.length) return;
+  todo.forEach((id) => { window.__DK_WAIT[id] = true; });
+  Promise.all(todo.map((id) => Promise.all([
+    loadDkForGame(id).catch(() => ({})),
+    loadAnOdds({ game_id: id }).catch(() => ({}))
+  ]).finally(() => { delete window.__DK_WAIT[id]; }))).then(() => {
+    if (typeof view !== "undefined" && view === "props" && typeof renderProps === "function") renderProps();
+  });
+}
 function dkLine(p, key) {
   const book = (window.__DK || {})[String(p.game_id || "")] || {};
   const row = book[String(p.id)] || {};
@@ -6394,23 +6429,27 @@ async function loadDkForGame(gameId) {
   if (window.__DK[id]) return window.__DK[id];
   const bag = {};
   try {
-    const payload = await getJSON("https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/" + id + "/competitions/" + id + "/odds/100/propBets?lang=en&region=us&limit=1000");
-    (payload.items || []).forEach((it) => {
-      const name = (it.type || {}).name;
-      const key = DK_KEYS[name] || DK_MILE[name];
-      if (!key) return;
-      const ref = (it.athlete && it.athlete.$ref) || "";
-      const m = ref.match(/athletes\/(\d+)/);
-      const tgt = it.current && it.current.target && it.current.target.value;
-      if (!m || tgt == null) return;
-      bag[m[1]] = bag[m[1]] || {};
-      if (DK_KEYS[name] && bag[m[1]][key] == null) bag[m[1]][key] = Number(tgt);
-      if (DK_MILE[name]) {
-        bag[m[1]].alts = bag[m[1]].alts || {};
-        bag[m[1]].alts[key] = bag[m[1]].alts[key] || [];
-        bag[m[1]].alts[key].push(Number(tgt));
-      }
-    });
+    const base = "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/" + id + "/competitions/" + id + "/odds/100/propBets?lang=en&region=us&limit=1000&page=";
+    for (let page = 1; page <= 6; page++) {
+      const payload = await getJSON(base + page);
+      (payload.items || []).forEach((it) => {
+        const name = (it.type || {}).name;
+        const key = DK_KEYS[name] || DK_MILE[name];
+        if (!key) return;
+        const ref = (it.athlete && it.athlete.$ref) || "";
+        const m = ref.match(/athletes\/(\d+)/);
+        const tgt = it.current && it.current.target && it.current.target.value;
+        if (!m || tgt == null) return;
+        bag[m[1]] = bag[m[1]] || {};
+        if (DK_KEYS[name] && bag[m[1]][key] == null) bag[m[1]][key] = Number(tgt);
+        if (DK_MILE[name]) {
+          bag[m[1]].alts = bag[m[1]].alts || {};
+          bag[m[1]].alts[key] = bag[m[1]].alts[key] || [];
+          bag[m[1]].alts[key].push(Number(tgt));
+        }
+      });
+      if (page >= (payload.pageCount || 1)) break;
+    }
   } catch (e) {}
   window.__DK[id] = bag;
   return bag;
@@ -6982,6 +7021,7 @@ function renderProps() {
     rows = nowStarting.concat(rows.filter((p) => !p.role));
   }
   const best = (day === "best" && hitCut === "all") ? rows.slice(0, 18) : rows.slice(0, 72);
+  ensureNflDk(rows);
   const qbs = best.filter((p) => p.pos === "QB").length;
   $("#propStats").innerHTML = `
     <div class="stat"><b>${best.length}</b><span>${day === "best" ? "featured picks" : "props on this filter"}</span></div>
@@ -7019,7 +7059,7 @@ function renderProps() {
       </div>
       <div class="side-top">
         <div><span class="lbl">Double Gs</span><b>${line}</b></div>
-        <div><span class="lbl">DraftKings</span><b>${dk != null ? dk : "—"}</b></div>
+        <div class="dk-wrap"><span class="lbl">DraftKings</span><b class="dk-all">${dkTileText(p)}</b></div>
       </div>
       <div class="dg-box"><div class="lbl">Our hit rate</div><b>${p._hit ? Math.round(p._hit * 100) + "% · " : ""}${pick}</b></div>
     </article>`;
