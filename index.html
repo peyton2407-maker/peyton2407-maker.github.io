@@ -2896,7 +2896,31 @@ function cfbLockPick(g) {
   return g;
 }
 function ratingEdgeSafe(model, market) { return Number(model) - Number(market); }
-function cfbReadHtml() { return ""; }
+function cfbNoteSide(note) {
+  const match = String((note && note.edge) || "").match(/Edge to (?:the )?([A-Za-z0-9&-]+)/i);
+  return match ? match[1].toUpperCase() : "";
+}
+function cfbPickWhyLines(g) {
+  const p = (g && g.proj) || {};
+  const pick = String(p.pick || "");
+  if (!pick || pick === "NO PLAY") return ["No side on this one. Our score is too close to the number to pick it."];
+  const lines = ["We took " + (p.pick_line || pick) + ". Our score is " + g.away.abbr + " " + (p.away_points ?? "—") + ", " + g.home.abbr + " " + (p.home_points ?? "—") + "."];
+  if (p.total_pick && p.total_pick !== "NO PLAY") lines.push("The total play is " + p.total_pick + ". Our total is " + (p.hashmark_total ?? "—") + ".");
+  const pack = (window.SPLIT_NOTES || {})[String(g.id)] || {};
+  const rank = (note) => /Scor/.test(note.line || "") ? 0 : /Yards/.test(note.line || "") ? 1 : /Rush/.test(note.line || "") ? 2 : /Passing/.test(note.line || "") ? 3 : 4;
+  ((pack.notes) || []).filter((note) => cfbNoteSide(note) === pick.toUpperCase()).slice().sort((a, b) => rank(a) - rank(b)).slice(0, 3).forEach((note) => lines.push(note.line));
+  if (lines.length < 3) lines.push("The score is the reason. The other edges on the sheet point the other way, so they are not why we took this side.");
+  return lines;
+}
+function cfbReadHtml(g) {
+  if (!g || g.league !== "cfb") return "";
+  const lines = cfbPickWhyLines(g);
+  return `<div class="split-note">
+    <div class="lbl">Why we made this pick</div>
+    <ul>${lines.map((line) => `<li>${line}</li>`).join("")}</ul>
+    <a href="/split/#${encodeURIComponent(String(g.id))}" onclick="event.stopPropagation()">Open the full sheet</a>
+  </div>`;
+}
 function projectGame(game, ratings) {
   const league = game.league;
   const hr = ratings[game.home.id] || {};
@@ -5769,6 +5793,7 @@ function deskPanelHtml(g) {
     <div class="desk-nums"><b>Spread ${fmt.signed(s.margin_adj)}</b><b>Total ${fmt.signed(s.total_adj)}</b></div>
     ${bits.length ? `<div class="desk-nums" style="font-size:13px">${bits.map((b) => `<span>${b}</span>`).join("")}</div>` : ""}
     <ul class="desk-notes">${notes.map((n) => `<li>${n}</li>`).join("")}</ul>
+    ${g.league === "cfb" && typeof cfbPickWhyLines === "function" ? `<div class="lbl" style="margin-top:10px">Why we made this pick</div><ul class="desk-notes">${cfbPickWhyLines(g).map((n) => `<li>${n}</li>`).join("")}</ul>` : ""}
   </div>`;
 }
 function deskStripHtml(games) {
@@ -8414,6 +8439,12 @@ async function boot() {
   $("#overlay").addEventListener("click", (e) => { if (e.target.id === "overlay") closeModal(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
   try { if (typeof repriceCfbBoard === "function") repriceCfbBoard(); } catch (e) { console.warn(e); }
+  try {
+    if (!window.SPLIT_NOTES) {
+      const noteRes = await fetch("/data/split-notes.json");
+      if (noteRes.ok) window.SPLIT_NOTES = await noteRes.json();
+    }
+  } catch (e) {}
   try { seedInjuriesFromSnap(); } catch (e) {}
   try { if (typeof enrichPowerRankings === "function") enrichPowerRankings(); } catch (e) {}
   try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) { console.warn(e); }

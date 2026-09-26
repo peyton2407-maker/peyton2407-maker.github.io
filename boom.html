@@ -3416,15 +3416,28 @@ function cfbLockPick(g) {
   return g;
 }
 function ratingEdgeSafe(model, market) { return Number(model) - Number(market); }
-function cfbReadHtml(g, full) {
+function cfbNoteSide(note) {
+  const match = String((note && note.edge) || "").match(/Edge to (?:the )?([A-Za-z0-9&-]+)/i);
+  return match ? match[1].toUpperCase() : "";
+}
+function cfbPickWhyLines(g) {
+  const p = (g && g.proj) || {};
+  const pick = String(p.pick || "");
+  if (!pick || pick === "NO PLAY") return ["No side on this one. Our score is too close to the number to pick it."];
+  const lines = ["We took " + (p.pick_line || pick) + ". Our score is " + g.away.abbr + " " + (p.away_points ?? "—") + ", " + g.home.abbr + " " + (p.home_points ?? "—") + "."];
+  if (p.total_pick && p.total_pick !== "NO PLAY") lines.push("The total play is " + p.total_pick + ". Our total is " + (p.hashmark_total ?? "—") + ".");
+  const pack = (window.SPLIT_NOTES || {})[String(g.id)] || {};
+  const rank = (note) => /Scor/.test(note.line || "") ? 0 : /Yards/.test(note.line || "") ? 1 : /Rush/.test(note.line || "") ? 2 : /Passing/.test(note.line || "") ? 3 : 4;
+  ((pack.notes) || []).filter((note) => cfbNoteSide(note) === pick.toUpperCase()).slice().sort((a, b) => rank(a) - rank(b)).slice(0, 3).forEach((note) => lines.push(note.line));
+  if (lines.length < 3) lines.push("The score is the reason. The other edges on the sheet point the other way, so they are not why we took this side.");
+  return lines;
+}
+function cfbReadHtml(g) {
   if (!g || g.league !== "cfb") return "";
-  const pack = (window.SPLIT_NOTES || {})[String(g.id)];
-  const notes = (pack && pack.notes) || [];
-  if (!notes.length) return "";
-  const show = notes;
+  const lines = cfbPickWhyLines(g);
   return `<div class="split-note">
-    <div class="lbl">Matchup · from The Split</div>
-    <ul>${show.map((n) => `<li><b>${n.edge}</b> ${n.line}</li>`).join("")}</ul>
+    <div class="lbl">Why we made this pick</div>
+    <ul>${lines.map((line) => `<li>${line}</li>`).join("")}</ul>
     <a href="/split/#${encodeURIComponent(String(g.id))}" onclick="event.stopPropagation()">Open the full sheet</a>
   </div>`;
 }
@@ -6770,7 +6783,7 @@ function deskPanelHtml(g) {
     <div class="lbl">Why we moved this line</div>
     <div class="desk-nums"><b>Spread ${fmt.signed(s.margin_adj || 0)}</b><b>Total ${fmt.signed(s.total_adj || 0)}</b></div>
     <ul class="desk-notes">${notes.map((n) => `<li>${n}</li>`).join("")}</ul>
-    ${score.length ? `<div class="lbl" style="margin-top:10px">Why the score looks like this</div><ul class="desk-notes">${score.map((n) => `<li>${n}</li>`).join("")}</ul>` : ""}
+    ${g.league === "cfb" ? `<div class="lbl" style="margin-top:10px">Why we made this pick</div><ul class="desk-notes">${cfbPickWhyLines(g).map((n) => `<li>${n}</li>`).join("")}</ul>` : (score.length ? `<div class="lbl" style="margin-top:10px">Why the score looks like this</div><ul class="desk-notes">${score.map((n) => `<li>${n}</li>`).join("")}</ul>` : "")}
   </div>`;
 }
 function deskStripHtml(games) {
