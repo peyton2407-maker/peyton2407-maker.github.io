@@ -2073,7 +2073,7 @@ window.settleBoard = settleBoard;
 async function fetchOpenMeteo(lat, lon, iso) {
   const kick = iso ? new Date(iso) : new Date();
   const day = kick.toISOString().slice(0, 10);
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,precipitation_probability,precipitation,weathercode,windspeed_10m,windgusts_10m,relativehumidity_2m&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,windspeed_10m_max,windgusts_10m_max&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=auto&start_date=${day}&end_date=${day}`;
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,precipitation_probability,precipitation,weathercode,windspeed_10m,windgusts_10m,relativehumidity_2m&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,windspeed_10m_max,windgusts_10m_max&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=UTC&start_date=${day}&end_date=${day}`;
   const j = await getJSON(url);
   const hours = j.hourly || {};
   const times = hours.time || [];
@@ -2082,7 +2082,8 @@ async function fetchOpenMeteo(lat, lon, iso) {
     const target = kick.getTime();
     let best = 0, bestD = Infinity;
     times.forEach((t, i) => {
-      const d = Math.abs(new Date(t).getTime() - target);
+      const stamp = /Z$|[+-]\d\d:?\d\d$/.test(String(t)) ? t : t + "Z";
+      const d = Math.abs(new Date(stamp).getTime() - target);
       if (d < bestD) { bestD = d; best = i; }
     });
     idx = best;
@@ -2366,13 +2367,15 @@ async function attachWeather(games) {
     if (g.completed && g.weather) { applyWeatherToGame(g); continue; }
     const xy = coordsForGame(g);
     if (!xy) { applyWeatherToGame(g); continue; }
-    const key = xy.map((n) => n.toFixed(2)).join(",") + "|" + String(g.date || "").slice(0, 13);
-    jobs.push([g, key, xy]);
+    const liveNow = !g.completed && g.date && new Date(g.date).getTime() <= Date.now();
+    const when = liveNow ? new Date().toISOString() : g.date;
+    const key = xy.map((n) => n.toFixed(2)).join(",") + "|" + String(when || "").slice(0, 13);
+    jobs.push([g, key, xy, when, liveNow]);
   }
-  await poolMap(jobs, 5, async ([g, key, xy]) => {
+  await poolMap(jobs, 5, async ([g, key, xy, when, liveNow]) => {
     try {
-      if (!cache.has(key)) cache.set(key, await fetchOpenMeteo(xy[0], xy[1], g.date));
-      g.weather = cache.get(key);
+      if (!cache.has(key)) cache.set(key, await fetchOpenMeteo(xy[0], xy[1], when));
+      g.weather = Object.assign({}, cache.get(key) || {}, { pulled: new Date().toISOString(), live_now: !!liveNow });
     } catch (err) {
       console.warn("weather", g.short_name, err);
     }
@@ -8401,7 +8404,7 @@ function renderWeatherDesk(opts) {
         <div class="pick-score">${g.indoor ? "Dome" : "wx " + fmt.signed(p.weather_adj_total)}</div>
       </div>
       <div class="prop-stats">
-        <div><span class="lbl">Sky at kick</span><b>${g.indoor ? "Climate dome" : (wx.condition || "Pending")}</b></div>
+        <div><span class="lbl">${wx.live_now ? "Sky right now" : "Sky at kick"}</span><b>${g.indoor ? "Climate dome" : ((wx.condition || "Pending") + (wx.pulled ? " · " + new Date(wx.pulled).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : ""))}</b></div>
         <div><span class="lbl">Kick / day range</span><b>${g.indoor ? "72°F" : (wx.temp_f != null ? Math.round(wx.temp_f) + "°F" : "—")} · ${range}</b></div>
         <div><span class="lbl">Wind / gust</span><b>${g.indoor ? "0 / 0" : `${fmt.n(wx.wind_mph,0)} / ${fmt.n(wx.wind_gust_mph,0)} mph`}</b></div>
         <div><span class="lbl">Precip kick / day</span><b>${g.indoor ? "0% · 0\"" : `${wx.precip_prob ?? "—"}% · ${fmt.n(wx.precip_in,2)}" kick · ${fmt.n(wx.precip_day_in,2)}" day`}</b></div>
@@ -9107,7 +9110,7 @@ function scheduleDeskRefresh(force) {
       const wantWx = force || view === "home" || view === "nfl" || view === "cfb" || view === "all" || view === "live" || view === "nflwx" || view === "cfbwx";
       const wantInj = force || view === "home" || view === "nflinj" || view === "cfbinj";
       const wantLines = force || view === "value" || view === "props" || view === "parlay" || view === "cfbpicks";
-      if (wantWx && typeof attachWeather === "function" && (force || Date.now() - (window.__wxAt || 0) > 10 * 60 * 1000)) {
+      if (wantWx && typeof attachWeather === "function" && (force || Date.now() - (window.__wxAt || 0) > ((view === "nflwx" || view === "cfbwx") ? 2 * 60 * 1000 : 10 * 60 * 1000))) {
         extra.push(attachWeather(DATA.games || []).then(() => { window.__wxAt = Date.now(); }).catch(() => {}));
       }
       if (wantInj && typeof fetchInjuries === "function" && (force || view === "nflinj" || view === "cfbinj" || Date.now() - (window.__injAt || 0) > 10 * 60 * 1000)) {
