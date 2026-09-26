@@ -3644,7 +3644,9 @@ function cfbLearnNudge(g) {
   const totBase = ((hr.total || 0) + (ar.total || 0)) / 2;
   const margin = Math.max(-4.5, Math.min(4.5, 0.55 * confw * hm));
   const total = Math.max(-4, Math.min(4, 0.35 * confw * totBase));
-  const note = Math.abs(margin) < 0.08 && Math.abs(total) < 0.08 ? "" : "After " + nGames + " finished college games, next week's line moves " + (margin > 0 ? "+" : "") + margin.toFixed(1) + ".";
+  const note = Math.abs(margin) < 0.08 && Math.abs(total) < 0.08
+    ? "Finished games were too small to move this one."
+    : "After " + nGames + " finished college games, this line moves " + (margin > 0 ? "+" : "") + margin.toFixed(1) + " on the spread and " + (total > 0 ? "+" : "") + total.toFixed(1) + " on the total.";
   return { margin: +margin.toFixed(2), total: +total.toFixed(2), note: note };
 }
 function cfbHomeFit(g, side) {
@@ -3760,16 +3762,20 @@ function applySplitDesk() {
       g.box.home_points = p.home_points;
       g.box.total_points = p.hashmark_total;
     }
-    const pack = (window.SPLIT_NOTES || {})[String(g.id)];
-    const why = ((pack && pack.notes) || []).map((n) => n.edge + ". " + n.line);
+    const signPt = (v) => (Number(v) > 0 ? "+" : "") + Number(v || 0).toFixed(1);
+    const notes = ["Starts at The Split. " + g.away.abbr + " " + away + ", " + g.home.abbr + " " + home + "."];
+    if (nudge.names.length) notes.push("Starters out: " + nudge.names.join(", ") + ". Spread " + signPt(nudge.margin) + ", total " + signPt(nudge.total) + ".");
+    else notes.push("No starter who matters is out.");
+    if (wxn.note && (Math.abs(wxn.margin) >= 0.05 || Math.abs(wxn.total) >= 0.05)) notes.push(wxn.note);
+    else if (!g.weather || g.weather.temp_f == null) notes.push("Weather is not in yet, so it has not moved the line.");
+    else notes.push("Weather is not enough to move the line.");
+    notes.push(learned.note || "No finished college game has moved this one yet.");
+    if (Math.abs(moveM) < 0.12 && Math.abs(moveT) < 0.08) notes.push("Those pieces cancel out, so the score stays on The Split.");
+    else notes.push("Net move: spread " + signPt(moveM) + ", total " + signPt(moveT) + ".");
     g.situational = {
       margin_adj: moveM,
       total_adj: moveT,
-      notes: (why.length ? why : ["Same score as The Split."]).concat([
-        nudge.names.length ? "Double Gs injuries. Starters out: " + nudge.names.join(", ") + ". Moved " + (nudge.margin > 0 ? "+" : "") + nudge.margin.toFixed(1) + "." : "No starter who matters is out.",
-        wxn.note ? "Double Gs weather. " + wxn.note : "Weather is calm, or the forecast is not in yet.",
-        learned.note || "No finished college game has moved this line yet."
-      ])
+      notes: notes
     };
   });
 }
