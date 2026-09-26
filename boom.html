@@ -8327,11 +8327,13 @@ function renderWeatherDesk(opts) {
   const kind = (document.getElementById(kindSel) || {}).value || "all";
   const q = ((document.getElementById(qSel) || {}).value || "").trim().toLowerCase();
   let games = (DATA.games || []).filter((g) => {
-    if (!g || g.league !== league || g.completed) return false;
+    if (!g || g.league !== league) return false;
     const st = String(g.status || "") + " " + String(g.status_detail || "");
-    if (/FINAL|FULL_TIME|IN_PROGRESS|HALFTIME|END OF/i.test(st)) return false;
+    if (g.completed || /FINAL|FULL_TIME/i.test(st)) return false;
+    if (typeof isLiveGame === "function" && isLiveGame(g)) return true;
     const kick = g.date ? new Date(g.date).getTime() : 0;
-    if (kick && kick <= Date.now()) return false;
+    if (!kick || kick > Date.now()) return true;
+    if (Date.now() - kick > 5 * 3600000) return false;
     return true;
   });
   if (conf !== "ALL") {
@@ -8476,6 +8478,8 @@ async function pullLiveScores() {
     const liveN = (DATA.games || []).filter((g) => typeof isLiveGame === "function" && isLiveGame(g)).length;
     if (liveN) setStamp(liveN + " live · rest-of-game on", true);
     else if (newFinals) setStamp("New finals are in. The line is the same for everyone.", true);
+    if (view === "nflwx" && typeof renderNflWeather === "function") renderNflWeather();
+    if (view === "cfbwx" && typeof renderCfbWeather === "function") renderCfbWeather();
     if (typeof syncDesk === "function") {
       syncDesk();
       if (view === "home") renderHome();
