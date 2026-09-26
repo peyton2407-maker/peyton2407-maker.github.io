@@ -146,7 +146,8 @@ function explain(id) {
   return `<div class="explain"><p>${esc(e.gist)}</p><p class="gap" style="color:var(--muted)">${esc(e.body)}</p><p class="gap"><span style="color:var(--chalk);font-weight:600">Which way. </span>${esc(e.better)}</p><p class="gap" style="color:var(--muted)"><span style="color:var(--fg);font-weight:600">On a mismatch. </span>${esc(e.mismatch)}</p></div>`;
 }
 function footer() {
-  return `<p class="foot">${LINES_STAMP ? esc(LINES_STAMP) + ". " : ""}The line, the record, the rank, the power number, and the win chance refresh from ESPN for everyone on the same timer. Play grades, roster talent, and coaches are the shared season sheet, same file for every person.</p>`;
+  const stamps = [LINES_STAMP, PLAY_STAMP].filter(Boolean).map(esc).join(". ");
+  return `<p class="foot">${stamps ? stamps + ". " : ""}The line, the record, the rank, and the power number refresh from ESPN for everyone. Play grades rebuild from this season's real plays on that same feed. Roster talent and coordinators stay the shared season file, because ESPN does not publish those live.</p>`;
 }
 function mark() {
   return `<svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#12140f"/><rect x="6" y="22" width="20" height="2" rx="1" fill="#3dbe78"/><rect x="9" y="8" width="4" height="14" rx="1" fill="#e4ff4a"/><rect x="19" y="8" width="4" height="14" rx="1" fill="#e4ff4a"/></svg>`;
@@ -508,6 +509,7 @@ function render() {
   }
 }
 let LINES_STAMP = "";
+let PLAY_STAMP = "";
 function applyLiveOdds(id, odds) {
   if (!odds || !odds.details) return false;
   const sheet = SHEETS[id];
@@ -690,7 +692,239 @@ window.addEventListener("hashchange", () => { open = null; render(); });
 render();
 refreshLines();
 setInterval(refreshLines, 120000);
-fetch("advanced.json").then((res) => res.json()).then((data) => { ADV = data; render(); }).catch(() => {});
+fetch("advanced.json").then((res) => res.json()).then((data) => { ADV = data; render(); refreshPlays(); }).catch(() => { refreshPlays(); });
+function playEp(ytg) {
+  const y = Math.max(1, Math.min(99, Number(ytg)));
+  const knots = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 99];
+  const vals = [6.2, 5.1, 4.1, 3.2, 2.5, 1.8, 1.1, 0.4, -0.2, -0.8, -1.5];
+  for (let i = 0; i < knots.length - 1; i += 1) {
+    if (y <= knots[i + 1]) {
+      const t = (y - knots[i]) / (knots[i + 1] - knots[i]);
+      return vals[i] + (vals[i + 1] - vals[i]) * t;
+    }
+  }
+  return vals[vals.length - 1];
+}
+function playBlank() {
+  return { games: {}, pass_n: 0, pass_ppa: 0, pass_ok: 0, pass_ex_y: 0, pass_ex_n: 0, rush_n: 0, rush_ppa: 0, rush_ok: 0, rush_ex_y: 0, rush_ex_n: 0, line_y: 0, scrim: 0, ok: 0, ppa: 0, ex_y: 0, ex_n: 0, pd_n: 0, pd_ppa: 0, pd_ok: 0, sd_n: 0, sd_ppa: 0, sd_ok: 0, avail: 0, gained: 0, def_scrim: 0, def_ok: 0, def_havoc: 0, def_stuffs: 0, def_rush: 0, drives: 0, start_sum: 0, start_n: 0, opp40: 0, opp40_pts: 0, rz: 0, rz_score: 0, rz_td: 0, points: 0, pen_against: 0, h1: 0, h2: 0, ats_w: 0, ats_l: 0, ats_p: 0, def_points: 0, def_drives: 0, def_rz: 0, def_rz_score: 0, def_rz_td: 0 };
+}
+function addPlayGame(summary, bag) {
+  const header = summary.header || {};
+  const comp = (header.competitions || [])[0] || {};
+  const status = (comp.status || {}).type || {};
+  const state = status.name || "";
+  const live = status.completed || /IN_PROGRESS|HALFTIME|END_/.test(state);
+  if (!live) return;
+  const comps = {};
+  (comp.competitors || []).forEach((side) => { comps[side.homeAway] = side; });
+  if (!comps.home || !comps.away) return;
+  const homeId = String((comps.home.team || comps.home).id);
+  const awayId = String((comps.away.team || comps.away).id);
+  const row = (id) => bag[id] || (bag[id] = playBlank());
+  const eventId = String(header.id || "");
+  row(homeId).games[eventId] = 1;
+  row(awayId).games[eventId] = 1;
+  const hs = Number(comps.home.score) || 0;
+  const aws = Number(comps.away.score) || 0;
+  let halfH = 0;
+  let halfA = 0;
+  (summary.scoringPlays || []).forEach((sp) => {
+    const per = ((sp.period || {}).number) || 0;
+    if (per <= 2) { halfH = Number(sp.homeScore) || halfH; halfA = Number(sp.awayScore) || halfA; }
+  });
+  row(homeId).h1 += halfH - halfA;
+  row(awayId).h1 += halfA - halfH;
+  row(homeId).h2 += (hs - halfH) - (aws - halfA);
+  row(awayId).h2 += (aws - halfA) - (hs - halfH);
+  let spread = ((comp.odds || [])[0] || {}).spread;
+  if (spread == null && summary.pickcenter) spread = (summary.pickcenter[0] || {}).spread;
+  if (spread != null && !Number.isNaN(Number(spread))) {
+    const margin = hs + Number(spread) - aws;
+    [[homeId, margin], [awayId, -margin]].forEach(([tid, side]) => {
+      if (Math.abs(side) < 0.01) row(tid).ats_p += 1;
+      else if (side > 0) row(tid).ats_w += 1;
+      else row(tid).ats_l += 1;
+    });
+  }
+  const labels = [];
+  [comps.home, comps.away].forEach((side) => {
+    const team = side.team || side;
+    const tid = String(team.id || side.id);
+    ["abbreviation", "shortDisplayName", "displayName", "location", "name", "nickname"].forEach((key) => {
+      if (team[key]) labels.push([String(team[key]).toLowerCase(), tid]);
+    });
+  });
+  const scrim = { Rush: 1, "Rushing Touchdown": 1, "Pass Reception": 1, "Passing Touchdown": 1, "Pass Incompletion": 1, Sack: 1, "Pass Interception Return": 1 };
+  const pass = { "Pass Reception": 1, "Passing Touchdown": 1, "Pass Incompletion": 1, Sack: 1, "Pass Interception Return": 1 };
+  const rush = { Rush: 1, "Rushing Touchdown": 1 };
+  ((summary.drives || {}).previous || []).forEach((drive) => {
+    const off = String((drive.team || {}).id || "");
+    if (!off) return;
+    const defense = off === homeId ? awayId : homeId;
+    row(off).drives += 1;
+    const ytg0 = (drive.start || {}).yardLine;
+    if (ytg0) { row(off).start_sum += Number(ytg0); row(off).start_n += 1; }
+    const result = String(drive.result || "");
+    const pts = result === "TD" ? 7 : result === "FG" ? 3 : result === "SAFETY" ? 2 : 0;
+    row(off).points += pts;
+    row(defense).def_points += pts;
+    row(defense).def_drives += 1;
+    let reached40 = false;
+    let reached20 = false;
+    (drive.plays || []).forEach((play) => {
+      const kind = ((play.type || {}).text) || "";
+      const text = play.text || "";
+      if (text.toUpperCase().indexOf("PENALTY") >= 0) {
+        const found = text.match(/PENALTY\s+([A-Za-z0-9.&']+)/);
+        const word = found ? found[1].toLowerCase() : "";
+        let flagged = "";
+        labels.forEach(([token, tid]) => {
+          if (flagged || word.length < 3 || token.length < 3) return;
+          if (token.indexOf(word) === 0 || word.indexOf(token.slice(0, 4)) === 0) flagged = tid;
+        });
+        if (flagged === homeId || flagged === awayId) row(flagged === homeId ? awayId : homeId).pen_against += 1;
+      }
+      const start = play.start || {};
+      const end = play.end || {};
+      const ytg = start.yardsToEndzone;
+      if (ytg != null && ytg <= 40) reached40 = true;
+      if (ytg != null && ytg <= 20) reached20 = true;
+      if (!scrim[kind]) return;
+      const down = start.down || 1;
+      const dist = start.distance || 10;
+      const yards = play.statYardage == null ? 0 : Number(play.statYardage);
+      const td = kind.indexOf("Touchdown") >= 0;
+      const ok = td || (down === 1 ? yards >= 0.5 * dist : down === 2 ? yards >= 0.7 * dist : yards >= dist);
+      const spot = Number(ytg == null ? 50 : ytg);
+      const endY = end.yardsToEndzone;
+      let ppa = 0;
+      if (play.isTurnover || kind.indexOf("Interception") >= 0) ppa = -playEp(endY == null ? 100 - spot : endY) - playEp(spot);
+      else if (td) ppa = 6.95 - playEp(spot);
+      else if (endY != null) ppa = playEp(endY) - playEp(spot);
+      const passingDown = (down === 2 && dist >= 8) || (down >= 3 && dist >= 5);
+      const offRow = row(off);
+      offRow.scrim += 1;
+      offRow.ppa += ppa;
+      offRow.ok += ok ? 1 : 0;
+      offRow.avail += spot;
+      offRow.gained += Math.max(0, Math.min(yards, spot));
+      if (ok) { offRow.ex_y += yards; offRow.ex_n += 1; }
+      if (passingDown) { offRow.pd_n += 1; offRow.pd_ppa += ppa; offRow.pd_ok += ok ? 1 : 0; }
+      else { offRow.sd_n += 1; offRow.sd_ppa += ppa; offRow.sd_ok += ok ? 1 : 0; }
+      const drow = row(defense);
+      drow.def_scrim += 1;
+      drow.def_ok += ok ? 1 : 0;
+      const low = text.toLowerCase();
+      const havoc = kind === "Sack" || kind === "Pass Interception Return" || yards < 0 || /tackle for loss|tackled for loss|forced fumble|fumble forced|broken up|pass breakup|batted|pass defensed/.test(low);
+      if (havoc) drow.def_havoc += 1;
+      if (pass[kind]) {
+        offRow.pass_n += 1; offRow.pass_ppa += ppa; offRow.pass_ok += ok ? 1 : 0;
+        if (ok) { offRow.pass_ex_y += yards; offRow.pass_ex_n += 1; }
+      }
+      if (rush[kind]) {
+        offRow.rush_n += 1; offRow.rush_ppa += ppa; offRow.rush_ok += ok ? 1 : 0;
+        const ly = yards <= 0 ? yards * 1.2 : yards <= 4 ? yards : yards <= 10 ? 4 + (yards - 4) * 0.5 : 7;
+        offRow.line_y += ly;
+        if (ok) { offRow.rush_ex_y += yards; offRow.rush_ex_n += 1; }
+        drow.def_rush += 1;
+        if (yards <= 0) { drow.def_stuffs += 1; }
+      }
+    });
+    const scored = result === "TD" || result === "FG";
+    if (reached40 || scored) { row(off).opp40 += 1; row(off).opp40_pts += pts; }
+    if (reached20) {
+      row(off).rz += 1; row(defense).def_rz += 1;
+      if (scored) { row(off).rz_score += 1; row(defense).def_rz_score += 1; }
+      if (result === "TD") { row(off).rz_td += 1; row(defense).def_rz_td += 1; }
+    }
+  });
+}
+function finishPlays(bag) {
+  const rate = (n, d) => (d ? n / d : null);
+  const rows = {};
+  Object.keys(bag).forEach((tid) => {
+    const raw = bag[tid];
+    const g = Math.max(1, Object.keys(raw.games).length);
+    if (raw.scrim < 20) return;
+    const prev = (ADV && ADV.teams && ADV.teams[tid]) || {};
+    const ats = (raw.ats_w || raw.ats_l || raw.ats_p) ? raw.ats_w + "-" + raw.ats_l + (raw.ats_p ? "-" + raw.ats_p : "") : (prev.ats || "");
+    rows[tid] = {
+      g, ppa_pass: rate(raw.pass_ppa, raw.pass_n), pass_success: rate(raw.pass_ok, raw.pass_n), pass_expl: rate(raw.pass_ex_y, raw.pass_ex_n),
+      ppa_rush: rate(raw.rush_ppa, raw.rush_n), rush_success: rate(raw.rush_ok, raw.rush_n), rush_expl: rate(raw.rush_ex_y, raw.rush_ex_n),
+      line_yards: rate(raw.line_y, raw.rush_n), stuff_rate: rate(raw.def_stuffs, raw.def_rush), stuffs_pg: raw.def_stuffs / g,
+      pd_rate: rate(raw.pd_n, raw.scrim), pd_ppa: rate(raw.pd_ppa, raw.pd_n), pd_success: rate(raw.pd_ok, raw.pd_n),
+      sd_rate: rate(raw.sd_n, raw.scrim), sd_ppa: rate(raw.sd_ppa, raw.sd_n), sd_success: rate(raw.sd_ok, raw.sd_n),
+      ppa: rate(raw.ppa, raw.scrim), success: rate(raw.ok, raw.scrim), expl: rate(raw.ex_y, raw.ex_n),
+      def_success: rate(raw.def_ok, raw.def_scrim), havoc: rate(raw.def_havoc, raw.def_scrim), available: rate(raw.gained, raw.avail),
+      field: rate(raw.start_sum, raw.start_n), opps: raw.opp40 / g, ppp: rate(raw.opp40_pts, raw.opp40), ppd: rate(raw.points, raw.drives),
+      rz: rate(raw.rz_score, raw.rz), rz_td: rate(raw.rz_td, raw.rz), def_rz: rate(raw.def_rz_score, raw.def_rz), def_ppd: rate(raw.def_points, raw.def_drives),
+      pen_pg: raw.pen_against / g, h1: raw.h1 / g, h2: raw.h2 / g, ats, drives_pg: raw.drives / g, points_pg: raw.points / g,
+      coach: prev.coach || "", oc: prev.oc || "", dc: prev.dc || "", talent_grade: prev.talent_grade, talent_r: prev.talent_r
+    };
+  });
+  const rankKeys = [["ppa_pass", true], ["pass_success", true], ["pass_expl", true], ["ppa_rush", true], ["rush_success", true], ["rush_expl", true], ["line_yards", true], ["stuff_rate", true], ["pd_ppa", true], ["pd_success", true], ["sd_ppa", true], ["sd_success", true], ["ppa", true], ["success", true], ["expl", true], ["havoc", true], ["available", true], ["opps", true], ["ppp", true], ["ppd", true], ["rz", true], ["rz_td", true], ["def_rz", false], ["def_ppd", false], ["field", false], ["def_success", false], ["pen_pg", true]];
+  rankKeys.forEach(([key, higher]) => {
+    const vals = Object.keys(rows).filter((tid) => rows[tid][key] != null).sort((a, b) => higher ? rows[b][key] - rows[a][key] : rows[a][key] - rows[b][key]);
+    vals.forEach((tid, i) => { rows[tid][key + "_r"] = i + 1; });
+  });
+  Object.keys(rows).forEach((tid) => {
+    const parts = ["success_r", "expl_r", "ppp_r", "field_r"].map((key) => rows[tid][key]).filter((v) => v != null);
+    if (parts.length) rows[tid].five = Math.round((parts.reduce((s, v) => s + v, 0) / parts.length) * 10) / 10;
+  });
+  const five = Object.keys(rows).filter((tid) => rows[tid].five != null).sort((a, b) => rows[a].five - rows[b].five);
+  five.forEach((tid, i) => { rows[tid].five_r = i + 1; });
+  return rows;
+}
+let PLAY_JOB = null;
+function refreshPlays() {
+  if (PLAY_JOB) return PLAY_JOB;
+  const week = (DATA.slate && DATA.slate.week) || 4;
+  PLAY_JOB = (async () => {
+    const ids = [];
+    const seen = {};
+    for (let w = 1; w <= week; w += 1) {
+      try {
+        const board = await fetch("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=" + w + "&seasontype=2&groups=80&limit=200").then((res) => res.json());
+        (board.events || []).forEach((ev) => {
+          const st = (((ev.competitions || [])[0] || {}).status || {}).type || {};
+          const name = st.name || "";
+          if (!(st.completed || /IN_PROGRESS|HALFTIME|END_/.test(name))) return;
+          if (seen[ev.id]) return;
+          seen[ev.id] = 1;
+          ids.push(ev.id);
+        });
+      } catch (e) {}
+    }
+    const bag = {};
+    let cursor = 0;
+    async function worker() {
+      while (cursor < ids.length) {
+        const id = ids[cursor];
+        cursor += 1;
+        try {
+          const summary = await fetch("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=" + id).then((res) => res.json());
+          addPlayGame(summary, bag);
+        } catch (e) {}
+      }
+    }
+    await Promise.all([worker(), worker(), worker(), worker()]);
+    const teams = finishPlays(bag);
+    const n = Object.keys(teams).length;
+    if (n >= 40) {
+      const keep = {};
+      const old = (ADV && ADV.teams) || {};
+      Object.keys(old).forEach((tid) => {
+        if (!teams[tid] && (old[tid].talent_r != null || old[tid].coach || old[tid].oc)) keep[tid] = old[tid];
+      });
+      ADV = { season: (DATA.slate && DATA.slate.season) || 2026, teams: Object.assign(keep, teams) };
+      const clock = new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+      PLAY_STAMP = "Play grades from " + ids.length + " games · " + clock;
+      render();
+    }
+  })().finally(() => { PLAY_JOB = null; });
+  return PLAY_JOB;
+}
+setInterval(refreshPlays, 8 * 60 * 1000);
 </script>
 </body>
 </html>
