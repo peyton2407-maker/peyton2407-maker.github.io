@@ -7455,7 +7455,7 @@ function buildWeeklyLegs(games) {
       edge: p.edge_spread
     });
   }
-  return legs.slice(0, 10);
+  return legs.filter((leg) => leg.league !== "cfb" || isThisCfbWeek(leg)).slice(0, 10);
 }
 function ensureWeeklyCard() {
   const desk = loadDesk();
@@ -7667,7 +7667,7 @@ function renderHome() {
     teaser.innerHTML = `
       <div class="lbl">Locked list</div>
       <h3 style="margin:4px 0 8px">${(card.legs || []).length} plays</h3>
-      <ul class="share-legs">${(card.legs || []).slice(0, 5).map((L) => `<li><span>${L.short}</span><b>${L.text}</b></li>`).join("")}</ul>
+      <ul class="share-legs">${(card.legs || []).slice(0, 10).map((L) => `<li><span>${L.short}</span><b>${L.text}</b></li>`).join("")}</ul>
       <p class="subn" style="margin:10px 0 0"><a href="#card" style="color:var(--turf);font-weight:800">Open the full card →</a></p>`;
     teaser.style.cursor = "pointer";
     teaser.onclick = () => { location.hash = "card"; };
