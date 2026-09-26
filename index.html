@@ -2498,37 +2498,47 @@ function cfbHomeFit(g, side) {
   return { cold, wind, wet, heat };
 }
 function cfbWeatherNudge(g) {
-  if (!g || g.indoor || !g.weather || g.weather.temp_f == null) return { margin: 0, total: 0, note: "" };
+  if (!g || g.indoor) return { margin: 0, total: 0, note: g && g.indoor ? "Indoor game. Weather does not move it." : "" };
+  if (!g.weather || g.weather.temp_f == null) return { margin: 0, total: 0, note: "" };
   const wx = g.weather;
   const impact = g.weather_impact || (typeof weatherImpact === "function" ? weatherImpact(wx, false) : { adj: 0, wet: false });
-  const total = Math.max(-0.9, Math.min(0.1, +((Number(impact.adj) || 0) * 0.16).toFixed(2)));
+  const raw = Number(impact.adj) || 0;
+  const total = raw <= -0.45 ? Math.max(-1.1, +(raw * 0.42).toFixed(2)) : 0;
   const t = Number(wx.temp_f);
   const wind = Math.max(Number(wx.wind_mph) || 0, (Number(wx.wind_gust_mph) || 0) * 0.85);
   const snow = Number(wx.weather_code) >= 71 && Number(wx.weather_code) <= 86;
-  const parts = [];
-  if (snow || (Number.isFinite(t) && t <= 45)) parts.push(["cold", snow ? 1 : t <= 32 ? 0.8 : 0.45]);
-  if (impact.wet) parts.push(["wet", 0.55]);
-  if (wind >= 15) parts.push(["wind", wind >= 22 ? 0.7 : 0.4]);
-  if (Number.isFinite(t) && t >= 88) parts.push(["heat", t >= 96 ? 0.7 : 0.4]);
-  const h = cfbHomeFit(g, "home");
-  const a = cfbHomeFit(g, "away");
+  const tags = [];
+  if (snow || (Number.isFinite(t) && t <= 45)) tags.push("cold");
+  if (impact.wet) tags.push("wet");
+  if (wind >= 15) tags.push("wind");
+  if (Number.isFinite(t) && t >= 88) tags.push("heat");
+  const label = { cold: "cold", wet: "rain", wind: "wind", heat: "heat" };
+  const h = (window.CFB_WX_PLAYED || {})[String(g.home && g.home.id)] || null;
+  const a = (window.CFB_WX_PLAYED || {})[String(g.away && g.away.id)] || null;
   let edge = 0;
-  let word = "";
-  parts.forEach(([k, sev]) => {
-    edge += (h[k] - a[k]) * sev;
-    if (!word && Math.abs(h[k] - a[k]) >= 0.22) word = k === "wet" ? "rain" : k;
-  });
-  edge = Math.max(-0.8, Math.min(0.8, edge));
-  if (Math.abs(edge) < 0.18) edge = 0;
+  const fitBits = [];
+  if (h && a && h.n && a.n && tags.length) {
+    tags.forEach((k) => {
+      const gap = (h[k] / h.n) - (a[k] / a.n);
+      if (Math.abs(gap) < 0.34 || (h[k] || 0) + (a[k] || 0) < 1) return;
+      edge += gap * 0.65;
+      const fav = gap > 0 ? g.home : g.away;
+      const other = gap > 0 ? g.away : g.home;
+      const favRow = gap > 0 ? h : a;
+      const otherRow = gap > 0 ? a : h;
+      fitBits.push(fav.abbr + " has played " + favRow[k] + " of " + favRow.n + " games in " + label[k] + ". " + other.abbr + " has played " + otherRow[k] + " of " + otherRow.n + ".");
+    });
+  }
+  edge = Math.max(-0.7, Math.min(0.7, edge));
+  if (Math.abs(edge) < 0.12) edge = 0;
   const cond = [Number.isFinite(t) ? Math.round(t) + "°F" : "", wind ? "wind " + Math.round(wind) : "", wx.condition || ""].filter(Boolean).join(", ");
   const bits = [];
   if (cond) bits.push("Live weather: " + cond + ".");
-  if (edge) {
-    const fav = edge > 0 ? g.home.abbr : g.away.abbr;
-    const other = edge > 0 ? g.away.abbr : g.home.abbr;
-    bits.push(fav + " is used to this " + (word || "weather") + ". " + other + " is not.");
-  }
-  if (Math.abs(total) >= 0.15) bits.push("Conditions move the total " + (total > 0 ? "+" : "") + total.toFixed(1) + ".");
+  if (fitBits.length && edge) bits.push(fitBits[0]);
+  else if (!tags.length) bits.push("The forecast is mild, so it does not pick a side.");
+  else if (!h || !a || !h.n || !a.n) bits.push("No played-game weather yet, so neither side gets a used-to-it edge.");
+  else bits.push("Both sides have a similar record in this weather, so it does not pick a side.");
+  if (Math.abs(total) >= 0.15) bits.push("The forecast moves the total " + total.toFixed(1) + ".");
   return { margin: +edge.toFixed(2), total: +total.toFixed(2), note: bits.join(" ") };
 }
 function cfbPrevious(teamId, beforeIso) {
@@ -2690,7 +2700,7 @@ function ensureCfbPrior() {
   if (window.CFB_PRIOR_READY || CFB_PRIOR_JOB) return CFB_PRIOR_JOB;
   CFB_PRIOR_JOB = (async () => {
     const by = {};
-    for (let week = 1; week <= 4; week += 1) {
+    for (let week = 1; week <= 5; week += 1) {
       try {
         const board = await fetch("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=" + week + "&seasontype=2&groups=80&limit=200").then((res) => res.json());
         (board.events || []).forEach((ev) => {
@@ -2700,7 +2710,7 @@ function ensureCfbPrior() {
             const id = String((side.team || {}).id || "");
             if (!id) return;
             const done = !!(((comp.status || {}).type || {}).completed);
-            const row = { date: ev.date, wasAway: side.homeAway === "away", city: side.homeAway === "home" ? city : "", event: String(ev.id), done: done };
+            const row = { date: ev.date, wasAway: side.homeAway === "away", city: city, event: String(ev.id), done: done };
             by[id] = by[id] || [];
             if (!by[id].some((old) => old.event === String(ev.id))) by[id].push(row);
           });
@@ -2785,6 +2795,73 @@ function ensureCfbPrior() {
     }
     await Promise.all([starterWorker(), starterWorker(), starterWorker(), starterWorker()]);
     window.CFB_STARTERS = starters;
+    const playedWx = {};
+    const spotGames = {};
+    const nowIso = new Date().toISOString();
+    Object.keys(slate).forEach((id) => {
+      (by[id] || []).forEach((row) => {
+        if (!row.done || !row.city || !row.date || row.date >= nowIso) return;
+        const xy = typeof coordsForGame === "function" ? coordsForGame({ city: row.city }) : null;
+        const key = xy ? xy[0].toFixed(2) + "," + xy[1].toFixed(2) : "city:" + String(row.city).toLowerCase();
+        spotGames[key] = spotGames[key] || { xy: xy, city: row.city, games: [] };
+        spotGames[key].games.push({ id: id, date: row.date });
+      });
+    });
+    const spotList = Object.keys(spotGames);
+    let geoCursor = 0;
+    async function geoWorker() {
+      while (geoCursor < spotList.length) {
+        const key = spotList[geoCursor];
+        geoCursor += 1;
+        const spot = spotGames[key];
+        if (spot.xy) continue;
+        try {
+          const geo = await fetch("https://geocoding-api.open-meteo.com/v1/search?count=1&name=" + encodeURIComponent(spot.city)).then((res) => res.json());
+          const hit = (geo.results || [])[0];
+          if (hit && hit.latitude != null) spot.xy = [Number(hit.latitude), Number(hit.longitude)];
+        } catch (e) {}
+      }
+    }
+    await Promise.all([geoWorker(), geoWorker()]);
+    let wxCursor = 0;
+    const wxSpots = spotList.filter((key) => spotGames[key].xy);
+    async function wxHistWorker() {
+      while (wxCursor < wxSpots.length) {
+        const key = wxSpots[wxCursor];
+        wxCursor += 1;
+        const spot = spotGames[key];
+        const dates = spot.games.map((game) => String(game.date).slice(0, 10)).sort();
+        try {
+          const url = "https://archive-api.open-meteo.com/v1/archive?latitude=" + spot.xy[0] + "&longitude=" + spot.xy[1] + "&start_date=" + dates[0] + "&end_date=" + dates[dates.length - 1] + "&hourly=temperature_2m,precipitation,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=UTC";
+          const pack = await fetch(url).then((res) => res.json());
+          const times = ((pack.hourly || {}).time) || [];
+          const temps = pack.hourly.temperature_2m || [];
+          const prec = pack.hourly.precipitation || [];
+          const codes = pack.hourly.weather_code || [];
+          const winds = pack.hourly.wind_speed_10m || [];
+          const at = {};
+          times.forEach((stamp, i) => { at[String(stamp).slice(0, 13)] = i; });
+          spot.games.forEach((game) => {
+            const kick = new Date(game.date);
+            if (Number.isNaN(kick.getTime())) return;
+            const idx = at[kick.toISOString().slice(0, 13)];
+            if (idx == null) return;
+            const temp = Number(temps[idx]);
+            const wind = Number(winds[idx]);
+            const code = Number(codes[idx]);
+            const rain = Number(prec[idx]);
+            const row = playedWx[game.id] || (playedWx[game.id] = { n: 0, cold: 0, wind: 0, wet: 0, heat: 0 });
+            row.n += 1;
+            if ((Number.isFinite(temp) && temp <= 45) || (code >= 71 && code <= 86)) row.cold += 1;
+            if (Number.isFinite(wind) && wind >= 15) row.wind += 1;
+            if ((Number.isFinite(rain) && rain >= 0.04) || (code >= 51 && code <= 67) || (code >= 80 && code <= 82)) row.wet += 1;
+            if (Number.isFinite(temp) && temp >= 88) row.heat += 1;
+          });
+        } catch (e) {}
+      }
+    }
+    await Promise.all([wxHistWorker(), wxHistWorker(), wxHistWorker(), wxHistWorker()]);
+    window.CFB_WX_PLAYED = playedWx;
     window.CFB_PRIOR_READY = true;
     if (typeof applySplitDesk === "function") applySplitDesk();
     if (typeof paintDesk === "function") paintDesk();
@@ -2908,8 +2985,8 @@ function applySplitDesk() {
     });
     if (!spreadRows.some((row) => row.name === "Starters")) notes.push("No starter who matters is out.");
     (trip.held || []).forEach((line) => notes.push(line));
-    if (!g.weather || g.weather.temp_f == null) notes.push("Weather is not in yet, so it has not moved the line.");
-    else if (!spreadRows.some((row) => row.name === "Weather") && Math.abs(wxn.total) < 0.05) notes.push("Weather is not enough to move the line.");
+    if (!g.weather || g.weather.temp_f == null) notes.push(g.indoor ? "Indoor game. Weather does not move it." : "Weather is not in yet, so it has not moved the line.");
+    else if (!spreadRows.some((row) => row.name === "Weather")) notes.push(wxn.note || "Weather is not enough to move the line.");
     const totalRows = totalFit.rows.filter((row) => Math.abs(row.used) >= 0.05);
     if (totalFit.scaled) notes.push("The total pieces wanted " + (totalFit.raw > 0 ? "+" : "") + totalFit.raw.toFixed(1) + ". That stays inside 1.2 too.");
     if (totalRows.length) notes.push("On the total, " + totalRows.map((row) => row.name.toLowerCase() + " " + (row.used > 0 ? "+" : "") + row.used.toFixed(1)).join(", ") + ". Those add to " + (moveT > 0 ? "+" : "") + moveT.toFixed(1) + ".");
