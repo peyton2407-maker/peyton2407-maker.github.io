@@ -5615,6 +5615,19 @@ const fmt = {
   },
 };
 
+function isThisCfbWeek(g) {
+  if (!g || g.league !== "cfb") return true;
+  const kick = g.date ? new Date(g.date).getTime() : 0;
+  if (!kick) return false;
+  const parts = {};
+  new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date()).forEach((p) => { parts[p.type] = p.value; });
+  const wd = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[parts.weekday] || 0;
+  const sinceTue = (wd + 7 - 2) % 7;
+  const guess = new Date(Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day) - sinceTue, 9, 0, 0));
+  const nyHour = Number(new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", hour: "numeric", hourCycle: "h23" }).format(guess));
+  const start = guess.getTime() + (5 - nyHour) * 3600000;
+  return kick >= start && kick < start + 7 * 86400000;
+}
 function gamesForView() {
   if (!DATA) return [];
   const q = ($("#q").value || "").trim().toLowerCase();
@@ -5622,7 +5635,7 @@ function gamesForView() {
   let games = DATA.games.filter((g) => {
     if (view === "live") return true;
     if (view === "nfl" || view === "cfb") return g.league === view;
-    return true;
+    return g.league !== "cfb" || isThisCfbWeek(g);
   });
   if (view === "live") {
     const now = Date.now();
@@ -5630,6 +5643,7 @@ function gamesForView() {
     const soon = games.filter((g) => !g.completed && Math.abs(new Date(g.date) - now) < 10 * 3600 * 1000);
     games = liveNow.length ? liveNow : (soon.length ? soon : games.filter((g) => !g.completed).slice(0, 8));
   }
+  if (view === "cfb") games = games.filter((g) => isThisCfbWeek(g));
   if (onlyOpen === "upcoming") games = games.filter((g) => !g.completed);
   if (onlyOpen === "projected") {
     games = games.filter((g) => !g.completed && (g.box || g.proj?.home_points != null));
@@ -5897,7 +5911,7 @@ function renderBoard() {
   }
   const table = projectionTable(games);
   const desk = (view === "nfl" || view === "cfb" || view === "live") ? deskStripHtml(games) : "";
-  const cards = (view === "cfb" ? games.slice(0, 25) : games).map(card).join("");
+  const cards = games.map(card).join("");
   const dogs = (view === "nfl" || view === "live" || view === "cfb") ? valueStripHtml() : "";
   $("#board").innerHTML = table + desk + dogs + cards;
   $$("#board .game").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
@@ -7060,7 +7074,7 @@ function renderCfbPicks() {
   const market = ($("#cfbMarket") && $("#cfbMarket").value) || "mix";
   const sort = ($("#cfbSort") && $("#cfbSort").value) || "best";
   const q = (($("#cfbQ") && $("#cfbQ").value) || "").trim().toLowerCase();
-  let games = (DATA.games || []).filter((g) => g.league === "cfb" && !g.completed && (g.proj || {}).hashmark_total != null);
+  let games = (DATA.games || []).filter((g) => g.league === "cfb" && isThisCfbWeek(g) && (g.proj || {}).hashmark_total != null);
   if (day === "thu") games = games.filter((g) => sameLocalDay(g.date, new Set([4, 5])));
   else if (day === "sat") games = games.filter((g) => sameLocalDay(g.date, new Set([6])));
   else if (day === "night") {
