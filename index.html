@@ -7433,7 +7433,7 @@ function playScore(g) {
   return n;
 }
 function buildWeeklyLegs(games) {
-  const upcoming = (games || []).filter((g) => !g.completed && isPlay(g.proj));
+  const upcoming = (games || []).filter((g) => !g.completed && isPlay(g.proj) && (g.league !== "cfb" || isThisCfbWeek(g)));
   upcoming.sort((a, b) => playScore(b) - playScore(a));
   const legs = [];
   const seen = new Set();

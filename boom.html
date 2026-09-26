@@ -8456,7 +8456,7 @@ function playScore(g) {
   return n;
 }
 function buildWeeklyLegs(games) {
-  const upcoming = (games || []).filter((g) => !g.completed && isPlay(g.proj));
+  const upcoming = (games || []).filter((g) => !g.completed && isPlay(g.proj) && (g.league !== "cfb" || isThisCfbWeek(g)));
   upcoming.sort((a, b) => playScore(b) - playScore(a));
   const legs = [];
   const seen = new Set();
@@ -8480,8 +8480,13 @@ function buildWeeklyLegs(games) {
   }
   return legs.slice(0, 10);
 }
-const LOCKED_CARD = {"weekKey":"nfl-3|cfb-4-5","frozen":true,"lockedAt":"2026-09-25T14:12:00Z","title":"HASHMARK weekly card","legs":[{"id":"401862779","league":"cfb","short":"ARMY @ TEM","date":"2026-09-25T20:00Z","home":"TEM","away":"ARMY","text":"TEM +3.0 · OVER 47.5","pick":"TEM +3.0","total":"OVER 47.5","proj":"ARMY 31.6 – TEM 30.8","edge":2.1},{"id":"401858478","league":"cfb","short":"WASH @ USC","date":"2026-10-03T04:00Z","home":"USC","away":"WASH","text":"USC -10.0 · OVER 57.5","pick":"USC -10.0","total":"OVER 57.5","proj":"WASH 28.1 – USC 40.9","edge":2.88},{"id":"401858249","league":"cfb","short":"MIA @ CLEM","date":"2026-10-03T04:00Z","home":"CLEM","away":"MIA","text":"CLEM +17.5 · OVER 50.5","pick":"CLEM +17.5","total":"OVER 50.5","proj":"MIA 32.2 – CLEM 20.4","edge":5.75},{"id":"401858245","league":"cfb","short":"PITT @ VT","date":"2026-10-02T23:00Z","home":"VT","away":"PITT","text":"PITT +6.0 · OVER 56.5","pick":"PITT +6.0","total":"OVER 56.5","proj":"PITT 29.9 – VT 31.9","edge":-4.02},{"id":"401858248","league":"cfb","short":"LOU @ NCSU","date":"2026-10-03T04:00Z","home":"NCSU","away":"LOU","text":"LOU -7.5 · OVER 59.5","pick":"LOU -7.5","total":"OVER 59.5","proj":"LOU 40.1 – NCSU 30.9","edge":-1.65},{"id":"401858466","league":"cfb","short":"WIS @ PSU","date":"2026-09-26T21:00Z","home":"PSU","away":"WIS","text":"PSU -10.0 · OVER 44.5","pick":"PSU -10.0","total":"OVER 44.5","proj":"WIS 18.5 – PSU 31.6","edge":3.18},{"id":"401856707","league":"cfb","short":"ALA @ MSST","date":"2026-10-03T04:00Z","home":"MSST","away":"ALA","text":"ALA -3.5 · OVER 58.5","pick":"ALA -3.5","total":"OVER 58.5","proj":"ALA 36.2 – MSST 30.5","edge":-2.13},{"id":"401861970","league":"cfb","short":"CONN @ M-OH","date":"2026-09-26T19:30Z","home":"M-OH","away":"CONN","text":"CONN +3.5 · OVER 51.5","pick":"CONN +3.5","total":"OVER 51.5","proj":"CONN 29.1 – M-OH 30.5","edge":-2.01},{"id":"401860896","league":"cfb","short":"CSU @ UTSA","date":"2026-09-26T16:00Z","home":"UTSA","away":"CSU","text":"CSU +14.0 · OVER 56.5","pick":"CSU +14.0","total":"OVER 56.5","proj":"CSU 24.1 – UTSA 34","edge":-4.16},{"id":"401866429","league":"cfb","short":"MASS @ SAC","date":"2026-09-27T01:00Z","home":"SAC","away":"MASS","text":"MASS -4.5 · UNDER 48.5","pick":"MASS -4.5","total":"UNDER 48.5","proj":"MASS 26.8 – SAC 18.6","edge":-3.63}]};
+const LOCKED_CARD = {"weekKey":"nfl-3|cfb-4","frozen":true,"lockedAt":"2026-09-25T14:12:00Z","title":"HASHMARK weekly card","legs":[{"id":"401862779","league":"cfb","short":"ARMY @ TEM","date":"2026-09-25T20:00Z","home":"TEM","away":"ARMY","text":"TEM +3.0 \u00b7 OVER 47.5","pick":"TEM +3.0","total":"OVER 47.5","proj":"ARMY 31.6 \u2013 TEM 30.8","edge":2.1},{"id":"401858466","league":"cfb","short":"WIS @ PSU","date":"2026-09-26T21:00Z","home":"PSU","away":"WIS","text":"PSU -10.0 \u00b7 OVER 44.5","pick":"PSU -10.0","total":"OVER 44.5","proj":"WIS 18.5 \u2013 PSU 31.6","edge":3.18},{"id":"401861970","league":"cfb","short":"CONN @ M-OH","date":"2026-09-26T19:30Z","home":"M-OH","away":"CONN","text":"CONN +3.5 \u00b7 OVER 51.5","pick":"CONN +3.5","total":"OVER 51.5","proj":"CONN 29.1 \u2013 M-OH 30.5","edge":-2.01},{"id":"401860896","league":"cfb","short":"CSU @ UTSA","date":"2026-09-26T16:00Z","home":"UTSA","away":"CSU","text":"CSU +14.0 \u00b7 OVER 56.5","pick":"CSU +14.0","total":"OVER 56.5","proj":"CSU 24.1 \u2013 UTSA 34","edge":-4.16},{"id":"401866429","league":"cfb","short":"MASS @ SAC","date":"2026-09-27T01:00Z","home":"SAC","away":"MASS","text":"MASS -4.5 \u00b7 UNDER 48.5","pick":"MASS -4.5","total":"UNDER 48.5","proj":"MASS 26.8 \u2013 SAC 18.6","edge":-3.63}]};
 window.LOCKED_CARD = LOCKED_CARD;
+function thisWeekCard(card) {
+  if (!card || !card.legs) return card;
+  card.legs = card.legs.filter((leg) => leg.league !== "cfb" || isThisCfbWeek(leg));
+  return card;
+}
 function ensureWeeklyCard(force) {
   const desk = loadDesk();
   const key = deskWeekKey();
@@ -8495,20 +8500,20 @@ function ensureWeeklyCard(force) {
     };
     window.LOCKED_CARD = desk.card;
     saveDesk();
-    return desk.card;
+    return thisWeekCard(desk.card);
   }
   if (window.LOCKED_CARD && window.LOCKED_CARD.frozen && (window.LOCKED_CARD.legs || []).length) {
-    desk.card = window.LOCKED_CARD;
+    desk.card = thisWeekCard(window.LOCKED_CARD);
     return desk.card;
   }
-  if (desk.card && desk.card.frozen && desk.card.weekKey === key && (desk.card.legs || []).length) return desk.card;
+  if (desk.card && desk.card.frozen && desk.card.weekKey === key && (desk.card.legs || []).length) return thisWeekCard(desk.card);
   const legs = buildWeeklyLegs(DATA.games || []);
   desk.card = {
     weekKey: key, frozen: false, lockedAt: null,
     title: "HASHMARK weekly card",
     legs
   };
-  return desk.card;
+  return thisWeekCard(desk.card);
 }
 function lockUpcomingPlays() {
   const desk = loadDesk();
