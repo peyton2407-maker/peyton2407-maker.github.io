@@ -4045,8 +4045,47 @@ function applySplitDesk() {
     const learned = cfbLearnNudge(g);
     const trip = cfbRestTravelNudge(g);
     const qbSwap = cfbQbChangeNudge(g);
-    const moveM = Math.max(-5.5, Math.min(5.5, +(nudge.margin + wxn.margin + learned.margin + trip.margin + qbSwap.margin).toFixed(2)));
-    const moveT = Math.max(-4.5, Math.min(4.2, +(nudge.total + wxn.total + learned.total + trip.total + qbSwap.total).toFixed(2)));
+    const plainReason = (text) => String(text || "")
+      .replace(/That is \d+(?:\.\d+)? toward [^.]+\./g, "")
+      .replace(/The next line moves [^.]+\./g, "")
+      .replace(/Those misses cancel, so this line stays put\./g, "")
+      .replace(/Conditions move the total [^.]+\./g, "")
+      .replace(/Rest and travel together stay inside 1\.2\./g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    const shareOfCap = (parts, cap) => {
+      const raw = parts.reduce((sum, part) => sum + Number(part.value || 0), 0);
+      const limited = Math.max(-cap, Math.min(cap, raw));
+      const scale = Math.abs(raw) > 0.001 ? limited / raw : 1;
+      const rows = parts.map((part) => ({
+        name: part.name,
+        detail: plainReason(part.detail),
+        used: +(Number(part.value || 0) * scale).toFixed(2)
+      }));
+      const drift = +(limited - rows.reduce((sum, row) => sum + row.used, 0)).toFixed(2);
+      if (Math.abs(drift) >= 0.01 && rows.length) {
+        let big = rows[0];
+        rows.forEach((row) => { if (Math.abs(row.used) > Math.abs(big.used)) big = row; });
+        big.used = +(big.used + drift).toFixed(2);
+      }
+      return { rows: rows, total: +limited.toFixed(2), raw: +raw.toFixed(2), scaled: Math.abs(raw) > cap + 0.001 };
+    };
+    const spreadFit = shareOfCap([
+      { name: "Starters", value: nudge.margin, detail: (nudge.lines || []).join(" ") },
+      { name: "Weather", value: wxn.margin, detail: wxn.note || "" },
+      { name: "Last games", value: learned.margin, detail: learned.note || "" },
+      { name: "Rest and travel", value: trip.margin, detail: (trip.lines || []).join(" ") },
+      { name: "Quarterback", value: qbSwap.margin, detail: (qbSwap.lines || []).join(" ") }
+    ], 1.2);
+    const totalFit = shareOfCap([
+      { name: "Starters", value: nudge.total, detail: "" },
+      { name: "Weather", value: wxn.total, detail: "" },
+      { name: "Last games", value: learned.total, detail: "" },
+      { name: "Rest and travel", value: trip.total, detail: "" },
+      { name: "Quarterback", value: qbSwap.total, detail: "" }
+    ], 1.2);
+    const moveM = spreadFit.total;
+    const moveT = totalFit.total;
     if (Math.abs(moveM) >= 0.12 || Math.abs(moveT) >= 0.08) {
       const dgMargin = +(p.blended_margin + moveM).toFixed(2);
       const dgTotal = +Math.max(20, p.hashmark_total + moveT).toFixed(1);
@@ -4058,7 +4097,7 @@ function applySplitDesk() {
     }
     p.gg_injury = nudge;
     p.gg_weather = wxn;
-    p.weather_adj_total = wxn.total;
+    p.weather_adj_total = (totalFit.rows.find((row) => row.name === "Weather") || {}).used || 0;
     if (typeof normCdf === "function" && typeof cfbSigma === "function") {
       const sigma = cfbSigma(p.blended_margin);
       p.cfb_sigma = sigma;
@@ -4071,15 +4110,21 @@ function applySplitDesk() {
       g.box.total_points = p.hashmark_total;
     }
     const notes = ["The Split has " + g.away.abbr + " " + away + ", " + g.home.abbr + " " + home + "."];
-    if (nudge.lines && nudge.lines.length) nudge.lines.forEach((line) => notes.push(line));
-    else notes.push("No starter who matters is out.");
-    if (trip.lines.length) trip.lines.forEach((line) => notes.push(line));
-    else notes.push("Rest and travel are normal, so they do not move it.");
-    qbSwap.lines.forEach((line) => notes.push(line));
-    if (wxn.note && (Math.abs(wxn.margin) >= 0.05 || Math.abs(wxn.total) >= 0.05)) notes.push(wxn.note);
-    else if (!g.weather || g.weather.temp_f == null) notes.push("Weather is not in yet, so it has not moved the line.");
-    else notes.push("Weather is not enough to move the line.");
-    notes.push(learned.note || "No finished college game is in for these teams yet.");
+    if (spreadFit.scaled) notes.push("The pieces wanted " + (spreadFit.raw > 0 ? "+" : "") + spreadFit.raw.toFixed(1) + " on the spread. The whole move stays inside 1.2, so each line is its share.");
+    const spreadRows = spreadFit.rows.filter((row) => Math.abs(row.used) >= 0.05);
+    if (!spreadRows.length) notes.push("Nothing moved the spread.");
+    spreadRows.forEach((row) => {
+      const toward = row.used > 0 ? g.home.abbr : g.away.abbr;
+      const verb = /Weather|Quarterback/.test(row.name) ? "is" : "are";
+      notes.push(row.name + " " + verb + " " + Math.abs(row.used).toFixed(1) + " toward " + toward + "." + (row.detail ? " " + row.detail : ""));
+    });
+    if (!spreadRows.some((row) => row.name === "Starters")) notes.push("No starter who matters is out.");
+    if (!g.weather || g.weather.temp_f == null) notes.push("Weather is not in yet, so it has not moved the line.");
+    else if (!spreadRows.some((row) => row.name === "Weather") && Math.abs(wxn.total) < 0.05) notes.push("Weather is not enough to move the line.");
+    const totalRows = totalFit.rows.filter((row) => Math.abs(row.used) >= 0.05);
+    if (totalFit.scaled) notes.push("The total pieces wanted " + (totalFit.raw > 0 ? "+" : "") + totalFit.raw.toFixed(1) + ". That stays inside 1.2 too.");
+    if (totalRows.length) notes.push("On the total, " + totalRows.map((row) => row.name.toLowerCase() + " " + (row.used > 0 ? "+" : "") + row.used.toFixed(1)).join(", ") + ". Those add to " + (moveT > 0 ? "+" : "") + moveT.toFixed(1) + ".");
+    else notes.push("Nothing moved the total.");
     notes.push(cfbMarketNote(g, row, liveSpread, liveTotal, bookName));
     let lead = "We did not move The Split.";
     if (Math.abs(moveM) >= 0.12 || Math.abs(moveT) >= 0.08) {
