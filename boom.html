@@ -3707,6 +3707,96 @@ function cfbWeatherNudge(g) {
   if (Math.abs(total) >= 0.15) bits.push("Conditions move the total " + (total > 0 ? "+" : "") + total.toFixed(1) + ".");
   return { margin: +edge.toFixed(2), total: +total.toFixed(2), note: bits.join(" ") };
 }
+function cfbPrevious(teamId, beforeIso) {
+  const rows = (window.CFB_PRIOR || {})[String(teamId)] || [];
+  let best = null;
+  rows.forEach((row) => {
+    if (!row.date || row.date >= beforeIso) return;
+    if (!best || row.date > best.date) best = row;
+  });
+  const board = lastGameFor(teamId, beforeIso, "cfb");
+  if (board && (!best || board.date > best.date)) {
+    return { date: board.date, wasAway: String(board.away.id) === String(teamId), city: board.city || "" };
+  }
+  return best;
+}
+function cfbRestTravelNudge(g) {
+  const restOf = (side) => {
+    const last = cfbPrevious(g[side].id, g.date);
+    if (!last) return { days: 7, kind: "week" };
+    const days = (new Date(g.date) - new Date(last.date)) / 864e5;
+    let kind = "normal";
+    if (days <= 4.6) kind = "short";
+    else if (days <= 5.8) kind = "shortish";
+    else if (days >= 13) kind = "bye";
+    else if (days >= 9.5) kind = "extra";
+    return { days, kind };
+  };
+  const restPts = (info) => info.kind === "short" ? 0.65 : info.kind === "shortish" ? 0.3 : info.kind === "bye" ? -0.3 : info.kind === "extra" ? -0.12 : 0;
+  const rh = restOf("home");
+  const ra = restOf("away");
+  const homeRest = restPts(rh);
+  const awayRest = restPts(ra);
+  const tr = typeof travelInfo === "function" ? travelInfo(g) : { awayTax: 0, homeTax: 0, tot: 0, miles: null, notes: [] };
+  let awayTrip = (tr.awayTax || 0) * 0.4;
+  let homeTrip = (tr.homeTax || 0) * 0.4;
+  if (tr.miles != null && tr.miles < 1200) awayTrip = Math.max(0, awayTrip - 0.11);
+  const lines = [];
+  const sayRest = (side, info, pts) => {
+    if (Math.abs(pts) < 0.1) return;
+    const team = g[side].abbr;
+    const other = g[side === "home" ? "away" : "home"].abbr;
+    const days = Number.isFinite(info.days) ? Math.round(info.days) + " days" : "";
+    if (pts > 0) lines.push(team + " is on short rest" + (days ? " (" + days + ")" : "") + ". That is " + pts.toFixed(1) + " toward " + other + ".");
+    else lines.push(team + " had extra rest" + (days ? " (" + days + ")" : "") + ". That is " + Math.abs(pts).toFixed(1) + " toward " + team + ".");
+  };
+  sayRest("away", ra, awayRest);
+  sayRest("home", rh, homeRest);
+  if (tr.miles != null) (tr.notes || []).forEach((note) => { if (!/Neutral|Road trip/.test(note)) lines.push(note + "."); });
+  else if (!g.neutral && typeof haversineMiles === "function" && typeof coordsForGame === "function") {
+    const venue = coordsForGame(g);
+    const rows = (window.CFB_PRIOR || {})[String(g.away.id)] || [];
+    const homeCity = (rows.find((row) => row.city && !row.wasAway) || {}).city;
+    const miles = haversineMiles(coordsForGame({ city: homeCity || "" }), venue);
+    if (miles >= 2000) { awayTrip += 0.45; lines.push(g.away.abbr + " flew about " + Math.round(miles) + " miles. That is 0.5 toward " + g.home.abbr + "."); }
+    else if (miles >= 1200) { awayTrip += 0.28; lines.push(g.away.abbr + " traveled about " + Math.round(miles) + " miles. That is 0.3 toward " + g.home.abbr + "."); }
+  }
+  let margin = (awayRest + awayTrip) - (homeRest + homeTrip);
+  let total = (tr.tot || 0) * 0.4;
+  if (rh.kind === "short" || ra.kind === "short") total -= 0.2;
+  else if (rh.kind === "shortish" || ra.kind === "shortish") total -= 0.1;
+  margin = Math.max(-1.2, Math.min(1.2, +margin.toFixed(2)));
+  total = Math.max(-0.55, Math.min(0.1, +total.toFixed(2)));
+  return { margin, total, lines };
+}
+let CFB_PRIOR_JOB = null;
+function ensureCfbPrior() {
+  if (window.CFB_PRIOR_READY || CFB_PRIOR_JOB) return CFB_PRIOR_JOB;
+  CFB_PRIOR_JOB = (async () => {
+    const by = {};
+    for (let week = 1; week <= 4; week += 1) {
+      try {
+        const board = await fetch("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=" + week + "&seasontype=2&groups=80&limit=200").then((res) => res.json());
+        (board.events || []).forEach((ev) => {
+          const comp = (ev.competitions || [])[0] || {};
+          const city = (((comp.venue || {}).address || {}).city) || "";
+          (comp.competitors || []).forEach((side) => {
+            const id = String((side.team || {}).id || "");
+            if (!id) return;
+            const row = { date: ev.date, wasAway: side.homeAway === "away", city: side.homeAway === "home" ? city : "" };
+            by[id] = by[id] || [];
+            by[id].push(row);
+          });
+        });
+      } catch (e) {}
+    }
+    window.CFB_PRIOR = by;
+    window.CFB_PRIOR_READY = true;
+    if (typeof applySplitDesk === "function") applySplitDesk();
+    if (typeof paintDesk === "function") paintDesk();
+  })().finally(() => { CFB_PRIOR_JOB = null; });
+  return CFB_PRIOR_JOB;
+}
 function applySplitDesk() {
   const rows = window.SPLIT_DESK || [];
   if (!rows.length || typeof DATA === "undefined" || !DATA) return;
@@ -3744,8 +3834,9 @@ function applySplitDesk() {
     const nudge = cfbStarterNudge(g);
     const wxn = cfbWeatherNudge(g);
     const learned = cfbLearnNudge(g);
-    const moveM = Math.max(-5.5, Math.min(5.5, +(nudge.margin + wxn.margin + learned.margin).toFixed(2)));
-    const moveT = Math.max(-4.5, Math.min(4.2, +(nudge.total + wxn.total + learned.total).toFixed(2)));
+    const trip = cfbRestTravelNudge(g);
+    const moveM = Math.max(-5.5, Math.min(5.5, +(nudge.margin + wxn.margin + learned.margin + trip.margin).toFixed(2)));
+    const moveT = Math.max(-4.5, Math.min(4.2, +(nudge.total + wxn.total + learned.total + trip.total).toFixed(2)));
     if (Math.abs(moveM) >= 0.12 || Math.abs(moveT) >= 0.08) {
       const dgMargin = +(p.blended_margin + moveM).toFixed(2);
       const dgTotal = +Math.max(20, p.hashmark_total + moveT).toFixed(1);
@@ -3772,6 +3863,8 @@ function applySplitDesk() {
     const notes = ["The Split has " + g.away.abbr + " " + away + ", " + g.home.abbr + " " + home + "."];
     if (nudge.lines && nudge.lines.length) nudge.lines.forEach((line) => notes.push(line));
     else notes.push("No starter who matters is out.");
+    if (trip.lines.length) trip.lines.forEach((line) => notes.push(line));
+    else notes.push("Rest and travel are normal, so they do not move it.");
     if (wxn.note && (Math.abs(wxn.margin) >= 0.05 || Math.abs(wxn.total) >= 0.05)) notes.push(wxn.note);
     else if (!g.weather || g.weather.temp_f == null) notes.push("Weather is not in yet, so it has not moved the line.");
     else notes.push("Weather is not enough to move the line.");
@@ -8791,6 +8884,7 @@ function scheduleDeskRefresh(force) {
       if (wantLines && typeof pullDkLines === "function") extra.push(pullDkLines().catch(() => {}));
       await Promise.all(extra);
       if (typeof applySplitDesk === "function") applySplitDesk();
+      if (typeof ensureCfbPrior === "function") ensureCfbPrior();
       __deskFreshAt = Date.now();
       paintDesk();
       const liveN = (DATA.games || []).filter((g) => typeof isLiveGame === "function" && isLiveGame(g)).length;
@@ -10133,6 +10227,7 @@ async function boot() {
     if (typeof apply === "function") (DATA.games || []).forEach(apply);
     if (typeof settleBoard === "function") settleBoard();
     if (typeof applySplitDesk === "function") applySplitDesk();
+    if (typeof ensureCfbPrior === "function") ensureCfbPrior();
     if (DATA.notes && n) DATA.notes.learning = `Same record for everyone. ${n} finished games are in the next line.`;
   } catch (e) {}
   try { if (typeof syncDesk === "function") syncDesk(); } catch (e) {}
