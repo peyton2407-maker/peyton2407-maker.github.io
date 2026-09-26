@@ -8326,7 +8326,14 @@ function renderWeatherDesk(opts) {
   const conf = (document.getElementById(confSel) || {}).value || "ALL";
   const kind = (document.getElementById(kindSel) || {}).value || "all";
   const q = ((document.getElementById(qSel) || {}).value || "").trim().toLowerCase();
-  let games = (DATA.games || []).filter((g) => g.league === league && !g.completed);
+  let games = (DATA.games || []).filter((g) => {
+    if (!g || g.league !== league || g.completed) return false;
+    const st = String(g.status || "") + " " + String(g.status_detail || "");
+    if (/FINAL|FULL_TIME|IN_PROGRESS|HALFTIME|END OF/i.test(st)) return false;
+    const kick = g.date ? new Date(g.date).getTime() : 0;
+    if (kick && kick <= Date.now()) return false;
+    return true;
+  });
   if (conf !== "ALL") {
     games = games.filter((g) => {
       if (confMode === "nfl") {
