@@ -3639,9 +3639,53 @@ function repriceCfbBoard() {
 
 window.learnFromFinals = learnFromFinals;
 window.applyLearningToGame = applyLearningToGame;
+function cfbPerson(name) {
+  let parts = String(name || "").trim().replace(/\./g, "").replace(/,/g, " ").split(/\s+/).filter(Boolean);
+  while (parts.length > 1 && /^(jr|sr|ii|iii|iv|v)$/i.test(parts[parts.length - 1])) parts.pop();
+  if (!parts.length) return null;
+  if (parts.length >= 2 && parts[0].length === 1) {
+    return { first: parts[0].toLowerCase(), initial: parts[0].toLowerCase(), last: parts.slice(1).join("").toLowerCase().replace(/[^a-z]/g, "") };
+  }
+  const first = parts[0].toLowerCase().replace(/[^a-z]/g, "");
+  const last = parts[parts.length - 1].toLowerCase().replace(/[^a-z]/g, "");
+  return { first: first, initial: first.slice(0, 1), last: last };
+}
+function cfbSamePerson(a, b) {
+  if (!a || !b || !a.last || a.last !== b.last) return false;
+  if (a.first && b.first && a.first === b.first) return true;
+  if (a.initial && a.initial === b.initial && (a.first.length === 1 || b.first.length === 1)) return true;
+  return false;
+}
+function cfbPosOk(injPos, chartPos) {
+  const p = String(injPos || "").toUpperCase();
+  const c = String(chartPos || "").toUpperCase();
+  if (!p || !c) return true;
+  if (c === "DB") return ["CB", "S", "FS", "SS", "SAF", "DB"].includes(p);
+  if (c === "DL") return ["DE", "DT", "NT", "DL", "EDGE"].includes(p);
+  if (c === "OL") return ["LT", "RT", "T", "OT", "G", "OG", "C", "OL"].includes(p);
+  if (c === "LB") return ["LB", "ILB", "OLB", "MLB"].includes(p);
+  return c === p;
+}
+function cfbRegularStarter(p, sample) {
+  const n = Math.max(Number(sample) || 0, Number(p && p.starts) || 0);
+  if (!p || !p.starts) return false;
+  if (n <= 1) return true;
+  if (p.starts >= 2) return true;
+  if (p.starts === 1 && !p.lastStart && n === 2) return true;
+  return false;
+}
+function cfbChartHit(chart, inj) {
+  if (!chart || !chart.players) return null;
+  const players = Object.values(chart.players);
+  const pid = String(inj.id || "");
+  if (pid && chart.players[pid] && cfbRegularStarter(chart.players[pid], chart.sample)) return chart.players[pid];
+  const me = cfbPerson(inj.name);
+  const hits = players.filter((p) => cfbRegularStarter(p, chart.sample) && cfbSamePerson(me, p) && cfbPosOk(inj.pos, p.pos));
+  return hits.length === 1 ? hits[0] : null;
+}
 function cfbStarterNudge(g) {
   const worth = { QB: 0.85, RB: 0.32, WR: 0.26, TE: 0.14, OT: 0.28, LT: 0.28, RT: 0.28, T: 0.28, C: 0.18, CB: 0.2, EDGE: 0.2, DE: 0.2, S: 0.18, FS: 0.18, SS: 0.18, SAF: 0.18, LB: 0.18, ILB: 0.18, OLB: 0.18, MLB: 0.18 };
-  const best = {};
+  const grouped = {};
   (g.injuries || []).forEach((r) => {
     const tag = String(r.tag || r.status || "").toUpperCase();
     if (!/OUT|IR|INACTIVE|DOUBT/.test(tag)) return;
@@ -3652,28 +3696,38 @@ function cfbStarterNudge(g) {
     const side = r.side === "home" || r.side === "away" ? r.side : "";
     if (!side) return;
     const chart = (window.CFB_STARTERS || {})[String((g[side] && g[side].id) || "")];
-    const last = String(r.name || "").split(" ").slice(-1)[0].toLowerCase().replace(/[^a-z]/g, "");
-    const pid = String(r.id || "");
-    let started = false;
-    if (chart && chart.ids && Object.keys(chart.ids).length) {
-      if (pid && chart.ids[pid]) started = true;
-      else if (last && chart.lasts && chart.lasts[last] === 1) started = true;
-    } else if (pos === "QB") {
+    let hit = null;
+    if (chart && chart.players && Object.keys(chart.players).length) hit = cfbChartHit(chart, r);
+    else if (pos === "QB") {
       const prior = ((window.CFB_QB || {})[String(g[side].id)] || []);
-      const usual = prior.length ? String(prior[prior.length - 1].name || "") : "";
-      const usualLast = usual.split(" ").slice(-1)[0].toLowerCase().replace(/[^a-z]/g, "");
-      if (usualLast && usualLast === last) started = true;
+      const me = cfbPerson(r.name);
+      const counts = {};
+      prior.forEach((row) => {
+        const who = cfbPerson(row.name);
+        if (!cfbSamePerson(me, who)) return;
+        const key = who.last + "|" + who.initial;
+        counts[key] = (counts[key] || 0) + 1;
+      });
+      const n = Object.values(counts)[0] || 0;
+      if (n >= 2 || (n === 1 && prior.length <= 1)) hit = { starts: n, lastStart: true };
     }
-    if (!started) return;
+    if (!hit) return;
     const group = ["LT", "RT", "T", "OT"].includes(pos) ? "OT" : (pos === "DE" ? "EDGE" : (["S", "FS", "SS", "SAF"].includes(pos) ? "S" : (["LB", "ILB", "OLB", "MLB"].includes(pos) ? "LB" : pos)));
     const key = side + "|" + group;
-    const score = Number(r.score) || 0;
-    if (!best[key] || score > best[key].score) best[key] = { r, score, side, group, doubt: /DOUBT/.test(tag) };
+    grouped[key] = grouped[key] || [];
+    grouped[key].push({ r: r, score: Number(r.score) || 0, side: side, group: group, doubt: /DOUBT/.test(tag), starts: hit.starts || 1, sample: (chart && chart.sample) || hit.starts || 1 });
+  });
+  const slots = { QB: 1, RB: 2, WR: 3, TE: 2, OT: 2, C: 1, CB: 2, S: 2, LB: 3, EDGE: 2 };
+  const picked = [];
+  Object.keys(grouped).forEach((key) => {
+    const group = key.split("|")[1];
+    const rows = grouped[key].slice().sort((a, b) => b.starts - a.starts || b.score - a.score);
+    rows.slice(0, slots[group] || 2).forEach((row) => picked.push(row));
   });
   let home = 0;
   let away = 0;
   const names = [];
-  Object.values(best).forEach((item) => {
+  picked.forEach((item) => {
     const base = worth[item.r.pos] || worth[item.group] || 0.12;
     const pts = item.doubt ? base * 0.4 : base;
     if (item.side === "home") home += pts;
@@ -3683,14 +3737,15 @@ function cfbStarterNudge(g) {
   });
   const margin = Math.max(-1.2, Math.min(1.2, away - home));
   const total = Math.max(-0.45, Math.min(0, -Math.min(0.45, (home + away) * 0.22)));
-  const lines = Object.values(best).map((item) => {
+  const lines = picked.map((item) => {
     const team = item.side === "home" ? g.home.abbr : g.away.abbr;
     const other = item.side === "home" ? g.away.abbr : g.home.abbr;
     const last = String(item.r.name || "").split(" ").slice(-1)[0];
     const pts = item.doubt ? (worth[item.r.pos] || worth[item.group] || 0.12) * 0.4 : (worth[item.r.pos] || worth[item.group] || 0.12);
-    return team + " " + last + " (" + item.group + ") started the last game and is " + (item.doubt ? "doubtful" : "out") + ". That is " + pts.toFixed(1) + " toward " + other + ".";
+    const played = item.sample > 1 ? "started " + item.starts + " of the last " + item.sample : "started the last game";
+    return team + " " + last + " (" + item.group + ") " + played + " and is " + (item.doubt ? "doubtful" : "out") + ". That is " + pts.toFixed(1) + " toward " + other + ".";
   });
-  return { margin: +margin.toFixed(2), total: +total.toFixed(2), names: names.slice(0, 4), lines: lines.slice(0, 4) };
+  return { margin: +margin.toFixed(2), total: +total.toFixed(2), names: names.slice(0, 6), lines: lines.slice(0, 6) };
 }
 function cfbLearnNudge(g) {
   const hr = residualFor("cfb", g.home && g.home.id);
@@ -4041,10 +4096,17 @@ function ensureCfbPrior() {
     window.CFB_QB = qb;
     const starters = {};
     const starterJobs = [];
+    const posFromEntry = (entry) => {
+      const ref = String(((entry || {}).position || {}).$ref || "");
+      const id = (ref.match(/positions\/(\d+)/) || [])[1];
+      return { "1": "WR", "7": "TE", "8": "QB", "9": "RB", "30": "LB", "35": "DB", "37": "DL", "45": "OL" }[id] || "";
+    };
     Object.keys(slate).forEach((id) => {
       const played = (by[id] || []).filter((row) => row.done && row.event).sort((a, b) => (a.date < b.date ? -1 : 1));
-      const last = played[played.length - 1];
-      if (last) starterJobs.push({ id: id, event: last.event });
+      const recent = played.slice(-4);
+      if (!recent.length) return;
+      starters[id] = { sample: recent.length, players: {} };
+      recent.forEach((row, i) => starterJobs.push({ id: id, event: row.event, latest: i === recent.length - 1 }));
     });
     let starterCursor = 0;
     async function starterWorker() {
@@ -4053,20 +4115,22 @@ function ensureCfbPrior() {
         starterCursor += 1;
         try {
           const roster = await fetch("https://sports.core.api.espn.com/v2/sports/football/leagues/college-football/events/" + job.event + "/competitions/" + job.event + "/competitors/" + job.id + "/roster?limit=100").then((res) => res.json());
-          const ids = {};
-          const lasts = {};
+          const team = starters[job.id];
           (roster.entries || []).forEach((entry) => {
             if (!entry || !entry.starter) return;
             const pid = String(entry.playerId || "");
-            if (pid) ids[pid] = 1;
-            const name = String(entry.displayName || "").split(" ").slice(-1)[0].toLowerCase().replace(/[^a-z]/g, "");
-            if (name) lasts[name] = (lasts[name] || 0) + 1;
+            if (!pid) return;
+            const who = cfbPerson(entry.displayName);
+            const row = team.players[pid] || { id: pid, name: entry.displayName || "", first: who && who.first, initial: who && who.initial, last: who && who.last, pos: posFromEntry(entry), starts: 0, lastStart: false };
+            row.starts += 1;
+            if (job.latest) row.lastStart = true;
+            if (!row.pos) row.pos = posFromEntry(entry);
+            team.players[pid] = row;
           });
-          if (Object.keys(ids).length) starters[job.id] = { ids: ids, lasts: lasts };
         } catch (e) {}
       }
     }
-    await Promise.all([starterWorker(), starterWorker(), starterWorker(), starterWorker()]);
+    await Promise.all([starterWorker(), starterWorker(), starterWorker(), starterWorker(), starterWorker(), starterWorker()]);
     window.CFB_STARTERS = starters;
     const playedWx = {};
     const spotGames = {};
