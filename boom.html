@@ -3632,7 +3632,14 @@ function cfbStarterNudge(g) {
   });
   const margin = Math.max(-1.2, Math.min(1.2, away - home));
   const total = Math.max(-0.45, Math.min(0, -Math.min(0.45, (home + away) * 0.22)));
-  return { margin: +margin.toFixed(2), total: +total.toFixed(2), names: names.slice(0, 4) };
+  const lines = Object.values(best).map((item) => {
+    const team = item.side === "home" ? g.home.abbr : g.away.abbr;
+    const other = item.side === "home" ? g.away.abbr : g.home.abbr;
+    const last = String(item.r.name || "").split(" ").slice(-1)[0];
+    const pts = item.doubt ? (worth[item.r.pos] || worth[item.group] || 0.12) * 0.4 : (worth[item.r.pos] || worth[item.group] || 0.12);
+    return team + " " + last + " (" + item.group + ") is " + (item.doubt ? "doubtful" : "out") + ". That is " + pts.toFixed(1) + " toward " + other + ".";
+  });
+  return { margin: +margin.toFixed(2), total: +total.toFixed(2), names: names.slice(0, 4), lines: lines.slice(0, 4) };
 }
 function cfbLearnNudge(g) {
   const hr = residualFor("cfb", g.home && g.home.id);
@@ -3645,8 +3652,8 @@ function cfbLearnNudge(g) {
   const margin = Math.max(-4.5, Math.min(4.5, 0.55 * confw * hm));
   const total = Math.max(-4, Math.min(4, 0.35 * confw * totBase));
   const note = Math.abs(margin) < 0.08 && Math.abs(total) < 0.08
-    ? "Finished games were too small to move this one."
-    : "After " + nGames + " finished college games, this line moves " + (margin > 0 ? "+" : "") + margin.toFixed(1) + " on the spread and " + (total > 0 ? "+" : "") + total.toFixed(1) + " on the total.";
+    ? "Finished games are in, but they are too small to move this one."
+    : "Finished games (" + nGames + ") move " + (Math.abs(margin) >= 0.08 ? ((margin > 0 ? g.home.abbr : g.away.abbr) + " by " + Math.abs(margin).toFixed(1)) : "") + (Math.abs(margin) >= 0.08 && Math.abs(total) >= 0.08 ? " and " : "") + (Math.abs(total) >= 0.08 ? ("the total " + (total > 0 ? "up " : "down ") + Math.abs(total).toFixed(1)) : "") + ".";
   return { margin: +margin.toFixed(2), total: +total.toFixed(2), note: note };
 }
 function cfbHomeFit(g, side) {
@@ -3762,20 +3769,28 @@ function applySplitDesk() {
       g.box.home_points = p.home_points;
       g.box.total_points = p.hashmark_total;
     }
-    const signPt = (v) => (Number(v) > 0 ? "+" : "") + Number(v || 0).toFixed(1);
-    const notes = ["Starts at The Split. " + g.away.abbr + " " + away + ", " + g.home.abbr + " " + home + "."];
-    if (nudge.names.length) notes.push("Starters out: " + nudge.names.join(", ") + ". Spread " + signPt(nudge.margin) + ", total " + signPt(nudge.total) + ".");
+    const notes = ["The Split has " + g.away.abbr + " " + away + ", " + g.home.abbr + " " + home + "."];
+    if (nudge.lines && nudge.lines.length) nudge.lines.forEach((line) => notes.push(line));
     else notes.push("No starter who matters is out.");
     if (wxn.note && (Math.abs(wxn.margin) >= 0.05 || Math.abs(wxn.total) >= 0.05)) notes.push(wxn.note);
     else if (!g.weather || g.weather.temp_f == null) notes.push("Weather is not in yet, so it has not moved the line.");
     else notes.push("Weather is not enough to move the line.");
-    notes.push(learned.note || "No finished college game has moved this one yet.");
-    if (Math.abs(moveM) < 0.12 && Math.abs(moveT) < 0.08) notes.push("Those pieces cancel out, so the score stays on The Split.");
-    else notes.push("Net move: spread " + signPt(moveM) + ", total " + signPt(moveT) + ".");
+    notes.push(learned.note || "No finished college game is in for these teams yet.");
+    let lead = "We did not move The Split.";
+    if (Math.abs(moveM) >= 0.12 || Math.abs(moveT) >= 0.08) {
+      const parts = [];
+      if (Math.abs(moveM) >= 0.12) parts.push((moveM > 0 ? g.home.abbr : g.away.abbr) + " by " + Math.abs(moveM).toFixed(1));
+      if (Math.abs(moveT) >= 0.08) parts.push("the total " + (moveT > 0 ? "up " : "down ") + Math.abs(moveT).toFixed(1));
+      lead = "Off The Split, we moved " + parts.join(" and ") + ".";
+    }
+    notes.unshift(lead);
+    const pack = (window.SPLIT_NOTES || {})[String(g.id)];
+    const scoreNotes = ((pack && pack.notes) || []).slice(0, 3).map((n) => n.edge + ". " + n.line);
     g.situational = {
       margin_adj: moveM,
       total_adj: moveT,
-      notes: notes
+      notes: notes,
+      score_notes: scoreNotes
     };
   });
 }
@@ -6455,10 +6470,12 @@ function deskPanelHtml(g) {
   const notes = (s.notes && s.notes.length)
     ? s.notes
     : ["We did not move this line."];
+  const score = s.score_notes || [];
   return `<div class="desk-panel">
     <div class="lbl">Why we moved this line</div>
     <div class="desk-nums"><b>Spread ${fmt.signed(s.margin_adj || 0)}</b><b>Total ${fmt.signed(s.total_adj || 0)}</b></div>
     <ul class="desk-notes">${notes.map((n) => `<li>${n}</li>`).join("")}</ul>
+    ${score.length ? `<div class="lbl" style="margin-top:10px">Why the score looks like this</div><ul class="desk-notes">${score.map((n) => `<li>${n}</li>`).join("")}</ul>` : ""}
   </div>`;
 }
 function deskStripHtml(games) {
