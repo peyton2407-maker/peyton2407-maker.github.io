@@ -146,7 +146,7 @@ function explain(id) {
   return `<div class="explain"><p>${esc(e.gist)}</p><p class="gap" style="color:var(--muted)">${esc(e.body)}</p><p class="gap"><span style="color:var(--chalk);font-weight:600">Which way. </span>${esc(e.better)}</p><p class="gap" style="color:var(--muted)"><span style="color:var(--fg);font-weight:600">On a mismatch. </span>${esc(e.mismatch)}</p></div>`;
 }
 function footer() {
-  return `<p class="foot">${LINES_STAMP ? esc(LINES_STAMP) + ". " : ""}The betting line refreshes from DraftKings every couple of minutes. Power, strength of record, and efficiencies are ESPN’s Football Power Index. Box-score rates are season totals, not opponent-adjusted. This is a reading sheet, not a pick. Picks stay on Double Gs, and only for college games.</p>`;
+  return `<p class="foot">${LINES_STAMP ? esc(LINES_STAMP) + ". " : ""}The line, the record, the rank, the power number, and the win chance refresh from ESPN for everyone on the same timer. Play grades, roster talent, and coaches are the shared season sheet, same file for every person.</p>`;
 }
 function mark() {
   return `<svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#12140f"/><rect x="6" y="22" width="20" height="2" rx="1" fill="#3dbe78"/><rect x="9" y="8" width="4" height="14" rx="1" fill="#e4ff4a"/><rect x="19" y="8" width="4" height="14" rx="1" fill="#e4ff4a"/></svg>`;
@@ -542,24 +542,127 @@ function applyLiveOdds(id, odds) {
   }
   return changed;
 }
+function powerSide(which) {
+  return which === "away" ? "left" : "right";
+}
+function paintPower(sheet, rowId, which, text, rank) {
+  const row = sheetRow(sheet, "power", rowId);
+  const cell = row && row[powerSide(which)];
+  if (!cell || text == null || text === "") return;
+  cell.text = String(text);
+  cell.rank = rank == null ? null : rank;
+}
+function placeRank(value, values, higherBetter) {
+  const nums = values.filter((v) => Number.isFinite(v));
+  const rank = 1 + nums.filter((v) => (higherBetter ? v > value : v < value)).length;
+  const pct = nums.length <= 1 ? 50 : (100 * (nums.length - rank)) / (nums.length - 1);
+  return { rank, pct };
+}
+function fpiOf(row) {
+  const out = {};
+  (row.predictives || []).forEach((item) => { out[item.name] = Number(item.value); });
+  const id = String((row.team && row.team.$ref) || "").match(/\/teams\/(\d+)/);
+  out.id = id ? id[1] : "";
+  return out;
+}
+function applyPower(sheet, game, away, home, pools) {
+  if (!away || !home || !Number.isFinite(away.fpi) || !Number.isFinite(home.fpi)) return;
+  ["away", "home"].forEach((which) => {
+    const row = which === "away" ? away : home;
+    const team = sheet[which];
+    const off = placeRank(row.epaoffense, pools.off, true);
+    const def = placeRank(row.epadefense, pools.def, true);
+    const st = placeRank(row.epaspecialteams, pools.st, true);
+    paintPower(sheet, "power-rating", which, Number(row.fpi).toFixed(1), Math.round(row.fpirank));
+    if (Number.isFinite(row.adjwinpctrank)) paintPower(sheet, "strength-of-record", which, Math.round(row.adjwinpctrank), Math.round(row.adjwinpctrank));
+    if (Number.isFinite(row.avgsosrank)) paintPower(sheet, "current-sos", which, Math.round(row.avgsosrank), Math.round(row.avgsosrank));
+    if (Number.isFinite(row.sosremainingrank)) paintPower(sheet, "remaining-sos", which, Math.round(row.sosremainingrank), Math.round(row.sosremainingrank));
+    if (Number.isFinite(row.gamecontrolrank)) paintPower(sheet, "game-control", which, Math.round(row.gamecontrolrank), Math.round(row.gamecontrolrank));
+    if (Number.isFinite(row.epaoffense)) paintPower(sheet, "off-efficiency", which, off.pct.toFixed(1), off.rank);
+    if (Number.isFinite(row.epadefense)) paintPower(sheet, "def-efficiency", which, def.pct.toFixed(1), def.rank);
+    if (Number.isFinite(row.epaspecialteams)) paintPower(sheet, "st-efficiency", which, st.pct.toFixed(1), st.rank);
+    paintPower(sheet, "poll-rank", which, team.rank ? "#" + team.rank : "NR", null);
+  });
+  const margin = (home.fpi - away.fpi) + 2.5;
+  const fav = margin >= 0 ? sheet.home.abbrev : sheet.away.abbrev;
+  const lean = fav + " -" + Math.abs(margin).toFixed(1);
+  if (!sheet.line) sheet.line = {};
+  sheet.line.fpiSpread = lean;
+  const tot = Number(sheet.line.total);
+  if (Number.isFinite(tot)) {
+    sheet.line.fpiHome = ((tot + margin) / 2).toFixed(1);
+    sheet.line.fpiAway = ((tot - margin) / 2).toFixed(1);
+  }
+  if (game) game.fpiLean = lean;
+}
+function applyLiveTeam(team, comp) {
+  if (!team || !comp) return;
+  const recs = comp.records || [];
+  const overall = recs.find((r) => r.type === "total");
+  const conf = recs.find((r) => r.type === "vsconf");
+  if (overall && overall.summary) team.record = overall.summary;
+  if (conf && conf.summary) team.confRecord = conf.summary;
+  const rk = Number(comp.curatedRank && comp.curatedRank.current);
+  team.rank = rk >= 1 && rk <= 25 ? rk : null;
+}
 function refreshLines() {
   const week = (DATA.slate && DATA.slate.week) || 4;
-  fetch("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=" + week + "&seasontype=2&groups=80&limit=200")
-    .then((res) => res.json())
-    .then((board) => {
-      let changed = !LINES_STAMP;
-      let n = 0;
-      (board.events || []).forEach((ev) => {
-        const comp = (ev.competitions || [])[0] || {};
-        const odds = (comp.odds || []).find((item) => ((item.provider || {}).name || "") === "DraftKings") || (comp.odds || [])[0];
-        if (odds && odds.details) n += 1;
-        if (applyLiveOdds(ev.id, odds)) changed = true;
+  const season = (DATA.slate && DATA.slate.season) || 2026;
+  const boardUrl = "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=" + week + "&seasontype=2&groups=80&limit=200";
+  const powerUrl = "https://sports.core.api.espn.com/v2/sports/football/leagues/college-football/seasons/" + season + "/powerindex?limit=200";
+  Promise.all([
+    fetch(boardUrl).then((res) => res.json()).catch(() => null),
+    fetch(powerUrl).then((res) => res.json()).catch(() => null)
+  ]).then(([board, power]) => {
+    let changed = !LINES_STAMP;
+    let n = 0;
+    const byId = {};
+    (power && power.items || []).forEach((item) => {
+      const row = fpiOf(item);
+      if (row.id) byId[row.id] = row;
+    });
+    const pools = {
+      off: Object.values(byId).map((row) => row.epaoffense),
+      def: Object.values(byId).map((row) => row.epadefense),
+      st: Object.values(byId).map((row) => row.epaspecialteams)
+    };
+    (board && board.events || []).forEach((ev) => {
+      const comp = (ev.competitions || [])[0] || {};
+      const odds = (comp.odds || []).find((item) => ((item.provider || {}).name || "") === "DraftKings") || (comp.odds || [])[0];
+      if (odds && odds.details) n += 1;
+      if (applyLiveOdds(ev.id, odds)) changed = true;
+      const sheet = SHEETS[ev.id];
+      const game = GAMES.find((item) => String(item.id) === String(ev.id));
+      const status = ((comp.status || {}).type || {}).name || "";
+      const started = status && status !== "STATUS_SCHEDULED" && status !== "STATUS_POSTPONED" && status !== "STATUS_CANCELED";
+      (comp.competitors || []).forEach((side) => {
+        const which = side.homeAway === "home" ? "home" : "away";
+        if (sheet) applyLiveTeam(sheet[which], side);
+        if (game) applyLiveTeam(game[which], side);
+        if (started && side.score != null && side.score !== "") {
+          if (sheet) sheet[which + "Score"] = side.score;
+          if (game) game[which + "Score"] = side.score;
+          changed = true;
+        }
       });
-      if (!n) return;
-      LINES_STAMP = "DraftKings · " + n + " lines · " + new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
-      if (changed) render();
-    })
-    .catch(() => {});
+      if (sheet) {
+        applyPower(sheet, game, byId[String(sheet.away.id)], byId[String(sheet.home.id)], pools);
+        if (!started) {
+          const proj = statsProjection(sheet);
+          if (proj) {
+            sheet.awayScore = proj.away;
+            sheet.homeScore = proj.home;
+            if (game) { game.awayScore = proj.away; game.homeScore = proj.home; }
+          }
+        }
+        ["away", "home"].forEach((which) => paintPower(sheet, "poll-rank", which, sheet[which].rank ? "#" + sheet[which].rank : "NR", null));
+      }
+    });
+    if (!n && !Object.keys(byId).length) return;
+    const clock = new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    LINES_STAMP = "Same feed for everyone · " + (n ? n + " lines · " : "") + Object.keys(byId).length + " power ratings · " + clock;
+    if (changed || Object.keys(byId).length) render();
+  }).catch(() => {});
 }
 document.addEventListener("click", (e) => {
   const desk = e.target.closest("[data-desk]");
