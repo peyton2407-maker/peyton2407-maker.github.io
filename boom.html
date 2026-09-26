@@ -3647,10 +3647,24 @@ function cfbStarterNudge(g) {
     if (!/OUT|IR|INACTIVE|DOUBT/.test(tag)) return;
     const pos = String(r.pos || "").toUpperCase();
     if (!worth[pos]) return;
-    const blob = String((r.short || "") + " " + (r.name || "")).toLowerCase();
-    if (/backup|third string|qb3|emergency|practice squad|walk-on|walk on/.test(blob)) return;
+    const blob = String((r.short || "") + " " + (r.name || "") + " " + (r.long || "")).toLowerCase();
+    if (/backup|third string|qb3|emergency|practice squad|walk-on|walk on|reserve/.test(blob)) return;
     const side = r.side === "home" || r.side === "away" ? r.side : "";
     if (!side) return;
+    const chart = (window.CFB_STARTERS || {})[String((g[side] && g[side].id) || "")];
+    const last = String(r.name || "").split(" ").slice(-1)[0].toLowerCase().replace(/[^a-z]/g, "");
+    const pid = String(r.id || "");
+    let started = false;
+    if (chart && chart.ids && Object.keys(chart.ids).length) {
+      if (pid && chart.ids[pid]) started = true;
+      else if (last && chart.lasts && chart.lasts[last] === 1) started = true;
+    } else if (pos === "QB") {
+      const prior = ((window.CFB_QB || {})[String(g[side].id)] || []);
+      const usual = prior.length ? String(prior[prior.length - 1].name || "") : "";
+      const usualLast = usual.split(" ").slice(-1)[0].toLowerCase().replace(/[^a-z]/g, "");
+      if (usualLast && usualLast === last) started = true;
+    }
+    if (!started) return;
     const group = ["LT", "RT", "T", "OT"].includes(pos) ? "OT" : (pos === "DE" ? "EDGE" : (["S", "FS", "SS", "SAF"].includes(pos) ? "S" : (["LB", "ILB", "OLB", "MLB"].includes(pos) ? "LB" : pos)));
     const key = side + "|" + group;
     const score = Number(r.score) || 0;
@@ -3674,7 +3688,7 @@ function cfbStarterNudge(g) {
     const other = item.side === "home" ? g.away.abbr : g.home.abbr;
     const last = String(item.r.name || "").split(" ").slice(-1)[0];
     const pts = item.doubt ? (worth[item.r.pos] || worth[item.group] || 0.12) * 0.4 : (worth[item.r.pos] || worth[item.group] || 0.12);
-    return team + " " + last + " (" + item.group + ") is " + (item.doubt ? "doubtful" : "out") + ". That is " + pts.toFixed(1) + " toward " + other + ".";
+    return team + " " + last + " (" + item.group + ") started the last game and is " + (item.doubt ? "doubtful" : "out") + ". That is " + pts.toFixed(1) + " toward " + other + ".";
   });
   return { margin: +margin.toFixed(2), total: +total.toFixed(2), names: names.slice(0, 4), lines: lines.slice(0, 4) };
 }
@@ -4015,6 +4029,35 @@ function ensureCfbPrior() {
       }).filter(Boolean);
     });
     window.CFB_QB = qb;
+    const starters = {};
+    const starterJobs = [];
+    Object.keys(slate).forEach((id) => {
+      const played = (by[id] || []).filter((row) => row.done && row.event).sort((a, b) => (a.date < b.date ? -1 : 1));
+      const last = played[played.length - 1];
+      if (last) starterJobs.push({ id: id, event: last.event });
+    });
+    let starterCursor = 0;
+    async function starterWorker() {
+      while (starterCursor < starterJobs.length) {
+        const job = starterJobs[starterCursor];
+        starterCursor += 1;
+        try {
+          const roster = await fetch("https://sports.core.api.espn.com/v2/sports/football/leagues/college-football/events/" + job.event + "/competitions/" + job.event + "/competitors/" + job.id + "/roster?limit=100").then((res) => res.json());
+          const ids = {};
+          const lasts = {};
+          (roster.entries || []).forEach((entry) => {
+            if (!entry || !entry.starter) return;
+            const pid = String(entry.playerId || "");
+            if (pid) ids[pid] = 1;
+            const name = String(entry.displayName || "").split(" ").slice(-1)[0].toLowerCase().replace(/[^a-z]/g, "");
+            if (name) lasts[name] = (lasts[name] || 0) + 1;
+          });
+          if (Object.keys(ids).length) starters[job.id] = { ids: ids, lasts: lasts };
+        } catch (e) {}
+      }
+    }
+    await Promise.all([starterWorker(), starterWorker(), starterWorker(), starterWorker()]);
+    window.CFB_STARTERS = starters;
     window.CFB_PRIOR_READY = true;
     if (typeof applySplitDesk === "function") applySplitDesk();
     if (typeof paintDesk === "function") paintDesk();
