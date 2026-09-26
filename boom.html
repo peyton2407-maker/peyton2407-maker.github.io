@@ -2180,6 +2180,7 @@ function rebuildSharedLearning(games) {
   res.cfb_scale = { n: 0, off: 0.34, def: 0.30 };
   res.games_learned = {};
   res.history = [];
+  window.CFB_LEARN_FORM = {};
   const extras = (window.CFB_FINAL_EXTRAS || []).filter((g) => g && g.completed && g.home && g.away);
   const ordered = (games || []).concat(extras).filter((g) => g && g.completed && g.home && g.away && g.home.score !== "" && g.home.score != null && g.away.score !== "" && g.away.score != null && Number.isFinite(Number(g.home.score)) && Number.isFinite(Number(g.away.score)))
     .slice()
@@ -2200,12 +2201,37 @@ function rebuildSharedLearning(games) {
 window.rebuildSharedLearning = rebuildSharedLearning;
 window.freezePublishedLines = freezePublishedLines;
 
+function cfbFormPredict(g) {
+  const table = window.CFB_LEARN_FORM || {};
+  const home = table[String(g.home && g.home.id)] || { n: 0, pf: 0, pa: 0 };
+  const away = table[String(g.away && g.away.id)] || { n: 0, pf: 0, pa: 0 };
+  const avg = 27.5;
+  const hfa = g.neutral ? 0 : 2.4;
+  const off = (side) => side.n ? side.pf / side.n : avg;
+  const def = (side) => side.n ? side.pa / side.n : avg;
+  const shrink = (pts, n) => (pts * Math.max(n, 0) + avg * 2) / (Math.max(n, 0) + 2);
+  const hp = Math.max(7, shrink((off(home) + def(away)) / 2 + hfa / 2, home.n));
+  const ap = Math.max(7, shrink((off(away) + def(home)) / 2 - hfa / 2, away.n));
+  return { margin: +(hp - ap).toFixed(2), total: +(hp + ap).toFixed(1) };
+}
+function cfbFormRecord(g, hs, as) {
+  const table = window.CFB_LEARN_FORM || (window.CFB_LEARN_FORM = {});
+  const add = (id, pf, pa) => {
+    const row = table[String(id)] || { n: 0, pf: 0, pa: 0 };
+    row.n += 1;
+    row.pf += pf;
+    row.pa += pa;
+    table[String(id)] = row;
+  };
+  add(g.home.id, hs, as);
+  add(g.away.id, as, hs);
+}
 function ourCfbScore(g) {
   if (!g) return null;
   const p = g.proj || {};
   if (p.split_margin != null && p.split_total != null) return { margin: Number(p.split_margin), total: Number(p.split_total) };
   const row = (window.SPLIT_DESK || []).find((item) => item && String(item.id) === String(g.id));
-  if (!row || row.homePts == null || row.awayPts == null) return null;
+  if (!row || row.homePts == null || row.awayPts == null) return cfbFormPredict(g);
   const home = Number(row.homePts);
   const away = Number(row.awayPts);
   if (!Number.isFinite(home) || !Number.isFinite(away)) return null;
@@ -2261,6 +2287,7 @@ function learnFromFinals(games) {
       actual: `${as}-${hs}`, pred: `${p.away_points}-${p.home_points}`,
       err_margin: +errM.toFixed(2), err_total: +errT.toFixed(2)
     };
+    if (lg === "cfb") cfbFormRecord(g, hs, as);
     if (lg === "cfb") {
       res.cfb_buckets = res.cfb_buckets || {};
       const conf = (typeof cfbConf === "function" ? cfbConf(g.home.name) : "") || "Other";
@@ -3750,12 +3777,13 @@ function cfbStarterNudge(g) {
 function cfbLearnNudge(g) {
   const hr = residualFor("cfb", g.home && g.home.id);
   const ar = residualFor("cfb", g.away && g.away.id);
-  const nGames = (hr.n || 0) + (ar.n || 0);
-  if (!nGames) return { margin: 0, total: 0, note: "No finished game for these teams yet, so nothing has been learned." };
+  const homeN = hr.n || 0;
+  const awayN = ar.n || 0;
+  if (!homeN && !awayN) return { margin: 0, total: 0, note: "No finished game for these teams yet, so nothing has been learned." };
   const rawM = ((hr.margin || 0) - (ar.margin || 0)) * 0.28;
   const rawT = (((hr.total || 0) + (ar.total || 0)) / 2) * 0.18;
-  const margin = Math.max(-1.6, Math.min(1.6, rawM));
-  const total = Math.max(-1.2, Math.min(1.2, rawT));
+  const margin = Math.max(-1, Math.min(1, rawM));
+  const total = Math.max(-0.8, Math.min(0.8, rawT));
   const sideNote = (side, row) => {
     if (!row || !row.n || !row.last || row.last.ours !== true) return "";
     const miss = Number(row.last.errM);
@@ -3763,14 +3791,14 @@ function cfbLearnNudge(g) {
     return g[side].abbr + " was off our score last game. This line does not take that whole miss.";
   };
   const bits = [sideNote("home", hr), sideNote("away", ar)].filter(Boolean);
-  const note = "Last games are graded against our score, not DraftKings. " + (bits.join(" ") || "No finished game of ours is in for these teams yet.");
+  const note = g.home.abbr + " has " + homeN + " finished game" + (homeN === 1 ? "" : "s") + " in our record. " + g.away.abbr + " has " + awayN + ". Each one was graded against our score, not DraftKings. " + bits.join(" ");
   return { margin: +margin.toFixed(2), total: +total.toFixed(2), note: note };
 }
 async function loadCfbFinalExtras() {
   const known = {};
   (DATA.games || []).forEach((g) => { if (g && g.id) known[String(g.id)] = 1; });
   const extras = [];
-  for (let week = 1; week <= 4; week += 1) {
+  for (let week = 1; week <= 6; week += 1) {
     try {
       const board = await fetch("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=" + week + "&seasontype=2&groups=80&limit=300").then((res) => res.json());
       (board.events || []).forEach((ev) => {
@@ -3793,13 +3821,11 @@ async function loadCfbFinalExtras() {
           else homeSpread = 0;
         }
         const total = odds.overUnder != null ? Number(odds.overUnder) : null;
-        if (homeSpread == null || total == null) return;
-        const predM = -homeSpread;
         extras.push({
           id: String(ev.id), completed: true, league: "cfb", date: ev.date, short_name: ev.shortName,
           home: { id: (sides.home.team || {}).id, abbr: (sides.home.team || {}).abbreviation, score: hs },
           away: { id: (sides.away.team || {}).id, abbr: (sides.away.team || {}).abbreviation, score: as },
-          odds: { home_spread: homeSpread, total: total },
+          odds: homeSpread == null ? {} : { home_spread: homeSpread, total: total },
           proj: {}
         });
       });
