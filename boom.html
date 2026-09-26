@@ -2179,7 +2179,8 @@ function rebuildSharedLearning(games) {
   res.cfb_scale = { n: 0, off: 0.34, def: 0.30 };
   res.games_learned = {};
   res.history = [];
-  const ordered = (games || []).filter((g) => g && g.completed && g.home && g.away && Number.isFinite(Number(g.home.score)) && Number.isFinite(Number(g.away.score)))
+  const extras = (window.CFB_FINAL_EXTRAS || []).filter((g) => g && g.completed && g.home && g.away);
+  const ordered = (games || []).concat(extras).filter((g) => g && g.completed && g.home && g.away && g.home.score !== "" && g.home.score != null && g.away.score !== "" && g.away.score != null && Number.isFinite(Number(g.home.score)) && Number.isFinite(Number(g.away.score)))
     .slice()
     .sort((a, b) => String(a.date).localeCompare(String(b.date)) || String(a.id).localeCompare(String(b.id)));
   let n = 0;
@@ -2205,6 +2206,7 @@ function learnFromFinals(games) {
     if (!g.completed || !g.home || !g.away) return;
     const hid = String(g.id);
     if (res.games_learned[hid]) return;
+    if (g.home.score === "" || g.home.score == null || g.away.score === "" || g.away.score == null) return;
     const hs = Number(g.home.score);
     const as = Number(g.away.score);
     if (!Number.isFinite(hs) || !Number.isFinite(as)) return;
@@ -2228,6 +2230,7 @@ function learnFromFinals(games) {
       row.total = +(row.total * (1 - a) + errT * a).toFixed(3);
       row.off = +(row.off * (1 - a) + offShare * a).toFixed(3);
       row.def = +(row.def * (1 - a) + defShare * a).toFixed(3);
+      row.last = { errM: +Number(marginShare).toFixed(1), name: g.short_name || g.name };
       res[lg][k] = row;
     }
     const homeOff = hs - (p.home_points || (predT + predM) / 2);
@@ -3645,16 +3648,69 @@ function cfbLearnNudge(g) {
   const hr = residualFor("cfb", g.home && g.home.id);
   const ar = residualFor("cfb", g.away && g.away.id);
   const nGames = (hr.n || 0) + (ar.n || 0);
-  if (!nGames) return { margin: 0, total: 0, note: "" };
-  const confw = nGames === 1 ? 0.62 : nGames <= 3 ? 0.82 : 1;
-  const hm = (hr.margin || 0) - (ar.margin || 0);
-  const totBase = ((hr.total || 0) + (ar.total || 0)) / 2;
-  const margin = Math.max(-4.5, Math.min(4.5, 0.55 * confw * hm));
-  const total = Math.max(-4, Math.min(4, 0.35 * confw * totBase));
-  const note = Math.abs(margin) < 0.08 && Math.abs(total) < 0.08
-    ? "Finished games are in, but they are too small to move this one."
-    : "Finished games (" + nGames + ") move " + (Math.abs(margin) >= 0.08 ? ((margin > 0 ? g.home.abbr : g.away.abbr) + " by " + Math.abs(margin).toFixed(1)) : "") + (Math.abs(margin) >= 0.08 && Math.abs(total) >= 0.08 ? " and " : "") + (Math.abs(total) >= 0.08 ? ("the total " + (total > 0 ? "up " : "down ") + Math.abs(total).toFixed(1)) : "") + ".";
+  if (!nGames) return { margin: 0, total: 0, note: "No finished game for these teams yet, so nothing has been learned." };
+  const rawM = ((hr.margin || 0) - (ar.margin || 0)) * 0.28;
+  const rawT = (((hr.total || 0) + (ar.total || 0)) / 2) * 0.18;
+  const margin = Math.max(-1.6, Math.min(1.6, rawM));
+  const total = Math.max(-1.2, Math.min(1.2, rawT));
+  const sideNote = (side, row) => {
+    if (!row || !row.n || !row.last) return "";
+    const miss = Number(row.last.errM);
+    if (!Number.isFinite(miss) || Math.abs(miss) < 0.5) return g[side].abbr + " has been close to the number.";
+    return g[side].abbr + " was " + (miss > 0 ? "better" : "worse") + " than the number by " + Math.abs(miss).toFixed(1) + " last game.";
+  };
+  const bits = [sideNote("home", hr), sideNote("away", ar)].filter(Boolean);
+  let move = "Those misses cancel, so this line stays put.";
+  if (Math.abs(margin) >= 0.08 || Math.abs(total) >= 0.08) {
+    const parts = [];
+    if (Math.abs(margin) >= 0.08) parts.push((margin > 0 ? g.home.abbr : g.away.abbr) + " by " + Math.abs(margin).toFixed(1));
+    if (Math.abs(total) >= 0.08) parts.push("the total " + (total > 0 ? "up " : "down ") + Math.abs(total).toFixed(1));
+    move = "The next line moves " + parts.join(" and ") + ".";
+  }
+  const note = "Learned from " + nGames + " finished game" + (nGames === 1 ? "" : "s") + ". " + bits.join(" ") + " " + move;
   return { margin: +margin.toFixed(2), total: +total.toFixed(2), note: note };
+}
+async function loadCfbFinalExtras() {
+  const known = {};
+  (DATA.games || []).forEach((g) => { if (g && g.id) known[String(g.id)] = 1; });
+  const extras = [];
+  for (let week = 1; week <= 4; week += 1) {
+    try {
+      const board = await fetch("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=" + week + "&seasontype=2&groups=80&limit=300").then((res) => res.json());
+      (board.events || []).forEach((ev) => {
+        if (known[String(ev.id)]) return;
+        const comp = (ev.competitions || [])[0] || {};
+        const st = ((comp.status || ev.status || {}).type) || {};
+        if (!st.completed) return;
+        const sides = {};
+        (comp.competitors || []).forEach((side) => { sides[side.homeAway] = side; });
+        if (!sides.home || !sides.away) return;
+        const hs = Number(sides.home.score);
+        const as = Number(sides.away.score);
+        if (!Number.isFinite(hs) || !Number.isFinite(as)) return;
+        const odds = ((comp.odds || []).find((o) => /draft/i.test(((o.provider || {}).name) || ""))) || (comp.odds || [])[0] || {};
+        let homeSpread = null;
+        if (odds.spread != null) {
+          const s = Math.abs(Number(odds.spread));
+          if ((odds.homeTeamOdds || {}).favorite) homeSpread = -s;
+          else if ((odds.awayTeamOdds || {}).favorite) homeSpread = s;
+          else homeSpread = 0;
+        }
+        const total = odds.overUnder != null ? Number(odds.overUnder) : null;
+        if (homeSpread == null || total == null) return;
+        const predM = -homeSpread;
+        extras.push({
+          id: String(ev.id), completed: true, league: "cfb", date: ev.date, short_name: ev.shortName,
+          home: { id: (sides.home.team || {}).id, abbr: (sides.home.team || {}).abbreviation, score: hs },
+          away: { id: (sides.away.team || {}).id, abbr: (sides.away.team || {}).abbreviation, score: as },
+          odds: { home_spread: homeSpread, total: total },
+          proj: { blended_margin: predM, hashmark_total: total, home_points: (total + predM) / 2, away_points: (total - predM) / 2 }
+        });
+      });
+    } catch (e) {}
+  }
+  window.CFB_FINAL_EXTRAS = extras;
+  return extras.length;
 }
 function cfbHomeFit(g, side) {
   const id = String((g[side] && g[side].id) || "");
@@ -8385,6 +8441,7 @@ async function pullLiveScores() {
       if (!wasDone && g.completed && g.league === "cfb") newFinals++;
     });
     if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games);
+    try { if (typeof loadCfbFinalExtras === "function") await loadCfbFinalExtras(); } catch (e) {}
     if (typeof rebuildSharedLearning === "function") rebuildSharedLearning(DATA.games || []);
     try { if (typeof reapplyDeskLine === "function") reapplyDeskLine(); } catch (e) {}
     if (newFinals) {
@@ -10374,6 +10431,7 @@ async function boot() {
   try {
     const learn = window.rebuildSharedLearning || rebuildSharedLearning;
     const apply = window.applyLearningToGame || applyLearningToGame;
+    try { if (typeof loadCfbFinalExtras === "function") await loadCfbFinalExtras(); } catch (e) {}
     const n = typeof learn === "function" ? learn(DATA.games || []) : 0;
     if (typeof apply === "function") (DATA.games || []).forEach(apply);
     if (typeof settleBoard === "function") settleBoard();
