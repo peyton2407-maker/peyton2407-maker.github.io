@@ -3737,10 +3737,28 @@ function cfbRestTravelNudge(g) {
   const ra = restOf("away");
   const homeRest = restPts(rh);
   const awayRest = restPts(ra);
-  const tr = typeof travelInfo === "function" ? travelInfo(g) : { awayTax: 0, homeTax: 0, tot: 0, miles: null, notes: [] };
-  let awayTrip = (tr.awayTax || 0) * 0.4;
-  let homeTrip = (tr.homeTax || 0) * 0.4;
-  if (tr.miles != null && tr.miles < 1200) awayTrip = Math.max(0, awayTrip - 0.11);
+  const tr = typeof travelInfo === "function" ? travelInfo(g) : { miles: null };
+  let miles = tr.miles;
+  if (miles == null && !g.neutral && typeof haversineMiles === "function" && typeof coordsForGame === "function") {
+    const venue = coordsForGame(g);
+    const rows = (window.CFB_PRIOR || {})[String(g.away.id)] || [];
+    const seen = {};
+    const homeCity = (rows.find((row) => {
+      if (!row.city || row.wasAway || seen[row.event]) return false;
+      seen[row.event] = 1;
+      return true;
+    }) || {}).city;
+    miles = haversineMiles(coordsForGame({ city: homeCity || "" }), venue);
+  }
+  let tripPts = 0;
+  let tripLine = "";
+  if (!g.neutral && miles >= 2000) {
+    tripPts = 0.45;
+    tripLine = g.away.abbr + " flew about " + Math.round(miles) + " miles. That is 0.5 toward " + g.home.abbr + ".";
+  } else if (!g.neutral && miles >= 1200) {
+    tripPts = 0.28;
+    tripLine = g.away.abbr + " traveled about " + Math.round(miles) + " miles. That is 0.3 toward " + g.home.abbr + ".";
+  }
   const lines = [];
   const sayRest = (side, info, pts) => {
     if (Math.abs(pts) < 0.1) return;
@@ -3752,21 +3770,14 @@ function cfbRestTravelNudge(g) {
   };
   sayRest("away", ra, awayRest);
   sayRest("home", rh, homeRest);
-  if (tr.miles != null) (tr.notes || []).forEach((note) => { if (!/Neutral|Road trip/.test(note)) lines.push(note + "."); });
-  else if (!g.neutral && typeof haversineMiles === "function" && typeof coordsForGame === "function") {
-    const venue = coordsForGame(g);
-    const rows = (window.CFB_PRIOR || {})[String(g.away.id)] || [];
-    const homeCity = (rows.find((row) => row.city && !row.wasAway) || {}).city;
-    const miles = haversineMiles(coordsForGame({ city: homeCity || "" }), venue);
-    if (miles >= 2000) { awayTrip += 0.45; lines.push(g.away.abbr + " flew about " + Math.round(miles) + " miles. That is 0.5 toward " + g.home.abbr + "."); }
-    else if (miles >= 1200) { awayTrip += 0.28; lines.push(g.away.abbr + " traveled about " + Math.round(miles) + " miles. That is 0.3 toward " + g.home.abbr + "."); }
-  }
-  let margin = (awayRest + awayTrip) - (homeRest + homeTrip);
-  let total = (tr.tot || 0) * 0.4;
-  if (rh.kind === "short" || ra.kind === "short") total -= 0.2;
-  else if (rh.kind === "shortish" || ra.kind === "shortish") total -= 0.1;
-  margin = Math.max(-1.2, Math.min(1.2, +margin.toFixed(2)));
-  total = Math.max(-0.55, Math.min(0.1, +total.toFixed(2)));
+  if (tripLine) lines.push(tripLine);
+  const raw = (awayRest + tripPts) - homeRest;
+  const margin = Math.max(-1.2, Math.min(1.2, +raw.toFixed(2)));
+  if (Math.abs(raw) > 1.2 + 0.01) lines.push("Rest and travel together stay inside 1.2.");
+  let total = 0;
+  if (rh.kind === "short" || ra.kind === "short") total = -0.2;
+  else if (rh.kind === "shortish" || ra.kind === "shortish") total = -0.1;
+  else if (tripPts) total = -0.1;
   return { margin, total, lines };
 }
 function cfbQbChangeNudge(g) {
@@ -3860,7 +3871,7 @@ function ensureCfbPrior() {
             const done = !!(((comp.status || {}).type || {}).completed);
             const row = { date: ev.date, wasAway: side.homeAway === "away", city: side.homeAway === "home" ? city : "", event: String(ev.id), done: done };
             by[id] = by[id] || [];
-            by[id].push(row);
+            if (!by[id].some((old) => old.event === String(ev.id))) by[id].push(row);
           });
         });
       } catch (e) {}
