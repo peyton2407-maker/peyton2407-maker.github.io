@@ -3810,6 +3810,39 @@ function cfbQbChangeNudge(g) {
   const total = home + away > 0 ? -0.1 : 0;
   return { margin, total, lines };
 }
+function splitHomeSpread(row, g) {
+  const text = String((row && row.spread) || "").trim();
+  if (!text) return null;
+  if (/^(pk|even|pick)/i.test(text)) return 0;
+  const match = text.match(/^([A-Za-z&.]+)\s*([+-]?\d+(?:\.\d+)?)/);
+  if (!match) return null;
+  const abbr = match[1].toUpperCase();
+  const n = Number(match[2]);
+  if (!Number.isFinite(n)) return null;
+  if (abbr === String(g.home.abbr || "").toUpperCase()) return n;
+  if (abbr === String(g.away.abbr || "").toUpperCase()) return -n;
+  return null;
+}
+function cfbMarketNote(g, row, liveSpread, liveTotal, bookName) {
+  const saved = splitHomeSpread(row, g);
+  const book = /draft/i.test(bookName || "") || !bookName ? "DraftKings" : bookName;
+  const sign = (v) => (Number(v) > 0 ? "+" : "") + Number(v).toFixed(1);
+  const bits = [];
+  if (saved == null || liveSpread == null || Number.isNaN(Number(liveSpread))) {
+    bits.push("The live " + book + " spread is not in yet.");
+  } else {
+    const move = Number(liveSpread) - saved;
+    if (Math.abs(move) < 1) bits.push(book + " is still within a point of the Split spread (" + g.home.abbr + " " + sign(saved) + ").");
+    else {
+      const toward = move < 0 ? g.home.abbr : g.away.abbr;
+      bits.push(book + " has moved " + Math.abs(move).toFixed(1) + " toward " + toward + " since The Split was made. The Split had " + g.home.abbr + " " + sign(saved) + ". " + book + " is " + g.home.abbr + " " + sign(liveSpread) + ". We did not chase it.");
+    }
+  }
+  if (row.totalLine != null && liveTotal != null && !Number.isNaN(Number(liveTotal)) && Math.abs(Number(liveTotal) - Number(row.totalLine)) >= 1) {
+    bits.push("The total moved from " + Number(row.totalLine).toFixed(1) + " to " + Number(liveTotal).toFixed(1) + ". We did not chase it.");
+  }
+  return bits.join(" ");
+}
 let CFB_PRIOR_JOB = null;
 function ensureCfbPrior() {
   if (window.CFB_PRIOR_READY || CFB_PRIOR_JOB) return CFB_PRIOR_JOB;
@@ -3896,6 +3929,9 @@ function applySplitDesk() {
     if (!g || g.league !== "cfb" || g.completed) return;
     const row = byId[String(g.id)];
     if (!row || row.awayPts == null || row.homePts == null) return;
+    const liveSpread = g.odds && g.odds.home_spread != null ? Number(g.odds.home_spread) : null;
+    const liveTotal = g.odds && g.odds.total != null ? Number(g.odds.total) : null;
+    const bookName = (g.odds && g.odds.book) || "";
     const p = g.proj || (g.proj = {});
     const away = Number(row.awayPts);
     const home = Number(row.homePts);
@@ -3961,6 +3997,7 @@ function applySplitDesk() {
     else if (!g.weather || g.weather.temp_f == null) notes.push("Weather is not in yet, so it has not moved the line.");
     else notes.push("Weather is not enough to move the line.");
     notes.push(learned.note || "No finished college game is in for these teams yet.");
+    notes.push(cfbMarketNote(g, row, liveSpread, liveTotal, bookName));
     let lead = "We did not move The Split.";
     if (Math.abs(moveM) >= 0.12 || Math.abs(moveT) >= 0.08) {
       const parts = [];
