@@ -9894,7 +9894,7 @@ function setView(next) {
   if (next === "parlay") {
     if (wantProps) window.__parlayLg = "props";
     else if (!window.__parlayLg) window.__parlayLg = "nfl";
-    renderParlays();
+    try { renderParlays(); } catch (err) { console.warn(err); }
   }
   if (next === "tds") renderTdDesk();
   if (next === "nflinj" || next === "cfbinj") {

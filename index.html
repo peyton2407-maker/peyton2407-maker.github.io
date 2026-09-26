@@ -723,7 +723,7 @@ button.prop-card.inj-open .report-full{display:block}
             <a class="tab" href="#card" data-view="card">This week's card</a>
             <a class="tab" href="#score" data-view="score">Scorecard</a>
             <a class="tab" href="#all" data-view="all">All games</a>
-            <a class="tab" href="#boom" data-view="boom">Boom Boom Room</a>
+            <a class="tab star" href="/boom.html#parlay">The Boom Boom Room</a>
             <a class="tab" href="#alerts" data-view="alerts">Alerts</a>
             <a class="tab" href="#ratings" data-view="ratings">Team rankings</a>
           </div>
@@ -8189,6 +8189,10 @@ function setView(next) {
   if (!allowed[next]) next = "home";
   const wantProps = next === "propp";
   if (wantProps) { window.__parlayLg = "props"; next = "parlay"; }
+  if (next === "boom") {
+    location.href = "/boom.html#parlay";
+    return;
+  }
   view = next;
   try { if (location.hash.replace("#","") !== next) history.replaceState(null, "", "#" + next); } catch (e) {}
   if (next === "cfb" && $("#openOnly").value === "upcoming") {
