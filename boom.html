@@ -4337,32 +4337,32 @@ function applySplitDesk() {
       g.box.home_points = p.home_points;
       g.box.total_points = p.hashmark_total;
     }
-    const notes = ["The Split has " + g.away.abbr + " " + away + ", " + g.home.abbr + " " + home + "."];
-    if (spreadFit.scaled) notes.push("The pieces wanted " + (spreadFit.raw > 0 ? "+" : "") + spreadFit.raw.toFixed(1) + " on the spread. The whole move stays inside 1.2, so each line is its share.");
-    const spreadRows = spreadFit.rows.filter((row) => Math.abs(row.used) >= 0.05);
-    if (!spreadRows.length) notes.push("Nothing moved the spread.");
-    spreadRows.forEach((row) => {
-      const toward = row.used > 0 ? g.home.abbr : g.away.abbr;
-      const verb = /Weather|Quarterback/.test(row.name) ? "is" : "are";
-      notes.push(row.name + " " + verb + " " + Math.abs(row.used).toFixed(1) + " toward " + toward + "." + (row.detail ? " " + row.detail : ""));
-    });
-    if (!spreadRows.some((row) => row.name === "Starters")) notes.push("No starter who matters is out.");
-    (trip.held || []).forEach((line) => notes.push(line));
-    if (!g.weather || g.weather.temp_f == null) notes.push(g.indoor ? "Indoor game. Weather does not move it." : "Weather is not in yet, so it has not moved the line.");
-    else if (!spreadRows.some((row) => row.name === "Weather")) notes.push(wxn.note || "Weather is not enough to move the line.");
-    const totalRows = totalFit.rows.filter((row) => Math.abs(row.used) >= 0.05);
-    if (totalFit.scaled) notes.push("The total pieces wanted " + (totalFit.raw > 0 ? "+" : "") + totalFit.raw.toFixed(1) + ". That stays inside 1.2 too.");
-    if (totalRows.length) notes.push("On the total, " + totalRows.map((row) => row.name.toLowerCase() + " " + (row.used > 0 ? "+" : "") + row.used.toFixed(1)).join(", ") + ". Those add to " + (moveT > 0 ? "+" : "") + moveT.toFixed(1) + ".");
-    else notes.push("Nothing moved the total.");
-    notes.push(cfbMarketNote(g, row, liveSpread, liveTotal, bookName));
-    let lead = "We did not move The Split.";
-    if (Math.abs(moveM) >= 0.12 || Math.abs(moveT) >= 0.08) {
-      const parts = [];
-      if (Math.abs(moveM) >= 0.12) parts.push((moveM > 0 ? g.home.abbr : g.away.abbr) + " by " + Math.abs(moveM).toFixed(1));
-      if (Math.abs(moveT) >= 0.08) parts.push("the total " + (moveT > 0 ? "up " : "down ") + Math.abs(moveT).toFixed(1));
-      lead = "Off The Split, we moved " + parts.join(" and ") + ".";
+    const movedSpread = Math.abs(moveM) >= 0.12;
+    const movedTotal = Math.abs(moveT) >= 0.08;
+    const score = g.away.abbr + " " + away + ", " + g.home.abbr + " " + home;
+    let note = "We kept The Split. " + score + ".";
+    if (movedSpread || movedTotal) {
+      const bits = [];
+      if (movedSpread) bits.push((moveM > 0 ? g.home.abbr : g.away.abbr) + " by " + Math.abs(moveM).toFixed(1));
+      if (movedTotal) bits.push("the total " + (moveT > 0 ? "up " : "down ") + Math.abs(moveT).toFixed(1));
+      const ranked = [];
+      if (movedSpread) spreadFit.rows.forEach((part) => { if (Math.abs(part.used) >= 0.05) ranked.push({ part: part, kind: "spread", size: Math.abs(part.used) }); });
+      if (movedTotal) totalFit.rows.forEach((part) => { if (Math.abs(part.used) >= 0.05) ranked.push({ part: part, kind: "total", size: Math.abs(part.used) }); });
+      ranked.sort((a, b) => b.size - a.size);
+      const top = ranked[0];
+      let why = "";
+      if (top && top.kind === "spread") {
+        const toward = top.part.used > 0 ? g.home.abbr : g.away.abbr;
+        const verb = /Weather|Quarterback/.test(top.part.name) ? "is" : "are";
+        const whole = Math.abs(Math.abs(top.part.used) - Math.abs(moveM)) <= 0.08;
+        why = " " + top.part.name + " " + verb + " " + (whole ? "the whole " + Math.abs(moveM).toFixed(1) : "most of that") + " toward " + toward + ".";
+      } else if (top) {
+        const whole = Math.abs(Math.abs(top.part.used) - Math.abs(moveT)) <= 0.08;
+        why = " " + top.part.name + " " + (top.part.used > 0 ? "raise" : "cut") + " " + (whole ? "the whole " + Math.abs(moveT).toFixed(1) : "most of that") + " on the total.";
+      }
+      note = "Off The Split (" + score + "), we moved " + bits.join(" and ") + "." + why;
     }
-    notes.unshift(lead);
+    const notes = [note];
     const pack = (window.SPLIT_NOTES || {})[String(g.id)];
     const scoreNotes = ((pack && pack.notes) || []).slice(0, 3).map((n) => n.edge + ". " + n.line);
     g.situational = {
