@@ -2187,7 +2187,30 @@ function periodHtml(g) {
     <div><span class="lbl">1st half</span><b>${g.away.abbr} ${p.h1_away} · ${g.home.abbr} ${p.h1_home}</b><span class="subn">Total ${p.h1_total}</span></div>
   </div>`;
 }
+function carryNflPower() {
+  const latest = {};
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.league !== "nfl" || !g.proj) return;
+    const p = g.proj;
+    [["home", "home_fpi", "home_off", "home_def"], ["away", "away_fpi", "away_off", "away_def"]].forEach(([side, fpi, off, def]) => {
+      if (p[fpi] == null || !g[side]) return;
+      const id = String(g[side].id);
+      const prev = latest[id];
+      if (!prev || String(g.date || "") > prev.date) latest[id] = { date: String(g.date || ""), fpi: p[fpi], off: p[off], def: p[def] };
+    });
+  });
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.league !== "nfl" || !g.proj || g.completed) return;
+    const p = g.proj;
+    if (p.home_fpi != null && p.away_fpi != null) return;
+    const h = latest[String(g.home && g.home.id)];
+    const a = latest[String(g.away && g.away.id)];
+    if (h) { p.home_fpi = h.fpi; p.home_off = h.off; p.home_def = h.def; }
+    if (a) { p.away_fpi = a.fpi; p.away_off = a.off; p.away_def = a.def; }
+  });
+}
 function settleBoard() {
+  if (typeof carryNflPower === "function") carryNflPower();
   (DATA.games || []).forEach((g) => {
     if (!g || !g.proj || g.completed) return;
     if (g.league === "cfb" && typeof cfbLockPick === "function") cfbLockPick(g);
@@ -2871,6 +2894,7 @@ function injuryTaxFor(game, side) {
     return "";
   };
   rows.forEach((r) => {
+    if (typeof seasonQbName === "function" && seasonQbName(r.name)) return;
     const tag = (r.tag || r.status || "").toUpperCase();
     const pos = (r.pos || "").toUpperCase();
     const out = /OUT|IR|INACTIVE|SUSP|INJURED RESERVE|PUP/.test(tag);
@@ -3038,10 +3062,11 @@ function applySituationalToGame(g) {
     const v = Number(raw);
     if (Math.abs(v) >= 0.15) bits.push({ label, v });
   };
+  const marketPriced = !!(g.odds && g.odds.home_spread != null);
   const homeWho = ((g._injWho || {}).home || []).slice(0, 3).join(", ");
   const awayWho = ((g._injWho || {}).away || []).slice(0, 3).join(", ");
-  addRaw(g.home.abbr + " injuries" + (homeWho ? " (" + homeWho + ")" : ""), -ht);
-  addRaw(g.away.abbr + " injuries" + (awayWho ? " (" + awayWho + ")" : ""), at);
+  addRaw(g.home.abbr + " injuries" + (homeWho ? " (" + homeWho + ")" : ""), marketPriced ? 0 : -ht);
+  addRaw(g.away.abbr + " injuries" + (awayWho ? " (" + awayWho + ")" : ""), marketPriced ? 0 : at);
 
   add(g.home.abbr + " rest", -rth);
   add(g.away.abbr + " rest", rta);
@@ -3056,7 +3081,7 @@ function applySituationalToGame(g) {
     if (Math.abs(v) >= 0.1) tBits.push({ label, v });
   };
   addT("situation on the total", tAdj - (-0.24 * (ht + at)));
-  const injTot = Math.max(-2, -0.22 * (ht + at));
+  const injTot = marketPriced ? 0 : Math.max(-2, -0.22 * (ht + at));
   if (Math.abs(injTot) >= 0.15) tBits.push({ label: "injuries on the total", v: injTot });
   addT("recent games on the total", epa.t || 0);
   addT("total move", stm.t || 0);
@@ -3090,6 +3115,10 @@ function applySituationalToGame(g) {
   const wxPts = Number(p.weather_adj_total) || 0;
   if (Math.abs(wxPts) >= 0.15) notes.push(`Weather on the total ${sign(wxPts)}`);
   if (Math.abs(m) >= capM - 0.05) notes.push("Spread shade is capped at " + capM.toFixed(1) + ".");
+  if (marketPriced && (Math.abs(ht) >= 0.4 || Math.abs(at) >= 0.4)) {
+    const names = [awayWho, homeWho].filter(Boolean).join("; ");
+    notes.push("DraftKings already has the injuries in this number" + (names ? " (" + names + ")" : "") + ". We do not add them a second time.");
+  }
   if (!notes.length) notes.push("Nothing here was big enough to move the line.");
   g.situational = {
     injury: { home: +ht.toFixed(2), away: +at.toFixed(2) },

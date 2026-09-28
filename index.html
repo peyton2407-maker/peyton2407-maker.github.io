@@ -1656,7 +1656,30 @@ function settleNfl(g) {
   p.settle_note = "";
   return g;
 }
+function carryNflPower() {
+  const latest = {};
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.league !== "nfl" || !g.proj) return;
+    const p = g.proj;
+    [["home", "home_fpi", "home_off", "home_def"], ["away", "away_fpi", "away_off", "away_def"]].forEach(([side, fpi, off, def]) => {
+      if (p[fpi] == null || !g[side]) return;
+      const id = String(g[side].id);
+      const prev = latest[id];
+      if (!prev || String(g.date || "") > prev.date) latest[id] = { date: String(g.date || ""), fpi: p[fpi], off: p[off], def: p[def] };
+    });
+  });
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.league !== "nfl" || !g.proj || g.completed) return;
+    const p = g.proj;
+    if (p.home_fpi != null && p.away_fpi != null) return;
+    const h = latest[String(g.home && g.home.id)];
+    const a = latest[String(g.away && g.away.id)];
+    if (h) { p.home_fpi = h.fpi; p.home_off = h.off; p.home_def = h.def; }
+    if (a) { p.away_fpi = a.fpi; p.away_off = a.off; p.away_def = a.def; }
+  });
+}
 function settleBoard() {
+  if (typeof carryNflPower === "function") carryNflPower();
   (DATA.games || []).forEach((g) => {
     if (!g || !g.proj || g.completed) return;
     if (g.league === "nfl") settleNfl(g);
@@ -2347,6 +2370,7 @@ function injuryTaxFor(game, side) {
     return "";
   };
   rows.forEach((r) => {
+    if (typeof seasonQbName === "function" && seasonQbName(r.name)) return;
     const tag = (r.tag || r.status || "").toUpperCase();
     const pos = (r.pos || "").toUpperCase();
     const out = /OUT|IR|INACTIVE|SUSP|INJURED RESERVE|PUP/.test(tag);
@@ -2500,8 +2524,11 @@ function applySituationalToGame(g) {
   const ref = refereeInfo(g);
   const epa = typeof epaInfo === "function" ? epaInfo(g) : { m: 0, t: 0, notes: [] };
   const stm = typeof steamInfo === "function" ? steamInfo(g) : { m: 0, t: 0, notes: [] };
-  const mAdj = -ht + at - rth + rta - (tr.homeTax || 0) + (tr.awayTax || 0) + (ref.home || 0) + (epa.m || 0) + (stm.m || 0);
-  const tAdj = -0.24 * (ht + at) - 0.32 * (Math.max(0, rth) + Math.max(0, rta)) + (tr.tot || 0) + (ref.tot || 0) + (epa.t || 0) + (stm.t || 0);
+  const marketPriced = !!(g.odds && g.odds.home_spread != null);
+  const htLine = marketPriced ? 0 : ht;
+  const atLine = marketPriced ? 0 : at;
+  const mAdj = -htLine + atLine - rth + rta - (tr.homeTax || 0) + (tr.awayTax || 0) + (ref.home || 0) + (epa.m || 0) + (stm.m || 0);
+  const tAdj = -0.24 * (htLine + atLine) - 0.32 * (Math.max(0, rth) + Math.max(0, rta)) + (tr.tot || 0) + (ref.tot || 0) + (epa.t || 0) + (stm.t || 0);
   const capM = g.league === "nfl" ? 6.5 : 8;
   const capT = g.league === "nfl" ? 4.5 : 5.5;
   const m = Math.max(-capM, Math.min(capM, mAdj));
@@ -2513,7 +2540,7 @@ function applySituationalToGame(g) {
   if (p._baseTotal != null) p.hashmark_total = +(p._baseTotal + t).toFixed(1);
   const sq = typeof seasonQbFor === "function" ? seasonQbFor(g) : null;
   let seasonM = 0, seasonT = 0;
-  if (sq && p.blended_margin != null) {
+  if (sq && !marketPriced && p.blended_margin != null) {
     const sign = sq.side === "home" ? -1 : 1;
     seasonM = sign * sq.margin;
     seasonT = sq.total;
@@ -2576,8 +2603,14 @@ function applySituationalToGame(g) {
   };
   if (sq) piece(seasonM, seasonT, sq.name + " is out for the year. " + sq.backup + " starts");
   const who = (side) => ((g._injWho || {})[side] || []).slice(0, 3).join(", ");
-  piece(-ht, -0.24 * ht, g.home.abbr + " injuries" + (who("home") ? " (" + who("home") + ")" : ""));
-  piece(at, -0.24 * at, g.away.abbr + " injuries" + (who("away") ? " (" + who("away") + ")" : ""));
+  if (marketPriced && (ht >= 0.4 || at >= 0.4 || sq)) {
+    const names = [who("away"), who("home")].filter(Boolean).join("; ");
+    const qb = sq ? sq.name + " is out for the year. " : "";
+    notes.push(qb + "DraftKings already has the injuries in this number" + (names ? " (" + names + ")" : "") + ". We do not add them a second time.");
+  } else {
+    piece(-htLine, -0.24 * htLine, g.home.abbr + " injuries" + (who("home") ? " (" + who("home") + ")" : ""));
+    piece(atLine, -0.24 * atLine, g.away.abbr + " injuries" + (who("away") ? " (" + who("away") + ")" : ""));
+  }
   piece(-rth, -0.32 * Math.max(0, rth), restLine(g.home.abbr, rh));
   piece(rta, -0.32 * Math.max(0, rta), restLine(g.away.abbr, ra));
   piece(-(tr.homeTax || 0) + (tr.awayTax || 0), tr.tot || 0, (tr.notes || []).join(". ") || "Travel");
