@@ -8671,16 +8671,15 @@ function scoreTally(league, kind) {
   let w = 0, l = 0, psh = 0;
   const items = [];
   rows.forEach((r) => {
-    const wantS = kind !== "total";
-    const wantT = kind !== "spread";
-    if (wantS && r.ats) {
-      if (r.ats === "HIT") w++; else if (r.ats === "MISS") l++; else psh++;
-      items.push(r);
-    }
-    if (wantT && r.ou) {
-      if (r.ou === "HIT") w++; else if (r.ou === "MISS") l++; else psh++;
-      items.push(r);
-    }
+    let mark = null;
+    if (kind === "total") mark = r.ou || null;
+    else if (kind === "spread") mark = r.ats || null;
+    else mark = r.ats || r.ou || null;
+    if (!mark) return;
+    if (mark === "HIT") w++;
+    else if (mark === "MISS") l++;
+    else psh++;
+    items.push(r);
   });
   const pending = rows.filter((r) => !r.graded);
   const clv = rows.filter((r) => r.clv != null);
