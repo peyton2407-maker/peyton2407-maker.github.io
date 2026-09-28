@@ -1194,6 +1194,9 @@ body{font-size:17px;line-height:1.45}
           <option value="spread">Spreads only</option>
           <option value="total">Totals only</option>
         </select>
+        <select id="scoreWeek" aria-label="Week">
+          <option value="all">All weeks</option>
+        </select>
       </div>
       <p class="subn" id="scoreStamp" style="margin:0 0 10px">Picks lock before kickoff. After the game we mark hit, miss, or push — and whether we beat the closing line.</p>
       <div class="stat-row" id="scoreStats"></div>
@@ -9275,8 +9278,41 @@ function todayGames() {
   const soon = (DATA.games || []).filter((g) => !g.completed).sort((a, b) => String(a.date).localeCompare(String(b.date)));
   return soon.slice(0, 8);
 }
-function scoreTally(league, kind) {
-  const rows = lockedScoreRows().filter((p) => !league || league === "all" || p.league === league);
+function scoreWeekMatch(row, week) {
+  if (!week || week === "all") return true;
+  return String((row && (row.weekKey || row.week)) || "") === week;
+}
+function fillScoreWeeks() {
+  const sel = document.getElementById("scoreWeek");
+  if (!sel) return "all";
+  const prev = sel.value || "all";
+  const map = {};
+  lockedScoreRows().forEach((r) => {
+    const key = String(r.weekKey || r.week || "week");
+    if (!map[key]) map[key] = { key, label: r.week || key, date: r.date || "" };
+    if (r.date && String(r.date) < map[key].date) map[key].date = r.date;
+  });
+  const weeks = Object.values(map).sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  const sig = weeks.map((w) => w.key).join("|");
+  if (sel.dataset.sig !== sig) {
+    sel.innerHTML = "";
+    const all = document.createElement("option");
+    all.value = "all";
+    all.textContent = "All weeks";
+    sel.appendChild(all);
+    weeks.forEach((w) => {
+      const opt = document.createElement("option");
+      opt.value = w.key;
+      opt.textContent = w.label;
+      sel.appendChild(opt);
+    });
+    sel.dataset.sig = sig;
+  }
+  sel.value = [...sel.options].some((o) => o.value === prev) ? prev : "all";
+  return sel.value || "all";
+}
+function scoreTally(league, kind, week) {
+  const rows = lockedScoreRows().filter((p) => (!league || league === "all" || p.league === league) && scoreWeekMatch(p, week));
   let w = 0, l = 0, psh = 0;
   const items = [];
   rows.forEach((r) => {
@@ -9401,7 +9437,8 @@ function renderScorecard() {
   syncDesk();
   const league = (document.getElementById("scoreLeague") || {}).value || "all";
   const kind = (document.getElementById("scoreKind") || {}).value || "all";
-  const t = scoreTally(league, kind);
+  const week = fillScoreWeeks();
+  const t = scoreTally(league, kind, week);
   const pct = t.n ? Math.round(100 * t.w / t.n) : 0;
   const stats = document.getElementById("scoreStats");
   if (stats) stats.innerHTML = `
@@ -9410,7 +9447,7 @@ function renderScorecard() {
     <div class="stat"><b>${t.pending}</b><span>still live / upcoming</span></div>
     <div class="stat"><b>${t.clvAvg ? (t.clvAvg > 0 ? "+" : "") + t.clvAvg.toFixed(1) : "—"}</b><span>avg vs close</span></div>`;
   const wrap = document.getElementById("scoreWrap");
-  let rows = lockedScoreRows().filter((p) => league === "all" || p.league === league);
+  let rows = lockedScoreRows().filter((p) => (league === "all" || p.league === league) && scoreWeekMatch(p, week));
   rows.sort((a, b) => String(a.weekKey || "").localeCompare(String(b.weekKey || "")) || String(a.date).localeCompare(String(b.date)));
   if (!wrap) return;
   if (!rows.length) { wrap.innerHTML = `<div class="empty">No locked picks yet. They freeze automatically as games get close to kickoff.</div>`; return; }
@@ -10945,6 +10982,7 @@ async function boot() {
   document.getElementById("tdQ")?.addEventListener("input", rerenderTd);
   document.getElementById("scoreLeague")?.addEventListener("change", renderScorecard);
   document.getElementById("scoreKind")?.addEventListener("change", renderScorecard);
+  document.getElementById("scoreWeek")?.addEventListener("change", renderScorecard);
   document.getElementById("freezeCardBtn")?.addEventListener("click", () => {
     const card = ensureWeeklyCard(true);
     const btn = document.getElementById("freezeCardBtn");
