@@ -1904,12 +1904,136 @@ function climateShift(g, impact) {
     note: `${fav} is used to this ${word}. ${other} is not.`
   };
 }
+function weatherTagsFrom(wx) {
+  if (!wx) return [];
+  const t = Number(wx.temp_f != null ? wx.temp_f : wx.temp);
+  const wind = Number(wx.wind_mph != null ? wx.wind_mph : wx.wind) || 0;
+  const code = Number(wx.weather_code != null ? wx.weather_code : wx.code) || 0;
+  const rain = Number(wx.precip_in != null ? wx.precip_in : wx.rain) || 0;
+  const tags = [];
+  if ((Number.isFinite(t) && t <= 45) || (code >= 71 && code <= 86)) tags.push("cold");
+  if (wind >= 15) tags.push("wind");
+  if (rain >= 0.04 || (code >= 51 && code <= 67) || (code >= 80 && code <= 82)) tags.push("wet");
+  if (Number.isFinite(t) && t >= 88) tags.push("heat");
+  return tags;
+}
+function pregameTotal(g) {
+  const row = (window.SPLIT_DESK || []).find((item) => item && String(item.id) === String(g.id));
+  if (row && row.homePts != null && row.awayPts != null) return Number(row.homePts) + Number(row.awayPts);
+  if (g._pub && g._pub.total != null) return Number(g._pub.total);
+  if (g.odds && g.odds.total != null) return Number(g.odds.total);
+  return null;
+}
+function rebuildWeatherLesson() {
+  const buckets = { nfl: {}, cfb: {} };
+  const seen = {};
+  (DATA.games || []).forEach((g) => {
+    if (!g || !g.completed || g.indoor || seen[String(g.id)]) return;
+    const cond = (window.WX_PLAYED_COND || {})[String(g.id)];
+    if (!cond) return;
+    const pred = pregameTotal(g);
+    const hs = Number(g.home && g.home.score);
+    const as = Number(g.away && g.away.score);
+    if (pred == null || !Number.isFinite(hs) || !Number.isFinite(as)) return;
+    seen[String(g.id)] = 1;
+    const miss = (hs + as) - pred;
+    const lg = g.league === "nfl" ? "nfl" : "cfb";
+    const tags = weatherTagsFrom(cond);
+    (tags.length ? tags : ["mild"]).forEach((tag) => {
+      const row = buckets[lg][tag] || { n: 0, miss: 0 };
+      row.n += 1;
+      const a = row.n < 8 ? 0.3 : 0.12;
+      row.miss = +(row.miss * (1 - a) + miss * a).toFixed(3);
+      buckets[lg][tag] = row;
+    });
+  });
+  window.WX_LESSON = buckets;
+}
+function weatherLearnedAdj(league, tags) {
+  const book = (window.WX_LESSON || {})[league === "nfl" ? "nfl" : "cfb"] || {};
+  const mild = book.mild;
+  const base = mild && mild.n >= 4 ? mild.miss : 0;
+  let best = null;
+  (tags || []).forEach((tag) => {
+    const row = book[tag];
+    if (!row || row.n < 3) return;
+    const shrink = row.n / (row.n + 5);
+    const piece = (row.miss - base) * shrink;
+    if (!best || row.n > best.n) best = { tag: tag, n: row.n, piece: piece };
+  });
+  if (!best) return { total: 0, note: "" };
+  const total = Math.max(-1.3, Math.min(0.5, best.piece));
+  if (Math.abs(total) < 0.15) return { total: 0, note: "" };
+  const word = { cold: "the cold", wind: "the wind", wet: "the rain", heat: "the heat" }[best.tag] || best.tag;
+  return { total: +total.toFixed(2), note: "After " + best.n + " finished games in " + word + ", the total landed " + (total > 0 ? "higher" : "lower") + " than the old forecast. This line uses that." };
+}
+let WX_LEARN_JOB = null;
+function learnPlayedWeather() {
+  if (WX_LEARN_JOB) return WX_LEARN_JOB;
+  WX_LEARN_JOB = (async () => {
+    const spots = {};
+    window.WX_PLAYED_COND = window.WX_PLAYED_COND || {};
+    (DATA.games || []).forEach((g) => {
+      if (!g || !g.completed || g.indoor || !g.date || window.WX_PLAYED_COND[String(g.id)]) return;
+      const xy = typeof coordsForGame === "function" ? coordsForGame(g) : null;
+      if (!xy) return;
+      const key = xy[0].toFixed(2) + "," + xy[1].toFixed(2);
+      spots[key] = spots[key] || { xy: xy, games: [] };
+      spots[key].games.push(g);
+    });
+    const keys = Object.keys(spots);
+    let cursor = 0;
+    async function worker() {
+      while (cursor < keys.length) {
+        const key = keys[cursor];
+        cursor += 1;
+        const spot = spots[key];
+        const dates = spot.games.map((g) => String(g.date).slice(0, 10)).sort();
+        try {
+          const url = "https://archive-api.open-meteo.com/v1/archive?latitude=" + spot.xy[0] + "&longitude=" + spot.xy[1] + "&start_date=" + dates[0] + "&end_date=" + dates[dates.length - 1] + "&hourly=temperature_2m,precipitation,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=UTC";
+          const pack = await fetch(url).then((res) => res.json());
+          const times = ((pack.hourly || {}).time) || [];
+          const at = {};
+          times.forEach((stamp, i) => { at[String(stamp).slice(0, 13)] = i; });
+          spot.games.forEach((g) => {
+            const kick = new Date(g.date);
+            if (Number.isNaN(kick.getTime())) return;
+            const idx = at[kick.toISOString().slice(0, 13)];
+            if (idx == null) return;
+            window.WX_PLAYED_COND[String(g.id)] = {
+              temp: Number(pack.hourly.temperature_2m[idx]),
+              wind: Number(pack.hourly.wind_speed_10m[idx]),
+              rain: Number(pack.hourly.precipitation[idx]),
+              code: Number(pack.hourly.weather_code[idx])
+            };
+          });
+        } catch (e) {}
+      }
+    }
+    await Promise.all([worker(), worker(), worker(), worker()]);
+    rebuildWeatherLesson();
+    (DATA.games || []).forEach((g) => {
+      if (!g || g.completed || !g.weather) return;
+      if (typeof applyWeatherToGame === "function") applyWeatherToGame(g);
+    });
+    if (typeof applySplitDesk === "function") applySplitDesk();
+    if (typeof paintDesk === "function") paintDesk();
+  })().finally(() => { WX_LEARN_JOB = null; });
+  return WX_LEARN_JOB;
+}
 function applyWeatherToGame(g) {
   const impact = weatherImpact(g.weather, g.indoor);
   const climate = climateShift(g, impact);
   impact.home_edge = climate.edge;
   impact.climate_note = climate.note;
   if (climate.note) impact.note = (impact.note ? impact.note + " " : "") + climate.note;
+  if (!g.indoor && g.weather) {
+    const learned = weatherLearnedAdj(g.league, weatherTagsFrom(g.weather));
+    if (learned.total) {
+      impact.adj = Math.max(-7.5, Math.min(0.6, +(Number(impact.adj || 0) + learned.total).toFixed(2)));
+      if (learned.note) impact.note = (impact.note ? impact.note + " " : "") + learned.note;
+    }
+  }
   g.weather_impact = impact;
   if (!g.proj) return g;
   g.proj.weather_adj_total = impact.adj;
@@ -3907,9 +4031,9 @@ function cfbWeatherNudge(g) {
   if (!g || g.indoor) return { margin: 0, total: 0, note: g && g.indoor ? "Indoor game. Weather does not move it." : "" };
   if (!g.weather || g.weather.temp_f == null) return { margin: 0, total: 0, note: "" };
   const wx = g.weather;
-  const impact = g.weather_impact || (typeof weatherImpact === "function" ? weatherImpact(wx, false) : { adj: 0, wet: false });
+  const impact = typeof weatherImpact === "function" ? weatherImpact(wx, false) : { adj: 0, wet: false };
   const raw = Number(impact.adj) || 0;
-  const total = raw <= -0.45 ? Math.max(-1.1, +(raw * 0.42).toFixed(2)) : 0;
+  let total = raw <= -0.45 ? Math.max(-1.1, +(raw * 0.42).toFixed(2)) : 0;
   const t = Number(wx.temp_f);
   const wind = Math.max(Number(wx.wind_mph) || 0, (Number(wx.wind_gust_mph) || 0) * 0.85);
   const snow = Number(wx.weather_code) >= 71 && Number(wx.weather_code) <= 86;
@@ -3918,6 +4042,8 @@ function cfbWeatherNudge(g) {
   if (impact.wet) tags.push("wet");
   if (wind >= 15) tags.push("wind");
   if (Number.isFinite(t) && t >= 88) tags.push("heat");
+  const learnedWx = weatherLearnedAdj("cfb", tags);
+  total = Math.max(-1.6, Math.min(0.4, +(total + learnedWx.total).toFixed(2)));
   const label = { cold: "cold", wet: "rain", wind: "wind", heat: "heat" };
   const h = (window.CFB_WX_PLAYED || {})[String(g.home && g.home.id)] || null;
   const a = (window.CFB_WX_PLAYED || {})[String(g.away && g.away.id)] || null;
@@ -3945,6 +4071,7 @@ function cfbWeatherNudge(g) {
   else if (!h || !a || !h.n || !a.n) bits.push("No played-game weather yet, so neither side gets a used-to-it edge.");
   else bits.push("Both sides have a similar record in this weather, so it does not pick a side.");
   if (Math.abs(total) >= 0.15) bits.push("The forecast moves the total " + total.toFixed(1) + ".");
+  if (learnedWx.note) bits.push(learnedWx.note);
   return { margin: +edge.toFixed(2), total: +total.toFixed(2), note: bits.join(" ") };
 }
 function cfbPrevious(teamId, beforeIso) {
@@ -8832,6 +8959,7 @@ async function pullLiveScores() {
     try { if (typeof loadCfbFinalExtras === "function") await loadCfbFinalExtras(); } catch (e) {}
     if (typeof attachUpcoming === "function") attachUpcoming(flat);
     if (typeof rebuildSharedLearning === "function") rebuildSharedLearning(DATA.games || []);
+    try { if (typeof learnPlayedWeather === "function") learnPlayedWeather(); } catch (e) {}
     try { if (typeof reapplyDeskLine === "function") reapplyDeskLine(); } catch (e) {}
     if (newFinals) {
       if (typeof repriceCfbBoard === "function") { /* residuals already applied */ }
@@ -10830,6 +10958,7 @@ async function boot() {
       }
     } catch (e) {}
     const n = typeof learn === "function" ? learn(DATA.games || []) : 0;
+    try { if (typeof learnPlayedWeather === "function") learnPlayedWeather(); } catch (e) {}
     if (typeof apply === "function") (DATA.games || []).forEach(apply);
     if (typeof settleBoard === "function") settleBoard();
     if (typeof applySplitDesk === "function") applySplitDesk();
