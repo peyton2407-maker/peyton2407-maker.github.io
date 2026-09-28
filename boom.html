@@ -7207,6 +7207,22 @@ const fmt = {
   },
 };
 
+function nflBoardWeek() {
+  const games = ((typeof DATA !== "undefined" && DATA && DATA.games) || []).filter((g) => g && g.league === "nfl" && g.week != null);
+  const weeks = [...new Set(games.map((g) => Number(g.week)))].filter((n) => Number.isFinite(n)).sort((a, b) => a - b);
+  for (const n of weeks) {
+    const slate = games.filter((g) => Number(g.week) === n);
+    if (slate.some((g) => !g.completed)) return n;
+  }
+  return weeks.length ? weeks[weeks.length - 1] : 3;
+}
+function syncNflTile() {
+  const week = nflBoardWeek();
+  document.querySelectorAll('[data-view="nfl"]').forEach((el) => {
+    if (el.classList.contains("tab")) el.textContent = "NFL Week " + week;
+  });
+  return week;
+}
 function gamesForView() {
   if (!DATA) return [];
   const q = ($("#q").value || "").trim().toLowerCase();
@@ -7221,6 +7237,10 @@ function gamesForView() {
     const liveNow = games.filter((g) => typeof isLiveGame === "function" && isLiveGame(g));
     const soon = games.filter((g) => !g.completed && Math.abs(new Date(g.date) - now) < 10 * 3600 * 1000);
     games = liveNow.length ? liveNow : (soon.length ? soon : games.filter((g) => !g.completed).slice(0, 8));
+  }
+  if (view === "nfl") {
+    const week = nflBoardWeek();
+    games = games.filter((g) => Number(g.week) === week);
   }
   if (view === "cfb") {
     const weeks = ((DATA.meta && DATA.meta.cfb_weeks) || [5]).map(Number);
@@ -7476,6 +7496,7 @@ function projectionTable(games) {
 }
 
 function renderBoard() {
+  syncNflTile();
   const games = gamesForView();
   const upcoming = games.filter((g) => !g.completed);
   const plays = upcoming.filter((g) => g.proj?.pick && g.proj.pick !== "NO PLAY");
@@ -9503,7 +9524,7 @@ function renderHome() {
       <a class="home-jump hot" href="#parlay" data-jump="parlay"><b>The Boom Boom Room</b><span>Start here. Game tickets and player props.</span></a>
       <a class="home-jump hot" href="#props" data-jump="props"><b>Player props</b><span>Yard lines, hit rates, and the pick</span></a>
       <a class="home-jump hot" href="#card" data-jump="card"><b>This week's card</b><span>${card.frozen ? "Locked. These plays will not move." : (card.legs || []).length + " plays ready to lock"}</span></a>
-      <a class="home-jump hot" href="#nfl" data-jump="nfl"><b>NFL board</b><span>Week 3 sides, totals, weather</span></a>
+      <a class="home-jump hot" href="#nfl" data-jump="nfl"><b>NFL board</b><span>Week ${nflBoardWeek()} sides, totals, weather</span></a>
       <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l : "0-0"} locked this season</span></a>
       <a class="home-jump" href="#recruit" data-jump="recruit"><b>Recruiting</b><span>On3 classes, the portal, and our board</span></a>`;
     // clicks handled globally via href + hash
