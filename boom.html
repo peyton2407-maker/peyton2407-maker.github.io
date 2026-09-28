@@ -9120,7 +9120,8 @@ function playScore(g) {
   return n;
 }
 function buildWeeklyLegs(games) {
-  const upcoming = (games || []).filter((g) => !g.completed && isPlay(g.proj) && (g.league !== "cfb" || isThisCfbWeek(g)));
+  const cur = typeof currentLeagueWeeks === "function" ? currentLeagueWeeks() : {};
+  const upcoming = (games || []).filter((g) => !g.completed && isPlay(g.proj) && cur[g.league] != null && Number(g.week) === Number(cur[g.league]));
   upcoming.sort((a, b) => playScore(b) - playScore(a));
   const legs = [];
   const seen = new Set();
@@ -9363,54 +9364,78 @@ function todayGames() {
   const soon = (DATA.games || []).filter((g) => !g.completed).sort((a, b) => String(a.date).localeCompare(String(b.date)));
   return soon.slice(0, 8);
 }
-function currentSlateStart() {
-  const now = Date.now();
-  const upcoming = ((typeof DATA !== "undefined" && DATA && DATA.games) || []).filter((g) => g && g.date && !g.completed && new Date(g.date).getTime() > now - 6 * 3600000);
-  const kick = upcoming.length ? Math.min.apply(null, upcoming.map((g) => new Date(g.date).getTime())) : now;
-  const parts = {};
-  new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date(kick)).forEach((p) => { parts[p.type] = p.value; });
-  const wd = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[parts.weekday] || 0;
-  const sinceTue = (wd + 7 - 2) % 7;
-  const guess = new Date(Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day) - sinceTue, 9, 0, 0));
-  const nyHour = Number(new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", hour: "numeric", hourCycle: "h23" }).format(guess));
-  return guess.getTime() + (5 - nyHour) * 3600000;
+function rowWeekInfo(row) {
+  const game = ((typeof DATA !== "undefined" && DATA && DATA.games) || []).find((g) => String(g.id) === String(row && row.id));
+  const league = (row && row.league) || (game && game.league) || "";
+  let num = game && game.week != null ? Number(game.week) : null;
+  if (num == null) {
+    const key = String((row && row.weekKey) || "");
+    const m = key.match(league === "nfl" ? /nfl-(\d+)/ : /cfb-(\d+)/);
+    if (m) num = Number(m[1]);
+  }
+  return { league, num };
+}
+function currentLeagueWeeks() {
+  const out = { nfl: null, cfb: null };
+  const soon = Date.now() + 20 * 3600000;
+  ((typeof DATA !== "undefined" && DATA && DATA.games) || []).forEach((g) => {
+    if (!g || g.week == null || !g.date) return;
+    if (new Date(g.date).getTime() > soon) return;
+    const n = Number(g.week);
+    if (out[g.league] == null || n > out[g.league]) out[g.league] = n;
+  });
+  return out;
+}
+function weekOptionLabel(league, num) {
+  const cur = currentLeagueWeeks();
+  const name = league === "nfl" ? "NFL" : "College";
+  return name + " Week " + num + (cur[league] === num ? " · current" : "");
 }
 function scoreWeekMatch(row, week) {
   if (!week || week === "all") return true;
+  const info = rowWeekInfo(row);
+  if (!info.league || info.num == null) return false;
   if (week === "current") {
-    const t = row && row.date ? new Date(row.date).getTime() : 0;
-    if (row && row.weekKey === "current") return true;
-    const start = currentSlateStart();
-    return t >= start && t < start + 7 * 86400000;
+    const cur = currentLeagueWeeks();
+    return info.num === cur[info.league];
   }
-  return String((row && (row.weekKey || row.week)) || "") === week;
+  const parts = String(week).split("-");
+  return info.league === parts[0] && String(info.num) === parts[1];
 }
 function fillScoreWeeks() {
   const sel = document.getElementById("scoreWeek");
   if (!sel) return "all";
   const prev = sel.value || "all";
   const map = {};
+  const add = (league, num, date) => {
+    if (!league || num == null) return;
+    const key = league + "-" + num;
+    if (!map[key]) map[key] = { key, league, num, date: date || "" };
+    if (date && (!map[key].date || String(date) < map[key].date)) map[key].date = date;
+  };
   lockedScoreRows().forEach((r) => {
-    const key = String(r.weekKey || r.week || "week");
-    if (!map[key]) map[key] = { key, label: r.week || key, date: r.date || "" };
-    if (r.date && String(r.date) < map[key].date) map[key].date = r.date;
+    const info = rowWeekInfo(r);
+    add(info.league, info.num, r.date);
   });
-  const weeks = Object.values(map).sort((a, b) => String(b.date).localeCompare(String(a.date)));
-  const sig = "current|" + weeks.map((w) => w.key).join("|");
+  ((typeof DATA !== "undefined" && DATA && DATA.games) || []).forEach((g) => add(g.league, g.week, g.date));
+  const cur = currentLeagueWeeks();
+  const weeks = Object.values(map).sort((a, b) => {
+    const ac = cur[a.league] === a.num ? 0 : 1;
+    const bc = cur[b.league] === b.num ? 0 : 1;
+    if (ac !== bc) return ac - bc;
+    return String(a.date).localeCompare(String(b.date));
+  });
+  const sig = weeks.map((w) => w.key).join("|");
   if (sel.dataset.sig !== sig) {
     sel.innerHTML = "";
     const all = document.createElement("option");
     all.value = "all";
     all.textContent = "All weeks";
     sel.appendChild(all);
-    const nowOpt = document.createElement("option");
-    nowOpt.value = "current";
-    nowOpt.textContent = "This week";
-    sel.appendChild(nowOpt);
     weeks.forEach((w) => {
       const opt = document.createElement("option");
       opt.value = w.key;
-      opt.textContent = w.label;
+      opt.textContent = weekOptionLabel(w.league, w.num);
       sel.appendChild(opt);
     });
     sel.dataset.sig = sig;
@@ -9420,16 +9445,26 @@ function fillScoreWeeks() {
 }
 function scoreSource(week) {
   const rows = lockedScoreRows();
-  if (week !== "current" || typeof ensureWeeklyCard !== "function" || typeof legToLockedPlay !== "function") return rows;
+  if (!week || week === "all") return rows;
   const seen = {};
   rows.forEach((r) => { seen[String(r.id)] = 1; });
-  const card = ensureWeeklyCard();
-  ((card && card.legs) || []).forEach((leg) => {
-    if (seen[String(leg.id)]) return;
-    const row = legToLockedPlay(leg, "current");
-    row.week = "This week";
-    row.weekKey = "current";
+  ((typeof DATA !== "undefined" && DATA && DATA.games) || []).forEach((g) => {
+    if (!g || !g.proj || g.completed || seen[String(g.id)]) return;
+    if (typeof isPlay === "function" && !isPlay(g.proj)) return;
+    const probe = { id: g.id, league: g.league, date: g.date };
+    if (!scoreWeekMatch(probe, week)) return;
+    const label = (g.league === "nfl" ? "NFL" : "College") + " Week " + g.week;
+    const row = typeof legToLockedPlay === "function" ? legToLockedPlay({
+      id: g.id, league: g.league, short: g.short_name, date: g.date,
+      home: g.home.abbr, away: g.away.abbr,
+      pick: g.proj.pick_line || g.proj.pick, pick_line: g.proj.pick_line,
+      total: g.proj.total_pick, total_pick: g.proj.total_pick
+    }, g.league + "-" + g.week) : null;
+    if (!row) return;
+    row.week = label;
+    row.weekKey = g.league + "-" + g.week;
     rows.push(row);
+    seen[String(g.id)] = 1;
   });
   return rows;
 }
@@ -9584,7 +9619,7 @@ function renderScorecard() {
       if (kind === "spread" && !(r.pick && r.pick !== "NO PLAY")) return "";
       if (kind === "total" && !(r.total_pick && r.total_pick !== "NO PLAY")) return "";
       return `<tr data-id="${r.id}">
-        <td><b>${r.short || (r.away + " @ " + r.home)}</b><div class="subn">${r.week || r.weekKey || r.league.toUpperCase()} · ${r.final || fmt.when(r.date)}</div></td>
+        <td><b>${r.short || (r.away + " @ " + r.home)}</b><div class="subn">${(() => { const info = rowWeekInfo(r); return info.num != null ? weekOptionLabel(info.league, info.num).replace(" · current", "") : (r.week || r.league.toUpperCase()); })()} · ${r.final || fmt.when(r.date)}</div></td>
         <td>${r.pick_line || r.pick || "—"}<div class="subn">${r.total_pick && r.total_pick !== "NO PLAY" ? r.total_pick : ""}</div></td>
         <td>${showS ? ats : "—"}</td>
         <td>${showT ? ou : "—"}</td>
