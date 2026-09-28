@@ -9363,8 +9363,26 @@ function todayGames() {
   const soon = (DATA.games || []).filter((g) => !g.completed).sort((a, b) => String(a.date).localeCompare(String(b.date)));
   return soon.slice(0, 8);
 }
+function currentSlateStart() {
+  const now = Date.now();
+  const upcoming = ((typeof DATA !== "undefined" && DATA && DATA.games) || []).filter((g) => g && g.date && !g.completed && new Date(g.date).getTime() > now - 6 * 3600000);
+  const kick = upcoming.length ? Math.min.apply(null, upcoming.map((g) => new Date(g.date).getTime())) : now;
+  const parts = {};
+  new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date(kick)).forEach((p) => { parts[p.type] = p.value; });
+  const wd = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[parts.weekday] || 0;
+  const sinceTue = (wd + 7 - 2) % 7;
+  const guess = new Date(Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day) - sinceTue, 9, 0, 0));
+  const nyHour = Number(new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", hour: "numeric", hourCycle: "h23" }).format(guess));
+  return guess.getTime() + (5 - nyHour) * 3600000;
+}
 function scoreWeekMatch(row, week) {
   if (!week || week === "all") return true;
+  if (week === "current") {
+    const t = row && row.date ? new Date(row.date).getTime() : 0;
+    if (row && row.weekKey === "current") return true;
+    const start = currentSlateStart();
+    return t >= start && t < start + 7 * 86400000;
+  }
   return String((row && (row.weekKey || row.week)) || "") === week;
 }
 function fillScoreWeeks() {
@@ -9378,13 +9396,17 @@ function fillScoreWeeks() {
     if (r.date && String(r.date) < map[key].date) map[key].date = r.date;
   });
   const weeks = Object.values(map).sort((a, b) => String(b.date).localeCompare(String(a.date)));
-  const sig = weeks.map((w) => w.key).join("|");
+  const sig = "current|" + weeks.map((w) => w.key).join("|");
   if (sel.dataset.sig !== sig) {
     sel.innerHTML = "";
     const all = document.createElement("option");
     all.value = "all";
     all.textContent = "All weeks";
     sel.appendChild(all);
+    const nowOpt = document.createElement("option");
+    nowOpt.value = "current";
+    nowOpt.textContent = "This week";
+    sel.appendChild(nowOpt);
     weeks.forEach((w) => {
       const opt = document.createElement("option");
       opt.value = w.key;
@@ -9396,8 +9418,23 @@ function fillScoreWeeks() {
   sel.value = [...sel.options].some((o) => o.value === prev) ? prev : "all";
   return sel.value || "all";
 }
+function scoreSource(week) {
+  const rows = lockedScoreRows();
+  if (week !== "current" || typeof ensureWeeklyCard !== "function" || typeof legToLockedPlay !== "function") return rows;
+  const seen = {};
+  rows.forEach((r) => { seen[String(r.id)] = 1; });
+  const card = ensureWeeklyCard();
+  ((card && card.legs) || []).forEach((leg) => {
+    if (seen[String(leg.id)]) return;
+    const row = legToLockedPlay(leg, "current");
+    row.week = "This week";
+    row.weekKey = "current";
+    rows.push(row);
+  });
+  return rows;
+}
 function scoreTally(league, kind, week) {
-  const rows = lockedScoreRows().filter((p) => (!league || league === "all" || p.league === league) && scoreWeekMatch(p, week));
+  const rows = scoreSource(week).filter((p) => (!league || league === "all" || p.league === league) && scoreWeekMatch(p, week));
   let w = 0, l = 0, psh = 0;
   const items = [];
   rows.forEach((r) => {
@@ -9534,7 +9571,7 @@ function renderScorecard() {
     <div class="stat"><b>${t.pending}</b><span>still live / upcoming</span></div>
     <div class="stat"><b>${t.clvAvg ? (t.clvAvg > 0 ? "+" : "") + t.clvAvg.toFixed(1) : "—"}</b><span>avg vs close</span></div>`;
   const wrap = document.getElementById("scoreWrap");
-  let rows = lockedScoreRows().filter((p) => (league === "all" || p.league === league) && scoreWeekMatch(p, week));
+  let rows = scoreSource(week).filter((p) => (league === "all" || p.league === league) && scoreWeekMatch(p, week));
   rows.sort((a, b) => String(a.weekKey || "").localeCompare(String(b.weekKey || "")) || String(a.date).localeCompare(String(b.date)));
   if (!wrap) return;
   if (!rows.length) { wrap.innerHTML = `<div class="empty">No locked picks yet. They freeze automatically as games get close to kickoff.</div>`; return; }
