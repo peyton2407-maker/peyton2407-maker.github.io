@@ -2292,41 +2292,117 @@ function applyThursdayReport(g) {
 function injuryTaxFor(game, side) {
   const rows = (game.injuries || []).filter((r) => r.side === side || ((r.team || "").toLowerCase().includes((game[side].name || "").toLowerCase())));
   let tax = 0;
+  let defTax = 0;
   let olOut = 0;
+  const who = [];
   const cfb = game.league === "cfb";
+  const flat = (n) => String(n || "").toLowerCase().replace(/[^a-z]/g, "");
+  const statOf = (p) => {
+    if (!p) return 0;
+    if (p.pos === "QB") return Number(p.pass_yds) || 0;
+    if (p.pos === "RB") return (Number(p.rush_yds) || 0) + (Number(p.rec_yds) || 0);
+    return (Number(p.rec_yds) || 0) + (Number(p.rush_yds) || 0);
+  };
+  const teamAbbr = String((game[side] && game[side].abbr) || "");
+  const roleOf = (r) => {
+    const pos = String(r.pos || "").toUpperCase();
+    if (cfb || !["QB", "RB", "WR", "TE"].includes(pos)) return "normal";
+    const key = flat(r.name);
+    let mineStat = 0;
+    const best = {};
+    const teamBest = {};
+    (typeof DATA !== "undefined" && DATA.games || []).forEach((g) => {
+      if (!g || g.league !== "nfl") return;
+      (g.props || []).forEach((p) => {
+        if (String(p.pos || "").toUpperCase() !== pos) return;
+        const k = flat(p.name);
+        const s = statOf(p);
+        if (k) best[k] = Math.max(best[k] || 0, s);
+        const club = p.side === "home" ? g.home.abbr : p.side === "away" ? g.away.abbr : "";
+        if (club === teamAbbr && k && (k === key || (k.length > 6 && key.length > 6 && (k.includes(key) || key.includes(k))))) {
+          mineStat = Math.max(mineStat, s);
+          teamBest[k] = Math.max(teamBest[k] || 0, s);
+        }
+      });
+    });
+    if (mineStat < (pos === "QB" ? 40 : 18)) return "bench";
+    const peers = Object.values(best).sort((a, b) => b - a);
+    const rank = peers.filter((v) => v > mineStat).length + 1;
+    const lead = !Object.values(teamBest).some((v) => v > mineStat + 8);
+    if (rank <= 10) return "star";
+    if (lead) return "starter";
+    return "rotation";
+  };
+  const slots = { CB: 2, S: 2, LB: 3, EDGE: 2, DT: 2, OT: 2, G: 2, C: 1 };
+  const used = {};
+  const slotKey = (pos) => {
+    if (["CB", "DB"].includes(pos)) return "CB";
+    if (["S", "FS", "SS", "SAF"].includes(pos)) return "S";
+    if (["LB", "ILB", "OLB", "MLB"].includes(pos)) return "LB";
+    if (["EDGE", "DE"].includes(pos)) return "EDGE";
+    if (["DT", "NT", "DL"].includes(pos)) return "DT";
+    if (["LT", "RT", "T", "OT"].includes(pos)) return "OT";
+    if (["G", "OG", "OL"].includes(pos)) return "G";
+    if (pos === "C") return "C";
+    return "";
+  };
   rows.forEach((r) => {
     const tag = (r.tag || r.status || "").toUpperCase();
     const pos = (r.pos || "").toUpperCase();
-    const out = /OUT|IR|INACTIVE|SUSP|INJURED RESERVE/.test(tag);
+    const out = /OUT|IR|INACTIVE|SUSP|INJURED RESERVE|PUP/.test(tag);
     const dbt = /DOUBT/.test(tag);
     const q = /QUESTION|^Q$/.test(tag);
-    if (pos === "QB" && typeof seasonQbName === "function" && seasonQbName(r.name)) {
-      /* Season-ending quarterback is applied once, on the whole team, not as a one-week ding. */
-    } else if (pos === "QB") {
-      if (cfb) {
-        /* College quarterback points are applied once in the college score card, not here. */
-      } else if (out) tax += 5.2;
-      else if (dbt) tax += 2.3;
-      else if (q) tax += 0.65;
+    const defense = ["CB", "DB", "S", "FS", "SS", "SAF", "LB", "ILB", "OLB", "MLB", "DE", "DT", "NT", "DL", "EDGE"].includes(pos);
+    const blob = ((r.short || "") + " " + (r.long || "")).toLowerCase();
+    const serious = /torn|acl|mri|surgery|season|broken|fracture|indefinitely|out for the year|biceps/.test(blob);
+    const ol = ["LT", "RT", "T", "OT", "G", "OG", "OL", "C"].includes(pos);
+    const recent = !r.date || (Date.parse(r.date) || 0) > Date.now() - 21 * 86400000;
+    const willMiss = /will miss|out for|ruled out|torn|sprain|broken|fracture|surgery|season|placed on|non-participant|did not practice/.test(blob);
+    if ((defense || ol) && !(out && recent && willMiss) && !(defense && (dbt || (q && serious)) && recent)) return;
+    if (defense && !out && !dbt && !(q && serious)) return;
+    const role = roleOf(r);
+    if (["QB", "RB", "WR", "TE"].includes(pos) && role !== "star" && role !== "starter") return;
+    const spot = slotKey(pos);
+    if (spot) {
+      used[spot] = used[spot] || 0;
+      if (used[spot] >= slots[spot]) return;
+      used[spot] += 1;
+    }
+    const mult = pos === "QB" ? 1 : defense ? 1 : role === "star" ? 1.55 : role === "starter" ? 1 : 0;
+    const frac = out ? 1 : dbt ? 0.7 : 0.45;
+    let hit = 0;
+    if (pos === "QB") {
+      if (!cfb && out) hit = 5.2;
+      else if (!cfb && dbt) hit = 2.3;
+      else if (!cfb && q) hit = 0.65;
     } else if (["LT", "RT", "T", "OT"].includes(pos)) {
-      if (out) { tax += 1.4; olOut++; }
-      else if (dbt) tax += 0.55;
+      if (out) { hit = 1.4; olOut++; }
+      else if (dbt) hit = 0.55;
     } else if (pos === "C") {
-      if (out) { tax += 1.15; olOut++; }
-    } else if (["G", "OG", "OL"].includes(pos) && out) { tax += 0.7; olOut++; }
+      if (out) { hit = 1.15; olOut++; }
+    } else if (["G", "OG", "OL"].includes(pos) && out) { hit = 0.7; olOut++; }
     else if (["WR", "RB"].includes(pos)) {
-      if (out) tax += 1.2;
-      else if (dbt) tax += 0.45;
-      else if (q) tax += 0.15;
-    } else if (pos === "TE" && out) tax += 0.7;
-    else if (["CB", "EDGE", "DE"].includes(pos) && out) tax += 0.7;
-    else if (["DT", "NT", "S", "LB"].includes(pos) && out) tax += 0.4;
-    else if (out) tax += 0.22;
+      if (out) hit = 1.2;
+      else if (dbt) hit = 0.45;
+      else if (q) hit = 0.15;
+    } else if (pos === "TE" && out) hit = 0.7;
+    else if (["CB", "EDGE", "DE"].includes(pos)) hit = 1.15 * frac;
+    else if (["DT", "NT", "S", "LB", "DB", "DL", "FS", "SS", "SAF", "ILB", "OLB", "MLB"].includes(pos)) hit = 0.55 * frac;
+    if (defense) defTax += hit;
+    else tax += hit * mult;
+    if (hit * (defense ? 1 : mult) >= 0.4) {
+      const last = String(r.name || "").split(" ").slice(-1)[0];
+      if (last) who.push(last + (!defense && role === "star" ? " top 10" : ""));
+    }
   });
-  if (olOut >= 2) tax += 0.8;
-  return Math.min(cfb ? 9 : 7.8, tax);
-}
-function haversineMiles(a, b) {
+  if (olOut >= 2) tax += 0.35;
+  defTax = Math.min(defTax, 1.6);
+  if (defTax >= 0.5 && !who.includes("defense")) who.push("defense");
+  tax += defTax;
+  game._injWho = game._injWho || {};
+  game._injWho[side] = who;
+  return Math.min(cfb ? 4.5 : 4.5, tax);
+}function haversineMiles(a, b) {
   if (!a || !b || a.length < 2 || b.length < 2) return null;
   const R = 3959, toR = (d) => d * Math.PI / 180;
   const dlat = toR(b[0] - a[0]), dlon = toR(b[1] - a[1]);
@@ -2499,8 +2575,9 @@ function applySituationalToGame(g) {
     return "";
   };
   if (sq) piece(seasonM, seasonT, sq.name + " is out for the year. " + sq.backup + " starts");
-  piece(-ht, -0.24 * ht, g.home.abbr + " injuries");
-  piece(at, -0.24 * at, g.away.abbr + " injuries");
+  const who = (side) => ((g._injWho || {})[side] || []).slice(0, 3).join(", ");
+  piece(-ht, -0.24 * ht, g.home.abbr + " injuries" + (who("home") ? " (" + who("home") + ")" : ""));
+  piece(at, -0.24 * at, g.away.abbr + " injuries" + (who("away") ? " (" + who("away") + ")" : ""));
   piece(-rth, -0.32 * Math.max(0, rth), restLine(g.home.abbr, rh));
   piece(rta, -0.32 * Math.max(0, rta), restLine(g.away.abbr, ra));
   piece(-(tr.homeTax || 0) + (tr.awayTax || 0), tr.tot || 0, (tr.notes || []).join(". ") || "Travel");
@@ -5874,10 +5951,10 @@ function attachInjuriesToGames(){
       return t.includes((g.home.name||"").toLowerCase()) || t.includes((g.away.name||"").toLowerCase());
     }).filter(r=>statusWeight(r.tag)>0);
     hits.sort((a,b)=>b.score-a.score);
-    g.injuries=hits.slice(0,8).map(r=>({
+    g.injuries=hits.slice(0,24).map(r=>({
       name:r.name, id:r.id, status:r.tag||r.status, pos:r.pos, tag:r.tag, league:r.league||g.league,
       side: (r.team||"").toLowerCase().includes((g.home.name||"").toLowerCase())?"home":"away",
-      short:r.short, reporter:r.reporter, score:r.score
+      short:r.short, long:r.long, date:r.date, reporter:r.reporter, score:r.score
     }));
     window.__FACES = null;
   });
