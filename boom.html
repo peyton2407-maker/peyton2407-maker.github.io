@@ -6616,7 +6616,7 @@ function posWeight(pos){
 }
 function statusWeight(tag){
   const t = String(tag || "").toUpperCase();
-  if (["OUT","IR","INACTIVE","SUSP"].includes(t) || /INJURED RESERVE/.test(t)) return 80;
+  if (["OUT","IR","INACTIVE","SUSP","PUP"].includes(t) || /INJURED RESERVE/.test(t)) return 80;
   if (t === "DOUBTFUL") return 52;
   if (t === "QUESTIONABLE" || t === "Q") return 28;
   return 0;
@@ -6638,11 +6638,15 @@ function ensureInjPack(){
 function matchInjuryGame(team, league){
   const t = (team || "").toLowerCase().trim();
   if (!t || !DATA) return null;
-  return (DATA.games || []).find(g => {
+  const hits = (DATA.games || []).filter(g => {
     if (league && g.league !== league) return false;
     const names = [g.home, g.away].flatMap((x) => [x.name, x.short, x.abbr].map((n) => (n || "").toLowerCase()));
     return names.some((n) => n && (t === n || t.startsWith(n + " ") || n.startsWith(t + " ")));
-  }) || null;
+  });
+  const open = hits.filter((g) => !g.completed).sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  if (open.length) return open[0];
+  hits.sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
+  return hits[0] || null;
 }
 function cfbTeamFromText(text) {
   const blob = String(text || "");
@@ -6750,6 +6754,13 @@ async function pullCfbInjuryNews() {
   }
   return newsArticlesToCfbInj(bag);
 }
+function staleGamedayNote(text) {
+  const b = String(text || "").toLowerCase();
+  if (!b) return false;
+  const leftover = /inactive for|coach'?s decision|emergency third|emergency quarterback|questionable to return|ruled out for the (rest|remainder)/.test(b);
+  if (!leftover) return false;
+  return !/torn|acl|mri|surgery|season|broken|fracture|will miss|next week|next sunday|placed on ir|injured reserve|out for the year|out for the season|dislocated|sprain|biceps/.test(b);
+}
 function parseInjuryFeed(payload, league){
   const rows=[];
   const cutoff = Date.now() - 21 * 86400000;
@@ -6763,6 +6774,7 @@ function parseInjuryFeed(payload, league){
       const det=x.details||{};
       const short=x.shortComment||x.short||"";
       const long=x.longComment||x.long||"";
+      if (league === "nfl" && staleGamedayNote(short + " " + long) && !/INJURED RESERVE|^IR$|^PUP$/.test(String(x.status || "").toUpperCase())) return;
       const reporter=extractReporter(short) || extractReporter(long);
       const tag=gameDayTag(x);
       const game=matchInjuryGame(teamName, league);
@@ -6783,6 +6795,8 @@ function parseInjuryFeed(payload, league){
         gameWhen: game ? game.date : ""
       };
       row.score = posWeight(pos) + statusWeight(tag) + (reporter ? 8 : 0) + (game && !game.completed ? 12 : 0);
+      if (when && when > Date.now() - 4 * 86400000) row.score += 40;
+      else if (when && when > Date.now() - 10 * 86400000) row.score += 16;
       row.reports = [];
       const who = reporter ? (reporter.name + (reporter.outlet ? " · " + reporter.outlet : " · ESPN")) : "ESPN";
       if (long) row.reports.push({ label: who, text: long });
@@ -6887,6 +6901,21 @@ function seedInjuriesFromSnap(){
 async function fetchInjuries(force){
   const today = new Date().toISOString().slice(0, 10);
   const pack = seedInjuriesFromSnap();
+  try {
+    const res = await fetch("data/nfl-injuries.json", { cache: "no-store" });
+    if (res.ok) {
+      const published = await res.json();
+      const parsed = parseInjuryFeed((published && published.nfl) || published, "nfl");
+      if (parsed.length) {
+        pack.nfl = parsed;
+        pack.fetched = Date.parse(published.pulled) || Date.now();
+        pack.fromSnap = false;
+        window.__INJ = pack;
+        if (typeof DATA === "object" && DATA) DATA.injuries = pack;
+        attachInjuriesToGames();
+      }
+    }
+  } catch (e) {}
   const cfbThin = !((pack.cfb || []).length >= 24);
   if (!force && pack.day === today && pack.fetched && Date.now() - pack.fetched < 10 * 60 * 1000 && (pack.nfl || []).length && !cfbThin && pack.live) {
     loadCfbFaces().catch(() => {});
@@ -9963,6 +9992,7 @@ function sleeperInjuryRows(players){
   });
   const rows = [];
   Object.values(players || {}).forEach((p) => {
+    if ((p.injury_body_part || "") === "Coach's Decision") return;
     const tag = sleeperTag(p.injury_status);
     if (!tag || !p.full_name || !p.team) return;
     const team = abbr[p.team] || p.team;
