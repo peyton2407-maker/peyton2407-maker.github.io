@@ -1650,7 +1650,48 @@ function previewLearnShift(g) {
     t: Math.max(-4, Math.min(4, 0.35 * confw * (((hr.total || 0) + (ar.total || 0)) / 2)))
   };
 }
+function applyWeekResults() {
+  const rows = window.WEEK_RESULTS || [];
+  if (!rows.length || typeof DATA === "undefined" || !DATA) return 0;
+  DATA.games = DATA.games || [];
+  const byId = {};
+  DATA.games.forEach((g) => { if (g && g.id) byId[String(g.id)] = g; });
+  let n = 0;
+  rows.forEach((row) => {
+    if (!row || row.hs == null || row.as == null) return;
+    let g = byId[String(row.id)];
+    if (!g) {
+      g = {
+        id: String(row.id),
+        completed: true,
+        league: row.league === "nfl" ? "nfl" : "cfb",
+        date: row.date,
+        short_name: row.name,
+        name: row.name,
+        home: { id: row.homeId, abbr: row.homeAbbr, score: row.hs },
+        away: { id: row.awayId, abbr: row.awayAbbr, score: row.as },
+        odds: row.spread == null ? {} : { home_spread: row.spread, total: row.total },
+        proj: {},
+        result: row
+      };
+      DATA.games.push(g);
+      byId[g.id] = g;
+      n += 1;
+      return;
+    }
+    g.completed = true;
+    if (g.home) g.home.score = row.hs;
+    if (g.away) g.away.score = row.as;
+    g.result = row;
+    if ((!g.odds || g.odds.home_spread == null) && row.spread != null) {
+      g.odds = Object.assign({}, g.odds || {}, { home_spread: row.spread, total: row.total });
+    }
+    n += 1;
+  });
+  return n;
+}
 function rebuildSharedLearning(games) {
+  if (typeof applyWeekResults === "function") applyWeekResults();
   freezePublishedLines(games);
   const res = getResiduals();
   res.nfl = {};
@@ -1704,8 +1745,19 @@ function learnFromFinals(games) {
       if (predT == null && g.odds && g.odds.total != null) predT = Number(g.odds.total);
     }
     if (predM == null || predT == null || Number.isNaN(predT)) return;
-    const errM = (hs - as) - predM;
-    const errT = (hs + as) - predT;
+    const errMraw = (hs - as) - predM;
+    let errM = errMraw;
+    let errT = (hs + as) - predT;
+    const box = g.result || {};
+    if (box.ydsH != null && box.ydsA != null) {
+      const yardM = (Number(box.ydsH) - Number(box.ydsA)) / 22;
+      errM = ((hs - as) * 0.7 + yardM * 0.3) - predM;
+    }
+    if (box.toH != null && box.toA != null) errM -= (Number(box.toA) - Number(box.toH)) * 1.7;
+    const sp = g.odds && g.odds.home_spread != null ? Math.abs(Number(g.odds.home_spread)) : (box.spread != null ? Math.abs(Number(box.spread)) : Math.abs(predM));
+    const w = sp >= 28 ? 0.4 : sp >= 17 ? 0.65 : 1;
+    errM *= w;
+    if (sp >= 28) errT *= 0.55;
     const recent = lg === "cfb" ? 0.52 : 0.45;
     function bump(id, marginShare, offShare, defShare) {
       const k = String(id);
@@ -1717,7 +1769,7 @@ function learnFromFinals(games) {
       row.total = +(row.total * (1 - a) + errT * a).toFixed(3);
       row.off = +(row.off * (1 - a) + offShare * a).toFixed(3);
       row.def = +(row.def * (1 - a) + defShare * a).toFixed(3);
-      row.last = { errM: +Number(marginShare).toFixed(1), ours: lg === "cfb", name: g.short_name || g.name };
+      row.last = { errM: +Number(marginShare).toFixed(1), ours: lg === "cfb", name: g.short_name || g.name, yards: box.ydsH != null, turnovers: box.toH != null };
       res[lg][k] = row;
     }
     const homeOff = hs - (p.home_points || (predT + predM) / 2);
@@ -1789,8 +1841,8 @@ function applyLearningToGame(g) {
     const confw = nGames <= 0 ? 0 : nGames === 1 ? 0.62 : nGames <= 3 ? 0.82 : 1;
     const hm = (hr.margin || 0) - (ar.margin || 0);
     const totShiftBase = ((hr.total || 0) + (ar.total || 0)) / 2;
-    mShift = Math.max(-4.5, Math.min(4.5, w * confw * hm));
-    totShift = Math.max(-4, Math.min(4, tw * confw * totShiftBase));
+    mShift = Math.max(-3, Math.min(3, w * confw * hm));
+    totShift = Math.max(-2.5, Math.min(2.5, tw * confw * totShiftBase));
   }
   const baseM = p._preLearnMargin;
   const baseT = p._preLearnTotal;
@@ -2509,10 +2561,10 @@ function cfbLearnNudge(g) {
   const homeN = hr.n || 0;
   const awayN = ar.n || 0;
   if (!homeN && !awayN) return { margin: 0, total: 0, note: "No finished game for these teams yet, so nothing has been learned." };
-  const rawM = ((hr.margin || 0) - (ar.margin || 0)) * 0.28;
-  const rawT = (((hr.total || 0) + (ar.total || 0)) / 2) * 0.18;
-  const margin = Math.max(-1, Math.min(1, rawM));
-  const total = Math.max(-0.8, Math.min(0.8, rawT));
+  const rawM = ((hr.margin || 0) - (ar.margin || 0)) * 0.45;
+  const rawT = (((hr.total || 0) + (ar.total || 0)) / 2) * 0.22;
+  const margin = Math.max(-2.5, Math.min(2.5, rawM));
+  const total = Math.max(-1.8, Math.min(1.8, rawT));
   const sideNote = (side, row) => {
     if (!row || !row.n || !row.last || row.last.ours !== true) return "";
     const miss = Number(row.last.errM);
@@ -2520,7 +2572,7 @@ function cfbLearnNudge(g) {
     return g[side].abbr + " was off our score last game. This line does not take that whole miss.";
   };
   const bits = [sideNote("home", hr), sideNote("away", ar)].filter(Boolean);
-  const note = g.home.abbr + " has " + homeN + " finished game" + (homeN === 1 ? "" : "s") + " in our record. " + g.away.abbr + " has " + awayN + ". Each one was graded against our score, not DraftKings. " + bits.join(" ");
+  const note = g.home.abbr + " has " + homeN + " finished game" + (homeN === 1 ? "" : "s") + " in our record. " + g.away.abbr + " has " + awayN + ". The score, the yards, and the turnovers are in. This line does not take the whole miss.";
   return { margin: +margin.toFixed(2), total: +total.toFixed(2), note: note };
 }
 async function loadCfbFinalExtras() {
@@ -3002,6 +3054,15 @@ function applySplitDesk() {
     const learned = cfbLearnNudge(g);
     const trip = cfbRestTravelNudge(g);
     const qbSwap = cfbQbChangeNudge(g);
+    if (Math.abs(learned.margin) >= 0.05 || Math.abs(learned.total) >= 0.05) {
+      const lm = +(p.blended_margin + learned.margin).toFixed(2);
+      const lt = +Math.max(20, p.hashmark_total + learned.total).toFixed(1);
+      p.blended_margin = lm;
+      p.hashmark_total = lt;
+      p.hashmark_home_spread = +(-lm).toFixed(1);
+      p.home_points = +Math.max(0, (lt + lm) / 2).toFixed(1);
+      p.away_points = +Math.max(0, (lt - lm) / 2).toFixed(1);
+    }
     const plainReason = (text) => String(text || "")
       .replace(/That is \d+(?:\.\d+)? toward [^.]+\./g, "")
       .replace(/The next line moves [^.]+\./g, "")
@@ -3030,22 +3091,20 @@ function applySplitDesk() {
     const spreadFit = shareOfCap([
       { name: "Starters", value: nudge.margin, detail: (nudge.lines || []).join(" ") },
       { name: "Weather", value: wxn.margin, detail: wxn.note || "" },
-      { name: "Last games", value: learned.margin, detail: learned.note || "" },
       { name: "Rest and travel", value: trip.margin, detail: (trip.lines || []).join(" ") },
       { name: "Quarterback", value: qbSwap.margin, detail: (qbSwap.lines || []).join(" ") }
     ], 1.2);
     const totalFit = shareOfCap([
       { name: "Starters", value: nudge.total, detail: "" },
       { name: "Weather", value: wxn.total, detail: "" },
-      { name: "Last games", value: learned.total, detail: "" },
       { name: "Rest and travel", value: trip.total, detail: "" },
       { name: "Quarterback", value: qbSwap.total, detail: "" }
     ], 1.2);
-    const moveM = spreadFit.total;
-    const moveT = totalFit.total;
-    if (Math.abs(moveM) >= 0.12 || Math.abs(moveT) >= 0.08) {
-      const dgMargin = +(p.blended_margin + moveM).toFixed(2);
-      const dgTotal = +Math.max(20, p.hashmark_total + moveT).toFixed(1);
+    const sitM = spreadFit.total;
+    const sitT = totalFit.total;
+    if (Math.abs(sitM) >= 0.12 || Math.abs(sitT) >= 0.08) {
+      const dgMargin = +(p.blended_margin + sitM).toFixed(2);
+      const dgTotal = +Math.max(20, p.hashmark_total + sitT).toFixed(1);
       p.blended_margin = dgMargin;
       p.hashmark_total = dgTotal;
       p.hashmark_home_spread = +(-dgMargin).toFixed(1);
@@ -3066,6 +3125,8 @@ function applySplitDesk() {
       g.box.home_points = p.home_points;
       g.box.total_points = p.hashmark_total;
     }
+    const moveM = +(sitM + learned.margin).toFixed(2);
+    const moveT = +(sitT + learned.total).toFixed(2);
     const movedSpread = Math.abs(moveM) >= 0.12;
     const movedTotal = Math.abs(moveT) >= 0.08;
     const score = g.away.abbr + " " + away + ", " + g.home.abbr + " " + home;
@@ -3077,6 +3138,8 @@ function applySplitDesk() {
       const ranked = [];
       if (movedSpread) spreadFit.rows.forEach((part) => { if (Math.abs(part.used) >= 0.05) ranked.push({ part: part, kind: "spread", size: Math.abs(part.used) }); });
       if (movedTotal) totalFit.rows.forEach((part) => { if (Math.abs(part.used) >= 0.05) ranked.push({ part: part, kind: "total", size: Math.abs(part.used) }); });
+      if (movedSpread && Math.abs(learned.margin) >= 0.05) ranked.push({ part: { name: "Finished games", used: learned.margin }, kind: "spread", size: Math.abs(learned.margin) });
+      if (movedTotal && Math.abs(learned.total) >= 0.05) ranked.push({ part: { name: "Finished games", used: learned.total }, kind: "total", size: Math.abs(learned.total) });
       ranked.sort((a, b) => b.size - a.size);
       const top = ranked[0];
       let why = "";
@@ -8136,19 +8199,45 @@ function renderCfbWeather() {
 }
 
 
+function attachUpcoming(parsed) {
+  const ids = {};
+  (DATA.games || []).forEach((g) => { if (g && g.id) ids[String(g.id)] = 1; });
+  (parsed || []).forEach((g) => {
+    if (!g || g.completed || ids[String(g.id)]) return;
+    if (g.league !== "nfl") return;
+    const spread = g.odds && g.odds.home_spread != null ? Number(g.odds.home_spread) : null;
+    const total = g.odds && g.odds.total != null ? Number(g.odds.total) : null;
+    if (spread == null || total == null) return;
+    const margin = -spread;
+    g.proj = {
+      blended_margin: +margin.toFixed(2),
+      hashmark_total: total,
+      hashmark_home_spread: spread,
+      home_points: +((total + margin) / 2).toFixed(1),
+      away_points: +((total - margin) / 2).toFixed(1),
+      market_margin: margin
+    };
+    DATA.games.push(g);
+    ids[String(g.id)] = 1;
+  });
+}
+
 async function pullLiveScores() {
   try {
     const jobs = [
       getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?limit=50").then((d) => parseGames(d, "nfl")).catch(() => []),
       getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=2&seasontype=2&limit=50").then((d) => parseGames(d, "nfl")).catch(() => []),
+      getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=1&seasontype=2&limit=50").then((d) => parseGames(d, "nfl")).catch(() => []),
       getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=3&seasontype=2&limit=50").then((d) => parseGames(d, "nfl")).catch(() => []),
+      getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=4&seasontype=2&limit=50").then((d) => parseGames(d, "nfl")).catch(() => []),
       getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?limit=300").then((d) => parseGames(d, "cfb")).catch(() => []),
       getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=4&seasontype=2&groups=80&limit=300").then((d) => parseGames(d, "cfb")).catch(() => []),
       getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=5&seasontype=2&groups=80&limit=300").then((d) => parseGames(d, "cfb")).catch(() => [])
     ];
     const packs = await Promise.all(jobs);
+    const flat = packs.flat();
     const byId = {};
-    packs.flat().forEach((g) => { if (g && g.id) byId[String(g.id)] = g; });
+    flat.forEach((g) => { if (g && g.id) byId[String(g.id)] = g; });
     let newFinals = 0;
     (DATA.games || []).forEach((g) => {
       const n = byId[String(g.id)];
@@ -8167,6 +8256,7 @@ async function pullLiveScores() {
     });
     if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games);
     try { if (typeof loadCfbFinalExtras === "function") await loadCfbFinalExtras(); } catch (e) {}
+    if (typeof attachUpcoming === "function") attachUpcoming(flat);
     if (typeof rebuildSharedLearning === "function") rebuildSharedLearning(DATA.games || []);
     if (typeof finishProjections === "function") finishProjections();
     if (newFinals) {
@@ -9234,6 +9324,12 @@ async function boot() {
     const learn = window.rebuildSharedLearning || rebuildSharedLearning;
     const apply = window.applyLearningToGame || applyLearningToGame;
     try { if (typeof loadCfbFinalExtras === "function") await loadCfbFinalExtras(); } catch (e) {}
+    try {
+      if (!window.WEEK_RESULTS) {
+        const doneRes = await fetch("/data/week-results.json");
+        if (doneRes.ok) window.WEEK_RESULTS = await doneRes.json();
+      }
+    } catch (e) {}
     const n = typeof learn === "function" ? learn(DATA.games || []) : 0;
     if (typeof finishProjections === "function") finishProjections();
     if (DATA.notes && n) DATA.notes.learning = `Same record for everyone. ${n} finished games are in the next line.`;
