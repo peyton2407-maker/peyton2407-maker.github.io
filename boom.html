@@ -9076,6 +9076,7 @@ function ensureWeeklyCard(force) {
     };
     window.LOCKED_CARD = desk.card;
     saveDesk();
+    archiveLockedWeek(desk.card);
     return thisWeekCard(desk.card);
   }
   if (window.LOCKED_CARD && window.LOCKED_CARD.frozen && (window.LOCKED_CARD.legs || []).length) {
@@ -9091,18 +9092,69 @@ function ensureWeeklyCard(force) {
   };
   return thisWeekCard(desk.card);
 }
+const SCORE_BOOK = [
+  {"id":"401858466","league":"cfb","weekKey":"nfl-3|cfb-4","week":"Sep 26 card","short":"WIS @ PSU","home":"PSU","away":"WIS","date":"2026-09-26T21:00Z","pick":"PSU","pick_line":"PSU -10.0","total_pick":"OVER 45.5","spread_line":-10,"total_line":45.5,"ats":"MISS","ou":"MISS","final":"WIS 24 – PSU 20","graded":true},
+  {"id":"401864510","league":"cfb","weekKey":"nfl-3|cfb-4","week":"Sep 26 card","short":"HAW @ WYO","home":"WYO","away":"HAW","date":"2026-09-26T19:00Z","pick":"HAW","pick_line":"HAW -3.0","total_pick":"OVER 45.5","spread_line":3,"total_line":45.5,"ats":"MISS","ou":"MISS","final":"HAW 10 – WYO 27","graded":true},
+  {"id":"401866429","league":"cfb","weekKey":"nfl-3|cfb-4","week":"Sep 26 card","short":"MASS @ SAC","home":"SAC","away":"MASS","date":"2026-09-27T01:00Z","pick":"MASS","pick_line":"MASS -5.5","total_pick":"OVER 48.5","spread_line":5.5,"total_line":48.5,"ats":"HIT","ou":"MISS","final":"MASS 35 – SAC 6","graded":true},
+  {"id":"401860896","league":"cfb","weekKey":"nfl-3|cfb-4","week":"Sep 26 card","short":"CSU @ UTSA","home":"UTSA","away":"CSU","date":"2026-09-26T16:00Z","pick":"CSU","pick_line":"CSU +12.5","total_pick":"UNDER 57.5","spread_line":-12.5,"total_line":57.5,"ats":"MISS","ou":"MISS","final":"CSU 45 – UTSA 59","graded":true},
+  {"id":"401858239","league":"cfb","weekKey":"nfl-3|cfb-4","week":"Sep 26 card","short":"DEL @ UVA","home":"UVA","away":"DEL","date":"2026-09-26T22:00Z","pick":"DEL","pick_line":"DEL +20.5","total_pick":"UNDER 52.5","spread_line":-20.5,"total_line":52.5,"ats":"MISS","ou":"HIT","final":"DEL 3 – UVA 42","graded":true},
+  {"id":"401861970","league":"cfb","weekKey":"nfl-3|cfb-4","week":"Sep 26 card","short":"CONN @ M-OH","home":"M-OH","away":"CONN","date":"2026-09-26T19:30Z","pick":"CONN","pick_line":"CONN +4.5","total_pick":"OVER 51.5","spread_line":-4.5,"total_line":51.5,"ats":"HIT","ou":"MISS","final":"CONN 21 – M-OH 24","graded":true},
+  {"id":"401864509","league":"cfb","weekKey":"nfl-3|cfb-4","week":"Sep 26 card","short":"AFA @ NEV","home":"NEV","away":"AFA","date":"2026-09-27T02:30Z","pick":"NEV","pick_line":"NEV +4.0","total_pick":"OVER 48.5","spread_line":4,"total_line":48.5,"ats":"HIT","ou":"HIT","final":"AFA 36 – NEV 33","graded":true},
+  {"id":"401862782","league":"cfb","weekKey":"nfl-3|cfb-4","week":"Sep 26 card","short":"FAU @ ULM","home":"ULM","away":"FAU","date":"2026-09-27T00:00Z","pick":"ULM","pick_line":"ULM +13.5","total_pick":"UNDER 57.5","spread_line":13.5,"total_line":57.5,"ats":"MISS","ou":"MISS","final":"FAU 45 – ULM 17","graded":true},
+  {"id":"401862785","league":"cfb","weekKey":"nfl-3|cfb-4","week":"Sep 26 card","short":"USF @ BGSU","home":"BGSU","away":"USF","date":"2026-09-26T21:00Z","pick":"USF","pick_line":"USF -17.5","total_pick":"OVER 49.5","spread_line":17.5,"total_line":49.5,"ats":"MISS","ou":"MISS","final":"USF 14 – BGSU 6","graded":true},
+  {"id":"401862780","league":"cfb","weekKey":"nfl-3|cfb-4","week":"Sep 26 card","short":"UL @ CLT","home":"CLT","away":"UL","date":"2026-09-26T22:30Z","pick":"CLT","pick_line":"CLT +10.5","total_pick":"OVER 49.5","spread_line":10.5,"total_line":49.5,"ats":"MISS","ou":"MISS","final":"UL 34 – CLT 7","graded":true}
+];
+window.SCORE_BOOK = SCORE_BOOK;
+function legToLockedPlay(leg, weekKey) {
+  const pickText = String(leg.pick || leg.pick_line || "");
+  const match = pickText.match(/^(.+?)\s+([+-]?\d+(?:\.\d+)?)$/);
+  const team = match ? match[1] : pickText;
+  const num = match ? Number(match[2]) : null;
+  const spread = num == null || !leg.home ? null : (team === leg.home ? num : -num);
+  const tot = String(leg.total || leg.total_pick || "");
+  const totMatch = tot.match(/^(OVER|UNDER)\s+([0-9.]+)/i);
+  return {
+    id: String(leg.id), league: leg.league || "cfb", weekKey: weekKey, week: leg.week || weekKey,
+    short: leg.short, home: leg.home, away: leg.away, date: leg.date,
+    pick: leg.ats ? leg.pick : team, pick_line: leg.pick_line || pickText,
+    total_pick: tot, spread_line: leg.spread_line != null ? leg.spread_line : spread,
+    total_line: leg.total_line != null ? leg.total_line : (totMatch ? Number(totMatch[2]) : null),
+    ats: leg.ats || null, ou: leg.ou || null, final: leg.final || "", clv: null,
+    graded: !!(leg.graded || leg.ats || leg.ou)
+  };
+}
+function lockedScoreRows() {
+  const rows = (window.SCORE_BOOK || []).map((row) => Object.assign({}, row));
+  const seen = {};
+  rows.forEach((row) => { seen[row.weekKey + "|" + row.id] = 1; });
+  const desk = loadDesk();
+  Object.keys(desk.weeks || {}).forEach((key) => {
+    if (key === "nfl-3|cfb-4") return;
+    ((desk.weeks[key] || {}).plays || []).forEach((row) => {
+      const id = key + "|" + row.id;
+      if (seen[id]) return;
+      seen[id] = 1;
+      rows.push(row);
+    });
+  });
+  return rows;
+}
+function archiveLockedWeek(card) {
+  if (!card || !card.frozen || !card.weekKey || card.weekKey === "nfl-3|cfb-4") return;
+  const desk = loadDesk();
+  desk.weeks = desk.weeks || {};
+  if (desk.weeks[card.weekKey] && desk.weeks[card.weekKey].locked) return;
+  desk.weeks[card.weekKey] = {
+    weekKey: card.weekKey, locked: true,
+    plays: (card.legs || []).map((leg) => legToLockedPlay(leg, card.weekKey))
+  };
+  saveDesk();
+}
 function lockUpcomingPlays() {
   const desk = loadDesk();
-  desk.plays = {};
-  (DATA.games || []).forEach((g) => {
-    if (!g || !g.proj || !isPlay(g.proj)) return;
-    const id = String(g.id);
-    const row = snapPlay(g);
-    if (g.odds && g.odds.home_spread != null) row.close_spread = g.odds.home_spread;
-    if (g.odds && g.odds.total != null) row.close_total = g.odds.total;
-    desk.plays[id] = row;
-    if (g.completed) gradeLock(row, g);
-  });
+  desk.weeks = desk.weeks || {};
+  desk.weeks["nfl-3|cfb-4"] = { weekKey: "nfl-3|cfb-4", locked: true, plays: window.SCORE_BOOK };
+  if (window.LOCKED_CARD && window.LOCKED_CARD.frozen) archiveLockedWeek(window.LOCKED_CARD);
 }
 function gradeLock(lock, g) {
   if (!lock || !g || !g.completed) return lock;
@@ -9132,11 +9184,20 @@ function gradeLock(lock, g) {
 }
 function gradeFinished() {
   const desk = loadDesk();
-  (DATA.games || []).forEach((g) => {
-    const lock = desk.plays[String(g.id)];
-    if (lock && g.completed) gradeLock(lock, g);
+  const byId = {};
+  (DATA.games || []).forEach((g) => { if (g && g.id) byId[String(g.id)] = g; });
+  let changed = false;
+  Object.keys(desk.weeks || {}).forEach((key) => {
+    if (key === "nfl-3|cfb-4") return;
+    ((desk.weeks[key] || {}).plays || []).forEach((row) => {
+      if (row.graded) return;
+      const g = byId[String(row.id)];
+      if (!g || !g.completed) return;
+      gradeLock(row, g);
+      if (row.ats || row.ou) changed = true;
+    });
   });
-  saveDesk();
+  if (changed) saveDesk();
 }
 function watchSnapshot(g) {
   const p = g.proj || {};
@@ -9226,8 +9287,7 @@ function todayGames() {
   return soon.slice(0, 8);
 }
 function scoreTally(league, kind) {
-  const desk = loadDesk();
-  const rows = Object.values(desk.plays || {}).filter((p) => !league || league === "all" || p.league === league);
+  const rows = lockedScoreRows().filter((p) => !league || league === "all" || p.league === league);
   let w = 0, l = 0, psh = 0;
   const items = [];
   rows.forEach((r) => {
@@ -9362,9 +9422,8 @@ function renderScorecard() {
     <div class="stat"><b>${t.pending}</b><span>still live / upcoming</span></div>
     <div class="stat"><b>${t.clvAvg ? (t.clvAvg > 0 ? "+" : "") + t.clvAvg.toFixed(1) : "—"}</b><span>avg vs close</span></div>`;
   const wrap = document.getElementById("scoreWrap");
-  const desk = loadDesk();
-  let rows = Object.values(desk.plays || {}).filter((p) => league === "all" || p.league === league);
-  rows.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  let rows = lockedScoreRows().filter((p) => league === "all" || p.league === league);
+  rows.sort((a, b) => String(a.weekKey || "").localeCompare(String(b.weekKey || "")) || String(a.date).localeCompare(String(b.date)));
   if (!wrap) return;
   if (!rows.length) { wrap.innerHTML = `<div class="empty">No locked picks yet. They freeze automatically as games get close to kickoff.</div>`; return; }
   wrap.innerHTML = `<table class="ratings"><thead><tr><th>Game</th><th>Locked pick</th><th>Spread</th><th>Total</th><th>vs close</th></tr></thead><tbody>
@@ -9376,7 +9435,7 @@ function renderScorecard() {
       if (kind === "spread" && !(r.pick && r.pick !== "NO PLAY")) return "";
       if (kind === "total" && !(r.total_pick && r.total_pick !== "NO PLAY")) return "";
       return `<tr data-id="${r.id}">
-        <td><b>${r.short || (r.away + " @ " + r.home)}</b><div class="subn">${r.league.toUpperCase()} · ${r.final || fmt.when(r.date)}</div></td>
+        <td><b>${r.short || (r.away + " @ " + r.home)}</b><div class="subn">${r.week || r.weekKey || r.league.toUpperCase()} · ${r.final || fmt.when(r.date)}</div></td>
         <td>${r.pick_line || r.pick || "—"}<div class="subn">${r.total_pick && r.total_pick !== "NO PLAY" ? r.total_pick : ""}</div></td>
         <td>${showS ? ats : "—"}</td>
         <td>${showT ? ou : "—"}</td>
