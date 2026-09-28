@@ -705,7 +705,7 @@ button.prop-card.inj-open .report-full{display:block}
           <div class="slide-wrap">
             <button class="slide-btn" type="button" data-slide="cfbTiles" data-dir="-1" aria-label="College tiles left">‹</button>
             <div class="tile-row slide" id="cfbTiles">
-              <a class="tab" href="#cfb" data-view="cfb">CFB Weeks 4–5</a>
+              <a class="tab" href="#cfb" data-view="cfb">CFB Week 5</a>
               <a class="tab" href="#cfbpicks" data-view="cfbpicks">College picks</a>
               <a class="tab" href="#cfbwx" data-view="cfbwx">College weather</a>
               <a class="tab" href="#cfbinj" data-view="cfbinj">College injuries</a>
@@ -6769,7 +6769,10 @@ function gamesForView() {
     const soon = games.filter((g) => !g.completed && Math.abs(new Date(g.date) - now) < 10 * 3600 * 1000);
     games = liveNow.length ? liveNow : (soon.length ? soon : games.filter((g) => !g.completed).slice(0, 8));
   }
-  if (view === "cfb") games = games.filter((g) => isThisCfbWeek(g));
+  if (view === "cfb") {
+    const weeks = ((DATA.meta && DATA.meta.cfb_weeks) || [5]).map(Number);
+    games = games.filter((g) => weeks.includes(Number(g.week)));
+  }
   if (onlyOpen === "upcoming") games = games.filter((g) => !g.completed);
   if (onlyOpen === "projected") {
     games = games.filter((g) => !g.completed && (g.box || g.proj?.home_points != null));
