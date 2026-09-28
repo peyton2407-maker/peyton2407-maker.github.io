@@ -8707,15 +8707,17 @@ function scoreTally(league, kind, week) {
   let w = 0, l = 0, psh = 0;
   const items = [];
   rows.forEach((r) => {
-    let mark = null;
-    if (kind === "total") mark = r.ou || null;
-    else if (kind === "spread") mark = r.ats || null;
-    else mark = r.ats || r.ou || null;
-    if (!mark) return;
-    if (mark === "HIT") w++;
-    else if (mark === "MISS") l++;
-    else psh++;
-    items.push(r);
+    const count = (mark) => {
+      if (!mark) return;
+      if (mark === "HIT") w++;
+      else if (mark === "MISS") l++;
+      else psh++;
+      items.push(r);
+    };
+    if (kind === "total") count(r.ou);
+    else if (kind === "spread") count(r.ats);
+    else if (r.league === "cfb") count(r.ats || r.ou);
+    else { count(r.ats); count(r.ou); }
   });
   const pending = rows.filter((r) => !r.graded);
   const clv = rows.filter((r) => r.clv != null);
