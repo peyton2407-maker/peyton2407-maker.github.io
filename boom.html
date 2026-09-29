@@ -101,7 +101,7 @@ button { touch-action: manipulation; cursor: pointer; }
   text-align:left;min-height:88px;cursor:pointer;pointer-events:auto;text-decoration:none;color:inherit;
   display:block;position:relative;z-index:8;touch-action:manipulation;-webkit-tap-highlight-color:rgba(182,232,90,.25);
 }
-.home-jump:hover{border-color:var(--turf);transform:translateY(-1px)}
+.home-jump:hover{border-color:var(--turf)}
 .home-jump.hot{background:linear-gradient(160deg,#243016,#152016);border-color:rgba(240,180,41,.5)}
 .home-jump b{display:block;font-family:Syne,sans-serif;font-size:18px;color:var(--ink)}
 .home-jump.hot b{color:var(--sun)}
@@ -280,7 +280,7 @@ option { background: #12201a; color: #e9f3ec; }
   box-shadow: var(--shadow);
 }
 .game { display: grid; gap: 12px; cursor: pointer; }
-.game:hover, .prop-card:hover { transform: translateY(-2px); border-color: var(--line-2); }
+.game:hover, .prop-card:hover { border-color: var(--line-2); }
 .game.done { opacity: .72; }
 .prop-card { cursor: pointer; }
 
@@ -696,7 +696,7 @@ button.game{width:100%;text-align:left;font:inherit;color:inherit;display:grid;g
 .home-game, .home-feature.on, #board tr[data-id], .desk-strip tr[data-id] { cursor: pointer; touch-action: manipulation; }
 .overlay:not(.show) { display: none !important; pointer-events: none !important; visibility: hidden !important; }
 body > iframe { display: none !important; width: 0 !important; height: 0 !important; pointer-events: none !important; }
-.game:hover, .prop-card:hover { transform: translateY(-2px); border-color: var(--line-2); }
+.game:hover, .prop-card:hover { border-color: var(--line-2); }
 .game.done { opacity: .72; }
 .prop-card { cursor: pointer; touch-action: manipulation; }
 button.prop-card{width:100%;text-align:left;font:inherit;color:inherit;display:block;touch-action:manipulation;-webkit-tap-highlight-color:rgba(182,232,90,.3)}
