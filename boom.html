@@ -2311,6 +2311,7 @@ function applyWeekResults() {
   const byId = {};
   DATA.games.forEach((g) => { if (g && g.id) byId[String(g.id)] = g; });
   let n = 0;
+  const extras = [];
   rows.forEach((row) => {
     if (!row || row.hs == null || row.as == null) return;
     let g = byId[String(row.id)];
@@ -2328,8 +2329,7 @@ function applyWeekResults() {
         proj: {},
         result: row
       };
-      DATA.games.push(g);
-      byId[g.id] = g;
+      extras.push(g);
       n += 1;
       return;
     }
@@ -2342,11 +2342,14 @@ function applyWeekResults() {
     }
     n += 1;
   });
+  window.__WEEK_EXTRA = extras;
   return n;
 }
 function rebuildSharedLearning(games) {
   if (typeof applyWeekResults === "function") applyWeekResults();
+  const learnedOffBoard = window.__WEEK_EXTRA || [];
   freezePublishedLines(games);
+  freezePublishedLines(learnedOffBoard);
   const res = getResiduals();
   res.nfl = {};
   res.cfb = {};
@@ -2356,7 +2359,7 @@ function rebuildSharedLearning(games) {
   res.history = [];
   window.CFB_LEARN_FORM = {};
   const extras = (window.CFB_FINAL_EXTRAS || []).filter((g) => g && g.completed && g.home && g.away);
-  const ordered = (games || []).concat(extras).filter((g) => g && g.completed && g.home && g.away && g.home.score !== "" && g.home.score != null && g.away.score !== "" && g.away.score != null && Number.isFinite(Number(g.home.score)) && Number.isFinite(Number(g.away.score)))
+  const ordered = (games || []).concat(learnedOffBoard).concat(extras).filter((g) => g && g.completed && g.home && g.away && g.home.score !== "" && g.home.score != null && g.away.score !== "" && g.away.score != null && Number.isFinite(Number(g.home.score)) && Number.isFinite(Number(g.away.score)))
     .slice()
     .sort((a, b) => String(a.date).localeCompare(String(b.date)) || String(a.id).localeCompare(String(b.id)));
   let n = 0;
@@ -7166,19 +7169,26 @@ function playChance(tag) {
   return null;
 }
 function cfbReportWindow() {
-  const weeks = new Set((((DATA && DATA.meta && DATA.meta.cfb_weeks) || [5]).map(Number)));
-  const games = ((DATA && DATA.games) || []).filter((g) => g && g.league === "cfb" && weeks.has(Number(g.week)) && g.date);
-  if (!games.length) return null;
-  let latest = 0;
-  games.forEach((g) => { const n = Date.parse(g.date); if (n > latest) latest = n; });
-  const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit", weekday: "short" }).formatToParts(new Date(latest));
-  const get = (type) => (parts.find((p) => p.type === type) || {}).value;
-  const wd = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[get("weekday")];
-  const back = ((wd == null ? 6 : wd) - 3 + 7) % 7;
-  const y = Number(get("year"));
-  const m = Number(get("month"));
-  const d = Number(get("day"));
-  return { start: Date.UTC(y, m - 1, d - back, 4, 0, 0), end: Date.UTC(y, m - 1, d + 1, 4, 0, 0), year: y };
+  const weeks = ((DATA && DATA.meta && DATA.meta.cfb_weeks) || [5]).map(Number);
+  const sig = ((DATA && DATA.games) || []).length + ":" + weeks.join(",");
+  if (window.__cfbReportWin && window.__cfbReportWin.sig === sig) return window.__cfbReportWin.win;
+  const want = new Set(weeks);
+  const games = ((DATA && DATA.games) || []).filter((g) => g && g.league === "cfb" && want.has(Number(g.week)) && g.date);
+  let win = null;
+  if (games.length) {
+    let latest = 0;
+    games.forEach((g) => { const n = Date.parse(g.date); if (n > latest) latest = n; });
+    const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit", weekday: "short" }).formatToParts(new Date(latest));
+    const get = (type) => (parts.find((p) => p.type === type) || {}).value;
+    const wd = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[get("weekday")];
+    const back = ((wd == null ? 6 : wd) - 3 + 7) % 7;
+    const y = Number(get("year"));
+    const m = Number(get("month"));
+    const d = Number(get("day"));
+    win = { start: Date.UTC(y, m - 1, d - back, 4, 0, 0), end: Date.UTC(y, m - 1, d + 1, 4, 0, 0), year: y };
+  }
+  window.__cfbReportWin = { sig, win };
+  return win;
 }
 function parseReportDate(text) {
   const raw = String(text || "").trim();
@@ -10595,18 +10605,19 @@ function renderGameCharts() {
 }
 
 function placeOverlay(ov) {
-  const y = window.scrollY || document.documentElement.scrollTop || 0;
+  if (!ov) return;
   ov.classList.add("show");
-  ov.style.position = "absolute";
-  ov.style.top = y + "px";
+  ov.style.position = "fixed";
+  ov.style.inset = "0";
+  ov.style.top = "0";
   ov.style.left = "0";
   ov.style.right = "0";
   ov.style.width = "100%";
-  ov.style.height = (window.innerHeight || 700) + "px";
+  ov.style.height = "100%";
   ov.style.display = "flex";
   ov.style.visibility = "visible";
   ov.style.pointerEvents = "auto";
-  ov.style.zIndex = "9999";
+  ov.style.zIndex = "80";
 }
 
 function showPropSheet(html) {
@@ -11113,7 +11124,10 @@ async function boot() {
       setStamp(desk.notif ? "Phone alerts on" : "Alerts stayed off", true);
     } catch (e) { setStamp("This browser blocked alerts", true); }
   });
-  $("#overlay").addEventListener("click", (e) => { if (e.target.id === "overlay") closeModal(); });
+  $("#overlay").addEventListener("click", (e) => {
+    const inside = e.target && e.target.closest && e.target.closest(".modal, .game-sheet");
+    if (!inside) closeModal();
+  });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
   try { if (typeof repriceCfbBoard === "function") repriceCfbBoard(); } catch (e) { console.warn(e); }
   try {
