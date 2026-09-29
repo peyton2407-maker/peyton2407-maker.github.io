@@ -4812,13 +4812,14 @@ function buildGameTdModel(g) {
     const rushPool = tagged.reduce((a, row) => a + row.rush, 0);
     const recPool = tagged.reduce((a, row) => a + row.rec, 0);
     const glSum = tagged.reduce((a, row) => a + row.gl, 0);
-    const rzcSum = tagged.reduce((a, row) => a + row.rzc, 0);
+    const rzOutSum = tagged.reduce((a, row) => a + Math.max(0, row.rzc - row.gl), 0);
     const rztSum = tagged.reduce((a, row) => a + row.rzt, 0);
     const raw = tagged.map((row) => {
+      const rzOut = Math.max(0, row.rzc - row.gl);
       const rushShare = mix([
         { w: 0.45, v: rushPool > 0 ? row.rush / rushPool : 0, on: true },
         { w: 0.35, v: glSum ? row.gl / glSum : 0, on: glSum > 0 },
-        { w: 0.20, v: rzcSum ? row.rzc / rzcSum : 0, on: rzcSum > 0 }
+        { w: 0.20, v: rzOutSum ? rzOut / rzOutSum : 0, on: rzOutSum > 0 }
       ]);
       const recShare = mix([
         { w: 0.55, v: recPool > 0 ? row.rec / recPool : 0, on: true },
@@ -4861,7 +4862,7 @@ function buildGameTdModel(g) {
     const whyBits = [];
     whyBits.push(lam.toFixed(2) + " projected TDs vs " + pl.opp);
     if (r.gl) whyBits.push(r.gl + " goal-line carries inside the 5");
-    if (r.rzc) whyBits.push(r.rzc + " red-zone carries");
+    if (r.rzc > r.gl) whyBits.push((r.rzc - r.gl) + " red-zone carries outside the 5");
     if (r.rzt) whyBits.push(r.rzt + " red-zone targets");
     if (r.took) whyBits.push("took an out teammate's scores at the same spot");
     if (r.inj >= 1) whyBits.push("injury desk has them out");
