@@ -5328,7 +5328,7 @@ function collectPropParlayLegs() {
         const start = Math.max(0.5, Math.round(Number(m.mean)) - 12);
         const stop = Number(m.mean) + 12;
         for (let line = start; line <= stop; line += 0.5) {
-          const over = ourChance(m.mean, line, m.key, false);
+          const over = ourChance(m.mean, line, m.key, false, m.player);
           const under = 1 - over;
           [{ side: "over", hit: over }, { side: "under", hit: under }].forEach((side) => {
             if (side.hit < 0.57 || side.hit > 0.72) return;
@@ -7618,8 +7618,8 @@ function countLines(mean) {
 }
 function marketsFor(p) {
   const rows = [];
-  const yards = (key, label, mean) => { if (Number(mean) >= 8) rows.push({ key, label, mean: Number(mean), lines: yardLines(mean), under: false }); };
-  const counts = (key, label, mean, lines) => { if (Number(mean) > 0.05) rows.push({ key, label, mean: Number(mean), lines, under: key === "pass_int" }); };
+  const yards = (key, label, mean) => { if (Number(mean) >= 8) rows.push({ key, label, mean: Number(mean), lines: yardLines(mean), under: false, player: p }); };
+  const counts = (key, label, mean, lines) => { if (Number(mean) > 0.05) rows.push({ key, label, mean: Number(mean), lines, under: key === "pass_int", player: p }); };
   if (p.pos === "QB") {
     yards("pass_yds", "Pass yards", p.pass_yds);
     counts("pass_td", "Pass touchdowns", p.pass_td, [0.5, 1.5, 2.5]);
@@ -7678,7 +7678,25 @@ function hitRate(rows, key, line, under) {
   const hits = vals.filter((v) => under ? v < line : v > line).length;
   return { hits, n: vals.length, pct: hits / vals.length };
 }
-function ourChance(mean, line, key, under) {
+function tdDeskRow(player) {
+  if (!player || typeof buildGameTdModel !== "function") return null;
+  const g = (DATA.games || []).find((game) => String(game.id) === String(player.game_id));
+  if (!g) return null;
+  return buildGameTdModel(g).find((r) => String(r.id) === String(player.id)) || null;
+}
+function anytimeHit(player, mean, line) {
+  const row = tdDeskRow(player);
+  const n = Number(line);
+  if (row) return n >= 1.5 ? row.two : row.anytime;
+  const lam = Math.max(0, Number(mean) || 0);
+  if (n >= 1.5) return 1 - Math.exp(-lam) * (1 + lam);
+  return 1 - Math.exp(-lam);
+}
+function ourChance(mean, line, key, under, player) {
+  if (key === "td") {
+    const hit = anytimeHit(player, mean, line);
+    return under ? 1 - hit : hit;
+  }
   const z = (line - Number(mean)) / propSigma(key);
   const over = 1 - (typeof normCdf === "function" ? normCdf(z) : 0.5);
   return under ? 1 - over : over;
@@ -8057,7 +8075,7 @@ function ladderTable(m, season, vs) {
     const mile = Math.abs(line - Math.round(line)) < 0.01;
     const yr = hitDk(season, m.key, line);
     const opp = hitDk(vs, m.key, line);
-    const chance = ourChance(m.mean, mile ? line - 0.5 : line, m.key, false);
+    const chance = ourChance(m.mean, mile ? line - 0.5 : line, m.key, false, m.player);
     const fmtH = (h) => h ? `${h.hits}/${h.n}` : "—";
     return `<tr><td>${dkRowLabel(line)}</td><td>${fmtH(yr)}</td><td>${fmtH(opp)}</td><td>${Math.round(chance * 100)}%</td><td>${money(x.over)}</td></tr>`;
   }).join("");
@@ -8076,7 +8094,7 @@ function chartTable(p, m, season, vs) {
   const body = lines.map((line) => {
     const yr = hitRate(season || [], m.key === "td" ? "td" : m.key, line, false);
     const opp = hitRate(vs || [], m.key === "td" ? "td" : m.key, line, false);
-    const chance = ourChance(m.mean, line, m.key, false);
+    const chance = ourChance(m.mean, line, m.key, false, m.player || p);
     const dk = typeof dkAlt === "function" ? dkAlt(p, m.key, line) : "—";
     const fmtH = (h) => h ? `${h.hits}/${h.n}` : "—";
     return `<tr><td>over ${line}</td><td>${fmtH(yr)}</td><td>${fmtH(opp)}</td><td>${Math.round(chance * 100)}%</td><td>${dk}</td></tr>`;
@@ -8115,7 +8133,7 @@ function renderGameCharts() {
 function bestDoubleG(markets, season, vs) {
   let best = null;
   markets.forEach((m) => m.lines.forEach((line) => {
-    const ours = ourChance(m.mean, line, m.key, m.under);
+    const ours = ourChance(m.mean, line, m.key, m.under, m.player);
     if (ours < 0.56 || ours > 0.78) return;
     const yr = hitRate(season, m.key, line, m.under);
     let score = ours;
@@ -8182,7 +8200,7 @@ async function openPlayer(id, gameId) {
       <div class="lbl">Double Gs</div>
       ${bestHtml}
       <h3 style="margin-top:12px">What we would still add</h3>
-      <p>Red-zone and goal-line share, how many snaps and routes he gets, and how this defense has played against his position this year. A teammate being out belongs here too. Those are not in this feed, so they are not inside the number. The projection is his yards and scores from Double Gs, checked against the real games ESPN lists.</p>
+      <p>Anytime touchdown uses the same number as the Boom Boom Room: this week's projected scores, goal-line carries inside the 5, red-zone carries outside the 5, red-zone targets, and an out teammate's scores moved to the next man at that spot. Snaps, routes, and how this defense plays his position are still not in it.</p>
     </div>`;
   showPropSheet($("#modal").innerHTML);
   const closer1 = document.getElementById("closeModal");
@@ -8469,7 +8487,7 @@ function renderProps() {
     const best = p._lean || bestDoubleG(markets, [], []);
     const main = markets[0];
     const dk = main ? dkLine(p, main.key) : null;
-    const ladder = main ? `<table class="ladder"><thead><tr><th>${main.label}</th><th>Our chance</th></tr></thead><tbody>${main.lines.map((ln) => `<tr><td>${main.under ? "under" : "over"} ${ln}</td><td>${Math.round(ourChance(main.mean, ln, main.key, main.under) * 100)}%</td></tr>`).join("")}</tbody></table>` : "";
+    const ladder = main ? `<table class="ladder"><thead><tr><th>${main.label}</th><th>Our chance</th></tr></thead><tbody>${main.lines.map((ln) => `<tr><td>${main.under ? "under" : "over"} ${ln}</td><td>${Math.round(ourChance(main.mean, ln, main.key, main.under, main.player) * 100)}%</td></tr>`).join("")}</tbody></table>` : "";
     const pick = best ? `${best.m.under ? "Under" : "Over"} ${best.line} ${best.m.label.toLowerCase()}` : "No strong lean";
     return `<article class="prop-card" data-id="${p.game_id}" data-player="${p.id}">
       <div class="who">
