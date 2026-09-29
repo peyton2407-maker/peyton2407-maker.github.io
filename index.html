@@ -823,7 +823,7 @@ button.prop-card.inj-open .report-full{display:block}
         </select>
         <input id="injQ" placeholder="Search player, team, reporter…"/>
       </div>
-      <p class="subn" id="injStamp" style="margin:0 0 10px">Live injury reports. NFL from ESPN. College reports run Wednesday through Saturday and show the label plus the chance to play.</p>
+      <p class="subn" id="injStamp" style="margin:0 0 10px">NFL and college injury reports list the label and the chance to play. NFL runs Wednesday through Saturday, and again from 90 minutes before kickoff. College runs Wednesday through Saturday.</p>
       <div class="card" id="rapXBox" style="margin:0 0 14px">
         <h3 style="margin:0 0 4px">Ian Rapoport on X</h3>
         <p class="subn" style="margin:0 0 8px">@RapSheet, read here before the articles. New posts show on his timeline first.</p>
@@ -5586,7 +5586,9 @@ function gameDayTag(x){
   if (/suspended/.test(blob) || /SUSPENSION/.test(st)) return "SUSP";
   if (/\bruled out\b|\bout for the season\b|\bwill not play\b|\binactive for\b|\bwill miss\b/.test(blob) || st === "OUT" || st === "INACTIVE") return "OUT";
   if (/doubtful/.test(blob) || /DOUBT/.test(st)) return "DOUBTFUL";
-  if (/questionable|game-time decision|game time decision/.test(blob) || /QUESTION/.test(st)) return "QUESTIONABLE";
+  if (/game[\s-]*time decision|\bgtd\b/.test(blob) || st === "GTD") return "GTD";
+  if (/\bprobable\b/.test(blob) || st === "PROBABLE") return "PROBABLE";
+  if (/questionable/.test(blob) || /QUESTION/.test(st)) return "QUESTIONABLE";
   if (/did not practice|\bdnp\b|limited participant|limited in practice|week-to-week/.test(blob)) return "QUESTIONABLE";
   if (/is active\b|full participant|no injury designation|will play|cleared|off the injury report/.test(blob)) return "PLAYING";
   if (st === "ACTIVE") return "ACTIVE";
@@ -6704,13 +6706,45 @@ function cfbReportInWindow(row) {
   if (!filed) return false;
   return filed >= win.start && filed < win.end;
 }
+
+function nflEtWeekday(now) {
+  const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short" }).formatToParts(new Date(now == null ? Date.now() : now));
+  return (parts.find((p) => p.type === "weekday") || {}).value || "";
+}
+function nflWeeklyReportOpen(now) {
+  return ["Wed", "Thu", "Fri", "Sat"].includes(nflEtWeekday(now));
+}
+function nflGameInactivesOpen(g, now) {
+  if (!g || g.completed || !g.date || g.league !== "nfl") return false;
+  const kick = Date.parse(g.date);
+  if (!Number.isFinite(kick)) return false;
+  const t = now == null ? Date.now() : now;
+  return t >= kick - 90 * 60 * 1000 && t < kick;
+}
+function nflReportInWindow(row, now) {
+  if (!row) return false;
+  const g = typeof matchInjuryGame === "function" ? matchInjuryGame(row.team, "nfl") : null;
+  if (nflWeeklyReportOpen(now)) {
+    if (!g) return true;
+    const week = typeof nflBoardWeek === "function" ? nflBoardWeek() : null;
+    if (week != null && g.week != null && Number(g.week) !== Number(week)) return false;
+    return true;
+  }
+  return !!(g && nflGameInactivesOpen(g, now));
+}
+function nflReportMode(now) {
+  if (nflWeeklyReportOpen(now)) return "week";
+  const games = ((typeof DATA !== "undefined" && DATA && DATA.games) || []).filter((g) => nflGameInactivesOpen(g, now));
+  return games.length ? "kick" : "closed";
+}
 function cfbBothHead(league, r, prev) {
-  if (league !== "cfb" || !r) return "";
-  if (prev && prev.gameLabel === r.gameLabel && prev.team && r.team) return "";
-  const g = typeof matchInjuryGame === "function" ? matchInjuryGame(r.team, "cfb") : null;
+  if ((league !== "cfb" && league !== "nfl") || !r) return "";
+  if (prev && prev.gameLabel === r.gameLabel) return "";
+  const g = typeof matchInjuryGame === "function" ? matchInjuryGame(r.team, league) : null;
   const both = g ? (g.away.abbr + " and " + g.home.abbr) : "both teams";
   const label = (g ? (g.away.abbr + " @ " + g.home.abbr) : (r.gameLabel || both));
-  return `<div class="inj-both"><b>${escHtml(label)}</b><span>${escHtml(both)} · label and chance to play</span></div>`;
+  const late = league === "nfl" && g && nflGameInactivesOpen(g) && !nflWeeklyReportOpen() ? " · 90 minutes to kick" : "";
+  return `<div class="inj-both"><b>${escHtml(label)}</b><span>${escHtml(both)} · label and chance to play${late}</span></div>`;
 }
 function renderInjuries(league){
   const box=document.getElementById("injBoard");
@@ -6734,10 +6768,11 @@ function renderInjuries(league){
     const hay = `${r.name} ${r.team} ${r.pos} ${r.status} ${r.tag} ${r.short} ${r.long} ${r.reporter?r.reporter.name:""}`.toLowerCase();
     if(q && !hay.includes(q)) return false;
     if(league==="cfb" && typeof cfbReportInWindow === "function" && !cfbReportInWindow(r)) return false;
+    if(league==="nfl" && typeof nflReportInWindow === "function" && !nflReportInWindow(r)) return false;
     return true;
   });
   rows.sort((a,b)=>{
-    if (league === "cfb") return String(a.gameLabel || "zzz").localeCompare(String(b.gameLabel || "zzz")) || String(a.team || "").localeCompare(String(b.team || "")) || injImpact(b) - injImpact(a);
+    if (league === "cfb" || league === "nfl") return String(a.gameLabel || "zzz").localeCompare(String(b.gameLabel || "zzz")) || String(a.team || "").localeCompare(String(b.team || "")) || injImpact(b) - injImpact(a);
     if(sort==="status") return injImpact(b)-injImpact(a) || b.score-a.score;
     if(sort==="kick") return String(a.gameWhen||"zzz").localeCompare(String(b.gameWhen||"zzz")) || b.score-a.score;
     if(sort==="new") return String(b.date||"").localeCompare(String(a.date||""));
@@ -6749,19 +6784,17 @@ function renderInjuries(league){
   const when = pack.fetched ? new Date(pack.fetched).toLocaleString([], {month:"short", day:"numeric", hour:"numeric", minute:"2-digit"}) : "today";
   const shownCount = league === "cfb" ? rows.length : all.length;
   const stats=document.getElementById("injStats");
-  if(stats) stats.innerHTML = league === "cfb" ? `
-    <div class="stat"><b>${shownCount}</b><span>in the Wed–Sat report</span></div>
+  if(stats) stats.innerHTML = `
+    <div class="stat"><b>${rows.length}</b><span>${league === "nfl" ? (nflReportMode() === "week" ? "Wed–Sat report" : nflReportMode() === "kick" ? "90 min to kick" : "report closed") : "in the Wed–Sat report"}</span></div>
     <div class="stat"><b>${rows.filter(r=>playChance(r.tag)&&playChance(r.tag).pct===0).length}</b><span>out · 0% to play</span></div>
+    <div class="stat"><b>${rows.filter(r=>r.tag==="DOUBTFUL").length}</b><span>doubtful · 25%</span></div>
     <div class="stat"><b>${rows.filter(r=>r.tag==="QUESTIONABLE"||r.tag==="GTD").length}</b><span>questionable / GTD · 50%</span></div>
-    <div class="stat"><b>${rows.filter(r=>r.tag==="PROBABLE").length}</b><span>probable · 75%</span></div>` : `
-    <div class="stat"><b>${all.length}</b><span>listed NFL</span></div>
-    <div class="stat"><b>${out}</b><span>out / IR / inactive</span></div>
-    <div class="stat"><b>${dbt}</b><span>doubtful</span></div>
-    <div class="stat"><b>${qst}</b><span>questionable</span></div>`;
+    <div class="stat"><b>${rows.filter(r=>r.tag==="PROBABLE").length}</b><span>probable · 75%</span></div>`;
   const stamp=document.getElementById("injStamp");
+  const pctLine = "Each card lists the label and the chance to play: out 0%, doubtful 25%, questionable 50%, game-time decision 50%, probable 75%.";
   if(stamp) stamp.textContent = league === "cfb"
-    ? `College reports run Wednesday through Saturday. Each card lists the label and the chance to play: out 0%, doubtful 25%, questionable 50%, game-time decision 50%, probable 75%. Both teams are grouped on the game. ${when}.`
-    : `Live NFL report · ${when}. @AdamSchefter and @RapSheet are checked first, then Sleeper and ESPN. If a player is out, the card names who is playing and his projected line.`;
+    ? `College reports run Wednesday through Saturday. ${pctLine} Both teams are grouped on the game. ${when}.`
+    : `NFL reports run Wednesday through Saturday, and again from 90 minutes before kickoff. ${pctLine} Both teams are grouped on the game. ${when}.`;
   const rap = document.getElementById("rapXBox");
   if (rap) rap.style.display = league === "nfl" ? "" : "none";
   const schef = document.getElementById("schefXBox");
@@ -6791,10 +6824,10 @@ function renderInjuries(league){
           <div>
           <h4>${escHtml(r.name)}</h4>
           <div class="prop-meta">${escHtml(r.team)} · ${escHtml(r.pos||"—")} · ${escHtml(r.type||"undisclosed")}${r.body? " · "+escHtml(r.body):""}</div>
-          <div class="inj-rank">${league==="cfb" && playChance(r.tag) ? escHtml(playChance(r.tag).label) + " · " + playChance(r.tag).pct + "% to play" : "Team-crucial " + Math.round(r.score||0)}</div>
+          <div class="inj-rank">${playChance(r.tag) ? escHtml(playChance(r.tag).label) + " · " + playChance(r.tag).pct + "% to play" : "Team-crucial " + Math.round(r.score||0)}</div>
           </div>
         </div>
-        ${league==="cfb" && playChance(r.tag) ? `<span class="gd-chip gd-${escHtml(r.tag)}">${escHtml(playChance(r.tag).label)}</span><span class="gd-chip gd-chance">${playChance(r.tag).pct}% to play</span>` : `<span class="gd-chip gd-${escHtml(gd)}">${escHtml(gd)}</span>`}
+        ${playChance(r.tag) ? `<span class="gd-chip gd-${escHtml(r.tag)}">${escHtml(playChance(r.tag).label)}</span><span class="gd-chip gd-chance">${playChance(r.tag).pct}% to play</span>` : `<span class="gd-chip gd-${escHtml(gd)}">${escHtml(gd)}</span>`}
       </div>
       ${r.gameLabel?`<div class="inj-game">This week: ${escHtml(r.gameLabel)}${whenGame? " · "+escHtml(whenGame):""}${r.returnDate? " · listed return "+escHtml(r.returnDate):""}</div>`:(r.returnDate?`<div class="inj-game">Listed return ${escHtml(r.returnDate)}</div>`:"")}
       ${replacementHtml(r)}
@@ -6802,7 +6835,7 @@ function renderInjuries(league){
       <div class="inj-more">${(r.reports && r.reports.length > 1) ? (r.reports.length + " reports · tap to read what everyone is saying") : "Tap to read the full report"}</div>
       <div class="report-full">${full}</div>
     </button>`;
-  }).join("") || `<div class="empty">${league==="cfb" ? "No college report in the Wednesday–Saturday window yet. Reports for this week's games run Wednesday through Saturday. Out is 0% to play, doubtful 25%, questionable 50%, game-time decision 50%, probable 75%." : "No injuries in this filter."}</div>`;
+  }).join("") || `<div class="empty">${league==="cfb" ? "No college report in the Wednesday–Saturday window yet. Reports for this week's games run Wednesday through Saturday. Out is 0% to play, doubtful 25%, questionable 50%, game-time decision 50%, probable 75%." : "No NFL report in this window. It runs Wednesday through Saturday, and again from 90 minutes before kickoff. Out is 0% to play, doubtful 25%, questionable 50%, game-time decision 50%, probable 75%. The label and the chance to play are both on the card."}</div>`;
 }
 function openInjury(i, el) {
   const card = el || document.querySelector('#injBoard [data-inj="' + i + '"]');
@@ -6826,7 +6859,7 @@ function openInjury(i, el) {
   $("#modal").innerHTML = `
     <div class="modal-head">
       <div class="who-row">${faceHtml(r.id, r.name, 64, r.league || "nfl")}<div>
-        <div class="lbl">${escHtml(r.team || "")} · ${escHtml(r.pos || "")} · ${escHtml(r.tag || "")}</div>
+        <div class="lbl">${escHtml(r.team || "")} · ${escHtml(r.pos || "")} · ${escHtml((playChance(r.tag) && playChance(r.tag).label) || r.tag || "")}${playChance(r.tag) ? " · " + playChance(r.tag).pct + "% to play" : ""}</div>
         <h2 style="margin:4px 0">${escHtml(r.name)}</h2>
         <div class="subn">What everyone is saying${r.gameLabel ? " · " + escHtml(r.gameLabel) : ""}${whenGame ? " · " + escHtml(whenGame) : ""}</div>
       </div></div>
