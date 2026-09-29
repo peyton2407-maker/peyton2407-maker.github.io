@@ -7165,11 +7165,12 @@ function collegeStatusTag(kind) {
 }
 function playChance(tag) {
   const t = String(tag || "").toUpperCase();
-  if (["OUT", "IR", "INACTIVE", "SUSP", "PUP"].includes(t) || /INJURED RESERVE/.test(t)) return { label: "Out", pct: 0 };
-  if (t === "DOUBTFUL") return { label: "Doubtful", pct: 25 };
-  if (t === "GTD") return { label: "Game-time decision", pct: 50 };
-  if (t === "QUESTIONABLE" || t === "Q") return { label: "Questionable", pct: 50 };
-  if (t === "PROBABLE") return { label: "Probable", pct: 75 };
+  if (!t || t === "ACTIVE" || t === "PLAYING") return null;
+  if (t === "GTD" || /GAME[\s-]*TIME/.test(t)) return { label: "Game-time decision", pct: 50 };
+  if (t === "DOUBTFUL" || /DOUBT/.test(t)) return { label: "Doubtful", pct: 25 };
+  if (t === "QUESTIONABLE" || t === "Q" || /QUESTION/.test(t)) return { label: "Questionable", pct: 50 };
+  if (t === "PROBABLE" || /PROBABLE/.test(t)) return { label: "Probable", pct: 75 };
+  if (["OUT", "IR", "INACTIVE", "SUSP", "PUP"].includes(t) || /INJURED RESERVE|\bOUT\b|\bIR\b|INACTIVE|SUSP/.test(t)) return { label: "Out", pct: 0 };
   return null;
 }
 function cfbReportWindow() {
@@ -7232,14 +7233,13 @@ function nflGameInactivesOpen(g, now) {
 }
 function nflReportInWindow(row, now) {
   if (!row) return false;
+  if (row.pos === "NEWS" || row.team === "From X") return true;
   const g = typeof matchInjuryGame === "function" ? matchInjuryGame(row.team, "nfl") : null;
-  if (nflWeeklyReportOpen(now)) {
-    if (!g) return true;
-    const week = typeof nflBoardWeek === "function" ? nflBoardWeek() : null;
-    if (week != null && g.week != null && Number(g.week) !== Number(week)) return false;
-    return true;
-  }
-  return !!(g && nflGameInactivesOpen(g, now));
+  if (!g) return true;
+  const week = typeof nflBoardWeek === "function" ? nflBoardWeek() : null;
+  if (week != null && g.week != null && Number(g.week) !== Number(week)) return false;
+  if (g.completed) return false;
+  return true;
 }
 function nflReportMode(now) {
   if (nflWeeklyReportOpen(now)) return "week";
@@ -7295,16 +7295,17 @@ function renderInjuries(league){
   const shownCount = league === "cfb" ? rows.length : all.length;
   const stats=document.getElementById("injStats");
   if(stats) stats.innerHTML = `
-    <div class="stat"><b>${rows.length}</b><span>${league === "nfl" ? (nflReportMode() === "week" ? "Wed–Sat report" : nflReportMode() === "kick" ? "90 min to kick" : "report closed") : "in the Wed–Sat report"}</span></div>
+    <div class="stat"><b>${rows.length}</b><span>${league === "nfl" ? (nflReportMode() === "week" ? "Wed–Sat report" : nflReportMode() === "kick" ? "90 min to kick" : "this week") : "in the Wed–Sat report"}</span></div>
     <div class="stat"><b>${rows.filter(r=>playChance(r.tag)&&playChance(r.tag).pct===0).length}</b><span>out · 0% to play</span></div>
     <div class="stat"><b>${rows.filter(r=>r.tag==="DOUBTFUL").length}</b><span>doubtful · 25%</span></div>
     <div class="stat"><b>${rows.filter(r=>r.tag==="QUESTIONABLE"||r.tag==="GTD").length}</b><span>questionable / GTD · 50%</span></div>
     <div class="stat"><b>${rows.filter(r=>r.tag==="PROBABLE").length}</b><span>probable · 75%</span></div>`;
   const stamp=document.getElementById("injStamp");
-  const pctLine = "Each card lists the label and the chance to play: out 0%, doubtful 25%, questionable 50%, game-time decision 50%, probable 75%.";
+  const pctLine = "Each card lists both the label and the chance to play: out 0%, doubtful 25%, questionable 50%, game-time decision 50%, probable 75%.";
+  const nflRun = nflReportMode() === "week" ? "Wednesday–Saturday report is running." : nflReportMode() === "kick" ? "90-minute kickoff report is running." : "Latest list is up. The report runs Wednesday through Saturday, and again from 90 minutes before kickoff.";
   if(stamp) stamp.textContent = league === "cfb"
     ? `College reports run Wednesday through Saturday. ${pctLine} Both teams are grouped on the game. ${when}.`
-    : `NFL reports run Wednesday through Saturday, and again from 90 minutes before kickoff. ${pctLine} Both teams are grouped on the game. ${when}.`;
+    : `NFL injuries. ${nflRun} ${pctLine} Both teams are grouped on the game. ${when}.`;
   const rap = document.getElementById("rapXBox");
   if (rap) rap.style.display = league === "nfl" ? "" : "none";
   const schef = document.getElementById("schefXBox");
@@ -7347,7 +7348,7 @@ function renderInjuries(league){
       <div class="inj-more">${(r.reports && r.reports.length > 1) ? (r.reports.length + " reports · tap to read what everyone is saying") : "Tap to read the full report"}</div>
       <div class="report-full">${full}</div>
     </button>`;
-  }).join("") || `<div class="empty">${league==="cfb" ? "No college report in the Wednesday–Saturday window yet. Reports for this week's games run Wednesday through Saturday. Out is 0% to play, doubtful 25%, questionable 50%, game-time decision 50%, probable 75%." : "No NFL report in this window. It runs Wednesday through Saturday, and again from 90 minutes before kickoff. Out is 0% to play, doubtful 25%, questionable 50%, game-time decision 50%, probable 75%. The label and the chance to play are both on the card."}</div>`;
+  }).join("") || `<div class="empty">${league==="cfb" ? "No college report in the Wednesday–Saturday window yet. Reports for this week's games run Wednesday through Saturday. Out is 0% to play, doubtful 25%, questionable 50%, game-time decision 50%, probable 75%." : "No NFL injuries listed for this week. The report runs Wednesday through Saturday, and again from 90 minutes before kickoff. Out is 0% to play, doubtful 25%, questionable 50%, game-time decision 50%, probable 75%. Each card lists both the label and the chance to play."}</div>`;
 }
 
 
