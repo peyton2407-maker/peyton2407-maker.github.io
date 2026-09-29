@@ -7133,6 +7133,28 @@ function lockMondayQbs() {
   ensure("Hollywood Brown", { name: "Hollywood Brown", tag: "OUT", status: "OUT", pos: "WR", side: "away", short: "Out tonight with an ankle.", long: "Out tonight with an ankle." });
 }
 
+function injuryDeskDue(now) {
+  const t = now == null ? Date.now() : now;
+  const day = typeof nflEtWeekday === "function" ? nflEtWeekday(t) : "";
+  if (day === "Wed" || day === "Sat") return true;
+  if (typeof nflWeeklyReportOpen === "function" && nflWeeklyReportOpen(t)) return true;
+  return ((typeof DATA !== "undefined" && DATA && DATA.games) || []).some((g) => {
+    if (!g || g.completed || !g.date) return false;
+    if (g.league === "nfl" && typeof nflGameInactivesOpen === "function") return nflGameInactivesOpen(g, t);
+    const kick = Date.parse(g.date);
+    return Number.isFinite(kick) && t >= kick - 90 * 60 * 1000 && t < kick;
+  });
+}
+function refreshInjuryProjections() {
+  if (typeof DATA === "undefined" || !DATA) return;
+  try {
+    (DATA.games || []).forEach((g) => {
+      if (g && g.league === "nfl" && typeof applySituationalToGame === "function") applySituationalToGame(g);
+    });
+  } catch (e) { console.warn(e); }
+  try { if (typeof applySplitDesk === "function") applySplitDesk(); } catch (e) { console.warn(e); }
+  try { if (typeof enrichPowerRankings === "function") enrichPowerRankings(); } catch (e) { console.warn(e); }
+}
 function attachInjuriesToGames(){
   try { lockSeasonQbs(); } catch (e) {}
   try { lockMondayQbs(); } catch (e) {}
@@ -7165,6 +7187,7 @@ function attachInjuriesToGames(){
   });
   try { lockMondayQbs(); } catch (e) {}
   try { reshapeSeasonQbProps(); } catch (e) {}
+  try { refreshInjuryProjections(); } catch (e) { console.warn(e); }
 }
 function seedInjuriesFromSnap(){
   const pack = ensureInjPack();
@@ -10024,14 +10047,18 @@ function scheduleDeskRefresh(force) {
       setStamp("Updating…", true);
       if (typeof pullLiveScores === "function") await pullLiveScores();
       const extra = [];
+      const due = typeof injuryDeskDue === "function" && injuryDeskDue();
+      const kickSig = ((DATA && DATA.games) || []).filter((g) => g && !g.completed && g.date && Date.now() >= Date.parse(g.date) - 90 * 60 * 1000 && Date.now() < Date.parse(g.date)).map((g) => g.id).sort().join(",");
+      const kickOpen = !!kickSig && kickSig !== window.__kickInjSig;
+      if (kickOpen) window.__kickInjSig = kickSig;
       const wantWx = force || view === "home" || view === "nfl" || view === "cfb" || view === "all" || view === "live" || view === "nflwx" || view === "cfbwx";
-      const wantInj = force || view === "home" || view === "nflinj" || view === "cfbinj";
-      const wantLines = force || view === "value" || view === "props" || view === "parlay" || view === "cfbpicks";
+      const wantInj = force || due || kickOpen || view === "home" || view === "nflinj" || view === "cfbinj" || view === "parlay" || view === "props" || view === "tds" || view === "nfl" || view === "cfb";
+      const wantLines = force || due || view === "value" || view === "props" || view === "parlay" || view === "cfbpicks";
       if (wantWx && typeof attachWeather === "function" && (force || Date.now() - (window.__wxAt || 0) > ((view === "nflwx" || view === "cfbwx") ? 2 * 60 * 1000 : 10 * 60 * 1000))) {
         extra.push(attachWeather(DATA.games || []).then(() => { window.__wxAt = Date.now(); }).catch(() => {}));
       }
-      if (wantInj && typeof fetchInjuries === "function" && (force || view === "nflinj" || view === "cfbinj" || Date.now() - (window.__injAt || 0) > 10 * 60 * 1000)) {
-        extra.push(fetchInjuries(false).then(() => { window.__injAt = Date.now(); }).catch(() => {}));
+      if (wantInj && typeof fetchInjuries === "function" && (force || due || kickOpen || view === "nflinj" || view === "cfbinj" || Date.now() - (window.__injAt || 0) > 10 * 60 * 1000)) {
+        extra.push(fetchInjuries(!!(force || kickOpen)).then(() => { window.__injAt = Date.now(); }).catch(() => {}));
       }
       if (wantLines && typeof pullDkLines === "function") extra.push(pullDkLines().catch(() => {}));
       if (wantLines && typeof refreshWeekProps === "function") extra.push(refreshWeekProps().catch(() => {}));
