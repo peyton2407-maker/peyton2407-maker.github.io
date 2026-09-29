@@ -4760,9 +4760,6 @@ function playerOutish(p, g) {
 function buildGameTdModel(g) {
   if (!g || g.league !== "nfl" || g.completed) return [];
   const p = g.proj || {};
-  const wx = g.weather_impact || {};
-  const rushTilt = (wx.wet || (wx.rush_mult && wx.rush_mult > 1.02)) ? 1.12 : 1;
-  const recTilt = rushTilt > 1 ? 0.92 : 1;
   const rows = (g.props || []).filter((pl) => pl.pos !== "K");
   if (!rows.length) return [];
   const bySide = { home: rows.filter((r) => r.side === "home"), away: rows.filter((r) => r.side === "away") };
@@ -4773,13 +4770,11 @@ function buildGameTdModel(g) {
     const teamTd = Math.max(0.5, (Number.isFinite(pts) ? pts : 21) * 0.64 / 7);
     const raw = group.map((pl) => {
       const inj = playerOutish(pl, g);
-      let rush = Number(pl.rush_td || 0) * rushTilt;
-      let rec = Number(pl.rec_td || 0) * recTilt;
+      let rush = Number(pl.rush_td || 0);
+      let rec = Number(pl.rec_td || 0);
       if (pl.pos === "QB") rec = 0;
       if (inj >= 1) { rush = 0; rec = 0; }
       else if (inj > 0) { rush *= (1 - inj); rec *= (1 - inj); }
-      if (pl.pos === "RB" && Number(pl.rush_att || 0) >= 14) rush *= 1.12;
-      if (pl.pos === "TE" && Number(pl.rec || 0) >= 4) rec *= 1.08;
       return { pl, rush, rec, lam: Math.max(0, rush + rec), inj };
     });
     const sum = raw.reduce((a, r) => a + r.lam, 0) || 1;
@@ -4816,9 +4811,6 @@ function buildGameTdModel(g) {
     whyBits.push(`${lam.toFixed(2)} projected TDs vs ${pl.opp}`);
     if (r.inj >= 1) whyBits.push("injury desk has them out — λ zeroed");
     else if (r.inj > 0) whyBits.push("doubtful/questionable tax on λ");
-    if (rushTilt > 1 && pl.pos === "RB") whyBits.push("weather tilts goal-line to the run");
-    if (pl.pos === "RB" && Number(pl.rush_att || 0) >= 14) whyBits.push("gets most of the runs near the goal line");
-    if (pl.pos === "WR") whyBits.push("more likely to catch the first TD of the game");
     return {
       id: pl.id, name: pl.name, pos: pl.pos, team: pl.team, opp: pl.opp,
       game: pl.game || g.short_name, game_id: g.id, date: g.date, side: r.side,
