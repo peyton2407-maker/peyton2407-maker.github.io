@@ -1290,7 +1290,18 @@ body{font-size:17px;line-height:1.45}
         <p class="home-kicker">Tickets</p>
         <h2>The Boom Boom Room</h2>
       </div>
-      <p class="subn" id="parlayStamp" style="margin:0 0 10px">Every parlay from the desk is listed here. NFL and college stay on separate tickets.</p>
+      <div class="controls">
+        <div class="tabs" id="parlayTabs" style="flex:1">
+          <button class="ptab active" type="button" data-parlay="nfl">NFL parlays</button>
+          <button class="ptab" type="button" data-parlay="dogs">Underdog parlays</button>
+          <button class="ptab" type="button" data-parlay="favs">Favorite parlays</button>
+          <button class="ptab" type="button" data-parlay="totals">Totals</button>
+          <button class="ptab" type="button" data-parlay="cfb">College parlays</button>
+          <button class="ptab" type="button" data-parlay="cdogs">College dogs</button>
+          <button class="ptab" type="button" data-parlay="props">Player prop parlays</button>
+        </div>
+      </div>
+      <p class="subn" id="parlayStamp" style="margin:0 0 10px">Sort the room with the bar above. NFL and college stay on separate tickets.</p>
       <div class="parlay-hero" id="parlayHero"></div>
     </section>
 
@@ -6407,39 +6418,54 @@ function renderCollegeParlayBoard() {
 }
 
 function renderParlays() {
-  const hero = document.getElementById("parlayHero");
+  let league = window.__parlayLg || "nfl";
+  if (league === "propp") league = "props";
+  $$("#parlayTabs .ptab").forEach((t) => t.classList.toggle("active", t.dataset.parlay === league));
   const stamp = document.getElementById("parlayStamp");
+  const hero = document.getElementById("parlayHero");
   if (!hero) return;
-  if (stamp) stamp.textContent = "Every parlay from the desk is listed here. NFL and college stay on separate tickets.";
-  const head = (title) => `<div class="home-label" style="grid-column:1/-1;margin-top:18px">${title}</div>`;
-  const orEmpty = (html, msg) => html || `<div class="empty" style="grid-column:1/-1">${msg}</div>`;
-  const plusLocked = (rows, locked, label) => {
-    const main = (rows || []).map(parlayCardHtml).join("");
-    const extra = (locked || []).map(parlayCardHtml).join("");
-    return main + (extra ? head(label) + extra : "");
+  if (league === "props") {
+    if (stamp) stamp.textContent = "Player props only. 1-leg through 6-leg. Anyone who already played is off the ticket.";
+    const rows = typeof buildPropParlays === "function" ? buildPropParlays() : [];
+    hero.innerHTML = typeof propLadderHtml === "function" ? propLadderHtml(rows) : `<div class="empty">No player prop tickets cleared the bar.</div>`;
+    hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
+    return;
+  }
+  const themed = {
+    dogs: { rows: buildDogParlays("nfl"), stamp: "NFL underdog parlays. Every leg is a team getting points. If it says lean, it did not clear a bet by itself.", empty: "No NFL underdog parlay this week. We do not have two dogs we like enough to pair." },
+    favs: { rows: buildFavParlays("nfl"), stamp: "NFL favorite parlays. These teams are laying points, and we still think the number is short.", empty: "No NFL favorite parlay this week." },
+    totals: { rows: buildTotalParlays("nfl"), stamp: "NFL totals. Overs and unders only, and only where our score and the posted number disagree.", empty: "No NFL totals parlay this week." },
+    cdogs: { rows: buildDogParlays("cfb"), stamp: "College underdogs only. No NFL teams on this ticket.", empty: "No college underdog parlay this week." }
   };
-  const nfl = orEmpty(parlayHeroHtml("nfl"), "Not enough NFL game legs yet.");
-  const dogs = orEmpty(plusLocked(buildDogParlays("nfl"), typeof lockedUnderdogParlays === "function" ? lockedUnderdogParlays() : [], "This week's underdog ticket"), "No NFL underdog parlay this week.");
-  const favs = orEmpty(plusLocked(buildFavParlays("nfl"), typeof lockedFavoriteParlays === "function" ? lockedFavoriteParlays() : [], "This week's favorite ticket"), "No NFL favorite parlay this week.");
-  const totals = orEmpty(plusLocked(buildTotalParlays("nfl"), typeof lockedTotalParlays === "function" ? lockedTotalParlays() : [], "This week's totals ticket"), "No NFL totals parlay this week.");
-  const college = typeof renderCollegeParlayBoard === "function" ? renderCollegeParlayBoard().html : "";
-  const cdogs = orEmpty(buildDogParlays("cfb").map(parlayCardHtml).join(""), "No college underdog parlay this week.");
-  const props = typeof buildPropParlays === "function" && typeof propLadderHtml === "function"
-    ? propLadderHtml(buildPropParlays())
-    : `<div class="empty" style="grid-column:1/-1">No player prop tickets cleared the bar.</div>`;
-  hero.innerHTML =
-    head("NFL parlays") + nfl +
-    head("Underdog parlays") + dogs +
-    head("Favorite parlays") + favs +
-    head("Totals") + totals +
-    head("College parlays") + orEmpty(college, "No college parlay this week.") +
-    head("College dogs") + cdogs +
-    head("Player prop parlays") + props;
-  hero.querySelectorAll("[data-cgroup]").forEach((btn) => btn.addEventListener("click", () => {
-    window.__cfbParlayGroup = btn.dataset.cgroup;
-    renderParlays();
-  }));
-  hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => { if (el.dataset.id) openGame(el.dataset.id); }));
+  if (themed[league]) {
+    if (stamp) stamp.textContent = themed[league].stamp;
+    hero.innerHTML = themed[league].rows.map(parlayCardHtml).join("")
+      + (league === "dogs"
+        ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">This week's underdog ticket</div>` + lockedUnderdogParlays().map(parlayCardHtml).join("")
+        : "")
+      + (league === "favs"
+        ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">This week's favorite ticket</div>` + lockedFavoriteParlays().map(parlayCardHtml).join("")
+        : "")
+      + (league === "totals"
+        ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">This week's totals ticket</div>` + lockedTotalParlays().map(parlayCardHtml).join("")
+        : "")
+      || `<div class="empty">${themed[league].empty}</div>`;
+    hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
+    return;
+  }
+  if (league === "cfb") {
+    if (stamp) stamp.textContent = "College parlays. Moneyline, spread, and totals are separate. All three mixes them. No next-week games.";
+    const board = renderCollegeParlayBoard();
+    hero.innerHTML = board.html;
+    hero.querySelectorAll("[data-cgroup]").forEach((btn) => btn.addEventListener("click", () => {
+      window.__cfbParlayGroup = btn.dataset.cgroup;
+      renderParlays();
+    }));
+    hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => { if (el.dataset.id) openGame(el.dataset.id); }));
+    return;
+  }
+  hero.innerHTML = parlayHeroHtml(league) || `<div class="empty">Not enough NFL game legs yet.</div>`;
+  hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 function valueTileHtml(r) {
   const line = r.line == null ? r.market : `${r.side} ${r.line} ${r.market}`;
