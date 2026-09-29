@@ -476,6 +476,7 @@ option { background: #12201a; color: #e9f3ec; }
   border-radius:20px;padding:16px 18px;cursor:default;
 }
 .parlay-card h3{margin:0 0 6px;font-family:Syne,sans-serif;color:var(--sun)}
+.rank-tabs{display:flex;gap:0;margin:0 0 12px;border-bottom:1px solid var(--line)}
 .rank-hero{display:grid;grid-template-columns:1fr;gap:12px;margin:0 0 16px}
 .rank-card{
   background:linear-gradient(165deg,#1a2814,#101c16 55%,#182016);
@@ -921,6 +922,7 @@ button.prop-card.inj-open .report-full{display:block}
   border-radius:20px;padding:16px 18px;cursor:default;
 }
 .parlay-card h3{margin:0 0 6px;font-family:Syne,sans-serif;color:var(--sun)}
+.rank-tabs{display:flex;gap:0;margin:0 0 12px;border-bottom:1px solid var(--line)}
 .rank-hero{display:grid;grid-template-columns:1fr;gap:12px;margin:0 0 16px}
 .rank-card{
   background:linear-gradient(165deg,#1a2814,#101c16 55%,#182016);
@@ -1512,11 +1514,11 @@ body{font-size:17px;line-height:1.45}
     </section>
 
     <section id="ratingsSection" style="display:none">
+      <div class="rank-tabs" id="ratingLeague">
+        <button class="ptab active" type="button" data-league="nfl">NFL</button>
+        <button class="ptab" type="button" data-league="cfb">College</button>
+      </div>
       <div class="controls">
-        <select id="ratingLeague">
-          <option value="nfl">NFL</option>
-          <option value="cfb">College football</option>
-        </select>
         <select id="ratingPoll">
           <option value="gg">Our ranking</option>
           <option value="ap">AP Top 25</option>
@@ -8034,16 +8036,21 @@ function renderPollBoard(kind) {
   $$("#ratingsWrap tr[data-id]").forEach((el) => el.addEventListener("click", () => { if (el.dataset.id) openGame(el.dataset.id); }));
 }
 
+function ratingLeagueNow() {
+  const bar = document.getElementById("ratingLeague");
+  const on = bar && bar.querySelector(".ptab.active");
+  return (on && on.dataset.league) || "nfl";
+}
 function renderRatings() {
   if (typeof enrichPowerRankings === "function") enrichPowerRankings();
-  const league = ($("#ratingLeague") && $("#ratingLeague").value) || "nfl";
+  const league = ratingLeagueNow();
   const pollSel = document.getElementById("ratingPoll");
   if (pollSel) pollSel.style.display = league === "cfb" ? "" : "none";
   const pollMode = league === "cfb" ? ((pollSel && pollSel.value) || "gg") : "gg";
   if (pollMode === "ap" || pollMode === "coaches") {
     renderPollBoard(pollMode);
     fetchCfbPolls(false).then(() => {
-      const still = ($("#ratingLeague") && $("#ratingLeague").value) === "cfb";
+      const still = ratingLeagueNow() === "cfb";
       const mode = (document.getElementById("ratingPoll") || {}).value;
       if (still && (mode === "ap" || mode === "coaches")) renderPollBoard(mode);
     });
@@ -11199,7 +11206,13 @@ async function boot() {
   $("#q").addEventListener("input", renderBoard);
   $("#openOnly").addEventListener("change", renderBoard);
   $("#sortKey").addEventListener("change", () => { sortKey = $("#sortKey").value; renderBoard(); });
-  $("#ratingLeague").addEventListener("change", renderRatings);
+  const rankTabs = document.getElementById("ratingLeague");
+  if (rankTabs) rankTabs.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-league]");
+    if (!btn) return;
+    rankTabs.querySelectorAll(".ptab").forEach((t) => t.classList.toggle("active", t === btn));
+    renderRatings();
+  });
   ["ratingView","ratingSort","ratingPoll"].forEach((id) => document.getElementById(id)?.addEventListener("change", renderRatings));
   document.getElementById("ratingQ")?.addEventListener("input", renderRatings);
   ["propDay","propPos","propSort","propHit"].forEach((id) => {
