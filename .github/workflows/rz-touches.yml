@@ -1,0 +1,29 @@
+name: Update touch counts
+on:
+  schedule:
+    # Tuesday 15:00 UTC, after Monday night football has ended.
+    - cron: "0 15 * * 2"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Rebuild goal-line and red-zone counts
+        run: python3 scripts/update_rz_touches.py
+      - name: Commit the new week
+        run: |
+          git config user.name "peyton2407-maker"
+          git config user.email "331867039+peyton2407-maker@users.noreply.github.com"
+          git add data/rz-touches.json boom.html index.html
+          if git diff --cached --quiet; then
+            echo "No touch-count change"
+            exit 0
+          fi
+          git commit -m "Update goal-line and red-zone touches after Monday night."
+          git push
