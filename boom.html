@@ -1120,6 +1120,7 @@ body{font-size:17px;line-height:1.45}
             <button class="slide-btn" type="button" data-slide="nflTiles" data-dir="-1" aria-label="NFL tiles left">‹</button>
             <div class="tile-row slide" id="nflTiles">
               <a class="tab star" href="#nfl" data-view="nfl">NFL Week 3</a>
+              <a class="tab" href="#nflinj" data-view="nflinj">NFL injuries</a>
               <a class="tab" href="#prime" data-view="prime">TNF · SNF · MNF</a>
               <a class="tab star" href="#props" data-view="props">Player props</a>
               <a class="tab" href="#charts" data-view="charts">Game charts</a>
@@ -1127,7 +1128,6 @@ body{font-size:17px;line-height:1.45}
               <a class="tab" href="#tds" data-view="tds">Who scores TDs</a>
               <a class="tab" href="#value" data-view="value">Underdogs</a>
               <a class="tab" href="#nflwx" data-view="nflwx">NFL weather</a>
-              <a class="tab" href="#nflinj" data-view="nflinj">NFL injuries</a>
               <a class="tab" href="#awards" data-view="awards">All awards</a>
             </div>
             <button class="slide-btn" type="button" data-slide="nflTiles" data-dir="1" aria-label="NFL tiles right">›</button>
@@ -7069,15 +7069,16 @@ async function fetchInjuries(force){
     const fromSleeper = sleeperInjuryRows(sleeper);
     const parsedC = parseInjuryFeed(cfb, "cfb");
     const coversC = parseCoversInjuries(coversHtml);
-    const nflMerged = applyRapoport(fromSleeper.length ? fromSleeper : parsedN, rap);
-    parsedN.forEach((r) => {
-      const cur = nflMerged.find((x) => (x.name || "").toLowerCase() === (r.name || "").toLowerCase());
-      if (!cur) { if (r.tag !== "ACTIVE" && r.tag !== "PLAYING") nflMerged.push(r); return; }
-      cur.reports = cur.reports || [];
-      const note = r.long || r.short || "";
-      (r.reports && r.reports.length ? r.reports : [{ label: "ESPN", text: note }]).forEach((bit) => addInjuryNote(cur, bit.label || "ESPN", bit.text));
-      if ((cur.long || "").length < 50 && note) cur.long = note;
-    });
+    const reportN = parsedN.filter((r) => r && r.tag && r.tag !== "ACTIVE" && r.tag !== "PLAYING");
+    const nflMerged = applyRapoport(reportN.length ? reportN : fromSleeper, rap);
+    if (reportN.length) {
+      fromSleeper.forEach((r) => {
+        if (!r || !r.name) return;
+        const cur = nflMerged.find((x) => (x.name || "").toLowerCase() === r.name.toLowerCase());
+        if (!cur) return;
+        addInjuryNote(cur, "Sleeper", r.long || r.short);
+      });
+    }
     applyDeskNews(nflMerged);
     applyRapoportX(nflMerged);
     applySchefterX(nflMerged);
@@ -7264,6 +7265,15 @@ function renderInjuries(league){
     try { applySchefterX(pack.nfl); } catch (e) {}
   }
   const all=(pack[league]||[]).slice();
+  if (league === "nfl") {
+    all.forEach((r) => {
+      if (!r || r.pos === "NEWS") return;
+      const g = typeof matchInjuryGame === "function" ? matchInjuryGame(r.team, "nfl") : null;
+      if (!g || g.completed) return;
+      r.gameLabel = g.away.abbr + " @ " + g.home.abbr;
+      r.gameWhen = g.date;
+    });
+  }
   const status=($("#injStatus")&&$("#injStatus").value)||"impact";
   const pos=($("#injPos")&&$("#injPos").value)||"ALL";
   const sort=($("#injSort")&&$("#injSort").value)||"crucial";
@@ -7278,6 +7288,7 @@ function renderInjuries(league){
     const hay = `${r.name} ${r.team} ${r.pos} ${r.status} ${r.tag} ${r.short} ${r.long} ${r.reporter?r.reporter.name:""}`.toLowerCase();
     if(q && !hay.includes(q)) return false;
     if(league==="cfb" && typeof cfbReportInWindow === "function" && !cfbReportInWindow(r)) return false;
+    if(league==="nfl" && (r.pos === "NEWS" || r.team === "From X" || r.team === "NFL Network")) return false;
     if(league==="nfl" && typeof nflReportInWindow === "function" && !nflReportInWindow(r)) return false;
     return true;
   });
