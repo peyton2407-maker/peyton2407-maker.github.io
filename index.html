@@ -1149,7 +1149,7 @@ body{font-size:17px;line-height:1.45}
           <div class="slide-wrap">
             <button class="slide-btn" type="button" data-slide="nflTiles" data-dir="-1" aria-label="NFL tiles left">‹</button>
             <div class="tile-row slide" id="nflTiles">
-              <a class="tab star" href="#nfl" data-view="nfl">NFL Week 3</a>
+              <a class="tab star" href="#nfl" data-view="nfl">NFL Week 4</a>
               <a class="tab" href="#prime" data-view="prime">TNF · SNF · MNF</a>
               <a class="tab star" href="#props" data-view="props">Player props</a>
               <a class="tab" href="#charts" data-view="charts">Game charts</a>
@@ -9285,7 +9285,7 @@ function renderHome() {
       <a class="home-jump hot" href="#parlay" data-jump="parlay"><b>The Boom Boom Room</b><span>Start here. Game tickets and player props.</span></a>
       <a class="home-jump hot" href="#props" data-jump="props"><b>Player props</b><span>Yard lines, hit rates, and the pick</span></a>
       <a class="home-jump hot" href="#card" data-jump="card"><b>This week's card</b><span>${card.frozen ? "Locked. These plays will not move." : (card.legs || []).length + " plays ready to lock"}</span></a>
-      <a class="home-jump hot" href="#nfl" data-jump="nfl"><b>NFL board</b><span>Week 3 sides, totals, weather</span></a>
+      <a class="home-jump hot" href="#nfl" data-jump="nfl"><b>NFL board</b><span>Week 4 sides, totals, weather</span></a>
       <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l : "0-0"} locked this season</span></a>
       <a class="home-jump" href="#recruit" data-jump="recruit"><b>Recruiting</b><span>On3 classes, the portal, and our board</span></a>`;
     // clicks handled globally via href + hash
@@ -11207,6 +11207,7 @@ async function boot() {
     const cfbWeeks = (DATA.games || []).filter((g) => g.league === "cfb" && g.week != null).map((g) => Number(g.week)).filter((n) => Number.isFinite(n));
     const currentCfb = cfbWeeks.length ? Math.max(...cfbWeeks) : 5;
     document.querySelectorAll('a.tab[data-view="cfb"]').forEach((a) => { a.textContent = "CFB Week " + currentCfb; });
+    document.querySelectorAll('a.tab[data-view="nfl"]').forEach((a) => { a.textContent = "NFL Week " + currentNflWeekNumber(); });
   } catch (e) {}
   try { if (typeof freezePublishedLines === "function") freezePublishedLines(DATA.games || []); } catch (e) {}
   try { if (typeof enrichPowerRankings === "function") enrichPowerRankings(); } catch (e) {}
