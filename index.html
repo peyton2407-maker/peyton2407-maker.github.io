@@ -2315,6 +2315,21 @@ function learnFromFinals(games) {
     const awayOff = as - (p.away_points || (predT - predM) / 2);
     bump(g.home.id, errM, homeOff, -awayOff);
     bump(g.away.id, -errM, awayOff, -homeOff);
+    if (lg === "cfb" && g.odds && g.odds.home_spread != null) {
+      const closeM = -Number(g.odds.home_spread);
+      const closeErr = (hs - as) - closeM;
+      const closeTot = g.odds.total != null ? (hs + as) - Number(g.odds.total) : null;
+      [g.home.id, g.away.id].forEach((id, i) => {
+        const row = res.cfb[String(id)];
+        if (!row) return;
+        const n = (row.closeN || 0) + 1;
+        const a = n < 4 ? 0.18 : 0.1;
+        const share = i === 0 ? closeErr : -closeErr;
+        row.closeN = n;
+        row.closeM = +(((row.closeM || 0) * (1 - a)) + share * a).toFixed(3);
+        if (closeTot != null) row.closeT = +(((row.closeT || 0) * (1 - a)) + closeTot * a).toFixed(3);
+      });
+    }
     res.games_learned[hid] = {
       when: g.date, league: lg, name: g.short_name || g.name,
       actual: `${as}-${hs}`, pred: `${p.away_points}-${p.home_points}`,
@@ -3682,101 +3697,101 @@ function repriceCfbBoard() {
 
 window.learnFromFinals = learnFromFinals;
 window.applyLearningToGame = applyLearningToGame;
+function cfbOutTag(r) {
+  const tag = String((r && (r.tag || r.status)) || "").toUpperCase();
+  if (/QUESTION|PROBABLE|PROB|DOUBT|DAY TO DAY|DAY-TO-DAY|ACTIVE|GTD/.test(tag)) return "";
+  if (/OUT|IR|INACTIVE|SUSP/.test(tag)) return tag;
+  return "";
+}
+function cfbPosOf(r) {
+  const pos = String((r && r.pos) || "").toUpperCase();
+  if (pos && pos !== "ATH") return pos;
+  const blob = String((r && (r.short || "")) + " " + (r && (r.name || ""))).toLowerCase();
+  if (/quarterback|\bqb\b/.test(blob)) return "QB";
+  if (/running back|\btailback\b|\brb\b/.test(blob)) return "RB";
+  if (/wideout|wide receiver|\bwr\b/.test(blob)) return "WR";
+  if (/tight end|\bte\b/.test(blob)) return "TE";
+  if (/left tackle/.test(blob)) return "LT";
+  if (/right tackle/.test(blob)) return "RT";
+  if (/tackle/.test(blob)) return "OT";
+  return pos;
+}
+function cfbSnapShare(r) {
+  const blob = String((r.short || "") + " " + (r.name || "")).toLowerCase();
+  const hit = blob.match(/(\d{2,3})\s*%\s*(?:of\s*)?(?:the\s*)?(?:team\s*)?(?:snaps|snap|plays|carries)/);
+  if (hit) return Math.min(1, Number(hit[1]) / 100);
+  if (/backup|rotational|third string|spelling|committee|limited snaps/.test(blob)) return 0;
+  const pos = cfbPosOf(r);
+  if (["LT", "RT", "OT", "T"].includes(pos) && /starter|starting|left tackle|right tackle/.test(blob)) return 0.95;
+  if (pos === "RB" && /starter|starting|lead back|workhorse|bell cow|every-down/.test(blob)) return 0.65;
+  if (["WR", "TE"].includes(pos) && /wr1|number one|no\. 1|leading receiver|go-to/.test(blob)) return 0.55;
+  return 0;
+}
 function cfbStarterNudge(g) {
-  const worth = { QB: 0.85, RB: 0.32, WR: 0.26, TE: 0.14, OT: 0.28, LT: 0.28, RT: 0.28, T: 0.28, C: 0.18, CB: 0.2, EDGE: 0.2, DE: 0.2, S: 0.18, FS: 0.18, SS: 0.18, SAF: 0.18, LB: 0.18, ILB: 0.18, OLB: 0.18, MLB: 0.18 };
-  const best = {};
-  (g.injuries || []).forEach((r) => {
-    const tag = String(r.tag || r.status || "").toUpperCase();
-    if (!/OUT|IR|INACTIVE|DOUBT/.test(tag)) return;
-    const pos = String(r.pos || "").toUpperCase();
-    if (!worth[pos]) return;
-    const blob = String((r.short || "") + " " + (r.name || "")).toLowerCase();
-    if (/backup|third string|qb3|emergency|practice squad|walk-on|walk on/.test(blob)) return;
-    const side = r.side === "home" || r.side === "away" ? r.side : "";
-    if (!side) return;
-    const group = ["LT", "RT", "T", "OT"].includes(pos) ? "OT" : (pos === "DE" ? "EDGE" : (["S", "FS", "SS", "SAF"].includes(pos) ? "S" : (["LB", "ILB", "OLB", "MLB"].includes(pos) ? "LB" : pos)));
-    const key = side + "|" + group;
-    const score = Number(r.score) || 0;
-    if (!best[key] || score > best[key].score) best[key] = { r, score, side, group, doubt: /DOUBT/.test(tag) };
-  });
   let home = 0;
   let away = 0;
-  const names = [];
-  Object.values(best).forEach((item) => {
-    const base = worth[item.r.pos] || worth[item.group] || 0.12;
-    const pts = item.doubt ? base * 0.4 : base;
-    if (item.side === "home") home += pts;
+  let total = 0;
+  const notes = [];
+  (g.injuries || []).forEach((r) => {
+    if (!cfbOutTag(r)) return;
+    const pos = cfbPosOf(r);
+    const blob = String((r.short || "") + " " + (r.name || "")).toLowerCase();
+    const side = r.side === "home" || r.side === "away" ? r.side : "";
+    if (!side) return;
+    let pts = 0;
+    let why = "";
+    if (pos === "QB" && !/backup|third string|qb2|qb3|emergency/.test(blob)) {
+      pts = /season|indefinitely|torn|surgery/.test(blob) ? 6 : 4.5;
+      if (/has started|veteran backup|experienced backup|won the job/.test(blob)) pts *= 0.55;
+      else if (/first (career )?start|freshman|never started/.test(blob)) pts *= 1.1;
+      const backup = /has started|veteran backup|experienced backup|won the job/.test(blob) ? " The backup has started before, so this move is smaller." : "";
+      why = (r.name || "Quarterback") + " is out. That is worth " + pts.toFixed(1) + " points against " + (side === "home" ? g.home.abbr : g.away.abbr) + "." + backup;
+      total -= Math.min(1.2, pts * 0.18);
+    } else {
+      const share = cfbSnapShare(r);
+      if (share < 0.45) return;
+      const full = ["LT", "RT", "OT", "T"].includes(pos) ? 2.6 : pos === "RB" ? 2.2 : ["WR", "TE"].includes(pos) ? 1.6 : 0;
+      if (!full) return;
+      pts = +(full * share).toFixed(2);
+      why = (r.name || pos) + " is out and takes " + Math.round(share * 100) + "% of the snaps. Moved " + pts.toFixed(1) + " against " + (side === "home" ? g.home.abbr : g.away.abbr) + ".";
+      total -= Math.min(0.4, pts * 0.12);
+    }
+    if (side === "home") home += pts;
     else away += pts;
-    const last = String(item.r.name || "").split(" ").slice(-1)[0];
-    if (last) names.push(last);
+    if (why) notes.push(why);
   });
-  const margin = Math.max(-1.2, Math.min(1.2, away - home));
-  const total = Math.max(-0.45, Math.min(0, -Math.min(0.45, (home + away) * 0.22)));
-  return { margin: +margin.toFixed(2), total: +total.toFixed(2), names: names.slice(0, 4) };
+  const margin = Math.max(-6.5, Math.min(6.5, +(away - home).toFixed(2)));
+  return { margin, total: +Math.max(-1.6, total).toFixed(2), names: notes.map((n) => n.split(" ")[0]).slice(0, 4), notes };
 }
 function cfbLearnNudge(g) {
   const hr = residualFor("cfb", g.home && g.home.id);
   const ar = residualFor("cfb", g.away && g.away.id);
-  const nGames = (hr.n || 0) + (ar.n || 0);
-  if (!nGames) return { margin: 0, total: 0, note: "" };
-  const confw = nGames === 1 ? 0.62 : nGames <= 3 ? 0.82 : 1;
-  const hm = (hr.margin || 0) - (ar.margin || 0);
-  const totBase = ((hr.total || 0) + (ar.total || 0)) / 2;
-  const margin = Math.max(-4.5, Math.min(4.5, 0.55 * confw * hm));
-  const total = Math.max(-4, Math.min(4, 0.35 * confw * totBase));
-  const note = Math.abs(margin) < 0.08 && Math.abs(total) < 0.08 ? "" : "After " + nGames + " finished college games, next week's line moves " + (margin > 0 ? "+" : "") + margin.toFixed(1) + ".";
-  return { margin: +margin.toFixed(2), total: +total.toFixed(2), note: note };
-}
-function cfbHomeFit(g, side) {
-  const id = String((g[side] && g[side].id) || "");
-  const homeG = (DATA.games || []).find((x) => x && x.league === "cfb" && x.home && String(x.home.id) === id);
-  const xy = homeG && typeof coordsForGame === "function" ? coordsForGame(homeG) : (side === "home" && typeof coordsForGame === "function" ? coordsForGame(g) : null);
-  if (!xy) return { cold: 0.45, wind: 0.4, wet: 0.45, heat: 0.45 };
-  const lat = Number(xy[0]);
-  const lon = Number(xy[1]);
-  const cold = Math.max(0.05, Math.min(1, (lat - 27) / 20));
-  const heat = Math.max(0.05, Math.min(1, (42 - lat) / 18));
-  let wet = 0.4;
-  if (lon <= -122) wet = 0.9;
-  else if (lat < 34 && lon > -92) wet = 0.7;
-  else if (lon < -108 && lat < 38) wet = 0.12;
-  else if (lat > 41 && lon < -104) wet = 0.28;
-  const wind = lat >= 41 || (lon < -104 && lat > 37) ? 0.75 : 0.35;
-  return { cold, wind, wet, heat };
+  if ((hr.closeN || 0) < 3 || (ar.closeN || 0) < 3) return { margin: 0, total: 0, note: "" };
+  const w = 0.28;
+  const margin = Math.max(-1.6, Math.min(1.6, +(w * ((hr.closeM || 0) - (ar.closeM || 0))).toFixed(2)));
+  const total = Math.max(-1.2, Math.min(1.2, +(w * 0.45 * (((hr.closeT || 0) + (ar.closeT || 0)) / 2)).toFixed(2)));
+  if (Math.abs(margin) < 0.2 && Math.abs(total) < 0.2) return { margin: 0, total: 0, note: "" };
+  const note = "Against the closing number, " + g.home.abbr + " has missed by " + (hr.closeM > 0 ? "+" : "") + Number(hr.closeM || 0).toFixed(1) + " over " + hr.closeN + " games and " + g.away.abbr + " by " + (ar.closeM > 0 ? "+" : "") + Number(ar.closeM || 0).toFixed(1) + " over " + ar.closeN + ". This week moves " + (margin > 0 ? "+" : "") + margin.toFixed(1) + ".";
+  return { margin, total, note };
 }
 function cfbWeatherNudge(g) {
-  if (!g || g.indoor || !g.weather || g.weather.temp_f == null) return { margin: 0, total: 0, note: "" };
+  if (!g || g.indoor || !g.weather) return { margin: 0, total: 0, note: "", notes: [] };
   const wx = g.weather;
-  const impact = g.weather_impact || (typeof weatherImpact === "function" ? weatherImpact(wx, false) : { adj: 0, wet: false });
-  const total = Math.max(-0.9, Math.min(0.1, +((Number(impact.adj) || 0) * 0.16).toFixed(2)));
-  const t = Number(wx.temp_f);
-  const wind = Math.max(Number(wx.wind_mph) || 0, (Number(wx.wind_gust_mph) || 0) * 0.85);
-  const snow = Number(wx.weather_code) >= 71 && Number(wx.weather_code) <= 86;
-  const parts = [];
-  if (snow || (Number.isFinite(t) && t <= 45)) parts.push(["cold", snow ? 1 : t <= 32 ? 0.8 : 0.45]);
-  if (impact.wet) parts.push(["wet", 0.55]);
-  if (wind >= 15) parts.push(["wind", wind >= 22 ? 0.7 : 0.4]);
-  if (Number.isFinite(t) && t >= 88) parts.push(["heat", t >= 96 ? 0.7 : 0.4]);
-  const h = cfbHomeFit(g, "home");
-  const a = cfbHomeFit(g, "away");
-  let edge = 0;
-  let word = "";
-  parts.forEach(([k, sev]) => {
-    edge += (h[k] - a[k]) * sev;
-    if (!word && Math.abs(h[k] - a[k]) >= 0.22) word = k === "wet" ? "rain" : k;
-  });
-  edge = Math.max(-0.8, Math.min(0.8, edge));
-  if (Math.abs(edge) < 0.18) edge = 0;
-  const cond = [Number.isFinite(t) ? Math.round(t) + "°F" : "", wind ? "wind " + Math.round(wind) : "", wx.condition || ""].filter(Boolean).join(", ");
-  const bits = [];
-  if (cond) bits.push("Live weather: " + cond + ".");
-  if (edge) {
-    const fav = edge > 0 ? g.home.abbr : g.away.abbr;
-    const other = edge > 0 ? g.away.abbr : g.home.abbr;
-    bits.push(fav + " is used to this " + (word || "weather") + ". " + other + " is not.");
+  const wind = Math.max(Number(wx.wind_mph) || 0, (Number(wx.wind_gust_mph) || 0) * 0.65);
+  const rain = Number(wx.precip_prob) >= 55 || Number(wx.precip_in) >= 0.08 || /rain|storm|snow|thunder/i.test(String(wx.condition || ""));
+  const notes = [];
+  let total = 0;
+  if (wind >= 15) {
+    const pts = wind >= 22 ? -1.6 : -0.9;
+    total += pts;
+    notes.push("Wind " + Math.round(wind) + " mph. The total moved " + pts.toFixed(1) + ". The side did not.");
   }
-  if (Math.abs(total) >= 0.15) bits.push("Conditions move the total " + (total > 0 ? "+" : "") + total.toFixed(1) + ".");
-  return { margin: +edge.toFixed(2), total: +total.toFixed(2), note: bits.join(" ") };
+  if (rain) {
+    total += -1.1;
+    notes.push("Rain is in the forecast. The total moved -1.1. The side did not.");
+  }
+  total = Math.max(-2.6, total);
+  return { margin: 0, total: +total.toFixed(2), note: notes.join(" "), notes };
 }
 function deskHomeSpread(row, g) {
   const raw = String((row && row.spread) || "").trim();
@@ -3791,6 +3806,49 @@ function deskHomeSpread(row, g) {
   if (hit(away) && !hit(home)) return -num;
   return null;
 }
+function cfbSideLabel(g, homeSpread) {
+  const n = Number(homeSpread);
+  if (!Number.isFinite(n) || !g) return "";
+  if (n < 0) return g.home.abbr + " " + n.toFixed(1);
+  if (n > 0) return g.away.abbr + " -" + n.toFixed(1);
+  return "pick";
+}
+function cfbMarketMove(g, lockedSp, liveSp, lockedTot, liveTot) {
+  const notes = [];
+  let margin = 0;
+  let total = 0;
+  if (lockedSp != null && liveSp != null && Math.abs(Number(liveSp) - Number(lockedSp)) >= 0.5) {
+    margin = Math.max(-3, Math.min(3, +(0.65 * (Number(lockedSp) - Number(liveSp))).toFixed(2)));
+    notes.push("The line moved from " + cfbSideLabel(g, lockedSp) + " to " + cfbSideLabel(g, liveSp) + ". We followed " + (margin > 0 ? "+" : "") + margin.toFixed(1) + " of that move.");
+  }
+  if (lockedTot != null && liveTot != null && Math.abs(Number(liveTot) - Number(lockedTot)) >= 0.5) {
+    total = Math.max(-2, Math.min(2, +(0.65 * (Number(liveTot) - Number(lockedTot))).toFixed(2)));
+    notes.push("The total moved from " + lockedTot + " to " + liveTot + ". We followed " + (total > 0 ? "+" : "") + total.toFixed(1) + ".");
+  }
+  return { margin, total, notes };
+}
+function cfbRestTravel(g) {
+  const notes = [];
+  let margin = 0;
+  let total = 0;
+  const rh = restInfo(g, "home");
+  const ra = restInfo(g, "away");
+  const shortPts = (info) => info.kind === "short" ? 1.7 : info.kind === "shortish" ? 1.0 : 0;
+  const hp = shortPts(rh);
+  const ap = shortPts(ra);
+  if (hp) notes.push(g.home.abbr + " is on short rest (" + Math.round(rh.days) + " days). Moved " + (-hp).toFixed(1) + ".");
+  if (ap) notes.push(g.away.abbr + " is on short rest (" + Math.round(ra.days) + " days). Moved +" + ap.toFixed(1) + " toward " + g.home.abbr + ".");
+  margin += -hp + ap;
+  const tr = typeof travelInfo === "function" ? travelInfo(g) : {};
+  const miles = Number(tr.miles);
+  if (miles >= 1200) {
+    const pts = miles >= 2000 ? 1.6 : 1.1;
+    margin += pts;
+    if (miles >= 2000) total -= 0.4;
+    notes.push(g.away.abbr + " traveled about " + Math.round(miles) + " miles. Moved +" + pts.toFixed(1) + " toward " + g.home.abbr + ".");
+  }
+  return { margin: +margin.toFixed(2), total: +total.toFixed(2), notes };
+}
 function applySplitDesk() {
   const rows = window.SPLIT_DESK || [];
   if (!rows.length || typeof DATA === "undefined" || !DATA) return;
@@ -3800,6 +3858,12 @@ function applySplitDesk() {
     if (!g || g.league !== "cfb" || g.completed) return;
     const row = byId[String(g.id)];
     if (!row || row.awayPts == null || row.homePts == null) return;
+    const liveSpread = g.marketDesk && g.marketDesk.home_spread != null
+      ? Number(g.marketDesk.home_spread)
+      : (g.odds && g.odds.home_spread != null ? Number(g.odds.home_spread) : null);
+    const liveTotal = g.marketDesk && g.marketDesk.total != null
+      ? Number(g.marketDesk.total)
+      : (g.odds && g.odds.total != null ? Number(g.odds.total) : null);
     const p = g.proj || (g.proj = {});
     const away = Number(row.awayPts);
     const home = Number(row.homePts);
@@ -3842,9 +3906,11 @@ function applySplitDesk() {
     const nudge = cfbStarterNudge(g);
     const wxn = cfbWeatherNudge(g);
     const learned = cfbLearnNudge(g);
-    const moveM = Math.max(-5.5, Math.min(5.5, +(nudge.margin + wxn.margin + learned.margin).toFixed(2)));
-    const moveT = Math.max(-4.5, Math.min(4.2, +(nudge.total + wxn.total + learned.total).toFixed(2)));
-    if (Math.abs(moveM) >= 0.12 || Math.abs(moveT) >= 0.08) {
+    const trip = cfbRestTravel(g);
+    const mkt = cfbMarketMove(g, hs, liveSpread, row.totalLine, liveTotal);
+    const moveM = Math.max(-6.5, Math.min(6.5, +(nudge.margin + learned.margin + trip.margin + mkt.margin).toFixed(2)));
+    const moveT = Math.max(-3.5, Math.min(3.5, +(nudge.total + wxn.total + learned.total + trip.total + mkt.total).toFixed(2)));
+    if (Math.abs(moveM) >= 0.2 || Math.abs(moveT) >= 0.2) {
       const dgMargin = +(p.blended_margin + moveM).toFixed(2);
       const dgTotal = +Math.max(20, p.hashmark_total + moveT).toFixed(1);
       p.blended_margin = dgMargin;
@@ -3852,6 +3918,26 @@ function applySplitDesk() {
       p.hashmark_home_spread = +(-dgMargin).toFixed(1);
       p.home_points = +Math.max(0, (dgTotal + dgMargin) / 2).toFixed(1);
       p.away_points = +Math.max(0, (dgTotal - dgMargin) / 2).toFixed(1);
+      if (hs != null) {
+        p.market_margin = +(-Number(hs)).toFixed(2);
+        p.edge_spread = +(p.blended_margin - p.market_margin).toFixed(2);
+        if (Math.abs(p.edge_spread) < 1.6) {
+          p.pick = "NO PLAY";
+          p.pick_line = null;
+        } else if (p.edge_spread > 0) {
+          const n = Number(hs);
+          p.pick = g.home.abbr;
+          p.pick_line = g.home.abbr + " " + (n > 0 ? "+" : "") + n.toFixed(1);
+        } else {
+          const n = -Number(hs);
+          p.pick = g.away.abbr;
+          p.pick_line = g.away.abbr + " " + (n > 0 ? "+" : "") + n.toFixed(1);
+        }
+      }
+      if (row.totalLine != null) {
+        p.edge_total = +(p.hashmark_total - Number(row.totalLine)).toFixed(2);
+        p.total_pick = Math.abs(p.edge_total) < 1.5 ? "NO PLAY" : ((p.edge_total > 0 ? "OVER " : "UNDER ") + row.totalLine);
+      }
     }
     p.gg_injury = nudge;
     p.gg_weather = wxn;
@@ -3867,16 +3953,16 @@ function applySplitDesk() {
       g.box.home_points = p.home_points;
       g.box.total_points = p.hashmark_total;
     }
-    const pack = (window.SPLIT_NOTES || {})[String(g.id)];
-    const why = ((pack && pack.notes) || []).map((n) => n.edge + ". " + n.line);
+    const why = []
+      .concat(mkt.notes || [])
+      .concat(nudge.notes || [])
+      .concat(trip.notes || [])
+      .concat(wxn.notes || [])
+      .concat(learned.note ? [learned.note] : []);
     g.situational = {
       margin_adj: moveM,
       total_adj: moveT,
-      notes: (why.length ? why : ["Same score as The Split."]).concat([
-        nudge.names.length ? "Double Gs injuries. Starters out: " + nudge.names.join(", ") + ". Moved " + (nudge.margin > 0 ? "+" : "") + nudge.margin.toFixed(1) + "." : "No starter who matters is out.",
-        wxn.note ? "Double Gs weather. " + wxn.note : "Weather is calm, or the forecast is not in yet.",
-        learned.note || "No finished college game has moved this line yet."
-      ])
+      notes: why.length ? why : ["Nothing since the locked score was big enough to move the line."]
     };
   });
 }
