@@ -7055,13 +7055,41 @@ function simStrip(g) {
   <div class="simtails">Each sim is a real football score (touchdowns and field goals), then we average them. Average total ${tot ?? "—"}</div>`;
 }
 
+function cfbPickWhy(g) {
+  const p = g.proj || {};
+  const o = g.odds || {};
+  const notes = [];
+  const away = Number(p.away_points);
+  const home = Number(p.home_points);
+  if (Number.isFinite(away) && Number.isFinite(home) && g.away && g.home) {
+    const score = g.away.abbr + " " + away + ", " + g.home.abbr + " " + home;
+    const line = o.details || "";
+    const gap = p.edge_spread == null ? "" : Math.abs(Number(p.edge_spread)).toFixed(1);
+    if (p.pick && p.pick !== "NO PLAY") {
+      notes.push("We like " + (p.pick_line || p.pick) + ". Our score is " + score + "." + (line ? " The posted line is " + line + "." : "") + (gap ? " That is " + gap + " points off the line." : ""));
+    } else if (line) {
+      notes.push("No side. Our score is " + score + ". The posted line is " + line + "." + (gap ? " That is only " + gap + " points off." : ""));
+    }
+    if (p.total_pick && p.total_pick !== "NO PLAY" && p.hashmark_total != null && o.total != null) {
+      notes.push("We like " + p.total_pick + ". Our total is " + p.hashmark_total + ". The posted total is " + o.total + ".");
+    }
+  }
+  const s = g.situational || {};
+  if (Math.abs(Number(s.margin_adj) || 0) >= 0.2 || Math.abs(Number(s.total_adj) || 0) >= 0.2) {
+    (s.notes || []).forEach((n) => {
+      if (/Same score as The Split|No finished college|No starter who matters|Weather is calm/.test(n)) return;
+      notes.push(n);
+    });
+  }
+  if (!notes.length) notes.push("Our score and the posted line are too close. No pick.");
+  return notes;
+}
 function deskPanelHtml(g) {
   const s = g.situational || { margin_adj: 0, total_adj: 0, notes: [] };
-  const notes = (s.notes && s.notes.length)
-    ? s.notes
-    : ["We did not move this line."];
+  const college = g && g.league === "cfb";
+  const notes = college ? cfbPickWhy(g) : ((s.notes && s.notes.length) ? s.notes : ["We did not move this line."]);
   return `<div class="desk-panel">
-    <div class="lbl">Why we moved this line</div>
+    <div class="lbl">${college ? "Why we picked this line" : "Why we moved this line"}</div>
     <div class="desk-nums"><b>Spread ${fmt.signed(s.margin_adj || 0)}</b><b>Total ${fmt.signed(s.total_adj || 0)}</b></div>
     <ul class="desk-notes">${notes.map((n) => `<li>${n}</li>`).join("")}</ul>
   </div>`;
