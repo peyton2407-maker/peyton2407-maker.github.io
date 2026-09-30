@@ -6880,11 +6880,29 @@ function renderInjuries(league){
 
 
 
+function repairCfbKickoffs(games) {
+  (games || []).forEach((g) => {
+    if (!g || g.league !== "cfb" || !g.date || !g.status_detail) return;
+    const m = String(g.status_detail).match(/(\d{1,2})\/(\d{1,2})\s*-\s*(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+    if (!m) return;
+    const clock = new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/New_York", hour: "2-digit", minute: "2-digit", hourCycle: "h23"
+    }).format(new Date(g.date));
+    if (clock !== "00:00") return;
+    let hour = Number(m[3]) % 12;
+    if (/pm/i.test(m[5])) hour += 12;
+    const y = Number(String(g.date).slice(0, 4)) || 2026;
+    const iso = `${y}-${String(m[1]).padStart(2, "0")}-${String(m[2]).padStart(2, "0")}T${String(hour).padStart(2, "0")}:${String(m[4]).padStart(2, "0")}:00-04:00`;
+    const next = new Date(iso);
+    if (!Number.isNaN(next.getTime())) g.date = next.toISOString();
+  });
+}
 const fmt = {
   when(iso) {
     if (!iso) return "TBD";
     const d = new Date(iso);
-    return d.toLocaleString(undefined, {
+    return d.toLocaleString("en-US", {
+      timeZone: "America/New_York",
       weekday: "short",
       month: "short",
       day: "numeric",
@@ -11235,7 +11253,7 @@ async function loadDeskData() {
     if (!res.ok) throw new Error(url + " " + res.status);
     return res.json();
   };
-  const snap = await get("/data/snapshot.json?v=38");
+  const snap = await get("/data/snapshot.json?v=40");
   window.HASHMARK = snap;
   window.NFL_CARD = ((snap && snap.games) || []).filter((g) => g && g.league === "nfl").map((g) => ({
     id: String(g.id),
@@ -11310,6 +11328,7 @@ async function boot() {
     if (!DATA) throw lastErr || new Error("snapshot.json not found");
   }
   $("#stamp").textContent = `Snapshot ${fmt.when(DATA.generated_at)}`;
+  try { if (typeof repairCfbKickoffs === "function") repairCfbKickoffs(DATA.games || []); } catch (e) {}
   try {
     const cfbWeeks = (DATA.games || []).filter((g) => g.league === "cfb" && g.week != null).map((g) => Number(g.week)).filter((n) => Number.isFinite(n));
     const currentCfb = cfbWeeks.length ? Math.max(...cfbWeeks) : 5;
