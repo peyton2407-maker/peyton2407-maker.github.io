@@ -11235,14 +11235,7 @@ async function loadDeskData() {
     if (!res.ok) throw new Error(url + " " + res.status);
     return res.json();
   };
-  const [snap, lines, polls, splitNotes, splitDesk, results] = await Promise.all([
-    get("/data/snapshot.json?v=34"),
-    get("/data/value-lines.json").catch(() => ({})),
-    get("/data/cfb-polls.json").catch(() => null),
-    get("/data/split-notes.json").catch(() => ({})),
-    get("/data/desk-cfb.json").catch(() => []),
-    get("/data/week-results.json").catch(() => []),
-  ]);
+  const snap = await get("/data/snapshot.json?v=38");
   window.HASHMARK = snap;
   window.NFL_CARD = ((snap && snap.games) || []).filter((g) => g && g.league === "nfl").map((g) => ({
     id: String(g.id),
@@ -11258,20 +11251,41 @@ async function loadDeskData() {
     pick_line: g.proj && g.proj.pick_line,
     total_pick: g.proj && g.proj.total_pick
   }));
-  window.VALUE_LINES = lines || {};
-  window.SPLIT_NOTES = splitNotes || {};
-  window.SPLIT_DESK = splitDesk || [];
-  window.WEEK_RESULTS = results || [];
-  if (polls) window.CFB_POLLS = polls;
-  get("/data/injuries.json").then((inj) => {
-    if (!inj) return;
-    window.INJURY_SNAP = inj;
-    try { if (typeof seedInjuriesFromSnap === "function") seedInjuriesFromSnap(); } catch (e) {}
+  Promise.all([
+    get("/data/value-lines.json").catch(() => ({})),
+    get("/data/cfb-polls.json").catch(() => null),
+    get("/data/split-notes.json").catch(() => ({})),
+    get("/data/desk-cfb.json").catch(() => []),
+    get("/data/week-results.json").catch(() => [])
+  ]).then(([lines, polls, splitNotes, splitDesk, results]) => {
+    window.VALUE_LINES = lines || {};
+    window.SPLIT_NOTES = splitNotes || {};
+    window.SPLIT_DESK = splitDesk || [];
+    window.WEEK_RESULTS = results || [];
+    if (polls) window.CFB_POLLS = polls;
+    try { if (typeof applySplitDesk === "function") applySplitDesk(); } catch (e) {}
     try {
-      if (typeof view !== "undefined" && view === "nflinj" && typeof renderInjuries === "function") renderInjuries("nfl");
-      if (typeof view !== "undefined" && view === "cfbinj" && typeof renderInjuries === "function") renderInjuries("cfb");
+      if (view === "score" && typeof renderScorecard === "function") renderScorecard();
+      if (view === "history" && typeof renderHistory === "function") renderHistory();
+      if (view === "cfbpicks" && typeof renderCfbPicks === "function") renderCfbPicks();
+      if ((view === "cfb" || view === "all") && typeof renderBoard === "function") renderBoard();
     } catch (e) {}
   }).catch(() => {});
+  const loadHeavy = () => {
+    get("/data/injuries.json").then((inj) => {
+      if (!inj) return;
+      window.INJURY_SNAP = inj;
+      try { if (typeof seedInjuriesFromSnap === "function") seedInjuriesFromSnap(); } catch (e) {}
+      try {
+        if (typeof view !== "undefined" && view === "nflinj" && typeof renderInjuries === "function") renderInjuries("nfl");
+        if (typeof view !== "undefined" && view === "cfbinj" && typeof renderInjuries === "function") renderInjuries("cfb");
+      } catch (e) {}
+    }).catch(() => {});
+    try { if (typeof installElevenReport === "function") installElevenReport(); } catch (e) {}
+  };
+  const hash = (location.hash || "").replace("#", "");
+  if (hash === "nflinj" || hash === "cfbinj" || hash === "nflwx" || hash === "cfbwx") loadHeavy();
+  else setTimeout(loadHeavy, 8000);
 }
 
 async function boot() {
@@ -11446,18 +11460,7 @@ async function boot() {
   $("#overlay").addEventListener("click", (e) => { if (e.target.id === "overlay") closeModal(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
   try { if (typeof repriceCfbBoard === "function") repriceCfbBoard(); } catch (e) { console.warn(e); }
-  try {
-    if (!window.SPLIT_DESK) {
-      const deskRes = await fetch("/data/desk-cfb.json");
-      if (deskRes.ok) window.SPLIT_DESK = await deskRes.json();
-    }
-    if (!window.SPLIT_NOTES || !Object.keys(window.SPLIT_NOTES).length) {
-      const noteRes = await fetch("/data/split-notes.json");
-      if (noteRes.ok) window.SPLIT_NOTES = await noteRes.json();
-    }
-  } catch (e) {}
   try { seedInjuriesFromSnap(); } catch (e) {}
-  try { if (typeof installElevenReport === "function") await installElevenReport(); } catch (e) {}
   try { if (typeof enrichPowerRankings === "function") enrichPowerRankings(); } catch (e) {}
   try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) { console.warn(e); }
   if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games || []);
@@ -11473,16 +11476,20 @@ async function boot() {
     if (saved === "nfl" || saved === "cfb") setActiveLeague(id, saved);
   });
   setView((location.hash || "").replace("#","") || "home");
-  if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games || []);
-  try {
-    const learn = window.rebuildSharedLearning || rebuildSharedLearning;
-    const apply = window.applyLearningToGame || applyLearningToGame;
-    const n = typeof learn === "function" ? learn(DATA.games || []) : 0;
-    if (typeof apply === "function") (DATA.games || []).forEach(apply);
-    if (typeof settleBoard === "function") settleBoard();
-    if (typeof applySplitDesk === "function") applySplitDesk();
-    if (DATA.notes && n) DATA.notes.learning = `Same record for everyone. ${n} finished games are in the next line.`;
-  } catch (e) {}
+  setTimeout(() => {
+    try {
+      const learn = window.rebuildSharedLearning || rebuildSharedLearning;
+      const apply = window.applyLearningToGame || applyLearningToGame;
+      const n = typeof learn === "function" ? learn(DATA.games || []) : 0;
+      if (typeof apply === "function") (DATA.games || []).forEach(apply);
+      if (typeof settleBoard === "function") settleBoard();
+      if (typeof applySplitDesk === "function") applySplitDesk();
+      if (DATA.notes && n) DATA.notes.learning = `Same record for everyone. ${n} finished games are in the next line.`;
+      if (view === "home" && typeof renderHome === "function") renderHome();
+      if (view === "score" && typeof renderScorecard === "function") renderScorecard();
+      if ((view === "nfl" || view === "cfb" || view === "all" || view === "live") && typeof renderBoard === "function") renderBoard();
+    } catch (e) {}
+  }, 40);
   try { if (typeof syncDesk === "function") syncDesk(); } catch (e) {}
   if (view === "home" && typeof renderHome === "function") renderHome();
   if (view === "score" && typeof renderScorecard === "function") renderScorecard();
@@ -11515,7 +11522,6 @@ async function boot() {
         });
       } catch (e) {}
     };
-    pullDueReports();
     window.__cfbInjClock = setInterval(pullDueReports, 60 * 1000);
   }
   document.getElementById("injRefreshBtn")?.addEventListener("click", () => {
