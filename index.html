@@ -7210,16 +7210,20 @@ function renderBoard() {
     $("#board").innerHTML = `<div class="empty">No games in this filter. Switch the dropdown to “Upcoming only” or “All games”.</div>`;
     return;
   }
-  const kickList = view === "cfb" ? `<div class="card" style="margin-bottom:14px"><h3 style="margin:0 0 10px">College Week ${currentCfbWeekNumber()} by start time</h3><table class="ratings"><tbody>${games.map((g) => `<tr data-id="${g.id}"><td><b>${fmt.when(g.date)}</b></td><td>${g.away.abbr} @ ${g.home.abbr}</td><td>${(g.odds && g.odds.details) || ""}</td></tr>`).join("")}</tbody></table></div>` : "";
+  const kickList = view === "cfb" ? `<div class="card board-card" style="margin-bottom:14px"><h3 style="margin:0 0 10px">College Week ${currentCfbWeekNumber()} by start time</h3><table class="ratings"><tbody>${games.map((g) => `<tr data-id="${g.id}"><td><b>${fmt.when(g.date)}</b></td><td>${g.away.abbr} @ ${g.home.abbr}</td><td>${(g.odds && g.odds.details) || ""}</td></tr>`).join("")}</tbody></table></div>` : "";
   const table = projectionTable(games);
   const desk = (view === "nfl" || view === "cfb" || view === "live") ? deskStripHtml(games) : "";
   const cards = games.map(card).join("");
   const dogs = (view === "nfl" || view === "live" || view === "cfb") ? valueStripHtml() : "";
   $("#board").innerHTML = kickList + cards + table + desk + dogs;
-  $$("#board .game").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
-  $$("#board .boardtable tr[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
-  $$("#board .desk-strip tr[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
-  $$("#board .value-tile").forEach((el) => el.addEventListener("click", (e) => { e.stopPropagation(); openGame(el.dataset.id); }));
+  if (!window.__boardClickBound) {
+    window.__boardClickBound = true;
+    document.getElementById("board").addEventListener("click", (e) => {
+      const row = e.target.closest("[data-id]");
+      if (!row || !row.dataset.id) return;
+      openGame(row.dataset.id);
+    });
+  }
 }
 
 function parseCfbPoll(poll) {
