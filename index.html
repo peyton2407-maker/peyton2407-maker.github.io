@@ -5737,6 +5737,27 @@ function renderCollegeParlayBoard() {
   return { html, count: board.count };
 }
 
+function lockedWeek4Html() {
+  const card = (title, price, chance, note, legs) => `<article class="parlay-card">
+    <div class="td-mkt">${title}</div>
+    <div class="parlay-odds">${price}</div>
+    <div class="subn">${chance} chance all of these hit</div>
+    <ul class="parlay-legs">${legs.map((l) => `<li><b>${l[0]}</b><div class="subn">${l[1]} · ${l[2]}</div><div class="prop-why">${l[3]}</div></li>`).join("")}</ul>
+    <div class="subn">${note}</div>
+  </article>`;
+  const lac = ["LAC +7.0", "LAC @ SEA", "59%", "Los Angeles is getting 7. Our number has them covering by about a point."];
+  const nyg = ["NYG +2.5", "ARI @ NYG", "58%", "The Giants are getting 2.5 at home. Our number covers that by about a point."];
+  const wsh = ["WSH +3.5", "IND @ WSH", "57%", "Washington is getting 3.5. Our number still likes the points."];
+  const sf = ["SF -3.0", "DEN @ SF", "57%", "San Francisco is laying 3. Our number makes that line short."];
+  const no = ["UNDER 48.5", "ATL @ NO total", "56%", "Our total is 47. The posted number is 48.5."];
+  const gb = ["OVER 39.5", "GB @ TB total", "55%", "Our total is 40.8. The posted number is 39.5."];
+  return [
+    card("2-leg spread", "+186", "34%", "Week 4. Different games. The 2-leg is the ticket.", [lac, nyg]),
+    card("3-leg spread", "+340", "20%", "Same sides, one more leg. The price gets longer.", [lac, nyg, wsh]),
+    card("4-leg spread", "+620", "11%", "Read the 2-leg first. One miss sinks this.", [lac, nyg, wsh, sf]),
+    card("2-leg total", "+155", "31%", "Totals only. These are the two biggest gaps this week.", [no, gb])
+  ].join("");
+}
 function renderParlays() {
   let league = window.__parlayLg || "nfl";
   if (league === "propp") league = "props";
@@ -5784,8 +5805,10 @@ function renderParlays() {
     hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => { if (el.dataset.id) openGame(el.dataset.id); }));
     return;
   }
-  hero.innerHTML = parlayHeroHtml(league) || `<div class="empty">Not enough NFL game legs yet.</div>`;
-  if (stamp) stamp.textContent = "NFL parlays for this week. Sides and totals from games that have not kicked off. Tap a leg for the why.";
+  if (stamp) stamp.textContent = "NFL Week 4 parlays. Sides and totals for games that have not kicked off. Tap a leg for the why.";
+  let extra = "";
+  try { extra = parlayHeroHtml(league) || ""; } catch (e) { extra = ""; }
+  hero.innerHTML = lockedWeek4Html() + extra;
   hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 function valueTileHtml(r) {
@@ -11185,7 +11208,7 @@ async function loadDeskData() {
     return res.json();
   };
   const [snap, lines, polls, splitNotes, splitDesk, results] = await Promise.all([
-    get("/data/snapshot.json"),
+    get("/data/snapshot.json?v=34"),
     get("/data/value-lines.json").catch(() => ({})),
     get("/data/cfb-polls.json").catch(() => null),
     get("/data/split-notes.json").catch(() => ({})),
