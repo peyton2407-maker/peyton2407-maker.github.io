@@ -3943,6 +3943,29 @@ function restoreCfbClose(g) {
   g._dkSpread = Number(row.spread);
   if (row.total != null) g._dkTotal = Number(row.total);
 }
+function lockBook() {
+  if (window.__CFB_LOCK) return window.__CFB_LOCK;
+  try { window.__CFB_LOCK = JSON.parse(localStorage.getItem("gg-cfb-lock-v1") || "{}"); }
+  catch (e) { window.__CFB_LOCK = {}; }
+  return window.__CFB_LOCK;
+}
+function saveCfbLock(id, spread, total) {
+  if (id == null || spread == null || !Number.isFinite(Number(spread))) return;
+  const book = lockBook();
+  const key = String(id);
+  if (book[key] && book[key].spread != null) return;
+  book[key] = {
+    spread: Number(spread),
+    total: total != null && Number.isFinite(Number(total)) ? Number(total) : null,
+    at: Date.now()
+  };
+  try { localStorage.setItem("gg-cfb-lock-v1", JSON.stringify(book)); } catch (e) {}
+}
+function frozenCfbLock(g) {
+  const row = g && lockBook()[String(g.id)];
+  if (!row || row.spread == null) return null;
+  return { spread: Number(row.spread), total: row.total != null ? Number(row.total) : null };
+}
 async function pullCfbCloseLines() {
   if (window.__cfbClosePull) return window.__cfbClosePull;
   window.__cfbClosePull = (async () => {
@@ -3998,32 +4021,39 @@ function applySplitDesk() {
       p.pick = String(row.pick).split(" ")[0];
     }
     p.total_pick = row.total || "NO PLAY";
-    const hs = row.spread ? deskHomeSpread(row, g) : null;
+    const fileSpread = row.spread ? deskHomeSpread(row, g) : null;
+    saveCfbLock(g.id, fileSpread, row.totalLine);
+    const frozen = frozenCfbLock(g);
+    const hs = frozen && frozen.spread != null ? frozen.spread : fileSpread;
+    const lockedTotal = frozen && frozen.total != null ? frozen.total : row.totalLine;
     if (hs != null) g._lockedSpread = Number(hs);
-    if (row.totalLine != null) g._lockedTotal = Number(row.totalLine);
+    if (lockedTotal != null) g._lockedTotal = Number(lockedTotal);
     restoreCfbClose(g);
-    if (hs != null || row.totalLine != null) {
-      g.odds = Object.assign({}, g.odds || {}, hs == null ? {} : {
-        home_spread: hs,
-        details: row.spread,
-        home_favorite: hs < 0,
-        away_favorite: hs > 0,
-        book: (g.odds && g.odds.book) || "DraftKings"
-      }, row.totalLine != null ? { total: row.totalLine } : {});
+    const boardSpread = g._dkSpread != null ? Number(g._dkSpread) : hs;
+    const boardTotal = g._dkTotal != null ? Number(g._dkTotal) : lockedTotal;
+    if (boardSpread != null || boardTotal != null) {
+      g.odds = Object.assign({}, g.odds || {}, boardSpread == null ? {} : {
+        home_spread: boardSpread,
+        details: cfbSideLabel(g, boardSpread),
+        locked_details: hs != null ? cfbSideLabel(g, hs) : (row.spread || ""),
+        home_favorite: Number(boardSpread) < 0,
+        away_favorite: Number(boardSpread) > 0,
+        book: "DraftKings"
+      }, boardTotal != null ? { total: boardTotal } : {});
     }
     if (hs != null) {
-      p.market_margin = +(-hs).toFixed(2);
+      p.market_margin = +(-Number(hs)).toFixed(2);
       p.edge_spread = +(p.blended_margin - p.market_margin).toFixed(2);
     }
-    if (row.totalLine != null) {
-      p.edge_total = +(p.hashmark_total - Number(row.totalLine)).toFixed(2);
+    if (lockedTotal != null) {
+      p.edge_total = +(p.hashmark_total - Number(lockedTotal)).toFixed(2);
     }
     p.split_locked = true;
     p.split_away = away;
     p.split_home = home;
     p.split_margin = p.blended_margin;
     p.split_total = p.hashmark_total;
-    const moved = cfbLineMove(g, hs, row.totalLine);
+    const moved = cfbLineMove(g, hs, lockedTotal);
     const moveM = moved.margin;
     const moveT = moved.total;
     if (Math.abs(moveM) >= 0.2 || Math.abs(moveT) >= 0.2) {
@@ -4050,9 +4080,9 @@ function applySplitDesk() {
           p.pick_line = g.away.abbr + " " + (n > 0 ? "+" : "") + n.toFixed(1);
         }
       }
-      if (row.totalLine != null) {
-        p.edge_total = +(p.hashmark_total - Number(row.totalLine)).toFixed(2);
-        p.total_pick = Math.abs(p.edge_total) < 1.5 ? "NO PLAY" : ((p.edge_total > 0 ? "OVER " : "UNDER ") + row.totalLine);
+      if (lockedTotal != null) {
+        p.edge_total = +(p.hashmark_total - Number(lockedTotal)).toFixed(2);
+        p.total_pick = Math.abs(p.edge_total) < 1.5 ? "NO PLAY" : ((p.edge_total > 0 ? "OVER " : "UNDER ") + lockedTotal);
       }
     }
     p.gg_injury = null;
@@ -7269,7 +7299,7 @@ function cfbPickWhy(g) {
     const winner = margin >= 0 ? g.home.abbr : g.away.abbr;
     const by = Math.abs(margin).toFixed(1);
     const score = "Our score is " + g.away.abbr + " " + away + ", " + g.home.abbr + " " + home + ". " + winner + " wins by " + by + ".";
-    const line = o.details || "";
+    const line = o.locked_details || o.details || "";
     const gap = p.edge_spread == null ? "" : Math.abs(Number(p.edge_spread)).toFixed(1);
     if (p.pick && p.pick !== "NO PLAY") {
       notes.push("We like " + (p.pick_line || p.pick) + ". " + score + (line ? " The posted line is " + line + "." : "") + (gap ? " " + p.pick + " covers that number by " + gap + "." : ""));
