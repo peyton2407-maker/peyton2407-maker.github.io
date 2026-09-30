@@ -1188,6 +1188,7 @@ body{font-size:17px;line-height:1.45}
             <a class="tab" href="#all" data-view="all">All games</a>
             <a class="tab" href="#alerts" data-view="alerts">Alerts</a>
             <a class="tab" href="#ratings" data-view="ratings">Team rankings</a>
+            <a class="tab" href="#history" data-view="history">Past weeks</a>
           </div>
         </div>
       </nav>
@@ -1242,6 +1243,26 @@ body{font-size:17px;line-height:1.45}
       <p class="subn" id="scoreStamp" style="margin:0 0 10px">Picks lock before kickoff. After the game we mark hit, miss, or push — and whether we beat the closing line.</p>
       <div class="stat-row" id="scoreStats"></div>
       <div class="card" id="scoreWrap"></div>
+    </section>
+
+    <section id="historySection" style="display:none">
+      <div class="controls">
+        <div class="league-tabs" id="historyLeague" role="tablist" aria-label="League">
+          <button type="button" data-league="nfl">NFL</button>
+          <button type="button" class="active" data-league="cfb">College</button>
+        </div>
+        <select id="historyKind">
+          <option value="all">Spreads + totals</option>
+          <option value="spread">Spreads only</option>
+          <option value="total">Totals only</option>
+        </select>
+        <select id="historyWeek" aria-label="Past week">
+          <option value="all">All past weeks</option>
+        </select>
+      </div>
+      <p class="subn" id="historyStamp" style="margin:0 0 10px">Past weeks only. Same card as the scorecard, already graded.</p>
+      <div class="stat-row" id="historyStats"></div>
+      <div class="card" id="historyWrap"></div>
     </section>
 
     <section id="alertsSection" style="display:none">
@@ -9423,6 +9444,192 @@ function renderScorecard() {
   </tbody></table>`;
   wrap.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
+function collegeWeekOf(iso) {
+  const d = String(iso || "").slice(0, 10);
+  if (d >= "2026-09-29") return 5;
+  if (d >= "2026-09-22") return 4;
+  if (d >= "2026-09-15") return 3;
+  if (d >= "2026-09-08") return 2;
+  if (d >= "2026-09-01") return 1;
+  return 0;
+}
+function currentNflWeekNumber() {
+  const d = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+  if (d >= "2026-09-29") return 4;
+  if (d >= "2026-09-22") return 3;
+  if (d >= "2026-09-15") return 2;
+  return 1;
+}
+function gradeHistoryRow(row, fin) {
+  if (!fin || fin.hs == null || fin.as == null) return row;
+  const hs = Number(fin.hs);
+  const as = Number(fin.as);
+  if (!Number.isFinite(hs) || !Number.isFinite(as)) return row;
+  const homeAbbr = fin.homeAbbr || row.home;
+  const awayAbbr = fin.awayAbbr || row.away;
+  row.final = awayAbbr + " " + as + " – " + homeAbbr + " " + hs;
+  row.graded = true;
+  if (row.pick && row.pick !== "NO PLAY" && row.pick_line) {
+    const m = String(row.pick_line).match(/([A-Za-z0-9&]+)\s*([+-]?\d+(?:\.\d+)?)/);
+    if (m) {
+      const side = m[1].toUpperCase();
+      const num = Number(m[2]);
+      const sideScore = side === String(homeAbbr).toUpperCase() ? hs : as;
+      const opp = side === String(homeAbbr).toUpperCase() ? as : hs;
+      const diff = sideScore + num - opp;
+      row.ats = Math.abs(diff) < 0.05 ? "PUSH" : diff > 0 ? "HIT" : "MISS";
+    }
+  }
+  if (row.total_pick && row.total_pick !== "NO PLAY") {
+    const tm = String(row.total_pick).match(/(OVER|UNDER)\s*(\d+(?:\.\d+)?)/i);
+    if (tm) {
+      const line = Number(tm[2]);
+      const tot = hs + as;
+      if (Math.abs(tot - line) < 0.05) row.ou = "PUSH";
+      else row.ou = (/over/i.test(tm[1]) ? tot > line : tot < line) ? "HIT" : "MISS";
+    }
+  }
+  return row;
+}
+function historyPlays(league) {
+  const finals = {};
+  (window.WEEK_RESULTS || []).forEach((r) => { if (r && r.id != null) finals[String(r.id)] = r; });
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.league !== league || !g.completed) return;
+    const hs = Number(g.home && g.home.score);
+    const as = Number(g.away && g.away.score);
+    if (!Number.isFinite(hs) || !Number.isFinite(as)) return;
+    if (!finals[String(g.id)]) {
+      finals[String(g.id)] = { id: g.id, hs: hs, as: as, homeAbbr: g.home.abbr, awayAbbr: g.away.abbr, date: g.date };
+    }
+  });
+  const rows = [];
+  if (league === "cfb") {
+    const current = currentCfbWeekNumber();
+    (window.SPLIT_DESK || []).forEach((src) => {
+      if (!src) return;
+      const week = collegeWeekOf(src.date);
+      if (!week || week >= current) return;
+      const hasPick = src.pick && src.pick !== "NO PLAY";
+      const hasTot = src.total && src.total !== "NO PLAY";
+      if (!hasPick && !hasTot) return;
+      const row = {
+        id: String(src.id), league: "cfb", week: week, short: src.short,
+        home: src.homeAbbr, away: src.awayAbbr, date: src.date,
+        pick: hasPick ? String(src.pick).split(/\s+/)[0] : null,
+        pick_line: hasPick ? src.pick : null,
+        total_pick: hasTot ? src.total : null,
+        ats: null, ou: null, clv: null, graded: false
+      };
+      rows.push(gradeHistoryRow(row, finals[String(src.id)]));
+    });
+    return rows;
+  }
+  const current = currentNflWeekNumber();
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.league !== "nfl" || !isPlay(g.proj)) return;
+    const week = Number(g.week) || 0;
+    if (!week || week >= current) return;
+    const row = snapPlay(g);
+    row.week = week;
+    rows.push(gradeHistoryRow(row, finals[String(g.id)]));
+  });
+  return rows;
+}
+function fillHistoryWeeks(league) {
+  const root = document.getElementById("historyWeek");
+  if (!root) return;
+  const prev = root.value;
+  const weeks = [];
+  const seen = new Set();
+  historyPlays(league).forEach((p) => {
+    const w = String(p.week || "");
+    if (!w || seen.has(w)) return;
+    seen.add(w);
+    weeks.push(Number(w));
+  });
+  weeks.sort((a, b) => b - a);
+  root.innerHTML = `<option value="all">All past weeks</option>` + weeks.map((w) => `<option value="${w}">${league === "nfl" ? "NFL Week " : "College Week "}${w}</option>`).join("");
+  const want = prev && [...root.options].some((o) => o.value === prev) ? prev : (weeks.length ? String(weeks[0]) : "all");
+  root.value = want;
+}
+function renderHistory() {
+  const league = activeLeague("historyLeague", "cfb");
+  fillHistoryWeeks(league);
+  const kind = (document.getElementById("historyKind") || {}).value || "all";
+  const week = (document.getElementById("historyWeek") || {}).value || "all";
+  let rows = historyPlays(league);
+  if (week && week !== "all") rows = rows.filter((r) => String(r.week || "") === String(week));
+  rows = rows.filter((r) => {
+    if (kind === "spread" && !(r.pick && r.pick !== "NO PLAY")) return false;
+    if (kind === "total" && !(r.total_pick && r.total_pick !== "NO PLAY")) return false;
+    return true;
+  });
+  rows.sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  let w = 0, l = 0, psh = 0;
+  rows.forEach((r) => {
+    ["ats", "ou"].forEach((k) => {
+      if (kind === "total" && k === "ats") return;
+      if (kind === "spread" && k === "ou") return;
+      if (r[k] === "HIT") w++;
+      else if (r[k] === "MISS") l++;
+      else if (r[k] === "PUSH") psh++;
+    });
+  });
+  const n = w + l;
+  const pct = n ? Math.round(100 * w / n) : 0;
+  const pending = rows.filter((r) => !r.graded).length;
+  const stats = document.getElementById("historyStats");
+  if (stats) stats.innerHTML = `
+    <div class="stat"><b>${w}-${l}${psh ? "-" + psh : ""}</b><span>locked record</span></div>
+    <div class="stat"><b>${n ? pct + "%" : "—"}</b><span>hit rate</span></div>
+    <div class="stat"><b>${pending}</b><span>still live / upcoming</span></div>
+    <div class="stat"><b>—</b><span>avg vs close</span></div>`;
+  const wrap = document.getElementById("historyWrap");
+  const stamp = document.getElementById("historyStamp");
+  const leagueName = league === "nfl" ? "NFL" : "College";
+  const weekName = week === "all" ? "All past weeks" : (league === "nfl" ? "NFL Week " : "College Week ") + week;
+  if (stamp) stamp.textContent = weekName + ". These are the old scorecards only. The current week stays on Scorecard.";
+  if (!wrap) return;
+  if (!rows.length) {
+    wrap.innerHTML = `<div class="empty">No past ${leagueName} scorecards are locked yet.</div>`;
+    return;
+  }
+  const groups = [];
+  const byKey = new Map();
+  rows.forEach((r) => {
+    const label = (r.league === "nfl" ? "NFL Week " : "College Week ") + r.week;
+    const key = r.league + "|" + r.week;
+    if (!byKey.has(key)) {
+      const bucket = { key: key, label: label, week: Number(r.week) || 0, rows: [] };
+      byKey.set(key, bucket);
+      groups.push(bucket);
+    }
+    byKey.get(key).rows.push(r);
+  });
+  groups.sort((a, b) => b.week - a.week);
+  const body = groups.map((group) => {
+    const head = `<tr class="score-week"><td colspan="5">${group.label}<span class="subn"> · ${group.rows.length} pick${group.rows.length === 1 ? "" : "s"}</span></td></tr>`;
+    const lines = group.rows.map((r) => {
+      const ats = r.ats ? `<span class="result-${r.ats.toLowerCase()}">${r.ats}</span>` : "pending";
+      const ou = r.ou ? `<span class="result-${r.ou.toLowerCase()}">${r.ou}</span>` : (r.total_pick && r.total_pick !== "NO PLAY" ? "pending" : "—");
+      const showS = kind !== "total";
+      const showT = kind !== "spread";
+      return `<tr data-id="${r.id}">
+        <td><b>${r.short || (r.away + " @ " + r.home)}</b><div class="subn">${group.label} · ${r.final || fmt.when(r.date)}</div></td>
+        <td>${(r.pick && r.pick !== "NO PLAY") ? (r.pick_line || r.pick) : "No side"}<div class="subn">${r.total_pick && r.total_pick !== "NO PLAY" ? r.total_pick : ""}</div></td>
+        <td>${showS ? ats : "—"}</td>
+        <td>${showT ? ou : "—"}</td>
+        <td>${r.clv == null ? "—" : ((r.clv > 0 ? "+" : "") + r.clv)}</td>
+      </tr>`;
+    }).join("");
+    return head + lines;
+  }).join("");
+  wrap.innerHTML = `<table class="ratings"><thead><tr><th>Game</th><th>Locked pick</th><th>Spread</th><th>Total</th><th>vs close</th></tr></thead><tbody>
+    ${body}
+  </tbody></table>`;
+  wrap.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
+}
 function renderAlerts() {
   const desk = loadDesk();
   const wrap = document.getElementById("alertsWrap");
@@ -9605,6 +9812,7 @@ function paintDesk() {
     if ((view === "nfl" || view === "cfb" || view === "all" || view === "live") && typeof renderBoard === "function") renderBoard();
     if (view === "card" && typeof renderWeeklyCard === "function") renderWeeklyCard();
     if (view === "score" && typeof renderScorecard === "function") renderScorecard();
+    if (view === "history" && typeof renderHistory === "function") renderHistory();
     if (view === "alerts" && typeof renderAlerts === "function") renderAlerts();
     if (view === "value" && typeof renderValueDogs === "function") renderValueDogs();
     if (view === "parlay" && typeof renderParlays === "function") renderParlays();
@@ -10824,7 +11032,7 @@ function renderBoom() {
 }
 
 function setView(next) {
-  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,heisman:1,awards:1,charts:1,prime:1,boom:1};
+  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,heisman:1,awards:1,charts:1,prime:1,boom:1};
   if (!allowed[next]) next = "home";
   const wantProps = next === "propp";
   if (wantProps) { window.__parlayLg = "props"; next = "parlay"; }
@@ -10844,6 +11052,8 @@ function setView(next) {
   if (cardS) cardS.style.display = next === "card" ? "" : "none";
   const scoreS = document.getElementById("scoreSection");
   if (scoreS) scoreS.style.display = next === "score" ? "" : "none";
+  const histS = document.getElementById("historySection");
+  if (histS) histS.style.display = next === "history" ? "" : "none";
   const alertS = document.getElementById("alertsSection");
   if (alertS) alertS.style.display = next === "alerts" ? "" : "none";
   $("#propsSection").style.display = next === "props" ? "" : "none";
@@ -10876,6 +11086,7 @@ function setView(next) {
   if (next === "home") renderHome();
   if (next === "card") renderWeeklyCard();
   if (next === "score") renderScorecard();
+  if (next === "history") renderHistory();
   if (next === "alerts") renderAlerts();
   if (next === "value") renderValueDogs();
   if (next === "parlay") {
@@ -10910,17 +11121,19 @@ async function loadDeskData() {
     if (!res.ok) throw new Error(url + " " + res.status);
     return res.json();
   };
-  const [snap, lines, polls, splitNotes, splitDesk] = await Promise.all([
+  const [snap, lines, polls, splitNotes, splitDesk, results] = await Promise.all([
     get("/data/snapshot.json"),
     get("/data/value-lines.json").catch(() => ({})),
     get("/data/cfb-polls.json").catch(() => null),
     get("/data/split-notes.json").catch(() => ({})),
     get("/data/desk-cfb.json").catch(() => []),
+    get("/data/week-results.json").catch(() => []),
   ]);
   window.HASHMARK = snap;
   window.VALUE_LINES = lines || {};
   window.SPLIT_NOTES = splitNotes || {};
   window.SPLIT_DESK = splitDesk || [];
+  window.WEEK_RESULTS = results || [];
   if (polls) window.CFB_POLLS = polls;
   get("/data/injuries.json").then((inj) => {
     if (!inj) return;
@@ -11054,6 +11267,9 @@ async function boot() {
   bindLeagueTabs("boardLeague", () => { if (view === "all" || view === "live") renderBoard(); });
   document.getElementById("scoreKind")?.addEventListener("change", renderScorecard);
   document.getElementById("scoreWeek")?.addEventListener("change", renderScorecard);
+  bindLeagueTabs("historyLeague", () => renderHistory());
+  document.getElementById("historyKind")?.addEventListener("change", renderHistory);
+  document.getElementById("historyWeek")?.addEventListener("change", renderHistory);
   (function bindScoreWeeks() {
     const root = document.getElementById("scoreWeek");
     if (!root || root.dataset.bound === "1") return;
@@ -11117,7 +11333,7 @@ async function boot() {
   try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) { console.warn(e); }
   if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games || []);
   try { if (typeof syncDesk === "function") syncDesk(); } catch (e) {}
-  ["scoreLeague", "boardLeague"].forEach((id) => {
+  ["scoreLeague", "boardLeague", "historyLeague"].forEach((id) => {
     let saved = "";
     try { saved = sessionStorage.getItem("gg-league-" + id) || ""; } catch (err) {}
     if (saved === "nfl" || saved === "cfb") setActiveLeague(id, saved);
