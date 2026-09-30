@@ -9227,7 +9227,7 @@ function scoreWeekLabel(league, week) {
   if (week === "all") return league === "nfl" ? "All NFL weeks" : "All college weeks";
   const current = league === "cfb"
     ? currentCfbWeekNumber()
-    : Number((DATA && DATA.meta && DATA.meta.nfl_week) || 0);
+    : currentNflWeekNumber();
   if (String(week) === String(current)) return "Current week";
   return (league === "nfl" ? "NFL Week " : "College Week ") + (week || "—");
 }
@@ -9238,11 +9238,32 @@ function scoreWeekValue() {
   const btn = root.querySelector("button.active[data-week]");
   return btn ? btn.dataset.week : "current";
 }
+function nflSlateLean(g) {
+  const p = g.proj || {};
+  const o = g.odds || {};
+  const out = { pick: p.pick || null, pick_line: p.pick_line || null, total_pick: p.total_pick || null };
+  const sp = o.home_spread == null ? null : Number(o.home_spread);
+  const edge = p.edge_spread == null ? null : Number(p.edge_spread);
+  if ((!out.pick || out.pick === "NO PLAY") && sp != null && edge != null && edge !== 0 && g.home && g.away) {
+    if (edge > 0) {
+      out.pick = g.home.abbr;
+      out.pick_line = g.home.abbr + " " + (sp >= 0 ? "+" : "") + sp.toFixed(1);
+    } else {
+      out.pick = g.away.abbr;
+      out.pick_line = g.away.abbr + " " + ((-sp) >= 0 ? "+" : "") + (-sp).toFixed(1);
+    }
+  }
+  const te = p.edge_total == null ? null : Number(p.edge_total);
+  if ((!out.total_pick || out.total_pick === "NO PLAY") && o.total != null && te != null && te !== 0) {
+    out.total_pick = (te > 0 ? "OVER " : "UNDER ") + o.total;
+  }
+  return out;
+}
 function playsForScorecard(league) {
   const desk = loadDesk();
   const byId = {};
   Object.values(desk.plays || {}).forEach((p) => { if (p && p.id != null) byId[String(p.id)] = p; });
-  const current = league === "cfb" ? currentCfbWeekNumber() : Number((DATA && DATA.meta && DATA.meta.nfl_week) || 0);
+  const current = league === "cfb" ? currentCfbWeekNumber() : currentNflWeekNumber();
   const splitById = {};
   (window.SPLIT_DESK || []).forEach((r) => { if (r && r.id != null) splitById[String(r.id)] = r; });
   (DATA.games || []).forEach((g) => {
@@ -9250,9 +9271,16 @@ function playsForScorecard(league) {
     if (Number(g.week) !== Number(current)) return;
     const src = splitById[String(g.id)];
     const deskPlay = src && ((src.pick && src.pick !== "NO PLAY") || (src.total && src.total !== "NO PLAY"));
-    if (!isPlay(g.proj) && !deskPlay) return;
+    if (league !== "nfl" && !isPlay(g.proj) && !deskPlay) return;
+    if (league === "nfl" && !g.odds) return;
     const row = snapPlay(g);
     row.week = Number(g.week);
+    if (league === "nfl") {
+      const lean = nflSlateLean(g);
+      row.pick = lean.pick;
+      row.pick_line = lean.pick_line;
+      row.total_pick = lean.total_pick;
+    }
     if (deskPlay) {
       if (src.pick && src.pick !== "NO PLAY") {
         row.pick_line = src.pick;
@@ -9275,7 +9303,7 @@ function playsForScorecard(league) {
 function fillScoreWeeks(league) {
   const root = document.getElementById("scoreWeek");
   if (!root) return;
-  const current = league === "cfb" ? currentCfbWeekNumber() : Number((DATA && DATA.meta && DATA.meta.nfl_week) || 0);
+  const current = league === "cfb" ? currentCfbWeekNumber() : currentNflWeekNumber();
   const weeks = [];
   const seen = new Set();
   playsForScorecard(league).forEach((p) => {
@@ -9440,7 +9468,7 @@ function renderScorecard() {
   fillScoreWeeks(league);
   const kind = (document.getElementById("scoreKind") || {}).value || "all";
   const weekRaw = scoreWeekValue();
-  const currentWeek = String(league === "cfb" ? currentCfbWeekNumber() : ((DATA && DATA.meta && DATA.meta.nfl_week) || ""));
+  const currentWeek = String(league === "cfb" ? currentCfbWeekNumber() : currentNflWeekNumber());
   const week = weekRaw === "current" ? currentWeek : weekRaw;
   try { sessionStorage.setItem("gg-score-week-" + league, week); } catch (e) {}
   const t = scoreTally(league, kind, week);
