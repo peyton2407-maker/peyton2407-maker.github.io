@@ -7062,16 +7062,22 @@ function cfbPickWhy(g) {
   const away = Number(p.away_points);
   const home = Number(p.home_points);
   if (Number.isFinite(away) && Number.isFinite(home) && g.away && g.home) {
-    const score = g.away.abbr + " " + away + ", " + g.home.abbr + " " + home;
+    const margin = +(home - away).toFixed(1);
+    const winner = margin >= 0 ? g.home.abbr : g.away.abbr;
+    const by = Math.abs(margin).toFixed(1);
+    const score = "Our score is " + g.away.abbr + " " + away + ", " + g.home.abbr + " " + home + ". " + winner + " wins by " + by + ".";
     const line = o.details || "";
     const gap = p.edge_spread == null ? "" : Math.abs(Number(p.edge_spread)).toFixed(1);
     if (p.pick && p.pick !== "NO PLAY") {
-      notes.push("We like " + (p.pick_line || p.pick) + ". Our score is " + score + "." + (line ? " The posted line is " + line + "." : "") + (gap ? " That is " + gap + " points off the line." : ""));
+      notes.push("We like " + (p.pick_line || p.pick) + ". " + score + (line ? " The posted line is " + line + "." : "") + (gap ? " " + p.pick + " covers that number by " + gap + "." : ""));
     } else if (line) {
-      notes.push("No side. Our score is " + score + ". The posted line is " + line + "." + (gap ? " That is only " + gap + " points off." : ""));
+      notes.push("No side. " + score + " The posted line is " + line + "." + (gap ? " The cover is only " + gap + ", so we pass." : ""));
+    } else {
+      notes.push(score);
     }
     if (p.total_pick && p.total_pick !== "NO PLAY" && p.hashmark_total != null && o.total != null) {
-      notes.push("We like " + p.total_pick + ". Our total is " + p.hashmark_total + ". The posted total is " + o.total + ".");
+      const off = Math.abs(Number(p.hashmark_total) - Number(o.total)).toFixed(1);
+      notes.push("We like " + p.total_pick + ". Our total is " + p.hashmark_total + " and the posted total is " + o.total + ", " + off + " points apart.");
     }
   }
   const s = g.situational || {};
@@ -7088,9 +7094,11 @@ function deskPanelHtml(g) {
   const s = g.situational || { margin_adj: 0, total_adj: 0, notes: [] };
   const college = g && g.league === "cfb";
   const notes = college ? cfbPickWhy(g) : ((s.notes && s.notes.length) ? s.notes : ["We did not move this line."]);
+  const moved = Math.abs(Number(s.margin_adj) || 0) >= 0.2 || Math.abs(Number(s.total_adj) || 0) >= 0.2;
+  const nums = college && !moved ? "" : `<div class="desk-nums"><b>Spread ${fmt.signed(s.margin_adj || 0)}</b><b>Total ${fmt.signed(s.total_adj || 0)}</b></div>`;
   return `<div class="desk-panel">
     <div class="lbl">${college ? "Why we picked this line" : "Why we moved this line"}</div>
-    <div class="desk-nums"><b>Spread ${fmt.signed(s.margin_adj || 0)}</b><b>Total ${fmt.signed(s.total_adj || 0)}</b></div>
+    ${nums}
     <ul class="desk-notes">${notes.map((n) => `<li>${n}</li>`).join("")}</ul>
   </div>`;
 }
