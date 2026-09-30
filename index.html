@@ -3728,40 +3728,58 @@ function cfbSnapShare(r) {
   return 0;
 }
 function cfbStarterNudge(g) {
-  let home = 0;
-  let away = 0;
-  let total = 0;
-  const notes = [];
+  const bestQb = {};
+  const bestSnap = {};
   (g.injuries || []).forEach((r) => {
     if (!cfbOutTag(r)) return;
     const pos = cfbPosOf(r);
     const blob = String((r.short || "") + " " + (r.name || "")).toLowerCase();
     const side = r.side === "home" || r.side === "away" ? r.side : "";
     if (!side) return;
-    let pts = 0;
-    let why = "";
     if (pos === "QB" && !/backup|third string|qb2|qb3|emergency/.test(blob)) {
-      pts = /season|indefinitely|torn|surgery/.test(blob) ? 6 : 4.5;
-      if (/has started|veteran backup|experienced backup|won the job/.test(blob)) pts *= 0.55;
-      else if (/first (career )?start|freshman|never started/.test(blob)) pts *= 1.1;
-      const backup = /has started|veteran backup|experienced backup|won the job/.test(blob) ? " The backup has started before, so this move is smaller." : "";
-      why = (r.name || "Quarterback") + " is out. That is worth " + pts.toFixed(1) + " points against " + (side === "home" ? g.home.abbr : g.away.abbr) + "." + backup;
-      total -= Math.min(1.2, pts * 0.18);
-    } else {
-      const share = cfbSnapShare(r);
-      if (share < 0.45) return;
-      const full = ["LT", "RT", "OT", "T"].includes(pos) ? 2.6 : pos === "RB" ? 2.2 : ["WR", "TE"].includes(pos) ? 1.6 : 0;
-      if (!full) return;
-      pts = +(full * share).toFixed(2);
-      why = (r.name || pos) + " is out and takes " + Math.round(share * 100) + "% of the snaps. Moved " + pts.toFixed(1) + " against " + (side === "home" ? g.home.abbr : g.away.abbr) + ".";
-      total -= Math.min(0.4, pts * 0.12);
+      let pts = /season|indefinitely|torn|surgery/.test(blob) ? 6 : 4.5;
+      if (/has started|veteran backup|experienced backup|won the job/.test(blob)) pts = +(pts * 0.55).toFixed(2);
+      else if (/first (career )?start|freshman|never started/.test(blob)) pts = +(pts * 1.1).toFixed(2);
+      if (!bestQb[side] || pts > bestQb[side].pts) bestQb[side] = { r, pts, blob };
+      return;
     }
-    if (side === "home") home += pts;
-    else away += pts;
-    if (why) notes.push(why);
+    const share = cfbSnapShare(r);
+    if (share < 0.45) return;
+    const full = ["LT", "RT", "OT", "T"].includes(pos) ? 2.6 : pos === "RB" ? 2.2 : ["WR", "TE"].includes(pos) ? 1.6 : 0;
+    if (!full) return;
+    const pts = +(full * share).toFixed(2);
+    if (!bestSnap[side] || pts > bestSnap[side].pts) bestSnap[side] = { r, pts, share };
   });
-  const margin = Math.max(-6.5, Math.min(6.5, +(away - home).toFixed(2)));
-  return { margin, total: +Math.max(-1.6, total).toFixed(2), names: notes.map((n) => n.split(" ")[0]).slice(0, 4), notes };
+  let home = 0;
+  let away = 0;
+  let total = 0;
+  const notes = [];
+  const qbOut = [];
+  Object.keys(bestQb).forEach((side) => {
+    const item = bestQb[side];
+    const team = side === "home" ? g.home.abbr : g.away.abbr;
+    if (side === "home") home += item.pts;
+    else away += item.pts;
+    total -= Math.min(1.2, item.pts * 0.18);
+    const backup = /has started|veteran backup|experienced backup|won the job/.test(item.blob) ? " The backup has started before, so this is smaller." : "";
+    notes.push((item.r.name || "Quarterback") + " is out. That is worth " + item.pts.toFixed(1) + " points against " + team + "." + backup);
+    qbOut.push(side);
+  });
+  Object.keys(bestSnap).forEach((side) => {
+    const item = bestSnap[side];
+    const team = side === "home" ? g.home.abbr : g.away.abbr;
+    if (side === "home") home += item.pts;
+    else away += item.pts;
+    total -= Math.min(0.4, item.pts * 0.12);
+    notes.push((item.r.name || "Starter") + " is out and takes " + Math.round(item.share * 100) + "% of the snaps. That is worth " + item.pts.toFixed(1) + " against " + team + ".");
+  });
+  return {
+    margin: Math.max(-6.5, Math.min(6.5, +(away - home).toFixed(2))),
+    total: +Math.max(-1.6, total).toFixed(2),
+    names: notes.map((n) => n.split(" ")[0]).slice(0, 4),
+    notes,
+    qbOut: qbOut.length > 0
+  };
 }
 function cfbLearnNudge(g) {
   const hr = residualFor("cfb", g.home && g.home.id);
@@ -3813,19 +3831,57 @@ function cfbSideLabel(g, homeSpread) {
   if (n > 0) return g.away.abbr + " -" + n.toFixed(1);
   return "pick";
 }
-function cfbMarketMove(g, lockedSp, liveSp, lockedTot, liveTot) {
+function cfbRememberClose(g) {
+  const desk = g && g.marketDesk;
+  if (!desk) return;
+  if (desk.home_spread != null && Number.isFinite(Number(desk.home_spread))) g._dkSpread = Number(desk.home_spread);
+  if (desk.total != null && Number.isFinite(Number(desk.total))) g._dkTotal = Number(desk.total);
+}
+function cfbLineMove(g, lockedSp, lockedTot) {
+  cfbRememberClose(g);
   const notes = [];
   let margin = 0;
   let total = 0;
-  if (lockedSp != null && liveSp != null && Math.abs(Number(liveSp) - Number(lockedSp)) >= 0.5) {
-    margin = Math.max(-3, Math.min(3, +(0.65 * (Number(lockedSp) - Number(liveSp))).toFixed(2)));
-    notes.push("The line moved from " + cfbSideLabel(g, lockedSp) + " to " + cfbSideLabel(g, liveSp) + ". We followed " + (margin > 0 ? "+" : "") + margin.toFixed(1) + " of that move.");
+  const spreadMoved = g._dkSpread != null && lockedSp != null && Math.abs(g._dkSpread - Number(lockedSp)) >= 0.5;
+  const totalMoved = g._dkTotal != null && lockedTot != null && Math.abs(g._dkTotal - Number(lockedTot)) >= 0.5;
+  if (spreadMoved) {
+    const m = Math.max(-3, Math.min(3, +(0.65 * (Number(lockedSp) - g._dkSpread)).toFixed(2)));
+    margin += m;
+    notes.push("The line moved from " + cfbSideLabel(g, lockedSp) + " to " + cfbSideLabel(g, g._dkSpread) + ". We followed " + (m > 0 ? "+" : "") + m.toFixed(1) + " of that move.");
   }
-  if (lockedTot != null && liveTot != null && Math.abs(Number(liveTot) - Number(lockedTot)) >= 0.5) {
-    total = Math.max(-2, Math.min(2, +(0.65 * (Number(liveTot) - Number(lockedTot))).toFixed(2)));
-    notes.push("The total moved from " + lockedTot + " to " + liveTot + ". We followed " + (total > 0 ? "+" : "") + total.toFixed(1) + ".");
+  if (totalMoved) {
+    const t = Math.max(-2, Math.min(2, +(0.65 * (g._dkTotal - Number(lockedTot))).toFixed(2)));
+    total += t;
+    notes.push("The total moved from " + lockedTot + " to " + g._dkTotal + ". We followed " + (t > 0 ? "+" : "") + t.toFixed(1) + ".");
   }
-  return { margin, total, notes };
+  const nudge = cfbStarterNudge(g);
+  if (spreadMoved) {
+    if (nudge.qbOut) notes.push("A quarterback is out. That is already inside the line move, so it is not added again.");
+  } else {
+    margin += nudge.margin;
+    if (!totalMoved) total += nudge.total;
+    nudge.notes.forEach((n) => notes.push(n));
+  }
+  if (!spreadMoved) {
+    const trip = cfbRestTravel(g);
+    margin += trip.margin;
+    if (!totalMoved) total += trip.total;
+    trip.notes.forEach((n) => notes.push(n));
+  }
+  if (!totalMoved) {
+    const wxn = cfbWeatherNudge(g);
+    total += wxn.total;
+    (wxn.notes || []).forEach((n) => notes.push(n));
+  }
+  const learned = cfbLearnNudge(g);
+  margin += learned.margin;
+  total += learned.total;
+  if (learned.note) notes.push(learned.note);
+  return {
+    margin: Math.max(-6.5, Math.min(6.5, +margin.toFixed(2))),
+    total: Math.max(-3.5, Math.min(3.5, +total.toFixed(2))),
+    notes
+  };
 }
 function cfbRestTravel(g) {
   const notes = [];
@@ -3850,6 +3906,9 @@ function cfbRestTravel(g) {
   return { margin: +margin.toFixed(2), total: +total.toFixed(2), notes };
 }
 function applySplitDesk() {
+  if (window.__splitDeskRunning) return;
+  window.__splitDeskRunning = true;
+  try {
   const rows = window.SPLIT_DESK || [];
   if (!rows.length || typeof DATA === "undefined" || !DATA) return;
   const byId = {};
@@ -3858,12 +3917,6 @@ function applySplitDesk() {
     if (!g || g.league !== "cfb" || g.completed) return;
     const row = byId[String(g.id)];
     if (!row || row.awayPts == null || row.homePts == null) return;
-    const liveSpread = g.marketDesk && g.marketDesk.home_spread != null
-      ? Number(g.marketDesk.home_spread)
-      : (g.odds && g.odds.home_spread != null ? Number(g.odds.home_spread) : null);
-    const liveTotal = g.marketDesk && g.marketDesk.total != null
-      ? Number(g.marketDesk.total)
-      : (g.odds && g.odds.total != null ? Number(g.odds.total) : null);
     const p = g.proj || (g.proj = {});
     const away = Number(row.awayPts);
     const home = Number(row.homePts);
@@ -3903,13 +3956,9 @@ function applySplitDesk() {
     p.split_home = home;
     p.split_margin = p.blended_margin;
     p.split_total = p.hashmark_total;
-    const nudge = cfbStarterNudge(g);
-    const wxn = cfbWeatherNudge(g);
-    const learned = cfbLearnNudge(g);
-    const trip = cfbRestTravel(g);
-    const mkt = cfbMarketMove(g, hs, liveSpread, row.totalLine, liveTotal);
-    const moveM = Math.max(-6.5, Math.min(6.5, +(nudge.margin + learned.margin + trip.margin + mkt.margin).toFixed(2)));
-    const moveT = Math.max(-3.5, Math.min(3.5, +(nudge.total + wxn.total + learned.total + trip.total + mkt.total).toFixed(2)));
+    const moved = cfbLineMove(g, hs, row.totalLine);
+    const moveM = moved.margin;
+    const moveT = moved.total;
     if (Math.abs(moveM) >= 0.2 || Math.abs(moveT) >= 0.2) {
       const dgMargin = +(p.blended_margin + moveM).toFixed(2);
       const dgTotal = +Math.max(20, p.hashmark_total + moveT).toFixed(1);
@@ -3939,9 +3988,9 @@ function applySplitDesk() {
         p.total_pick = Math.abs(p.edge_total) < 1.5 ? "NO PLAY" : ((p.edge_total > 0 ? "OVER " : "UNDER ") + row.totalLine);
       }
     }
-    p.gg_injury = nudge;
-    p.gg_weather = wxn;
-    p.weather_adj_total = wxn.total;
+    p.gg_injury = null;
+    p.gg_weather = null;
+    p.weather_adj_total = moveT;
     if (typeof normCdf === "function" && typeof cfbSigma === "function") {
       const sigma = cfbSigma(p.blended_margin);
       p.cfb_sigma = sigma;
@@ -3953,18 +4002,15 @@ function applySplitDesk() {
       g.box.home_points = p.home_points;
       g.box.total_points = p.hashmark_total;
     }
-    const why = []
-      .concat(mkt.notes || [])
-      .concat(nudge.notes || [])
-      .concat(trip.notes || [])
-      .concat(wxn.notes || [])
-      .concat(learned.note ? [learned.note] : []);
     g.situational = {
       margin_adj: moveM,
       total_adj: moveT,
-      notes: why.length ? why : ["Nothing since the locked score was big enough to move the line."]
+      notes: moved.notes.length ? moved.notes : ["Nothing since the locked score was big enough to move the line."]
     };
   });
+  } finally {
+    window.__splitDeskRunning = false;
+  }
 }
 window.applySplitDesk = applySplitDesk;
 
