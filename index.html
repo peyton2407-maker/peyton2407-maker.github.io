@@ -3889,11 +3889,26 @@ function cfbRestTravel(g) {
   let total = 0;
   const rh = restInfo(g, "home");
   const ra = restInfo(g, "away");
-  const shortPts = (info) => info.kind === "short" ? 1.7 : info.kind === "shortish" ? 1.0 : 0;
+  const shortPts = (info) => {
+    if (!info || !info.last) return 0;
+    const d = Number(info.days);
+    if (!Number.isFinite(d)) return 0;
+    if (d <= 4.6) return 1.7;
+    if (d <= 5.8) return 1.0;
+    if (d <= 6.65) return 1.5;
+    return 0;
+  };
+  const restWord = (info) => {
+    const d = Number(info.days);
+    if (d > 5.8) return "a Friday turnaround (" + d.toFixed(1) + " days)";
+    return "short rest (" + Math.round(d) + " days)";
+  };
   const hp = shortPts(rh);
   const ap = shortPts(ra);
-  if (hp) notes.push(g.home.abbr + " is on short rest (" + Math.round(rh.days) + " days). Moved " + (-hp).toFixed(1) + ".");
-  if (ap) notes.push(g.away.abbr + " is on short rest (" + Math.round(ra.days) + " days). Moved +" + ap.toFixed(1) + " toward " + g.home.abbr + ".");
+  if (!(hp && ap && hp === ap)) {
+    if (hp) notes.push(g.home.abbr + " is on " + restWord(rh) + ". Moved " + (-hp).toFixed(1) + ".");
+    if (ap) notes.push(g.away.abbr + " is on " + restWord(ra) + ". Moved +" + ap.toFixed(1) + " toward " + g.home.abbr + ".");
+  }
   margin += -hp + ap;
   const tr = typeof travelInfo === "function" ? travelInfo(g) : {};
   const miles = Number(tr.miles);
@@ -3905,8 +3920,57 @@ function cfbRestTravel(g) {
   }
   return { margin: +margin.toFixed(2), total: +total.toFixed(2), notes };
 }
+function closeBook() {
+  if (window.__CFB_CLOSE) return window.__CFB_CLOSE;
+  try { window.__CFB_CLOSE = JSON.parse(localStorage.getItem("gg-cfb-close-v1") || "{}"); }
+  catch (e) { window.__CFB_CLOSE = {}; }
+  return window.__CFB_CLOSE;
+}
+function saveCfbClose(g, odds) {
+  if (!g || !odds || odds.home_spread == null || !Number.isFinite(Number(odds.home_spread))) return;
+  const spread = Number(odds.home_spread);
+  const total = odds.total != null && Number.isFinite(Number(odds.total)) ? Number(odds.total) : null;
+  g._dkSpread = spread;
+  if (total != null) g._dkTotal = total;
+  const book = closeBook();
+  book[String(g.id)] = { spread: spread, total: total, at: Date.now() };
+  try { localStorage.setItem("gg-cfb-close-v1", JSON.stringify(book)); } catch (e) {}
+}
+function restoreCfbClose(g) {
+  if (!g || g._dkSpread != null) return;
+  const row = closeBook()[String(g.id)];
+  if (!row || row.spread == null) return;
+  g._dkSpread = Number(row.spread);
+  if (row.total != null) g._dkTotal = Number(row.total);
+}
+async function pullCfbCloseLines() {
+  if (window.__cfbClosePull) return window.__cfbClosePull;
+  window.__cfbClosePull = (async () => {
+    const week = typeof currentCfbWeekNumber === "function" ? currentCfbWeekNumber() : 5;
+    const url = "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=" + week + "&seasontype=2&groups=80&limit=400";
+    const data = await getJSON(url);
+    const byId = {};
+    (typeof parseGames === "function" ? parseGames(data, "cfb") : []).forEach((row) => {
+      if (row && row.id) byId[String(row.id)] = row;
+    });
+    let n = 0;
+    (DATA.games || []).forEach((g) => {
+      if (!g || g.league !== "cfb" || g.completed) return;
+      const live = byId[String(g.id)];
+      if (!live || !live.odds || live.odds.home_spread == null) return;
+      saveCfbClose(g, live.odds);
+      n++;
+    });
+    if (n && typeof applySplitDesk === "function") applySplitDesk();
+    if ((view === "cfb" || view === "all") && typeof renderBoard === "function") renderBoard();
+  })().catch((e) => { console.warn("cfb close", e); });
+  return window.__cfbClosePull;
+}
 function applySplitDesk() {
-  if (window.__splitDeskRunning) return;
+  if (window.__splitDeskRunning) {
+    window.__splitDeskAgain = true;
+    return;
+  }
   window.__splitDeskRunning = true;
   try {
   const rows = window.SPLIT_DESK || [];
@@ -3935,6 +3999,9 @@ function applySplitDesk() {
     }
     p.total_pick = row.total || "NO PLAY";
     const hs = row.spread ? deskHomeSpread(row, g) : null;
+    if (hs != null) g._lockedSpread = Number(hs);
+    if (row.totalLine != null) g._lockedTotal = Number(row.totalLine);
+    restoreCfbClose(g);
     if (hs != null || row.totalLine != null) {
       g.odds = Object.assign({}, g.odds || {}, hs == null ? {} : {
         home_spread: hs,
@@ -4010,6 +4077,10 @@ function applySplitDesk() {
   });
   } finally {
     window.__splitDeskRunning = false;
+    if (window.__splitDeskAgain) {
+      window.__splitDeskAgain = false;
+      applySplitDesk();
+    }
   }
 }
 window.applySplitDesk = applySplitDesk;
@@ -9086,7 +9157,10 @@ async function pullLiveScores() {
       g.situation = n.situation;
       if (g.home) g.home.score = n.home.score;
       if (g.away) g.away.score = n.away.score;
-      if (n.odds && n.odds.home_spread != null) g.odds = n.odds;
+      if (n.odds && n.odds.home_spread != null) {
+        if (g.league === "cfb" && typeof saveCfbClose === "function") saveCfbClose(g, n.odds);
+        g.odds = n.odds;
+      }
       if (!wasDone && g.completed && g.league === "cfb") newFinals++;
     });
     if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games);
@@ -11463,6 +11537,7 @@ async function loadDeskData() {
     window.WEEK_RESULTS = results || [];
     if (polls) window.CFB_POLLS = polls;
     try { if (typeof applySplitDesk === "function") applySplitDesk(); } catch (e) {}
+    try { if (typeof pullCfbCloseLines === "function") pullCfbCloseLines(); } catch (e) {}
     try {
       if (view === "score" && typeof renderScorecard === "function") renderScorecard();
       if (view === "history" && typeof renderHistory === "function") renderHistory();
