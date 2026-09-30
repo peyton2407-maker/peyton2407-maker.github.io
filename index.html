@@ -6939,7 +6939,7 @@ function gamesForView() {
     if (view === "all") return g.league === activeLeague("boardLeague", "nfl");
     return g.league === activeLeague("boardLeague", "nfl");
   });
-  if (view === "cfb") games = games.filter((g) => isThisCfbWeek(g));
+  if (view === "cfb" || (view === "all" && activeLeague("boardLeague", "nfl") === "cfb")) games = games.filter((g) => isThisCfbWeek(g));
   if (view === "live") {
     const now = Date.now();
     const liveNow = games.filter((g) => typeof isLiveGame === "function" && isLiveGame(g));
