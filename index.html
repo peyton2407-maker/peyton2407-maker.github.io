@@ -1704,8 +1704,8 @@ const LIVE = {
   MARKET_WEIGHT_CFB: 0.44,
   CFB_TOTAL_MARKET: 0.52,
   SIM_N: 30000,
-  SIM_N_NFL: 30000,
-  SIM_N_CFB: 12000,
+  SIM_N_NFL: 2500,
+  SIM_N_CFB: 1500,
   PRIORS: {
     nfl: { rush: 118, rec: 218, allowed: 336, ppg: 22.8 },
     cfb: { rush: 168, rec: 232, allowed: 400, ppg: 27 },
@@ -3940,7 +3940,7 @@ function simulateGame(game) {
   const highCut = nfl ? 55 : 70;
   const blow = nfl ? 17 : 21;
   const live = typeof isLiveGame === "function" && (isLiveGame(game) || game.completed);
-  const n = live ? 8000 : (nfl ? (LIVE.SIM_N_NFL || 30000) : (LIVE.SIM_N_CFB || 12000));
+  const n = live ? 1200 : (nfl ? (LIVE.SIM_N_NFL || 2500) : (LIVE.SIM_N_CFB || 1500));
   const rand = mulberry32(Number(String(game.id || "1").slice(-9)) || 1);
   const home = [], away = [], tots = [];
   const pair = Object.create(null);
@@ -6547,10 +6547,10 @@ async function fetchInjuries(force){
     if (wantNfl) {
       const [nfl, sleeper, rap] = await Promise.all([
         getJSON(injEndpoint("/apis/site/v2/sports/football/nfl/injuries")),
-        getJSON("https://api.sleeper.app/v1/players/nfl").catch(() => null),
-        pullRapoportArticles().catch(() => []),
-        pullRapoportX().catch(() => []),
-        pullSchefterX().catch(() => [])
+        force ? getJSON("https://api.sleeper.app/v1/players/nfl").catch(() => null) : Promise.resolve(null),
+        force ? pullRapoportArticles().catch(() => []) : Promise.resolve([]),
+        force ? pullRapoportX().catch(() => []) : Promise.resolve([]),
+        force ? pullSchefterX().catch(() => []) : Promise.resolve([])
       ]);
       const parsedN = parseInjuryFeed(nfl, "nfl");
       const fromSleeper = sleeperInjuryRows(sleeper);
@@ -8920,7 +8920,7 @@ async function pullLiveScores() {
         DATA.notes.learning = `CFB board shifted after ${n} finals.`;
       }
     }
-    if (typeof renderBoard === "function") renderBoard();
+    if (typeof renderBoard === "function" && (view === "nfl" || view === "cfb" || view === "all" || view === "live")) renderBoard();
     if (view === "cfbpicks" && typeof renderCfbPicks === "function") renderCfbPicks();
     const liveN = (DATA.games || []).filter((g) => typeof isLiveGame === "function" && isLiveGame(g)).length;
     if (liveN) setStamp(liveN + " live · rest-of-game on", true);
@@ -10020,9 +10020,9 @@ function scheduleDeskRefresh(force) {
         if (typeof pullLiveScores === "function") await pullLiveScores();
       }
       const extra = [];
-      const wantWx = !quiet && (force || view === "home" || view === "nfl" || view === "cfb" || view === "all" || view === "live" || view === "nflwx" || view === "cfbwx");
-      const wantInj = !quiet && (force || view === "home");
-      const wantLines = force || view === "value" || view === "props" || view === "parlay" || view === "cfbpicks";
+      const wantWx = !quiet && (view === "home" || view === "nfl" || view === "cfb" || view === "all" || view === "live" || view === "nflwx" || view === "cfbwx");
+      const wantInj = !quiet && view === "home";
+      const wantLines = view === "value" || view === "props" || view === "parlay" || view === "cfbpicks";
       if (wantWx && typeof attachWeather === "function") {
         const bare = (DATA.games || []).some((g) => (g.league === "nfl" || g.league === "cfb") && !g.completed && !g.indoor && !g.weather);
         const due = typeof wxReportsDue === "function" && wxReportsDue();
@@ -11458,7 +11458,6 @@ async function boot() {
   try { if (typeof syncDesk === "function") syncDesk(); } catch (e) {}
   if (view === "home" && typeof renderHome === "function") renderHome();
   if (view === "score" && typeof renderScorecard === "function") renderScorecard();
-  if (typeof renderBoard === "function") renderBoard();
   seedInjuriesFromSnap();
   if (!window.__cfbInjClock) {
     const pullDueReports = () => {
@@ -11491,10 +11490,6 @@ async function boot() {
     pullDueReports();
     window.__cfbInjClock = setInterval(pullDueReports, 60 * 1000);
   }
-  if (!window.__dkPoll) window.__dkPoll = setInterval(() => {
-    const ids = (DATA.games || []).filter((g) => g && g.league === "nfl" && !g.completed).map((g) => String(g.id));
-    if (typeof ensureNflDk === "function") ensureNflDk(ids.map((id) => ({ game_id: id })));
-  }, 2 * 60 * 1000);
   document.getElementById("injRefreshBtn")?.addEventListener("click", () => {
     setStamp("Updating injuries…", true);
     fetchInjuries(true).then(() => {
@@ -11514,7 +11509,7 @@ async function boot() {
   });
   $("#refreshBtn")?.addEventListener("click", () => {
     __deskFreshAt = 0;
-    scheduleDeskRefresh(true);
+    scheduleDeskRefresh(false);
   });
   document.getElementById("downloadBtn")?.addEventListener("click", () => {
     const html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
