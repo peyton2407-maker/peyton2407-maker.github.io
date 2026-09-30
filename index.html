@@ -6959,6 +6959,10 @@ function gamesForView() {
     );
   }
   games = [...games];
+  if (view === "cfb" || (view === "all" && activeLeague("boardLeague", "nfl") === "cfb")) {
+    games.sort((a, b) => (new Date(a.date).getTime() || 0) - (new Date(b.date).getTime() || 0) || String(a.short_name || "").localeCompare(String(b.short_name || "")));
+    return games;
+  }
   games.sort((a, b) => {
     if (sortKey === "edge") return Math.abs(b.proj?.edge_spread || 0) - Math.abs(a.proj?.edge_spread || 0);
     if (sortKey === "total") return Math.abs(b.proj?.edge_total || 0) - Math.abs(a.proj?.edge_total || 0);
@@ -7141,7 +7145,7 @@ function projectionTable(games) {
   if (!rows.length) return "";
   return `
     <div class="card board-card">
-      <h3 style="margin:0 0 10px">${view === "nfl" ? "Best projections" : view === "cfb" ? "Best CFB projections" : view === "live" ? "Live board" : "Full projection board"}</h3>
+      <h3 style="margin:0 0 10px">${view === "nfl" ? "Best projections" : view === "cfb" ? ("College Week " + currentCfbWeekNumber() + " by start time") : view === "live" ? "Live board" : "Full projection board"}</h3>
       <div class="tablewrap">
       <table class="boardtable">
         <thead>
@@ -11163,8 +11167,11 @@ function setView(next) {
   if (wantProps) { window.__parlayLg = "props"; next = "parlay"; }
   view = next;
   try { if (location.hash.replace("#","") !== next) history.replaceState(null, "", "#" + next); } catch (e) {}
-  if (next === "cfb" && $("#openOnly").value === "upcoming") {
-    $("#openOnly").value = "projected";
+  if (next === "cfb") {
+    if ($("#openOnly").value === "upcoming") $("#openOnly").value = "projected";
+    sortKey = "kick";
+    const sortSel = document.getElementById("sortKey");
+    if (sortSel) sortSel.value = "kick";
   }
   $$(".tab").forEach((t) => t.classList.toggle("active", t.dataset.view === next));
   const board = next === "nfl" || next === "cfb" || next === "all" || next === "live";
