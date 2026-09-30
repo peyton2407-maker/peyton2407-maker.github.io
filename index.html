@@ -4864,7 +4864,8 @@ function collectValueDogs() {
 function collectParlayLegs() {
   const legs = [];
   (DATA.games || []).forEach((g) => {
-        if (g.completed) return;
+    if (g.completed) return;
+    if (g.date && new Date(g.date).getTime() < Date.now() - 3 * 60 * 60 * 1000) return;
     if (g.league === "cfb" && typeof isThisCfbWeek === "function" && !isThisCfbWeek(g)) return;
     const p = g.proj || {};
     const o = g.odds || {};
@@ -4951,15 +4952,25 @@ function packParlays(legs, thoughtFor) {
   return [pack("2-leg", pickDiverse(2)), pack("3-leg", pickDiverse(3)), pack("4-leg", pickDiverse(4))].filter(Boolean);
 }
 function buildParlays(league) {
-  const legs = collectParlayLegs().filter((l) => !league || l.league === league);
-  return packParlays(legs, (title) => title === "2-leg"
-    ? "These are the two biggest gaps between our number and Vegas, in two different games. This is the ticket we would actually use."
-    : "Same idea, more legs. The price gets longer and the chance they all hit gets smaller. Treat the 2-leg as the main play.");
+  let legs = collectParlayLegs().filter((l) => !league || l.league === league);
+  let lean = false;
+  if (legs.length < 2 && league === "nfl") {
+    lean = true;
+    legs = leanSideLegs("nfl", true, 0.4).concat(leanSideLegs("nfl", false, 0.4), collectParlayLegs().filter((l) => l.league === "nfl" && l.kind === "total"));
+    legs.sort((a, b) => b.score - a.score);
+  }
+  return packParlays(legs, (title) => lean
+    ? "Week 4 leans. Each leg is a side our number likes, in a different game. The 2-leg is the ticket."
+    : (title === "2-leg"
+      ? "These are the two biggest gaps between our number and Vegas, in two different games. This is the ticket we would actually use."
+      : "Same idea, more legs. The price gets longer and the chance they all hit gets smaller. Treat the 2-leg as the main play."));
 }
-function leanSideLegs(league, wantDog) {
+function leanSideLegs(league, wantDog, minEdge) {
+  const floor = minEdge == null ? 1 : minEdge;
   const legs = [];
   (DATA.games || []).forEach((g) => {
     if (g.completed || g.league !== league) return;
+    if (g.date && new Date(g.date).getTime() < Date.now() - 3 * 60 * 60 * 1000) return;
     const p = g.proj || {};
     const o = g.odds || {};
     if (o.home_spread == null || p.edge_spread == null) return;
@@ -4968,7 +4979,7 @@ function leanSideLegs(league, wantDog) {
     const dogIsHome = sp > 0;
     const dogEdge = dogIsHome ? Number(p.edge_spread) : -Number(p.edge_spread);
     const edge = wantDog ? dogEdge : -dogEdge;
-    if (edge < 1) return;
+    if (edge < floor) return;
     const abbr = (wantDog ? dogIsHome : !dogIsHome) ? g.home.abbr : g.away.abbr;
     const side = abbr === g.home.abbr ? "home" : "away";
     const pts = Math.abs(sp);
@@ -5774,6 +5785,7 @@ function renderParlays() {
     return;
   }
   hero.innerHTML = parlayHeroHtml(league) || `<div class="empty">Not enough NFL game legs yet.</div>`;
+  if (stamp) stamp.textContent = "NFL parlays for this week. Sides and totals from games that have not kicked off. Tap a leg for the why.";
   hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 function valueTileHtml(r) {
@@ -8824,6 +8836,13 @@ function renderCfbWeather() {
 }
 
 
+async function ensureWeekProps() {
+  const upcoming = (DATA.games || []).filter((g) => g && g.league === "nfl" && !g.completed && g.date && new Date(g.date).getTime() > Date.now() - 3 * 60 * 60 * 1000 && !(g.props && g.props.length));
+  if (!upcoming.length || typeof collectProps !== "function" || typeof attachProps !== "function") return;
+  if (DATA.meta) DATA.meta.nfl_week = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : 4;
+  const players = await collectProps();
+  upcoming.forEach((g) => { g.props = attachProps(g, players); });
+}
 async function pullLiveScores() {
   try {
     const jobs = [
@@ -8854,6 +8873,22 @@ async function pullLiveScores() {
       if (!wasDone && g.completed && g.league === "cfb") newFinals++;
     });
     if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games);
+    const have = new Set((DATA.games || []).map((g) => String(g.id)));
+    const ratings = {};
+    (DATA.games || []).forEach((g) => {
+      if (!g || g.league !== "nfl" || !g.proj) return;
+      const p = g.proj;
+      if (g.home && p.home_fpi != null) ratings[String(g.home.id)] = { fpi: p.home_fpi, fpi_rank: p.home_fpi_rank, off: p.home_off, def: p.home_def };
+      if (g.away && p.away_fpi != null) ratings[String(g.away.id)] = { fpi: p.away_fpi, fpi_rank: p.away_fpi_rank, off: p.away_off, def: p.away_def };
+    });
+    Object.values(byId).forEach((n) => {
+      if (!n || n.league !== "nfl" || n.completed || have.has(String(n.id))) return;
+      if (typeof projectGame === "function") n.proj = projectGame(n, ratings);
+      DATA.games.push(n);
+      have.add(String(n.id));
+    });
+    DATA.meta = DATA.meta || {};
+    DATA.meta.nfl_week = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : 4;
     if (typeof rebuildSharedLearning === "function") rebuildSharedLearning(DATA.games || []);
     try { if (typeof reapplyDeskLine === "function") reapplyDeskLine(); } catch (e) {}
     if (newFinals) {
@@ -11114,6 +11149,13 @@ function setView(next) {
     if (wantProps) window.__parlayLg = "props";
     else if (!window.__parlayLg) window.__parlayLg = "nfl";
     renderParlays();
+    const upcoming = (DATA.games || []).filter((g) => g.league === "nfl" && !g.completed && g.date && new Date(g.date).getTime() > Date.now());
+    if (upcoming.length < 8 && typeof pullLiveScores === "function") {
+      pullLiveScores()
+        .then(() => ensureWeekProps())
+        .then(() => { if (view === "parlay") renderParlays(); })
+        .catch(() => {});
+    }
   }
   if (next === "tds") renderTdDesk();
   if (next === "nflinj" || next === "cfbinj") {
