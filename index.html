@@ -1082,7 +1082,7 @@ body{font-size:17px;line-height:1.45}
 .home-jump.hot span{color:#f6edd4}
 .dk-all{display:block;margin-top:4px;font-size:15px;line-height:1.45;font-weight:700}
 .side-top .dk-wrap{grid-column:1/-1}
-#parlayTabs .ptab.active{color:#d6ff4a;border-bottom-color:#d6ff4a}
+a[data-view="heisman"], a[href="#heisman"] { display: none !important; }
 #tabBar a.tab.star::after{content:" · tap";font-weight:800;color:#ffe08a}
 #boomSection .hm-sub,#boomSection .hm-kick,#boomSection .hm-team span{color:#d5e3d8;font-size:14px}
 .league-tabs{
@@ -1172,9 +1172,6 @@ body{font-size:17px;line-height:1.45}
               <a class="tab star" href="#cfbpicks" data-view="cfbpicks">College picks</a>
               <a class="tab" href="#cfbwx" data-view="cfbwx">College weather</a>
               <a class="tab" href="#cfbinj" data-view="cfbinj">College injuries</a>
-              <!-- SET ASIDE: Heisman odds tile. Put this link back in the college row when Heisman odds return.
-              <a class="tab" href="#heisman" data-view="heisman">Heisman odds</a>
-              -->
               <a class="tab" href="#recruit" data-view="recruit">Recruiting</a>
             </div>
             <button class="slide-btn" type="button" data-slide="cfbTiles" data-dir="1" aria-label="College tiles right">›</button>
@@ -11113,7 +11110,8 @@ function renderBoom() {
 }
 
 function setView(next) {
-  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,heisman:1,awards:1,charts:1,prime:1,boom:1};
+  if (next === "heisman") next = "home";
+  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
   if (!allowed[next]) next = "home";
   const wantProps = next === "propp";
   if (wantProps) { window.__parlayLg = "props"; next = "parlay"; }
