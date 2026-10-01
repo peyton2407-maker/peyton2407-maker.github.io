@@ -2044,6 +2044,27 @@ function writeSettledLine(g, margin, total) {
   }
   return g;
 }
+function nflModelTotal(offH, defH, offA, defA, hfa) {
+  const base = LIVE.NFL_AVG_TOTAL / 2;
+  const homePts = base + Number(offH) - Number(defA) + 0.45 * hfa;
+  const awayPts = base + Number(offA) - Number(defH) - 0.45 * hfa;
+  return homePts + awayPts;
+}
+function rememberNflUnits(map) {
+  window.__nflUnits = map || {};
+  const list = (DATA && DATA.ratings && DATA.ratings.nfl) || [];
+  list.forEach((r) => {
+    const u = window.__nflUnits[String(r.id)];
+    if (!u) return;
+    if (u.off != null) r.off = u.off;
+    if (u.def != null) r.def = u.def;
+  });
+}
+async function fillNflOffenseDefense() {
+  if (window.__nflUnits && Object.keys(window.__nflUnits).length >= 30) return;
+  const payload = await getJSON("https://site.web.api.espn.com/apis/fitt/v3/sports/football/nfl/powerindex?limit=40");
+  rememberNflUnits(fpiMap(payload, "nfl"));
+}
 function settleNfl(g) {
   if (!g || g.league !== "nfl" || !g.proj || g.completed) return g;
   const p = g.proj;
@@ -2060,6 +2081,17 @@ function settleNfl(g) {
   if (model != null && mkt != null) margin = mw * mkt + (1 - mw) * model;
   else margin = model != null ? model : mkt;
   let total = p.model_total != null ? Number(p.model_total) : null;
+  const units = window.__nflUnits || {};
+  const hu = units[String(g.home && g.home.id)];
+  const au = units[String(g.away && g.away.id)];
+  if (hu && au && hu.off != null && au.off != null && hu.def != null && au.def != null) {
+    p.home_off = Number(hu.off);
+    p.home_def = Number(hu.def);
+    p.away_off = Number(au.off);
+    p.away_def = Number(au.def);
+    total = nflModelTotal(p.home_off, p.home_def, p.away_off, p.away_def, hfa);
+    p.model_total = +total.toFixed(2);
+  }
   const mktT = lockTot;
   if (total != null && mktT != null) total = mw * mktT + (1 - mw) * total;
   else total = total != null ? total : mktT;
@@ -10956,7 +10988,9 @@ function scheduleDeskRefresh(force) {
         extra.push(fetchInjuries(false).then(() => { window.__injAt = Date.now(); }).catch(() => {}));
       }
       if (wantLines && typeof pullDkLines === "function") extra.push(pullDkLines().catch(() => {}));
+      if (typeof fillNflOffenseDefense === "function") extra.push(fillNflOffenseDefense().catch(() => {}));
       await Promise.all(extra);
+      if (window.__nflUnits && typeof reapplyDeskLine === "function") reapplyDeskLine();
       if (typeof applySplitDesk === "function") applySplitDesk();
       __deskFreshAt = Date.now();
       if (!quiet || force) paintDesk();
@@ -12388,6 +12422,12 @@ async function boot() {
       if (typeof settleBoard === "function") settleBoard();
       if (typeof applySituationalBoard === "function") applySituationalBoard();
       if (typeof applySplitDesk === "function") applySplitDesk();
+      if (typeof fillNflOffenseDefense === "function") {
+        fillNflOffenseDefense().then(() => {
+          if (typeof reapplyDeskLine === "function") reapplyDeskLine();
+          if (typeof paintDesk === "function") paintDesk();
+        }).catch(() => {});
+      }
       if (typeof pullCfbCloseLines === "function") pullCfbCloseLines();
       if (typeof pullCfbCloseMiss === "function") pullCfbCloseMiss();
       if (typeof pullNflCloseLines === "function") pullNflCloseLines();
