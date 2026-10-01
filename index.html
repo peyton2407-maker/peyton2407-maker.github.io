@@ -2930,6 +2930,12 @@ function nflRestTravel(g) {
   }
   return { margin: +margin.toFixed(2), total: +total.toFixed(2), notes };
 }
+function nflDome(g) {
+  if (!g) return false;
+  if (g.indoor || (g.weather && g.weather.indoor)) return true;
+  const venue = String(g.venue || "").toLowerCase();
+  return /superdome|allegiant|u\.s\. bank|us bank|lucas oil|sofi|state farm|ford field|reliant|nrg stadium/.test(venue);
+}
 function nflLearnNudge(g) {
   const hr = residualFor("nfl", g.home && g.home.id);
   const ar = residualFor("nfl", g.away && g.away.id);
@@ -2956,7 +2962,7 @@ function nflLineMove(g, lockedSp, lockedTot) {
     total += t;
     notes.push("The total moved from " + lockedTot + " to " + g._dkTotal + ". We followed " + (t > 0 ? "+" : "") + t.toFixed(1) + ".");
   }
-  const nudge = cfbStarterNudge(g, { qb: 3.5, qbSeason: 4.5, snap: 0.85 });
+  const nudge = cfbStarterNudge(g, { qb: 3.5, qbSeason: 4.5, snap: 0.85, backup: 0.4 });
   if (spreadMoved) {
     if (nudge.qbOut) notes.push("A quarterback is out. That is already inside the line move, so it is not added again.");
   } else {
@@ -2970,7 +2976,7 @@ function nflLineMove(g, lockedSp, lockedTot) {
     if (!totalMoved) total += trip.total;
     trip.notes.forEach((n) => notes.push(n));
   }
-  if (!totalMoved) {
+  if (!totalMoved && !nflDome(g)) {
     const wxn = cfbWeatherNudge(g);
     total += wxn.total;
     (wxn.notes || []).forEach((n) => notes.push(n));
@@ -3832,9 +3838,10 @@ function cfbStarterNudge(g, scale) {
     const blob = String((r.short || "") + " " + (r.name || "")).toLowerCase();
     const side = r.side === "home" || r.side === "away" ? r.side : "";
     if (!side) return;
-    if (pos === "QB" && !/backup|third string|qb2|qb3|emergency/.test(blob)) {
+    if (pos === "QB" && !(/\b(backup|third string|qb2|qb3|emergency)\b/.test(blob) && !/starter|starting|ruled out|will not play/.test(blob))) {
       let pts = /season|indefinitely|torn|surgery/.test(blob) ? qbSeason : qbBase;
-      if (/has started|veteran backup|experienced backup|won the job/.test(blob)) pts = +(pts * 0.55).toFixed(2);
+      const backupCut = scale && scale.backup != null ? scale.backup : 0.55;
+      if (/has started|veteran backup|experienced backup|won the job/.test(blob)) pts = +(pts * backupCut).toFixed(2);
       else if (/first (career )?start|freshman|never started/.test(blob)) pts = +(pts * 1.1).toFixed(2);
       if (!bestQb[side] || pts > bestQb[side].pts) bestQb[side] = { r, pts, blob };
       return;
