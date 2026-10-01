@@ -7930,7 +7930,7 @@ function card(g) {
       <div class="linebox">
         <div class="lbl">Market / HASHMARK</div>
         <div class="num">${o.details || "No line"}</div>
-        <div class="subn">DG ${g.home.abbr} ${fmt.signed(p.hashmark_home_spread)} · edge ${fmt.signed(edge)}</div>
+        <div class="subn">DG ${cfbSideLabel(g, p.hashmark_home_spread) || "—"} · edge ${fmt.signed(edge)}</div>
         ${pickBadge}
         ${cfbReadHtml(g)}
       </div>
@@ -8840,7 +8840,7 @@ function sideBySide(p) {
     add("Receptions", cell(p.rec, 1), dk("rec"));
   }
   if (g) {
-    add("Spread", `${g.home.abbr} ${fmt.signed(proj.hashmark_home_spread)}`, price ? `${price.spread || "—"} (${american(price.homeSpread) || "—"})` : "—");
+    add("Spread", cfbSideLabel(g, proj.hashmark_home_spread) || "—", price ? `${price.spread || "—"} (${american(price.homeSpread) || "—"})` : "—");
     add("Total", cell(proj.hashmark_total, 1), price ? `${price.total ?? "—"} · over ${american(price.over) || "—"} · under ${american(price.under) || "—"}` : "—");
   }
   return `<table class="ladder"><thead><tr><th></th><th>HASHMARK</th><th>DraftKings</th></tr></thead><tbody>${rows.join("")}</tbody></table>`;
@@ -9014,7 +9014,7 @@ function openGame(id) {
     </div>` : ""}
     <div class="grid2">
       <div class="kv"><div class="lbl">Vegas line</div><b>${o.details || "—"}</b><div class="subn">Over/under ${o.total ?? "—"} · ${o.book || ""} · moneyline ${o.away_ml || "—"} / ${o.home_ml || "—"}</div></div>
-      <div class="kv"><div class="lbl">Our line</div><b>${g.home.abbr} ${fmt.signed(p.hashmark_home_spread)}</b><div class="subn">Our number for this game</div></div>
+      <div class="kv"><div class="lbl">Our line</div><b>${cfbSideLabel(g, p.hashmark_home_spread) || "—"}</b><div class="subn">Our number for this game</div></div>
       <div class="kv"><div class="lbl">Who wins?</div><b>${g.away.abbr} ${fmt.pct(p.win_prob_away)} / ${g.home.abbr} ${fmt.pct(p.win_prob_home)}</b></div>
       <div class="kv"><div class="lbl">Projected score</div><b>${p.away_points ?? "—"} – ${p.home_points ?? "—"}</b><div class="subn">Our total ${p.hashmark_total ?? "—"} · Vegas ${o.total ?? "—"} · ${p.total_pick || ""}</div></div>
       <div class="kv"><div class="lbl">Who we like</div><b>${p.pick_line || p.pick || "too close to call"}</b><div class="subn">How far off Vegas ${fmt.signed(p.edge_spread)}</div></div>
