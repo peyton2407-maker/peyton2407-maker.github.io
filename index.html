@@ -5724,11 +5724,12 @@ function takeParlayBags(pool, n, limit) {
   walk(0, []);
   return bags;
 }
-function packParlays(legs, thoughtFor) {
+function packParlays(legs, thoughtFor, perLength) {
+  const limit = perLength || 6;
   const out = [];
   for (let n = 2; n <= 6; n++) {
     const title = n + "-leg";
-    takeParlayBags(legs, n, 6).forEach((bag, i) => {
+    takeParlayBags(legs, n, limit).forEach((bag, i) => {
       const { p, odds } = parlayPayout(bag.map((l) => l.hit));
       out.push({
         title: title + " #" + (i + 1),
@@ -5742,12 +5743,6 @@ function packParlays(legs, thoughtFor) {
     });
   }
   return out;
-}
-function buildParlays(league) {
-  const legs = collectParlayLegs().filter((l) => !league || l.league === league);
-  return packParlays(legs, (title) => title === "2-leg"
-    ? "These are the two biggest gaps between our number and the current line, in two different games. This is the ticket."
-    : "The next best legs, added on. The price gets longer and one miss sinks it. The 2-leg is the play.");
 }
 function leanSideLegs(league, wantDog, minEdge) {
   const floor = minEdge == null ? 1 : minEdge;
@@ -5770,31 +5765,41 @@ function leanSideLegs(league, wantDog, minEdge) {
     const hit = typeof coverHit === "function" ? coverHit(g, side) : 0.52;
     const sign = wantDog ? "+" : "-";
     const why = wantDog
-      ? `${abbr} is getting ${pts.toFixed(1)}. Our score has them covering by ${edge.toFixed(1)} points. That is not enough to bet them alone. It is enough to put on an underdog ticket.`
-      : `${abbr} is laying ${pts.toFixed(1)}. Our score still makes that number short by ${edge.toFixed(1)} points.`;
+      ? `${abbr} is getting ${pts.toFixed(1)}. Our number has them covering by ${edge.toFixed(1)} points.`
+      : `${abbr} is laying ${pts.toFixed(1)}. Our number makes that line short by ${edge.toFixed(1)} points.`;
     legs.push({
       label: `${abbr} ${sign}${pts.toFixed(1)}`,
       detail: `${g.away.abbr} @ ${g.home.abbr}`,
       game_id: g.id, game: g.short_name, date: g.date, league: g.league,
       hit, odds: toAmerican(Math.min(0.62, Math.max(0.4, hit))),
-      key: (wantDog ? "dog:" : "fav:") + g.id, score: edge * 10 + hit * 20,
+      key: (wantDog ? "dog:" : "fav:") + g.id, score: edge * 100 + hit,
       kind: "spread", dog: wantDog, why
     });
   });
   legs.sort((a, b) => b.score - a.score);
   return legs;
 }
+function dogFavLegs(league, wantDog) {
+  const primary = collectParlayLegs().filter((l) => l.league === league && l.kind === "spread" && !!l.dog === !!wantDog);
+  const have = new Set(primary.map((l) => l.game_id));
+  const extra = leanSideLegs(league, wantDog, 0.75).filter((l) => !have.has(l.game_id));
+  return primary.concat(extra).sort((a, b) => Number(b.score) - Number(a.score));
+}
 function buildDogParlays(league) {
-  const legs = collectParlayLegs().filter((l) => l.league === league && l.kind === "spread" && l.dog);
-  return packParlays(legs, (title) => title === "2-leg"
-    ? "The two underdogs our number likes by the most, in different games. Both already cleared a bet on their own."
-    : "Same dogs, more legs. The chance they all cover drops fast. Read the 2-leg first.");
+  return packParlays(dogFavLegs(league, true), (title) => title === "2-leg"
+    ? "The two underdogs our number likes by the most, in different games."
+    : "More underdogs from the same list, biggest gap first. The long ticket adds dogs that did not clear a bet by themselves.", 8);
 }
 function buildFavParlays(league) {
-  const legs = collectParlayLegs().filter((l) => l.league === league && l.kind === "spread" && !l.dog);
+  return packParlays(dogFavLegs(league, false), (title) => title === "2-leg"
+    ? "The two favorites our number likes by the most, in different games."
+    : "More favorites from the same list, biggest gap first. The long ticket adds favorites that did not clear a bet by themselves.", 8);
+}
+function buildParlays(league) {
+  const legs = collectParlayLegs().filter((l) => !league || l.league === league);
   return packParlays(legs, (title) => title === "2-leg"
-    ? "The two favorites our number likes by the most. Both already cleared a bet on their own."
-    : "One favorite miss sinks the longer ticket. Read the 2-leg first.");
+    ? "These are the two biggest gaps between our number and the current line, in two different games. This is the ticket."
+    : "The next best legs, added on. The price gets longer and one miss sinks it. The 2-leg is the play.");
 }
 function buildTotalParlays(league) {
   const legs = collectParlayLegs().filter((l) => l.league === league && l.kind === "total");
@@ -6559,8 +6564,8 @@ function renderParlays() {
     return;
   }
   const themed = {
-    dogs: { rows: buildDogParlays("nfl"), stamp: "NFL underdogs. Only dogs that already cleared a bet on their own, biggest gap first.", empty: "No NFL underdog parlay this week. We do not have two dogs that cleared." },
-    favs: { rows: buildFavParlays("nfl"), stamp: "NFL favorites. Only favorites that already cleared a bet on their own, biggest gap first.", empty: "No NFL favorite parlay this week." },
+    dogs: { rows: buildDogParlays("nfl"), stamp: "NFL underdogs. Eight tickets at each size when the board has enough dogs, from 2 legs through 6. Biggest gap first.", empty: "No NFL underdog parlay this week. We do not have two dogs that cleared." },
+    favs: { rows: buildFavParlays("nfl"), stamp: "NFL favorites. Eight tickets at each size when the board has enough favorites, from 2 legs through 6. Biggest gap first.", empty: "No NFL favorite parlay this week." },
     totals: { rows: buildTotalParlays("nfl"), stamp: "NFL totals. Only overs and unders that already cleared, biggest gap first.", empty: "No NFL totals parlay this week. No total is far enough off our number." },
     cdogs: { rows: buildDogParlays("cfb"), stamp: "College underdogs only. No NFL teams on this ticket.", empty: "No college underdog parlay this week." }
   };
