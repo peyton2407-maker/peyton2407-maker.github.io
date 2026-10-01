@@ -2962,7 +2962,7 @@ function nflLineMove(g, lockedSp, lockedTot) {
     total += t;
     notes.push("The total moved from " + lockedTot + " to " + g._dkTotal + ". We followed " + (t > 0 ? "+" : "") + t.toFixed(1) + ".");
   }
-  const nudge = cfbStarterNudge(g, { qb: 3.5, qbSeason: 4.5, snap: 0.85, backup: 0.4, total: 0 });
+  const nudge = cfbStarterNudge(g, { qb: 3.5, qbSeason: 4.5, snap: 0.85, backup: 0.4, total: 0, nfl: true });
   if (spreadMoved) {
     if (nudge.qbOut) notes.push("A quarterback is out. That is already inside the line move, so it is not added again.");
   } else {
@@ -3815,6 +3815,117 @@ function cfbPosOf(r) {
   if (/tackle/.test(blob)) return "OT";
   return pos;
 }
+function nflDepthBook() {
+  if (window.__NFL_DEPTH) return window.__NFL_DEPTH;
+  try { window.__NFL_DEPTH = JSON.parse(localStorage.getItem("gg-nfl-depth-v1") || "{}"); }
+  catch (e) { window.__NFL_DEPTH = {}; }
+  return window.__NFL_DEPTH;
+}
+function nflNameKey(name) {
+  return String(name || "").toLowerCase().replace(/[^a-z]/g, "");
+}
+function rememberNflDepth(teamId, chart) {
+  const slots = {};
+  const rankSpot = { lt: 1, rt: 1, rb: 2, wr1: 3, te: 4, wr2: 5, wr3: 6 };
+  ((chart && chart.depthchart) || []).forEach((form) => {
+    const positions = form.positions || {};
+    Object.keys(positions).forEach((spot) => {
+      if (!rankSpot[spot]) return;
+      ((positions[spot] || {}).athletes || []).forEach((a, i) => {
+        const name = a.displayName || (a.athlete || {}).displayName || "";
+        const key = nflNameKey(name);
+        if (!key) return;
+        const row = { spot: spot, rank: i + 1, name: name };
+        const prev = slots[key];
+        if (!prev || row.rank < prev.rank || (row.rank === prev.rank && rankSpot[spot] < rankSpot[prev.spot])) slots[key] = row;
+      });
+    });
+  });
+  const book = nflDepthBook();
+  book[String(teamId)] = { at: Date.now(), slots: slots };
+  try { localStorage.setItem("gg-nfl-depth-v1", JSON.stringify(book)); } catch (e) {}
+}
+function nflDepthOf(g, r) {
+  const side = r && (r.side === "home" || r.side === "away") ? r.side : "";
+  const team = side && g ? g[side] : null;
+  const saved = team && nflDepthBook()[String(team.id)];
+  if (!saved || !saved.slots) return null;
+  const key = nflNameKey(r.name);
+  if (saved.slots[key]) return saved.slots[key];
+  const keys = Object.keys(saved.slots);
+  for (let i = 0; i < keys.length; i++) {
+    const row = saved.slots[keys[i]];
+    const n = nflNameKey(row.name);
+    if (n && key && n.length > 6 && key.length > 6 && (n.indexOf(key) >= 0 || key.indexOf(n) >= 0)) return row;
+  }
+  return null;
+}
+function nflUsageShare(g, r) {
+  const pos = String((r && r.pos) || "").toUpperCase();
+  if (!g || !["RB", "WR", "TE"].includes(pos)) return 0;
+  const key = nflNameKey(r.name);
+  const stat = (p) => (Number(p.rush_yds) || 0) + (Number(p.rec_yds) || 0);
+  const mine = (g.props || []).find((p) => {
+    const k = nflNameKey(p.name);
+    return k && key && (k === key || (k.length > 6 && key.length > 6 && (k.indexOf(key) >= 0 || key.indexOf(k) >= 0)));
+  });
+  if (!mine) return 0;
+  const mineStat = stat(mine);
+  if (mineStat < 18) return 0;
+  const peers = (g.props || []).filter((p) => p.side === mine.side && String(p.pos || "").toUpperCase() === pos);
+  if (peers.some((p) => stat(p) > mineStat + 8)) return 0;
+  return pos === "RB" ? 0.65 : 0.55;
+}
+function nflSnapShare(g, r) {
+  const blob = String(((r && r.short) || "") + " " + ((r && r.name) || "")).toLowerCase();
+  const hit = blob.match(/(\d{2,3})\s*%\s*(?:of\s*)?(?:the\s*)?(?:team\s*)?(?:snaps|snap|plays|carries)/);
+  if (hit) return Math.min(1, Number(hit[1]) / 100);
+  if (/backup|rotational|third string|spelling|committee|limited snaps|practice squad/.test(blob)) return 0;
+  const depth = nflDepthOf(g, r);
+  if (depth && depth.rank === 1) {
+    if (depth.spot === "lt" || depth.spot === "rt") return 0.95;
+    if (depth.spot === "rb") return 0.65;
+    if (depth.spot === "wr1") return 0.72;
+    if (depth.spot === "te") return 0.62;
+    if (depth.spot === "wr2") return 0.5;
+    return 0;
+  }
+  if (depth && depth.rank > 1) return nflUsageShare(g, r);
+  const fromNote = cfbSnapShare(r);
+  if (fromNote >= 0.45) return fromNote;
+  return nflUsageShare(g, r);
+}
+async function pullNflDepth() {
+  if (window.__nflDepthPull) return window.__nflDepthPull;
+  window.__nflDepthPull = (async () => {
+    const ids = [];
+    (DATA.games || []).forEach((g) => {
+      if (!g || g.league !== "nfl" || g.completed) return;
+      [g.home, g.away].forEach((t) => {
+        if (t && t.id && ids.indexOf(String(t.id)) < 0) ids.push(String(t.id));
+      });
+    });
+    const book = nflDepthBook();
+    const fresh = Date.now() - 18 * 60 * 60 * 1000;
+    const need = ids.filter((id) => !book[id] || !book[id].at || book[id].at < fresh);
+    let cursor = 0;
+    async function next() {
+      const id = need[cursor++];
+      if (!id) return;
+      try {
+        const data = await getJSON("https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/" + id + "/depthcharts");
+        rememberNflDepth(id, data);
+      } catch (e) {}
+      return next();
+    }
+    await Promise.all([next(), next(), next(), next()]);
+    if (need.length && typeof applySituationalBoard === "function") {
+      applySituationalBoard();
+      if ((view === "nfl" || view === "all" || view === "home") && typeof renderBoard === "function") renderBoard();
+    }
+  })().catch((e) => { console.warn("nfl depth", e); });
+  return window.__nflDepthPull;
+}
 function cfbSnapShare(r) {
   const blob = String((r.short || "") + " " + (r.name || "")).toLowerCase();
   const hit = blob.match(/(\d{2,3})\s*%\s*(?:of\s*)?(?:the\s*)?(?:team\s*)?(?:snaps|snap|plays|carries)/);
@@ -3846,12 +3957,18 @@ function cfbStarterNudge(g, scale) {
       if (!bestQb[side] || pts > bestQb[side].pts) bestQb[side] = { r, pts, blob };
       return;
     }
-    const share = cfbSnapShare(r);
+    const share = (scale && scale.nfl) ? nflSnapShare(g, r) : cfbSnapShare(r);
     if (share < 0.45) return;
-    const full = (["LT", "RT", "OT", "T"].includes(pos) ? 2.6 : pos === "RB" ? 2.2 : ["WR", "TE"].includes(pos) ? 1.6 : 0) * snapScale;
+    const depth = (scale && scale.nfl) ? nflDepthOf(g, r) : null;
+    const spot = depth && depth.rank === 1 ? depth.spot : "";
+    let base = ["LT", "RT", "OT", "T"].includes(pos) ? 2.6 : pos === "RB" ? 2.2 : ["WR", "TE"].includes(pos) ? 1.6 : 0;
+    if (!base && (spot === "lt" || spot === "rt")) base = 2.6;
+    if (!base && spot === "rb") base = 2.2;
+    if (!base && (spot === "wr1" || spot === "wr2" || spot === "te")) base = 1.6;
+    const full = base * snapScale;
     if (!full) return;
     const pts = +(full * share).toFixed(2);
-    if (!bestSnap[side] || pts > bestSnap[side].pts) bestSnap[side] = { r, pts, share };
+    if (!bestSnap[side] || pts > bestSnap[side].pts) bestSnap[side] = { r, pts, share, spot: spot };
   });
   let home = 0;
   let away = 0;
@@ -3874,7 +3991,8 @@ function cfbStarterNudge(g, scale) {
     if (side === "home") home += item.pts;
     else away += item.pts;
     if (!(scale && scale.total === 0)) total -= Math.min(0.4, item.pts * 0.12);
-    notes.push((item.r.name || "Starter") + " is out and takes " + Math.round(item.share * 100) + "% of the snaps. That is worth " + item.pts.toFixed(1) + " against " + team + ".");
+    const job = item.spot === "lt" ? "starting left tackle" : item.spot === "rt" ? "starting right tackle" : item.spot === "rb" ? "starting back" : item.spot === "te" ? "starting tight end" : (item.spot === "wr1" || item.spot === "wr2") ? "starting receiver" : "";
+    notes.push((item.r.name || "Starter") + " is out" + (job ? ". He is the " + job + " and" : " and") + " takes about " + Math.round(item.share * 100) + "% of the snaps. That is worth " + item.pts.toFixed(1) + " against " + team + ".");
   });
   return {
     margin: Math.max(-6.5, Math.min(6.5, +(away - home).toFixed(2))),
@@ -11935,6 +12053,7 @@ async function boot() {
       if (typeof applySplitDesk === "function") applySplitDesk();
       if (typeof pullCfbCloseLines === "function") pullCfbCloseLines();
       if (typeof pullNflCloseLines === "function") pullNflCloseLines();
+      if (typeof pullNflDepth === "function") pullNflDepth();
       if (DATA.notes && n) DATA.notes.learning = `Same record for everyone. ${n} finished games are in the next line.`;
       if (view === "home" && typeof renderHome === "function") renderHome();
       if (view === "score" && typeof renderScorecard === "function") renderScorecard();
