@@ -4056,7 +4056,7 @@ function cfbStarterNudge(g, scale) {
       if (!bestQb[side] || pts > bestQb[side].pts) bestQb[side] = { r, pts, blob };
       return;
     }
-    const share = (scale && scale.nfl) ? nflSnapShare(g, r) : cfbSnapShare(r);
+    const share = (scale && scale.nfl) ? nflSnapShare(g, r) : (scale && scale.cfb) ? cfbPlayerShare(g, r) : cfbSnapShare(r);
     if (share < 0.45) return;
     const depth = (scale && scale.nfl) ? nflDepthOf(g, r) : null;
     const spot = depth && depth.rank === 1 ? depth.spot : "";
@@ -4095,7 +4095,7 @@ function cfbStarterNudge(g, scale) {
     if (side === "home") home += item.pts;
     else away += item.pts;
     if (!(scale && scale.total === 0)) total -= Math.min(0.4, item.pts * 0.12);
-    const job = item.spot === "lt" ? "starting left tackle" : item.spot === "rt" ? "starting right tackle" : item.spot === "rb" ? "starting back" : item.spot === "te" ? "starting tight end" : (item.spot === "wr1" || item.spot === "wr2") ? "starting receiver" : "";
+    const job = item.spot === "lt" ? "starting left tackle" : item.spot === "rt" ? "starting right tackle" : item.spot === "rb" ? "starting back" : item.spot === "te" ? "starting tight end" : (item.spot === "wr1" || item.spot === "wr2") ? "starting receiver" : (scale && scale.cfb ? (cfbPosOf(item.r) === "LT" ? "starting left tackle" : cfbPosOf(item.r) === "RT" ? "starting right tackle" : cfbPosOf(item.r) === "RB" ? "starting back" : cfbPosOf(item.r) === "TE" ? "starting tight end" : (cfbPosOf(item.r) === "WR" ? "starting receiver" : (["OT", "T"].includes(cfbPosOf(item.r)) ? "starting tackle" : ""))) : "");
     notes.push((item.r.name || "Starter") + " is out" + (job ? ". He is the " + job + " and" : " and") + " takes about " + Math.round(item.share * 100) + "% of the snaps. That is worth " + item.pts.toFixed(1) + " against " + team + ".");
   });
   return {
@@ -4109,14 +4109,22 @@ function cfbStarterNudge(g, scale) {
   };
 }
 function cfbLearnNudge(g) {
-  const hr = residualFor("cfb", g.home && g.home.id);
-  const ar = residualFor("cfb", g.away && g.away.id);
-  if ((hr.closeN || 0) < 3 || (ar.closeN || 0) < 3) return { margin: 0, total: 0, note: "" };
+  const teams = typeof cfbCloseStats === "function" ? cfbCloseStats() : {};
+  const hr = teams[String(g.home && g.home.id)] || residualFor("cfb", g.home && g.home.id);
+  const ar = teams[String(g.away && g.away.id)] || residualFor("cfb", g.away && g.away.id);
+  const hn = hr.n != null ? hr.n : (hr.closeN || 0);
+  const an = ar.n != null ? ar.n : (ar.closeN || 0);
+  if (hn < 3 || an < 3) return { margin: 0, total: 0, note: "" };
+  const hm = hr.m != null ? Number(hr.m) : Number(hr.closeM || 0);
+  const am = ar.m != null ? Number(ar.m) : Number(ar.closeM || 0);
+  const ht = hr.t != null ? Number(hr.t) : Number(hr.closeT || 0);
+  const at = ar.t != null ? Number(ar.t) : Number(ar.closeT || 0);
   const w = 0.28;
-  const margin = Math.max(-1.6, Math.min(1.6, +(w * ((hr.closeM || 0) - (ar.closeM || 0))).toFixed(2)));
-  const total = Math.max(-1.2, Math.min(1.2, +(w * 0.45 * (((hr.closeT || 0) + (ar.closeT || 0)) / 2)).toFixed(2)));
+  const margin = Math.max(-1.6, Math.min(1.6, +(w * (hm - am)).toFixed(2)));
+  const total = Math.max(-1.2, Math.min(1.2, +(w * 0.45 * ((ht + at) / 2)).toFixed(2)));
   if (Math.abs(margin) < 0.2 && Math.abs(total) < 0.2) return { margin: 0, total: 0, note: "" };
-  const note = "Against the closing number, " + g.home.abbr + " has missed by " + (hr.closeM > 0 ? "+" : "") + Number(hr.closeM || 0).toFixed(1) + " over " + hr.closeN + " games and " + g.away.abbr + " by " + (ar.closeM > 0 ? "+" : "") + Number(ar.closeM || 0).toFixed(1) + " over " + ar.closeN + ". This week moves " + (margin > 0 ? "+" : "") + margin.toFixed(1) + ".";
+  let note = "Against the closing number, " + g.home.abbr + " has missed by " + (hm > 0 ? "+" : "") + hm.toFixed(1) + " over " + hn + " games and " + g.away.abbr + " by " + (am > 0 ? "+" : "") + am.toFixed(1) + " over " + an + " games. This week moves " + (margin > 0 ? "+" : "") + margin.toFixed(1) + ".";
+  if (Math.abs(total) >= 0.2) note += " The total moves " + (total > 0 ? "+" : "") + total.toFixed(1) + ".";
   return { margin, total, note };
 }
 function cfbWeatherNudge(g) {
@@ -4164,12 +4172,159 @@ function cfbRememberClose(g) {
   if (desk.home_spread != null && Number.isFinite(Number(desk.home_spread))) g._dkSpread = Number(desk.home_spread);
   if (desk.total != null && Number.isFinite(Number(desk.total))) g._dkTotal = Number(desk.total);
 }
+function cfbMissBook() {
+  if (window.__CFB_MISS) return window.__CFB_MISS;
+  try { window.__CFB_MISS = JSON.parse(localStorage.getItem("gg-cfb-close-miss-v1") || "{}"); }
+  catch (e) { window.__CFB_MISS = {}; }
+  window.__CFB_MISS.games = window.__CFB_MISS.games || [];
+  window.__CFB_MISS.usage = window.__CFB_MISS.usage || {};
+  return window.__CFB_MISS;
+}
+function saveCfbMiss() {
+  try { localStorage.setItem("gg-cfb-close-miss-v1", JSON.stringify(cfbMissBook())); } catch (e) {}
+}
+function cfbCloseStats() {
+  const teams = {};
+  (cfbMissBook().games || []).slice().sort((a, b) => String(a.date || "").localeCompare(String(b.date || ""))).forEach((g) => {
+    if (g.spread == null || g.hs == null || g.as == null) return;
+    const closeErr = (Number(g.hs) - Number(g.as)) - (-Number(g.spread));
+    const closeTot = g.total != null ? (Number(g.hs) + Number(g.as)) - Number(g.total) : null;
+    [[g.homeId, closeErr], [g.awayId, -closeErr]].forEach(([id, share]) => {
+      const row = teams[String(id)] || { n: 0, sum: 0, tSum: 0, tN: 0 };
+      row.n += 1;
+      row.sum += share;
+      if (closeTot != null) { row.tN += 1; row.tSum += closeTot; }
+      teams[String(id)] = row;
+    });
+  });
+  Object.keys(teams).forEach((id) => {
+    const row = teams[id];
+    row.m = +(row.sum / row.n).toFixed(2);
+    row.t = row.tN ? +(row.tSum / row.tN).toFixed(2) : 0;
+  });
+  return teams;
+}
+function rememberCfbUsage(book, row, sm) {
+  book.usage = book.usage || {};
+  (((sm || {}).boxscore || {}).players || []).forEach((team) => {
+    const id = String((team.team || {}).id || "");
+    if (!id) return;
+    const prev = book.usage[id];
+    if (prev && prev.date && String(prev.date) > String(row.date || "")) return;
+    const rush = [];
+    const rec = [];
+    (team.statistics || []).forEach((stat) => {
+      if (stat.name === "rushing") (stat.athletes || []).forEach((a) => {
+        const name = (a.athlete || {}).displayName;
+        const car = Number((a.stats || [])[0]);
+        if (name && car > 0) rush.push({ name: name, car: car });
+      });
+      if (stat.name === "receiving") (stat.athletes || []).forEach((a) => {
+        const name = (a.athlete || {}).displayName;
+        const recs = Number((a.stats || [])[0]);
+        if (name && recs > 0) rec.push({ name: name, recs: recs });
+      });
+    });
+    const rushTot = rush.reduce((s, x) => s + x.car, 0) || 1;
+    const recTot = rec.reduce((s, x) => s + x.recs, 0) || 1;
+    const map = {};
+    rush.forEach((x) => {
+      const key = nflNameKey(x.name);
+      map[key] = Object.assign(map[key] || { name: x.name }, { carries: x.car, rushShare: +(x.car / rushTot).toFixed(2) });
+    });
+    rec.sort((a, b) => b.recs - a.recs);
+    rec.forEach((x, i) => {
+      const key = nflNameKey(x.name);
+      map[key] = Object.assign(map[key] || { name: x.name }, { recs: x.recs, recShare: +(x.recs / recTot).toFixed(2), leadRec: i === 0 });
+    });
+    book.usage[id] = { date: row.date, players: map };
+  });
+}
+function cfbUsageHit(g, r) {
+  const side = r && (r.side === "home" || r.side === "away") ? r.side : "";
+  const team = side && g ? g[side] : null;
+  const usage = team && (((cfbMissBook().usage || {})[String(team.id)] || {}).players);
+  if (!usage) return null;
+  const key = nflNameKey(r.name);
+  if (usage[key]) return usage[key];
+  const keys = Object.keys(usage);
+  for (let i = 0; i < keys.length; i++) {
+    const row = usage[keys[i]];
+    const n = nflNameKey(row.name);
+    if (n && key && n.length > 6 && key.length > 6 && (n.indexOf(key) >= 0 || key.indexOf(n) >= 0)) return row;
+  }
+  return null;
+}
+function cfbPlayerShare(g, r) {
+  const fromNote = cfbSnapShare(r);
+  if (fromNote >= 0.45) return fromNote;
+  const blob = String(((r && r.short) || "") + " " + ((r && r.name) || "")).toLowerCase();
+  if (/backup|rotational|third string|spelling|committee|limited snaps|practice squad/.test(blob)) return 0;
+  const pos = cfbPosOf(r);
+  const hit = cfbUsageHit(g, r);
+  if (hit && pos === "RB" && (hit.carries >= 12 || hit.rushShare >= 0.4)) return Math.min(0.75, Math.max(0.5, hit.rushShare || 0.5));
+  if (hit && (pos === "WR" || pos === "TE") && hit.leadRec && hit.recs >= 4) return 0.55;
+  if (pos === "LT" || pos === "RT" || pos === "OT" || pos === "T") return 0.95;
+  return 0;
+}
+async function pullCfbCloseMiss() {
+  if (window.__cfbMissPull) return window.__cfbMissPull;
+  window.__cfbMissPull = (async () => {
+    const week = typeof currentCfbWeekNumber === "function" ? currentCfbWeekNumber() : 5;
+    const book = cfbMissBook();
+    if ((book.throughWeek || 0) >= week && book.games.length >= 80) return book.games.length;
+    const have = {};
+    book.games.forEach((g) => { have[String(g.id)] = true; });
+    const need = [];
+    const start = Math.max(1, (book.throughWeek || 0) + 1);
+    for (let w = start; w <= week; w++) {
+      const data = await getJSON("https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?seasontype=2&week=" + w + "&dates=2026&groups=80&limit=400");
+      (data.events || []).forEach((ev) => {
+        const comp = (ev.competitions || [])[0] || {};
+        if (!(comp.status && comp.status.type && comp.status.type.completed)) return;
+        if (have[String(ev.id)]) return;
+        const teams = comp.competitors || [];
+        const home = teams.find((t) => t.homeAway === "home");
+        const away = teams.find((t) => t.homeAway === "away");
+        if (!home || !away) return;
+        need.push({ id: String(ev.id), date: ev.date, homeId: String(home.team.id), awayId: String(away.team.id), hs: Number(home.score), as: Number(away.score) });
+      });
+    }
+    let cursor = 0;
+    let saved = 0;
+    async function next() {
+      const row = need[cursor++];
+      if (!row) return;
+      try {
+        const sm = await getJSON("https://site.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=" + row.id);
+        const pc = (sm.pickcenter || [])[0] || {};
+        const spread = pc.spread != null ? Number(pc.spread) : null;
+        if (spread != null && Number.isFinite(spread)) {
+          book.games.push(Object.assign({}, row, { spread: spread, total: pc.overUnder != null ? Number(pc.overUnder) : null }));
+          have[row.id] = true;
+          saved++;
+          if (saved % 25 === 0) saveCfbMiss();
+        }
+        rememberCfbUsage(book, row, sm);
+      } catch (e) {}
+      return next();
+    }
+    await Promise.all([next(), next(), next(), next()]);
+    book.throughWeek = week;
+    saveCfbMiss();
+    if (typeof applySplitDesk === "function") applySplitDesk();
+    if ((view === "cfb" || view === "all") && typeof renderBoard === "function") renderBoard();
+    return book.games.length;
+  })().catch((e) => { console.warn("cfb close miss", e); });
+  return window.__cfbMissPull;
+}
 function cfbLineMove(g, lockedSp, lockedTot) {
   cfbRememberClose(g);
   const notes = [];
   let margin = 0;
   let total = 0;
-  const spreadMoved = g._dkSpread != null && lockedSp != null && Math.abs(g._dkSpread - Number(lockedSp)) >= 0.5;
+  const lineMove = g._dkSpread != null && lockedSp != null ? Math.abs(g._dkSpread - Number(lockedSp)) : 0;
+  const spreadMoved = lineMove >= 0.5;
   const totalMoved = g._dkTotal != null && lockedTot != null && Math.abs(g._dkTotal - Number(lockedTot)) >= 0.5;
   if (spreadMoved) {
     const m = Math.max(-3, Math.min(3, +(0.65 * (Number(lockedSp) - g._dkSpread)).toFixed(2)));
@@ -4181,13 +4336,13 @@ function cfbLineMove(g, lockedSp, lockedTot) {
     total += t;
     notes.push("The total moved from " + lockedTot + " to " + g._dkTotal + ". We followed " + (t > 0 ? "+" : "") + t.toFixed(1) + ".");
   }
-  const nudge = cfbStarterNudge(g);
-  if (spreadMoved) {
-    if (nudge.qbOut) notes.push("A quarterback is out. That is already inside the line move, so it is not added again.");
-  } else {
+  const nudge = cfbStarterNudge(g, { total: 0, cfb: true });
+  if (!spreadMoved || lineMove < 3) {
     margin += nudge.margin;
     if (!totalMoved) total += nudge.total;
     nudge.notes.forEach((n) => notes.push(n));
+  } else if (nudge.qbOut) {
+    notes.push("A quarterback is out. The line moved " + lineMove.toFixed(1) + " points, so that is already inside the move and is not added again.");
   }
   if (!spreadMoved) {
     const trip = cfbRestTravel(g);
@@ -4243,7 +4398,7 @@ function cfbRestTravel(g) {
     const pts = miles >= 2000 ? 1.6 : 1.1;
     margin += pts;
     if (miles >= 2000) total -= 0.4;
-    notes.push(g.away.abbr + " traveled about " + Math.round(miles) + " miles. Moved +" + pts.toFixed(1) + " toward " + g.home.abbr + ".");
+    notes.push(g.away.abbr + " traveled about " + Math.round(miles) + " miles. Moved +" + pts.toFixed(1) + " toward " + g.home.abbr + "." + (miles >= 2000 ? " The total moved -0.4." : ""));
   }
   return { margin: +margin.toFixed(2), total: +total.toFixed(2), notes };
 }
@@ -4408,6 +4563,16 @@ function applySplitDesk() {
     p.split_margin = p.blended_margin;
     p.split_total = p.hashmark_total;
     const moved = cfbLineMove(g, hs, lockedTotal);
+    if (g._dkSpread != null || g._dkTotal != null) {
+      g.odds = Object.assign({}, g.odds || {}, g._dkSpread == null ? {} : {
+        home_spread: Number(g._dkSpread),
+        details: cfbSideLabel(g, g._dkSpread),
+        locked_details: hs != null ? cfbSideLabel(g, hs) : ((g.odds && g.odds.locked_details) || ""),
+        home_favorite: Number(g._dkSpread) < 0,
+        away_favorite: Number(g._dkSpread) > 0,
+        book: "DraftKings"
+      }, g._dkTotal != null ? { total: Number(g._dkTotal) } : {});
+    }
     const moveM = moved.margin;
     const moveT = moved.total;
     if (Math.abs(moveM) >= 0.2 || Math.abs(moveT) >= 0.2) {
@@ -12158,6 +12323,7 @@ async function boot() {
       if (typeof applySituationalBoard === "function") applySituationalBoard();
       if (typeof applySplitDesk === "function") applySplitDesk();
       if (typeof pullCfbCloseLines === "function") pullCfbCloseLines();
+      if (typeof pullCfbCloseMiss === "function") pullCfbCloseMiss();
       if (typeof pullNflCloseLines === "function") pullNflCloseLines();
       if (typeof pullNflDepth === "function") pullNflDepth();
       if (typeof pullNflCloseMiss === "function") pullNflCloseMiss();
