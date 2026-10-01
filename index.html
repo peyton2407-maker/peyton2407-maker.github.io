@@ -10155,8 +10155,9 @@ function nflSlateLean(g) {
   const o = g.odds || {};
   const out = { pick: p.pick || null, pick_line: p.pick_line || null, total_pick: p.total_pick || null };
   const sp = o.home_spread == null ? null : Number(o.home_spread);
-  const edge = p.edge_spread == null ? null : Number(p.edge_spread);
-  if ((!out.pick || out.pick === "NO PLAY") && sp != null && edge != null && edge !== 0 && g.home && g.away) {
+  let edge = p.edge_spread == null ? null : Number(p.edge_spread);
+  if ((edge == null || edge === 0) && p.hashmark_home_spread != null && sp != null) edge = +(sp - Number(p.hashmark_home_spread)).toFixed(2);
+  if ((!out.pick || out.pick === "NO PLAY") && sp != null && edge != null && Math.abs(edge) >= 0.05 && g.home && g.away) {
     if (edge > 0) {
       out.pick = g.home.abbr;
       out.pick_line = g.home.abbr + " " + (sp >= 0 ? "+" : "") + sp.toFixed(1);
@@ -10165,8 +10166,9 @@ function nflSlateLean(g) {
       out.pick_line = g.away.abbr + " " + ((-sp) >= 0 ? "+" : "") + (-sp).toFixed(1);
     }
   }
-  const te = p.edge_total == null ? null : Number(p.edge_total);
-  if ((!out.total_pick || out.total_pick === "NO PLAY") && o.total != null && te != null && te !== 0) {
+  let te = p.edge_total == null ? null : Number(p.edge_total);
+  if ((te == null || te === 0) && p.hashmark_total != null && o.total != null) te = +(Number(p.hashmark_total) - Number(o.total)).toFixed(2);
+  if ((!out.total_pick || out.total_pick === "NO PLAY") && o.total != null && te != null && Math.abs(te) >= 0.05) {
     out.total_pick = (te > 0 ? "OVER " : "UNDER ") + o.total;
   }
   return out;
@@ -10214,6 +10216,12 @@ function playsForScorecard(league) {
         row.total_pick = fileSide && fileSide === liveSideT ? src.total : g.proj.total_pick;
       } else row.total_pick = "NO PLAY";
     }
+    const lean = nflSlateLean(g);
+    if (!row.pick || row.pick === "NO PLAY") {
+      row.pick = lean.pick;
+      row.pick_line = lean.pick_line;
+    }
+    if (!row.total_pick || row.total_pick === "NO PLAY") row.total_pick = lean.total_pick;
     const old = byId[String(g.id)];
     if (old && old.graded) {
       row.ats = old.ats;
