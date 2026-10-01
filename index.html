@@ -10130,7 +10130,25 @@ function playsForScorecard(league) {
     }
     byId[String(g.id)] = row;
   });
-  return Object.values(byId).filter((p) => p && p.league === league);
+  const finals = {};
+  const byTeams = {};
+  (window.WEEK_RESULTS || []).forEach((r) => {
+    if (!r || r.id == null || r.hs == null || r.as == null) return;
+    finals[String(r.id)] = r;
+    byTeams[String(r.awayAbbr || "") + "@" + String(r.homeAbbr || "")] = r;
+  });
+  (DATA.games || []).forEach((g) => {
+    if (!g || !g.completed || !g.home || !g.away) return;
+    const hs = Number(g.home.score);
+    const as = Number(g.away.score);
+    if (!Number.isFinite(hs) || !Number.isFinite(as)) return;
+    if (!finals[String(g.id)]) finals[String(g.id)] = { id: g.id, hs: hs, as: as, homeAbbr: g.home.abbr, awayAbbr: g.away.abbr, date: g.date };
+  });
+  return Object.values(byId).filter((p) => p && p.league === league).map((row) => {
+    if (row.graded && (row.ats || row.ou)) return row;
+    const fin = finals[String(row.id)] || byTeams[String(row.away || "") + "@" + String(row.home || "")];
+    return fin ? gradeHistoryRow(row, fin) : row;
+  });
 }
 function fillScoreWeeks(league) {
   const root = document.getElementById("scoreWeek");
@@ -10323,7 +10341,9 @@ function renderScorecard() {
   if (!wrap) return;
   const leagueName = league === "nfl" ? "NFL" : "College";
   const stamp = document.getElementById("scoreStamp");
-  if (stamp) stamp.textContent = "Current week. Every play on this slate is listed. Picks lock before kickoff. After the game we mark hit, miss, or push.";
+  if (stamp) stamp.textContent = String(week) === String(currentWeek)
+    ? "Current week. Every play on this slate is listed. Picks lock before kickoff. After the game we mark hit, miss, or push."
+    : scoreWeekLabel(league, week) + ". These games are finished. Hit, miss, or push is the locked pick against the final.";
   if (!rows.length) { wrap.innerHTML = `<div class="empty">No locked ${leagueName} picks on this week. Switch the week, or open the other league tab.</div>`; return; }
   const groups = [];
   const byKey = new Map();
@@ -10344,7 +10364,7 @@ function renderScorecard() {
   const body = groups.map((group) => {
     const head = `<tr class="score-week"><td colspan="5">${group.label}<span class="subn"> · ${group.rows.length} pick${group.rows.length === 1 ? "" : "s"}</span></td></tr>`;
     const lines = group.rows.map((r) => {
-      const ats = r.ats ? `<span class="result-${r.ats.toLowerCase()}">${r.ats}</span>` : "pending";
+      const ats = r.ats ? `<span class="result-${r.ats.toLowerCase()}">${r.ats}</span>` : ((r.pick && r.pick !== "NO PLAY") ? "pending" : "—");
       const ou = r.ou ? `<span class="result-${r.ou.toLowerCase()}">${r.ou}</span>` : (r.total_pick && r.total_pick !== "NO PLAY" ? "pending" : "—");
       const showS = kind !== "total";
       const showT = kind !== "spread";
