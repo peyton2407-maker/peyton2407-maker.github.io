@@ -2962,7 +2962,7 @@ function nflLineMove(g, lockedSp, lockedTot) {
     total += t;
     notes.push("The total moved from " + lockedTot + " to " + g._dkTotal + ". We followed " + (t > 0 ? "+" : "") + t.toFixed(1) + ".");
   }
-  const nudge = cfbStarterNudge(g, { qb: 3.5, qbSeason: 4.5, snap: 0.85, backup: 0.4 });
+  const nudge = cfbStarterNudge(g, { qb: 3.5, qbSeason: 4.5, snap: 0.85, backup: 0.4, total: 0 });
   if (spreadMoved) {
     if (nudge.qbOut) notes.push("A quarterback is out. That is already inside the line move, so it is not added again.");
   } else {
@@ -3863,7 +3863,7 @@ function cfbStarterNudge(g, scale) {
     const team = side === "home" ? g.home.abbr : g.away.abbr;
     if (side === "home") home += item.pts;
     else away += item.pts;
-    total -= Math.min(1.2, item.pts * 0.18);
+    if (!(scale && scale.total === 0)) total -= Math.min(1.2, item.pts * 0.18);
     const backup = /has started|veteran backup|experienced backup|won the job/.test(item.blob) ? " The backup has started before, so this is smaller." : "";
     notes.push((item.r.name || "Quarterback") + " is out. That is worth " + item.pts.toFixed(1) + " points against " + team + "." + backup);
     qbOut.push(side);
@@ -3873,7 +3873,7 @@ function cfbStarterNudge(g, scale) {
     const team = side === "home" ? g.home.abbr : g.away.abbr;
     if (side === "home") home += item.pts;
     else away += item.pts;
-    total -= Math.min(0.4, item.pts * 0.12);
+    if (!(scale && scale.total === 0)) total -= Math.min(0.4, item.pts * 0.12);
     notes.push((item.r.name || "Starter") + " is out and takes " + Math.round(item.share * 100) + "% of the snaps. That is worth " + item.pts.toFixed(1) + " against " + team + ".");
   });
   return {
