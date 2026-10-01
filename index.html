@@ -4064,6 +4064,14 @@ function applySplitDesk() {
       p.hashmark_home_spread = +(-dgMargin).toFixed(1);
       p.home_points = +Math.max(0, (dgTotal + dgMargin) / 2).toFixed(1);
       p.away_points = +Math.max(0, (dgTotal - dgMargin) / 2).toFixed(1);
+      const beforeSp = +(-Number(p.split_margin)).toFixed(1);
+      if (Math.abs(moveM) >= 0.2 && beforeSp !== p.hashmark_home_spread) {
+        moved.notes.unshift("Our line moved from " + cfbSideLabel(g, beforeSp) + " to " + cfbSideLabel(g, p.hashmark_home_spread) + ".");
+      }
+      if (Math.abs(moveT) >= 0.2 && Number(p.split_total) !== dgTotal) {
+        const at = Math.abs(moveM) >= 0.2 ? 1 : 0;
+        moved.notes.splice(at, 0, "Our total moved from " + p.split_total + " to " + dgTotal + ".");
+      }
       if (hs != null) {
         p.market_margin = +(-Number(hs)).toFixed(2);
         p.edge_spread = +(p.blended_margin - p.market_margin).toFixed(2);
