@@ -2936,15 +2936,110 @@ function nflDome(g) {
   const venue = String(g.venue || "").toLowerCase();
   return /superdome|allegiant|u\.s\. bank|us bank|lucas oil|sofi|state farm|ford field|reliant|nrg stadium/.test(venue);
 }
+function nflMissBook() {
+  if (window.__NFL_MISS) return window.__NFL_MISS;
+  try { window.__NFL_MISS = JSON.parse(localStorage.getItem("gg-nfl-close-miss-v1") || "{}"); }
+  catch (e) { window.__NFL_MISS = {}; }
+  window.__NFL_MISS.games = window.__NFL_MISS.games || [];
+  return window.__NFL_MISS;
+}
+function saveNflMiss() {
+  try { localStorage.setItem("gg-nfl-close-miss-v1", JSON.stringify(nflMissBook())); } catch (e) {}
+}
+function nflCloseStats() {
+  const teams = {};
+  (nflMissBook().games || []).slice().sort((a, b) => String(a.date || "").localeCompare(String(b.date || ""))).forEach((g) => {
+    if (g.spread == null || g.hs == null || g.as == null) return;
+    const closeErr = (Number(g.hs) - Number(g.as)) - (-Number(g.spread));
+    const closeTot = g.total != null ? (Number(g.hs) + Number(g.as)) - Number(g.total) : null;
+    [[g.homeId, closeErr], [g.awayId, -closeErr]].forEach(([id, share]) => {
+      const row = teams[String(id)] || { n: 0, sum: 0, tSum: 0, tN: 0 };
+      row.n += 1;
+      row.sum += share;
+      if (closeTot != null) { row.tN += 1; row.tSum += closeTot; }
+      teams[String(id)] = row;
+    });
+  });
+  Object.keys(teams).forEach((id) => {
+    const row = teams[id];
+    row.m = +(row.sum / row.n).toFixed(2);
+    row.t = row.tN ? +(row.tSum / row.tN).toFixed(2) : 0;
+  });
+  return teams;
+}
+async function pullNflCloseMiss() {
+  if (window.__nflMissPull) return window.__nflMissPull;
+  window.__nflMissPull = (async () => {
+    const week = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : 5;
+    const book = nflMissBook();
+    if ((book.throughWeek || 0) >= week && book.games.length >= 40) return book.games.length;
+    const have = {};
+    book.games.forEach((g) => { have[String(g.id)] = true; });
+    const known = {};
+    (DATA.games || []).forEach((g) => {
+      if (g && g.league === "nfl" && g.completed && g.odds && g.odds.home_spread != null) known[String(g.id)] = g;
+    });
+    const need = [];
+    const start = (book.throughWeek || 0) + 1;
+    for (let w = start; w <= week; w++) {
+      const data = await getJSON("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?seasontype=2&week=" + w + "&dates=2026&limit=50");
+      (data.events || []).forEach((ev) => {
+        const comp = (ev.competitions || [])[0] || {};
+        if (!(comp.status && comp.status.type && comp.status.type.completed)) return;
+        if (have[String(ev.id)]) return;
+        const teams = comp.competitors || [];
+        const home = teams.find((t) => t.homeAway === "home");
+        const away = teams.find((t) => t.homeAway === "away");
+        if (!home || !away) return;
+        const row = { id: String(ev.id), date: ev.date, homeId: String(home.team.id), awayId: String(away.team.id), hs: Number(home.score), as: Number(away.score) };
+        const saved = known[row.id];
+        if (saved) {
+          book.games.push(Object.assign(row, { spread: Number(saved.odds.home_spread), total: saved.odds.total != null ? Number(saved.odds.total) : null }));
+          have[row.id] = true;
+        } else need.push(row);
+      });
+    }
+    let cursor = 0;
+    async function next() {
+      const row = need[cursor++];
+      if (!row) return;
+      try {
+        const sm = await getJSON("https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=" + row.id);
+        const pc = (sm.pickcenter || [])[0] || {};
+        const spread = pc.spread != null ? Number(pc.spread) : null;
+        if (spread != null && Number.isFinite(spread)) {
+          book.games.push(Object.assign(row, { spread: spread, total: pc.overUnder != null ? Number(pc.overUnder) : null }));
+          have[row.id] = true;
+        }
+      } catch (e) {}
+      return next();
+    }
+    await Promise.all([next(), next(), next(), next()]);
+    book.throughWeek = week;
+    saveNflMiss();
+    if (typeof settleBoard === "function") settleBoard();
+    if (typeof applySituationalBoard === "function") applySituationalBoard();
+    if ((view === "nfl" || view === "all" || view === "home") && typeof renderBoard === "function") renderBoard();
+    return book.games.length;
+  })().catch((e) => { console.warn("nfl close miss", e); });
+  return window.__nflMissPull;
+}
 function nflLearnNudge(g) {
-  const hr = residualFor("nfl", g.home && g.home.id);
-  const ar = residualFor("nfl", g.away && g.away.id);
-  if ((hr.closeN || 0) < 3 || (ar.closeN || 0) < 3) return { margin: 0, total: 0, note: "" };
+  const teams = nflCloseStats();
+  const hr = teams[String(g.home && g.home.id)] || residualFor("nfl", g.home && g.home.id);
+  const ar = teams[String(g.away && g.away.id)] || residualFor("nfl", g.away && g.away.id);
+  const hn = hr.n != null ? hr.n : (hr.closeN || 0);
+  const an = ar.n != null ? ar.n : (ar.closeN || 0);
+  if (hn < 3 || an < 3) return { margin: 0, total: 0, note: "" };
+  const hm = hr.m != null ? Number(hr.m) : Number(hr.closeM || 0);
+  const am = ar.m != null ? Number(ar.m) : Number(ar.closeM || 0);
+  const ht = hr.t != null ? Number(hr.t) : Number(hr.closeT || 0);
+  const at = ar.t != null ? Number(ar.t) : Number(ar.closeT || 0);
   const w = 0.22;
-  const margin = Math.max(-1.2, Math.min(1.2, +(w * ((hr.closeM || 0) - (ar.closeM || 0))).toFixed(2)));
-  const total = Math.max(-1, Math.min(1, +(w * 0.4 * (((hr.closeT || 0) + (ar.closeT || 0)) / 2)).toFixed(2)));
+  const margin = Math.max(-1.2, Math.min(1.2, +(w * (hm - am)).toFixed(2)));
+  const total = Math.max(-1, Math.min(1, +(w * 0.4 * ((ht + at) / 2)).toFixed(2)));
   if (Math.abs(margin) < 0.2 && Math.abs(total) < 0.2) return { margin: 0, total: 0, note: "" };
-  return { margin, total, note: "Against the closing number, " + g.home.abbr + " has missed by " + (hr.closeM > 0 ? "+" : "") + Number(hr.closeM || 0).toFixed(1) + " over " + hr.closeN + " games and " + g.away.abbr + " by " + (ar.closeM > 0 ? "+" : "") + Number(ar.closeM || 0).toFixed(1) + " over " + ar.closeN + ". This week moves " + (margin > 0 ? "+" : "") + margin.toFixed(1) + "." };
+  return { margin, total, note: "Against the closing number, " + g.home.abbr + " has missed by " + (hm > 0 ? "+" : "") + hm.toFixed(1) + " over " + hn + " games and " + g.away.abbr + " by " + (am > 0 ? "+" : "") + am.toFixed(1) + " over " + an + " games. This week moves " + (margin > 0 ? "+" : "") + margin.toFixed(1) + "." };
 }
 function nflLineMove(g, lockedSp, lockedTot) {
   const notes = [];
@@ -12054,6 +12149,7 @@ async function boot() {
       if (typeof pullCfbCloseLines === "function") pullCfbCloseLines();
       if (typeof pullNflCloseLines === "function") pullNflCloseLines();
       if (typeof pullNflDepth === "function") pullNflDepth();
+      if (typeof pullNflCloseMiss === "function") pullNflCloseMiss();
       if (DATA.notes && n) DATA.notes.learning = `Same record for everyone. ${n} finished games are in the next line.`;
       if (view === "home" && typeof renderHome === "function") renderHome();
       if (view === "score" && typeof renderScorecard === "function") renderScorecard();
