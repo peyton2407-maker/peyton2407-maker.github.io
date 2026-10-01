@@ -5667,7 +5667,7 @@ function collectParlayLegs() {
         detail: `${g.away.abbr} @ ${g.home.abbr}`,
         game_id: g.id, game: g.short_name, date: g.date, league: g.league,
         hit, odds: toAmerican(Math.min(0.58, hit)),
-        key: "spread:" + g.id, score: Math.abs(p.edge_spread) * 10 + hit * 40,
+        key: "spread:" + g.id, score: Math.abs(Number(p.edge_spread) || 0) * 100 + hit,
         kind: "spread", dog: !!(dog && p.pick === dog), why
       });
     }
@@ -5683,7 +5683,7 @@ function collectParlayLegs() {
           detail: `${g.away.abbr} @ ${g.home.abbr} total`,
           game_id: g.id, game: g.short_name, date: g.date, league: g.league,
           hit, odds: toAmerican(Math.min(0.56, hit)),
-          key: "total:" + g.id, score: Math.abs(p.edge_total) * 8 + hit * 36,
+          key: "total:" + g.id, score: Math.abs(Number(p.edge_total) || 0) * 100 + hit,
           kind: "total", dog: false, why
         });
       }
@@ -5713,26 +5713,18 @@ function packParlays(legs, thoughtFor) {
     }
     return bag;
   };
-  const pack = (title, bag) => {
-    if (bag.length < 2) return null;
+  const pack = (title, bag, n) => {
+    if (bag.length < n) return null;
     const { p, odds } = parlayPayout(bag.map((l) => l.hit));
     return { title, legs: bag, p, odds, label: odds > 0 ? "+" + odds : String(odds), thought: thoughtFor ? thoughtFor(title, bag) : "" };
   };
-  return [pack("2-leg", pickDiverse(2)), pack("3-leg", pickDiverse(3)), pack("4-leg", pickDiverse(4))].filter(Boolean);
+  return [pack("2-leg", pickDiverse(2), 2), pack("3-leg", pickDiverse(3), 3), pack("4-leg", pickDiverse(4), 4)].filter(Boolean);
 }
 function buildParlays(league) {
-  let legs = collectParlayLegs().filter((l) => !league || l.league === league);
-  let lean = false;
-  if (legs.length < 2 && league === "nfl") {
-    lean = true;
-    legs = leanSideLegs("nfl", true, 0.4).concat(leanSideLegs("nfl", false, 0.4), collectParlayLegs().filter((l) => l.league === "nfl" && l.kind === "total"));
-    legs.sort((a, b) => b.score - a.score);
-  }
-  return packParlays(legs, (title) => lean
-    ? "Week 4 leans. Each leg is a side our number likes, in a different game. The 2-leg is the ticket."
-    : (title === "2-leg"
-      ? "These are the two biggest gaps between our number and Vegas, in two different games. This is the ticket we would actually use."
-      : "Same idea, more legs. The price gets longer and the chance they all hit gets smaller. Treat the 2-leg as the main play."));
+  const legs = collectParlayLegs().filter((l) => !league || l.league === league);
+  return packParlays(legs, (title) => title === "2-leg"
+    ? "These are the two biggest gaps between our number and the current line, in two different games. This is the ticket."
+    : "The next best legs, added on. The price gets longer and one miss sinks it. The 2-leg is the play.");
 }
 function leanSideLegs(league, wantDog, minEdge) {
   const floor = minEdge == null ? 1 : minEdge;
@@ -5770,26 +5762,15 @@ function leanSideLegs(league, wantDog, minEdge) {
   return legs;
 }
 function buildDogParlays(league) {
-  const plays = collectParlayLegs().filter((l) => l.league === league && l.kind === "spread" && l.dog);
-  const lean = plays.length < 2;
-  const legs = lean ? leanSideLegs(league, true) : plays;
-  return packParlays(legs, (title) => {
-    if (!lean) return title === "2-leg"
-      ? "Both teams are getting points, and each one already cleared the single-game bar. Different games, so one bad script cannot wipe both."
-      : "More underdogs means a longer price and a much lower chance they all cover. The 2-leg is the main play.";
-    return title === "2-leg"
-      ? "These underdogs did not clear the single-game bar, so we would not bet them by themselves. Our score still has each one covering by at least a point. This 2-leg is the underdog ticket. It is a lean, not a lock."
-      : "Same leans, more legs. The chance they all cover drops fast. Read the 2-leg first.";
-  });
+  const legs = collectParlayLegs().filter((l) => l.league === league && l.kind === "spread" && l.dog);
+  return packParlays(legs, (title) => title === "2-leg"
+    ? "The two underdogs our number likes by the most, in different games. Both already cleared a bet on their own."
+    : "Same dogs, more legs. The chance they all cover drops fast. Read the 2-leg first.");
 }
 function buildFavParlays(league) {
-  const plays = collectParlayLegs().filter((l) => l.league === league && l.kind === "spread" && !l.dog);
-  const lean = plays.length < 2;
-  const legs = lean ? leanSideLegs(league, false) : plays;
+  const legs = collectParlayLegs().filter((l) => l.league === league && l.kind === "spread" && !l.dog);
   return packParlays(legs, (title) => title === "2-leg"
-    ? (lean
-      ? "These favorites are the sides our score likes by at least a point. The payout is smaller because they are supposed to win. The 2-leg is the steadier ticket."
-      : "Both sides are laying points, and we still think the number is short. Favorites are the steadier ticket.")
+    ? "The two favorites our number likes by the most. Both already cleared a bet on their own."
     : "One favorite miss sinks the longer ticket. Read the 2-leg first.");
 }
 function buildTotalParlays(league) {
@@ -6279,42 +6260,36 @@ function bestCfbMarketLeg(g, kind, floor) {
     };
   }
   if (kind === "spread") {
-    if (o.home_spread == null) return null;
-    const ch = coverHitSafe(g, "home");
-    const ca = coverHitSafe(g, "away");
-    const home = ch >= ca;
-    const hit = Math.min(0.78, home ? ch : ca);
-    if (!(hit >= floor)) return null;
-    const sp = home ? Number(o.home_spread) : -Number(o.home_spread);
-    const abbr = home ? g.home.abbr : g.away.abbr;
-    const line = abbr + " " + (sp > 0 ? "+" : "") + sp;
+    if (!p.pick || p.pick === "NO PLAY" || o.home_spread == null) return null;
+    const home = p.pick === g.home.abbr;
+    const hit = Math.min(0.78, Math.max(0.5, coverHitSafe(g, home ? "home" : "away")));
+    const abbr = p.pick;
+    const line = p.pick_line || (abbr + " spread");
+    const edge = Math.abs(Number(p.edge_spread) || 0);
     return {
       kind: "spread", label: line, detail: match,
-      game_id: g.id, date: g.date, league: "cfb", hit,
+      game_id: g.id, date: g.date, league: "cfb", hit, edge,
       odds: typeof toAmerican === "function" ? toAmerican(Math.min(0.62, hit)) : -110,
       key: "spread:" + g.id,
-      why: "Our sims have " + abbr + " covering " + line + " in " + Math.round(hit * 100) + "% of runs."
+      why: "Our number is " + edge.toFixed(1) + " points off " + line + ". That already cleared a bet on its own."
     };
   }
-  if (o.total == null) return null;
+  if (!p.total_pick || p.total_pick === "NO PLAY" || o.total == null) return null;
+  const isOver = String(p.total_pick).startsWith("OVER");
+  const edge = Math.abs(Number(p.edge_total) || 0);
   let over = Number(s.over || 0);
   let under = Number(s.under || 0);
-  if (over < 0.5 && under < 0.5 && p.hashmark_total != null) {
-    const edge = Number(p.hashmark_total) - Number(o.total);
-    const tilt = Math.max(-0.16, Math.min(0.16, edge * 0.028));
-    over = 0.5 + tilt;
-    under = 0.5 - tilt;
+  if (over < 0.5 && under < 0.5) {
+    over = isOver ? 0.56 : 0.44;
+    under = isOver ? 0.44 : 0.56;
   }
-  const isOver = over >= under;
-  const hit = Math.min(0.8, isOver ? over : under);
-  if (!(hit >= floor)) return null;
-  const sideWord = isOver ? "OVER" : "UNDER";
+  const hit = Math.min(0.8, Math.max(0.5, isOver ? over : under));
   return {
-    kind: "total", label: sideWord + " " + o.total, detail: match + " total",
-    game_id: g.id, date: g.date, league: "cfb", hit,
+    kind: "total", label: p.total_pick, detail: match + " total",
+    game_id: g.id, date: g.date, league: "cfb", hit, edge,
     odds: typeof toAmerican === "function" ? toAmerican(Math.min(0.62, hit)) : -110,
     key: "total:" + g.id,
-    why: sideWord + " " + o.total + " hits in " + Math.round(hit * 100) + "% of sims. Our total is " + (p.hashmark_total ?? "—") + "."
+    why: p.total_pick + ". Our number is " + edge.toFixed(1) + " points off that total."
   };
 }
 function cfbLegPool(kind, floor) {
@@ -6323,7 +6298,7 @@ function cfbLegPool(kind, floor) {
     const leg = bestCfbMarketLeg(g, kind, floor);
     if (leg) legs.push(leg);
   });
-  legs.sort((a, b) => b.hit - a.hit || String(a.detail).localeCompare(String(b.detail)));
+  legs.sort((a, b) => (Number(b.edge) || 0) - (Number(a.edge) || 0) || b.hit - a.hit || String(a.detail).localeCompare(String(b.detail)));
   return legs;
 }
 function collegeTicket(group, legs) {
@@ -6347,7 +6322,7 @@ function collegeLadder(kind, lengths, floor) {
   lengths.forEach((n) => {
     if (pool.length < n) return;
     const bag = pool.slice(0, n);
-    if (bag[bag.length - 1].hit < floor) return;
+    if (bag[bag.length - 1].hit < floor && !(Number(bag[bag.length - 1].edge) > 0)) return;
     out.push(collegeTicket(kind, bag));
   });
   return out;
@@ -6492,11 +6467,10 @@ function renderCollegeParlayBoard() {
       <button type="button" data-cgroup="all" class="${filter === "all" ? "on" : ""}">All groups</button>
       ${groups.map((g) => `<button type="button" data-cgroup="${g.id}" class="${filter === g.id ? "on" : ""}">${g.title}</button>`).join("")}
     </div>`;
-  const locked = typeof lockedCollegeBoard === "function" ? lockedCollegeBoard() : {};
   const show = groups.filter((g) => filter === "all" || filter === g.id);
   let html = chips;
   show.forEach((g) => {
-    const rows = (locked[g.id] && locked[g.id].length) ? locked[g.id] : (board[g.id] || []);
+    const rows = board[g.id] || [];
     html += `<div class="home-label parlay-group">${g.title}</div>`;
     html += `<p class="subn" style="grid-column:1/-1;margin:0 0 4px">${g.blurb}</p>`;
     html += rows.length
@@ -6542,24 +6516,14 @@ function renderParlays() {
     return;
   }
   const themed = {
-    dogs: { rows: buildDogParlays("nfl"), stamp: "NFL underdog parlays. Every leg is a team getting points. If it says lean, it did not clear a bet by itself.", empty: "No NFL underdog parlay this week. We do not have two dogs we like enough to pair." },
-    favs: { rows: buildFavParlays("nfl"), stamp: "NFL favorite parlays. These teams are laying points, and we still think the number is short.", empty: "No NFL favorite parlay this week." },
-    totals: { rows: buildTotalParlays("nfl"), stamp: "NFL totals. Overs and unders only, and only where our score and the posted number disagree.", empty: "No NFL totals parlay this week." },
+    dogs: { rows: buildDogParlays("nfl"), stamp: "NFL underdogs. Only dogs that already cleared a bet on their own, biggest gap first.", empty: "No NFL underdog parlay this week. We do not have two dogs that cleared." },
+    favs: { rows: buildFavParlays("nfl"), stamp: "NFL favorites. Only favorites that already cleared a bet on their own, biggest gap first.", empty: "No NFL favorite parlay this week." },
+    totals: { rows: buildTotalParlays("nfl"), stamp: "NFL totals. Only overs and unders that already cleared, biggest gap first.", empty: "No NFL totals parlay this week. No total is far enough off our number." },
     cdogs: { rows: buildDogParlays("cfb"), stamp: "College underdogs only. No NFL teams on this ticket.", empty: "No college underdog parlay this week." }
   };
   if (themed[league]) {
     if (stamp) stamp.textContent = "Built off the board. Tap a leg for the why. NFL and college stay in their own tabs so a ticket never mixes the two.";
-    hero.innerHTML = themed[league].rows.map(parlayCardHtml).join("")
-      + (league === "dogs"
-        ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">This week's underdog ticket</div>` + lockedUnderdogParlays().map(parlayCardHtml).join("")
-        : "")
-      + (league === "favs"
-        ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">This week's favorite ticket</div>` + lockedFavoriteParlays().map(parlayCardHtml).join("")
-        : "")
-      + (league === "totals"
-        ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">This week's totals ticket</div>` + lockedTotalParlays().map(parlayCardHtml).join("")
-        : "")
-      || `<div class="empty">${themed[league].empty}</div>`;
+    hero.innerHTML = themed[league].rows.map(parlayCardHtml).join("") || `<div class="empty">${themed[league].empty}</div>`;
     hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
     return;
   }
@@ -6574,10 +6538,11 @@ function renderParlays() {
     hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => { if (el.dataset.id) openGame(el.dataset.id); }));
     return;
   }
-  if (stamp) stamp.textContent = "NFL Week 4 parlays. Sides and totals for games that have not kicked off. Tap a leg for the why.";
+  const week = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : "";
+  if (stamp) stamp.textContent = "NFL Week " + week + ". The 2-leg is the two biggest gaps on the board. Longer tickets add the next best.";
   let extra = "";
   try { extra = parlayHeroHtml(league) || ""; } catch (e) { extra = ""; }
-  hero.innerHTML = lockedWeek4Html() + extra;
+  hero.innerHTML = extra || `<div class="empty">No NFL parlay this week. We do not have two plays far enough off the number.</div>`;
   hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 function valueTileHtml(r) {
