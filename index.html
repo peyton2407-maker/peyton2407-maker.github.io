@@ -1853,10 +1853,20 @@ function weatherCodeLabel(code) {
 
 function coordsForGame(g) {
   if (g.lat && g.lon) return [Number(g.lat), Number(g.lon)];
-  const city = (g.city || "").trim();
-  if (CITY_COORDS[city]) return CITY_COORDS[city];
-  for (const [k, v] of Object.entries(CITY_COORDS)) {
-    if (city.toLowerCase().includes(k.toLowerCase()) || k.toLowerCase().includes(city.toLowerCase())) return v;
+  const city = String(g.city || "").trim();
+  if (city && CITY_COORDS[city]) return CITY_COORDS[city];
+  const venue = String(g.venue || "");
+  if (/tottenham|wembley|london/i.test(venue)) return [51.604, -0.066];
+  if (g.league === "nfl" && g.home && !g.neutral) {
+    const homeCity = NFL_HOME_CITY[g.home.abbr] || NFL_HOME_CITY[String(g.home.abbr || "").replace("WSH", "WAS")];
+    if (homeCity && CITY_COORDS[homeCity]) return CITY_COORDS[homeCity];
+  }
+  if (city.length >= 4) {
+    const want = city.toLowerCase();
+    for (const [k, v] of Object.entries(CITY_COORDS)) {
+      const key = k.toLowerCase();
+      if (want === key || want.includes(key) || (key.length >= 5 && key.includes(want))) return v;
+    }
   }
   return null;
 }
@@ -1895,7 +1905,7 @@ function weatherImpact(wx, indoor) {
     rush *= 1.04;
     bits.push(`Precip ${precip}% / ${inch.toFixed(2)}" — expect shorter throws and more run.`);
   }
-  if (code >= 71 && code <= 86) {
+  if ((code >= 71 && code <= 77) || code === 85 || code === 86) {
     adj -= 1.4;
     rec *= 0.93;
     rush *= 0.98;
@@ -7502,7 +7512,9 @@ function renderInjuries(league){
     const reports = loadCfbInjReports();
     const days = cfbVisibleDays();
     const et = etFields();
-    const focus = days.some((d) => d.ymd === et.ymd) ? et.ymd : days[days.length - 1].ymd;
+    const posted = days.filter((d) => (((reports[d.ymd] || {}).rows) || []).length);
+    const today = days.find((d) => d.ymd === et.ymd);
+    const focus = (today && (((reports[today.ymd] || {}).rows) || []).length) ? today.ymd : (posted.length ? posted[posted.length - 1].ymd : (today ? today.ymd : days[days.length - 1].ymd));
     if (!window.__cfbInjDay || !days.some((d) => d.ymd === window.__cfbInjDay)) window.__cfbInjDay = focus;
     const pick = window.__cfbInjDay;
     const chosen = reports[pick];
@@ -7547,7 +7559,10 @@ function renderInjuries(league){
     const days = nflVisibleDays();
     const kicks = nflKickCards();
     const et = etFields();
-    const focus = "day-" + (days.some((d) => d.ymd === et.ymd) ? et.ymd : days[0].ymd);
+    const posted = days.filter((d) => (((reports["day-" + d.ymd] || {}).rows) || []).length);
+    const today = days.find((d) => d.ymd === et.ymd);
+    const focusDay = (today && posted.some((d) => d.ymd === today.ymd)) ? today : (posted.length ? posted[posted.length - 1] : (today || days[0]));
+    const focus = "day-" + focusDay.ymd;
     const keys = days.map((d) => "day-" + d.ymd).concat(kicks.map((k) => k.id));
     if (!window.__nflInjKey || keys.indexOf(window.__nflInjKey) === -1) window.__nflInjKey = focus;
     const pick = window.__nflInjKey;
@@ -9594,7 +9609,10 @@ function renderWeatherDesk(opts) {
   const saved = loadWxReports();
   const days = nflVisibleDays();
   const et = etFields();
-  const focus = league + "-day-" + (days.some((d) => d.ymd === et.ymd) ? et.ymd : days[0].ymd);
+  const posted = days.filter((d) => (((saved[league + "-day-" + d.ymd] || {}).rows) || []).length);
+  const today = days.find((d) => d.ymd === et.ymd);
+  const focusDay = (today && posted.some((d) => d.ymd === today.ymd)) ? today : (posted.length ? posted[posted.length - 1] : (today || days[0]));
+  const focus = league + "-day-" + focusDay.ymd;
   const kicks = wxKickCards(league);
   const keys = days.map((d) => league + "-day-" + d.ymd).concat(kicks.map((k) => "ko-" + k.id));
   const bagKey = league === "nfl" ? "__wxKeyNfl" : "__wxKeyCfb";
@@ -10876,7 +10894,8 @@ async function installElevenReport() {
   } catch (e) { return; }
   if (!file || !file.ymd) return;
   const today = etFields().ymd;
-  if (file.ymd !== today) return;
+  const age = (new Date(today + "T12:00:00Z") - new Date(file.ymd + "T12:00:00Z")) / 86400000;
+  if (!Number.isFinite(age) || age < 0 || age > 6) return;
   const put = (storeKey, id, rows, extra) => {
     if (!rows || !rows.length) return;
     let all = {};
