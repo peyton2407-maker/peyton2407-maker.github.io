@@ -10116,17 +10116,31 @@ function playsForScorecard(league) {
     const row = snapPlay(g);
     row.week = Number(g.week);
     if (league === "nfl") {
-      const lean = nflSlateLean(g);
-      row.pick = lean.pick;
-      row.pick_line = lean.pick_line;
-      row.total_pick = lean.total_pick;
+      row.pick = (g.proj && g.proj.pick) || null;
+      row.pick_line = (g.proj && g.proj.pick_line) || null;
+      row.total_pick = (g.proj && g.proj.total_pick) || null;
     }
-    if (deskPlay) {
-      if (src.pick && src.pick !== "NO PLAY") {
-        row.pick_line = src.pick;
-        row.pick = String(src.pick).split(/\s+/)[0];
+    if (deskPlay && league !== "nfl") {
+      const liveSide = g.proj && g.proj.pick && g.proj.pick !== "NO PLAY";
+      const liveTot = g.proj && g.proj.total_pick && g.proj.total_pick !== "NO PLAY";
+      if (liveSide) {
+        const fileTeam = src.pick && src.pick !== "NO PLAY" ? String(src.pick).split(/\s+/)[0] : "";
+        if (fileTeam && fileTeam === g.proj.pick) {
+          row.pick_line = src.pick;
+          row.pick = fileTeam;
+        } else {
+          row.pick = g.proj.pick;
+          row.pick_line = g.proj.pick_line || g.proj.pick;
+        }
+      } else {
+        row.pick = "NO PLAY";
+        row.pick_line = null;
       }
-      if (src.total && src.total !== "NO PLAY") row.total_pick = src.total;
+      if (liveTot) {
+        const fileSide = src.total && src.total !== "NO PLAY" ? String(src.total).split(/\s+/)[0] : "";
+        const liveSideT = String(g.proj.total_pick).split(/\s+/)[0];
+        row.total_pick = fileSide && fileSide === liveSideT ? src.total : g.proj.total_pick;
+      } else row.total_pick = "NO PLAY";
     }
     const old = byId[String(g.id)];
     if (old && old.graded) {
