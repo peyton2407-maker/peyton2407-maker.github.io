@@ -3039,7 +3039,9 @@ function nflLearnNudge(g) {
   const margin = Math.max(-1.2, Math.min(1.2, +(w * (hm - am)).toFixed(2)));
   const total = Math.max(-1, Math.min(1, +(w * 0.4 * ((ht + at) / 2)).toFixed(2)));
   if (Math.abs(margin) < 0.2 && Math.abs(total) < 0.2) return { margin: 0, total: 0, note: "" };
-  return { margin, total, note: "Against the closing number, " + g.home.abbr + " has missed by " + (hm > 0 ? "+" : "") + hm.toFixed(1) + " over " + hn + " games and " + g.away.abbr + " by " + (am > 0 ? "+" : "") + am.toFixed(1) + " over " + an + " games. This week moves " + (margin > 0 ? "+" : "") + margin.toFixed(1) + "." };
+  let note = "Against the closing number, " + g.home.abbr + " has missed by " + (hm > 0 ? "+" : "") + hm.toFixed(1) + " over " + hn + " games and " + g.away.abbr + " by " + (am > 0 ? "+" : "") + am.toFixed(1) + " over " + an + " games. This week moves " + (margin > 0 ? "+" : "") + margin.toFixed(1) + ".";
+  if (Math.abs(total) >= 0.2) note += " The total moves " + (total > 0 ? "+" : "") + total.toFixed(1) + ".";
+  return { margin, total, note };
 }
 function nflLineMove(g, lockedSp, lockedTot) {
   const notes = [];
