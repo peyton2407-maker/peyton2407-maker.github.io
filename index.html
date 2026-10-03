@@ -1831,7 +1831,23 @@ const CITY_COORDS = {
   "Oxford": [34.3620, -89.5340],
   "Starkville": [33.4560, -88.7930],
   "Fayetteville": [36.0670, -94.1780],
-  "Tuscaloosa": [33.2083, -87.5502]
+  "Tuscaloosa": [33.2083, -87.5502],
+  "Champaign": [40.0993, -88.2359],
+  "Albuquerque": [35.0844, -106.6280],
+  "Mount Pleasant": [43.5775, -84.7708],
+  "Muncie": [40.2158, -85.4188],
+  "Amherst": [42.3770, -72.5360],
+  "Ruston": [32.5273, -92.6555],
+  "Lafayette": [30.2150, -92.0419],
+  "Harrisonburg": [38.4350, -78.8698],
+  "Mobile": [30.6944, -88.1761],
+  "East Hartford": [41.7590, -72.6180],
+  "USAF Academy": [38.9970, -104.8430],
+  "Fort Collins": [40.5700, -105.0860],
+  "Boca Raton": [26.3780, -80.1010],
+  "Boise": [43.6030, -116.1960],
+  "San Diego": [32.7844, -117.1228],
+  "Honolulu": [21.3720, -157.9300]
 };
 
 function weatherCodeLabel(code) {
@@ -2505,10 +2521,17 @@ async function attachWeather(games) {
     const key = xy.map((n) => n.toFixed(2)).join(",") + "|" + String(g.date || "").slice(0, 13);
     jobs.push([g, key, xy]);
   }
-  await poolMap(jobs, 5, async ([g, key, xy]) => {
+  await poolMap(jobs, 2, async ([g, key, xy]) => {
     try {
-      if (!cache.has(key)) cache.set(key, await fetchOpenMeteo(xy[0], xy[1], g.date));
-      g.weather = cache.get(key);
+      if (!cache.has(key)) {
+        let wx = null;
+        for (let attempt = 0; attempt < 3 && !wx; attempt++) {
+          try { wx = await fetchOpenMeteo(xy[0], xy[1], g.date); }
+          catch (err) { await new Promise((r) => setTimeout(r, 800 * (attempt + 1))); }
+        }
+        if (wx) cache.set(key, wx);
+      }
+      if (cache.has(key)) g.weather = cache.get(key);
     } catch (err) {
       console.warn("weather", g.short_name, err);
     }
@@ -9555,34 +9578,72 @@ function wxKickCards(league, now) {
 function wxReportsDue() {
   const day = nflDaySlot();
   const saved = loadWxReports();
-  if (day.due && ["nfl", "cfb"].some((lg) => !(((saved[lg + "-day-" + day.ymd] || {}).rows) || []).length)) return true;
-  return wxKickCards().some((k) => k.due && !(((saved["ko-" + k.id] || {}).rows) || []).length);
+  return day.due && ["nfl", "cfb"].some((lg) => !(((saved[lg + "-day-" + day.ymd] || {}).rows) || []).length);
 }
-function wxNextLabel(league) {
+function wxNextLabel() {
   const et = etFields();
   const order = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  let day = "Wednesday 11:00 AM ET";
-  if (NFL_REPORT_DAYS.includes(et.weekday) && et.hour < 11) day = et.weekday + " 11:00 AM ET";
-  else {
-    const idx = order.indexOf(et.weekday);
-    for (let i = 1; i <= 7; i++) {
-      const name = order[(idx + i) % 7];
-      if (NFL_REPORT_DAYS.includes(name)) { day = name + " 11:00 AM ET"; break; }
-    }
+  if (NFL_REPORT_DAYS.includes(et.weekday) && et.hour < 11) return et.weekday + " 11:00 AM ET";
+  const idx = order.indexOf(et.weekday);
+  for (let i = 1; i <= 7; i++) {
+    const name = order[(idx + i) % 7];
+    if (NFL_REPORT_DAYS.includes(name)) return name + " 11:00 AM ET";
   }
-  const next = wxKickCards(league).filter((k) => !k.due && !k.passed)[0];
-  if (!next) return day;
-  const when = etFields(new Date(next.opens));
+  return "Wednesday 11:00 AM ET";
+}
+function msUntilEtHalfHour() {
+  const et = etFields();
+  const mod = (et.minute % 30) * 60 * 1000 + new Date().getSeconds() * 1000 + new Date().getMilliseconds();
+  if (mod < 2500) return 30 * 60 * 1000;
+  return 30 * 60 * 1000 - mod;
+}
+function nextHalfHourLabel() {
+  const when = etFields(new Date(Date.now() + msUntilEtHalfHour()));
   const hour = when.hour % 12 || 12;
   const min = String(when.minute).padStart(2, "0");
-  return day + ". Next kickoff report " + next.short + " at " + hour + ":" + min + " " + (when.hour >= 12 ? "PM" : "AM") + " ET";
+  return hour + ":" + min + " " + (when.hour >= 12 ? "PM" : "AM") + " ET";
+}
+async function refreshLiveWeather(league, includeFinals) {
+  if (window.__wxLivePull || typeof attachWeather !== "function") return;
+  const nflW = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : 0;
+  const cfbW = typeof currentCfbWeekNumber === "function" ? currentCfbWeekNumber() : 0;
+  const games = (DATA.games || []).filter((g) => {
+    if (!g || (g.league !== "nfl" && g.league !== "cfb")) return false;
+    if (league && g.league !== league) return false;
+    if (Number(g.week) !== Number(g.league === "cfb" ? cfbW : nflW)) return false;
+    return includeFinals || !g.completed;
+  });
+  if (!games.length) return;
+  window.__wxLivePull = true;
+  try {
+    await attachWeather(games);
+    window.__wxLiveAt = Date.now();
+    const et = etFields();
+    const min = String(et.minute).padStart(2, "0");
+    const hour = et.hour % 12 || 12;
+    saveWxReport((league || "live") + "-live-" + et.ymd + "-" + et.hour + min, {
+      kind: "live",
+      league: league || "both",
+      label: "Live weather " + hour + ":" + min + " " + (et.hour >= 12 ? "PM" : "AM") + " ET"
+    }, games);
+    if (view === "nflwx" && typeof renderNflWeather === "function") renderNflWeather();
+    if (view === "cfbwx" && typeof renderCfbWeather === "function") renderCfbWeather();
+    if ((view === "nfl" || view === "cfb" || view === "all" || view === "live") && typeof renderBoard === "function") renderBoard();
+  } catch (e) { console.warn("live wx", e); }
+  finally { window.__wxLivePull = false; }
+}
+function armLiveWeatherClock() {
+  if (window.__wxHalf) clearTimeout(window.__wxHalf);
+  window.__wxHalf = setTimeout(() => {
+    refreshLiveWeather().finally(() => armLiveWeatherClock());
+  }, msUntilEtHalfHour());
 }
 async function runDueWeatherReports() {
   if (window.__wxReportPulling || typeof attachWeather !== "function") return;
   const day = nflDaySlot();
   const saved = loadWxReports();
   const needDay = day.due && ["nfl", "cfb"].some((lg) => !(((saved[lg + "-day-" + day.ymd] || {}).rows) || []).length);
-  const kicks = wxKickCards().filter((k) => k.due && !(((saved["ko-" + k.id] || {}).rows) || []).length);
+  const kicks = [];
   if (!needDay && !kicks.length) return;
   window.__wxReportPulling = true;
   try {
@@ -9626,7 +9687,7 @@ function renderWeatherDesk(opts) {
   const dayBox = document.getElementById(league === "nfl" ? "nflWxDays" : "cfbWxDays");
   const kickBox = document.getElementById(league === "nfl" ? "nflWxKicks" : "cfbWxKicks");
   const stamp = document.getElementById(league === "nfl" ? "nflWxStamp" : "cfbWxStamp");
-  if (stamp) stamp.textContent = "Weather reports run Wednesday through Sunday at 11:00 AM ET, and 90 minutes before each kickoff. Next report " + wxNextLabel(league) + ".";
+  if (stamp) stamp.textContent = "The 11:00 AM report still posts Wednesday through Sunday. Live weather refreshes every 30 minutes on the dot, at :00 and :30 ET. Next live refresh " + nextHalfHourLabel() + ".";
   if (dayBox) {
     dayBox.innerHTML = days.map((d) => {
       const id = league + "-day-" + d.ymd;
@@ -9644,12 +9705,7 @@ function renderWeatherDesk(opts) {
     }
   }
   if (kickBox) {
-    kickBox.innerHTML = kicks.length ? kicks.map((k) => {
-      const id = "ko-" + k.id;
-      const n = (((saved[id] || {}).rows) || []).length;
-      const state = n ? "Posted" : k.passed ? "Window passed" : k.due ? "Due now" : "90 min before kick";
-      return `<button type="button" class="cfb-day${pick === id ? " on" : ""}" data-wxkey="${id}"><span class="lbl">${escHtml(k.short)}</span><b>${state}</b></button>`;
-    }).join("") : `<div class="subn">Kickoff reports post 90 minutes before each game. None are on this week's board yet.</div>`;
+    kickBox.innerHTML = `<div class="subn">Live weather refreshes at :00 and :30 ET. Next one is ${nextHalfHourLabel()}.</div>`;
     if (!kickBox.dataset.bound) {
       kickBox.dataset.bound = "1";
       kickBox.addEventListener("click", (e) => {
@@ -9664,12 +9720,16 @@ function renderWeatherDesk(opts) {
   const kind = (document.getElementById(kindSel) || {}).value || "all";
   const q = ((document.getElementById(qSel) || {}).value || "").trim().toLowerCase();
   let games = (DATA.games || []).filter((g) => g.league === league);
-  if (snap && (snap.rows || []).length) {
+  const liveNow = window.__wxLiveAt && pick === focus && focusDay && focusDay.ymd === et.ymd;
+  if (!liveNow && snap && (snap.rows || []).length) {
     const byId = {};
     snap.rows.forEach((r) => { byId[String(r.id)] = r; });
     games = games.filter((g) => byId[String(g.id)]).map((g) => wxOverlay(g, byId[String(g.id)]));
-  } else if (pick !== focus) games = [];
-  else games = games.filter((g) => !g.completed);
+  } else if (!liveNow && pick !== focus) games = [];
+  else {
+    const week = league === "cfb" ? currentCfbWeekNumber() : currentNflWeekNumber();
+    games = games.filter((g) => Number(g.week) === Number(week));
+  }
   if (conf !== "ALL") {
     games = games.filter((g) => {
       if (confMode === "nfl") {
@@ -12547,6 +12607,8 @@ async function boot() {
     };
     window.__cfbInjClock = setInterval(pullDueReports, 60 * 1000);
   }
+  if (typeof refreshLiveWeather === "function") refreshLiveWeather("cfb", true);
+  if (typeof armLiveWeatherClock === "function") armLiveWeatherClock();
   document.getElementById("injRefreshBtn")?.addEventListener("click", () => {
     setStamp("Updating injuries…", true);
     fetchInjuries(true).then(() => {
