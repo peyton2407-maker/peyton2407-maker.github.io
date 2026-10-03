@@ -1546,7 +1546,7 @@ a[data-view="heisman"], a[href="#heisman"] { display: none !important; }
         </select>
         <input id="nflWxQ" placeholder="Search team, city, stadium…" />
       </div>
-      <p class="subn" id="nflWxStamp" style="margin:0 0 10px">The 11:00 AM report posts Wednesday through Sunday. Live weather refreshes every 30 minutes, at :00 and :30 ET.</p>
+      <p class="subn" id="nflWxStamp" style="margin:0 0 10px">NFL weather posts Wednesday through Sunday at 11:00 AM ET, and 90 minutes before each kickoff.</p>
       <div id="nflWxDays" class="cfb-inj-week"></div>
       <div id="nflWxKicks" class="cfb-inj-week"></div>
       <div class="stat-row" id="nflWxStats"></div>
@@ -1587,7 +1587,7 @@ a[data-view="heisman"], a[href="#heisman"] { display: none !important; }
         </select>
         <input id="cfbWxQ" placeholder="Search team, city, stadium…" />
       </div>
-      <p class="subn" id="cfbWxStamp" style="margin:0 0 10px">The 11:00 AM report posts Wednesday through Sunday. Live weather refreshes every 30 minutes, at :00 and :30 ET.</p>
+      <p class="subn" id="cfbWxStamp" style="margin:0 0 10px">College has no 90-minute kickoff pull. Live weather refreshes at :00 and :30 ET. The 11:00 AM report still posts.</p>
       <div id="cfbWxDays" class="cfb-inj-week"></div>
       <div id="cfbWxKicks" class="cfb-inj-week"></div>
       <div class="stat-row" id="cfbWxStats"></div>
@@ -9578,7 +9578,8 @@ function wxKickCards(league, now) {
 function wxReportsDue() {
   const day = nflDaySlot();
   const saved = loadWxReports();
-  return day.due && ["nfl", "cfb"].some((lg) => !(((saved[lg + "-day-" + day.ymd] || {}).rows) || []).length);
+  if (day.due && ["nfl", "cfb"].some((lg) => !(((saved[lg + "-day-" + day.ymd] || {}).rows) || []).length)) return true;
+  return wxKickCards("nfl").some((k) => k.due && !(((saved["ko-" + k.id] || {}).rows) || []).length);
 }
 function wxNextLabel() {
   const et = etFields();
@@ -9635,7 +9636,7 @@ async function refreshLiveWeather(league, includeFinals) {
 function armLiveWeatherClock() {
   if (window.__wxHalf) clearTimeout(window.__wxHalf);
   window.__wxHalf = setTimeout(() => {
-    refreshLiveWeather().finally(() => armLiveWeatherClock());
+    refreshLiveWeather("cfb").finally(() => armLiveWeatherClock());
   }, msUntilEtHalfHour());
 }
 async function runDueWeatherReports() {
@@ -9643,7 +9644,7 @@ async function runDueWeatherReports() {
   const day = nflDaySlot();
   const saved = loadWxReports();
   const needDay = day.due && ["nfl", "cfb"].some((lg) => !(((saved[lg + "-day-" + day.ymd] || {}).rows) || []).length);
-  const kicks = [];
+  const kicks = wxKickCards("nfl").filter((k) => k.due && !(((saved["ko-" + k.id] || {}).rows) || []).length);
   if (!needDay && !kicks.length) return;
   window.__wxReportPulling = true;
   try {
@@ -9678,7 +9679,7 @@ function renderWeatherDesk(opts) {
   const today = days.find((d) => d.ymd === et.ymd);
   const focusDay = (today && posted.some((d) => d.ymd === today.ymd)) ? today : (posted.length ? posted[posted.length - 1] : (today || days[0]));
   const focus = league + "-day-" + focusDay.ymd;
-  const kicks = wxKickCards(league);
+  const kicks = league === "nfl" ? wxKickCards("nfl") : [];
   const keys = days.map((d) => league + "-day-" + d.ymd).concat(kicks.map((k) => "ko-" + k.id));
   const bagKey = league === "nfl" ? "__wxKeyNfl" : "__wxKeyCfb";
   if (!window[bagKey] || keys.indexOf(window[bagKey]) === -1) window[bagKey] = focus;
@@ -9687,7 +9688,9 @@ function renderWeatherDesk(opts) {
   const dayBox = document.getElementById(league === "nfl" ? "nflWxDays" : "cfbWxDays");
   const kickBox = document.getElementById(league === "nfl" ? "nflWxKicks" : "cfbWxKicks");
   const stamp = document.getElementById(league === "nfl" ? "nflWxStamp" : "cfbWxStamp");
-  if (stamp) stamp.textContent = "The 11:00 AM report still posts Wednesday through Sunday. Live weather refreshes every 30 minutes on the dot, at :00 and :30 ET. Next live refresh " + nextHalfHourLabel() + ".";
+  if (stamp) stamp.textContent = league === "nfl"
+    ? "NFL weather posts Wednesday through Sunday at 11:00 AM ET, and 90 minutes before each kickoff."
+    : "College has no 90-minute kickoff pull. The 11:00 AM report still posts, and live weather refreshes at :00 and :30 ET. Next live refresh " + nextHalfHourLabel() + ".";
   if (dayBox) {
     dayBox.innerHTML = days.map((d) => {
       const id = league + "-day-" + d.ymd;
@@ -9705,7 +9708,14 @@ function renderWeatherDesk(opts) {
     }
   }
   if (kickBox) {
-    kickBox.innerHTML = `<div class="subn">Live weather refreshes at :00 and :30 ET. Next one is ${nextHalfHourLabel()}.</div>`;
+    kickBox.innerHTML = league === "nfl"
+      ? (kicks.length ? kicks.map((k) => {
+          const id = "ko-" + k.id;
+          const n = (((saved[id] || {}).rows) || []).length;
+          const state = n ? "Posted" : k.passed ? "Window passed" : k.due ? "Due now" : "90 min before kick";
+          return `<button type="button" class="cfb-day${pick === id ? " on" : ""}" data-wxkey="${id}"><span class="lbl">${escHtml(k.short)}</span><b>${state}</b></button>`;
+        }).join("") : `<div class="subn">Kickoff reports post 90 minutes before each NFL game.</div>`)
+      : `<div class="subn">College does not run a 90-minute kickoff report. Live weather refreshes at :00 and :30 ET. Next one is ${nextHalfHourLabel()}.</div>`;
     if (!kickBox.dataset.bound) {
       kickBox.dataset.bound = "1";
       kickBox.addEventListener("click", (e) => {
@@ -11073,7 +11083,7 @@ function scorePullsDue() {
   if (["Thu", "Fri", "Sat", "Sun"].includes(et.weekday) && after11 && !saved["day-" + et.ymd]) due.push("day-" + et.ymd);
   const t = Date.now();
   (DATA.games || []).forEach((g) => {
-    if (!g || !g.date || (g.league !== "nfl" && g.league !== "cfb")) return;
+    if (!g || !g.date || g.league !== "nfl") return;
     const kick = new Date(g.date).getTime();
     if (!Number.isFinite(kick)) return;
     const opens = kick - 90 * 60 * 1000;
