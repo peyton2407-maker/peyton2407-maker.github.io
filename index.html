@@ -1169,6 +1169,7 @@ a[data-view="heisman"], a[href="#heisman"] { display: none !important; }
             <button class="slide-btn" type="button" data-slide="cfbTiles" data-dir="-1" aria-label="College tiles left">‹</button>
             <div class="tile-row slide" id="cfbTiles">
               <a class="tab" href="#cfb" data-view="cfb">CFB Week 5</a>
+              <a class="tab star" href="#potd" data-view="potd">POTD</a>
               <a class="tab star" href="#cfbpicks" data-view="cfbpicks">College picks</a>
               <a class="tab" href="#cfbwx" data-view="cfbwx">College weather</a>
               <a class="tab" href="#cfbinj" data-view="cfbinj">College injuries</a>
@@ -1510,6 +1511,10 @@ a[data-view="heisman"], a[href="#heisman"] { display: none !important; }
       </div>
       <div class="stat-row" id="cfbPickStats"></div>
       <div class="prop-board" id="cfbPickBoard"></div>
+    </section>
+
+    <section id="potdSection" style="display:none">
+      <div id="potdBoard"></div>
     </section>
 
     <section id="nflWxSection" style="display:none">
@@ -9411,6 +9416,93 @@ function renderCfbPicks() {
   $$("#cfbPickBoard .prop-card").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 
+function cfbPotd() {
+  const now = Date.now();
+  const games = (DATA.games || []).filter((g) => {
+    if (!g || g.league !== "cfb" || g.completed || !g.odds || !g.proj || !g.home || !g.away) return false;
+    if (typeof isThisCfbWeek === "function" && !isThisCfbWeek(g)) return false;
+    const kick = new Date(g.date).getTime();
+    return !Number.isFinite(kick) || kick > now;
+  });
+  const bets = [];
+  games.forEach((g) => {
+    const p = g.proj || {};
+    const o = g.odds || {};
+    const margin = Number(p.blended_margin);
+    const sigma = (typeof cfbSigma === "function" && Number.isFinite(margin)) ? cfbSigma(margin) : (LIVE.CFB_SIGMA || 16.4);
+    const edge = Number(p.edge_spread);
+    if (o.home_spread != null && Number.isFinite(edge) && Math.abs(edge) >= 1) {
+      const sp = Number(o.home_spread);
+      const home = edge > 0;
+      const abbr = home ? g.home.abbr : g.away.abbr;
+      const num = home ? sp : -sp;
+      bets.push({
+        g, kind: "Spread",
+        line: abbr + " " + (num >= 0 ? "+" : "") + num.toFixed(1),
+        hit: normCdf(Math.abs(edge) / sigma),
+        why: "Our number is " + Math.abs(edge).toFixed(1) + " points off the posted spread."
+      });
+    }
+    const te = Number(p.edge_total);
+    if (o.total != null && Number.isFinite(te) && Math.abs(te) >= 1) {
+      bets.push({
+        g, kind: te > 0 ? "Over" : "Under",
+        line: (te > 0 ? "OVER " : "UNDER ") + o.total,
+        hit: normCdf(Math.abs(te) / 13.5),
+        why: "Our total is " + Math.abs(te).toFixed(1) + " points " + (te > 0 ? "over" : "under") + " the market."
+      });
+    }
+    const wpH = Number(p.win_prob_home);
+    const wpA = Number(p.win_prob_away);
+    const impH = Number(o.home_ml_prob) || (typeof parseAmerican === "function" ? parseAmerican(o.home_ml) : null);
+    const impA = Number(o.away_ml_prob) || (typeof parseAmerican === "function" ? parseAmerican(o.away_ml) : null);
+    if (Number.isFinite(wpH) && impH && wpH - impH >= 0.04) {
+      bets.push({
+        g, kind: "Moneyline",
+        line: g.home.abbr + " ML " + (o.home_ml || ""),
+        hit: wpH,
+        why: "We have " + g.home.abbr + " at " + Math.round(wpH * 100) + "% to win. The moneyline price is shorter than that."
+      });
+    }
+    if (Number.isFinite(wpA) && impA && wpA - impA >= 0.04) {
+      bets.push({
+        g, kind: "Moneyline",
+        line: g.away.abbr + " ML " + (o.away_ml || ""),
+        hit: wpA,
+        why: "We have " + g.away.abbr + " at " + Math.round(wpA * 100) + "% to win. The moneyline price is shorter than that."
+      });
+    }
+  });
+  bets.sort((a, b) => b.hit - a.hit);
+  return bets[0] || null;
+}
+function renderPotd() {
+  const board = document.getElementById("potdBoard");
+  if (!board) return;
+  const bet = cfbPotd();
+  if (!bet) {
+    board.innerHTML = `<div class="empty">No college play is far enough off the market yet.</div>`;
+    return;
+  }
+  const g = bet.g;
+  const pct = Math.round(bet.hit * 100);
+  board.innerHTML = `<article class="prop-card" data-id="${g.id}">
+    <div class="who">
+      <div>
+        <h4>POTD · ${escHtml(g.away.abbr)} @ ${escHtml(g.home.abbr)}</h4>
+        <div class="prop-meta">${fmt.when(g.date)} · ${escHtml(g.venue || "Campus")} · one play</div>
+      </div>
+      <div class="pick-score">${pct}%</div>
+    </div>
+    <div class="prop-stats">
+      <div><span class="lbl">${escHtml(bet.kind)}</span><b>${escHtml(bet.line)}</b></div>
+      <div><span class="lbl">Confidence</span><b>${pct}% to hit</b></div>
+      <div><span class="lbl">Why this one</span><b>${escHtml(bet.why)}</b></div>
+    </div>
+  </article>`;
+  board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
+}
+
 
 const NFL_DIV = {
   BUF:"AFC East", MIA:"AFC East", NE:"AFC East", NYJ:"AFC East",
@@ -12213,7 +12305,7 @@ function renderBoom() {
 
 function setView(next) {
   if (next === "heisman") next = "home";
-  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
+  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,potd:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
   if (!allowed[next]) next = "home";
   const wantProps = next === "propp";
   if (wantProps) { window.__parlayLg = "props"; next = "parlay"; }
@@ -12243,6 +12335,8 @@ function setView(next) {
   if (alertS) alertS.style.display = next === "alerts" ? "" : "none";
   $("#propsSection").style.display = next === "props" ? "" : "none";
   $("#cfbPicksSection").style.display = next === "cfbpicks" ? "" : "none";
+  const potdS = document.getElementById("potdSection");
+  if (potdS) potdS.style.display = next === "potd" ? "" : "none";
   $("#nflWxSection").style.display = next === "nflwx" ? "" : "none";
   $("#cfbWxSection").style.display = next === "cfbwx" ? "" : "none";
   $("#ratingsSection").style.display = next === "ratings" ? "" : "none";
@@ -12294,6 +12388,7 @@ function setView(next) {
   }
   if (next === "props") renderProps();
   if (next === "cfbpicks") renderCfbPicks();
+  if (next === "potd" && typeof renderPotd === "function") renderPotd();
   if (next === "nflwx") renderNflWeather();
   if (next === "cfbwx") renderCfbWeather();
   if (next === "ratings") renderRatings();
