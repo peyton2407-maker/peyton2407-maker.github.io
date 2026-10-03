@@ -10222,6 +10222,14 @@ function playsForScorecard(league) {
       row.pick_line = lean.pick_line;
     }
     if (!row.total_pick || row.total_pick === "NO PLAY") row.total_pick = lean.total_pick;
+    const kick = g.date ? new Date(g.date).getTime() : 0;
+    const started = (kick && kick < Date.now() - 30 * 60 * 1000) || g.completed;
+    if (started) {
+      if (!g._scoreLock) g._scoreLock = { pick: row.pick, pick_line: row.pick_line, total_pick: row.total_pick };
+      row.pick = g._scoreLock.pick;
+      row.pick_line = g._scoreLock.pick_line;
+      row.total_pick = g._scoreLock.total_pick;
+    }
     const old = byId[String(g.id)];
     if (old && old.graded) {
       row.ats = old.ats;
@@ -10247,9 +10255,14 @@ function playsForScorecard(league) {
     if (!finals[String(g.id)]) finals[String(g.id)] = { id: g.id, hs: hs, as: as, homeAbbr: g.home.abbr, awayAbbr: g.away.abbr, date: g.date };
   });
   return Object.values(byId).filter((p) => p && p.league === league).map((row) => {
-    if (row.graded && (row.ats || row.ou)) return row;
     const fin = finals[String(row.id)] || byTeams[String(row.away || "") + "@" + String(row.home || "")];
-    return fin ? gradeHistoryRow(row, fin) : row;
+    if (!fin) return row;
+    const keep = { pick: row.pick, pick_line: row.pick_line, total_pick: row.total_pick };
+    const graded = gradeHistoryRow(row, fin);
+    graded.pick = keep.pick;
+    graded.pick_line = keep.pick_line;
+    graded.total_pick = keep.total_pick;
+    return graded;
   });
 }
 function fillScoreWeeks(league) {
@@ -10414,7 +10427,44 @@ function renderWeeklyCard() {
   </article>`;
   wrap.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
+async function stampFinalScores() {
+  if (window.__finalStamp) return window.__finalStamp;
+  const stale = (DATA.games || []).some((g) => {
+    if (!g || g.completed || !g.date || (g.league !== "nfl" && g.league !== "cfb")) return false;
+    const kick = new Date(g.date).getTime();
+    return Number.isFinite(kick) && kick < Date.now() - 3 * 60 * 60 * 1000;
+  });
+  if (!stale) return;
+  const nflW = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : 4;
+  const cfbW = typeof currentCfbWeekNumber === "function" ? currentCfbWeekNumber() : 5;
+  window.__finalStamp = Promise.all([
+    getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=" + nflW + "&seasontype=2&limit=50").then((d) => parseGames(d, "nfl")).catch(() => []),
+    getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=" + cfbW + "&seasontype=2&groups=80&limit=300").then((d) => parseGames(d, "cfb")).catch(() => [])
+  ]).then((packs) => {
+    const byId = {};
+    packs.flat().forEach((g) => { if (g && g.id) byId[String(g.id)] = g; });
+    (DATA.games || []).forEach((g) => {
+      const n = byId[String(g.id)];
+      if (!n || !n.completed || !g.home || !g.away) return;
+      g.status = n.status;
+      g.status_detail = n.status_detail;
+      g.completed = true;
+      g.home.score = n.home.score;
+      g.away.score = n.away.score;
+    });
+  }).finally(() => { window.__finalStamp = null; });
+  return window.__finalStamp;
+}
 function renderScorecard() {
+  const needsFinal = (DATA.games || []).some((g) => {
+    if (!g || g.completed || !g.date || (g.league !== "nfl" && g.league !== "cfb")) return false;
+    const kick = new Date(g.date).getTime();
+    return Number.isFinite(kick) && kick < Date.now() - 3 * 60 * 60 * 1000;
+  });
+  if (needsFinal && !window.__finalTried && typeof stampFinalScores === "function") {
+    window.__finalTried = true;
+    stampFinalScores().then(() => { if (view === "score") renderScorecard(); }).catch(() => {});
+  }
   syncDesk();
   const league = activeLeague("scoreLeague", "cfb");
   fillScoreWeeks(league);
