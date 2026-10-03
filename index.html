@@ -7966,14 +7966,18 @@ function card(g) {
   const b = g.box || {};
   const edge = p.edge_spread;
   const edgeCls = Math.abs(edge || 0) >= 1 ? "edge-pos" : "edge-neg";
-  const pickBadge = p.pick && p.pick !== "NO PLAY"
-    ? `<span class="badge play">${p.pick_line}</span>`
+  const listed = g.league === "cfb" ? cfbListedPick(g) : null;
+  const sidePick = listed ? listed.pick : p.pick;
+  const sideLine = listed ? listed.pick_line : p.pick_line;
+  const totLine = listed ? listed.total_pick : p.total_pick;
+  const pickBadge = sidePick && sidePick !== "NO PLAY"
+    ? `<span class="badge play">${sideLine}</span>`
     : `<span class="badge pass">market aligned</span>`;
   const awayPts = p.away_points ?? b.away_points;
   const homePts = p.home_points ?? b.home_points;
   const tot = p.hashmark_total ?? b.total_points ?? o.total;
-  const totPick = p.total_pick && p.total_pick !== "NO PLAY"
-    ? `<span class="badge ${String(p.total_pick).startsWith("OVER") ? "over" : "under"}">${p.total_pick}</span>`
+  const totPick = totLine && totLine !== "NO PLAY"
+    ? `<span class="badge ${String(totLine).startsWith("OVER") ? "over" : "under"}">${totLine}</span>`
     : "";
   return `
     <article class="game ${g.completed ? "done" : ""}" data-id="${g.id}">
@@ -10173,6 +10177,17 @@ function nflSlateLean(g) {
   }
   return out;
 }
+function cfbListedPick(g) {
+  const src = (window.SPLIT_DESK || []).find((r) => r && String(r.id) === String(g.id));
+  const lean = nflSlateLean(g);
+  const out = { pick: lean.pick, pick_line: lean.pick_line, total_pick: lean.total_pick };
+  if (src && src.pick && src.pick !== "NO PLAY") {
+    out.pick_line = src.pick;
+    out.pick = String(src.pick).split(/\s+/)[0];
+  }
+  if (src && src.total && src.total !== "NO PLAY") out.total_pick = src.total;
+  return out;
+}
 function playsForScorecard(league) {
   const desk = loadDesk();
   const byId = {};
@@ -10185,7 +10200,8 @@ function playsForScorecard(league) {
     if (Number(g.week) !== Number(current)) return;
     const src = splitById[String(g.id)];
     const deskPlay = src && ((src.pick && src.pick !== "NO PLAY") || (src.total && src.total !== "NO PLAY"));
-    if (league !== "nfl" && !isPlay(g.proj) && !deskPlay) return;
+    const hasNumber = g.odds && (g.odds.home_spread != null || g.odds.total != null);
+    if (league !== "nfl" && !hasNumber && !deskPlay) return;
     if (league === "nfl" && !g.odds) return;
     const row = snapPlay(g);
     row.week = Number(g.week);
@@ -10194,27 +10210,16 @@ function playsForScorecard(league) {
       row.pick_line = (g.proj && g.proj.pick_line) || null;
       row.total_pick = (g.proj && g.proj.total_pick) || null;
     }
-    if (deskPlay && league !== "nfl") {
-      const liveSide = g.proj && g.proj.pick && g.proj.pick !== "NO PLAY";
-      const liveTot = g.proj && g.proj.total_pick && g.proj.total_pick !== "NO PLAY";
-      if (liveSide) {
-        const fileTeam = src.pick && src.pick !== "NO PLAY" ? String(src.pick).split(/\s+/)[0] : "";
-        if (fileTeam && fileTeam === g.proj.pick) {
-          row.pick_line = src.pick;
-          row.pick = fileTeam;
-        } else {
-          row.pick = g.proj.pick;
-          row.pick_line = g.proj.pick_line || g.proj.pick;
-        }
+    if (league !== "nfl" && src) {
+      if (src.pick && src.pick !== "NO PLAY") {
+        row.pick_line = src.pick;
+        row.pick = String(src.pick).split(/\s+/)[0];
       } else {
         row.pick = "NO PLAY";
         row.pick_line = null;
       }
-      if (liveTot) {
-        const fileSide = src.total && src.total !== "NO PLAY" ? String(src.total).split(/\s+/)[0] : "";
-        const liveSideT = String(g.proj.total_pick).split(/\s+/)[0];
-        row.total_pick = fileSide && fileSide === liveSideT ? src.total : g.proj.total_pick;
-      } else row.total_pick = "NO PLAY";
+      if (src.total && src.total !== "NO PLAY") row.total_pick = src.total;
+      else row.total_pick = "NO PLAY";
     }
     const lean = nflSlateLean(g);
     if (!row.pick || row.pick === "NO PLAY") {
@@ -10222,14 +10227,6 @@ function playsForScorecard(league) {
       row.pick_line = lean.pick_line;
     }
     if (!row.total_pick || row.total_pick === "NO PLAY") row.total_pick = lean.total_pick;
-    const kick = g.date ? new Date(g.date).getTime() : 0;
-    const started = (kick && kick < Date.now() - 30 * 60 * 1000) || g.completed;
-    if (started) {
-      if (!g._scoreLock) g._scoreLock = { pick: row.pick, pick_line: row.pick_line, total_pick: row.total_pick };
-      row.pick = g._scoreLock.pick;
-      row.pick_line = g._scoreLock.pick_line;
-      row.total_pick = g._scoreLock.total_pick;
-    }
     const old = byId[String(g.id)];
     if (old && old.graded) {
       row.ats = old.ats;
