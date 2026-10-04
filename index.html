@@ -5992,22 +5992,18 @@ function collectPropParlayLegs() {
     const g = (DATA.games || []).find((x) => String(x.id) === String(r.game_id));
     if (g && (g.completed || (g.date && new Date(g.date).getTime() < Date.now()))) return false;
     if (/ATL\s*@\s*GB/i.test(String(r.game || ""))) return false;
-    if (r.kind === "td") return r.hit >= 0.38 && r.hit <= 0.55 && Number(r.odds) >= 100;
-    if (r.kind === "over" || r.kind === "under") {
-      if (r.hit < 0.56 || r.hit > 0.73) return false;
-      if (r.source === "DraftKings") return true;
-      return r.hit >= 0.62;
-    }
+    if (r.kind === "td") return r.hit >= 0.22 && Number(r.odds) >= 100;
+    if (r.kind === "over" || r.kind === "under") return r.hit >= 0.54 && r.source === "DraftKings";
     return false;
   });
-  rows.sort((a, b) => (b.hit + (Number(b.odds) > 0 ? 0.04 : 0) + (b.source === "DraftKings" ? 0.02 : 0)) - (a.hit + (Number(a.odds) > 0 ? 0.04 : 0)));
+  rows.sort((a, b) => (b.hit || 0) - (a.hit || 0));
   const seen = new Set();
   return rows.filter((r) => {
-    const k = (r.name || "") + "|" + r.market;
+    const k = (r.name || "") + "|" + r.market + "|" + r.side;
     if (seen.has(k)) return false;
     seen.add(k);
     return true;
-  }).slice(0, 40).map((r) => ({
+  }).slice(0, 80).map((r) => ({
     label: r.kind === "td" ? `${r.name} ${r.market}` : `${r.name} ${r.side} ${r.line} ${r.market}`,
     detail: `${r.pos} · ${r.game}`,
     game_id: r.game_id, player: r.name, id: r.id, game: r.game, date: r.date,
@@ -6046,66 +6042,55 @@ function propParlayEV(bag) {
   return { p, odds, ev, label: odds > 0 ? "+" + odds : String(odds) };
 }
 function uniquePropCombos(legs, n, limit) {
-  const floor = { 1: 0, 2: 0.28, 3: 0.16, 4: 0.08, 5: 0.045, 6: 0.025 }[n] || 0.02;
-  const build = (cap) => {
-    const out = [];
-    const seen = new Set();
-    for (let i = 0; i < legs.length && out.length < limit; i++) {
-      const bag = [];
-      const usedP = new Set(), usedG = new Set();
-      const order = legs.slice(i).concat(legs.slice(0, i));
-      for (const l of order) {
-        if (usedP.has(l.player) || (n > 1 && usedG.has(l.game_id))) continue;
-        usedP.add(l.player);
-        usedG.add(l.game_id);
-        bag.push(l);
-        if (bag.length >= n) break;
-      }
-      if (bag.length < n) continue;
-      const k = bag.map((x) => x.key).sort().join("|");
-      if (seen.has(k)) continue;
-      const players = new Set(bag.map((x) => x.player));
-      if (cap != null && out.some((r) => r.legs.filter((l) => players.has(l.player)).length > cap)) continue;
-      seen.add(k);
-      const m = propParlayEV(bag);
-      if (n > 1 && !(m.odds > 0)) continue;
-      if (m.p < floor) continue;
-      if (n > 1 && m.ev < 0.02) continue;
-      const book = Number(bag[0].odds);
-      out.push({
-        title: n + "-leg #" + (out.length + 1),
-        n, legs: bag, p: m.p, odds: n === 1 ? book : m.odds,
+  const floor = { 1: 0, 2: 0.2, 3: 0.1, 4: 0.05, 5: 0.025, 6: 0.012 }[n] || 0.01;
+  const use = [];
+  const seen = new Set();
+  (legs || []).forEach((l) => {
+    if (!l || seen.has(l.key)) return;
+    seen.add(l.key);
+    use.push(l);
+  });
+  const pool = use.slice(0, n >= 5 ? 12 : 18);
+  const bags = [];
+  if (pool.length < n) return bags;
+  const walk = (start, cur) => {
+    if (bags.length >= limit) return;
+    if (cur.length === n) {
+      const m = propParlayEV(cur);
+      if (n > 1 && m.p < floor) return;
+      const book = Number(cur[0].odds);
+      bags.push({
+        title: n + "-leg #" + (bags.length + 1),
+        n, legs: cur.slice(), p: m.p,
+        odds: n === 1 ? book : m.odds,
         label: n === 1 ? (book > 0 ? "+" + book : String(book)) : m.label,
-        ev: m.ev, money: n === 1 ? book > 0 : true
+        ev: m.ev, money: n === 1 ? book > 0 : m.odds > 0
       });
+      return;
     }
-    return out;
+    for (let i = start; i < pool.length && bags.length < limit; i++) {
+      const l = pool[i];
+      if (cur.some((x) => x.player === l.player || (n > 1 && x.game_id === l.game_id))) continue;
+      cur.push(l);
+      walk(i + 1, cur);
+      cur.pop();
+    }
   };
-  const cap = n <= 2 ? 0 : n === 3 ? 1 : 2;
-  const strict = build(cap);
-  return strict.length >= Math.min(2, limit) ? strict : build(null);
+  walk(0, []);
+  return bags;
 }
 function buildPropParlays() {
   const legs = collectPropParlayLegs();
-  const cash = legs.filter((l) => l.hit >= 0.56);
-  const twoPool = cash.filter((l) => l.hit <= 0.72);
+  const cash = legs.filter((l) => l.hit >= 0.54);
   const plus = legs.filter((l) => Number(l.odds) >= 100);
-  const same = (function () {
-    const bag = pickPropBag(twoPool, 2, true);
-    if (!bag || bag.length < 2) return [];
-    const m = propParlayEV(bag);
-    if (!(m.odds > 0) || m.p < 0.28) return [];
-    return [{ title: "Same-game 2-leg", n: 2, legs: bag, p: m.p, odds: m.odds, label: m.label, ev: m.ev, money: true }];
-  })();
   const rows = [
-    ...uniquePropCombos(cash, 1, 4),
-    ...uniquePropCombos(plus, 1, 2),
-    ...uniquePropCombos(twoPool, 2, 8),
-    ...same,
-    ...uniquePropCombos(cash, 3, 8),
-    ...uniquePropCombos(cash, 4, 6),
-    ...uniquePropCombos(cash, 5, 6),
-    ...uniquePropCombos(cash, 6, 6)
+    ...uniquePropCombos(cash, 1, 16),
+    ...uniquePropCombos(plus, 1, 8),
+    ...uniquePropCombos(cash, 2, 12),
+    ...uniquePropCombos(cash, 3, 10),
+    ...uniquePropCombos(cash, 4, 8),
+    ...uniquePropCombos(cash, 5, 8),
+    ...uniquePropCombos(cash, 6, 8)
   ];
   const seen = new Set();
   const counts = {};
@@ -6629,9 +6614,19 @@ function renderParlays() {
   const hero = document.getElementById("parlayHero");
   if (!hero) return;
   if (league === "props") {
-    if (stamp) stamp.textContent = "Player props only. 1-leg through 6-leg. Anyone who already played is off the ticket.";
+    if (stamp) stamp.textContent = "Player props. A full card of 1-leg through 6-leg tickets off DraftKings numbers. Anyone who already played is off.";
+    const needLines = (DATA.games || []).some((g) => g.league === "nfl" && !g.completed && !Object.keys((window.VALUE_LINES || {})[String(g.id)] || {}).length);
+    if ((needLines || (DATA.games || []).some((g) => g.league === "nfl" && !g.completed && !(g.props && g.props.length))) && !window.__propLinePull) {
+      window.__propLinePull = Promise.resolve()
+        .then(() => (typeof ensureWeekProps === "function" ? ensureWeekProps() : null))
+        .then(() => (typeof pullDkLines === "function" ? pullDkLines() : null))
+        .then(() => { window.__propLinePull = null; if (view === "parlay" && (window.__parlayLg === "props" || window.__parlayLg === "propp") ) renderParlays(); })
+        .catch(() => { window.__propLinePull = null; });
+    }
     const rows = typeof buildPropParlays === "function" ? buildPropParlays() : [];
-    hero.innerHTML = typeof propLadderHtml === "function" ? propLadderHtml(rows) : `<div class="empty">No player prop tickets cleared the bar.</div>`;
+    hero.innerHTML = rows.length && typeof propLadderHtml === "function"
+      ? propLadderHtml(rows)
+      : `<div class="empty">${window.__propLinePull ? "Pulling DraftKings player props…" : "No player prop tickets cleared the bar."}</div>`;
     hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
     return;
   }
