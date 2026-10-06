@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="desk-version" content="82" />
+  <meta name="desk-version" content="83" />
   <meta property="og:title" content="Double Gs · The Split" />
   <meta property="og:description" content="Double Gs picks desk and The Split college matchup sheets." />
   <meta property="og:image" content="/og.jpg?v=3" />
@@ -9985,7 +9985,9 @@ async function pullLiveScores() {
     Object.values(byId).forEach((n) => {
       if (!n || have.has(String(n.id))) return;
       const current = n.league === "cfb" ? cfbW : nflW;
-      if (Number(n.week) !== Number(current) || n.completed) return;
+      const prev = Number(current) - 1;
+      const keep = Number(n.week) === Number(current) || Number(n.week) === prev;
+      if (!keep || (n.completed && Number(n.week) === Number(current))) return;
       if (typeof projectGame === "function") n.proj = projectGame(n, ratings);
       DATA.games.push(n);
       added.push(n);
@@ -9995,6 +9997,7 @@ async function pullLiveScores() {
       if (typeof attachWeather === "function") attachWeather(added).catch(() => {});
       if (added.some((g) => g.league === "nfl") && typeof ensureWeekProps === "function") ensureWeekProps().catch(() => {});
     }
+    if (typeof archivePastWeeks === "function") archivePastWeeks();
     if (typeof refreshWeekLabels === "function") refreshWeekLabels();
     DATA.meta = DATA.meta || {};
     DATA.meta.nfl_week = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : 4;
@@ -10756,6 +10759,64 @@ function gradeHistoryRow(row, fin) {
   }
   return row;
 }
+function localPastCards() {
+  try { return JSON.parse(localStorage.getItem("gg-past-cards-v1") || "{}"); } catch (e) { return {}; }
+}
+function savedPastRows(league) {
+  const published = (window.PAST_CARDS && window.PAST_CARDS[league]) || {};
+  const local = (localPastCards()[league]) || {};
+  const weeks = {};
+  Object.keys(local).forEach((w) => { if ((local[w] || []).length) weeks[w] = local[w]; });
+  Object.keys(published).forEach((w) => { if ((published[w] || []).length) weeks[w] = published[w]; });
+  const rows = [];
+  Object.keys(weeks).forEach((w) => {
+    (weeks[w] || []).forEach((src) => {
+      rows.push({
+        id: String(src.id), league: league, week: Number(src.week || w),
+        short: src.short, home: src.home, away: src.away, date: src.date,
+        pick: src.pick || null, pick_line: src.pick_line || null, total_pick: src.total_pick || null,
+        hs: src.hs, as: src.as, homeAbbr: src.homeAbbr || src.home, awayAbbr: src.awayAbbr || src.away,
+        ats: null, ou: null, clv: null, graded: false
+      });
+    });
+  });
+  return rows;
+}
+function freezeWeekRow(g) {
+  const listed = g.league === "cfb" && typeof cfbListedPick === "function" ? cfbListedPick(g) : nflSlateLean(g);
+  const pick = listed.pick && listed.pick !== "NO PLAY" ? listed.pick : null;
+  const total = listed.total_pick && listed.total_pick !== "NO PLAY" ? listed.total_pick : null;
+  if (!pick && !total) return null;
+  const hs = g.completed ? Number(g.home && g.home.score) : null;
+  const as = g.completed ? Number(g.away && g.away.score) : null;
+  return {
+    id: String(g.id), week: Number(g.week), short: g.short_name,
+    home: g.home && g.home.abbr, away: g.away && g.away.abbr, date: g.date,
+    pick: pick, pick_line: pick ? listed.pick_line : null, total_pick: total,
+    hs: Number.isFinite(hs) ? hs : null, as: Number.isFinite(as) ? as : null,
+    homeAbbr: g.home && g.home.abbr, awayAbbr: g.away && g.away.abbr
+  };
+}
+function archivePastWeeks() {
+  let store = localPastCards();
+  ["nfl", "cfb"].forEach((league) => {
+    const current = league === "cfb" ? currentCfbWeekNumber() : currentNflWeekNumber();
+    const published = (window.PAST_CARDS && window.PAST_CARDS[league]) || {};
+    const weeks = new Set();
+    (DATA.games || []).forEach((g) => {
+      const w = Number(g && g.week);
+      if (g && g.league === league && w && w < current) weeks.add(w);
+    });
+    weeks.forEach((w) => {
+      if ((published[String(w)] || []).length) return;
+      store[league] = store[league] || {};
+      if ((store[league][String(w)] || []).length) return;
+      const rows = (DATA.games || []).map((g) => (g && g.league === league && Number(g.week) === w) ? freezeWeekRow(g) : null).filter(Boolean);
+      if (rows.length) store[league][String(w)] = rows;
+    });
+  });
+  try { localStorage.setItem("gg-past-cards-v1", JSON.stringify(store)); } catch (e) {}
+}
 function historyPlays(league) {
   const finals = {};
   const byTeams = {};
@@ -10773,6 +10834,14 @@ function historyPlays(league) {
       finals[String(g.id)] = { id: g.id, hs: hs, as: as, homeAbbr: g.home.abbr, awayAbbr: g.away.abbr, date: g.date };
     }
   });
+  const saved = savedPastRows(league);
+  if (saved.length) {
+    return saved.map((row) => {
+      const baked = row.hs != null && row.as != null ? { hs: Number(row.hs), as: Number(row.as), homeAbbr: row.homeAbbr || row.home, awayAbbr: row.awayAbbr || row.away } : null;
+      const fin = finals[String(row.id)] || byTeams[String(row.away || "") + "@" + String(row.home || "")] || baked;
+      return gradeHistoryRow(row, fin);
+    });
+  }
   const rows = [];
   if (league === "cfb") {
     const current = currentCfbWeekNumber();
@@ -12444,12 +12513,14 @@ async function loadDeskData() {
     get("/data/cfb-polls.json").catch(() => null),
     get("/data/split-notes.json").catch(() => ({})),
     get("/data/desk-cfb.json").catch(() => []),
-    get("/data/week-results.json").catch(() => [])
-  ]).then(([lines, polls, splitNotes, splitDesk, results]) => {
+    get("/data/week-results.json").catch(() => []),
+    get("/data/past-scorecards.json").catch(() => ({}))
+  ]).then(([lines, polls, splitNotes, splitDesk, results, past]) => {
     window.VALUE_LINES = lines || {};
     window.SPLIT_NOTES = splitNotes || {};
     window.SPLIT_DESK = splitDesk || [];
     window.WEEK_RESULTS = results || [];
+    window.PAST_CARDS = past || {};
     if (polls) window.CFB_POLLS = polls;
     try { if (typeof applySplitDesk === "function") applySplitDesk(); } catch (e) {}
     try { if (typeof pullCfbCloseLines === "function") pullCfbCloseLines(); } catch (e) {}
