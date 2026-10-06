@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="desk-version" content="81" />
+  <meta name="desk-version" content="82" />
   <meta property="og:title" content="Double Gs · The Split" />
   <meta property="og:description" content="Double Gs picks desk and The Split college matchup sheets." />
   <meta property="og:image" content="/og.jpg?v=3" />
@@ -1150,7 +1150,7 @@ a[data-view="heisman"], a[href="#heisman"] { display: none !important; }
           <div class="slide-wrap">
             <button class="slide-btn" type="button" data-slide="nflTiles" data-dir="-1" aria-label="NFL tiles left">‹</button>
             <div class="tile-row slide" id="nflTiles">
-              <a class="tab star" href="#nfl" data-view="nfl">NFL Week 4</a>
+              <a class="tab star" href="#nfl" data-view="nfl">NFL Week</a>
               <a class="tab" href="#prime" data-view="prime">TNF · SNF · MNF</a>
               <a class="tab star" href="#props" data-view="props">Player props</a>
               <a class="tab" href="#charts" data-view="charts">Game charts</a>
@@ -1169,7 +1169,7 @@ a[data-view="heisman"], a[href="#heisman"] { display: none !important; }
           <div class="slide-wrap">
             <button class="slide-btn" type="button" data-slide="cfbTiles" data-dir="-1" aria-label="College tiles left">‹</button>
             <div class="tile-row slide" id="cfbTiles">
-              <a class="tab" href="#cfb" data-view="cfb">CFB Week 5</a>
+              <a class="tab" href="#cfb" data-view="cfb">CFB Week</a>
               <a class="tab star" href="#potd" data-view="potd">POTD</a>
               <a class="tab star" href="#cfbpicks" data-view="cfbpicks">College picks</a>
               <a class="tab" href="#cfbwx" data-view="cfbwx">College weather</a>
@@ -6142,12 +6142,7 @@ function renderPropParlays() {
 }
 
 function currentCfbWeekNumber() {
-  const games = ((DATA && DATA.games) || []).filter((g) => g && g.league === "cfb" && g.week != null);
-  const now = Date.now() - 6 * 60 * 60 * 1000;
-  const upcoming = games.filter((g) => g.date && new Date(g.date).getTime() >= now).sort((a, b) => String(a.date).localeCompare(String(b.date)));
-  if (upcoming.length && Number.isFinite(Number(upcoming[0].week))) return Number(upcoming[0].week);
-  const weeks = games.map((g) => Number(g.week)).filter((n) => Number.isFinite(n));
-  return weeks.length ? Math.max.apply(null, weeks) : 5;
+  return collegeWeekOf(etYmd()) || 1;
 }
 function isThisCfbWeek(g) {
   if (!g || g.league !== "cfb") return true;
@@ -7803,6 +7798,7 @@ function gamesForView() {
     return g.league === activeLeague("boardLeague", "nfl");
   });
   if (view === "cfb" || (view === "all" && activeLeague("boardLeague", "nfl") === "cfb")) games = games.filter((g) => isThisCfbWeek(g));
+  if (view === "nfl") games = games.filter((g) => isThisNflWeek(g));
   if (view === "live") {
     const now = Date.now();
     const liveNow = games.filter((g) => typeof isLiveGame === "function" && isLiveGame(g));
@@ -9932,15 +9928,23 @@ async function ensureWeekProps() {
   const players = await collectProps();
   upcoming.forEach((g) => { g.props = attachProps(g, players); });
 }
+function refreshWeekLabels() {
+  const nfl = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : "";
+  const cfb = typeof currentCfbWeekNumber === "function" ? currentCfbWeekNumber() : "";
+  document.querySelectorAll('a.tab[data-view="nfl"]').forEach((a) => { a.textContent = "NFL Week " + nfl; });
+  document.querySelectorAll('a.tab[data-view="cfb"]').forEach((a) => { a.textContent = "CFB Week " + cfb; });
+  const jump = document.querySelector('a.home-jump[href="#nfl"] span');
+  if (jump) jump.textContent = "Week " + nfl + " sides, totals, weather";
+}
 async function pullLiveScores() {
   try {
+    const nflW = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : 5;
+    const cfbW = typeof currentCfbWeekNumber === "function" ? currentCfbWeekNumber() : 6;
     const jobs = [
-      getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?limit=50").then((d) => parseGames(d, "nfl")).catch(() => []),
-      getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=2&seasontype=2&limit=50").then((d) => parseGames(d, "nfl")).catch(() => []),
-      getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=3&seasontype=2&limit=50").then((d) => parseGames(d, "nfl")).catch(() => []),
-      getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?limit=300").then((d) => parseGames(d, "cfb")).catch(() => []),
-      getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=4&seasontype=2&groups=80&limit=300").then((d) => parseGames(d, "cfb")).catch(() => []),
-      getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=5&seasontype=2&groups=80&limit=300").then((d) => parseGames(d, "cfb")).catch(() => [])
+      getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=${nflW}&seasontype=2&limit=50`).then((d) => parseGames(d, "nfl")).catch(() => []),
+      getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=${Math.max(1, nflW - 1)}&seasontype=2&limit=50`).then((d) => parseGames(d, "nfl")).catch(() => []),
+      getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=${cfbW}&seasontype=2&groups=80&limit=300`).then((d) => parseGames(d, "cfb")).catch(() => []),
+      getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=${Math.max(1, cfbW - 1)}&seasontype=2&groups=80&limit=300`).then((d) => parseGames(d, "cfb")).catch(() => [])
     ];
     const packs = await Promise.all(jobs);
     const byId = {};
@@ -9972,17 +9976,26 @@ async function pullLiveScores() {
     const have = new Set((DATA.games || []).map((g) => String(g.id)));
     const ratings = {};
     (DATA.games || []).forEach((g) => {
-      if (!g || g.league !== "nfl" || !g.proj) return;
+      if (!g || !g.proj) return;
       const p = g.proj;
       if (g.home && p.home_fpi != null) ratings[String(g.home.id)] = { fpi: p.home_fpi, fpi_rank: p.home_fpi_rank, off: p.home_off, def: p.home_def };
       if (g.away && p.away_fpi != null) ratings[String(g.away.id)] = { fpi: p.away_fpi, fpi_rank: p.away_fpi_rank, off: p.away_off, def: p.away_def };
     });
+    const added = [];
     Object.values(byId).forEach((n) => {
-      if (!n || n.league !== "nfl" || n.completed || have.has(String(n.id))) return;
+      if (!n || have.has(String(n.id))) return;
+      const current = n.league === "cfb" ? cfbW : nflW;
+      if (Number(n.week) !== Number(current) || n.completed) return;
       if (typeof projectGame === "function") n.proj = projectGame(n, ratings);
       DATA.games.push(n);
+      added.push(n);
       have.add(String(n.id));
     });
+    if (added.length) {
+      if (typeof attachWeather === "function") attachWeather(added).catch(() => {});
+      if (added.some((g) => g.league === "nfl") && typeof ensureWeekProps === "function") ensureWeekProps().catch(() => {});
+    }
+    if (typeof refreshWeekLabels === "function") refreshWeekLabels();
     DATA.meta = DATA.meta || {};
     DATA.meta.nfl_week = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : 4;
     if (typeof rebuildSharedLearning === "function") rebuildSharedLearning(DATA.games || []);
@@ -9998,6 +10011,7 @@ async function pullLiveScores() {
     if (view === "cfbpicks" && typeof renderCfbPicks === "function") renderCfbPicks();
     const liveN = (DATA.games || []).filter((g) => typeof isLiveGame === "function" && isLiveGame(g)).length;
     if (liveN) setStamp(liveN + " live · rest-of-game on", true);
+    else if (added.length) setStamp("Week " + nflW + " NFL and Week " + cfbW + " college are on the board.", true);
     else if (newFinals) setStamp("New finals are in. The line is the same for everyone.", true);
     if (typeof syncDesk === "function") {
       syncDesk();
@@ -10490,7 +10504,7 @@ function renderHome() {
       <a class="home-jump hot" href="#parlay" data-jump="parlay"><b>The Boom Boom Room</b><span>Start here. Game tickets and player props.</span></a>
       <a class="home-jump hot" href="#props" data-jump="props"><b>Player props</b><span>Yard lines, hit rates, and the pick</span></a>
       <a class="home-jump hot" href="#card" data-jump="card"><b>This week's card</b><span>${card.frozen ? "Locked. These plays will not move." : (card.legs || []).length + " plays ready to lock"}</span></a>
-      <a class="home-jump hot" href="#nfl" data-jump="nfl"><b>NFL board</b><span>Week 4 sides, totals, weather</span></a>
+      <a class="home-jump hot" href="#nfl" data-jump="nfl"><b>NFL board</b><span>This week's sides, totals, weather</span></a>
       <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l : "0-0"} locked this season</span></a>
       <a class="home-jump" href="#recruit" data-jump="recruit"><b>Recruiting</b><span>On3 classes, the portal, and our board</span></a>`;
     // clicks handled globally via href + hash
@@ -10690,21 +10704,26 @@ function renderScorecard() {
   </tbody></table>`;
   wrap.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
+function weekFromTuesday(ymd, openYmd) {
+  const start = Date.parse(openYmd + "T16:00:00Z");
+  const now = Date.parse(String(ymd || "").slice(0, 10) + "T16:00:00Z");
+  if (!Number.isFinite(start) || !Number.isFinite(now) || now < start) return 1;
+  return Math.floor((now - start) / (7 * 86400000)) + 1;
+}
+function etYmd(date) {
+  return (date || new Date()).toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+}
 function collegeWeekOf(iso) {
   const d = String(iso || "").slice(0, 10);
-  if (d >= "2026-09-29") return 5;
-  if (d >= "2026-09-22") return 4;
-  if (d >= "2026-09-15") return 3;
-  if (d >= "2026-09-08") return 2;
-  if (d >= "2026-09-01") return 1;
-  return 0;
+  if (!d || d < "2026-09-01") return 0;
+  return weekFromTuesday(d, "2026-09-01");
 }
 function currentNflWeekNumber() {
-  const d = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
-  if (d >= "2026-09-29") return 4;
-  if (d >= "2026-09-22") return 3;
-  if (d >= "2026-09-15") return 2;
-  return 1;
+  return Math.max(1, Math.min(22, weekFromTuesday(etYmd(), "2026-09-08")));
+}
+function isThisNflWeek(g) {
+  if (!g || g.league !== "nfl") return true;
+  return Number(g.week) === currentNflWeekNumber();
 }
 function gradeHistoryRow(row, fin) {
   if (!fin || fin.hs == null || fin.as == null) return row;
@@ -12483,10 +12502,12 @@ async function boot() {
   $("#stamp").textContent = `Snapshot ${fmt.when(DATA.generated_at)}`;
   try { if (typeof repairCfbKickoffs === "function") repairCfbKickoffs(DATA.games || []); } catch (e) {}
   try {
-    const cfbWeeks = (DATA.games || []).filter((g) => g.league === "cfb" && g.week != null).map((g) => Number(g.week)).filter((n) => Number.isFinite(n));
-    const currentCfb = cfbWeeks.length ? Math.max(...cfbWeeks) : 5;
-    document.querySelectorAll('a.tab[data-view="cfb"]').forEach((a) => { a.textContent = "CFB Week " + currentCfb; });
-    document.querySelectorAll('a.tab[data-view="nfl"]').forEach((a) => { a.textContent = "NFL Week " + currentNflWeekNumber(); });
+    const currentCfb = typeof currentCfbWeekNumber === "function" ? currentCfbWeekNumber() : 6;
+    if (typeof refreshWeekLabels === "function") refreshWeekLabels();
+    else {
+      document.querySelectorAll('a.tab[data-view="cfb"]').forEach((a) => { a.textContent = "CFB Week " + currentCfb; });
+      document.querySelectorAll('a.tab[data-view="nfl"]').forEach((a) => { a.textContent = "NFL Week " + currentNflWeekNumber(); });
+    }
   } catch (e) {}
   try { if (typeof freezePublishedLines === "function") freezePublishedLines(DATA.games || []); } catch (e) {}
   try { if (typeof enrichPowerRankings === "function") enrichPowerRankings(); } catch (e) {}
@@ -12710,6 +12731,10 @@ async function boot() {
   }
   if (typeof refreshLiveWeather === "function") refreshLiveWeather("cfb", true);
   if (typeof armLiveWeatherClock === "function") armLiveWeatherClock();
+  if (!window.__slateClock && typeof pullLiveScores === "function") {
+    pullLiveScores();
+    window.__slateClock = setInterval(() => { pullLiveScores(); }, 60 * 60 * 1000);
+  }
   document.getElementById("injRefreshBtn")?.addEventListener("click", () => {
     setStamp("Updating injuries…", true);
     fetchInjuries(true).then(() => {
