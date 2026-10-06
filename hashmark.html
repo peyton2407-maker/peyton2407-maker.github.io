@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="desk-version" content="83" />
+  <meta name="desk-version" content="84" />
   <meta property="og:title" content="Double Gs · The Split" />
   <meta property="og:description" content="Double Gs picks desk and The Split college matchup sheets." />
   <meta property="og:image" content="/og.jpg?v=3" />
@@ -9936,15 +9936,15 @@ function refreshWeekLabels() {
   const jump = document.querySelector('a.home-jump[href="#nfl"] span');
   if (jump) jump.textContent = "Week " + nfl + " sides, totals, weather";
 }
-async function pullLiveScores() {
+async function pullLiveScores(light) {
   try {
     const nflW = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : 5;
     const cfbW = typeof currentCfbWeekNumber === "function" ? currentCfbWeekNumber() : 6;
     const jobs = [
       getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=${nflW}&seasontype=2&limit=50`).then((d) => parseGames(d, "nfl")).catch(() => []),
-      getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=${Math.max(1, nflW - 1)}&seasontype=2&limit=50`).then((d) => parseGames(d, "nfl")).catch(() => []),
+      light ? Promise.resolve([]) : getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=${Math.max(1, nflW - 1)}&seasontype=2&limit=50`).then((d) => parseGames(d, "nfl")).catch(() => []),
       getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=${cfbW}&seasontype=2&groups=80&limit=300`).then((d) => parseGames(d, "cfb")).catch(() => []),
-      getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=${Math.max(1, cfbW - 1)}&seasontype=2&groups=80&limit=300`).then((d) => parseGames(d, "cfb")).catch(() => [])
+      light ? Promise.resolve([]) : getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=${Math.max(1, cfbW - 1)}&seasontype=2&groups=80&limit=300`).then((d) => parseGames(d, "cfb")).catch(() => [])
     ];
     const packs = await Promise.all(jobs);
     const byId = {};
@@ -12488,7 +12488,7 @@ function setView(next) {
 async function loadDeskData() {
   if (window.HASHMARK && window.HASHMARK.games) return;
   const get = async (url) => {
-    const res = await fetch(url, { signal: AbortSignal.timeout(20000) });
+    const res = await fetch(url);
     if (!res.ok) throw new Error(url + " " + res.status);
     return res.json();
   };
@@ -12749,17 +12749,21 @@ async function boot() {
       if (typeof settleBoard === "function") settleBoard();
       if (typeof applySituationalBoard === "function") applySituationalBoard();
       if (typeof applySplitDesk === "function") applySplitDesk();
-      if (typeof fillNflOffenseDefense === "function") {
-        fillNflOffenseDefense().then(() => {
-          if (typeof reapplyDeskLine === "function") reapplyDeskLine();
-          if (typeof paintDesk === "function") paintDesk();
-        }).catch(() => {});
-      }
-      if (typeof pullCfbCloseLines === "function") pullCfbCloseLines();
-      if (typeof pullCfbCloseMiss === "function") pullCfbCloseMiss();
-      if (typeof pullNflCloseLines === "function") pullNflCloseLines();
-      if (typeof pullNflDepth === "function") pullNflDepth();
-      if (typeof pullNflCloseMiss === "function") pullNflCloseMiss();
+      const pullFeeds = () => {
+        if (typeof fillNflOffenseDefense === "function") {
+          fillNflOffenseDefense().then(() => {
+            if (typeof reapplyDeskLine === "function") reapplyDeskLine();
+            if (typeof paintDesk === "function") paintDesk();
+          }).catch(() => {});
+        }
+        if (typeof pullCfbCloseLines === "function") pullCfbCloseLines();
+        if (typeof pullCfbCloseMiss === "function") pullCfbCloseMiss();
+        if (typeof pullNflCloseLines === "function") pullNflCloseLines();
+        if (typeof pullNflDepth === "function") pullNflDepth();
+        if (typeof pullNflCloseMiss === "function") pullNflCloseMiss();
+      };
+      if (window.matchMedia("(max-width: 800px)").matches) setTimeout(pullFeeds, 4000);
+      else pullFeeds();
       if (DATA.notes && n) DATA.notes.learning = `Same record for everyone. ${n} finished games are in the next line.`;
       if (view === "home" && typeof renderHome === "function") renderHome();
       if (view === "score" && typeof renderScorecard === "function") renderScorecard();
@@ -12800,10 +12804,13 @@ async function boot() {
     };
     window.__cfbInjClock = setInterval(pullDueReports, 60 * 1000);
   }
-  if (typeof refreshLiveWeather === "function") refreshLiveWeather("cfb", true);
+  const phone = window.matchMedia("(max-width: 800px)").matches;
   if (typeof armLiveWeatherClock === "function") armLiveWeatherClock();
+  if (!phone && typeof refreshLiveWeather === "function") refreshLiveWeather("cfb", true);
   if (!window.__slateClock && typeof pullLiveScores === "function") {
-    pullLiveScores();
+    const startScores = () => pullLiveScores(phone);
+    if (phone) setTimeout(startScores, 3000);
+    else startScores();
     window.__slateClock = setInterval(() => { pullLiveScores(); }, 60 * 60 * 1000);
   }
   document.getElementById("injRefreshBtn")?.addEventListener("click", () => {
