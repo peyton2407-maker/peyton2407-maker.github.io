@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="desk-version" content="84" />
+  <meta name="desk-version" content="85" />
   <meta property="og:title" content="Double Gs · The Split" />
   <meta property="og:description" content="Double Gs picks desk and The Split college matchup sheets." />
   <meta property="og:image" content="/og.jpg?v=3" />
@@ -5091,7 +5091,7 @@ async function collectProps() {
     const pl = row.player || {};
     const pos = POS[pl.defaultPositionId];
     if (!pos || pos === "K") return;
-    const week = Number((typeof DATA !== "undefined" && DATA.meta && DATA.meta.nfl_week) || 3);
+    const week = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : Number((typeof DATA !== "undefined" && DATA.meta && DATA.meta.nfl_week) || 5);
     const stats = pl.stats || [];
     const pickStat = (period, source) => (stats.find((st) => st.seasonId === 2026 && st.scoringPeriodId === period && st.statSourceId === source) || {}).stats || {};
     const projRaw = pickStat(week, 1);
@@ -9927,6 +9927,8 @@ async function ensureWeekProps() {
   if (DATA.meta) DATA.meta.nfl_week = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : 4;
   const players = await collectProps();
   upcoming.forEach((g) => { g.props = attachProps(g, players); });
+  if (typeof view !== "undefined" && view === "props" && typeof renderProps === "function") renderProps();
+  if (typeof view !== "undefined" && view === "parlay" && (window.__parlayLg === "props" || window.__parlayLg === "propp") && typeof renderParlays === "function") renderParlays();
 }
 function refreshWeekLabels() {
   const nfl = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : "";
@@ -12470,7 +12472,19 @@ function setView(next) {
     try { seedInjuriesFromSnap(); renderInjuries(lg); } catch (e) { console.warn(e); }
     fetchInjuries(false).then(() => renderInjuries(lg)).catch(() => renderInjuries(lg));
   }
-  if (next === "props") renderProps();
+  if (next === "props") {
+    renderProps();
+    const live = (DATA.games || []).filter((g) => g.league === "nfl" && !g.completed && g.date && new Date(g.date).getTime() > Date.now() - 3 * 60 * 60 * 1000);
+    const missing = live.filter((g) => !(g.props && g.props.length));
+    const load = live.length < 8 && typeof pullLiveScores === "function"
+      ? pullLiveScores().then(() => ensureWeekProps())
+      : (missing.length ? ensureWeekProps() : null);
+    if (load) {
+      const board = document.getElementById("propBoard");
+      if (board && (!live.length || missing.length)) board.innerHTML = `<div class="empty">Pulling this week's player props…</div>`;
+      Promise.resolve(load).then(() => { if (view === "props") renderProps(); }).catch(() => { if (view === "props") renderProps(); });
+    }
+  }
   if (next === "cfbpicks") renderCfbPicks();
   if (next === "potd" && typeof renderPotd === "function") renderPotd();
   if (next === "nflwx") renderNflWeather();
