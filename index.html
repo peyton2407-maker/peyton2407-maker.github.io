@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="desk-version" content="85" />
+  <meta name="desk-version" content="86" />
   <meta property="og:title" content="Double Gs · The Split" />
   <meta property="og:description" content="Double Gs picks desk and The Split college matchup sheets." />
   <meta property="og:image" content="/og.jpg?v=3" />
@@ -8565,16 +8565,13 @@ function dkTileText(p) {
       else if (item.value != null) g.lines.push(item.value);
     });
     const order = ["pass", "pass TD", "pass att", "comp", "INT", "pass+rush", "long pass", "rush", "carries", "long rush", "rush+rec", "rec yds", "rec", "long rec", "anytime TD", "first TD", "last TD", "2+ TD", "3+ TD", "1H TD", "1Q TD", "first team TD", "1H pass", "1Q pass", "1H rush", "1Q rush", "1H rec yds", "1Q rec yds", "kicking pts", "FG", "XP"];
-    const bits = Object.keys(groups).sort((a, b) => {
+    const keep = { pass: 1, "pass TD": 1, rush: 1, carries: 1, "rec yds": 1, rec: 1, "anytime TD": 1 };
+    const bits = Object.keys(groups).filter((label) => keep[label]).sort((a, b) => {
       const ia = order.indexOf(a), ib = order.indexOf(b);
       return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
     }).map((label) => {
       const g = groups[label];
       if (g.lines.length) return g.lines[0] + " " + label;
-      if (g.miles.length) {
-        const nums = [...new Set(g.miles)].sort((a, b) => a - b).map((v) => (Math.abs(v - Math.round(v)) < 0.01 ? Math.round(v) : v) + "+");
-        return nums.join("/") + " " + label;
-      }
       if (g.score) return label;
       return "";
     }).filter(Boolean);
@@ -8995,6 +8992,21 @@ function ladderTable(m, season, vs) {
   }).join("");
   return `<h3 style="margin:14px 0 0">${m.label}</h3>${head}${body}</tbody></table>`;
 }
+function postedLean(p) {
+  const order = p.pos === "QB" ? ["pass_yds", "pass_td", "rush_yds"] : p.pos === "RB" ? ["rush_yds", "rec_yds", "rec"] : ["rec_yds", "rec", "rush_yds"];
+  const markets = marketsFor(p);
+  for (let i = 0; i < order.length; i++) {
+    const m = markets.find((row) => row.key === order[i]);
+    if (!m) continue;
+    const line = typeof dkLine === "function" ? dkLine(p, m.key) : null;
+    if (line == null || !Number.isFinite(Number(line))) continue;
+    const over = ourChance(m.mean, Number(line), m.key, false);
+    if (!Number.isFinite(over)) continue;
+    const takeUnder = over < 0.5;
+    return { m, line: Number(line), chance: takeUnder ? 1 - over : over, take: takeUnder ? "Under" : "Over" };
+  }
+  return null;
+}
 function bestDoubleG(markets, season, vs) {
   let best = null;
   markets.forEach((m) => m.lines.forEach((line) => {
@@ -9220,6 +9232,7 @@ function renderProps() {
   const q = (($("#propQ") && $("#propQ").value) || "").trim().toLowerCase();
   let rows = collectNflProps().filter((p) => {
     if (p.completed || p.pos === "K") return false;
+    if (/OUT|IR|INACTIVE|SUSP/i.test(p.injury || "")) return false;
     const kick = p.date ? new Date(p.date).getTime() : 0;
     if (kick && Date.now() - kick > 4 * 60 * 60 * 1000) return false;
     return true;
@@ -9248,8 +9261,8 @@ function renderProps() {
   rows.forEach((p) => {
     p._score = propScore(p);
     p._td = Number(p.pass_td || 0) + Number(p.rush_td || 0) + Number(p.rec_td || 0);
-    p._lean = bestDoubleG(marketsFor(p), [], []);
-    p._hit = p._lean ? p._lean.ours : 0;
+    p._lean = postedLean(p);
+    p._hit = p._lean ? p._lean.chance : 0;
   });
   if (hitCut === "60" || hitCut === "65" || hitCut === "70") {
     const min = Number(hitCut) / 100;
@@ -9262,12 +9275,8 @@ function renderProps() {
     if (sort === "rush") return (b.rush_yds || 0) - (a.rush_yds || 0);
     if (sort === "rec") return (b.rec_yds || 0) - (a.rec_yds || 0);
     if (sort === "td") return b._td - a._td;
-    return b._score - a._score;
+    return ((b._lean ? 1 : 0) - (a._lean ? 1 : 0)) || (b._hit || 0) - (a._hit || 0) || b._score - a._score;
   });
-  if (day === "best" || day === "week") {
-    const nowStarting = rows.filter((p) => p.role && (!p.date || new Date(p.date).getTime() > Date.now()));
-    rows = nowStarting.concat(rows.filter((p) => !p.role));
-  }
   const best = (day === "best" && hitCut === "all") ? rows.slice(0, 18) : rows.slice(0, 72);
   ensureNflDk(rows);
   const qbs = best.filter((p) => p.pos === "QB").length;
@@ -9288,11 +9297,9 @@ function renderProps() {
       : `${fmt.n(p.rec,1)} rec · ${fmt.n(p.rec_yds,0)} yds · ${fmt.n(p.rec_td,1)} TD`;
     const inj = p.injury && p.injury !== "ACTIVE" ? `<span class="inj">${p.injury}</span>` : "";
     const markets = marketsFor(p).map((m) => Object.assign(m, { player: p }));
-    const best = p._lean || bestDoubleG(markets, [], []);
+    const best = p._lean;
     const main = markets[0];
-    const dk = main ? dkLine(p, main.key) : null;
-    const ladder = main ? `<table class="ladder"><thead><tr><th>${main.label}</th><th>Our chance</th></tr></thead><tbody>${main.lines.map((ln) => `<tr><td>${main.under ? "under" : "over"} ${ln}</td><td>${Math.round(ourChance(main.mean, ln, main.key, main.under) * 100)}%</td></tr>`).join("")}</tbody></table>` : "";
-    const pick = best ? `${best.m.under ? "Under" : "Over"} ${best.line} ${best.m.label.toLowerCase()}` : "No strong lean";
+    const pick = best ? `${best.take} ${best.line} ${best.m.label.toLowerCase()}` : "DraftKings line not posted yet";
     return `<article class="prop-card" data-id="${p.game_id}" data-player="${p.id}">
       <div class="who">
         <div class="who-row">
@@ -11491,27 +11498,10 @@ function lockSeasonQbs() {
 
 function promoteStartingQbs() {
   if (typeof DATA === "undefined" || !DATA) return;
-  const moves = [
-    { out: "Jayden Daniels", name: "Marcus Mariota", role: "Starting this week. Daniels is out." },
-    { out: "Tua Tagovailoa", name: "Michael Penix Jr.", role: "Starting Thursday. Penix is back." }
-  ];
   (DATA.games || []).forEach((g) => {
-    if (!g || g.league !== "nfl" || !g.props) return;
-    const started = g.completed || (g.date && new Date(g.date).getTime() < Date.now());
-    if (started) {
-      g.props.forEach((p) => { if (p && p.role && /thursday/i.test(p.role)) p.role = ""; });
-      return;
-    }
-    moves.forEach((spec) => {
-      const out = g.props.find((p) => p.name === spec.out);
-      const qb = g.props.find((p) => p.name === spec.name);
-      if (!qb) return;
-      if (out) {
-        out.injury = "OUT";
-        out.pass_yds = 0; out.pass_td = 0; out.pass_int = 0; out.rush_yds = 0; out.rush_td = 0; out.rush_att = 0;
-      }
-      qb.injury = "";
-      qb.role = spec.role;
+    if (!g || !g.props) return;
+    g.props.forEach((p) => {
+      if (p && p.role && /thursday|penix is back|daniels is out/i.test(p.role)) p.role = "";
     });
   });
 }
