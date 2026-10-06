@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="desk-version" content="86" />
+  <meta name="desk-version" content="87" />
   <meta property="og:title" content="Double Gs · The Split" />
   <meta property="og:description" content="Double Gs picks desk and The Split college matchup sheets." />
   <meta property="og:image" content="/og.jpg?v=3" />
@@ -1083,7 +1083,7 @@ body{font-size:17px;line-height:1.45}
 .home-jump.hot span{color:#f6edd4}
 .dk-all{display:block;margin-top:4px;font-size:15px;line-height:1.45;font-weight:700}
 .side-top .dk-wrap{grid-column:1/-1}
-a[data-view="heisman"], a[href="#heisman"] { display: none !important; }
+a[data-view="heisman"], a[href="#heisman"], a[data-view="recruit"], a[href="#recruit"] { display: none !important; }
 #tabBar a.tab.star::after{content:" · tap";font-weight:800;color:#ffe08a}
 #boomSection .hm-sub,#boomSection .hm-kick,#boomSection .hm-team span{color:#d5e3d8;font-size:14px}
 .league-tabs{
@@ -10517,8 +10517,7 @@ function renderHome() {
       <a class="home-jump hot" href="#props" data-jump="props"><b>Player props</b><span>Yard lines, hit rates, and the pick</span></a>
       <a class="home-jump hot" href="#card" data-jump="card"><b>This week's card</b><span>${card.frozen ? "Locked. These plays will not move." : (card.legs || []).length + " plays ready to lock"}</span></a>
       <a class="home-jump hot" href="#nfl" data-jump="nfl"><b>NFL board</b><span>This week's sides, totals, weather</span></a>
-      <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l : "0-0"} locked this season</span></a>
-      <a class="home-jump" href="#recruit" data-jump="recruit"><b>Recruiting</b><span>On3 classes, the portal, and our board</span></a>`;
+      <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l : "0-0"} locked this season</span></a>`;
     // clicks handled globally via href + hash
   }
   const feat = document.getElementById("homeFeature");
@@ -12380,7 +12379,7 @@ function renderBoom() {
 }
 
 function setView(next) {
-  if (next === "heisman") next = "home";
+  if (next === "heisman" || next === "recruit") next = "home";
   const allowed = {home:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,potd:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
   if (!allowed[next]) next = "home";
   const wantProps = next === "propp";
