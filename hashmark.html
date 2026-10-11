@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="desk-version" content="89" />
+  <meta name="desk-version" content="90" />
   <meta property="og:title" content="Double Gs · The Split" />
   <meta property="og:description" content="Double Gs picks desk and The Split college matchup sheets." />
   <meta property="og:image" content="/og.jpg?v=3" />
@@ -1151,7 +1151,6 @@ a[data-view="heisman"], a[href="#heisman"], a[data-view="recruit"], a[href="#rec
             <button class="slide-btn" type="button" data-slide="nflTiles" data-dir="-1" aria-label="NFL tiles left">‹</button>
             <div class="tile-row slide" id="nflTiles">
               <a class="tab star" href="#nfl" data-view="nfl">NFL Week</a>
-              <a class="tab star" href="#nflpotd" data-view="nflpotd">POTD</a>
               <a class="tab" href="#prime" data-view="prime">TNF · SNF · MNF</a>
               <a class="tab star" href="#props" data-view="props">Player props</a>
               <a class="tab" href="#charts" data-view="charts">Game charts</a>
@@ -1160,7 +1159,7 @@ a[data-view="heisman"], a[href="#heisman"], a[data-view="recruit"], a[href="#rec
               <a class="tab" href="#value" data-view="value">Underdogs</a>
               <a class="tab" href="#nflwx" data-view="nflwx">NFL weather</a>
               <a class="tab" href="#nflinj" data-view="nflinj">NFL injuries</a>
-              <a class="tab" href="#awards" data-view="awards">All awards</a>
+              <a class="tab star" href="#nflpotd" data-view="nflpotd">POTD</a>
             </div>
             <button class="slide-btn" type="button" data-slide="nflTiles" data-dir="1" aria-label="NFL tiles right">›</button>
           </div>
@@ -12478,7 +12477,7 @@ function renderBoom() {
 }
 
 function setView(next) {
-  if (next === "heisman" || next === "recruit") next = "home";
+  if (next === "heisman" || next === "recruit" || next === "awards") next = next === "awards" ? "nflpotd" : "home";
   const allowed = {home:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,potd:1,nflpotd:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
   if (!allowed[next]) next = "home";
   const wantProps = next === "propp";
