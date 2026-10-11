@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="desk-version" content="91" />
+  <meta name="desk-version" content="92" />
   <meta property="og:title" content="Double Gs · The Split" />
   <meta property="og:description" content="Double Gs picks desk and The Split college matchup sheets." />
   <meta property="og:image" content="/og.jpg?v=3" />
@@ -3228,6 +3228,7 @@ function applySituationalToGame(g) {
     g.box.away_points = p.away_points;
     g.box.total_points = p.hashmark_total;
   }
+  if (!g.completed && typeof isLiveGame === "function" && isLiveGame(g) && typeof projectInGame === "function") projectInGame(g);
   return g;
 }
 function applySituationalBoard() {
@@ -8016,8 +8017,8 @@ function card(g) {
   const pickBadge = sidePick && sidePick !== "NO PLAY"
     ? `<span class="badge play">${sideLine}</span>`
     : `<span class="badge pass">market aligned</span>`;
-  const awayPts = p.away_points ?? b.away_points;
-  const homePts = p.home_points ?? b.home_points;
+  const awayPts = (g.live && g.live.away_points != null) ? g.live.away_points : (p.away_points ?? b.away_points);
+  const homePts = (g.live && g.live.home_points != null) ? g.live.home_points : (p.home_points ?? b.home_points);
   const tot = p.hashmark_total ?? b.total_points ?? o.total;
   const totPick = totLine && totLine !== "NO PLAY"
     ? `<span class="badge ${String(totLine).startsWith("OVER") ? "over" : "under"}">${totLine}</span>`
@@ -8101,7 +8102,7 @@ function projectionTable(games) {
               <td>${(typeof isLiveGame==="function" && isLiveGame(g)) ? `<span class="live-pill">LIVE</span> <span class="live-clock">${g.status_detail||g.clock||""}</span>` : fmt.when(g.date)}</td>
               <td>${g.away.abbr} @ ${g.home.abbr}</td>
               <td>${now}</td>
-              <td><b>${p.away_points ?? b.away_points ?? "—"}–${p.home_points ?? b.home_points ?? "—"}</b></td>
+              <td><b>${(g.live && g.live.away_points != null ? g.live.away_points : (p.away_points ?? b.away_points)) ?? "—"}–${(g.live && g.live.home_points != null ? g.live.home_points : (p.home_points ?? b.home_points)) ?? "—"}</b></td>
               <td>${wp}</td>
               <td>${p.hashmark_total ?? b.total_points ?? "—"}</td>
               <td>${g.league === "cfb" && p.q1_total != null ? p.q1_away + "–" + p.q1_home + " (" + p.q1_total + ")" : "—"}</td>
@@ -10137,6 +10138,8 @@ async function pullLiveScores(light) {
       }
     }
     if (typeof renderBoard === "function" && (view === "nfl" || view === "cfb" || view === "all" || view === "live")) renderBoard();
+    if (typeof fillOpenNflWeather === "function") fillOpenNflWeather();
+    if (typeof fillNflYardProfiles === "function") fillNflYardProfiles();
     if (view === "cfbpicks" && typeof renderCfbPicks === "function") renderCfbPicks();
     const liveN = (DATA.games || []).filter((g) => typeof isLiveGame === "function" && isLiveGame(g)).length;
     if (liveN) setStamp(liveN + " live · rest-of-game on", true);
@@ -11464,6 +11467,93 @@ function reapplyDeskLine() {
   });
   if (typeof applySituationalBoard === "function") applySituationalBoard();
   if (typeof applySplitDesk === "function") applySplitDesk();
+  if (typeof fillNflYards === "function") fillNflYards();
+  if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games);
+}
+function fillNflYards() {
+  const profiles = window.__yardProfiles || {};
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.league !== "nfl" || g.completed || !g.proj) return;
+    if (typeof isThisNflWeek === "function" && !isThisNflWeek(g)) return;
+    const live = typeof isLiveGame === "function" && isLiveGame(g);
+    const keep = live ? { h: g.proj.home_points, a: g.proj.away_points, t: g.proj.hashmark_total } : null;
+    const box = typeof projectBox === "function" ? projectBox(g, profiles) : null;
+    if (!box) return;
+    const imp = g.weather_impact || {};
+    if (imp.rush_mult && imp.rush_mult !== 1) {
+      box.home_rush_yds = +(box.home_rush_yds * imp.rush_mult).toFixed(1);
+      box.away_rush_yds = +(box.away_rush_yds * imp.rush_mult).toFixed(1);
+    }
+    if (imp.rec_mult && imp.rec_mult !== 1) {
+      box.home_rec_yds = +(box.home_rec_yds * imp.rec_mult).toFixed(1);
+      box.away_rec_yds = +(box.away_rec_yds * imp.rec_mult).toFixed(1);
+    }
+    if (keep && keep.h != null && keep.a != null) {
+      g.proj.home_points = keep.h;
+      g.proj.away_points = keep.a;
+      g.proj.hashmark_total = keep.t;
+      box.home_points = keep.h;
+      box.away_points = keep.a;
+      box.total_points = keep.t;
+    }
+    g.box = Object.assign({}, g.box || {}, box);
+  });
+}
+async function fillOpenNflWeather() {
+  if (window.__nflWxBoot || window.__nflWxPulling || typeof fetchOpenMeteo !== "function") return;
+  const week = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : 0;
+  const games = (DATA.games || []).filter((g) => g && g.league === "nfl" && Number(g.week) === Number(week) && !g.completed && !g.indoor && !g.weather);
+  if (!games.length) return;
+  window.__nflWxPulling = true;
+  let got = 0;
+  try {
+    for (const g of games) {
+      const xy = typeof coordsForGame === "function" ? coordsForGame(g) : null;
+      if (!xy) continue;
+      try {
+        const wx = await fetchOpenMeteo(xy[0], xy[1], g.date);
+        if (wx) {
+          g.weather = wx;
+          got++;
+          if (typeof applyWeatherToGame === "function") applyWeatherToGame(g);
+        }
+      } catch (e) {
+        if (String(e).indexOf("429") >= 0) break;
+      }
+      await new Promise((r) => setTimeout(r, 400));
+    }
+    if (got) {
+      window.__nflWxBoot = true;
+      if (typeof reapplyDeskLine === "function") reapplyDeskLine();
+      if (typeof paintDesk === "function") paintDesk();
+    }
+  } catch (e) { console.warn("nfl wx", e); }
+  finally { window.__nflWxPulling = false; }
+  if (!got && !window.__nflWxRetried) {
+    window.__nflWxRetried = true;
+    setTimeout(() => { if (!window.__nflWxBoot) fillOpenNflWeather(); }, 60000);
+  }
+}
+async function fillNflYardProfiles() {
+  if (window.__yardProfPull || typeof fetchTeamProfile !== "function") return;
+  const week = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : 0;
+  const ids = [];
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.league !== "nfl" || Number(g.week) !== Number(week)) return;
+    ["home", "away"].forEach((side) => { if (g[side] && g[side].id) ids.push(String(g[side].id)); });
+  });
+  const uniq = [...new Set(ids)];
+  if (!uniq.length) return;
+  window.__yardProfPull = true;
+  window.__yardProfiles = window.__yardProfiles || {};
+  try {
+    await poolMap(uniq, 3, async (id) => {
+      window.__yardProfiles["nfl:" + id] = await fetchTeamProfile("nfl", id);
+    });
+    fillNflYards();
+    if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games);
+    if (typeof paintDesk === "function") paintDesk();
+  } catch (e) { console.warn("yard profiles", e); }
 }
 function finishProjections() {
   reapplyDeskLine();
