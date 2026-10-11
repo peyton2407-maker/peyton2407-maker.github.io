@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="desk-version" content="88" />
+  <meta name="desk-version" content="89" />
   <meta property="og:title" content="Double Gs · The Split" />
   <meta property="og:description" content="Double Gs picks desk and The Split college matchup sheets." />
   <meta property="og:image" content="/og.jpg?v=3" />
@@ -1151,6 +1151,7 @@ a[data-view="heisman"], a[href="#heisman"], a[data-view="recruit"], a[href="#rec
             <button class="slide-btn" type="button" data-slide="nflTiles" data-dir="-1" aria-label="NFL tiles left">‹</button>
             <div class="tile-row slide" id="nflTiles">
               <a class="tab star" href="#nfl" data-view="nfl">NFL Week</a>
+              <a class="tab star" href="#nflpotd" data-view="nflpotd">POTD</a>
               <a class="tab" href="#prime" data-view="prime">TNF · SNF · MNF</a>
               <a class="tab star" href="#props" data-view="props">Player props</a>
               <a class="tab" href="#charts" data-view="charts">Game charts</a>
@@ -1516,6 +1517,10 @@ a[data-view="heisman"], a[href="#heisman"], a[data-view="recruit"], a[href="#rec
 
     <section id="potdSection" style="display:none">
       <div id="potdBoard"></div>
+    </section>
+
+    <section id="nflPotdSection" style="display:none">
+      <div id="nflPotdBoard"></div>
     </section>
 
     <section id="nflWxSection" style="display:none">
@@ -9475,6 +9480,99 @@ function cfbPotd() {
   bets.sort((a, b) => b.hit - a.hit);
   return bets[0] || null;
 }
+function nflPotd() {
+  const now = Date.now();
+  const sigma = LIVE.NFL_SIGMA || 13;
+  const games = (DATA.games || []).filter((g) => {
+    if (!g || g.league !== "nfl" || g.completed || !g.odds || !g.proj || !g.home || !g.away) return false;
+    if (typeof isThisNflWeek === "function" && !isThisNflWeek(g)) return false;
+    if (typeof isLiveGame === "function" && isLiveGame(g)) return false;
+    const kick = new Date(g.date).getTime();
+    return !Number.isFinite(kick) || kick > now;
+  });
+  const bets = [];
+  games.forEach((g) => {
+    const p = g.proj || {};
+    const o = g.odds || {};
+    const edge = Number(p.edge_spread);
+    if (o.home_spread != null && Number.isFinite(edge) && Math.abs(edge) >= 1.8) {
+      const sp = Number(o.home_spread);
+      const home = edge > 0;
+      const abbr = home ? g.home.abbr : g.away.abbr;
+      const num = home ? sp : -sp;
+      const our = typeof cfbSideLabel === "function" ? cfbSideLabel(g, p.hashmark_home_spread) : "";
+      bets.push({
+        g, kind: "Spread",
+        line: abbr + " " + (num >= 0 ? "+" : "") + num.toFixed(1),
+        hit: normCdf(Math.abs(edge) / sigma),
+        value: Math.abs(edge),
+        why: "Best price on the board. DraftKings has " + (o.details || "the market") + ". Our number is " + (our || "off that line") + ", " + Math.abs(edge).toFixed(1) + " points of value."
+      });
+    }
+    const te = Number(p.edge_total);
+    if (o.total != null && Number.isFinite(te) && Math.abs(te) >= 1.6) {
+      bets.push({
+        g, kind: te > 0 ? "Over" : "Under",
+        line: (te > 0 ? "OVER " : "UNDER ") + o.total,
+        hit: normCdf(Math.abs(te) / 12),
+        value: Math.abs(te),
+        why: "Best total price. Our number is " + Math.abs(te).toFixed(1) + " points " + (te > 0 ? "over" : "under") + " DraftKings " + o.total + "."
+      });
+    }
+    const wpH = Number(p.win_prob_home);
+    const wpA = Number(p.win_prob_away);
+    const impH = Number(o.home_ml_prob) || (typeof parseAmerican === "function" ? parseAmerican(o.home_ml) : null);
+    const impA = Number(o.away_ml_prob) || (typeof parseAmerican === "function" ? parseAmerican(o.away_ml) : null);
+    if (Number.isFinite(wpH) && impH && wpH - impH >= 0.06) {
+      bets.push({
+        g, kind: "Moneyline",
+        line: g.home.abbr + " ML " + (o.home_ml || ""),
+        hit: wpH,
+        value: (wpH - impH) * sigma,
+        why: "Best moneyline price. We have " + g.home.abbr + " at " + Math.round(wpH * 100) + "% to win. The posted price is shorter than that."
+      });
+    }
+    if (Number.isFinite(wpA) && impA && wpA - impA >= 0.06) {
+      bets.push({
+        g, kind: "Moneyline",
+        line: g.away.abbr + " ML " + (o.away_ml || ""),
+        hit: wpA,
+        value: (wpA - impA) * sigma,
+        why: "Best moneyline price. We have " + g.away.abbr + " at " + Math.round(wpA * 100) + "% to win. The posted price is shorter than that."
+      });
+    }
+  });
+  bets.sort((a, b) => b.value - a.value || b.hit - a.hit);
+  return bets[0] || null;
+}
+function renderNflPotd() {
+  const board = document.getElementById("nflPotdBoard");
+  if (!board) return;
+  const bet = nflPotd();
+  if (!bet) {
+    board.innerHTML = `<div class="empty">No NFL play is far enough off DraftKings yet.</div>`;
+    return;
+  }
+  const g = bet.g;
+  const pct = Math.round(bet.hit * 100);
+  const p = g.proj || {};
+  board.innerHTML = `<article class="prop-card" data-id="${g.id}">
+    <div class="who">
+      <div>
+        <h4>NFL POTD · ${escHtml(g.away.abbr)} @ ${escHtml(g.home.abbr)}</h4>
+        <div class="prop-meta">${fmt.when(g.date)} · ${escHtml(g.venue || "")} · best odds on the board</div>
+      </div>
+      <div class="pick-score">${pct}%</div>
+    </div>
+    <div class="prop-stats">
+      <div><span class="lbl">${escHtml(bet.kind)}</span><b>${escHtml(bet.line)}</b></div>
+      <div><span class="lbl">DraftKings</span><b>${escHtml((g.odds && g.odds.details) || "—")} · total ${escHtml(String((g.odds && g.odds.total) || "—"))}</b></div>
+      <div><span class="lbl">Our score</span><b>${g.away.abbr} ${p.away_points ?? "—"} – ${g.home.abbr} ${p.home_points ?? "—"}</b></div>
+      <div><span class="lbl">Why this one</span><b>${escHtml(bet.why)}</b></div>
+    </div>
+  </article>`;
+  board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
+}
 function renderPotd() {
   const board = document.getElementById("potdBoard");
   if (!board) return;
@@ -11186,6 +11284,7 @@ function paintDesk() {
     if (view === "nflinj" && typeof renderInjuries === "function") renderInjuries("nfl");
     if (view === "cfbinj" && typeof renderInjuries === "function") renderInjuries("cfb");
     if (view === "recruit" && typeof renderRecruit === "function") renderRecruit();
+    if (view === "nflpotd" && typeof renderNflPotd === "function") renderNflPotd();
   } catch (e) { console.warn(e); }
   const id = window.__openGameId;
   const overlay = document.getElementById("overlay");
@@ -12380,7 +12479,7 @@ function renderBoom() {
 
 function setView(next) {
   if (next === "heisman" || next === "recruit") next = "home";
-  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,potd:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
+  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,potd:1,nflpotd:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
   if (!allowed[next]) next = "home";
   const wantProps = next === "propp";
   if (wantProps) { window.__parlayLg = "props"; next = "parlay"; }
@@ -12412,6 +12511,8 @@ function setView(next) {
   $("#cfbPicksSection").style.display = next === "cfbpicks" ? "" : "none";
   const potdS = document.getElementById("potdSection");
   if (potdS) potdS.style.display = next === "potd" ? "" : "none";
+  const nflPotdS = document.getElementById("nflPotdSection");
+  if (nflPotdS) nflPotdS.style.display = next === "nflpotd" ? "" : "none";
   $("#nflWxSection").style.display = next === "nflwx" ? "" : "none";
   $("#cfbWxSection").style.display = next === "cfbwx" ? "" : "none";
   $("#ratingsSection").style.display = next === "ratings" ? "" : "none";
@@ -12476,6 +12577,7 @@ function setView(next) {
   }
   if (next === "cfbpicks") renderCfbPicks();
   if (next === "potd" && typeof renderPotd === "function") renderPotd();
+  if (next === "nflpotd" && typeof renderNflPotd === "function") renderNflPotd();
   if (next === "nflwx") renderNflWeather();
   if (next === "cfbwx") renderCfbWeather();
   if (next === "ratings") renderRatings();
