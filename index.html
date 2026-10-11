@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="desk-version" content="92" />
+  <meta name="desk-version" content="93" />
   <meta property="og:title" content="Double Gs · The Split" />
   <meta property="og:description" content="Double Gs picks desk and The Split college matchup sheets." />
   <meta property="og:image" content="/og.jpg?v=3" />
@@ -2024,15 +2024,6 @@ function climateShift(g, impact) {
 function applyWeatherToGame(g) {
   const impact = weatherImpact(g.weather, g.indoor);
   g.weather_impact = impact;
-  if (!g.proj) return g;
-  g.proj.weather_adj_total = impact.adj;
-  if (g.box && !g._wxYards) {
-    g._wxYards = true;
-    if (g.box.home_rush_yds != null) g.box.home_rush_yds = +(g.box.home_rush_yds * impact.rush_mult).toFixed(1);
-    if (g.box.away_rush_yds != null) g.box.away_rush_yds = +(g.box.away_rush_yds * impact.rush_mult).toFixed(1);
-    if (g.box.home_rec_yds != null) g.box.home_rec_yds = +(g.box.home_rec_yds * impact.rec_mult).toFixed(1);
-    if (g.box.away_rec_yds != null) g.box.away_rec_yds = +(g.box.away_rec_yds * impact.rec_mult).toFixed(1);
-  }
   return g;
 }
 function weeklyShift(g) {
@@ -3152,9 +3143,11 @@ function nflLineMove(g, lockedSp, lockedTot) {
     if (!totalMoved) total += trip.total;
     trip.notes.forEach((n) => notes.push(n));
   }
+  let weather = 0;
   if (!totalMoved && !nflDome(g)) {
     const wxn = cfbWeatherNudge(g);
-    total += wxn.total;
+    weather = wxn.total || 0;
+    total += weather;
     (wxn.notes || []).forEach((n) => notes.push(n));
   }
   const learned = nflLearnNudge(g);
@@ -3164,6 +3157,7 @@ function nflLineMove(g, lockedSp, lockedTot) {
   return {
     margin: Math.max(-5, Math.min(5, +margin.toFixed(2))),
     total: Math.max(-2.6, Math.min(2.6, +total.toFixed(2))),
+    weather: +Number(weather).toFixed(2),
     notes
   };
 }
@@ -3187,7 +3181,7 @@ function applySituationalToGame(g) {
   p.hashmark_home_spread = +(-dgMargin).toFixed(1);
   p.home_points = +Math.max(3, (dgTotal + dgMargin) / 2).toFixed(1);
   p.away_points = +Math.max(3, (dgTotal - dgMargin) / 2).toFixed(1);
-  p.weather_adj_total = moveT;
+  p.weather_adj_total = moved.weather || 0;
   const beforeSp = +(-baseM).toFixed(1);
   if (Math.abs(moveM) >= 0.2 && beforeSp !== p.hashmark_home_spread) moved.notes.unshift("Our line moved from " + cfbSideLabel(g, beforeSp) + " to " + cfbSideLabel(g, p.hashmark_home_spread) + ".");
   if (Math.abs(moveT) >= 0.2 && +Number(baseT).toFixed(1) !== dgTotal) {
@@ -4423,10 +4417,13 @@ function cfbLineMove(g, lockedSp, lockedTot) {
     notes.push("The total moved from " + lockedTot + " to " + g._dkTotal + ". We followed " + (t > 0 ? "+" : "") + t.toFixed(1) + ".");
   }
   const nudge = cfbStarterNudge(g, { total: 0, cfb: true });
-  if (!spreadMoved || lineMove < 3) {
+  if (!spreadMoved) {
     margin += nudge.margin;
     if (!totalMoved) total += nudge.total;
     nudge.notes.forEach((n) => notes.push(n));
+  } else if (nudge.qbOut && lineMove < 3) {
+    margin += nudge.qbMargin || 0;
+    (nudge.qbNotes || []).forEach((n) => notes.push(n));
   } else if (nudge.qbOut) {
     notes.push("A quarterback is out. The line moved " + lineMove.toFixed(1) + " points, so that is already inside the move and is not added again.");
   }
@@ -4436,9 +4433,11 @@ function cfbLineMove(g, lockedSp, lockedTot) {
     if (!totalMoved) total += trip.total;
     trip.notes.forEach((n) => notes.push(n));
   }
+  let weather = 0;
   if (!totalMoved) {
     const wxn = cfbWeatherNudge(g);
-    total += wxn.total;
+    weather = wxn.total || 0;
+    total += weather;
     (wxn.notes || []).forEach((n) => notes.push(n));
   }
   const learned = cfbLearnNudge(g);
@@ -4448,6 +4447,7 @@ function cfbLineMove(g, lockedSp, lockedTot) {
   return {
     margin: Math.max(-6.5, Math.min(6.5, +margin.toFixed(2))),
     total: Math.max(-3.5, Math.min(3.5, +total.toFixed(2))),
+    weather: +Number(weather).toFixed(2),
     notes
   };
 }
@@ -4700,7 +4700,7 @@ function applySplitDesk() {
     }
     p.gg_injury = null;
     p.gg_weather = null;
-    p.weather_adj_total = moveT;
+    p.weather_adj_total = moved.weather || 0;
     if (typeof normCdf === "function" && typeof cfbSigma === "function") {
       const sigma = cfbSigma(p.blended_margin);
       p.cfb_sigma = sigma;
@@ -4804,7 +4804,7 @@ function simulateGame(game) {
     let hp, ap;
     if (game.completed) {
       hp = hs0; ap = as0;
-    } else if (live) {
+    } else if (live && !p.in_game) {
       hp = hs0 + footballScore(hpExp * remF, rand, nfl);
       ap = as0 + footballScore(apExp * remF, rand, nfl);
     } else {
@@ -7892,12 +7892,11 @@ function wxChip(g) {
   if (!wx) return `<span class="wxchip">Forecast pending</span>`;
   const impact = g.weather_impact || weatherImpact(wx, g.indoor);
   const cls = impact.harsh ? "wx-harsh" : impact.wet ? "wx-wet" : "";
-  const adj = impact.adj ? ` · wx ${impact.adj > 0 ? "+" : ""}${impact.adj}` : "";
   const bits = [wx.condition || "Outdoor"];
   if (wx.temp_f != null) bits.push(`${Math.round(wx.temp_f)}°F`);
   if (wx.wind_mph != null) bits.push(`wind ${Math.round(wx.wind_mph)}`);
   if (wx.precip_prob != null && wx.precip_prob >= 15) bits.push(`${wx.precip_prob}% rain`);
-  return `<span class="wxchip ${cls}">${bits.join(" · ")}${adj}</span>`;
+  return `<span class="wxchip ${cls}">${bits.join(" · ")}</span>`;
 }
 
 function wxPanel(g) {
@@ -7918,7 +7917,7 @@ function wxPanel(g) {
     <div><span class="lbl">Kick temp</span><b>${fmt.n(wx.temp_f,0)}°F</b></div>
     <div><span class="lbl">Wind / gust</span><b>${fmt.n(wx.wind_mph,0)} / ${fmt.n(wx.wind_gust_mph,0)}</b></div>
     <div><span class="lbl">Precip</span><b>${wx.precip_prob ?? "—"}% · ${fmt.n(wx.precip_in,2)}"</b></div>
-    <div><span class="lbl">Total adj</span><b>${fmt.signed(impact.adj)}</b></div>
+    <div><span class="lbl">Total adj</span><b>${fmt.signed((g.proj && g.proj.weather_adj_total) || 0)}</b></div>
   </div>
   <div class="wx-note">${impact.note}${wx.humidity != null ? " · RH " + wx.humidity + "%" : ""} · ${wx.source || "Open-Meteo"}</div>`;
 }
@@ -8040,7 +8039,7 @@ function card(g) {
           <span class="score-dash">–</span>
           <span><b>${homePts ?? "—"}</b> ${g.home.abbr}</span>
         </div>`}
-        <div class="total-line">Total <b>${tot ?? "—"}</b> <span>market ${o.total ?? "—"}</span> ${p.weather_adj_total ? `<span>wx ${fmt.signed(p.weather_adj_total)}</span>` : ""}${(g.situational && (g.situational.margin_adj || g.situational.total_adj)) ? `<span>desk ${fmt.signed(g.situational.margin_adj)} / tot ${fmt.signed(g.situational.total_adj)}</span>` : ""}</div>
+        <div class="total-line">Total <b>${tot ?? "—"}</b> <span>market ${o.total ?? "—"}</span> ${(g.situational && (g.situational.margin_adj || g.situational.total_adj)) ? `<span>desk ${fmt.signed(g.situational.margin_adj)} / tot ${fmt.signed(g.situational.total_adj)}</span>` : (p.weather_adj_total ? `<span>wx ${fmt.signed(p.weather_adj_total)}</span>` : "")}</div>
         ${totPick}
         ${periodHtml(g)}
       </div>
@@ -11479,15 +11478,6 @@ function fillNflYards() {
     const keep = live ? { h: g.proj.home_points, a: g.proj.away_points, t: g.proj.hashmark_total } : null;
     const box = typeof projectBox === "function" ? projectBox(g, profiles) : null;
     if (!box) return;
-    const imp = g.weather_impact || {};
-    if (imp.rush_mult && imp.rush_mult !== 1) {
-      box.home_rush_yds = +(box.home_rush_yds * imp.rush_mult).toFixed(1);
-      box.away_rush_yds = +(box.away_rush_yds * imp.rush_mult).toFixed(1);
-    }
-    if (imp.rec_mult && imp.rec_mult !== 1) {
-      box.home_rec_yds = +(box.home_rec_yds * imp.rec_mult).toFixed(1);
-      box.away_rec_yds = +(box.away_rec_yds * imp.rec_mult).toFixed(1);
-    }
     if (keep && keep.h != null && keep.a != null) {
       g.proj.home_points = keep.h;
       g.proj.away_points = keep.a;
