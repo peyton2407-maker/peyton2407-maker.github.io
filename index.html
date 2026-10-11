@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="desk-version" content="90" />
+  <meta name="desk-version" content="91" />
   <meta property="og:title" content="Double Gs · The Split" />
   <meta property="og:description" content="Double Gs picks desk and The Split college matchup sheets." />
   <meta property="og:image" content="/og.jpg?v=3" />
@@ -5373,69 +5373,88 @@ function playerOutish(p, g) {
   return 0;
 }
 function buildGameTdModel(g) {
-  if (!g || g.league !== "nfl" || g.completed) return [];
+  if (!g || g.league !== "nfl" || g.completed || !g.home || !g.away) return [];
+  if (typeof isThisNflWeek === "function" && !isThisNflWeek(g)) return [];
+  if (typeof isLiveGame === "function" && isLiveGame(g)) return [];
+  const kick = new Date(g.date).getTime();
+  if (Number.isFinite(kick) && kick <= Date.now()) return [];
   const p = g.proj || {};
   const wx = g.weather_impact || {};
   const rushTilt = (wx.wet || (wx.rush_mult && wx.rush_mult > 1.02)) ? 1.12 : 1;
   const recTilt = rushTilt > 1 ? 0.92 : 1;
-  const rows = (g.props || []).filter((pl) => pl.pos !== "K");
+  const rows = (g.props || []).filter((pl) => pl && pl.pos && pl.pos !== "K");
   if (!rows.length) return [];
   const bySide = { home: rows.filter((r) => r.side === "home"), away: rows.filter((r) => r.side === "away") };
   const out = [];
   ["away", "home"].forEach((side) => {
     const group = bySide[side];
     const pts = side === "home" ? Number(p.home_points) : Number(p.away_points);
-    const teamTd = Math.max(0.5, (Number.isFinite(pts) ? pts : 21) * 0.64 / 7);
+    const teamTd = Math.max(0.9, (Number.isFinite(pts) ? pts : 21) * 0.68 / 7);
     const raw = group.map((pl) => {
       const inj = playerOutish(pl, g);
       let rush = Number(pl.rush_td || 0) * rushTilt;
       let rec = Number(pl.rec_td || 0) * recTilt;
       if (pl.pos === "QB") rec = 0;
+      if (rush + rec < 0.04) {
+        if (pl.pos === "RB") rush = Math.max(rush, Number(pl.rush_att || 0) * 0.028 + Number(pl.rec || 0) * 0.012);
+        else if (pl.pos === "QB") rush = Math.max(rush, Number(pl.rush_att || 0) * 0.035);
+        else rec = Math.max(rec, Number(pl.rec || 0) * 0.04 + Number(pl.rec_yds || 0) / 140);
+      }
       if (inj >= 1) { rush = 0; rec = 0; }
       else if (inj > 0) { rush *= (1 - inj); rec *= (1 - inj); }
-      if (pl.pos === "RB" && Number(pl.rush_att || 0) >= 14) rush *= 1.12;
-      if (pl.pos === "TE" && Number(pl.rec || 0) >= 4) rec *= 1.08;
-      return { pl, rush, rec, lam: Math.max(0, rush + rec), inj };
+      if (pl.pos === "RB" && Number(pl.rush_att || 0) >= 16) rush *= 1.08;
+      return { pl, rush, rec, base: Math.max(0, rush + rec), inj };
     });
-    const sum = raw.reduce((a, r) => a + r.lam, 0) || 1;
-    const scale = Math.min(1.22, Math.max(0.84, (teamTd * 0.96) / sum));
-    const scaled = raw.map((r) => ({ ...r, lam: +(r.lam * scale).toFixed(4) }));
+    const target = teamTd * 0.94;
+    let lam = raw.map((r) => r.base);
+    const sum0 = lam.reduce((a, b) => a + b, 0);
+    if (sum0 > 0.05) lam = lam.map((v) => v * target / sum0);
+    const cap = raw.map((r) => r.pl.pos === "QB" ? 0.85 : 1.15);
+    for (let pass = 0; pass < 3; pass++) {
+      let extra = 0;
+      lam.forEach((v, i) => { if (v > cap[i]) { extra += v - cap[i]; lam[i] = cap[i]; } });
+      if (extra < 0.02) break;
+      const room = lam.map((v, i) => Math.max(0, cap[i] - v));
+      const roomSum = room.reduce((a, b) => a + b, 0);
+      if (roomSum < 0.02) break;
+      lam = lam.map((v, i) => v + extra * (room[i] / roomSum));
+    }
+    const scaled = raw.map((r, i) => ({ ...r, lam: +lam[i].toFixed(4) }));
     const firstW = scaled.map((r) => {
       let w = r.lam;
-      if (r.pl.pos === "WR") w *= 1.16;
-      else if (r.pl.pos === "TE") w *= 1.08;
-      else if (r.pl.pos === "RB") w *= 0.88;
-      else if (r.pl.pos === "QB") w *= 0.62;
+      if (r.pl.pos === "WR") w *= 1.18;
+      else if (r.pl.pos === "TE") w *= 1.06;
+      else if (r.pl.pos === "RB") w *= 0.9;
+      else if (r.pl.pos === "QB") w *= 0.55;
       return Math.max(0, w);
     });
     const firstSum = firstW.reduce((a, b) => a + b, 0) || 1;
-    scaled.forEach((r, i) => {
-      r.firstShare = firstW[i] / firstSum;
-    });
+    scaled.forEach((r, i) => { r.firstShare = firstW[i] / firstSum; });
     scaled.forEach((r) => out.push({ side, teamTd, ...r }));
   });
   const hm = Number(p.blended_margin) || 0;
   const pHomeFirst = 1 / (1 + Math.exp(-hm / 7.2));
   const tot = Number(p.hashmark_total) || 44;
-  const pTdNotFg = Math.min(0.86, Math.max(0.70, 0.76 + (tot - 44) * 0.008));
+  const pTdNotFg = Math.min(0.84, Math.max(0.68, 0.74 + (tot - 44) * 0.006));
   const pHomeFirstTd = pHomeFirst * pTdNotFg;
   const pAwayFirstTd = (1 - pHomeFirst) * pTdNotFg;
   return out.map((r) => {
     const lam = r.lam;
     const anytime = 1 - Math.exp(-lam);
-    const two = 1 - Math.exp(-lam) - lam * Math.exp(-lam);
+    const two = Math.max(0, 1 - Math.exp(-lam) - lam * Math.exp(-lam));
     const pTeamFirst = r.side === "home" ? pHomeFirstTd : pAwayFirstTd;
     const first = pTeamFirst * r.firstShare;
     const pl = r.pl;
     const whyBits = [];
-    whyBits.push(`${lam.toFixed(2)} projected TDs vs ${pl.opp}`);
-    if (r.inj >= 1) whyBits.push("injury desk has them out — λ zeroed");
-    else if (r.inj > 0) whyBits.push("doubtful/questionable tax on λ");
-    if (rushTilt > 1 && pl.pos === "RB") whyBits.push("weather tilts goal-line to the run");
-    if (pl.pos === "RB" && Number(pl.rush_att || 0) >= 14) whyBits.push("gets most of the runs near the goal line");
-    if (pl.pos === "WR") whyBits.push("more likely to catch the first TD of the game");
+    whyBits.push(lam.toFixed(2) + " projected scores, " + (r.side === "home" ? g.home.abbr : g.away.abbr) + " projected for " + r.teamTd.toFixed(1) + " TDs");
+    if (r.inj >= 1) whyBits.push("listed out, so this chance is zero");
+    else if (r.inj > 0) whyBits.push("questionable, so the chance is cut");
+    if (rushTilt > 1 && pl.pos === "RB") whyBits.push("weather leans the goal line to the run");
+    if (pl.pos === "RB" && Number(pl.rush_att || 0) >= 16) whyBits.push("he gets the red-zone carries");
+    if (pl.pos === "QB" && Number(pl.rush_td || 0) >= 0.25) whyBits.push("the rushing quarterback scores himself");
     return {
-      id: pl.id, name: pl.name, pos: pl.pos, team: pl.team, opp: pl.opp,
+      id: pl.id, name: pl.name, pos: pl.pos, team: pl.team || (r.side === "home" ? g.home.abbr : g.away.abbr),
+      opp: pl.opp || (r.side === "home" ? g.away.abbr : g.home.abbr),
       game: pl.game || g.short_name, game_id: g.id, date: g.date, side: r.side,
       lam, anytime, two, first, teamTd: r.teamTd,
       injury: pl.injury, indoor: pl.indoor, weather: pl.weather,
@@ -10032,6 +10051,7 @@ async function ensureWeekProps() {
   const players = await collectProps();
   upcoming.forEach((g) => { g.props = attachProps(g, players); });
   if (typeof view !== "undefined" && view === "props" && typeof renderProps === "function") renderProps();
+  if (typeof view !== "undefined" && view === "tds" && typeof renderTdDesk === "function") renderTdDesk();
   if (typeof view !== "undefined" && view === "parlay" && (window.__parlayLg === "props" || window.__parlayLg === "propp") && typeof renderParlays === "function") renderParlays();
 }
 function refreshWeekLabels() {
@@ -12555,7 +12575,15 @@ function setView(next) {
         .catch(() => {});
     }
   }
-  if (next === "tds") renderTdDesk();
+  if (next === "tds") {
+    renderTdDesk();
+    const needTd = (DATA.games || []).some((g) => g.league === "nfl" && !g.completed && !(g.props && g.props.length));
+    if (needTd && typeof ensureWeekProps === "function") {
+      const board = document.getElementById("tdBoard");
+      if (board && !board.querySelector(".td-card")) board.innerHTML = `<div class="empty">Pulling this week's scorers…</div>`;
+      ensureWeekProps().then(() => { if (view === "tds") renderTdDesk(); }).catch(() => { if (view === "tds") renderTdDesk(); });
+    }
+  }
   if (next === "nflinj" || next === "cfbinj") {
     const lg = next === "nflinj" ? "nfl" : "cfb";
     try { seedInjuriesFromSnap(); renderInjuries(lg); } catch (e) { console.warn(e); }
