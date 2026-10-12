@@ -318,10 +318,11 @@ function loadOpen(id) {
     .catch(() => { OPENLINE[id] = "Open line did not load"; });
 }
 function advFmt(kind, value) {
-  if (value == null || Number.isNaN(Number(value))) return "—";
+  if (value == null || value === "") return "—";
+  if (kind === "raw") return String(value);
+  if (Number.isNaN(Number(value))) return "—";
   if (kind === "pct") return Math.round(Number(value) * 100) + "%";
   if (kind === "yd") return Number(value).toFixed(1);
-  if (kind === "raw") return String(value);
   return Number(value).toFixed(2);
 }
 function advBit(team, row, key, kind) {
