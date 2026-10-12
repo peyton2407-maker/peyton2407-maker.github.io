@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="desk-version" content="93" />
+  <meta name="desk-version" content="94" />
   <meta property="og:title" content="Double Gs · The Split" />
   <meta property="og:description" content="Double Gs picks desk and The Split college matchup sheets." />
   <meta property="og:image" content="/og.jpg?v=3" />
@@ -6166,7 +6166,7 @@ function renderPropParlays() {
 }
 
 function currentCfbWeekNumber() {
-  return collegeWeekOf(etYmd()) || 1;
+  return rollMonday(collegeWeekOf(etYmd()) || 1);
 }
 function isThisCfbWeek(g) {
   if (!g || g.league !== "cfb") return true;
@@ -9563,58 +9563,111 @@ function nflPotd() {
   bets.sort((a, b) => b.value - a.value || b.hit - a.hit);
   return bets[0] || null;
 }
-function renderNflPotd() {
-  const board = document.getElementById("nflPotdBoard");
-  if (!board) return;
-  const bet = nflPotd();
-  if (!bet) {
-    board.innerHTML = `<div class="empty">No NFL play is far enough off DraftKings yet.</div>`;
-    return;
-  }
+function potdStore() {
+  window.POTD_LOG = window.POTD_LOG || { nfl: [], cfb: [] };
+  window.POTD_LOG.nfl = window.POTD_LOG.nfl || [];
+  window.POTD_LOG.cfb = window.POTD_LOG.cfb || [];
+  return window.POTD_LOG;
+}
+function lastPotd(league) {
+  const week = league === "nfl" ? currentNflWeekNumber() : currentCfbWeekNumber();
+  const rows = (potdStore()[league] || []).filter((r) => r && Number(r.week) < Number(week) && r.result);
+  return rows.sort((a, b) => Number(b.week) - Number(a.week))[0] || null;
+}
+function rememberPotd(league, bet) {
+  if (!bet || !bet.g) return;
+  const week = league === "nfl" ? currentNflWeekNumber() : currentCfbWeekNumber();
+  const bag = potdStore();
+  if ((bag[league] || []).some((r) => Number(r.week) === Number(week))) return;
+  bag[league].push({
+    week: week, league: league, id: String(bet.g.id), game: bet.g.short_name,
+    kind: bet.kind, line: bet.line, hitPct: Math.round(Number(bet.hit) * 100),
+    why: bet.why, result: null, final: null, resultWhy: ""
+  });
+  try { localStorage.setItem("gg-potd-log", JSON.stringify(bag)); } catch (e) {}
+}
+function gradeSavedPotd(league) {
+  const bag = potdStore();
+  (bag[league] || []).forEach((row) => {
+    if (!row || row.result || !row.line) return;
+    const g = (DATA.games || []).find((x) => String(x.id) === String(row.id));
+    if (!g || !g.completed || !g.home || !g.away) return;
+    const hs = Number(g.home.score);
+    const as = Number(g.away.score);
+    if (!Number.isFinite(hs) || !Number.isFinite(as)) return;
+    const graded = gradeHistoryRow({
+      pick: row.line.split(/\s+/)[0],
+      pick_line: row.kind === "Spread" || !/OVER|UNDER|ML/i.test(row.line) ? row.line : null,
+      total_pick: /OVER|UNDER/i.test(row.line) ? row.line : null
+    }, { hs: hs, as: as, homeAbbr: g.home.abbr, awayAbbr: g.away.abbr });
+    row.final = g.away.abbr + " " + as + " – " + g.home.abbr + " " + hs;
+    row.result = graded.ats || graded.ou || null;
+    if (!row.result) return;
+    const covered = row.result === "HIT";
+    row.resultWhy = covered
+      ? "It hit. " + row.line + " covered. Final was " + row.final + "."
+      : (row.result === "PUSH" ? "It pushed. Final was " + row.final + "." : "It missed. " + row.line + " did not cover. Final was " + row.final + ".");
+  });
+}
+function potdCard(bet, title) {
   const g = bet.g;
   const pct = Math.round(bet.hit * 100);
   const p = g.proj || {};
-  board.innerHTML = `<article class="prop-card" data-id="${g.id}">
+  return `<article class="prop-card" data-id="${g.id}">
     <div class="who">
       <div>
-        <h4>NFL POTD · ${escHtml(g.away.abbr)} @ ${escHtml(g.home.abbr)}</h4>
-        <div class="prop-meta">${fmt.when(g.date)} · ${escHtml(g.venue || "")} · best odds on the board</div>
+        <h4>${escHtml(title)} · ${escHtml(g.away.abbr)} @ ${escHtml(g.home.abbr)}</h4>
+        <div class="prop-meta">${fmt.when(g.date)} · ${escHtml(g.venue || "")} · this week's play</div>
       </div>
       <div class="pick-score">${pct}%</div>
     </div>
     <div class="prop-stats">
       <div><span class="lbl">${escHtml(bet.kind)}</span><b>${escHtml(bet.line)}</b></div>
-      <div><span class="lbl">DraftKings</span><b>${escHtml((g.odds && g.odds.details) || "—")} · total ${escHtml(String((g.odds && g.odds.total) || "—"))}</b></div>
+      <div><span class="lbl">DraftKings</span><b>${escHtml((g.odds && g.odds.details) || "—")} · total ${escHtml(String((g.odds && g.odds.total) != null ? g.odds.total : "—"))}</b></div>
       <div><span class="lbl">Our score</span><b>${g.away.abbr} ${p.away_points ?? "—"} – ${g.home.abbr} ${p.home_points ?? "—"}</b></div>
       <div><span class="lbl">Why this one</span><b>${escHtml(bet.why)}</b></div>
     </div>
   </article>`;
+}
+function potdResultCard(row) {
+  if (!row) return "";
+  const cls = String(row.result || "").toLowerCase();
+  return `<article class="prop-card">
+    <div class="who">
+      <div>
+        <h4>Last week · ${escHtml(row.game || "")}</h4>
+        <div class="prop-meta">Week ${escHtml(String(row.week))} · the play we locked</div>
+      </div>
+      <div class="pick-score result-${cls}">${escHtml(row.result || "—")}</div>
+    </div>
+    <div class="prop-stats">
+      <div><span class="lbl">${escHtml(row.kind || "Play")}</span><b>${escHtml(row.line || "")}</b></div>
+      <div><span class="lbl">Final</span><b>${escHtml(row.final || "—")}</b></div>
+      <div><span class="lbl">Why we picked it</span><b>${escHtml(row.why || "")}</b></div>
+      <div><span class="lbl">Why it ${escHtml(String(row.result || "").toLowerCase() || "finished")}</span><b>${escHtml(row.resultWhy || "")}</b></div>
+    </div>
+  </article>`;
+}
+function renderNflPotd() {
+  const board = document.getElementById("nflPotdBoard");
+  if (!board) return;
+  gradeSavedPotd("nfl");
+  const bet = nflPotd();
+  rememberPotd("nfl", bet);
+  const last = lastPotd("nfl");
+  const current = bet ? potdCard(bet, "NFL POTD") : `<div class="empty">No NFL play is far enough off DraftKings yet.</div>`;
+  board.innerHTML = potdResultCard(last) + current;
   board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 function renderPotd() {
   const board = document.getElementById("potdBoard");
   if (!board) return;
+  gradeSavedPotd("cfb");
   const bet = cfbPotd();
-  if (!bet) {
-    board.innerHTML = `<div class="empty">No college play is far enough off the market yet.</div>`;
-    return;
-  }
-  const g = bet.g;
-  const pct = Math.round(bet.hit * 100);
-  board.innerHTML = `<article class="prop-card" data-id="${g.id}">
-    <div class="who">
-      <div>
-        <h4>POTD · ${escHtml(g.away.abbr)} @ ${escHtml(g.home.abbr)}</h4>
-        <div class="prop-meta">${fmt.when(g.date)} · ${escHtml(g.venue || "Campus")} · one play</div>
-      </div>
-      <div class="pick-score">${pct}%</div>
-    </div>
-    <div class="prop-stats">
-      <div><span class="lbl">${escHtml(bet.kind)}</span><b>${escHtml(bet.line)}</b></div>
-      <div><span class="lbl">Confidence</span><b>${pct}% to hit</b></div>
-      <div><span class="lbl">Why this one</span><b>${escHtml(bet.why)}</b></div>
-    </div>
-  </article>`;
+  rememberPotd("cfb", bet);
+  const last = lastPotd("cfb");
+  const current = bet ? potdCard(bet, "POTD") : `<div class="empty">No college play is far enough off the market yet.</div>`;
+  board.innerHTML = potdResultCard(last) + current;
   board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 
@@ -10849,11 +10902,24 @@ function collegeWeekOf(iso) {
   return weekFromTuesday(d, "2026-09-01");
 }
 function currentNflWeekNumber() {
-  return Math.max(1, Math.min(22, weekFromTuesday(etYmd(), "2026-09-08")));
+  return Math.max(1, Math.min(22, rollMonday(weekFromTuesday(etYmd(), "2026-09-08"))));
+}
+function rollMonday(week) {
+  const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short", hour: "numeric", hourCycle: "h23" }).formatToParts(new Date());
+  const bag = {};
+  parts.forEach((p) => { bag[p.type] = p.value; });
+  if (bag.weekday === "Mon" && Number(bag.hour) >= 6) return Number(week) + 1;
+  return Number(week);
 }
 function isThisNflWeek(g) {
   if (!g || g.league !== "nfl") return true;
-  return Number(g.week) === currentNflWeekNumber();
+  const week = currentNflWeekNumber();
+  if (Number(g.week) === week) return true;
+  if (g.completed || Number(g.week) !== week - 1) return false;
+  const kick = new Date(g.date).getTime();
+  if (!Number.isFinite(kick)) return false;
+  const hours = (kick - Date.now()) / 3600000;
+  return hours > -3 && hours < 30;
 }
 function gradeHistoryRow(row, fin) {
   if (!fin || fin.hs == null || fin.as == null) return row;
@@ -12704,7 +12770,7 @@ async function loadDeskData() {
     if (!res.ok) throw new Error(url + " " + res.status);
     return res.json();
   };
-  const snap = await get("/data/snapshot.json?v=93");
+  const snap = await get("/data/snapshot.json?v=94");
   window.HASHMARK = snap;
   window.NFL_CARD = ((snap && snap.games) || []).filter((g) => g && g.league === "nfl").map((g) => ({
     id: String(g.id),
@@ -12732,7 +12798,8 @@ async function loadDeskData() {
     window.SPLIT_NOTES = splitNotes || {};
     window.SPLIT_DESK = splitDesk || [];
     window.WEEK_RESULTS = results || [];
-    window.PAST_CARDS = past || {};
+    window.PAST_CARDS = { nfl: (past && past.nfl) || {}, cfb: (past && past.cfb) || {} };
+    window.POTD_LOG = (past && past.potd) || { nfl: [], cfb: [] };
     if (polls) window.CFB_POLLS = polls;
     try { if (typeof applySplitDesk === "function") applySplitDesk(); } catch (e) {}
     try { if (typeof pullCfbCloseLines === "function") pullCfbCloseLines(); } catch (e) {}
