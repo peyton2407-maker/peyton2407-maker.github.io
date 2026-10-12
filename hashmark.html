@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="desk-version" content="94" />
+  <meta name="desk-version" content="95" />
   <meta property="og:title" content="Double Gs · The Split" />
   <meta property="og:description" content="Double Gs picks desk and The Split college matchup sheets." />
   <meta property="og:image" content="/og.jpg?v=3" />
@@ -2496,6 +2496,11 @@ function applyLearningToGame(g) {
     if (Math.abs(p.edge_total) < (cfb ? 1.5 : 0.8)) p.total_pick = "NO PLAY";
     else p.total_pick = p.edge_total > 0 ? `OVER ${g.odds.total}` : `UNDER ${g.odds.total}`;
   }
+  if (cfb && typeof cfbPotdGameOk === "function" && !cfbPotdGameOk(g)) {
+    p.pick = "NO PLAY";
+    p.pick_line = null;
+    p.total_pick = "NO PLAY";
+  }
   p.learned = { home_n: hr.n, away_n: ar.n, margin_shift: +mShift.toFixed(2), total_shift: +totShift.toFixed(2) };
   p.learn_note = learnNote || "";
   if (cfb && typeof cfbLockPick === "function") cfbLockPick(g);
@@ -4697,6 +4702,11 @@ function applySplitDesk() {
         p.edge_total = +(p.hashmark_total - Number(lockedTotal)).toFixed(2);
         p.total_pick = Math.abs(p.edge_total) < 1.5 ? "NO PLAY" : ((p.edge_total > 0 ? "OVER " : "UNDER ") + lockedTotal);
       }
+    }
+    if (typeof cfbPotdGameOk === "function" && !cfbPotdGameOk(g)) {
+      p.pick = "NO PLAY";
+      p.pick_line = null;
+      p.total_pick = "NO PLAY";
     }
     p.gg_injury = null;
     p.gg_weather = null;
@@ -9438,11 +9448,22 @@ function renderCfbPicks() {
   $$("#cfbPickBoard .prop-card").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 
+function cfbPotdGameOk(g) {
+  const p = g.proj || {};
+  const edge = Number(p.edge_spread);
+  const te = Number(p.edge_total);
+  if (Number.isFinite(edge) && Math.abs(edge) > 7.5) return false;
+  if (Number.isFinite(te) && Math.abs(te) > 8) return false;
+  const blob = [g.away && g.away.name, g.home && g.home.name, g.away && g.away.abbr, g.home && g.home.abbr].join(" ");
+  if (/Sacramento State|Citadel|Charleston Southern|Elon|Tarleton|Abilene|Incarnate|Stephen F|North Dakota|Montana|Weber|UC Davis|Northern Arizona|Eastern Washington|Portland State/.test(blob)) return false;
+  return true;
+}
 function cfbPotd() {
   const now = Date.now();
   const games = (DATA.games || []).filter((g) => {
     if (!g || g.league !== "cfb" || g.completed || !g.odds || !g.proj || !g.home || !g.away) return false;
     if (typeof isThisCfbWeek === "function" && !isThisCfbWeek(g)) return false;
+    if (!cfbPotdGameOk(g)) return false;
     const kick = new Date(g.date).getTime();
     return !Number.isFinite(kick) || kick > now;
   });
@@ -10913,13 +10934,7 @@ function rollMonday(week) {
 }
 function isThisNflWeek(g) {
   if (!g || g.league !== "nfl") return true;
-  const week = currentNflWeekNumber();
-  if (Number(g.week) === week) return true;
-  if (g.completed || Number(g.week) !== week - 1) return false;
-  const kick = new Date(g.date).getTime();
-  if (!Number.isFinite(kick)) return false;
-  const hours = (kick - Date.now()) / 3600000;
-  return hours > -3 && hours < 30;
+  return Number(g.week) === currentNflWeekNumber();
 }
 function gradeHistoryRow(row, fin) {
   if (!fin || fin.hs == null || fin.as == null) return row;
@@ -11534,6 +11549,17 @@ function reapplyDeskLine() {
   if (typeof applySplitDesk === "function") applySplitDesk();
   if (typeof fillNflYards === "function") fillNflYards();
   if (typeof applyLiveBoard === "function") applyLiveBoard(DATA.games);
+  dropBrokenCfbPlays();
+}
+function dropBrokenCfbPlays() {
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.league !== "cfb" || !g.proj || g.completed) return;
+    if (typeof cfbPotdGameOk === "function" && !cfbPotdGameOk(g)) {
+      g.proj.pick = "NO PLAY";
+      g.proj.pick_line = null;
+      g.proj.total_pick = "NO PLAY";
+    }
+  });
 }
 function fillNflYards() {
   const profiles = window.__yardProfiles || {};
@@ -12770,7 +12796,7 @@ async function loadDeskData() {
     if (!res.ok) throw new Error(url + " " + res.status);
     return res.json();
   };
-  const snap = await get("/data/snapshot.json?v=94");
+  const snap = await get("/data/snapshot.json?v=96");
   window.HASHMARK = snap;
   window.NFL_CARD = ((snap && snap.games) || []).filter((g) => g && g.league === "nfl").map((g) => ({
     id: String(g.id),
