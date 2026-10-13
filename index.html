@@ -9459,130 +9459,143 @@ function cfbPotdGameOk(g) {
   return true;
 }
 function cfbPotd() {
-  const now = Date.now();
-  const games = (DATA.games || []).filter((g) => {
-    if (!g || g.league !== "cfb" || g.completed || !g.odds || !g.proj || !g.home || !g.away) return false;
-    if (typeof isThisCfbWeek === "function" && !isThisCfbWeek(g)) return false;
-    if (!cfbPotdGameOk(g)) return false;
-    const kick = new Date(g.date).getTime();
-    return !Number.isFinite(kick) || kick > now;
-  });
-  const bets = [];
-  games.forEach((g) => {
-    const p = g.proj || {};
-    const o = g.odds || {};
-    const margin = Number(p.blended_margin);
-    const sigma = (typeof cfbSigma === "function" && Number.isFinite(margin)) ? cfbSigma(margin) : (LIVE.CFB_SIGMA || 16.4);
-    const edge = Number(p.edge_spread);
-    if (o.home_spread != null && Number.isFinite(edge) && Math.abs(edge) >= 1) {
-      const sp = Number(o.home_spread);
-      const home = edge > 0;
-      const abbr = home ? g.home.abbr : g.away.abbr;
-      const num = home ? sp : -sp;
-      bets.push({
-        g, kind: "Spread",
-        line: abbr + " " + (num >= 0 ? "+" : "") + num.toFixed(1),
-        hit: normCdf(Math.abs(edge) / sigma),
-        why: "Our number is " + Math.abs(edge).toFixed(1) + " points off the posted spread."
-      });
-    }
-    const te = Number(p.edge_total);
-    if (o.total != null && Number.isFinite(te) && Math.abs(te) >= 1) {
-      bets.push({
-        g, kind: te > 0 ? "Over" : "Under",
-        line: (te > 0 ? "OVER " : "UNDER ") + o.total,
-        hit: normCdf(Math.abs(te) / 13.5),
-        why: "Our total is " + Math.abs(te).toFixed(1) + " points " + (te > 0 ? "over" : "under") + " the market."
-      });
-    }
-    const wpH = Number(p.win_prob_home);
-    const wpA = Number(p.win_prob_away);
-    const impH = Number(o.home_ml_prob) || (typeof parseAmerican === "function" ? parseAmerican(o.home_ml) : null);
-    const impA = Number(o.away_ml_prob) || (typeof parseAmerican === "function" ? parseAmerican(o.away_ml) : null);
-    if (Number.isFinite(wpH) && impH && wpH - impH >= 0.04) {
-      bets.push({
-        g, kind: "Moneyline",
-        line: g.home.abbr + " ML " + (o.home_ml || ""),
-        hit: wpH,
-        why: "We have " + g.home.abbr + " at " + Math.round(wpH * 100) + "% to win. The moneyline price is shorter than that."
-      });
-    }
-    if (Number.isFinite(wpA) && impA && wpA - impA >= 0.04) {
-      bets.push({
-        g, kind: "Moneyline",
-        line: g.away.abbr + " ML " + (o.away_ml || ""),
-        hit: wpA,
-        why: "We have " + g.away.abbr + " at " + Math.round(wpA * 100) + "% to win. The moneyline price is shorter than that."
-      });
-    }
-  });
-  bets.sort((a, b) => b.hit - a.hit);
-  return bets[0] || null;
+  return potdPick("cfb");
 }
 function nflPotd() {
+  return potdPick("nfl");
+}
+function potdDayKey(date) {
+  const d = new Date(date);
+  if (!Number.isFinite(d.getTime())) return "";
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(d);
+}
+function potdDayName(date) {
+  const d = new Date(date);
+  if (!Number.isFinite(d.getTime())) return "";
+  return new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "long" }).format(d);
+}
+function potdUpcoming(league) {
   const now = Date.now();
-  const sigma = LIVE.NFL_SIGMA || 13;
-  const games = (DATA.games || []).filter((g) => {
-    if (!g || g.league !== "nfl" || g.completed || !g.odds || !g.proj || !g.home || !g.away) return false;
-    if (typeof isThisNflWeek === "function" && !isThisNflWeek(g)) return false;
-    if (typeof isLiveGame === "function" && isLiveGame(g)) return false;
+  return (DATA.games || []).filter((g) => {
+    if (!g || g.league !== league || g.completed || !g.odds || !g.proj || !g.home || !g.away) return false;
+    if (league === "nfl" && typeof isThisNflWeek === "function" && !isThisNflWeek(g)) return false;
+    if (league === "cfb" && typeof isThisCfbWeek === "function" && !isThisCfbWeek(g)) return false;
+    if (league === "cfb" && typeof cfbPotdGameOk === "function" && !cfbPotdGameOk(g)) return false;
     const kick = new Date(g.date).getTime();
-    return !Number.isFinite(kick) || kick > now;
-  });
+    return Number.isFinite(kick) && kick > now;
+  }).sort((a, b) => new Date(a.date) - new Date(b.date));
+}
+function potdWindow(league) {
+  const games = potdUpcoming(league);
+  if (!games.length) return { games: [], big: false, day: "" };
+  const cluster = [games[0]];
+  const day = potdDayKey(games[0].date);
+  for (let i = 1; i < games.length; i++) {
+    const prev = new Date(cluster[cluster.length - 1].date).getTime();
+    const kick = new Date(games[i].date).getTime();
+    if (potdDayKey(games[i].date) !== day) break;
+    if (kick - prev > 3.5 * 60 * 60 * 1000) break;
+    cluster.push(games[i]);
+  }
+  const big = cluster.length >= 4;
+  return { games: big ? cluster : [games[0]], big: big, day: day, count: cluster.length };
+}
+function potdKindWeight(league, kind) {
+  const done = (potdStore()[league] || []).filter((r) => r && (r.result === "HIT" || r.result === "MISS") && r.kind === kind);
+  const recent = done.slice(-12);
+  if (recent.length < 4) return 1;
+  const rate = recent.filter((r) => r.result === "HIT").length / recent.length;
+  return Math.max(0.82, Math.min(1.18, 0.7 + rate * 0.6));
+}
+function potdKindRecord(league, kind) {
+  const done = (potdStore()[league] || []).filter((r) => r && (r.result === "HIT" || r.result === "MISS") && r.kind === kind);
+  const recent = done.slice(-12);
+  if (recent.length < 4) return null;
+  return { hit: recent.filter((r) => r.result === "HIT").length, n: recent.length };
+}
+function potdBets(g, league, soft) {
   const bets = [];
-  games.forEach((g) => {
-    const p = g.proj || {};
-    const o = g.odds || {};
-    const edge = Number(p.edge_spread);
-    if (o.home_spread != null && Number.isFinite(edge) && Math.abs(edge) >= 1.8) {
-      const sp = Number(o.home_spread);
-      const home = edge > 0;
-      const abbr = home ? g.home.abbr : g.away.abbr;
-      const num = home ? sp : -sp;
-      const our = typeof cfbSideLabel === "function" ? cfbSideLabel(g, p.hashmark_home_spread) : "";
-      bets.push({
-        g, kind: "Spread",
-        line: abbr + " " + (num >= 0 ? "+" : "") + num.toFixed(1),
-        hit: normCdf(Math.abs(edge) / sigma),
-        value: Math.abs(edge),
-        why: "Best price on the board. DraftKings has " + (o.details || "the market") + ". Our number is " + (our || "off that line") + ", " + Math.abs(edge).toFixed(1) + " points of value."
-      });
-    }
-    const te = Number(p.edge_total);
-    if (o.total != null && Number.isFinite(te) && Math.abs(te) >= 1.6) {
-      bets.push({
-        g, kind: te > 0 ? "Over" : "Under",
-        line: (te > 0 ? "OVER " : "UNDER ") + o.total,
-        hit: normCdf(Math.abs(te) / 12),
-        value: Math.abs(te),
-        why: "Best total price. Our number is " + Math.abs(te).toFixed(1) + " points " + (te > 0 ? "over" : "under") + " DraftKings " + o.total + "."
-      });
-    }
-    const wpH = Number(p.win_prob_home);
-    const wpA = Number(p.win_prob_away);
-    const impH = Number(o.home_ml_prob) || (typeof parseAmerican === "function" ? parseAmerican(o.home_ml) : null);
-    const impA = Number(o.away_ml_prob) || (typeof parseAmerican === "function" ? parseAmerican(o.away_ml) : null);
-    if (Number.isFinite(wpH) && impH && wpH - impH >= 0.06) {
-      bets.push({
-        g, kind: "Moneyline",
-        line: g.home.abbr + " ML " + (o.home_ml || ""),
-        hit: wpH,
-        value: (wpH - impH) * sigma,
-        why: "Best moneyline price. We have " + g.home.abbr + " at " + Math.round(wpH * 100) + "% to win. The posted price is shorter than that."
-      });
-    }
-    if (Number.isFinite(wpA) && impA && wpA - impA >= 0.06) {
-      bets.push({
-        g, kind: "Moneyline",
-        line: g.away.abbr + " ML " + (o.away_ml || ""),
-        hit: wpA,
-        value: (wpA - impA) * sigma,
-        why: "Best moneyline price. We have " + g.away.abbr + " at " + Math.round(wpA * 100) + "% to win. The posted price is shorter than that."
-      });
-    }
-  });
-  bets.sort((a, b) => b.value - a.value || b.hit - a.hit);
-  return bets[0] || null;
+  const p = g.proj || {};
+  const o = g.odds || {};
+  const sigma = league === "nfl" ? (LIVE.NFL_SIGMA || 13) : ((typeof cfbSigma === "function" && Number.isFinite(Number(p.blended_margin))) ? cfbSigma(Number(p.blended_margin)) : (LIVE.CFB_SIGMA || 16.4));
+  const spreadFloor = soft ? 0.5 : (league === "nfl" ? 1.8 : 1);
+  const totalFloor = soft ? 0.5 : (league === "nfl" ? 1.6 : 1);
+  const mlFloor = soft ? 0.02 : (league === "nfl" ? 0.06 : 0.04);
+  const edge = Number(p.edge_spread);
+  if (o.home_spread != null && Number.isFinite(edge) && Math.abs(edge) >= spreadFloor) {
+    const sp = Number(o.home_spread);
+    const home = edge > 0;
+    const abbr = home ? g.home.abbr : g.away.abbr;
+    const num = home ? sp : -sp;
+    const our = typeof cfbSideLabel === "function" ? cfbSideLabel(g, p.hashmark_home_spread) : "";
+    bets.push({
+      g, kind: "Spread",
+      line: abbr + " " + (num >= 0 ? "+" : "") + num.toFixed(1),
+      hit: normCdf(Math.abs(edge) / sigma),
+      value: Math.abs(edge),
+      why: "The play is " + abbr + " " + (num >= 0 ? "+" : "") + num.toFixed(1) + ". Our number is " + (our || "off the posted line") + ", " + Math.abs(edge).toFixed(1) + " points off DraftKings."
+    });
+  }
+  const te = Number(p.edge_total);
+  if (o.total != null && Number.isFinite(te) && Math.abs(te) >= totalFloor) {
+    bets.push({
+      g, kind: te > 0 ? "Over" : "Under",
+      line: (te > 0 ? "OVER " : "UNDER ") + o.total,
+      hit: normCdf(Math.abs(te) / (league === "nfl" ? 12 : 13.5)),
+      value: Math.abs(te),
+      why: "Our total is " + Math.abs(te).toFixed(1) + " points " + (te > 0 ? "over" : "under") + " DraftKings " + o.total + "."
+    });
+  }
+  const wpH = Number(p.win_prob_home);
+  const wpA = Number(p.win_prob_away);
+  const impH = Number(o.home_ml_prob) || (typeof parseAmerican === "function" ? parseAmerican(o.home_ml) : null);
+  const impA = Number(o.away_ml_prob) || (typeof parseAmerican === "function" ? parseAmerican(o.away_ml) : null);
+  if (Number.isFinite(wpH) && impH && wpH - impH >= mlFloor) {
+    bets.push({
+      g, kind: "Moneyline",
+      line: g.home.abbr + " ML " + (o.home_ml || ""),
+      hit: wpH,
+      value: (wpH - impH) * sigma,
+      why: "We have " + g.home.abbr + " at " + Math.round(wpH * 100) + "% to win. The moneyline price is shorter than that."
+    });
+  }
+  if (Number.isFinite(wpA) && impA && wpA - impA >= mlFloor) {
+    bets.push({
+      g, kind: "Moneyline",
+      line: g.away.abbr + " ML " + (o.away_ml || ""),
+      hit: wpA,
+      value: (wpA - impA) * sigma,
+      why: "We have " + g.away.abbr + " at " + Math.round(wpA * 100) + "% to win. The moneyline price is shorter than that."
+    });
+  }
+  return bets;
+}
+function potdPick(league) {
+  const window = potdWindow(league);
+  if (!window.games.length) return null;
+  const locked = potdLockedBet(league, window);
+  if (locked) return locked;
+  let bets = [];
+  window.games.forEach((g) => { bets = bets.concat(potdBets(g, league, false)); });
+  if (!bets.length && !window.big) bets = potdBets(window.games[0], league, true);
+  bets.forEach((b) => { b.score = b.value * potdKindWeight(league, b.kind); });
+  bets.sort((a, b) => b.score - a.score || b.hit - a.hit);
+  const best = bets[0];
+  if (!best) return null;
+  const rec = potdKindRecord(league, best.kind);
+  const weight = potdKindWeight(league, best.kind);
+  if (rec && Math.abs(weight - 1) >= 0.04) {
+    best.why += " " + best.kind + " plays are " + rec.hit + "-" + (rec.n - rec.hit) + " on the play of the day, so that record is in the pick.";
+  }
+  best.window = window;
+  best.label = window.big
+    ? ("Best of " + potdDayName(best.g.date) + "'s " + window.count + " games")
+    : (potdDayName(best.g.date) + " · next game");
+  return best;
+}
+function potdWindowKey(window, bet) {
+  if (!window || !bet || !bet.g) return "";
+  return window.big ? ("slate:" + window.day) : ("game:" + bet.g.id);
 }
 function potdStore() {
   window.POTD_LOG = window.POTD_LOG || { nfl: [], cfb: [] };
@@ -9590,55 +9603,100 @@ function potdStore() {
   window.POTD_LOG.cfb = window.POTD_LOG.cfb || [];
   return window.POTD_LOG;
 }
+function mergePotdLog() {
+  const published = window.POTD_LOG || { nfl: [], cfb: [] };
+  let local = {};
+  try { local = JSON.parse(localStorage.getItem("gg-potd-log") || "{}"); } catch (e) { local = {}; }
+  ["nfl", "cfb"].forEach((league) => {
+    const map = new Map();
+    (published[league] || []).forEach((r) => { if (r) map.set(r.key || ("legacy:" + r.week + ":" + r.id), r); });
+    ((local && local[league]) || []).forEach((r) => {
+      if (!r) return;
+      const key = r.key || ("legacy:" + r.week + ":" + r.id);
+      const prev = map.get(key);
+      if (!prev || (!prev.result && Number(r.savedAt || 0) >= Number(prev.savedAt || 0))) map.set(key, r);
+    });
+    published[league] = Array.from(map.values());
+  });
+  window.POTD_LOG = published;
+}
+function potdLockedBet(league, window) {
+  const rows = potdStore()[league] || [];
+  const row = rows.find((r) => r && r.locked && !r.result && ((window.big && r.key === "slate:" + window.day) || (!window.big && r.key === "game:" + window.games[0].id)));
+  if (!row) return null;
+  const g = (DATA.games || []).find((x) => String(x.id) === String(row.id));
+  if (!g || g.completed) return null;
+  const kick = new Date(g.date).getTime();
+  if (!Number.isFinite(kick) || kick <= Date.now()) return null;
+  return { g: g, kind: row.kind, line: row.line, hit: Number(row.hitPct || 0) / 100, value: 0, why: row.why, label: row.label, window: window, locked: true };
+}
 function lastPotd(league) {
-  const week = league === "nfl" ? currentNflWeekNumber() : currentCfbWeekNumber();
-  const rows = (potdStore()[league] || []).filter((r) => r && Number(r.week) < Number(week) && r.result);
-  return rows.sort((a, b) => Number(b.week) - Number(a.week))[0] || null;
+  const rows = (potdStore()[league] || []).filter((r) => r && r.result);
+  return rows.sort((a, b) => Number(b.kick ? new Date(b.kick).getTime() : 0) - Number(a.kick ? new Date(a.kick).getTime() : 0) || Number(b.week) - Number(a.week))[0] || null;
 }
 function rememberPotd(league, bet) {
-  if (!bet || !bet.g) return;
-  const week = league === "nfl" ? currentNflWeekNumber() : currentCfbWeekNumber();
+  if (!bet || !bet.g || !bet.window) return;
+  const key = potdWindowKey(bet.window, bet);
+  if (!key) return;
   const bag = potdStore();
-  if ((bag[league] || []).some((r) => Number(r.week) === Number(week))) return;
-  bag[league].push({
-    week: week, league: league, id: String(bet.g.id), game: bet.g.short_name,
+  const kick = new Date(bet.g.date).getTime();
+  const freeze = Number.isFinite(kick) && Date.now() >= kick - 90 * 60 * 1000;
+  let row = (bag[league] || []).find((r) => r && r.key === key);
+  if (row && (row.locked || row.result)) return;
+  const next = {
+    key: key, week: league === "nfl" ? currentNflWeekNumber() : currentCfbWeekNumber(),
+    day: potdDayKey(bet.g.date), league: league, id: String(bet.g.id), game: bet.g.short_name,
     kind: bet.kind, line: bet.line, hitPct: Math.round(Number(bet.hit) * 100),
-    why: bet.why, result: null, final: null, resultWhy: ""
-  });
+    why: bet.why, label: bet.label || "", result: null, final: null, resultWhy: "",
+    locked: freeze, kick: bet.g.date, big: !!bet.window.big, savedAt: Date.now()
+  };
+  if (row) Object.assign(row, next);
+  else bag[league].push(next);
   try { localStorage.setItem("gg-potd-log", JSON.stringify(bag)); } catch (e) {}
 }
 function gradeSavedPotd(league) {
   const bag = potdStore();
   (bag[league] || []).forEach((row) => {
     if (!row || row.result || !row.line) return;
+    const kick = new Date(row.kick || 0).getTime();
+    if (!row.locked && Number.isFinite(kick) && Date.now() >= kick - 90 * 60 * 1000) row.locked = true;
+    if (!row.locked) return;
     const g = (DATA.games || []).find((x) => String(x.id) === String(row.id));
     if (!g || !g.completed || !g.home || !g.away) return;
     const hs = Number(g.home.score);
     const as = Number(g.away.score);
     if (!Number.isFinite(hs) || !Number.isFinite(as)) return;
-    const graded = gradeHistoryRow({
-      pick: row.line.split(/\s+/)[0],
-      pick_line: row.kind === "Spread" || !/OVER|UNDER|ML/i.test(row.line) ? row.line : null,
-      total_pick: /OVER|UNDER/i.test(row.line) ? row.line : null
-    }, { hs: hs, as: as, homeAbbr: g.home.abbr, awayAbbr: g.away.abbr });
     row.final = g.away.abbr + " " + as + " – " + g.home.abbr + " " + hs;
-    row.result = graded.ats || graded.ou || null;
+    if (/ ML /i.test(row.line)) {
+      const abbr = String(row.line).split(/\s+/)[0].toUpperCase();
+      const side = abbr === String(g.home.abbr).toUpperCase() ? hs : as;
+      const opp = abbr === String(g.home.abbr).toUpperCase() ? as : hs;
+      row.result = side === opp ? "PUSH" : side > opp ? "HIT" : "MISS";
+    } else {
+      const graded = gradeHistoryRow({
+        pick: row.line.split(/\s+/)[0],
+        pick_line: /OVER|UNDER/i.test(row.line) ? null : row.line,
+        total_pick: /OVER|UNDER/i.test(row.line) ? row.line : null
+      }, { hs: hs, as: as, homeAbbr: g.home.abbr, awayAbbr: g.away.abbr });
+      row.result = graded.ats || graded.ou || null;
+    }
     if (!row.result) return;
-    const covered = row.result === "HIT";
-    row.resultWhy = covered
-      ? "It hit. " + row.line + " covered. Final was " + row.final + "."
-      : (row.result === "PUSH" ? "It pushed. Final was " + row.final + "." : "It missed. " + row.line + " did not cover. Final was " + row.final + ".");
+    row.resultWhy = row.result === "HIT"
+      ? "It hit. " + row.line + " cashed. Final was " + row.final + "."
+      : (row.result === "PUSH" ? "It pushed. Final was " + row.final + "." : "It missed. " + row.line + " did not cash. Final was " + row.final + ".");
   });
+  try { localStorage.setItem("gg-potd-log", JSON.stringify(bag)); } catch (e) {}
 }
 function potdCard(bet, title) {
   const g = bet.g;
   const pct = Math.round(bet.hit * 100);
   const p = g.proj || {};
+  const label = bet.label || "Next game";
   return `<article class="prop-card" data-id="${g.id}">
     <div class="who">
       <div>
         <h4>${escHtml(title)} · ${escHtml(g.away.abbr)} @ ${escHtml(g.home.abbr)}</h4>
-        <div class="prop-meta">${fmt.when(g.date)} · ${escHtml(g.venue || "")} · this week's play</div>
+        <div class="prop-meta">${escHtml(label)} · ${fmt.when(g.date)} · ${escHtml(g.venue || "")}${bet.locked ? " · locked" : ""}</div>
       </div>
       <div class="pick-score">${pct}%</div>
     </div>
@@ -9650,22 +9708,27 @@ function potdCard(bet, title) {
     </div>
   </article>`;
 }
-function potdResultCard(row) {
-  if (!row) return "";
-  const cls = String(row.result || "").toLowerCase();
+function potdRecordCard(league) {
+  const rows = (potdStore()[league] || []).filter((r) => r && r.result);
+  const hit = rows.filter((r) => r.result === "HIT").length;
+  const miss = rows.filter((r) => r.result === "MISS").length;
+  const push = rows.filter((r) => r.result === "PUSH").length;
+  const decided = hit + miss;
+  const pct = decided ? Math.round((100 * hit) / decided) : null;
+  const last = lastPotd(league);
+  const name = league === "nfl" ? "NFL" : "College";
   return `<article class="prop-card">
     <div class="who">
       <div>
-        <h4>Last week · ${escHtml(row.game || "")}</h4>
-        <div class="prop-meta">Week ${escHtml(String(row.week))} · the play we locked</div>
+        <h4>${name} POTD record</h4>
+        <div class="prop-meta">One play per game. A slate of 4 or more is one best play. It locks 90 minutes before kickoff, then the record learns from the result.</div>
       </div>
-      <div class="pick-score result-${cls}">${escHtml(row.result || "—")}</div>
+      <div class="pick-score">${hit}-${miss}${push ? "-" + push : ""}</div>
     </div>
     <div class="prop-stats">
-      <div><span class="lbl">${escHtml(row.kind || "Play")}</span><b>${escHtml(row.line || "")}</b></div>
-      <div><span class="lbl">Final</span><b>${escHtml(row.final || "—")}</b></div>
-      <div><span class="lbl">Why we picked it</span><b>${escHtml(row.why || "")}</b></div>
-      <div><span class="lbl">Why it ${escHtml(String(row.result || "").toLowerCase() || "finished")}</span><b>${escHtml(row.resultWhy || "")}</b></div>
+      <div><span class="lbl">Hit rate</span><b>${pct == null ? "No finished plays yet" : pct + "%"}</b></div>
+      <div><span class="lbl">Last play</span><b>${last ? escHtml(last.line + " · " + last.result) : "The next lock starts the record"}</b></div>
+      <div><span class="lbl">Why the last one finished that way</span><b>${last ? escHtml(last.resultWhy || last.why || "") : "—"}</b></div>
     </div>
   </article>`;
 }
@@ -9675,9 +9738,8 @@ function renderNflPotd() {
   gradeSavedPotd("nfl");
   const bet = nflPotd();
   rememberPotd("nfl", bet);
-  const last = lastPotd("nfl");
-  const current = bet ? potdCard(bet, "NFL POTD") : `<div class="empty">No NFL play is far enough off DraftKings yet.</div>`;
-  board.innerHTML = potdResultCard(last) + current;
+  const current = bet ? potdCard(bet, "NFL POTD") : `<div class="empty">No NFL game is next.</div>`;
+  board.innerHTML = potdRecordCard("nfl") + current;
   board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 function renderPotd() {
@@ -9686,12 +9748,10 @@ function renderPotd() {
   gradeSavedPotd("cfb");
   const bet = cfbPotd();
   rememberPotd("cfb", bet);
-  const last = lastPotd("cfb");
-  const current = bet ? potdCard(bet, "POTD") : `<div class="empty">No college play is far enough off the market yet.</div>`;
-  board.innerHTML = potdResultCard(last) + current;
+  const current = bet ? potdCard(bet, "POTD") : `<div class="empty">No college game is next.</div>`;
+  board.innerHTML = potdRecordCard("cfb") + current;
   board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
-
 
 const NFL_DIV = {
   BUF:"AFC East", MIA:"AFC East", NE:"AFC East", NYJ:"AFC East",
@@ -12826,6 +12886,8 @@ async function loadDeskData() {
     window.WEEK_RESULTS = results || [];
     window.PAST_CARDS = { nfl: (past && past.nfl) || {}, cfb: (past && past.cfb) || {} };
     window.POTD_LOG = (past && past.potd) || { nfl: [], cfb: [] };
+    if (typeof mergePotdLog === "function") mergePotdLog();
+    try { if (view === "potd" && typeof renderPotd === "function") renderPotd(); if (view === "nflpotd" && typeof renderNflPotd === "function") renderNflPotd(); } catch (e) {}
     if (polls) window.CFB_POLLS = polls;
     try { if (typeof applySplitDesk === "function") applySplitDesk(); } catch (e) {}
     try { if (typeof pullCfbCloseLines === "function") pullCfbCloseLines(); } catch (e) {}
