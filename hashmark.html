@@ -3204,17 +3204,19 @@ function applySituationalToGame(g) {
       book: "DraftKings"
     });
   }
-  if (hs != null) {
-    p.market_margin = +(-Number(hs)).toFixed(2);
-    p.edge_spread = +(p.blended_margin - p.market_margin).toFixed(2);
-    const n = Number(hs);
+  if (hs != null) p.market_margin = +(-Number(hs)).toFixed(2);
+  const boardSp = g._dkSpread != null ? Number(g._dkSpread) : (g.odds && g.odds.home_spread != null ? Number(g.odds.home_spread) : hs);
+  const boardTot = g._dkTotal != null ? Number(g._dkTotal) : (g.odds && g.odds.total != null ? Number(g.odds.total) : lockedTotal);
+  if (boardSp != null && p.blended_margin != null) {
+    p.edge_spread = +(Number(p.blended_margin) - (-Number(boardSp))).toFixed(2);
+    const n = Number(boardSp);
     if (Math.abs(p.edge_spread) < 1.8) { p.pick = "NO PLAY"; p.pick_line = null; }
-    else if (p.edge_spread > 0) { p.pick = g.home.abbr; p.pick_line = g.home.abbr + " " + (n > 0 ? "+" : "") + n.toFixed(1); }
-    else { const a = -n; p.pick = g.away.abbr; p.pick_line = g.away.abbr + " " + (a > 0 ? "+" : "") + a.toFixed(1); }
+    else if (p.edge_spread > 0) { p.pick = g.home.abbr; p.pick_line = g.home.abbr + " " + (n >= 0 ? "+" : "") + n.toFixed(1); }
+    else { const a = -n; p.pick = g.away.abbr; p.pick_line = g.away.abbr + " " + (a >= 0 ? "+" : "") + a.toFixed(1); }
   }
-  if (lockedTotal != null) {
-    p.edge_total = +(p.hashmark_total - Number(lockedTotal)).toFixed(2);
-    p.total_pick = Math.abs(p.edge_total) < 1.6 ? "NO PLAY" : (p.edge_total > 0 ? "OVER " + lockedTotal : "UNDER " + lockedTotal);
+  if (boardTot != null && p.hashmark_total != null) {
+    p.edge_total = +(Number(p.hashmark_total) - Number(boardTot)).toFixed(2);
+    p.total_pick = Math.abs(p.edge_total) < 1.6 ? "NO PLAY" : (p.edge_total > 0 ? "OVER " + boardTot : "UNDER " + boardTot);
   }
   if (typeof normCdf === "function") {
     const sigma = LIVE.NFL_SIGMA;
@@ -7174,6 +7176,7 @@ function applySavedNflDay(pack) {
     }
   }
   if (!pick || !(pick.rows || []).length) return pack;
+  if ((pick.rows || []).length < 20 && (pack.nfl || []).length > (pick.rows || []).length) return pack;
   pack.nfl = pick.rows.map((r) => Object.assign({ league: "nfl" }, r));
   pack.nflLive = "11am";
   pack.nflReport = pick.label || "";
@@ -7441,12 +7444,15 @@ function attachInjuriesToGames(){
 }
 function seedInjuriesFromSnap(){
   const pack = ensureInjPack();
-  if ((pack.nfl || []).length && (pack.cfb || []).length) return pack;
+  if ((pack.nfl || []).length >= 20 && (pack.cfb || []).length) return pack;
   const snap = window.INJURY_SNAP;
   if (!snap) return pack;
   try {
-    if (!(pack.nfl || []).length) pack.nfl = parseInjuryFeed(snap.nfl, "nfl");
-    if (!(pack.cfb || []).length) pack.cfb = parseInjuryFeed(snap.cfb, "cfb");
+    const nflRows = snap.nfl ? parseInjuryFeed(snap.nfl, "nfl") : [];
+    if (nflRows.length > (pack.nfl || []).length) {
+      pack.nfl = nflRows.map((r) => { r.league = "nfl"; r.playPct = typeof cfbPlayPct === "function" ? cfbPlayPct(r.tag) : r.playPct; return r; });
+    }
+    if (!(pack.cfb || []).length && snap.cfb) pack.cfb = parseInjuryFeed(snap.cfb, "cfb");
     if (window.CFB_DESK && (window.CFB_DESK.rows || []).length && (!(pack.cfb || []).length || pack.cfbLive !== "covers")) {
       pack.cfb = (window.CFB_DESK.rows || []).map((r) => {
         const game = matchInjuryGame(r.team, "cfb");
@@ -12133,7 +12139,7 @@ function tagFromRapoport(text) {
 }
 
 function applyRapoportX(rows) {
-  const posts = rapoportXPosts();
+  const posts = rapoportXPosts().filter((p) => !p.when || Date.parse(p.when) > Date.now() - 12 * 86400000);
   (rows || []).forEach((r) => {
     if (!r || !r.name || r.name.length < 5 || r.pos === "NEWS") return;
     posts.forEach((post) => {
@@ -12198,7 +12204,7 @@ function nameInReport(name, text) {
 }
 
 function applySchefterX(rows) {
-  const posts = schefterXPosts();
+  const posts = schefterXPosts().filter((p) => !p.when || Date.parse(p.when) > Date.now() - 12 * 86400000);
   (rows || []).forEach((r) => {
     if (!r || !r.name || r.name.length < 5 || r.pos === "NEWS") return;
     posts.forEach((post) => {
@@ -12930,7 +12936,7 @@ async function loadDeskData() {
     if (!res.ok) throw new Error(url + " " + res.status);
     return res.json();
   };
-  const snap = await get("/data/snapshot.json?v=102");
+  const snap = await get("/data/snapshot.json?v=103");
   window.HASHMARK = snap;
   window.NFL_CARD = ((snap && snap.games) || []).filter((g) => g && g.league === "nfl").map((g) => ({
     id: String(g.id),
@@ -12974,7 +12980,7 @@ async function loadDeskData() {
     } catch (e) {}
   }).catch(() => {});
   const loadHeavy = () => {
-    get("/data/injuries.json").then((inj) => {
+    get("/data/injuries.json?v=103").then((inj) => {
       if (!inj) return;
       window.INJURY_SNAP = inj;
       try { if (typeof seedInjuriesFromSnap === "function") seedInjuriesFromSnap(); } catch (e) {}
