@@ -4539,6 +4539,58 @@ function frozenCfbLock(g) {
   if (!row || row.spread == null) return null;
   return { spread: Number(row.spread), total: row.total != null ? Number(row.total) : null };
 }
+function syncCfbListedLine(g) {
+  if (!g || g.league !== "cfb" || !g.proj || g.completed) return g;
+  const p = g.proj;
+  const o = g.odds || {};
+  if (p._preWeatherTotal == null && p.hashmark_total != null) {
+    p._preWeatherTotal = +(Number(p.hashmark_total) - (Number(p.weather_adj_total) || 0)).toFixed(1);
+  }
+  if (!g.indoor && g.weather && p._preWeatherTotal != null && typeof cfbWeatherNudge === "function") {
+    const wx = cfbWeatherNudge(g);
+    const adj = Number(wx.total) || 0;
+    p.weather_adj_total = adj;
+    p.hashmark_total = +Math.max(20, Number(p._preWeatherTotal) + adj).toFixed(1);
+    const margin = Number(p.blended_margin);
+    if (Number.isFinite(margin)) {
+      p.home_points = +Math.max(0, (Number(p.hashmark_total) + margin) / 2).toFixed(1);
+      p.away_points = +Math.max(0, (Number(p.hashmark_total) - margin) / 2).toFixed(1);
+    }
+    if (adj) g.situational = { margin_adj: 0, total_adj: adj, notes: wx.notes || [] };
+  }
+  const spread = g._dkSpread != null ? Number(g._dkSpread) : (o.home_spread != null ? Number(o.home_spread) : null);
+  const total = g._dkTotal != null ? Number(g._dkTotal) : (o.total != null ? Number(o.total) : null);
+  const names = [(g.away && g.away.name) || "", (g.home && g.home.name) || ""].join(" ");
+  const fcs = /Sacramento State|Citadel|Charleston Southern|Elon|Tarleton|Abilene|Incarnate|Stephen F|North Dakota|Montana|Weber|UC Davis|Northern Arizona|Eastern Washington|Portland State/.test(names);
+  if (spread != null && p.blended_margin != null) {
+    g.odds = Object.assign({}, g.odds || {}, {
+      home_spread: spread,
+      details: typeof cfbSideLabel === "function" ? cfbSideLabel(g, spread) : (o.details || ""),
+      home_favorite: spread < 0,
+      away_favorite: spread > 0,
+      book: "DraftKings"
+    });
+    if (total != null) g.odds.total = total;
+    p.market_margin = +(-spread).toFixed(2);
+    p.edge_spread = +(Number(p.blended_margin) - (-spread)).toFixed(2);
+    if (fcs || Math.abs(p.edge_spread) > 7.5 || Math.abs(p.edge_spread) < 1.6) {
+      p.pick = "NO PLAY";
+      p.pick_line = null;
+    } else if (p.edge_spread > 0) {
+      p.pick = g.home.abbr;
+      p.pick_line = g.home.abbr + " " + (spread >= 0 ? "+" : "") + spread.toFixed(1);
+    } else {
+      const a = -spread;
+      p.pick = g.away.abbr;
+      p.pick_line = g.away.abbr + " " + (a >= 0 ? "+" : "") + a.toFixed(1);
+    }
+  }
+  if (total != null && p.hashmark_total != null) {
+    p.edge_total = +(Number(p.hashmark_total) - Number(total)).toFixed(2);
+    p.total_pick = (fcs || Math.abs(p.edge_total) > 8 || Math.abs(p.edge_total) < 1.5) ? "NO PLAY" : (p.edge_total > 0 ? "OVER " + total : "UNDER " + total);
+  }
+  return g;
+}
 async function pullCfbCloseLines() {
   if (window.__cfbClosePull) return window.__cfbClosePull;
   window.__cfbClosePull = (async () => {
@@ -4555,6 +4607,17 @@ async function pullCfbCloseLines() {
       const live = byId[String(g.id)];
       if (!live || !live.odds || live.odds.home_spread == null) return;
       saveCfbClose(g, live.odds);
+      if (live.date) g.date = live.date;
+      if (live.indoor != null) g.indoor = !!live.indoor;
+      if (live.odds && (live.odds.home_ml || live.odds.away_ml)) {
+        g.odds = Object.assign({}, g.odds || {}, {
+          home_ml: live.odds.home_ml || (g.odds && g.odds.home_ml),
+          away_ml: live.odds.away_ml || (g.odds && g.odds.away_ml),
+          home_ml_prob: live.odds.home_ml_prob,
+          away_ml_prob: live.odds.away_ml_prob
+        });
+      }
+      if (typeof syncCfbListedLine === "function") syncCfbListedLine(g);
       n++;
     });
     if (n && typeof applySplitDesk === "function") applySplitDesk();
@@ -11614,11 +11677,22 @@ function reapplyDeskLine() {
 function dropBrokenCfbPlays() {
   (DATA.games || []).forEach((g) => {
     if (!g || g.league !== "cfb" || !g.proj || g.completed) return;
-    if (typeof cfbPotdGameOk === "function" && !cfbPotdGameOk(g)) {
-      g.proj.pick = "NO PLAY";
-      g.proj.pick_line = null;
-      g.proj.total_pick = "NO PLAY";
+    const p = g.proj;
+    const names = [(g.away && g.away.name) || "", (g.home && g.home.name) || ""].join(" ");
+    const fcs = /Sacramento State|Citadel|Charleston Southern|Elon|Tarleton|Abilene|Incarnate|Stephen F|North Dakota|Montana|Weber|UC Davis|Northern Arizona|Eastern Washington|Portland State/.test(names);
+    const edge = Number(p.edge_spread);
+    const te = Number(p.edge_total);
+    if (fcs) {
+      p.pick = "NO PLAY";
+      p.pick_line = null;
+      p.total_pick = "NO PLAY";
+      return;
     }
+    if (Number.isFinite(edge) && Math.abs(edge) > 7.5) {
+      p.pick = "NO PLAY";
+      p.pick_line = null;
+    }
+    if (Number.isFinite(te) && Math.abs(te) > 8) p.total_pick = "NO PLAY";
   });
 }
 function fillNflYards() {
@@ -12856,7 +12930,7 @@ async function loadDeskData() {
     if (!res.ok) throw new Error(url + " " + res.status);
     return res.json();
   };
-  const snap = await get("/data/snapshot.json?v=96");
+  const snap = await get("/data/snapshot.json?v=102");
   window.HASHMARK = snap;
   window.NFL_CARD = ((snap && snap.games) || []).filter((g) => g && g.league === "nfl").map((g) => ({
     id: String(g.id),
