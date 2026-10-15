@@ -3,7 +3,21 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>The Split</title>
+<title>The Split — College Football Matchup Sheets | Double Gs</title>
+<meta name="description" content="The Split: side-by-side college football matchup sheets with the line, power ratings, offense and defense splits, coaches and ATS records for every game this week." />
+<link rel="canonical" href="https://peyton2407-maker.github.io/split/" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<meta name="theme-color" content="#12140f" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Double Gs" />
+<meta property="og:url" content="https://peyton2407-maker.github.io/split/" />
+<meta property="og:title" content="The Split · Double Gs" />
+<meta property="og:description" content="College football matchup sheets for every game this week." />
+<meta property="og:image" content="https://peyton2407-maker.github.io/og.jpg?v=3" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://peyton2407-maker.github.io/og.jpg?v=3" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
@@ -138,7 +152,7 @@ function esc(s) {
 function logo(team, big) {
   const cls = big ? "logo" : "";
   if (!team.logo) return `<span class="fallback ${cls}" style="background:#${team.color || "343c2e"}">${esc(team.abbrev.slice(0,3))}</span>`;
-  return `<img class="${cls}" src="${esc(team.logo)}" alt="" />`;
+  return `<img class="${cls}" src="${esc(team.logo)}" alt="" loading="lazy" decoding="async" />`;
 }
 function explain(id) {
   const e = GLOSSARY.get(id);
@@ -153,7 +167,7 @@ function mark() {
   return `<svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#12140f"/><rect x="6" y="22" width="20" height="2" rx="1" fill="#3dbe78"/><rect x="9" y="8" width="4" height="14" rx="1" fill="#e4ff4a"/><rect x="19" y="8" width="4" height="14" rx="1" fill="#e4ff4a"/></svg>`;
 }
 function header() {
-  return `<div class="row">${mark()}<span><span class="display h1" style="display:block;font-size:30px;line-height:1">THE SPLIT</span><span class="kicker">2026 college football</span></span></div>
+  return `<div class="row">${mark()}<div><h1 class="display h1" style="display:block;font-size:30px;line-height:1;margin:0">THE SPLIT</h1><span class="kicker">2026 college football</span></div></div>
   <p class="lede">Week ${esc(DATA.slate.week)} matchup sheets. The live numbers are this season. Every stat from the full sheet is explained in plain English, including the ones a public feed cannot fill in. College only — NFL stays on Double Gs.</p>
   <div class="toggle">
     <button type="button" data-mode="week" class="${mode==="week"?"on":"off"}">This week</button>
@@ -478,7 +492,7 @@ function sheetView() {
   if (desk) {
     const side = playable(desk.pick);
     const total = playable(desk.total);
-    const deskHref = location.hostname.endsWith("github.io") ? "/boom.html" : "/hashmark.html";
+    const deskHref = "/";
     deskHtml = `<section class="desk"><div class="tag">Double Gs · college pick</div><div class="display pts">${esc(desk.awayAbbr)} ${points(desk.awayPts)}<span style="color:var(--muted)"> – </span>${esc(desk.homeAbbr)} ${points(desk.homePts)}</div><p>${esc(side || "No side on this one.")}${total ? " · " + esc(total) : ""}${desk.conf ? " · " + esc(desk.conf) + " confidence" : ""}</p><a href="${deskHref}" data-desk="${esc(sheet.id)}">Open on Double Gs</a></section>`;
   }
   const lineHtml = `<section class="lineblock"><h2 class="display">The line</h2><p class="note">${esc(line.fpiNote || "")} The power score is that rating turned into points, with the home team getting its field. The betting line is the live DraftKings number, and the implied score is rebuilt from it.</p>${rows.map((r) => `<div><button type="button" class="statbtn" data-open="${r[0]}"><div class="lbl">${esc(r[1])}</div><div class="display val">${esc(r[2])}</div></button>${open===r[0]?explain(r[0]):""}</div>`).join("")}</section>`;

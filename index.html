@@ -1,17 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="desk-version" content="95" />
+  <meta name="desk-version" content="96" />
+  <title>Double Gs — NFL &amp; College Football Projections, Picks and Props</title>
+  <meta name="description" content="NFL and college football projections: predicted scores, spreads, totals, player props, anytime TD odds, weather and injuries. Every locked pick is graded on a public scorecard." />
+  <link rel="canonical" href="https://peyton2407-maker.github.io/" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta name="theme-color" content="#07110e" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Double Gs" />
+  <meta property="og:url" content="https://peyton2407-maker.github.io/" />
   <meta property="og:title" content="Double Gs · The Split" />
-  <meta property="og:description" content="Double Gs picks desk and The Split college matchup sheets." />
-  <meta property="og:image" content="/og.jpg?v=3" />
+  <meta property="og:description" content="NFL and college football projections, picks, player props and a public scorecard." />
+  <meta property="og:image" content="https://peyton2407-maker.github.io/og.jpg?v=3" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Double G's and The Split logos" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="/og.jpg?v=3" />
-  <title>Double Gs — night kickoff desk</title>
+  <meta name="twitter:title" content="Double Gs · The Split" />
+  <meta name="twitter:description" content="NFL and college football projections, picks, player props and a public scorecard." />
+  <meta name="twitter:image" content="https://peyton2407-maker.github.io/og.jpg?v=3" />
   <style>
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap");
 
@@ -1115,6 +1126,16 @@ a[data-view="heisman"], a[href="#heisman"], a[data-view="recruit"], a[href="#rec
   outline-offset:2px;
 }
 #scoreWeek.league-tabs{grid-template-columns:repeat(auto-fit,minmax(148px,1fr))}
+/* Layout fixes: no sideways page scroll on desktop or phone. */
+.prop-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.prop-stats > div { min-width: 0; overflow-wrap: anywhere; }
+#ratingsWrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+#ratingsWrap table.ratings td:last-child { min-width: 190px; }
+/* Highlighted tabs: label on one line, the "tap" hint on its own line under it. */
+#tabBar a.tab.star { flex-wrap: wrap; align-content: center; }
+#tabBar a.tab.star::after { content: "tap"; flex-basis: 100%; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; margin-top: 2px; }
+.site-foot { max-width: 1240px; margin: 28px auto 36px; padding: 0 16px; color: var(--muted); font-size: 12.5px; line-height: 1.55; text-align: center; }
+.site-foot a { color: var(--ink-soft); }
 </style>
 </head>
 <body>
@@ -1122,7 +1143,7 @@ a[data-view="heisman"], a[href="#heisman"], a[data-view="recruit"], a[href="#rec
   <div class="app">
 
     <nav class="gg-apps" aria-label="Apps">
-      <a class="on" href="/hashmark.html">Double Gs</a>
+      <a class="on" href="/">Double Gs</a>
       <a class="star" href="/split">The Split</a>
     </nav>
     <img class="share-card" src="/og.jpg?v=3" alt="Double G's The Split" />
@@ -1696,6 +1717,12 @@ a[data-view="heisman"], a[href="#heisman"], a[data-view="recruit"], a[href="#rec
       <div class="news" id="newsWrap" style="margin-top:14px"></div>
     </section>
   </div>
+
+  <footer class="site-foot">
+    Double Gs projections are for information and entertainment. They are not betting advice and no pick is a sure thing.
+    21+ where sports betting is legal. If gambling stops being fun, call or text <a href="tel:18004262537">1-800-GAMBLER</a>.
+    Scores, lines and injury data come from ESPN and DraftKings; weather from Open-Meteo.
+  </footer>
 
   <div class="overlay" id="overlay">
     <div class="modal" id="modal"></div>
@@ -3506,6 +3533,13 @@ function remainingSeconds(g) {
   const played = Math.max(0, (period - 1) * qlen + (qlen - clock));
   return Math.max(0, qmax * qlen - played);
 }
+// A game that kicked off hours ago but has no final yet is over, just not graded.
+// Keep it off "Up next" lists so the home page never leads with old games.
+function isPastKickoff(g, hours) {
+  if (!g || g.completed || isLiveGame(g)) return false;
+  const t = Date.parse(g.date);
+  return Number.isFinite(t) && t + (hours || 4.5) * 3600 * 1000 < Date.now();
+}
 function isLiveGame(g) {
   if (!g || g.completed) return false;
   return /IN_PROGRESS|HALFTIME|END_PERIOD|END_QUARTER/i.test(g.status || "") || (Number(g.period) > 0 && !/SCHEDULED/i.test(g.status || ""));
@@ -4004,7 +4038,7 @@ function nflNameKey(name) {
 }
 function rememberNflDepth(teamId, chart) {
   const slots = {};
-  const rankSpot = { lt: 1, rt: 1, rb: 2, wr1: 3, te: 4, wr2: 5, wr3: 6 };
+  const rankSpot = { qb: 0.5, lt: 1, rt: 1, rb: 2, wr1: 3, te: 4, wr2: 5, wr3: 6 };
   ((chart && chart.depthchart) || []).forEach((form) => {
     const positions = form.positions || {};
     Object.keys(positions).forEach((spot) => {
@@ -4020,7 +4054,7 @@ function rememberNflDepth(teamId, chart) {
     });
   });
   const book = nflDepthBook();
-  book[String(teamId)] = { at: Date.now(), slots: slots };
+  book[String(teamId)] = { at: Date.now(), v: 2, slots: slots };
   try { localStorage.setItem("gg-nfl-depth-v1", JSON.stringify(book)); } catch (e) {}
 }
 function nflDepthOf(g, r) {
@@ -4054,6 +4088,40 @@ function nflUsageShare(g, r) {
   if (peers.some((p) => stat(p) > mineStat + 8)) return 0;
   return pos === "RB" ? 0.65 : 0.55;
 }
+// Only the starting quarterback moves the line. "Starter" means the No. 1 on ESPN's depth
+// chart, or the most-rostered fantasy QB on the team: an injured starter the chart has moved
+// down still counts, a backup on the injury report (e.g. the fill-in after the starter
+// returns) does not. Quarterbacks on the season-out list always count. No data: unchanged.
+function nflQbOwnership() {
+  if (window.__qbOwn && window.__qbOwnN === (DATA.games || []).length) return window.__qbOwn;
+  const own = {};
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.league !== "nfl") return;
+    (g.props || []).forEach((p) => {
+      if (!p || String(p.pos || "").toUpperCase() !== "QB" || p.owned == null || !p.team) return;
+      const team = String(p.team), key = nflNameKey(p.name), pct = Number(p.owned);
+      if (!key || !Number.isFinite(pct)) return;
+      own[team] = own[team] || {};
+      own[team][key] = Math.max(own[team][key] || 0, pct);
+    });
+  });
+  window.__qbOwn = own;
+  window.__qbOwnN = (DATA.games || []).length;
+  return own;
+}
+function nflQbIsStarter(g, r, side) {
+  if (typeof seasonQbName === "function" && seasonQbName(r && r.name)) return true;
+  const depth = nflDepthOf(g, r);
+  if (depth && depth.spot === "qb" && depth.rank === 1) return true;
+  const team = g && g[side] && g[side].abbr;
+  const mine = nflNameKey(r && r.name);
+  const room = (team && nflQbOwnership()[team]) || {};
+  if (room[mine] != null) {
+    const others = Object.keys(room).filter((k) => k !== mine).map((k) => room[k]);
+    if (others.length) return room[mine] >= Math.max.apply(null, others);
+  }
+  return !(depth && depth.spot === "qb" && depth.rank > 1);
+}
 function nflSnapShare(g, r) {
   const blob = String(((r && r.short) || "") + " " + ((r && r.name) || "")).toLowerCase();
   const hit = blob.match(/(\d{2,3})\s*%\s*(?:of\s*)?(?:the\s*)?(?:team\s*)?(?:snaps|snap|plays|carries)/);
@@ -4085,7 +4153,7 @@ async function pullNflDepth() {
     });
     const book = nflDepthBook();
     const fresh = Date.now() - 18 * 60 * 60 * 1000;
-    const need = ids.filter((id) => !book[id] || !book[id].at || book[id].at < fresh);
+    const need = ids.filter((id) => !book[id] || !book[id].at || book[id].v !== 2 || book[id].at < fresh);
     let cursor = 0;
     async function next() {
       const id = need[cursor++];
@@ -4127,6 +4195,7 @@ function cfbStarterNudge(g, scale) {
     const blob = String((r.short || "") + " " + (r.name || "")).toLowerCase();
     const side = r.side === "home" || r.side === "away" ? r.side : "";
     if (!side) return;
+    if (pos === "QB" && scale && scale.nfl && !nflQbIsStarter(g, r, side)) return;
     if (pos === "QB" && !(/\b(backup|third string|qb2|qb3|emergency)\b/.test(blob) && !/starter|starting|ruled out|will not play/.test(blob))) {
       let pts = /season|indefinitely|torn|surgery/.test(blob) ? qbSeason : qbBase;
       const backupCut = scale && scale.backup != null ? scale.backup : 0.55;
@@ -10613,7 +10682,7 @@ function todayGames() {
   const ids = new Set(today.map((g) => g.id));
   live.forEach((g) => { if (!ids.has(g.id)) today.unshift(g); });
   if (today.length) return today.sort((a, b) => String(a.date).localeCompare(String(b.date)));
-  const soon = (DATA.games || []).filter((g) => !g.completed).sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  const soon = (DATA.games || []).filter((g) => !g.completed && !isPastKickoff(g)).sort((a, b) => String(a.date).localeCompare(String(b.date)));
   return soon.slice(0, 8);
 }
 function activeLeague(id, fallback) {
@@ -10828,9 +10897,31 @@ function scoreTally(league, kind, week) {
   const clvAvg = clv.length ? clv.reduce((s, r) => s + Number(r.clv), 0) / clv.length : 0;
   return { w, l, psh, pending: pending.length, clvAvg, n: w + l, rows, items };
 }
+// One season record for everyone: the published past scorecards plus this week's
+// graded plays. Same numbers as Scorecard + Past weeks, never rebuilt per visitor.
+function seasonRecord() {
+  let w = 0, l = 0, psh = 0;
+  const seen = new Set();
+  const add = (lg, r) => {
+    if (!r || r.id == null) return;
+    const key = lg + ":" + r.id;
+    if (seen.has(key)) return;
+    seen.add(key);
+    ["ats", "ou"].forEach((k) => {
+      if (r[k] === "HIT") w++;
+      else if (r[k] === "MISS") l++;
+      else if (r[k] === "PUSH") psh++;
+    });
+  };
+  ["nfl", "cfb"].forEach((lg) => {
+    try { (historyPlays(lg) || []).forEach((r) => add(lg, r)); } catch (e) {}
+    try { (scoreTally(lg, "all").rows || []).forEach((r) => add(lg, r)); } catch (e) {}
+  });
+  return { w, l, psh, n: w + l };
+}
 function renderHome() {
   syncDesk();
-  const tally = scoreTally("all", "all");
+  const tally = seasonRecord();
   const card = ensureWeeklyCard(false);
   const jumps = document.getElementById("homeJumps");
   if (jumps) {
@@ -10839,13 +10930,13 @@ function renderHome() {
       <a class="home-jump hot" href="#props" data-jump="props"><b>Player props</b><span>Yard lines, hit rates, and the pick</span></a>
       <a class="home-jump hot" href="#card" data-jump="card"><b>This week's card</b><span>${card.frozen ? "Locked. These plays will not move." : (card.legs || []).length + " plays ready to lock"}</span></a>
       <a class="home-jump hot" href="#nfl" data-jump="nfl"><b>NFL board</b><span>This week's sides, totals, weather</span></a>
-      <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l : "0-0"} locked this season</span></a>`;
+      <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l + (tally.psh ? "-" + tally.psh : "") + " this season · " + Math.round(100 * tally.w / tally.n) + "%" : "0-0"}</span></a>`;
     // clicks handled globally via href + hash
   }
   const feat = document.getElementById("homeFeature");
   const liveOrNext = (DATA.games || []).filter((g) => typeof isLiveGame === "function" && isLiveGame(g))[0]
     || todayGames()[0]
-    || (DATA.games || []).filter((g) => !g.completed).sort((a, b) => String(a.date).localeCompare(String(b.date)))[0];
+    || (DATA.games || []).filter((g) => !g.completed && !isPastKickoff(g)).sort((a, b) => String(a.date).localeCompare(String(b.date)))[0];
   if (feat && liveOrNext) {
     const g = liveOrNext;
     const p = g.proj || {};
@@ -10880,7 +10971,7 @@ function renderHome() {
   const games = todayGames();
   const board = document.getElementById("homeBoard");
   if (!board) return;
-  const upcoming = (DATA.games || []).filter((g) => !g.completed && !games.some((x) => x.id === g.id))
+  const upcoming = (DATA.games || []).filter((g) => !g.completed && !isPastKickoff(g) && !games.some((x) => x.id === g.id))
     .sort((a, b) => String(a.date).localeCompare(String(b.date))).slice(0, 6);
   const block = (list, title) => {
     if (!list.length) return "";
@@ -11052,14 +11143,30 @@ function collegeWeekOf(iso) {
   return weekFromTuesday(d, "2026-09-01");
 }
 function currentNflWeekNumber() {
-  return Math.max(1, Math.min(22, rollMonday(weekFromTuesday(etYmd(), "2026-09-08"))));
+  return Math.max(1, Math.min(22, rollMonday(weekFromTuesday(etYmd(), "2026-09-08"), "nfl")));
 }
-function rollMonday(week) {
+function rollMonday(week, league) {
   const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short", hour: "numeric", hourCycle: "h23" }).formatToParts(new Date());
   const bag = {};
   parts.forEach((p) => { bag[p.type] = p.value; });
-  if (bag.weekday === "Mon" && Number(bag.hour) >= 6) return Number(week) + 1;
+  if (bag.weekday === "Mon" && Number(bag.hour) >= 6 && !(league === "nfl" && nflWeekStillPlaying(Number(week)))) return Number(week) + 1;
   return Number(week);
+}
+// Monday night belongs to the week it was scheduled in. Hold the roll until every
+// game of that week is final (or at least 4.5 hours past kickoff).
+function nflWeekStillPlaying(week) {
+  try {
+    if (typeof DATA === "undefined" || !DATA || !DATA.games) return false;
+    const now = Date.now();
+    // Only games kicking off within the next day count (the Monday night game itself).
+    return DATA.games.some((g) => {
+      if (!g || g.league !== "nfl" || Number(g.week) !== week || g.completed) return false;
+      const kick = Date.parse(g.date);
+      return Number.isFinite(kick) && kick < now + 24 * 3600 * 1000 && kick + 4.5 * 3600 * 1000 > now;
+    });
+  } catch (e) {
+    return false;
+  }
 }
 function isThisNflWeek(g) {
   if (!g || g.league !== "nfl") return true;
@@ -11781,20 +11888,34 @@ function finishProjections() {
   reapplyDeskLine();
 }
 
+// Fetch with a hard time limit so a slow or dead source never stalls the board.
+async function fetchWithin(url, ms, opts) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), ms);
+  try {
+    return await fetch(url, Object.assign({}, opts || {}, { signal: ctrl.signal }));
+  } finally {
+    clearTimeout(timer);
+  }
+}
 async function fetchText(url) {
   try {
-    const res = await fetch(url, { headers: { Accept: "text/html,application/json" } });
+    const res = await fetchWithin(url, 10000, { headers: { Accept: "text/html,application/json" } });
     if (res.ok) return res.text();
     throw new Error(res.status + " " + url);
   } catch (err) {
+    // Public CORS relays are a last resort only. They are free services that go down,
+    // so each one gets a short time limit and an empty or error page is not accepted.
     const proxies = [
       "https://corsproxy.io/?" + encodeURIComponent(url),
       "https://api.allorigins.win/raw?url=" + encodeURIComponent(url)
     ];
     for (const p of proxies) {
       try {
-        const res = await fetch(p);
-        if (res.ok) return res.text();
+        const res = await fetchWithin(p, 8000);
+        if (!res.ok) continue;
+        const text = await res.text();
+        if (text && text.length > 200) return text;
       } catch (e) {}
     }
     throw err;
@@ -12937,6 +13058,15 @@ async function loadDeskData() {
     return res.json();
   };
   const snap = await get("/data/snapshot.json?v=103");
+  // Guard: a game marked finished while ESPN still says "scheduled" at 0-0 is a bad
+  // pull, not a final. Treat it as unfinished so it never grades a pick or teaches the model.
+  ((snap && snap.games) || []).forEach((g) => {
+    if (g && g.completed && /SCHEDULED/i.test(g.status || "")
+      && Number(g.home && g.home.score) === 0 && Number(g.away && g.away.score) === 0) {
+      g.completed = false;
+      g._badFinal = true;
+    }
+  });
   window.HASHMARK = snap;
   window.NFL_CARD = ((snap && snap.games) || []).filter((g) => g && g.league === "nfl").map((g) => ({
     id: String(g.id),
@@ -12973,6 +13103,7 @@ async function loadDeskData() {
     try { if (typeof pullCfbCloseLines === "function") pullCfbCloseLines(); } catch (e) {}
     try { if (typeof pullNflCloseLines === "function") pullNflCloseLines(); } catch (e) {}
     try {
+      if (view === "home" && typeof renderHome === "function") renderHome();
       if (view === "score" && typeof renderScorecard === "function") renderScorecard();
       if (view === "history" && typeof renderHistory === "function") renderHistory();
       if (view === "cfbpicks" && typeof renderCfbPicks === "function") renderCfbPicks();

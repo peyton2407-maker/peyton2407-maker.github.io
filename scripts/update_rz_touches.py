@@ -16,7 +16,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "rz-touches.json"
-PAGES = [ROOT / "boom.html", ROOT / "index.html"]
+# Pages that may embed a copy of the counts. data/rz-touches.json is always written;
+# a page without the embedded block is skipped instead of failing the whole job.
+PAGES = [ROOT / "index.html"]
 
 SUFFIX = re.compile(r"\s+(Jr\.?|Sr\.?|II|III|IV|V)$", re.I)
 ELIG = re.compile(r"^(?:(?:[A-Z]\.[A-Za-z'\-]+(?:\s+and\s+[A-Z]\.[A-Za-z'\-]+)*)\s+reported in as eligible\.\s*)+")
@@ -189,7 +191,8 @@ def patch_pages(payload):
         start = text.find("window.RZ_TOUCHES = ")
         end = text.find(";\nfunction rzRow", start)
         if start < 0 or end < 0:
-            raise SystemExit(f"Could not find the touch block in {path.name}")
+            print(f"No embedded touch block in {path.name}; leaving it alone.")
+            continue
         path.write_text(text[:start] + "window.RZ_TOUCHES = " + payload + text[end:])
 
 

@@ -20,7 +20,7 @@ jobs:
         run: |
           git config user.name "peyton2407-maker"
           git config user.email "331867039+peyton2407-maker@users.noreply.github.com"
-          git add data/rz-touches.json boom.html index.html
+          git add data/rz-touches.json index.html
           if git diff --cached --quiet; then
             echo "No touch-count change"
             exit 0
