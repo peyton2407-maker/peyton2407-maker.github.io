@@ -1,9 +1,71 @@
 {
  "v": 1,
- "plays": {},
+ "plays": {
+  "401862800": {
+   "id": "401862800",
+   "league": "cfb",
+   "week": 7,
+   "short": "ECU @ UAB",
+   "home": "UAB",
+   "away": "ECU",
+   "date": "2026-10-15T23:30Z",
+   "pick": "ECU",
+   "pick_line": "ECU -4.5",
+   "total_pick": "UNDER 49.5",
+   "side_play": false,
+   "our_margin": -5.4,
+   "our_total": 46,
+   "confidence": 0,
+   "total_play": true,
+   "spread": 4.5,
+   "total": 49.5,
+   "lockedAt": "2026-10-15T22:20:57.467Z"
+  },
+  "401869950": {
+   "id": "401869950",
+   "league": "cfb",
+   "week": 7,
+   "short": "GASO @ ODU",
+   "home": "ODU",
+   "away": "GASO",
+   "date": "2026-10-15T23:30Z",
+   "pick": "GASO",
+   "pick_line": "GASO -3.0",
+   "total_pick": "UNDER 45.5",
+   "side_play": false,
+   "our_margin": -3.6,
+   "our_total": 38.6,
+   "confidence": 57,
+   "total_play": true,
+   "spread": 3,
+   "total": 45.5,
+   "lockedAt": "2026-10-15T22:20:57.467Z"
+  }
+ },
  "potd": {
   "nfl": [],
-  "cfb": []
+  "cfb": [
+   {
+    "key": "game:401862800",
+    "week": 7,
+    "day": "2026-10-15",
+    "league": "cfb",
+    "id": "401862800",
+    "game": "ECU @ UAB",
+    "kind": "Under",
+    "line": "UNDER 49.5",
+    "hitPct": 60,
+    "why": "Our total is 3.5 points under DraftKings 49.5.",
+    "label": "Thursday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "locked": true,
+    "kick": "2026-10-15T23:30Z",
+    "big": false,
+    "savedAt": 1792102857496
+   }
+  ]
  },
  "card": {
   "weekKey": "nfl-6|cfb-7",
@@ -143,5 +205,5 @@
    }
   ]
  },
- "updated": "2026-10-15T17:00:19.224Z"
+ "updated": "2026-10-15T22:20:57.467Z"
 }
