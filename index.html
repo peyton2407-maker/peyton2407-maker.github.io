@@ -2245,40 +2245,48 @@ window.settleBoard = settleBoard;
 async function fetchOpenMeteo(lat, lon, iso) {
   const kick = iso ? new Date(iso) : new Date();
   const day = kick.toISOString().slice(0, 10);
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,precipitation_probability,precipitation,weathercode,windspeed_10m,windgusts_10m,relativehumidity_2m&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,windspeed_10m_max,windgusts_10m_max&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=auto&start_date=${day}&end_date=${day}`;
+  // Kickoff is stored in UTC. A night game's UTC date is the next calendar day, so ask for
+  // the day before as well and line up hours using the venue's UTC offset from the reply.
+  const prev = new Date(kick.getTime() - 86400000).toISOString().slice(0, 10);
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,precipitation_probability,precipitation,weathercode,windspeed_10m,windgusts_10m,relativehumidity_2m&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,windspeed_10m_max,windgusts_10m_max&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=auto&start_date=${prev}&end_date=${day}`;
   const j = await getJSON(url);
   const hours = j.hourly || {};
   const times = hours.time || [];
+  const offsetMs = (Number(j.utc_offset_seconds) || 0) * 1000;
+  const instant = (t) => /[zZ]$|[+-]\d\d:?\d\d$/.test(String(t)) ? Date.parse(t) : Date.parse(String(t) + "Z") - offsetMs;
   let idx = 0;
   if (times.length) {
     const target = kick.getTime();
     let best = 0, bestD = Infinity;
     times.forEach((t, i) => {
-      const d = Math.abs(new Date(t).getTime() - target);
+      const d = Math.abs(instant(t) - target);
       if (d < bestD) { bestD = d; best = i; }
     });
     idx = best;
   }
   const daily = j.daily || {};
-  const temp = hours.temperature_2m?.[idx] ?? daily.temperature_2m_max?.[0];
-  const wind = hours.windspeed_10m?.[idx] ?? daily.windspeed_10m_max?.[0];
-  const gust = hours.windgusts_10m?.[idx] ?? daily.windgusts_10m_max?.[0];
-  const precipP = hours.precipitation_probability?.[idx] ?? daily.precipitation_probability_max?.[0] ?? 0;
+  const localDay = new Date(kick.getTime() + offsetMs).toISOString().slice(0, 10);
+  let di = (daily.time || []).indexOf(localDay);
+  if (di < 0) di = Math.max(0, (daily.time || []).length - 1);
+  const temp = hours.temperature_2m?.[idx] ?? daily.temperature_2m_max?.[di];
+  const wind = hours.windspeed_10m?.[idx] ?? daily.windspeed_10m_max?.[di];
+  const gust = hours.windgusts_10m?.[idx] ?? daily.windgusts_10m_max?.[di];
+  const precipP = hours.precipitation_probability?.[idx] ?? daily.precipitation_probability_max?.[di] ?? 0;
   const precipI = hours.precipitation?.[idx] ?? 0;
-  const code = hours.weathercode?.[idx] ?? daily.weathercode?.[0];
+  const code = hours.weathercode?.[idx] ?? daily.weathercode?.[di];
   const rh = hours.relativehumidity_2m?.[idx];
   return {
     source: "Open-Meteo",
     lat, lon,
     hour: times[idx] || day,
     temp_f: temp != null ? +Number(temp).toFixed(1) : null,
-    temp_max_f: daily.temperature_2m_max?.[0] ?? null,
-    temp_min_f: daily.temperature_2m_min?.[0] ?? null,
+    temp_max_f: daily.temperature_2m_max?.[di] ?? null,
+    temp_min_f: daily.temperature_2m_min?.[di] ?? null,
     wind_mph: wind != null ? +Number(wind).toFixed(1) : null,
     wind_gust_mph: gust != null ? +Number(gust).toFixed(1) : null,
     precip_prob: precipP != null ? Math.round(Number(precipP)) : null,
     precip_in: precipI != null ? +Number(precipI).toFixed(2) : 0,
-    precip_day_in: daily.precipitation_sum?.[0] ?? null,
+    precip_day_in: daily.precipitation_sum?.[di] ?? null,
     weather_code: code,
     condition: weatherCodeLabel(code),
     humidity: rh != null ? Math.round(Number(rh)) : null,
@@ -3840,10 +3848,18 @@ function cfbReadHtml(g, full) {
 // The college unit model's average distance from the market total across this week's
 // slate. The market total is unbiased over a season, so this average is the model's
 // scale error (its over lean), not information. Median, and 0 until 8 games have both.
+// Unit ratings are ESPN efficiencies on a 0-100 scale. Some teams arrive on a different
+// (EPA-style) scale: negative or tiny numbers that would turn into nonsense scores.
+function cfbUnitOk(o, d) {
+  if (o == null || d == null) return false;
+  const a = Number(o), b = Number(d);
+  return Number.isFinite(a) && Number.isFinite(b) && a >= 0 && b >= 0 && a <= 100 && b <= 100 && !(a < 15 && b < 15);
+}
 function cfbSlateLean() {
   const gaps = [];
   ((typeof DATA !== "undefined" && DATA && DATA.games) || []).forEach((g) => {
     if (!g || g.league !== "cfb" || g.completed || !g.proj || !g.odds) return;
+    if (!cfbUnitOk(g.proj.home_off, g.proj.home_def) || !cfbUnitOk(g.proj.away_off, g.proj.away_def)) return;
     const m = Number(g.proj.model_total), t = Number(g.odds.total);
     if (g.proj.model_total != null && g.odds.total != null && Number.isFinite(m) && Number.isFinite(t)) gaps.push(m - t);
   });
@@ -3893,13 +3909,11 @@ function projectGame(game, ratings) {
     modelTotal = homePts + awayPts;
   } else if (league === "cfb") {
     const offH = hr.off, offA = ar.off, defH = hr.def, defA = ar.def;
-    if (offH != null && offA != null && defH != null && defA != null) {
+    if (cfbUnitOk(offH, defH) && cfbUnitOk(offA, defA)) {
       const homePts = cfbSidePoints(offH, defA, hfa * 0.62);
       const awayPts = cfbSidePoints(offA, defH, -hfa * 0.38);
       modelTotal = homePts + awayPts;
       matchupMargin = homePts - awayPts;
-    } else if (modelMargin != null) {
-      modelTotal = LIVE.CFB_AVG_TOTAL;
     }
   } else if (modelMargin != null) {
     const gap = Math.abs((hr.fpi || 0) - (ar.fpi || 0));
