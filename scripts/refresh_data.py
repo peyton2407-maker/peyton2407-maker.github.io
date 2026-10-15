@@ -42,6 +42,22 @@ FPI = {
     "nfl": "https://site.web.api.espn.com/apis/fitt/v3/sports/football/nfl/powerindex?limit=50",
     "cfb": "https://site.web.api.espn.com/apis/fitt/v3/sports/football/college-football/powerindex?limit=200",
 }
+# ESPN serves different versions of the college index by URL; some leave out the
+# offense/defense "efficiencies". Try these in order and keep the first that has them.
+CFB_FPI_TRIES = [
+    "https://site.web.api.espn.com/apis/fitt/v3/sports/football/college-football/powerindex?limit=150",
+    "https://site.api.espn.com/apis/fitt/v3/sports/football/college-football/powerindex?limit=150",
+    FPI["cfb"],
+]
+
+
+def efficiency_count(payload):
+    n = 0
+    for t in (payload or {}).get("teams") or []:
+        for c in t.get("categories") or []:
+            if c.get("name") == "efficiencies" and len(c.get("values") or []) >= 6:
+                n += 1
+    return n
 # Fields that change on a game that is already in the snapshot.
 LIVE_FIELDS = ["date", "status", "status_detail", "completed", "broadcasts"]
 TEAM_FIELDS = ["score", "record", "rank", "winner"]
@@ -85,6 +101,21 @@ def load_feeds(args, nfl_w, cfb_w):
         if args.fixtures:
             f = Path(args.fixtures) / f"fpi-{lg}.json"
             fpi[lg] = json.loads(f.read_text()) if f.exists() else None
+        elif lg == "cfb":
+            best, best_n = None, -1
+            for url in CFB_FPI_TRIES:
+                try:
+                    payload = get_json(url)
+                except Exception as e:
+                    print(f"college index failed at {url}: {e}")
+                    continue
+                n = efficiency_count(payload)
+                print(f"college index {url.split('?')[0].split('//')[1].split('/')[0]} ?{url.split('?')[1]}: {len(payload.get('teams') or [])} teams, {n} with offense/defense")
+                if n > best_n:
+                    best, best_n = payload, n
+                if n >= 100:
+                    break
+            fpi[lg] = best
         else:
             fpi[lg] = get_json(FPI[lg])
     return {"boards": boards, "fpi": fpi}
