@@ -56,13 +56,17 @@ async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         ctx = await browser.new_context()
-        if args.local:
-            root = Path(args.local).resolve()
+        # Always run this checkout's code and data (the live site can be a few minutes
+        # behind its CDN cache). Live feeds like ESPN still load from the internet,
+        # except in --local test runs where everything else is blocked.
+        if True:
+            root = Path(args.local or ROOT).resolve()
+            offline = bool(args.local)
 
             async def route(r):
                 url = r.request.url
                 if not url.startswith(SITE):
-                    return await r.abort()
+                    return await (r.abort() if offline else r.continue_())
                 path = url[len(SITE):].split("?")[0].split("#")[0].lstrip("/") or "index.html"
                 f = root / path
                 if f.is_dir():

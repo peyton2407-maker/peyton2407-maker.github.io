@@ -94,8 +94,9 @@ async def parse_in_page(args, feeds):
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         ctx = await browser.new_context()
-        if args.local:
-            root = Path(args.local).resolve()
+        # Always run this checkout's code, not whatever the live site has cached.
+        if True:
+            root = Path(args.local or ROOT).resolve()
 
             async def route(r):
                 url = r.request.url
@@ -114,7 +115,7 @@ async def parse_in_page(args, feeds):
         if args.now:
             await page.clock.install(time=args.now)
         await page.goto(SITE + "/#home", wait_until="load", timeout=120000)
-        await page.wait_for_function("typeof ggParseFeeds === 'function' && typeof DATA !== 'undefined' && (DATA.games || []).length > 0", timeout=120000)
+        await page.wait_for_function("typeof ggParseFeeds === 'function' && typeof DATA !== 'undefined' && DATA && (DATA.games || []).length > 0", timeout=120000)
         out = await page.evaluate("(feeds) => ggParseFeeds(feeds)", feeds)
         await browser.close()
         return out
@@ -127,6 +128,17 @@ def merge(snap, results, parsed, nfl_w, cfb_w, now_iso):
     ratings = parsed["ratings"]
     rmap = {lg: {str(r["id"]): r for r in ratings.get(lg) or []} for lg in ("nfl", "cfb")}
 
+    # College offense/defense: if the feed's unit ratings didn't come through for most
+    # teams, keep the ones already saved (never wipe them).
+    old_cfb = {str(r["id"]): r for r in (snap.get("ratings", {}).get("cfb") or [])}
+    cfb_new = ratings.get("cfb") or []
+    if sum(1 for r in cfb_new if r.get("off") is not None) < 100:
+        print("college unit ratings missing from the feed; keeping saved ones")
+        for r in cfb_new:
+            o = old_cfb.get(str(r["id"]))
+            if o and r.get("off") is None:
+                r["off"], r["def"] = o.get("off"), o.get("def")
+        rmap["cfb"] = {str(r["id"]): r for r in cfb_new}
     # Ratings: only replace a league when the feed came back with a full table.
     for lg, need in (("nfl", 30), ("cfb", 100)):
         lst = ratings.get(lg) or []
