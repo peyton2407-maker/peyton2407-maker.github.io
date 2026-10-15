@@ -1,6 +1,26 @@
 {
  "v": 1,
  "plays": {
+  "401860923": {
+   "id": "401860923",
+   "league": "cfb",
+   "week": 7,
+   "short": "CSU @ TXST",
+   "home": "TXST",
+   "away": "CSU",
+   "date": "2026-10-16T00:00Z",
+   "pick": "CSU",
+   "pick_line": "CSU +14.5",
+   "total_pick": "OVER 69.5",
+   "side_play": false,
+   "our_margin": 13.17,
+   "our_total": 73.3,
+   "confidence": 57,
+   "total_play": true,
+   "spread": -14.5,
+   "total": 69.5,
+   "lockedAt": "2026-10-15T22:53:28.834Z"
+  },
   "401862800": {
    "id": "401862800",
    "league": "cfb",
@@ -40,6 +60,26 @@
    "spread": 3,
    "total": 45.5,
    "lockedAt": "2026-10-15T22:20:57.467Z"
+  },
+  "401872995": {
+   "id": "401872995",
+   "league": "nfl",
+   "week": 6,
+   "short": "SEA @ DEN",
+   "home": "DEN",
+   "away": "SEA",
+   "date": "2026-10-16T00:15Z",
+   "pick": "DEN",
+   "pick_line": "DEN +2.5",
+   "total_pick": "UNDER 40.5",
+   "side_play": false,
+   "our_margin": -1.28,
+   "our_total": 39,
+   "confidence": 0,
+   "total_play": false,
+   "spread": 2.5,
+   "total": 40.5,
+   "lockedAt": "2026-10-15T22:53:28.834Z"
   }
  },
  "potd": {
@@ -205,5 +245,5 @@
    }
   ]
  },
- "updated": "2026-10-15T22:20:57.467Z"
+ "updated": "2026-10-15T22:53:28.834Z"
 }
