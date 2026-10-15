@@ -5,5 +5,143 @@
   "nfl": [],
   "cfb": []
  },
- "card": null
+ "card": {
+  "weekKey": "nfl-6|cfb-7",
+  "frozen": true,
+  "lockedAt": "2026-10-15T17:00:19.224Z",
+  "title": "Double Gs weekly card",
+  "legs": [
+   {
+    "id": "401858269",
+    "league": "cfb",
+    "short": "WAKE @ CAL",
+    "date": "2026-10-18T02:30Z",
+    "home": "CAL",
+    "away": "WAKE",
+    "text": "CAL +9.5 · OVER 53.5",
+    "pick": "CAL +9.5",
+    "total": "OVER 53.5",
+    "proj": "WAKE 33 – CAL 26.8",
+    "edge": 3.3
+   },
+   {
+    "id": "401862801",
+    "league": "cfb",
+    "short": "MEM @ TULN",
+    "date": "2026-10-16T23:30Z",
+    "home": "TULN",
+    "away": "MEM",
+    "text": "TULN +7.0 · OVER 55.5",
+    "pick": "TULN +7.0",
+    "total": "OVER 55.5",
+    "proj": "MEM 33 – TULN 28.5",
+    "edge": 2.57
+   },
+   {
+    "id": "401869950",
+    "league": "cfb",
+    "short": "GASO @ ODU",
+    "date": "2026-10-15T23:30Z",
+    "home": "ODU",
+    "away": "GASO",
+    "text": "ODU +3.5 · UNDER 46.5",
+    "pick": "ODU +3.5",
+    "total": "UNDER 46.5",
+    "proj": "GASO 20.2 – ODU 18.4",
+    "edge": 1.65
+   },
+   {
+    "id": "401860923",
+    "league": "cfb",
+    "short": "CSU @ TXST",
+    "date": "2026-10-16T00:00Z",
+    "home": "TXST",
+    "away": "CSU",
+    "text": "CSU +14.5 · OVER 70.5",
+    "pick": "CSU +14.5",
+    "total": "OVER 70.5",
+    "proj": "CSU 30.9 – TXST 42.4",
+    "edge": -3.02
+   },
+   {
+    "id": "401869934",
+    "league": "cfb",
+    "short": "ARST @ USM",
+    "date": "2026-10-17T23:00Z",
+    "home": "USM",
+    "away": "ARST",
+    "text": "USM +7.0 · UNDER 62.5",
+    "pick": "USM +7.0",
+    "total": "UNDER 62.5",
+    "proj": "ARST 31.1 – USM 25.9",
+    "edge": 1.7
+   },
+   {
+    "id": "401864523",
+    "league": "cfb",
+    "short": "SJSU @ UTEP",
+    "date": "2026-10-18T01:00Z",
+    "home": "UTEP",
+    "away": "SJSU",
+    "text": "SJSU -7.5 · OVER 46.5",
+    "pick": "SJSU -7.5",
+    "total": "OVER 46.5",
+    "proj": "SJSU 30.5 – UTEP 21.3",
+    "edge": -1.67
+   },
+   {
+    "id": "401860903",
+    "league": "cfb",
+    "short": "WSU @ ORST",
+    "date": "2026-10-17T22:00Z",
+    "home": "ORST",
+    "away": "WSU",
+    "text": "WSU +18.5",
+    "pick": "WSU +18.5",
+    "total": "NO PLAY",
+    "proj": "WSU 18.3 – ORST 33.2",
+    "edge": -3.51
+   },
+   {
+    "id": "401873006",
+    "league": "nfl",
+    "short": "LAC @ KC",
+    "date": "2026-10-18T20:25Z",
+    "home": "KC",
+    "away": "LAC",
+    "text": "KC -8.5",
+    "pick": "KC -8.5",
+    "total": "NO PLAY",
+    "proj": "LAC 14.7 – KC 26.7",
+    "edge": 3.47
+   },
+   {
+    "id": "401856830",
+    "league": "cfb",
+    "short": "KU @ KSU",
+    "date": "2026-10-17T16:00Z",
+    "home": "KSU",
+    "away": "KU",
+    "text": "KSU -4.5 · UNDER 55.5",
+    "pick": "KSU -4.5",
+    "total": "UNDER 55.5",
+    "proj": "KU 22.8 – KSU 29.6",
+    "edge": 2.38
+   },
+   {
+    "id": "401862806",
+    "league": "cfb",
+    "short": "KENT @ USF",
+    "date": "2026-10-17T23:00Z",
+    "home": "USF",
+    "away": "KENT",
+    "text": "OVER 45.5",
+    "pick": "NO PLAY",
+    "total": "OVER 45.5",
+    "proj": "KENT 15.4 – USF 37.3",
+    "edge": 1.49
+   }
+  ]
+ },
+ "updated": "2026-10-15T17:00:19.224Z"
 }
