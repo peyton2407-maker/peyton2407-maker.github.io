@@ -1,87 +1,52 @@
 {
- "checked_at": "2026-10-15T18:06:04Z",
+ "checked_at": "2026-10-15T18:20:28Z",
  "errors": [],
  "console": [
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/34/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/teams?limit=500' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is pr",
   "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/30/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/26/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/7/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on ",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/33/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/29/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/5/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on ",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/21/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/3/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on ",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/1/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on ",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/18/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/19/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/27/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/23/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/20/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/17/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/11/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/10/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/14/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/22/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/13/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/2/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on ",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/24/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/12/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/9/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on ",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/25/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/6/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on ",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/28/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/16/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on",
-  "Failed to load resource: net::ERR_FAILED",
-  "Access to fetch at 'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/4/depthcharts' from origin 'https://peyton2407-maker.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on ",
-  "Failed to load resource: net::ERR_FAILED"
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()"
  ],
  "failed_requests": {
   "site.web.api.espn.com": {
-   "count": 33,
-   "example": "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/34/depthcharts",
+   "count": 1,
+   "example": "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/teams?limit=500",
    "reason": "net::ERR_FAILED"
-  },
-  "sports.core.api.espn.com": {
-   "count": 14,
-   "example": "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/401873009/competitions/401873009/odds/100/propBets?lang=en&region=us&limit=1000",
-   "reason": "net::ERR_ABORTED"
   }
  },
  "bad_status": {
   "sports.core.api.espn.com": {
-   "count": 154,
+   "count": 28,
    "statuses": {
-    "404": 154
+    "404": 28
    },
-   "example": "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/401873020/competitions/401873020/odds/100/propBets?lang=en&region=us&limit=1000&page=1"
+   "example": "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/401873017/competitions/401873017/odds/100/propBets?lang=en&region=us&limit=1000&page=1"
   }
  },
  "screens": {
@@ -89,10 +54,10 @@
    "visible": true,
    "count": 72,
    "summary": [
-    "433 matching NFL players 17 QBs in this list 85% best our hit rate C Chr"
+    "433 matching NFL players 17 QBs in this list 84% best our hit rate C Chr"
    ],
    "empty": [],
-   "chars": 15584
+   "chars": 15564
   },
   "tds": {
    "visible": true,
@@ -108,23 +73,23 @@
    "count": 28,
    "summary": [],
    "empty": [],
-   "chars": 3799
+   "chars": 3798
   },
   "value": {
    "visible": true,
    "count": 72,
    "summary": [
-    "360 value tickets in this filter 124 TD plus-money 6 spread / dog sides 92% b"
+    "138 value tickets in this filter 123 TD plus-money 8 spread / dog sides 56% b"
    ],
    "empty": [],
-   "chars": 13496
+   "chars": 14214
   },
   "parlay": {
    "visible": true,
    "count": 30,
    "summary": [],
    "empty": [],
-   "chars": 56243
+   "chars": 63274
   },
   "live": {
    "visible": true,
@@ -133,7 +98,7 @@
     "4 games on this board 1 with score + yard projections 0 spread leans \u2265 0"
    ],
    "empty": [],
-   "chars": 5678
+   "chars": 5694
   },
   "nflinj": {
    "visible": true,
@@ -150,14 +115,14 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 7501
+   "chars": 8021
   },
   "nflpotd": {
    "visible": true,
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 565
+   "chars": 559
   },
   "cfbpicks": {
    "visible": true,
