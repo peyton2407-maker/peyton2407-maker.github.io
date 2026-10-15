@@ -26,7 +26,7 @@ GitHub Pages serves this branch directly (Settings → Pages → Deploy from a b
 
 ## Locked picks
 
-The "Lock picks" GitHub job locks each game's scorecard pick 90 minutes before kickoff, the play of the day the same way, and this week's card at Thursday noon ET (or 90 minutes before its first game). Once every locked game of a week has a final, that week is added to `past-scorecards.json` (a week already there is never overwritten). Run it by hand from the Actions tab with "Run workflow". Test it locally with `python3 scripts/lock_runner.py --local . --now 2026-10-15T23:00:00Z --dry-run`.
+The "Lock picks" GitHub job locks each game's scorecard pick 90 minutes before kickoff, the play of the day the same way, and this week's card at Thursday noon ET (or 90 minutes before its first game). Each run within 20 minutes of kickoff also saves the closing line, so every locked pick shows how many points it beat (or lost to) the close. Once every locked game of a week has a final, that week is added to `past-scorecards.json` (a week already there is never overwritten). Run it by hand from the Actions tab with "Run workflow". Test it locally with `python3 scripts/lock_runner.py --local . --now 2026-10-15T23:00:00Z --dry-run`.
 
 ## Week rules
 

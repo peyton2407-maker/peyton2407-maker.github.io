@@ -10908,6 +10908,7 @@ function playsForScorecard(league) {
       row.published = true;
       if (lock.side_play != null) row.side_play = !!lock.side_play;
       if (lock.total_play != null) row.total_play = !!lock.total_play;
+      if (lock.clv_side != null || lock.clv_total != null) row.clv = lock.clv_side != null ? lock.clv_side : lock.clv_total;
     }
     const old = byId[String(g.id)];
     if (old && old.graded) {
@@ -11024,6 +11025,21 @@ function applyPublishedLocks(locks) {
     log[lg] = Array.from(map.values());
   });
 }
+// Points gained against the closing line (positive = we beat the close).
+// Spreads are home spreads: a home pick at -3 that closes -4 gained a point.
+function lockClv(lock) {
+  if (!lock) return { side: null, total: null };
+  let side = null, total = null;
+  if (lock.pick && lock.pick !== "NO PLAY" && lock.spread != null && lock.close_spread != null) {
+    const open = Number(lock.spread), close = Number(lock.close_spread);
+    side = +(lock.pick === lock.home ? open - close : close - open).toFixed(1);
+  }
+  if (lock.total_pick && lock.total_pick !== "NO PLAY" && lock.total != null && lock.close_total != null) {
+    const open = Number(lock.total), close = Number(lock.close_total);
+    total = +(/^OVER/i.test(lock.total_pick) ? close - open : open - close).toFixed(1);
+  }
+  return { side, total };
+}
 // Called by the lock runner. Returns the updated locks object and a list of what changed.
 function ggLockRun(prev) {
   const now = Date.now();
@@ -11062,6 +11078,21 @@ function ggLockRun(prev) {
       };
       changes.push("locked pick " + (r.short || r.id));
     });
+  });
+  // Closing line: the run nearest kickoff (20 minutes either side) saves the line.
+  Object.values(out.plays).forEach((lock) => {
+    if (!lock || lock.close_spread != null || lock.close_total != null) return;
+    const k = kickOf(lock.id);
+    if (!k || !Number.isFinite(k.kick) || now < k.kick - 20 * 60000 || now > k.kick + 20 * 60000) return;
+    const o = k.g.odds || {};
+    if (o.home_spread == null && o.total == null) return;
+    lock.close_spread = o.home_spread != null ? Number(o.home_spread) : null;
+    lock.close_total = o.total != null ? Number(o.total) : null;
+    lock.closeAt = iso;
+    const c = lockClv(lock);
+    lock.clv_side = c.side;
+    lock.clv_total = c.total;
+    changes.push("closing line " + lock.short);
   });
   const key = deskWeekKey();
   if (!out.card || out.card.weekKey !== key) {
@@ -11130,7 +11161,9 @@ function ggArchive(locks, past) {
         pick: r.pick, pick_line: r.pick_line, total_pick: r.total_pick,
         hs: String(finals[String(r.id)].hs), as: String(finals[String(r.id)].as),
         homeAbbr: r.home, awayAbbr: r.away,
-        side_play: r.side_play, total_play: r.total_play
+        side_play: r.side_play, total_play: r.total_play,
+        spread: r.spread, total: r.total, close_spread: r.close_spread, close_total: r.close_total,
+        clv_side: r.clv_side, clv_total: r.clv_total
       }));
       changes.push("archived " + lg + " week " + wk + " (" + rows.length + " picks)");
     }
@@ -11502,7 +11535,9 @@ function savedPastRows(league) {
         pick: src.pick || null, pick_line: src.pick_line || null, total_pick: src.total_pick || null,
         hs: src.hs, as: src.as, homeAbbr: src.homeAbbr || src.home, awayAbbr: src.awayAbbr || src.away,
         side_play: src.side_play, total_play: src.total_play,
-        ats: null, ou: null, clv: null, graded: false
+        ats: null, ou: null,
+        clv: src.clv_side != null ? src.clv_side : (src.clv_total != null ? src.clv_total : null),
+        graded: false
       });
     });
   });
@@ -11663,7 +11698,7 @@ function renderHistory() {
     <div class="stat"><b>${w}-${l}${psh ? "-" + psh : ""}</b><span>locked record</span></div>
     <div class="stat"><b>${n ? pct + "%" : "—"}</b><span>hit rate</span></div>
     <div class="stat"><b>${pending}</b><span>still live / upcoming</span></div>
-    <div class="stat"><b>—</b><span>avg vs close</span></div>
+    <div class="stat"><b>${(() => { const c = rows.filter((r) => r.clv != null); if (!c.length) return "—"; const a = c.reduce((s, r) => s + Number(r.clv), 0) / c.length; return (a > 0 ? "+" : "") + a.toFixed(1); })()}</b><span>avg vs close</span></div>
     ${realPlaysStat(rows, kind)}`;
   const wrap = document.getElementById("historyWrap");
   const stamp = document.getElementById("historyStamp");
