@@ -34,6 +34,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SNAP = ROOT / "data" / "snapshot.json"
 RESULTS = ROOT / "data" / "week-results.json"
 STATUS = ROOT / "data" / "refresh-status.json"
+DEPTH = ROOT / "data" / "nfl-depth.json"
+DEPTH_URL = "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/{id}/depthcharts"
 REPORT = {"sources": []}  # what each feed returned; saved to data/refresh-status.json
 SITE = "https://peyton2407-maker.github.io"
 SB = {
@@ -129,7 +131,20 @@ def load_feeds(args, nfl_w, cfb_w):
             except Exception as e:
                 fpi[lg] = None
                 REPORT["sources"].append({"feed": FPI[lg], "error": str(e)[:200]})
-    return {"boards": boards, "fpi": fpi}
+    # NFL depth charts (browsers can't read these directly, so the job saves them).
+    depth = {}
+    if not args.fixtures:
+        nfl_ids = [str(t["team"]["id"]) for t in (fpi.get("nfl") or {}).get("teams") or [] if t.get("team", {}).get("id")]
+        for tid in nfl_ids:
+            try:
+                depth[tid] = get_json(DEPTH_URL.format(id=tid))
+            except Exception as e:
+                REPORT["sources"].append({"feed": f"nfl depth chart team {tid}", "error": str(e)[:200]})
+        REPORT["sources"].append({"feed": "nfl depth charts", "teams": len(depth)})
+    else:
+        f = Path(args.fixtures) / "depth.json"
+        depth = json.loads(f.read_text()) if f.exists() else {}
+    return {"boards": boards, "fpi": fpi, "depth": depth}
 
 
 async def parse_in_page(args, feeds):
@@ -292,6 +307,13 @@ def main():
                    "parse": parsed.get("debug")})
     if not args.dry_run:
         STATUS.write_text(json.dumps(REPORT, indent=1) + "\n", encoding="utf-8")
+        depth = parsed.get("depth") or {}
+        if len(depth) >= 28:
+            old = json.loads(DEPTH.read_text()) if DEPTH.exists() else {}
+            strip = lambda d: {k: v.get("slots") for k, v in (d.get("teams") or {}).items()}
+            if strip(old) != strip({"teams": depth}):
+                DEPTH.write_text(json.dumps({"updated": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "teams": depth}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+                changes.append(f"depth charts for {len(depth)} teams")
     if not changes:
         print("No changes.")
         return 0

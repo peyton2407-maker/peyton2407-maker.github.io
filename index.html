@@ -4227,37 +4227,30 @@ function nflSnapShare(g, r) {
   if (fromNote >= 0.45) return fromNote;
   return nflUsageShare(g, r);
 }
+// ESPN's depth chart endpoint blocks browsers (CORS), so the Refresh data job saves the
+// charts it needs to data/nfl-depth.json every 2 hours and the board reads that file.
 async function pullNflDepth() {
   if (window.__nflDepthPull) return window.__nflDepthPull;
   window.__nflDepthPull = (async () => {
-    const ids = [];
-    (DATA.games || []).forEach((g) => {
-      if (!g || g.league !== "nfl" || g.completed) return;
-      [g.home, g.away].forEach((t) => {
-        if (t && t.id && ids.indexOf(String(t.id)) < 0) ids.push(String(t.id));
-      });
-    });
+    const res = await fetch("/data/nfl-depth.json?t=" + Math.floor(Date.now() / 600000));
+    if (!res.ok) return;
+    const file = await res.json();
     const book = nflDepthBook();
-    const fresh = Date.now() - 18 * 60 * 60 * 1000;
-    const need = ids.filter((id) => !book[id] || !book[id].at || book[id].v !== 2 || book[id].at < fresh);
-    let cursor = 0;
-    async function next() {
-      const id = need[cursor++];
-      if (!id) return;
-      try {
-        const data = await getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/" + id + "/depthcharts");
-        rememberNflDepth(id, data);
-      } catch (e) {}
-      return next();
-    }
-    await Promise.all([next(), next(), next(), next()]);
-    if (need.length && typeof applySituationalBoard === "function") {
+    let changed = 0;
+    Object.keys((file && file.teams) || {}).forEach((id) => {
+      const row = file.teams[id];
+      if (!row || !row.slots) return;
+      if (!book[id] || book[id].v !== 2 || (book[id].at || 0) < (row.at || 0)) { book[id] = row; changed++; }
+    });
+    try { localStorage.setItem("gg-nfl-depth-v1", JSON.stringify(book)); } catch (e) {}
+    if (changed && typeof applySituationalBoard === "function") {
       applySituationalBoard();
       if ((view === "nfl" || view === "all" || view === "home") && typeof renderBoard === "function") renderBoard();
     }
   })().catch((e) => { console.warn("nfl depth", e); });
   return window.__nflDepthPull;
 }
+
 function cfbSnapShare(r) {
   const blob = String((r.short || "") + " " + (r.name || "")).toLowerCase();
   const hit = blob.match(/(\d{2,3})\s*%\s*(?:of\s*)?(?:the\s*)?(?:team\s*)?(?:snaps|snap|plays|carries)/);
@@ -11127,13 +11120,22 @@ function ggParseFeeds(feeds) {
       games.push({ game: g, proj });
     });
   });
+  const depth = {};
+  Object.keys(feeds.depth || {}).forEach((id) => {
+    try {
+      rememberNflDepth(id, feeds.depth[id]);
+      const row = nflDepthBook()[String(id)];
+      if (row && row.slots && Object.keys(row.slots).length) depth[String(id)] = row;
+    } catch (e) {}
+  });
   const effCat = ((feeds.fpi && feeds.fpi.cfb && feeds.fpi.cfb.categories) || []).find((c) => c && c.name === "efficiencies") || null;
   const debug = {
     cfb_efficiency_names: effCat ? (effCat.names || null) : "no efficiencies category",
     cfb_with_offense: (lists.cfb || []).filter((r) => r.off != null).length,
     sample: (lists.cfb || []).slice(0, 2).map((r) => ({ abbr: r.abbr, fpi: r.fpi, off: r.off, def: r.def }))
   };
-  return { games, ratings: lists, debug };
+  debug.nfl_depth_teams = Object.keys(depth).length;
+  return { games, ratings: lists, depth, debug };
 }
 window.ggParseFeeds = ggParseFeeds;
 window.ggArchive = ggArchive;

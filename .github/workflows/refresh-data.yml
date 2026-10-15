@@ -31,6 +31,7 @@ jobs:
           git config user.name "peyton2407-maker"
           git config user.email "331867039+peyton2407-maker@users.noreply.github.com"
           git add data/snapshot.json data/week-results.json data/refresh-status.json
+          if [ -f data/nfl-depth.json ]; then git add data/nfl-depth.json; fi
           if git diff --cached --quiet; then
             echo "Nothing new."
             exit 0
