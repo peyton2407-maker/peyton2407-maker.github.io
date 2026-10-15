@@ -19,7 +19,12 @@
    "total_play": true,
    "spread": -14.5,
    "total": 69.5,
-   "lockedAt": "2026-10-15T22:53:28.834Z"
+   "lockedAt": "2026-10-15T22:53:28.834Z",
+   "close_spread": -15.5,
+   "close_total": 69.5,
+   "closeAt": "2026-10-15T23:50:15.106Z",
+   "clv_side": -1,
+   "clv_total": 0
   },
   "401862800": {
    "id": "401862800",
@@ -114,6 +119,26 @@
     "kick": "2026-10-15T23:30Z",
     "big": false,
     "savedAt": 1792102857496
+   },
+   {
+    "key": "game:401860923",
+    "week": 7,
+    "day": "2026-10-15",
+    "league": "cfb",
+    "id": "401860923",
+    "game": "CSU @ TXST",
+    "kind": "Over",
+    "line": "OVER 69.5",
+    "hitPct": 61,
+    "why": "Our total is 3.8 points over DraftKings 69.5.",
+    "label": "Thursday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "locked": true,
+    "kick": "2026-10-16T00:00Z",
+    "big": false,
+    "savedAt": 1792108215134
    }
   ]
  },
@@ -255,5 +280,5 @@
    }
   ]
  },
- "updated": "2026-10-15T23:16:01.854Z"
+ "updated": "2026-10-15T23:50:15.106Z"
 }
