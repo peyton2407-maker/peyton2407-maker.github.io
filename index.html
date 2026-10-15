@@ -3280,6 +3280,13 @@ function applySituationalToGame(g) {
     p.edge_total = +(Number(p.hashmark_total) - Number(boardTot)).toFixed(2);
     p.total_pick = Math.abs(p.edge_total) < 1.6 ? "NO PLAY" : (p.edge_total > 0 ? "OVER " + boardTot : "UNDER " + boardTot);
   }
+  // Confidence = estimated chance the best play hits (NFL edges are already 70% market).
+  {
+    const sideP = p.pick && p.pick !== "NO PLAY" && p.edge_spread != null ? normCdf(Math.abs(Number(p.edge_spread)) / LIVE.NFL_SIGMA) : 0;
+    const totP = p.total_pick && p.total_pick !== "NO PLAY" && p.edge_total != null ? normCdf(Math.abs(Number(p.edge_total)) / 12) : 0;
+    p.confidence = Math.max(sideP, totP) ? Math.round(100 * Math.max(sideP, totP)) : 0;
+    p.conf_pct = true;
+  }
   if (typeof normCdf === "function") {
     const sigma = LIVE.NFL_SIGMA;
     p.win_prob_home = +normCdf(Number(p.blended_margin) / sigma).toFixed(4);
@@ -6471,7 +6478,7 @@ function pickConfidence(g) {
   const s = g.sim || pr.sim || {};
   const hasPlay = !!(pr.pick && pr.pick !== "NO PLAY") || !!(pr.total_pick && pr.total_pick !== "NO PLAY");
   if (!hasPlay) return { c: 38, label: "No play" };
-  if (g.league === "cfb" && !pr._deskConf && pr.confidence) {
+  if (((g.league === "cfb" && !pr._deskConf) || (g.league === "nfl" && pr.conf_pct)) && pr.confidence) {
     const pc = Math.round(Number(pr.confidence));
     return { c: pc, label: pc >= 58 ? "High" : pc >= 54 ? "Medium" : "Low", pct: true };
   }
@@ -10999,6 +11006,11 @@ function ggLockRun(prev) {
         // The scorecard grades a lean on every game; these flags say which ones the board
         // called a real play when it locked.
         side_play: !!(k.g.proj && k.g.proj.pick && k.g.proj.pick !== "NO PLAY"),
+        // The model's own numbers at lock time: our margin (home minus away), our total,
+        // confidence. These make every finished week a clean backtest.
+        our_margin: k.g.proj && k.g.proj.blended_margin != null ? Number(k.g.proj.blended_margin) : null,
+        our_total: k.g.proj && k.g.proj.hashmark_total != null ? Number(k.g.proj.hashmark_total) : null,
+        confidence: k.g.proj && k.g.proj.confidence != null ? Number(k.g.proj.confidence) : null,
         total_play: !!(k.g.proj && k.g.proj.total_pick && k.g.proj.total_pick !== "NO PLAY"),
         spread: k.g.odds && k.g.odds.home_spread != null ? Number(k.g.odds.home_spread) : null,
         total: k.g.odds && k.g.odds.total != null ? Number(k.g.odds.total) : null,
@@ -11091,6 +11103,7 @@ function ggArchive(locks, past) {
         homeAbbr: r.home, awayAbbr: r.away,
         side_play: r.side_play, total_play: r.total_play,
         spread: r.spread, total: r.total, close_spread: r.close_spread, close_total: r.close_total,
+        our_margin: r.our_margin, our_total: r.our_total, confidence: r.confidence,
         clv_side: r.clv_side, clv_total: r.clv_total
       }));
       changes.push("archived " + lg + " week " + wk + " (" + rows.length + " picks)");
@@ -11100,6 +11113,45 @@ function ggArchive(locks, past) {
   return { locks: L, past: P, changes };
 }
 window.ggLockRun = ggLockRun;
+// Model check, built from locked picks that finished (only rows locked by the job carry
+// the model's numbers, so this starts Oct 15). Written to data/model-report.json.
+function ggModelReport(past) {
+  const rows = [];
+  ["nfl", "cfb"].forEach((lg) => {
+    Object.values((past && past[lg]) || {}).forEach((wk) => (wk || []).forEach((r) => {
+      if (r && r.our_margin != null && r.hs != null && r.as != null) rows.push(Object.assign({ league: lg }, r));
+    }));
+  });
+  const out = { updated: new Date().toISOString(), games: rows.length, leagues: {} };
+  ["nfl", "cfb", "all"].forEach((lg) => {
+    const R = rows.filter((r) => lg === "all" || r.league === lg);
+    if (!R.length) return;
+    const mean = (a) => a.length ? +(a.reduce((x, y) => x + y, 0) / a.length).toFixed(2) : null;
+    const margin = (r) => Number(r.hs) - Number(r.as);
+    const total = (r) => Number(r.hs) + Number(r.as);
+    const g = { games: R.length };
+    g.margin_miss_ours = mean(R.map((r) => Math.abs(Number(r.our_margin) - margin(r))));
+    g.margin_miss_market = mean(R.filter((r) => r.spread != null).map((r) => Math.abs(-Number(r.spread) - margin(r))));
+    const T = R.filter((r) => r.our_total != null);
+    g.total_miss_ours = mean(T.map((r) => Math.abs(Number(r.our_total) - total(r))));
+    g.total_miss_market = mean(T.filter((r) => r.total != null).map((r) => Math.abs(Number(r.total) - total(r))));
+    g.total_lean_ours = mean(T.filter((r) => r.total != null).map((r) => Number(r.our_total) - Number(r.total)));
+    g.avg_vs_close = mean(R.map((r) => r.clv_side != null ? r.clv_side : r.clv_total).filter((x) => x != null));
+    const buckets = {};
+    R.forEach((r) => {
+      if (r.side_play !== true || r.confidence == null) return;
+      const hit = gradeHistoryRow(Object.assign({}, r), { hs: Number(r.hs), as: Number(r.as), homeAbbr: r.home, awayAbbr: r.away }).ats;
+      if (!hit || hit === "PUSH") return;
+      const b = r.confidence >= 58 ? "58%+" : r.confidence >= 54 ? "54-57%" : "under 54%";
+      buckets[b] = buckets[b] || { w: 0, l: 0 };
+      buckets[b][hit === "HIT" ? "w" : "l"]++;
+    });
+    g.real_side_plays_by_confidence = buckets;
+    out.leagues[lg] = g;
+  });
+  return out;
+}
+window.ggModelReport = ggModelReport;
 // Used by scripts/refresh_data.py: turn raw ESPN scoreboards and power indexes into
 // snapshot-shaped games and ratings with this page's own parsers and model.
 function ggParseFeeds(feeds) {
@@ -12761,18 +12813,13 @@ async function loadCfbFaces() {
         if (t && t.id && t.name) idByName[cfbTeamKey(t.name)] = String(t.id);
       });
     });
-    try {
-      const data = await getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/teams?limit=500");
-      const arr = ((((data.sports || [])[0] || {}).leagues || [])[0] || {}).teams || [];
-      arr.forEach((row) => {
-        const t = row.team || row;
-        const id = String(t.id || "");
-        if (!id) return;
-        [t.displayName, t.shortDisplayName, t.name, t.location, t.nickname, t.abbreviation].forEach((n) => {
-          if (n) idByName[cfbTeamKey(n)] = id;
-        });
-      });
-    } catch (e) {}
+    // ESPN's team list blocks browsers on this site; the saved ratings list has every
+    // FBS team's id and name (kept current by the Refresh data job).
+    (((DATA && DATA.ratings) || {}).cfb || []).forEach((t) => {
+      const id = String(t.id || "");
+      if (!id) return;
+      [t.name, t.abbr].forEach((n) => { if (n) idByName[cfbTeamKey(n)] = id; });
+    });
     window.__CFB_TEAM_IDS = idByName;
     const need = [];
     (pack.cfb || []).forEach((r) => {

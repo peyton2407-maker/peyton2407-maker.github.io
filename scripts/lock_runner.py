@@ -28,6 +28,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE = "https://peyton2407-maker.github.io"
 LOCKS = ROOT / "data" / "locks.json"
 PAST = ROOT / "data" / "past-scorecards.json"
+REPORT = ROOT / "data" / "model-report.json"
 
 
 def read_json(path, default):
@@ -98,7 +99,8 @@ async def main():
             """([locks, past]) => {
                 const run = ggLockRun(locks);
                 const arc = ggArchive(run.locks, past);
-                return { locks: arc.locks, past: arc.past, changes: run.changes.concat(arc.changes) };
+                const report = typeof ggModelReport === "function" ? ggModelReport(arc.past) : null;
+                return { locks: arc.locks, past: arc.past, report, changes: run.changes.concat(arc.changes) };
             }""",
             [locks, past],
         )
@@ -116,6 +118,12 @@ async def main():
     new_locks = dump(result["locks"])
     if new_locks != dump(locks):
         LOCKS.write_text(new_locks, encoding="utf-8")
+    rep = result.get("report")
+    if rep and rep.get("games"):
+        old = read_json(REPORT, {})
+        strip = lambda d: {k: v for k, v in (d or {}).items() if k != "updated"}
+        if strip(old) != strip(rep):
+            REPORT.write_text(dump(rep), encoding="utf-8")
     if dump(result["past"]) != dump(past):
         # Keep the existing compact style of past-scorecards.json.
         PAST.write_text(json.dumps(result["past"], ensure_ascii=False), encoding="utf-8")
