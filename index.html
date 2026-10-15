@@ -3895,6 +3895,13 @@ function projectGame(game, ratings) {
   const odds = game.odds || {};
   const mktHomeSpread = odds.home_spread;
   const mktMargin = mktHomeSpread != null ? -mktHomeSpread : null;
+  // A college rating 17+ points away from the line is a data problem (e.g. a new FBS team
+  // with a placeholder rating), not an edge. Use the market for that game.
+  let ratingSuspect = false;
+  if (league === "cfb" && modelMargin != null && mktMargin != null && Math.abs(modelMargin - mktMargin) > 17) {
+    modelMargin = null;
+    ratingSuspect = true;
+  }
   let mw = league === "nfl" ? LIVE.MARKET_WEIGHT_NFL : LIVE.MARKET_WEIGHT_CFB;
   if (league === "cfb" && (hr.fpi == null || ar.fpi == null)) mw = 0.88;
   let blendedMargin = null;
@@ -3926,9 +3933,12 @@ function projectGame(game, ratings) {
   let cfbLean = null;
   if (league === "cfb") {
     cfbLean = cfbSlateLean();
-    const adj = modelTotal != null ? modelTotal - cfbLean : null;
+    let adj = modelTotal != null ? modelTotal - cfbLean : null;
+    // A unit-model total 15+ points from the market (e.g. a 29-point game against a 47.5
+    // line) is the linear model breaking on an extreme rating, not an edge.
+    if (adj != null && mktTotal != null && Math.abs(adj - Number(mktTotal)) > 15) adj = null;
     if (adj != null && mktTotal != null) blendedTotal = Number(mktTotal) + LIVE.CFB_TOTAL_TRUST * (adj - Number(mktTotal));
-    else blendedTotal = adj ?? mktTotal;
+    else blendedTotal = mktTotal ?? adj;
   } else if (modelTotal != null && mktTotal != null) blendedTotal = tw * Number(mktTotal) + (1 - tw) * modelTotal;
   else blendedTotal = modelTotal ?? mktTotal;
   const edgeSpread = blendedMargin != null && mktMargin != null ? blendedMargin - mktMargin : null;
@@ -3976,7 +3986,7 @@ function projectGame(game, ratings) {
       : (edgeSpread != null ? Math.min(96, Math.floor(38 + Math.abs(edgeSpread) * 14 + (hr.fpi && ar.fpi ? 8 : 0))) : 0),
     cfb_lean: cfbLean,
     weather_adj_total: 0,
-    missing_ratings: !(hr.fpi != null && ar.fpi != null),
+    missing_ratings: ratingSuspect || !(hr.fpi != null && ar.fpi != null),
   };
 }
 
@@ -9720,8 +9730,10 @@ function potdBets(g, league, soft) {
   const p = g.proj || {};
   const o = g.odds || {};
   const sigma = league === "nfl" ? (LIVE.NFL_SIGMA || 13) : ((typeof cfbSigma === "function" && Number.isFinite(Number(p.blended_margin))) ? cfbSigma(Number(p.blended_margin)) : (LIVE.CFB_SIGMA || 16.4));
-  const spreadFloor = soft ? 0.5 : (league === "nfl" ? 1.8 : 1);
-  const totalFloor = soft ? 0.5 : (league === "nfl" ? 1.6 : 1);
+  // Same bars the board uses to call a play, so the play of the day is never a game
+  // the board itself passes on.
+  const spreadFloor = soft ? 0.5 : (league === "nfl" ? 1.8 : 1.6);
+  const totalFloor = soft ? 0.5 : (league === "nfl" ? 1.6 : 1.5);
   const mlFloor = soft ? 0.02 : (league === "nfl" ? 0.06 : 0.04);
   const edge = Number(p.edge_spread);
   if (o.home_spread != null && Number.isFinite(edge) && Math.abs(edge) >= spreadFloor) {
@@ -9773,13 +9785,22 @@ function potdBets(g, league, soft) {
   return bets;
 }
 function potdPick(league) {
-  const window = potdWindow(league);
+  let window = potdWindow(league);
   if (!window.games.length) return null;
   const locked = potdLockedBet(league, window);
   if (locked) return locked;
   let bets = [];
   window.games.forEach((g) => { bets = bets.concat(potdBets(g, league, false)); });
-  if (!bets.length && !window.big) bets = potdBets(window.games[0], league, true);
+  if (!bets.length && !window.big) {
+    // The next game has no real play. Don't force one the board itself would pass on;
+    // move to the next game that clears the bar.
+    const next = potdUpcoming(league).find((g) => potdBets(g, league, false).length);
+    if (!next) return null;
+    window = { games: [next], big: false, day: potdDayKey(next.date), count: 1 };
+    const held = potdLockedBet(league, window);
+    if (held) return held;
+    bets = potdBets(next, league, false);
+  }
   bets.forEach((b) => { b.score = b.value * potdKindWeight(league, b.kind); });
   bets.sort((a, b) => b.score - a.score || b.hit - a.hit);
   const best = bets[0];
@@ -9940,7 +9961,7 @@ function renderNflPotd() {
   gradeSavedPotd("nfl");
   const bet = nflPotd();
   rememberPotd("nfl", bet);
-  const current = bet ? potdCard(bet, "NFL POTD") : `<div class="empty">No NFL game is next.</div>`;
+  const current = bet ? potdCard(bet, "NFL POTD") : `<div class="empty">No NFL game left this week clears our bar, so there is no play of the day.</div>`;
   board.innerHTML = potdRecordCard("nfl") + current;
   board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
@@ -9950,7 +9971,7 @@ function renderPotd() {
   gradeSavedPotd("cfb");
   const bet = cfbPotd();
   rememberPotd("cfb", bet);
-  const current = bet ? potdCard(bet, "POTD") : `<div class="empty">No college game is next.</div>`;
+  const current = bet ? potdCard(bet, "POTD") : `<div class="empty">No college game left this week clears our bar, so there is no play of the day.</div>`;
   board.innerHTML = potdRecordCard("cfb") + current;
   board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
