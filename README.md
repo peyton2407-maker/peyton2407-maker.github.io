@@ -22,7 +22,7 @@ GitHub Pages serves this branch directly (Settings → Pages → Deploy from a b
 
 1. Save the new `data/snapshot.json`. Finished games need `completed: true`, a final status and the real score. The board ignores a game marked finished while it still says scheduled at 0-0, so a bad pull can't grade picks or skew the team form numbers.
 2. After saving a new raw ESPN injury pull to `data/injuries.json`, run `python3 scripts/slim_injuries.py`.
-3. When a week ends, add its locked picks to `data/past-scorecards.json`. The home page season record is built from that file plus this week's graded plays, so it matches Scorecard and Past weeks for everyone.
+3. Finished weeks are added to `data/past-scorecards.json` automatically by the Lock picks job (below). You can still add or fix a week by hand; the job never overwrites a week that's already there. The home page season record is built from that file plus this week's graded plays, so it matches Scorecard and Past weeks for everyone.
 
 ## Locked picks
 
