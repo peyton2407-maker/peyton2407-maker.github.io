@@ -33,6 +33,8 @@ from playwright.async_api import async_playwright
 ROOT = Path(__file__).resolve().parents[1]
 SNAP = ROOT / "data" / "snapshot.json"
 RESULTS = ROOT / "data" / "week-results.json"
+STATUS = ROOT / "data" / "refresh-status.json"
+REPORT = {"sources": []}  # what each feed returned; saved to data/refresh-status.json
 SITE = "https://peyton2407-maker.github.io"
 SB = {
     "nfl": "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week={w}&seasontype=2&limit=50",
@@ -96,7 +98,9 @@ def load_feeds(args, nfl_w, cfb_w):
                     payload = get_json(SB[lg].format(w=w))
                 except Exception as e:  # one week missing is not fatal
                     print(f"skip {lg} week {w}: {e}")
+                    REPORT["sources"].append({"feed": f"{lg} scoreboard week {w}", "error": str(e)[:200]})
                     continue
+                REPORT["sources"].append({"feed": f"{lg} scoreboard week {w}", "events": len(payload.get("events") or [])})
             boards.append({"league": lg, "week": w, "payload": payload})
         if args.fixtures:
             f = Path(args.fixtures) / f"fpi-{lg}.json"
@@ -108,8 +112,10 @@ def load_feeds(args, nfl_w, cfb_w):
                     payload = get_json(url)
                 except Exception as e:
                     print(f"college index failed at {url}: {e}")
+                    REPORT["sources"].append({"feed": url, "error": str(e)[:200]})
                     continue
                 n = efficiency_count(payload)
+                REPORT["sources"].append({"feed": url, "teams": len(payload.get("teams") or []), "with_offense_defense": n})
                 print(f"college index {url.split('?')[0].split('//')[1].split('/')[0]} ?{url.split('?')[1]}: {len(payload.get('teams') or [])} teams, {n} with offense/defense")
                 if n > best_n:
                     best, best_n = payload, n
@@ -117,7 +123,12 @@ def load_feeds(args, nfl_w, cfb_w):
                     break
             fpi[lg] = best
         else:
-            fpi[lg] = get_json(FPI[lg])
+            try:
+                fpi[lg] = get_json(FPI[lg])
+                REPORT["sources"].append({"feed": FPI[lg], "teams": len(fpi[lg].get("teams") or [])})
+            except Exception as e:
+                fpi[lg] = None
+                REPORT["sources"].append({"feed": FPI[lg], "error": str(e)[:200]})
     return {"boards": boards, "fpi": fpi}
 
 
@@ -165,6 +176,7 @@ def merge(snap, results, parsed, nfl_w, cfb_w, now_iso):
     cfb_new = ratings.get("cfb") or []
     if sum(1 for r in cfb_new if r.get("off") is not None) < 100:
         print("college unit ratings missing from the feed; keeping saved ones")
+        REPORT.setdefault("notes", []).append("college offense/defense missing from the feed; kept saved ones")
         for r in cfb_new:
             o = old_cfb.get(str(r["id"]))
             if o and r.get("off") is None:
@@ -178,6 +190,7 @@ def merge(snap, results, parsed, nfl_w, cfb_w, now_iso):
         else:
             rmap[lg] = {str(r["id"]): r for r in (snap.get("ratings", {}).get(lg) or [])}
             print(f"kept old {lg} ratings (feed had {len(lst)})")
+            REPORT.setdefault("notes", []).append(f"kept saved {lg} ratings (feed had {len(lst)} teams)")
 
     added = updated = finals = 0
     for item in parsed["games"]:
@@ -275,6 +288,9 @@ def main():
     snap, old_snap = json.loads(raw), json.loads(raw)
     results = json.loads(RESULTS.read_text(encoding="utf-8"))
     changes = merge(snap, results, parsed, nfl_w, cfb_w, now.strftime("%Y-%m-%dT%H:%M:%SZ"))
+    REPORT.update({"ran_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "nfl_week": nfl_w, "cfb_week": cfb_w, "changes": changes})
+    if not args.dry_run:
+        STATUS.write_text(json.dumps(REPORT, indent=1) + "\n", encoding="utf-8")
     if not changes:
         print("No changes.")
         return 0
