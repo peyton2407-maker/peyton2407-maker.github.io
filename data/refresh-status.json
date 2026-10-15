@@ -32,14 +32,16 @@
    "feed": "https://site.web.api.espn.com/apis/fitt/v3/sports/football/college-football/powerindex?limit=150",
    "teams": 138,
    "with_offense_defense": 138
+  },
+  {
+   "feed": "nfl depth charts",
+   "teams": 32
   }
  ],
- "ran_at": "2026-10-15T17:53:00Z",
+ "ran_at": "2026-10-15T18:11:20Z",
  "nfl_week": 6,
  "cfb_week": 7,
- "changes": [
-  "0 new games, 114 updated, 0 new finals"
- ],
+ "changes": [],
  "parse": {
   "cfb_efficiency_names": [
    "totefficiency",
@@ -65,6 +67,7 @@
     "off": 91.725,
     "def": 83.807
    }
-  ]
+  ],
+  "nfl_depth_teams": 32
  }
 }
