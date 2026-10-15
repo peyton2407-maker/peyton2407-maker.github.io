@@ -34,13 +34,37 @@
    "with_offense_defense": 138
   }
  ],
- "notes": [
-  "college offense/defense missing from the feed; kept saved ones"
- ],
- "ran_at": "2026-10-15T17:50:25Z",
+ "ran_at": "2026-10-15T17:53:00Z",
  "nfl_week": 6,
  "cfb_week": 7,
  "changes": [
-  "0 new games, 2 updated, 0 new finals"
- ]
+  "0 new games, 114 updated, 0 new finals"
+ ],
+ "parse": {
+  "cfb_efficiency_names": [
+   "totefficiency",
+   "totefficiencyrank",
+   "offefficiency",
+   "offefficiencyrank",
+   "defefficiency",
+   "defefficiencyrank",
+   "stefficiency",
+   "stefficiencyrank"
+  ],
+  "cfb_with_offense": 138,
+  "sample": [
+   {
+    "abbr": "ND",
+    "fpi": 29.469,
+    "off": 87.858,
+    "def": 93.647
+   },
+   {
+    "abbr": "UGA",
+    "fpi": 28.85,
+    "off": 91.725,
+    "def": 83.807
+   }
+  ]
+ }
 }
