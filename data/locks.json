@@ -39,7 +39,12 @@
    "total_play": true,
    "spread": 4.5,
    "total": 49.5,
-   "lockedAt": "2026-10-15T22:20:57.467Z"
+   "lockedAt": "2026-10-15T22:20:57.467Z",
+   "close_spread": 4.5,
+   "close_total": 49.5,
+   "closeAt": "2026-10-15T23:16:01.854Z",
+   "clv_side": 0,
+   "clv_total": 0
   },
   "401869950": {
    "id": "401869950",
@@ -59,7 +64,12 @@
    "total_play": true,
    "spread": 3,
    "total": 45.5,
-   "lockedAt": "2026-10-15T22:20:57.467Z"
+   "lockedAt": "2026-10-15T22:20:57.467Z",
+   "close_spread": 3,
+   "close_total": 44.5,
+   "closeAt": "2026-10-15T23:16:01.854Z",
+   "clv_side": 0,
+   "clv_total": 1
   },
   "401872995": {
    "id": "401872995",
@@ -245,5 +255,5 @@
    }
   ]
  },
- "updated": "2026-10-15T22:53:28.834Z"
+ "updated": "2026-10-15T23:16:01.854Z"
 }
