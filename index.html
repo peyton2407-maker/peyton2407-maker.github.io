@@ -1139,6 +1139,9 @@ a[data-view="heisman"], a[href="#heisman"], a[data-view="recruit"], a[href="#rec
 .pick-tag.play { background: var(--turf-soft); color: var(--turf); }
 .pick-tag.lean { background: rgba(255,255,255,.06); color: var(--muted); }
 .stat.plays-stat span { line-height: 1.4; }
+.stat-row:has(.plays-stat.lead) .plays-stat { order: -1; }
+.stat.plays-stat.lead { border-color: var(--turf); }
+.stat.plays-stat.lead b { font-size: 1.25em; }
 .site-foot { max-width: 1240px; margin: 28px auto 36px; padding: 0 16px; color: var(--muted); font-size: 12.5px; line-height: 1.55; text-align: center; }
 .site-foot a { color: var(--ink-soft); }
 </style>
@@ -11154,6 +11157,11 @@ function playTag(flag) {
   if (flag === false) return ' <span class="pick-tag lean">lean</span>';
   return "";
 }
+// Real plays become the headline once they have a meaningful sample.
+const REAL_PLAYS_HEADLINE_MIN = 20;
+function recordText(t) {
+  return t.w + "-" + t.l + (t.psh ? "-" + t.psh : "") + ((t.w + t.l) ? " (" + Math.round(100 * t.w / (t.w + t.l)) + "%)" : "");
+}
 function realPlaysStat(rows, kind) {
   const t = realPlaysTally(rows, kind);
   const rec = `${t.w}-${t.l}${t.psh ? "-" + t.psh : ""}`;
@@ -11161,7 +11169,8 @@ function realPlaysStat(rows, kind) {
   const sub = t.tracked
     ? "Real plays only: picks the board called a play when they locked. The record above also counts leans."
     : "Real plays only (picks the board called a play, not leans). Counting starts with picks locked from Oct 15.";
-  return `<div class="stat plays-stat"><b>${rec}${pct}</b><span>${sub}</span></div>`;
+  const lead = t.graded >= REAL_PLAYS_HEADLINE_MIN;
+  return `<div class="stat plays-stat${lead ? " lead" : ""}"><b>${rec}${pct}</b><span>${lead ? "Real plays: the picks the board called a play when they locked. This is our record." : sub}</span></div>`;
 }
 
 // One season record for everyone: the published past scorecards plus this week's
@@ -11199,7 +11208,12 @@ function renderHome() {
       <a class="home-jump hot" href="#props" data-jump="props"><b>Player props</b><span>Yard lines, hit rates, and the pick</span></a>
       <a class="home-jump hot" href="#card" data-jump="card"><b>This week's card</b><span>${card.frozen ? "Locked. These plays will not move." : (card.legs || []).length + " plays ready to lock"}</span></a>
       <a class="home-jump hot" href="#nfl" data-jump="nfl"><b>NFL board</b><span>This week's sides, totals, weather</span></a>
-      <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l + (tally.psh ? "-" + tally.psh : "") + " this season · " + Math.round(100 * tally.w / tally.n) + "%" : "0-0"}${tally.plays && tally.plays.graded ? " · real plays " + tally.plays.w + "-" + tally.plays.l + (tally.plays.psh ? "-" + tally.plays.psh : "") : ""}</span></a>`;
+      <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${(() => {
+        const rp = tally.plays || { w: 0, l: 0, psh: 0, graded: 0 };
+        const all = tally.n ? recordText(tally) + " all picks, incl. leans" : "No graded picks yet";
+        if (rp.graded >= REAL_PLAYS_HEADLINE_MIN) return "Real plays " + recordText(rp) + " · " + all;
+        return all + (rp.graded ? " · real plays " + recordText(rp) + " so far" : " · real plays tracked from Oct 15");
+      })()}</span></a>`;
     // clicks handled globally via href + hash
   }
   const feat = document.getElementById("homeFeature");
@@ -11344,7 +11358,7 @@ function renderScorecard() {
   const pct = t.n ? Math.round(100 * t.w / t.n) : 0;
   const stats = document.getElementById("scoreStats");
   if (stats) stats.innerHTML = `
-    <div class="stat"><b>${t.w}-${t.l}${t.psh ? "-" + t.psh : ""}</b><span>locked record</span></div>
+    <div class="stat"><b>${t.w}-${t.l}${t.psh ? "-" + t.psh : ""}</b><span>all picks, incl. leans</span></div>
     <div class="stat"><b>${t.n ? pct + "%" : "—"}</b><span>hit rate</span></div>
     <div class="stat"><b>${t.pending}</b><span>still live / upcoming</span></div>
     <div class="stat"><b>${t.clvAvg ? (t.clvAvg > 0 ? "+" : "") + t.clvAvg.toFixed(1) : "—"}</b><span>avg vs close</span></div>
@@ -11656,7 +11670,7 @@ function renderHistory() {
   const pending = rows.filter((r) => !r.graded).length;
   const stats = document.getElementById("historyStats");
   if (stats) stats.innerHTML = `
-    <div class="stat"><b>${w}-${l}${psh ? "-" + psh : ""}</b><span>locked record</span></div>
+    <div class="stat"><b>${w}-${l}${psh ? "-" + psh : ""}</b><span>all picks, incl. leans</span></div>
     <div class="stat"><b>${n ? pct + "%" : "—"}</b><span>hit rate</span></div>
     <div class="stat"><b>${pending}</b><span>still live / upcoming</span></div>
     <div class="stat"><b>${(() => { const c = rows.filter((r) => r.clv != null); if (!c.length) return "—"; const a = c.reduce((s, r) => s + Number(r.clv), 0) / c.length; return (a > 0 ? "+" : "") + a.toFixed(1); })()}</b><span>avg vs close</span></div>
