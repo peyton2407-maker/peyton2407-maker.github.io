@@ -2780,6 +2780,12 @@ function fpiMap(payload, league) {
     projNames.forEach((n, i) => { pk[n] = (cats.projections?.values || [])[i]; });
     const ek = {};
     effNames.forEach((n, i) => { ek[n] = (cats.efficiencies?.values || [])[i]; });
+    // College efficiencies come without names: [overall, rank, offense, rank, defense, rank,
+    // special teams, rank] on ESPN's 0-100 scale. A team without them gets no unit ratings
+    // (rather than numbers from a different scale).
+    const effVals = (cats.efficiencies && cats.efficiencies.values) || [];
+    const effOff = !effNames.length && effVals.length >= 6 && Number.isFinite(Number(effVals[2])) ? Number(effVals[2]) : null;
+    const effDef = !effNames.length && effVals.length >= 6 && Number.isFinite(Number(effVals[4])) ? Number(effVals[4]) : null;
     out[tid] = {
       id: tid,
       name: team.displayName,
@@ -2787,8 +2793,8 @@ function fpiMap(payload, league) {
       logo: logoFrom(team, league),
       fpi: kv.fpi,
       fpi_rank: kv.fpirank,
-      off: kv.epaoffense ?? ek.offensiverating ?? Object.values(ek)[0],
-      def: kv.epadefense ?? Object.values(ek)[2],
+      off: league === "cfb" ? (ek.offensiverating ?? effOff) : (kv.epaoffense ?? ek.offensiverating ?? Object.values(ek)[0]),
+      def: league === "cfb" ? (ek.defensiverating ?? effDef) : (kv.epadefense ?? Object.values(ek)[2]),
       st: kv.epaspecialteams,
       proj_wins: pk.projectedwins ?? pk.projectedw ?? kv.projectedw,
       playoff_pct: pk.playoffpct ?? pk.probmakeplayoffs ?? kv.probmakeplayoffs,
@@ -11087,6 +11093,29 @@ function ggArchive(locks, past) {
   return { locks: L, past: P, changes };
 }
 window.ggLockRun = ggLockRun;
+// Used by scripts/refresh_data.py: turn raw ESPN scoreboards and power indexes into
+// snapshot-shaped games and ratings with this page's own parsers and model.
+function ggParseFeeds(feeds) {
+  const ratings = {};
+  const lists = {};
+  ["nfl", "cfb"].forEach((lg) => {
+    const map = feeds.fpi && feeds.fpi[lg] ? fpiMap(feeds.fpi[lg], lg) : {};
+    ratings[lg] = map;
+    lists[lg] = Object.values(map).filter((r) => r.fpi != null).sort((a, b) => b.fpi - a.fpi)
+      .map((r, i) => Object.assign({}, r, { board_rank: i + 1 }));
+  });
+  const games = [];
+  (feeds.boards || []).forEach((b) => {
+    (parseGames(b.payload, b.league) || []).forEach((g) => {
+      if (!g || !g.id) return;
+      if (g.week == null && b.week != null) g.week = b.week;
+      const proj = projectGame(g, ratings[g.league] || {});
+      games.push({ game: g, proj });
+    });
+  });
+  return { games, ratings: lists };
+}
+window.ggParseFeeds = ggParseFeeds;
 window.ggArchive = ggArchive;
 
 // Record of the picks the board actually called a play when they locked (not leans).

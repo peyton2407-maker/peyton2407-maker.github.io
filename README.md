@@ -13,13 +13,14 @@ Live at https://peyton2407-maker.github.io/
 | `hashmark.html`, `boom.html` | Old addresses. They now forward to `/` and keep the `#tab`. |
 | `data/locks.json` | Picks, plays of the day and this week's card, locked 90 minutes before kickoff. Same for every visitor. |
 | `scripts/lock_runner.py` | Runs every 15 minutes from `.github/workflows/lock-picks.yml`: opens the live board, locks what's due, grades finished plays of the day, and moves finished weeks into `past-scorecards.json`. |
+| `scripts/refresh_data.py` | Runs every 2 hours from `.github/workflows/refresh-data.yml`: updates scores, lines, new games, team ratings and finals in `snapshot.json` and `week-results.json` from ESPN, using the board's own parsers. Picks are never edited here. |
 | `scripts/slim_injuries.py` | Shrinks `data/injuries.json` to the fields the board reads (about 9 MB down to about 0.6 MB). |
 
 GitHub Pages serves this branch directly (Settings → Pages → Deploy from a branch, `main`, root). There is no build step.
 
 ## When you update the data
 
-1. Save the new `data/snapshot.json`. Finished games need `completed: true`, a final status and the real score. The board ignores a game marked finished while it still says scheduled at 0-0, so a bad pull can't grade picks or skew the team form numbers.
+1. The Refresh data job keeps `data/snapshot.json` current on its own. If you save a new one by hand, finished games need `completed: true`, a final status and the real score. The board ignores a game marked finished while it still says scheduled at 0-0, so a bad pull can't grade picks or skew the team form numbers.
 2. After saving a new raw ESPN injury pull to `data/injuries.json`, run `python3 scripts/slim_injuries.py`.
 3. Finished weeks are added to `data/past-scorecards.json` automatically by the Lock picks job (below). You can still add or fix a week by hand; the job never overwrites a week that's already there. The home page season record is built from that file plus this week's graded plays, so it matches Scorecard and Past weeks for everyone.
 
