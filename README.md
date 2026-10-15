@@ -11,7 +11,6 @@ Live at https://peyton2407-maker.github.io/
 | `split/` | The Split, college matchup sheets. |
 | `data/` | Files the board loads: `snapshot.json` (games, lines, projections), `past-scorecards.json` (locked picks by week), `week-results.json` (final scores), `injuries.json`, polls, notes. |
 | `hashmark.html`, `boom.html` | Old addresses. They now forward to `/` and keep the `#tab`. |
-| `scripts/update_rz_touches.py` | Weekly red-zone touch counts (runs Tuesdays from `.github/workflows/rz-touches.yml`). |
 | `data/locks.json` | Picks, plays of the day and this week's card, locked 90 minutes before kickoff. Same for every visitor. |
 | `scripts/lock_runner.py` | Runs every 15 minutes from `.github/workflows/lock-picks.yml`: opens the live board, locks what's due, grades finished plays of the day, and moves finished weeks into `past-scorecards.json`. |
 | `scripts/slim_injuries.py` | Shrinks `data/injuries.json` to the fields the board reads (about 9 MB down to about 0.6 MB). |

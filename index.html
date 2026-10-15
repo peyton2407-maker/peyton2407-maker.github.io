@@ -5074,10 +5074,6 @@ function simulateGame(game) {
   };
 }
 
-function ratingsList(map) {
-  return Object.values(map).filter((r) => r.fpi != null).sort((a, b) => b.fpi - a.fpi)
-    .map((r, i) => ({ ...r, board_rank: i + 1 }));
-}
 function letterGrade(z) {
   if (z >= 1.6) return "A+";
   if (z >= 1.1) return "A";
@@ -5364,87 +5360,6 @@ function attachProps(game, players) {
   ];
 }
 
-async function liveRefresh() {
-  setStamp("Refreshing live lines…", true);
-  const year = new Date().getFullYear();
-  const [nflSb, cfb1, cfb2, nflFpi, cfbFpi] = await Promise.all([
-    getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?limit=50"),
-    getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?limit=300"),
-    getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?groups=80&limit=300"),
-    getJSON("https://site.web.api.espn.com/apis/fitt/v3/sports/football/nfl/powerindex?limit=50"),
-    getJSON("https://site.web.api.espn.com/apis/fitt/v3/sports/football/college-football/powerindex?limit=150"),
-  ]);
-  const nflR = fpiMap(nflFpi, "nfl");
-  const cfbR = fpiMap(cfbFpi, "cfb");
-  const seen = new Set();
-  const games = [];
-  [...parseGames(nflSb, "nfl"), ...parseGames(cfb1, "cfb"), ...parseGames(cfb2, "cfb")].forEach((g) => {
-    if (seen.has(g.id)) return;
-    seen.add(g.id);
-    g.proj = projectGame(g, g.league === "nfl" ? nflR : cfbR);
-    const sim = simulateGame(g);
-    if (sim) { g.sim = sim; g.proj.sim = sim; }
-    games.push(g);
-  });
-  if (typeof applyLiveBoard === "function") applyLiveBoard(games);
-
-  DATA = DATA || {};
-  DATA.generated_at = new Date().toISOString();
-  DATA.live = true;
-  DATA.games = games;
-  DATA.ratings = { nfl: ratingsList(nflR), cfb: ratingsList(cfbR) };
-  if (typeof enrichPowerRankings === "function") enrichPowerRankings();
-  DATA.news = DATA.news || { nfl: [], cfb: [] };
-  DATA.notes = DATA.notes || {};
-  DATA.app = "HASHMARK";
-  if (typeof renderBoard === "function") renderBoard();
-  if (typeof renderRatings === "function" && view === "ratings") renderRatings();
-
-  setStamp("Pulling stadium forecasts…", true);
-  try { await attachWeather(games); } catch (e) { console.warn(e); }
-  DATA.games = games;
-  if (typeof renderBoard === "function") renderBoard();
-
-  setStamp("Loading yards + props…", true);
-  const jobs = [];
-  const want = new Set();
-  games.forEach((g) => {
-    ["home", "away"].forEach((side) => {
-      const key = `${g.league}:${g[side].id}`;
-      if (want.has(key)) return;
-      if (g.league === "nfl" || g.odds?.home_spread != null) {
-        want.add(key);
-        jobs.push([g.league, g[side].id]);
-      }
-    });
-  });
-  const profiles = {};
-  await poolMap(jobs.slice(0, 110), 6, async ([lg, id]) => {
-    profiles[`${lg}:${id}`] = await fetchTeamProfile(lg, id);
-  });
-  let props = [];
-  try { props = await collectProps(); } catch (e) { console.warn(e); }
-  games.forEach((g) => {
-    const box = projectBox(g, profiles);
-    if (box) {
-      g.box = box;
-      g.proj.home_points = box.home_points;
-      g.proj.away_points = box.away_points;
-      g.proj.hashmark_total = box.total_points;
-      g._wxApplied = false;
-      applyWeatherToGame(g);
-    }
-    if (g.league === "nfl") g.props = attachProps(g, props);
-  });
-  const learned = learnFromFinals(games);
-  games.forEach(applyLearningToGame);
-  DATA.games = games;
-  DATA.notes = DATA.notes || {};
-  DATA.notes.learning = `Post-game residuals from ${Object.keys((DATA.residuals||{}).games_learned||{}).length} finals; remaining board shifted after each result.`;
-  if (typeof renderBoard === "function") renderBoard();
-  setStamp(`Live ${new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })} · learned ${learned}`, true);
-  return games.length;
-}
 
 window.learnFromFinals = learnFromFinals;
 window.applyLearningToGame = applyLearningToGame;
@@ -11319,11 +11234,16 @@ function cardShareText() {
 function renderWeeklyCard() {
   const card = ensureWeeklyCard(false);
   const stamp = document.getElementById("cardStamp");
+  const published = !!(window.GG_LOCKS && window.GG_LOCKS.card && card === window.GG_LOCKS.card);
+  const when = card.lockedAt ? new Date(card.lockedAt).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" }) : "";
   if (stamp) stamp.textContent = card.frozen
-    ? "This card is locked. It will not change even if the model moves."
-    : "Preview — hit “Lock this week's card” to freeze it before kickoff.";
+    ? (published
+      ? "Locked for everyone" + (when ? " " + when : "") + ". It will not change even if the model moves."
+      : "This card is locked. It will not change even if the model moves.")
+    : "Preview. The card locks for everyone on its own at Thursday noon ET, or 90 minutes before its first game.";
+  // Locking is automatic and shared now, so the old "lock it yourself" button is hidden.
   const btn = document.getElementById("freezeCardBtn");
-  if (btn && card.frozen) btn.textContent = "Locked";
+  if (btn) btn.style.display = "none";
   const wrap = document.getElementById("cardWrap");
   if (!wrap) return;
   wrap.innerHTML = `<article class="share-card">
