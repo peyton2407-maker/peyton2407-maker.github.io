@@ -1738,13 +1738,14 @@ const LIVE = {
   NFL_AVG_TOTAL: 45.6,
   CFB_AVG_TOTAL: 54.2,
   MARKET_WEIGHT_NFL: 0.70,
-  MARKET_WEIGHT_CFB: 0.44,
+  // College spreads: was 0.44 (model 56%). Backtest on locked Week 4-5 picks: bigger model
+  // edges did worse (4-6 pt edges went 3-9), so trust the model at 25% like totals.
+  MARKET_WEIGHT_CFB: 0.75,
   CFB_TOTAL_MARKET: 0.52,
   // College calibration (Oct 15, backtested on this season's locked Week 4-5 picks):
   // the unit model ran ~2-6 points over the market on every slate, and its edges did not
   // predict results. Remove the slate's average lean and trust the model at 25%.
   CFB_TOTAL_TRUST: 0.25,
-  CFB_EDGE_TRUST: 0.25,
   CFB_TOTAL_SIGMA: 13.5,
   SIM_N: 30000,
   SIM_N_NFL: 2500,
@@ -3869,12 +3870,12 @@ function cfbSlateLean() {
   return +(gaps.length % 2 ? gaps[mid] : (gaps[mid - 1] + gaps[mid]) / 2).toFixed(2);
 }
 // College confidence = the estimated chance the best play on the game hits, in percent.
-// Spread edges are trusted at CFB_EDGE_TRUST; total edges are already shrunk.
+// Both edges are already shrunk toward the market (model trusted at 25%).
 function cfbConfidence(edgeSpread, edgeTotal, margin, sidePlay, totalPlay) {
   let best = 0;
   if (sidePlay && edgeSpread != null) {
     const sig = typeof cfbSigma === "function" ? cfbSigma(margin) : LIVE.CFB_SIGMA;
-    best = Math.max(best, normCdf(LIVE.CFB_EDGE_TRUST * Math.abs(edgeSpread) / sig));
+    best = Math.max(best, normCdf(Math.abs(edgeSpread) / sig));
   }
   if (totalPlay && edgeTotal != null) best = Math.max(best, normCdf(Math.abs(edgeTotal) / LIVE.CFB_TOTAL_SIGMA));
   return best ? Math.round(best * 100) : 0;
@@ -10536,7 +10537,10 @@ function playScore(g) {
   return n;
 }
 function buildWeeklyLegs(games) {
-  const upcoming = (games || []).filter((g) => !g.completed && isPlay(g.proj));
+  const upcoming = (games || []).filter((g) => !g.completed && isPlay(g.proj)
+    && !(typeof isPastKickoff === "function" && isPastKickoff(g))
+    && !(g.league === "nfl" && typeof isThisNflWeek === "function" && !isThisNflWeek(g))
+    && !(g.league === "cfb" && typeof isThisCfbWeek === "function" && !isThisCfbWeek(g)));
   upcoming.sort((a, b) => playScore(b) - playScore(a));
   const legs = [];
   const seen = new Set();
@@ -10577,7 +10581,9 @@ function ensureWeeklyCard(force) {
     saveDesk();
     return desk.card;
   }
-  if (window.LOCKED_CARD && window.LOCKED_CARD.frozen && (window.LOCKED_CARD.legs || []).length) {
+  // The published card only counts for the week it was locked. An old one (the Week 4 card
+  // baked into this page) must not show up as "This week's card".
+  if (window.LOCKED_CARD && window.LOCKED_CARD.frozen && window.LOCKED_CARD.weekKey === key && (window.LOCKED_CARD.legs || []).length) {
     desk.card = window.LOCKED_CARD;
     return desk.card;
   }
