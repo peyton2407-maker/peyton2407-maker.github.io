@@ -1134,6 +1134,11 @@ a[data-view="heisman"], a[href="#heisman"], a[data-view="recruit"], a[href="#rec
 /* Highlighted tabs: label on one line, the "tap" hint on its own line under it. */
 #tabBar a.tab.star { flex-wrap: wrap; align-content: center; }
 #tabBar a.tab.star::after { content: "tap"; flex-basis: 100%; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; margin-top: 2px; }
+.stat.plays-stat { grid-column: 1 / -1; }
+.pick-tag { display: inline-block; font-size: 10.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 1px 6px; border-radius: 6px; vertical-align: 1px; }
+.pick-tag.play { background: var(--turf-soft); color: var(--turf); }
+.pick-tag.lean { background: rgba(255,255,255,.06); color: var(--muted); }
+.stat.plays-stat span { line-height: 1.4; }
 .site-foot { max-width: 1240px; margin: 28px auto 36px; padding: 0 16px; color: var(--muted); font-size: 12.5px; line-height: 1.55; text-align: center; }
 .site-foot a { color: var(--ink-soft); }
 </style>
@@ -10901,6 +10906,8 @@ function playsForScorecard(league) {
       row.total_pick = lock.total_pick;
       row.locked_at = lock.lockedAt;
       row.published = true;
+      if (lock.side_play != null) row.side_play = !!lock.side_play;
+      if (lock.total_play != null) row.total_play = !!lock.total_play;
     }
     const old = byId[String(g.id)];
     if (old && old.graded) {
@@ -11122,7 +11129,8 @@ function ggArchive(locks, past) {
         id: r.id, week: Number(wk), short: r.short, home: r.home, away: r.away, date: r.date,
         pick: r.pick, pick_line: r.pick_line, total_pick: r.total_pick,
         hs: String(finals[String(r.id)].hs), as: String(finals[String(r.id)].as),
-        homeAbbr: r.home, awayAbbr: r.away
+        homeAbbr: r.home, awayAbbr: r.away,
+        side_play: r.side_play, total_play: r.total_play
       }));
       changes.push("archived " + lg + " week " + wk + " (" + rows.length + " picks)");
     }
@@ -11133,27 +11141,63 @@ function ggArchive(locks, past) {
 window.ggLockRun = ggLockRun;
 window.ggArchive = ggArchive;
 
+// Record of the picks the board actually called a play when they locked (not leans).
+// Only rows locked by the shared lock job carry the flags, so it starts Oct 15, 2026.
+function realPlaysTally(rows, kind) {
+  let w = 0, l = 0, psh = 0, n = 0;
+  (rows || []).forEach((r) => {
+    if (!r) return;
+    const parts = [];
+    if (kind !== "total" && r.side_play === true) parts.push(r.ats);
+    if (kind !== "spread" && r.total_play === true) parts.push(r.ou);
+    parts.forEach((x) => {
+      n++;
+      if (x === "HIT") w++;
+      else if (x === "MISS") l++;
+      else if (x === "PUSH") psh++;
+    });
+  });
+  return { w, l, psh, graded: w + l, tracked: n };
+}
+// Small tag on a locked pick: "play" if the board called it, "lean" if it didn't.
+function playTag(flag) {
+  if (flag === true) return ' <span class="pick-tag play">play</span>';
+  if (flag === false) return ' <span class="pick-tag lean">lean</span>';
+  return "";
+}
+function realPlaysStat(rows, kind) {
+  const t = realPlaysTally(rows, kind);
+  const rec = `${t.w}-${t.l}${t.psh ? "-" + t.psh : ""}`;
+  const pct = t.graded ? ` · ${Math.round(100 * t.w / t.graded)}%` : "";
+  const sub = t.tracked
+    ? "Real plays only: picks the board called a play when they locked. The record above also counts leans."
+    : "Real plays only (picks the board called a play, not leans). Counting starts with picks locked from Oct 15.";
+  return `<div class="stat plays-stat"><b>${rec}${pct}</b><span>${sub}</span></div>`;
+}
+
 // One season record for everyone: the published past scorecards plus this week's
 // graded plays. Same numbers as Scorecard + Past weeks, never rebuilt per visitor.
 function seasonRecord() {
   let w = 0, l = 0, psh = 0;
   const seen = new Set();
   const add = (lg, r) => {
-    if (!r || r.id == null) return;
+    if (!r || r.id == null) return false;
     const key = lg + ":" + r.id;
-    if (seen.has(key)) return;
+    if (seen.has(key)) return false;
     seen.add(key);
     ["ats", "ou"].forEach((k) => {
       if (r[k] === "HIT") w++;
       else if (r[k] === "MISS") l++;
       else if (r[k] === "PUSH") psh++;
     });
+    return true;
   };
+  const all = [];
   ["nfl", "cfb"].forEach((lg) => {
-    try { (historyPlays(lg) || []).forEach((r) => add(lg, r)); } catch (e) {}
-    try { (scoreTally(lg, "all").rows || []).forEach((r) => add(lg, r)); } catch (e) {}
+    try { (historyPlays(lg) || []).forEach((r) => { if (add(lg, r)) all.push(r); }); } catch (e) {}
+    try { (scoreTally(lg, "all").rows || []).forEach((r) => { if (add(lg, r)) all.push(r); }); } catch (e) {}
   });
-  return { w, l, psh, n: w + l };
+  return { w, l, psh, n: w + l, plays: realPlaysTally(all, "all") };
 }
 function renderHome() {
   syncDesk();
@@ -11166,7 +11210,7 @@ function renderHome() {
       <a class="home-jump hot" href="#props" data-jump="props"><b>Player props</b><span>Yard lines, hit rates, and the pick</span></a>
       <a class="home-jump hot" href="#card" data-jump="card"><b>This week's card</b><span>${card.frozen ? "Locked. These plays will not move." : (card.legs || []).length + " plays ready to lock"}</span></a>
       <a class="home-jump hot" href="#nfl" data-jump="nfl"><b>NFL board</b><span>This week's sides, totals, weather</span></a>
-      <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l + (tally.psh ? "-" + tally.psh : "") + " this season · " + Math.round(100 * tally.w / tally.n) + "%" : "0-0"}</span></a>`;
+      <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${tally.n ? tally.w + "-" + tally.l + (tally.psh ? "-" + tally.psh : "") + " this season · " + Math.round(100 * tally.w / tally.n) + "%" : "0-0"}${tally.plays && tally.plays.graded ? " · real plays " + tally.plays.w + "-" + tally.plays.l + (tally.plays.psh ? "-" + tally.plays.psh : "") : ""}</span></a>`;
     // clicks handled globally via href + hash
   }
   const feat = document.getElementById("homeFeature");
@@ -11309,7 +11353,8 @@ function renderScorecard() {
     <div class="stat"><b>${t.w}-${t.l}${t.psh ? "-" + t.psh : ""}</b><span>locked record</span></div>
     <div class="stat"><b>${t.n ? pct + "%" : "—"}</b><span>hit rate</span></div>
     <div class="stat"><b>${t.pending}</b><span>still live / upcoming</span></div>
-    <div class="stat"><b>${t.clvAvg ? (t.clvAvg > 0 ? "+" : "") + t.clvAvg.toFixed(1) : "—"}</b><span>avg vs close</span></div>`;
+    <div class="stat"><b>${t.clvAvg ? (t.clvAvg > 0 ? "+" : "") + t.clvAvg.toFixed(1) : "—"}</b><span>avg vs close</span></div>
+    ${realPlaysStat(t.rows, kind)}`;
   const wrap = document.getElementById("scoreWrap");
   let rows = playsForScorecard(league);
   if (week && week !== "all") rows = rows.filter((r) => String(r.week || "") === String(week));
@@ -11351,7 +11396,7 @@ function renderScorecard() {
       const showT = kind !== "spread";
       return `<tr data-id="${r.id}">
         <td><b>${r.short || (r.away + " @ " + r.home)}</b><div class="subn">${scoreWeekLabel(r.league, r.week)} · ${r.final || fmt.when(r.date)}</div></td>
-        <td>${(r.pick && r.pick !== "NO PLAY") ? (r.pick_line || r.pick) : "No side"}<div class="subn">${r.total_pick && r.total_pick !== "NO PLAY" ? r.total_pick : ""}</div></td>
+        <td>${(r.pick && r.pick !== "NO PLAY") ? (r.pick_line || r.pick) + playTag(r.side_play) : "No side"}<div class="subn">${r.total_pick && r.total_pick !== "NO PLAY" ? r.total_pick + playTag(r.total_play) : ""}</div></td>
         <td>${showS ? ats : "—"}</td>
         <td>${showT ? ou : "—"}</td>
         <td>${r.clv == null ? "—" : ((r.clv > 0 ? "+" : "") + r.clv)}</td>
@@ -11456,6 +11501,7 @@ function savedPastRows(league) {
         short: src.short, home: src.home, away: src.away, date: src.date,
         pick: src.pick || null, pick_line: src.pick_line || null, total_pick: src.total_pick || null,
         hs: src.hs, as: src.as, homeAbbr: src.homeAbbr || src.home, awayAbbr: src.awayAbbr || src.away,
+        side_play: src.side_play, total_play: src.total_play,
         ats: null, ou: null, clv: null, graded: false
       });
     });
@@ -11617,7 +11663,8 @@ function renderHistory() {
     <div class="stat"><b>${w}-${l}${psh ? "-" + psh : ""}</b><span>locked record</span></div>
     <div class="stat"><b>${n ? pct + "%" : "—"}</b><span>hit rate</span></div>
     <div class="stat"><b>${pending}</b><span>still live / upcoming</span></div>
-    <div class="stat"><b>—</b><span>avg vs close</span></div>`;
+    <div class="stat"><b>—</b><span>avg vs close</span></div>
+    ${realPlaysStat(rows, kind)}`;
   const wrap = document.getElementById("historyWrap");
   const stamp = document.getElementById("historyStamp");
   const leagueName = league === "nfl" ? "NFL" : "College";
@@ -11650,7 +11697,7 @@ function renderHistory() {
       const showT = kind !== "spread";
       return `<tr data-id="${r.id}">
         <td><b>${r.short || (r.away + " @ " + r.home)}</b><div class="subn">${group.label} · ${r.final || fmt.when(r.date)}</div></td>
-        <td>${(r.pick && r.pick !== "NO PLAY") ? (r.pick_line || r.pick) : "No side"}<div class="subn">${r.total_pick && r.total_pick !== "NO PLAY" ? r.total_pick : ""}</div></td>
+        <td>${(r.pick && r.pick !== "NO PLAY") ? (r.pick_line || r.pick) + playTag(r.side_play) : "No side"}<div class="subn">${r.total_pick && r.total_pick !== "NO PLAY" ? r.total_pick + playTag(r.total_play) : ""}</div></td>
         <td>${showS ? ats : "—"}</td>
         <td>${showT ? ou : "—"}</td>
         <td>${r.clv == null ? "—" : ((r.clv > 0 ? "+" : "") + r.clv)}</td>

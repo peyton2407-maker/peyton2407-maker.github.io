@@ -84,6 +84,8 @@ async def main():
             await page.clock.run_for(int(args.settle * 1000))
         else:
             await page.wait_for_timeout(int(args.settle * 1000))
+        # The scorecards, results and published locks load after the board itself.
+        await page.wait_for_function("!!window.PAST_CARDS && Array.isArray(window.WEEK_RESULTS)", timeout=60000)
         # Make sure scores and finals for this week and last week are in.
         await page.evaluate("async () => { try { if (typeof pullLiveScores === 'function') await pullLiveScores(false); } catch (e) {} }")
         if args.inject:
