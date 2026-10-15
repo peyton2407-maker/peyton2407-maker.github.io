@@ -2783,9 +2783,15 @@ function fpiMap(payload, league) {
     // College efficiencies come without names: [overall, rank, offense, rank, defense, rank,
     // special teams, rank] on ESPN's 0-100 scale. A team without them gets no unit ratings
     // (rather than numbers from a different scale).
+    // When ESPN does name them, find the offense/defense columns by name (not the ranks).
     const effVals = (cats.efficiencies && cats.efficiencies.values) || [];
-    const effOff = !effNames.length && effVals.length >= 6 && Number.isFinite(Number(effVals[2])) ? Number(effVals[2]) : null;
-    const effDef = !effNames.length && effVals.length >= 6 && Number.isFinite(Number(effVals[4])) ? Number(effVals[4]) : null;
+    const effIdx = (re, fallback) => {
+      const i = effNames.findIndex((n) => re.test(String(n)) && !/rank|rk/i.test(String(n)));
+      return i >= 0 ? i : fallback;
+    };
+    const iOff = effIdx(/off/i, 2), iDef = effIdx(/def/i, 4);
+    const effOff = effVals.length >= 6 && Number.isFinite(Number(effVals[iOff])) ? Number(effVals[iOff]) : null;
+    const effDef = effVals.length >= 6 && Number.isFinite(Number(effVals[iDef])) ? Number(effVals[iDef]) : null;
     out[tid] = {
       id: tid,
       name: team.displayName,
@@ -11113,7 +11119,13 @@ function ggParseFeeds(feeds) {
       games.push({ game: g, proj });
     });
   });
-  return { games, ratings: lists };
+  const effCat = ((feeds.fpi && feeds.fpi.cfb && feeds.fpi.cfb.categories) || []).find((c) => c && c.name === "efficiencies") || null;
+  const debug = {
+    cfb_efficiency_names: effCat ? (effCat.names || null) : "no efficiencies category",
+    cfb_with_offense: (lists.cfb || []).filter((r) => r.off != null).length,
+    sample: (lists.cfb || []).slice(0, 2).map((r) => ({ abbr: r.abbr, fpi: r.fpi, off: r.off, def: r.def }))
+  };
+  return { games, ratings: lists, debug };
 }
 window.ggParseFeeds = ggParseFeeds;
 window.ggArchive = ggArchive;

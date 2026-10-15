@@ -288,7 +288,8 @@ def main():
     snap, old_snap = json.loads(raw), json.loads(raw)
     results = json.loads(RESULTS.read_text(encoding="utf-8"))
     changes = merge(snap, results, parsed, nfl_w, cfb_w, now.strftime("%Y-%m-%dT%H:%M:%SZ"))
-    REPORT.update({"ran_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "nfl_week": nfl_w, "cfb_week": cfb_w, "changes": changes})
+    REPORT.update({"ran_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "nfl_week": nfl_w, "cfb_week": cfb_w, "changes": changes,
+                   "parse": parsed.get("debug")})
     if not args.dry_run:
         STATUS.write_text(json.dumps(REPORT, indent=1) + "\n", encoding="utf-8")
     if not changes:
