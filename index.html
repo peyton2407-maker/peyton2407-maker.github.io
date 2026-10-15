@@ -3115,7 +3115,7 @@ async function pullNflCloseMiss() {
     const need = [];
     const start = (book.throughWeek || 0) + 1;
     for (let w = start; w <= week; w++) {
-      const data = await getJSON("https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?seasontype=2&week=" + w + "&dates=2026&limit=50");
+      const data = await getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?seasontype=2&week=" + w + "&dates=2026&limit=50");
       (data.events || []).forEach((ev) => {
         const comp = (ev.competitions || [])[0] || {};
         if (!(comp.status && comp.status.type && comp.status.type.completed)) return;
@@ -3137,7 +3137,7 @@ async function pullNflCloseMiss() {
       const row = need[cursor++];
       if (!row) return;
       try {
-        const sm = await getJSON("https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=" + row.id);
+        const sm = await getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=" + row.id);
         const pc = (sm.pickcenter || [])[0] || {};
         const spread = pc.spread != null ? Number(pc.spread) : null;
         if (spread != null && Number.isFinite(spread)) {
@@ -4245,7 +4245,7 @@ async function pullNflDepth() {
       const id = need[cursor++];
       if (!id) return;
       try {
-        const data = await getJSON("https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/" + id + "/depthcharts");
+        const data = await getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/" + id + "/depthcharts");
         rememberNflDepth(id, data);
       } catch (e) {}
       return next();
@@ -4520,7 +4520,7 @@ async function pullCfbCloseMiss() {
     const need = [];
     const start = Math.max(1, (book.throughWeek || 0) + 1);
     for (let w = start; w <= week; w++) {
-      const data = await getJSON("https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?seasontype=2&week=" + w + "&dates=2026&groups=80&limit=400");
+      const data = await getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?seasontype=2&week=" + w + "&dates=2026&groups=80&limit=400");
       (data.events || []).forEach((ev) => {
         const comp = (ev.competitions || [])[0] || {};
         if (!(comp.status && comp.status.type && comp.status.type.completed)) return;
@@ -4538,7 +4538,7 @@ async function pullCfbCloseMiss() {
       const row = need[cursor++];
       if (!row) return;
       try {
-        const sm = await getJSON("https://site.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=" + row.id);
+        const sm = await getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=" + row.id);
         const pc = (sm.pickcenter || [])[0] || {};
         const spread = pc.spread != null ? Number(pc.spread) : null;
         if (spread != null && Number.isFinite(spread)) {
@@ -5239,7 +5239,7 @@ async function fetchTeamProfile(league, teamId) {
   const slug = league === "nfl" ? "nfl" : "college-football";
   const prior = LIVE.PRIORS[league];
   try {
-    const payload = await getJSON(`https://site.api.espn.com/apis/site/v2/sports/football/${slug}/teams/${teamId}/statistics`);
+    const payload = await getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/${slug}/teams/${teamId}/statistics`);
     const cats = payload.results?.stats?.categories || [];
     const gp = statVal(cats, "rushing", "teamGamesPlayed") || statVal(cats, "passing", "teamGamesPlayed") || 0;
     let allowed = statVal(cats, "defensive", "yardsAllowed");
@@ -8799,15 +8799,16 @@ function ensureNflDk(rows) {
   const ids = [...new Set((rows || []).map((p) => String(p.game_id || "")).filter(Boolean))];
   window.__DK = window.__DK || {};
   window.__DK_WAIT = window.__DK_WAIT || {};
-  const fresh = (id) => window.__DK && window.__DK[id] && window.__DK[id].__listed && Date.now() - ((window.__DK_AT || {})[id] || 0) < 2 * 60 * 1000;
-  const todo = ids.filter((id) => !fresh(id) && !window.__DK_WAIT[id]);
+  const todo = ids.filter((id) => !dkFresh(id) && !window.__DK_WAIT[id]);
   if (!todo.length) return;
   todo.forEach((id) => { window.__DK_WAIT[id] = true; });
   Promise.all(todo.map((id) => Promise.all([
     loadDkForGame(id).catch(() => ({})),
     loadAnOdds({ game_id: id }).catch(() => ({}))
   ]).finally(() => { delete window.__DK_WAIT[id]; }))).then(() => {
-    if (typeof view !== "undefined" && view === "props" && typeof renderProps === "function") renderProps();
+    // Only redraw when new lines actually arrived; redrawing on nothing restarted the fetch.
+    const got = todo.some((id) => window.__DK[id] && window.__DK[id].__listed);
+    if (got && typeof view !== "undefined" && view === "props" && typeof renderProps === "function") renderProps();
   });
 }
 function dkLine(p, key) {
@@ -8835,7 +8836,7 @@ async function loadDkForGame(gameId) {
   const id = String(gameId || "");
   if (!id) return {};
   window.__DK_AT = window.__DK_AT || {};
-  if (window.__DK[id] && window.__DK[id].__listed && Date.now() - (window.__DK_AT[id] || 0) < 2 * 60 * 1000) return window.__DK[id];
+  if (dkFresh(id)) return window.__DK[id];
   const bag = {};
   try {
     const base = "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/" + id + "/competitions/" + id + "/odds/100/propBets?lang=en&region=us&limit=1000&page=";
@@ -8866,14 +8867,18 @@ async function loadDkForGame(gameId) {
     }
   } catch (e) {}
   const listed = Object.keys(bag).length > 0;
+  // Remember the answer either way. A game DraftKings has no props for yet is checked
+  // again in 10 minutes, not on every render (that loop sent ~1,200 requests a visit).
   window.__DK[id] = bag;
-  if (listed) {
-    bag.__listed = true;
-    window.__DK_AT[id] = Date.now();
-  } else {
-    delete window.__DK[id];
-  }
+  window.__DK_AT[id] = Date.now();
+  if (listed) bag.__listed = true;
   return bag;
+}
+function dkFresh(id) {
+  const bag = window.__DK && window.__DK[id];
+  if (!bag) return false;
+  const age = Date.now() - ((window.__DK_AT || {})[id] || 0);
+  return age < (bag.__listed ? 2 : 10) * 60 * 1000;
 }
 
 function oddsKey(name) {
