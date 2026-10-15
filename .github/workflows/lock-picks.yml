@@ -1,0 +1,54 @@
+name: Lock picks
+# Every 15 minutes: open the live board, lock any pick / play of the day / weekly card
+# whose kickoff is 90 minutes away or less, grade finished plays of the day, and move
+# finished weeks into the past scorecards. Commits only when something changed.
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+concurrency:
+  group: lock-picks
+  cancel-in-progress: false
+jobs:
+  lock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install the browser
+        run: |
+          pip install --quiet playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Lock, grade and archive
+        run: python3 scripts/lock_runner.py
+      - name: Commit any new locks
+        run: |
+          git config user.name "peyton2407-maker"
+          git config user.email "331867039+peyton2407-maker@users.noreply.github.com"
+          git add data/locks.json data/past-scorecards.json
+          if git diff --cached --quiet; then
+            echo "Nothing new."
+            exit 0
+          fi
+          git commit -m "Lock picks: $(date -u +'%a %H:%M UTC')"
+          for i in 1 2 3; do
+            if git pull --rebase --quiet origin main && git push; then
+              echo "pushed=1" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1
+        id: commit
+      - name: Rebuild the site
+        # A push made with the workflow token may not start a Pages build on its own.
+        if: steps.commit.outputs.pushed == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Pages build request failed; the next push will publish it."

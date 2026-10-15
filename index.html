@@ -9837,6 +9837,7 @@ function mergePotdLog() {
       if (!r) return;
       const key = r.key || ("legacy:" + r.week + ":" + r.id);
       const prev = map.get(key);
+      if (prev && prev.published) return;
       if (!prev || (!prev.result && Number(r.savedAt || 0) >= Number(prev.savedAt || 0))) map.set(key, r);
     });
     published[league] = Array.from(map.values());
@@ -10527,6 +10528,7 @@ function saveDesk() {
   try { localStorage.setItem(DESK_KEY, JSON.stringify(window.__DESK || emptyDesk())); } catch (e) {}
 }
 function deskWeekKey() {
+  try { return `nfl-${currentNflWeekNumber()}|cfb-${currentCfbWeekNumber()}`; } catch (e) {}
   const m = (DATA && DATA.meta) || {};
   return `nfl-${m.nfl_week || 3}|cfb-${(m.cfb_weeks || [4, 5]).join("-")}`;
 }
@@ -10892,6 +10894,14 @@ function playsForScorecard(league) {
       row.pick_line = lean.pick_line;
     }
     if (!row.total_pick || row.total_pick === "NO PLAY") row.total_pick = lean.total_pick;
+    const lock = window.GG_LOCKS && window.GG_LOCKS.plays && window.GG_LOCKS.plays[String(g.id)];
+    if (lock) {
+      row.pick = lock.pick;
+      row.pick_line = lock.pick_line;
+      row.total_pick = lock.total_pick;
+      row.locked_at = lock.lockedAt;
+      row.published = true;
+    }
     const old = byId[String(g.id)];
     if (old && old.graded) {
       row.ats = old.ats;
@@ -10987,6 +10997,142 @@ function scoreTally(league, kind, week) {
   const clvAvg = clv.length ? clv.reduce((s, r) => s + Number(r.clv), 0) / clv.length : 0;
   return { w, l, psh, pending: pending.length, clvAvg, n: w + l, rows, items };
 }
+// ---- Shared locks -------------------------------------------------------------------
+// data/locks.json is written by a scheduled GitHub job (scripts/lock_runner.py) that opens
+// this page, and 90 minutes before each kickoff saves the pick, the play of the day and
+// this week's card. Every visitor reads the same file, so locked picks and records match.
+const LOCK_WINDOW_MS = 90 * 60 * 1000;
+function applyPublishedLocks(locks) {
+  window.GG_LOCKS = locks && typeof locks === "object" ? locks : null;
+  const L = window.GG_LOCKS;
+  if (!L) return;
+  if (L.card && L.card.frozen && L.card.weekKey === deskWeekKey() && (L.card.legs || []).length) {
+    window.LOCKED_CARD = L.card;
+  }
+  const log = window.POTD_LOG || (window.POTD_LOG = { nfl: [], cfb: [] });
+  ["nfl", "cfb"].forEach((lg) => {
+    const map = new Map();
+    (log[lg] || []).forEach((r) => { if (r) map.set(r.key || ("legacy:" + r.week + ":" + r.id), r); });
+    ((L.potd && L.potd[lg]) || []).forEach((r) => { if (r && r.key) map.set(r.key, Object.assign({}, r, { published: true })); });
+    log[lg] = Array.from(map.values());
+  });
+}
+// Called by the lock runner. Returns the updated locks object and a list of what changed.
+function ggLockRun(prev) {
+  const now = Date.now();
+  const iso = new Date(now).toISOString();
+  const out = JSON.parse(JSON.stringify(prev || {}));
+  out.v = 1;
+  out.plays = out.plays || {};
+  out.potd = out.potd || { nfl: [], cfb: [] };
+  const changes = [];
+  applyPublishedLocks(out);
+  const kickOf = (id) => {
+    const g = (DATA.games || []).find((x) => String(x.id) === String(id));
+    return g ? { g, kick: Date.parse(g.date) } : null;
+  };
+  const due = (kick) => Number.isFinite(kick) && kick > now && kick - now <= LOCK_WINDOW_MS;
+  ["nfl", "cfb"].forEach((lg) => {
+    (playsForScorecard(lg) || []).forEach((r) => {
+      if (!r || r.id == null || out.plays[String(r.id)]) return;
+      const k = kickOf(r.id);
+      if (!k || k.g.completed || !due(k.kick)) return;
+      const hasSide = r.pick_line && r.pick !== "NO PLAY";
+      const hasTotal = r.total_pick && r.total_pick !== "NO PLAY";
+      if (!hasSide && !hasTotal) return;
+      out.plays[String(r.id)] = {
+        id: String(r.id), league: lg, week: Number(r.week || k.g.week), short: r.short || k.g.short_name,
+        home: r.home || k.g.home.abbr, away: r.away || k.g.away.abbr, date: k.g.date,
+        pick: hasSide ? r.pick : "NO PLAY", pick_line: hasSide ? r.pick_line : null,
+        total_pick: hasTotal ? r.total_pick : "NO PLAY",
+        // The scorecard grades a lean on every game; these flags say which ones the board
+        // called a real play when it locked.
+        side_play: !!(k.g.proj && k.g.proj.pick && k.g.proj.pick !== "NO PLAY"),
+        total_play: !!(k.g.proj && k.g.proj.total_pick && k.g.proj.total_pick !== "NO PLAY"),
+        spread: k.g.odds && k.g.odds.home_spread != null ? Number(k.g.odds.home_spread) : null,
+        total: k.g.odds && k.g.odds.total != null ? Number(k.g.odds.total) : null,
+        lockedAt: iso
+      };
+      changes.push("locked pick " + (r.short || r.id));
+    });
+  });
+  const key = deskWeekKey();
+  if (!out.card || out.card.weekKey !== key) {
+    const legs = buildWeeklyLegs(DATA.games || []);
+    const first = Math.min.apply(null, legs.map((l) => Date.parse(l.date)).filter(Number.isFinite));
+    // Lock 90 minutes before the first game on the card, or Thursday noon ET of the NFL
+    // week at the latest, so the card can't keep reshuffling past Thursday night.
+    const weekTue = Date.parse("2026-09-08T04:00:00Z") + (currentNflWeekNumber() - 1) * 7 * 86400000;
+    const thursdayNoon = weekTue + 2.5 * 86400000;
+    if (legs.length && Number.isFinite(first) && (first - now <= LOCK_WINDOW_MS || now >= thursdayNoon)) {
+      out.card = { weekKey: key, frozen: true, lockedAt: iso, title: "Double Gs weekly card", legs };
+      changes.push("locked card " + key);
+    }
+  }
+  ["nfl", "cfb"].forEach((lg) => {
+    gradeSavedPotd(lg);
+    const bet = potdPick(lg);
+    if (bet && !bet.locked && bet.g && due(Date.parse(bet.g.date))) rememberPotd(lg, bet);
+    gradeSavedPotd(lg);
+    const mine = new Map((out.potd[lg] || []).map((r) => [r.key, r]));
+    (potdStore()[lg] || []).forEach((r) => {
+      if (!r || !r.key || !r.locked) return;
+      const was = mine.get(r.key);
+      const row = Object.assign({}, r);
+      delete row.published;
+      if (!was) changes.push("locked " + lg + " play of the day " + row.game);
+      else if (!was.result && row.result) changes.push(lg + " play of the day " + row.game + " " + row.result);
+      else return;
+      mine.set(r.key, row);
+    });
+    out.potd[lg] = Array.from(mine.values());
+  });
+  if (changes.length) out.updated = iso;
+  return { locks: out, changes };
+}
+// Moves finished weeks of locked picks into past-scorecards once every game has a final.
+// Never overwrites a week that is already published.
+function ggArchive(locks, past) {
+  const L = JSON.parse(JSON.stringify(locks || {}));
+  const P = JSON.parse(JSON.stringify(past || {}));
+  const changes = [];
+  L.plays = L.plays || {};
+  const finals = {};
+  (window.WEEK_RESULTS || []).forEach((r) => { if (r && r.id != null && r.hs != null && r.as != null) finals[String(r.id)] = { hs: Number(r.hs), as: Number(r.as) }; });
+  (DATA.games || []).forEach((g) => {
+    if (!g || !g.completed || !g.home || !g.away) return;
+    const hs = Number(g.home.score), as = Number(g.away.score);
+    if (Number.isFinite(hs) && Number.isFinite(as)) finals[String(g.id)] = { hs, as };
+  });
+  const current = { nfl: currentNflWeekNumber(), cfb: currentCfbWeekNumber() };
+  const groups = {};
+  Object.values(L.plays).forEach((r) => {
+    if (!r || !(r.league in current) || !(Number(r.week) < current[r.league])) return;
+    const k = r.league + ":" + r.week;
+    (groups[k] = groups[k] || []).push(r);
+  });
+  Object.keys(groups).forEach((k) => {
+    const [lg, wk] = k.split(":");
+    const rows = groups[k];
+    P[lg] = P[lg] || {};
+    const already = (P[lg][wk] || []).length > 0;
+    if (!already) {
+      if (!rows.every((r) => finals[String(r.id)])) return;
+      P[lg][wk] = rows.sort((a, b) => String(a.date).localeCompare(String(b.date))).map((r) => ({
+        id: r.id, week: Number(wk), short: r.short, home: r.home, away: r.away, date: r.date,
+        pick: r.pick, pick_line: r.pick_line, total_pick: r.total_pick,
+        hs: String(finals[String(r.id)].hs), as: String(finals[String(r.id)].as),
+        homeAbbr: r.home, awayAbbr: r.away
+      }));
+      changes.push("archived " + lg + " week " + wk + " (" + rows.length + " picks)");
+    }
+    rows.forEach((r) => { delete L.plays[String(r.id)]; });
+  });
+  return { locks: L, past: P, changes };
+}
+window.ggLockRun = ggLockRun;
+window.ggArchive = ggArchive;
+
 // One season record for everyone: the published past scorecards plus this week's
 // graded plays. Same numbers as Scorecard + Past weeks, never rebuilt per visitor.
 function seasonRecord() {
@@ -13178,14 +13324,16 @@ async function loadDeskData() {
     get("/data/split-notes.json").catch(() => ({})),
     get("/data/desk-cfb.json").catch(() => []),
     get("/data/week-results.json").catch(() => []),
-    get("/data/past-scorecards.json").catch(() => ({}))
-  ]).then(([lines, polls, splitNotes, splitDesk, results, past]) => {
+    get("/data/past-scorecards.json").catch(() => ({})),
+    get("/data/locks.json?t=" + Math.floor(Date.now() / 60000)).catch(() => null)
+  ]).then(([lines, polls, splitNotes, splitDesk, results, past, locks]) => {
     window.VALUE_LINES = lines || {};
     window.SPLIT_NOTES = splitNotes || {};
     window.SPLIT_DESK = splitDesk || [];
     window.WEEK_RESULTS = results || [];
     window.PAST_CARDS = { nfl: (past && past.nfl) || {}, cfb: (past && past.cfb) || {} };
     window.POTD_LOG = (past && past.potd) || { nfl: [], cfb: [] };
+    if (typeof applyPublishedLocks === "function") applyPublishedLocks(locks);
     if (typeof mergePotdLog === "function") mergePotdLog();
     try { if (view === "potd" && typeof renderPotd === "function") renderPotd(); if (view === "nflpotd" && typeof renderNflPotd === "function") renderNflPotd(); } catch (e) {}
     if (polls) window.CFB_POLLS = polls;
