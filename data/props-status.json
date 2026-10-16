@@ -1,5 +1,5 @@
 {
- "ran_at": "2026-10-16T14:42:45Z",
+ "ran_at": "2026-10-16T14:45:10Z",
  "scoreboards": 2,
  "feed_games": 14,
  "board_games": 27,
@@ -17,7 +17,14 @@
   "first_type": null,
   "row_keys": null,
   "sample_line": null,
-  "player_keys": null
+  "player_keys": null,
+  "sizes": {
+   "game_props": 0,
+   "player_props": 0,
+   "prop_order": 0,
+   "players": 0,
+   "market_rules": 0
+  }
  },
  "games_with_prices": 0,
  "prices": 0
