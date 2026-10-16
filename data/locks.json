@@ -239,6 +239,26 @@
     "kick": "2026-10-16T23:30Z",
     "big": false,
     "savedAt": 1792188562626
+   },
+   {
+    "key": "game:401869844",
+    "week": 7,
+    "day": "2026-10-16",
+    "league": "cfb",
+    "id": "401869844",
+    "game": "APP @ CCU",
+    "kind": "Over",
+    "line": "OVER 48.5",
+    "hitPct": 59,
+    "why": "Our total is 3.2 points over DraftKings 48.5.",
+    "label": "Friday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "locked": true,
+    "kick": "2026-10-17T00:00Z",
+    "big": false,
+    "savedAt": 1792193788787
    }
   ]
  },
@@ -380,5 +400,5 @@
    }
   ]
  },
- "updated": "2026-10-16T23:06:31.555Z"
+ "updated": "2026-10-16T23:36:28.781Z"
 }
