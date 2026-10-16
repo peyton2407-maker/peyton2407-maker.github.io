@@ -30,6 +30,9 @@ jobs:
         # Never blocks the refresh: if the feed is down, the old file stays.
         continue-on-error: true
         run: python3 scripts/books.py
+      - name: Save player-prop prices for the parlay builder
+        continue-on-error: true
+        run: python3 scripts/props.py
       - name: Commit any changes
         run: |
           git config user.name "peyton2407-maker"
@@ -37,6 +40,7 @@ jobs:
           git add data/snapshot.json data/week-results.json data/refresh-status.json
           if [ -f data/nfl-depth.json ]; then git add data/nfl-depth.json; fi
           if [ -f data/books.json ]; then git add data/books.json; fi
+          if [ -f data/props.json ]; then git add data/props.json; fi
           if git diff --cached --quiet; then
             echo "Nothing new."
             exit 0
