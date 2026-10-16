@@ -174,6 +174,38 @@ def collect(repo):
     return last
 
 
+def locked_boards(repo):
+    """The numbers each pick was actually locked with (lock time, our margin and total, the
+    market line then). These are the board people saw when the pick went up, so they win
+    over the snapshot copy, whose projection fields aren't refreshed after a game is added."""
+    out = {}
+    def take(r, league):
+        if not r or r.get("our_margin") is None or r.get("spread") is None:
+            return
+        out[str(r["id"])] = {
+            "league": r.get("league") or league, "ct": ts(r.get("lockedAt")) or 0,
+            "our_home": -float(r["our_margin"]),
+            "our_total": r.get("our_total"),
+            "home_spread": float(r["spread"]), "total": r.get("total"),
+            "home_ml": None, "away_ml": None,
+        }
+    try:
+        past = json.loads((repo / "data" / "past-scorecards.json").read_text())
+        for lg in ("nfl", "cfb"):
+            for rows in (past.get(lg) or {}).values():
+                for r in rows or []:
+                    take(r, lg)
+    except Exception:
+        pass
+    try:
+        locks = json.loads((repo / "data" / "locks.json").read_text())
+        for r in (locks.get("plays") or {}).values():
+            take(r, r.get("league"))
+    except Exception:
+        pass
+    return out
+
+
 def fit_keep(rows):
     """Max-likelihood keep in [0, 1.2] for checked = market + keep * (board - market)."""
     if len(rows) < 20:
@@ -195,9 +227,19 @@ def fit_keep(rows):
             q = min(0.995, max(0.005, market + k * (board - market)))
             t += math.log(q if hit else 1 - q)
         return t
-    h = 0.05
-    curv = (ll_at(k0 + h) - 2 * ll_at(k0) + ll_at(max(0.0, k0 - h))) / (h * h)
-    se = math.sqrt(-1 / curv) if curv < 0 else None
+    # One-sigma interval from the likelihood itself: the keep values where the log-likelihood
+    # falls 0.5 below its best. Works at the 0 edge too, where a curvature estimate doesn't.
+    top = ll_at(k0)
+    def edge(step):
+        k = k0
+        while 0.0 <= k + step <= 3.0:
+            k += step
+            if top - ll_at(k) >= 0.5:
+                return abs(k - k0)
+        return None
+    up, down = edge(0.01), edge(-0.01) if k0 > 0 else None
+    sides = [x for x in (up, down) if x is not None]
+    se = sum(sides) / len(sides) if sides else None
     return k0, se
 
 
@@ -222,6 +264,11 @@ def main():
     finals = {str(r["id"]): r for r in json.loads((repo / "data" / "week-results.json").read_text())
               if r and r.get("hs") is not None and r.get("as") is not None}
     games = collect(repo)
+    for gid, g in locked_boards(repo).items():
+        old = games.get(gid) or {}
+        # keep the moneyline from the snapshot copy; the lock doesn't store it
+        g["home_ml"], g["away_ml"] = old.get("home_ml"), old.get("away_ml")
+        games[gid] = g
     data = {lg: {"spread": [], "total": [], "ml": []} for lg in ("nfl", "cfb")}
     for gid, g in games.items():
         f = finals.get(gid)

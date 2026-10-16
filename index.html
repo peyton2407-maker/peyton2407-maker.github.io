@@ -3498,8 +3498,8 @@ function travelInfo(g) {
     else if (miles >= 1200) { awayTax += 0.7; tot -= 0.2; notes.push(`Cross-country ~${Math.round(miles)} mi`); }
     else if (miles >= 450) { awayTax += 0.28; notes.push(`Road trip ~${Math.round(miles)} mi`); }
     if (awayHome && venue && awayHome[1] < -105 && venue[1] > -90) {
-      const hour = new Date(g.date).getUTCHours();
-      if (hour <= 18) { awayTax += 0.5; notes.push("West-coast body clock on an East kick"); }
+      const hour = etHourOf(g.date);
+      if (hour < 14.5) { awayTax += 0.5; notes.push("West-coast body clock on an East kick"); }
     }
   }
   const lastH = lastGameFor(g.home.id, g.date, g.league);
@@ -4270,9 +4270,7 @@ function cfbField(g) {
   const venue = typeof coordsForGame === "function" ? coordsForGame(g) : null;
   const awayHome = typeof teamHomeCoords === "function" ? teamHomeCoords(g, "away") : null;
   if (venue && awayHome && awayHome[1] < -115 && venue[1] > -95) {
-    const d = new Date(g.date);
-    const utc = d.getUTCHours() + d.getUTCMinutes() / 60;
-    if (utc < 17.6) {
+    if (etHourOf(g.date) < 13.6) {
       hfa += 0.8;
       body = true;
       lines.push("");
@@ -5535,7 +5533,8 @@ function poissonDraw(lam, rand) {
   }
   return Math.max(0, Math.round(lam + gauss(rand) * Math.sqrt(lam)));
 }
-function footballScore(mu, rand, nfl) {
+function footballScore(mu, rand, nfl, frac) {
+  const f = frac == null ? 1 : Math.max(0, Math.min(1, frac));
   mu = Math.max(0, Number(mu) || 0);
   const tdShare = nfl ? 0.72 : 0.70;
   const lamTD = (mu * tdShare) / 6.94;
@@ -5549,8 +5548,8 @@ function footballScore(mu, rand, nfl) {
     else if (u < 0.075) pts += 8;
     else pts += 7;
   }
-  if (rand() < 0.018) pts += 2;
-  if (rand() < 0.03) pts += 7;
+  if (rand() < 0.018 * f) pts += 2;
+  if (rand() < 0.03 * f) pts += 7;
   return pts;
 }
 function simulateGame(game) {
@@ -5572,20 +5571,39 @@ function simulateGame(game) {
   const hs0 = Number(game.home && game.home.score) || 0;
   const as0 = Number(game.away && game.away.score) || 0;
   const remF = live && !game.completed ? Math.max(0.08, remainingSeconds(game) / 3600) : 1;
+  // In a live game, simulate only the rest of it, on top of the score now. The rest-of-game
+  // margin and total come from the in-game projection (projected final minus the score now),
+  // or the pregame numbers scaled to the time left; the spread of outcomes shrinks with time.
+  const inPlay = live && !game.completed;
+  let restM = 0, restT = 0;
+  if (inPlay) {
+    const L = game.live || {};
+    if (L.home_points != null && L.away_points != null) {
+      restM = (Number(L.home_points) - hs0) - (Number(L.away_points) - as0);
+      restT = Math.max(0, Number(L.home_points) + Number(L.away_points) - hs0 - as0);
+    } else {
+      const baseM = p.pregame_margin != null ? Number(p.pregame_margin) : Number(p.blended_margin);
+      const baseT = p.pregame_total != null ? Number(p.pregame_total) : Number(p.hashmark_total);
+      restM = baseM * remF; restT = baseT * remF;
+    }
+  }
+  const remSd = Math.sqrt(remF);
   for (let i = 0; i < n; i++) {
     const shock = rand() < 0.035;
-    const m = p.blended_margin + gauss(rand) * sigmaM * (shock ? 1.25 : 0.88);
-    let t = p.hashmark_total + gauss(rand) * sigmaT * (shock ? 1.15 : 0.84);
-    t = Math.max(17, t);
-    const hpExp = Math.max(0, (t + m) / 2);
-    const apExp = Math.max(0, (t - m) / 2);
     let hp, ap;
     if (game.completed) {
       hp = hs0; ap = as0;
-    } else if (live && !p.in_game) {
-      hp = hs0 + footballScore(hpExp * remF, rand, nfl);
-      ap = as0 + footballScore(apExp * remF, rand, nfl);
+    } else if (inPlay) {
+      const m = restM + gauss(rand) * sigmaM * remSd * (shock ? 1.25 : 0.88);
+      const t = Math.max(0, restT + gauss(rand) * sigmaT * remSd * (shock ? 1.15 : 0.84));
+      hp = hs0 + footballScore(Math.max(0, (t + m) / 2), rand, nfl, remF);
+      ap = as0 + footballScore(Math.max(0, (t - m) / 2), rand, nfl, remF);
     } else {
+      const m = p.blended_margin + gauss(rand) * sigmaM * (shock ? 1.25 : 0.88);
+      let t = p.hashmark_total + gauss(rand) * sigmaT * (shock ? 1.15 : 0.84);
+      t = Math.max(17, t);
+      const hpExp = Math.max(0, (t + m) / 2);
+      const apExp = Math.max(0, (t - m) / 2);
       hp = footballScore(hpExp, rand, nfl);
       ap = footballScore(apExp, rand, nfl);
     }
@@ -7239,11 +7257,11 @@ function renderParlays() {
     }
     if (stamp) stamp.textContent = "Player props at DraftKings' prices (a typical -115 where we don't have theirs yet). Anyone who already played is off.";
     const needLines = (DATA.games || []).some((g) => g.league === "nfl" && !g.completed && !Object.keys((window.VALUE_LINES || {})[String(g.id)] || {}).length);
-    if ((needLines || (DATA.games || []).some((g) => g.league === "nfl" && !g.completed && !(g.props && g.props.length))) && !window.__propLinePull) {
+    if ((needLines || (DATA.games || []).some((g) => g.league === "nfl" && !g.completed && !(g.props && g.props.length))) && !window.__propLinePull && !window.__propLineTried) {
       window.__propLinePull = Promise.resolve()
         .then(() => (typeof ensureWeekProps === "function" ? ensureWeekProps() : null))
-        .then(() => (typeof pullDkLines === "function" ? pullDkLines() : null))
-        .then(() => { window.__propLinePull = null; if (view === "parlay" && (window.__parlayLg === "props" || window.__parlayLg === "propp") ) renderParlays(); })
+        .then(() => (typeof pullDkLines === "function" ? pullDkLines() : false))
+        .then((added) => { window.__propLinePull = null; window.__propLineTried = true; if (added && view === "parlay" && (window.__parlayLg === "props" || window.__parlayLg === "propp") ) renderParlays(); })
         .catch(() => { window.__propLinePull = null; });
     }
     const rows = typeof buildPropParlays === "function" ? buildPropParlays() : [];
@@ -7321,9 +7339,9 @@ function renderValueDogs() {
   if (!box) return;
   const needLines = (DATA.games || []).some((g) => g.league === "nfl" && !g.completed && !Object.keys((window.VALUE_LINES || {})[String(g.id)] || {}).length);
   if (needLines && !window.__valueLinesPull && typeof pullDkLines === "function") {
-    window.__valueLinesPull = pullDkLines().then(() => {
+    window.__valueLinesPull = pullDkLines().then((added) => {
       window.__valueLinesPull = null;
-      if (view === "value") renderValueDogs();
+      if (added && view === "value") renderValueDogs();
     }).catch(() => { window.__valueLinesPull = null; });
   }
   const when = (document.getElementById("valWhen") || {}).value || "soon";
@@ -7368,35 +7386,53 @@ function renderValueDogs() {
   box.innerHTML = rows.slice(0, 72).map(valueTileHtml).join("") || `<div class="empty">Nothing in this hit-rate filter. Try Best projected hit rate, or drop the percent.</div>`;
   box.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
+// Player prop lines for the value page and prop tickets. ESPN's propBets feed went dark
+// (every call 404s), so the lines come from data/props.json (licensed odds, hourly) and the
+// Action Network board this browser can read. One pass at most every 10 minutes; the
+// callers re-render only when this actually added lines, so it can never loop.
 async function pullDkLines() {
-  const games = (DATA.games || []).filter((g) => g.league === "nfl" && !g.completed);
-  const KEEP = {
-    "Total Passing Yards (incl. overtime)": "pass_yds",
-    "Total Rushing Yards (incl. overtime)": "rush_yds",
-    "Total Receiving Yards (incl. overtime)": "rec_yds",
-    "Total Receptions (incl. overtime)": "rec",
-    "Total Passing Touchdowns (incl. overtime)": "pass_td"
-  };
-  window.VALUE_LINES = window.VALUE_LINES || {};
-  for (const g of games) {
-    try {
-      const base = (usesLocalProxy() ? "/espncore" : "https://sports.core.api.espn.com")
-        + `/v2/sports/football/leagues/nfl/events/${g.id}/competitions/${g.id}/odds/100/propBets?lang=en&region=us&limit=1000`;
-      const payload = await getJSON(base);
-      const bag = window.VALUE_LINES[String(g.id)] || {};
-      (payload.items || []).forEach((it) => {
-        const key = KEEP[(it.type || {}).name];
-        if (!key) return;
-        const ref = (it.athlete && it.athlete.$ref) || "";
-        const m = ref.match(/athletes\/(\d+)/);
-        const tgt = it.current && it.current.target && it.current.target.value;
-        if (!m || tgt == null) return;
-        bag[m[1]] = bag[m[1]] || { id: m[1] };
-        bag[m[1]][key] = Number(tgt);
-      });
-      window.VALUE_LINES[String(g.id)] = bag;
-    } catch (e) { console.warn("dk lines", g.short_name, e); }
+  const now = Date.now();
+  if (pullDkLines.at && now - pullDkLines.at < 10 * 60 * 1000) return false;
+  pullDkLines.at = now;
+  if (typeof pbFetchOnce === "function") {
+    await pbFetchOnce("props", "/data/props.json?t=" + Math.floor(now / 600000), (d) => { window.PB_PROPS = d; });
   }
+  const games = (DATA.games || []).filter((g) => g.league === "nfl" && !g.completed);
+  const KEYS = ["pass_yds", "rush_yds", "rec_yds", "rec", "pass_td"];
+  window.VALUE_LINES = window.VALUE_LINES || {};
+  let added = 0;
+  const pick = (offers) => {
+    // DraftKings' over line first, then the most common line across books
+    if (!offers || !offers.length) return null;
+    const dk = offers.find((o) => o.book === "DraftKings" && o.side === "over");
+    if (dk) return Number(dk.line);
+    const count = {};
+    offers.forEach((o) => { count[o.line] = (count[o.line] || 0) + 1; });
+    return Number(Object.keys(count).sort((a, b) => count[b] - count[a])[0]);
+  };
+  games.forEach((g) => {
+    const gid = String(g.id);
+    const fileGame = ((window.PB_PROPS || {}).games || {})[gid] || {};
+    const anGame = (window.__DKODDS || {})[gid] || {};
+    const bag = window.VALUE_LINES[gid] || {};
+    (g.props || []).forEach((pl) => {
+      const key = oddsKey(pl.name);
+      const fromFile = (fileGame[key] || {}).stats || {};
+      const fromAn = anGame[key] || {};
+      KEYS.forEach((stat) => {
+        let line = pick(fromFile[stat]);
+        if (line == null && Array.isArray(fromAn[stat])) {
+          const main = fromAn[stat].filter((x) => x.over != null && x.under != null)[0];
+          if (main) line = Number(main.line);
+        }
+        if (line == null || !Number.isFinite(line)) return;
+        const row = bag[String(pl.id)] = bag[String(pl.id)] || { id: String(pl.id) };
+        if (row[stat] !== line) { row[stat] = line; added++; }
+      });
+    });
+    if (Object.keys(bag).length) window.VALUE_LINES[gid] = bag;
+  });
+  return added > 0;
 }
 
 
@@ -8386,6 +8422,25 @@ function renderInjuries(league){
 
 
 
+// Eastern time helpers that follow the clock change (EDT -04:00 until Nov 1, EST -05:00 after).
+const ET_HOUR_FMT = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+function etHourOf(date) {
+  const d = new Date(date);
+  if (Number.isNaN(d.getTime())) return NaN;
+  const [h, m] = ET_HOUR_FMT.format(d).split(":").map(Number);
+  return h + m / 60;
+}
+function etOffsetOn(y, month, day) {
+  // the ET offset at noon on that date, as "-04:00" or "-05:00"
+  try {
+    const noonUtc = new Date(Date.UTC(y, month - 1, day, 16, 0));
+    const name = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", timeZoneName: "shortOffset" })
+      .formatToParts(noonUtc).find((x) => x.type === "timeZoneName").value; // "GMT-4"
+    const n = Number((name.match(/GMT([+-]\d+)/) || [])[1]);
+    if (Number.isFinite(n)) return (n < 0 ? "-" : "+") + String(Math.abs(n)).padStart(2, "0") + ":00";
+  } catch (e) {}
+  return "-05:00";
+}
 function repairCfbKickoffs(games) {
   (games || []).forEach((g) => {
     if (!g || g.league !== "cfb" || !g.date || !g.status_detail) return;
@@ -8398,7 +8453,7 @@ function repairCfbKickoffs(games) {
     let hour = Number(m[3]) % 12;
     if (/pm/i.test(m[5])) hour += 12;
     const y = Number(String(g.date).slice(0, 4)) || 2026;
-    const iso = `${y}-${String(m[1]).padStart(2, "0")}-${String(m[2]).padStart(2, "0")}T${String(hour).padStart(2, "0")}:${String(m[4]).padStart(2, "0")}:00-04:00`;
+    const iso = `${y}-${String(m[1]).padStart(2, "0")}-${String(m[2]).padStart(2, "0")}T${String(hour).padStart(2, "0")}:${String(m[4]).padStart(2, "0")}:00${etOffsetOn(y, Number(m[1]), Number(m[2]))}`;
     const next = new Date(iso);
     if (!Number.isNaN(next.getTime())) g.date = next.toISOString();
   });
@@ -9300,6 +9355,9 @@ async function loadDkForGame(gameId) {
   window.__DK_AT = window.__DK_AT || {};
   if (dkFresh(id)) return window.__DK[id];
   const bag = {};
+  // ESPN's propBets feed returns 404 for every game now; skip it. Lines come from
+  // data/props.json and Action Network instead (pullDkLines / loadAnOdds).
+  if (!window.ESPN_PROPBETS) { window.__DK[id] = bag; window.__DK_AT[id] = Date.now() + 864e5; return bag; }
   try {
     const base = "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/" + id + "/competitions/" + id + "/odds/100/propBets?lang=en&region=us&limit=1000&page=";
     for (let page = 1; page <= 6; page++) {
@@ -9367,7 +9425,11 @@ async function loadAnOdds(p) {
   window.__DKODDS[gid] = bag;
   if (!g) return bag;
   try {
-    const board = await getJSON("https://api.actionnetwork.com/web/v1/scoreboard/nfl");
+    if (!loadAnOdds.board || Date.now() - loadAnOdds.boardAt > 2 * 60 * 1000) {
+      loadAnOdds.boardAt = Date.now();
+      loadAnOdds.board = getJSON("https://api.actionnetwork.com/web/v1/scoreboard/nfl").catch((e) => { loadAnOdds.board = null; throw e; });
+    }
+    const board = await loadAnOdds.board;
     const game = (board.games || []).find((x) => {
       const ab = (x.teams || []).map((t) => t.abbr);
       return ab.some((a) => sameOpp(a, g.home.abbr)) && ab.some((a) => sameOpp(a, g.away.abbr));
@@ -11621,11 +11683,23 @@ function ggArchive(locks, past) {
     P[lg] = P[lg] || {};
     const already = (P[lg][wk] || []).length > 0;
     if (!already) {
-      if (!rows.every((r) => finals[String(r.id)])) return;
+      // A postponed or canceled game, or one 4+ days past kickoff with no final, is void:
+      // archive it ungraded instead of holding the whole week open forever.
+      const gameOf = (id) => (DATA.games || []).find((g) => String(g.id) === String(id));
+      const isVoid = (r) => {
+        if (finals[String(r.id)]) return false;
+        const g = gameOf(r.id);
+        if (g && /POSTPONED|CANCEL|SUSPENDED|FORFEIT/i.test(String(g.status || "") + " " + String(g.status_detail || ""))) return true;
+        const t = Date.parse(r.date);
+        return Number.isFinite(t) && Date.now() - t > 4 * 86400000;
+      };
+      if (!rows.every((r) => finals[String(r.id)] || isVoid(r))) return;
       P[lg][wk] = rows.sort((a, b) => String(a.date).localeCompare(String(b.date))).map((r) => ({
         id: r.id, week: Number(wk), short: r.short, home: r.home, away: r.away, date: r.date,
         pick: r.pick, pick_line: r.pick_line, total_pick: r.total_pick,
-        hs: String(finals[String(r.id)].hs), as: String(finals[String(r.id)].as),
+        hs: finals[String(r.id)] ? String(finals[String(r.id)].hs) : null,
+        as: finals[String(r.id)] ? String(finals[String(r.id)].as) : null,
+        void: finals[String(r.id)] ? undefined : true,
         homeAbbr: r.home, awayAbbr: r.away,
         side_play: r.side_play, total_play: r.total_play,
         spread: r.spread, total: r.total, close_spread: r.close_spread, close_total: r.close_total,
@@ -12196,12 +12270,17 @@ function gradeHistoryRow(row, fin) {
   row.final = awayAbbr + " " + as + " – " + homeAbbr + " " + hs;
   row.graded = true;
   if (row.pick && row.pick !== "NO PLAY" && row.pick_line) {
-    const m = String(row.pick_line).match(/([A-Za-z0-9&]+)\s*([+-]?\d+(?:\.\d+)?)/);
+    // "M-OH -3.5", "TA&M +7", "PK": the number is the trailing token, the side is the rest
+    const txt = String(row.pick_line).trim();
+    const m = txt.match(/^(.*?)\s*([+-]?\d+(?:\.\d+)?|PK|pk|EVEN|even)\s*$/);
     if (m) {
-      const side = m[1].toUpperCase();
-      const num = Number(m[2]);
-      const sideScore = side === String(homeAbbr).toUpperCase() ? hs : as;
-      const opp = side === String(homeAbbr).toUpperCase() ? as : hs;
+      const side = m[1].trim().toUpperCase();
+      const num = /^\d|^[+-]/.test(m[2]) ? Number(m[2]) : 0;
+      const H = String(homeAbbr).toUpperCase(), A = String(awayAbbr).toUpperCase();
+      const P = String(row.pick || "").toUpperCase();
+      const isHome = side === H || (side !== A && (P === H || P === String(row.home || "").toUpperCase()));
+      const sideScore = isHome ? hs : as;
+      const opp = isHome ? as : hs;
       const diff = sideScore + num - opp;
       row.ats = Math.abs(diff) < 0.05 ? "PUSH" : diff > 0 ? "HIT" : "MISS";
     }
@@ -12538,7 +12617,7 @@ function recruitWhyPortal(r, net) {
 }
 
 function escHtml(v) {
-  return String(v == null ? "" : v).replace(/[&<>"']/g, (c) => ({ "&": "\u0026amp;", "<": "\u003c", ">": "\u003e", '"': "\u0026quot;", "'": "\u0026#39;" }[c]));
+  return String(v == null ? "" : v).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 function teamBtn(name) {
   const safe = escHtml(name);
@@ -14243,7 +14322,8 @@ function pbSave() {
 function pbParseAmerican(v) {
   if (v == null || v === "") return null;
   if (/^\s*even\s*$/i.test(String(v))) return 100;
-  const n = Number(String(v).replace(/[^\d.+-]/g, ""));
+  // sportsbooks show "−110" with a Unicode minus (or a dash); treat those as minus signs
+  const n = Number(String(v).replace(/[\u2212\u2010-\u2015\uFE63\uFF0D]/g, "-").replace(/[^\d.+-]/g, ""));
   if (!Number.isFinite(n) || Math.abs(n) < 100) return null;
   return Math.round(n);
 }
@@ -15165,7 +15245,7 @@ function pbLegStatus(st, shift) {
   const g = pbGame(parts[0]);
   const kind = parts[1], side = parts[parts.length - 1];
   const bet = st.bet || (() => { const l = pbLeg(st); return l ? { line: l.line, price: l.price, label: l.label, game: l.game } : null; })();
-  if (!g || !bet) return { state: "gone", label: st.label || "Leg", game: st.game || "" };
+  if (!g || !bet) return { state: "gone", label: st.label || "Leg", game: st.game || "", stored: st, price: st.bet ? st.bet.price : st.price };
   const line = pbTeaseLine(kind, side, bet.line, shift);
   const team = side === "home" ? g.home.abbr : g.away.abbr;
   const label = kind === "sp" ? `${team} ${pbLine(line)}` : kind === "tot" ? `${side === "over" ? "Over" : "Under"} ${pbTot(line)}` : bet.label;
@@ -15236,7 +15316,11 @@ function pbLiveView() {
       const price = wins >= 2 ? pbTeaserPrice(wins, wins === stats.length) : wins === 1 ? -110 : null;
       dec = price != null ? pbDec(price) : 1;
     } else {
-      dec = stats.filter((s) => s.state !== "push").reduce((a, s) => a * s.dec, 1);
+      // a leg whose game left the board has no live price; use the price it was saved with
+      dec = stats.filter((s) => s.state !== "push").reduce((a, s) => {
+        const d = Number.isFinite(s.dec) ? s.dec : (pbParseAmerican(s.price) != null ? pbDec(pbParseAmerican(s.price)) : (s.stored && pbParseAmerican(s.stored.price) != null ? pbDec(pbParseAmerican(s.stored.price)) : 1));
+        return a * d;
+      }, 1);
     }
     const decEff = dec > 1 ? 1 + (dec - 1) * (1 + b) : 1;
     const R = stake * decEff;
@@ -15576,7 +15660,10 @@ function installBuilder() {
 }
 
 async function boot() {
-  await loadDeskData();
+  try { await loadDeskData(); } catch (e) {
+    console.warn("desk data", e);
+    try { await new Promise((r) => setTimeout(r, 1200)); await loadDeskData(); } catch (e2) { console.warn("desk data retry", e2); }
+  }
   if (window.HASHMARK) {
     DATA = window.HASHMARK;
   } else {
@@ -15608,11 +15695,7 @@ async function boot() {
   } catch (e) {}
   try { if (typeof freezePublishedLines === "function") freezePublishedLines(DATA.games || []); } catch (e) {}
   try { if (typeof enrichPowerRankings === "function") enrichPowerRankings(); } catch (e) {}
-  $$(".tab").forEach((t) => t.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (t.dataset.view === "parlay") window.__parlayLg = "nfl";
-    setView(t.dataset.view, { push: true });
-  }));
+  // tab clicks are handled once, by the document listener below
   document.addEventListener("click", (e) => {
     const jump = e.target.closest("[data-jump]");
     if (jump && jump.getAttribute("data-jump")) {

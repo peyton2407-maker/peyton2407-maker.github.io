@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-16T15:40:31Z",
+ "updated": "2026-10-16T18:30:58Z",
  "method": "Every game since Sept 21: the last board posted before kickoff, the chance it gave each side, and the final score. keep = how much of the board's lean over the market's price held up.",
  "leagues": {
   "nfl": {
@@ -8,21 +8,21 @@
     "lean_hits": 25,
     "lean_rate": 0.556,
     "keep": 1.2,
-    "keep_se": 1.09,
+    "keep_se": 1.03,
     "buckets": [
      {
       "from": 0.5,
       "to": 0.55,
-      "n": 27,
+      "n": 28,
       "board": 0.518,
-      "actual": 0.519
+      "actual": 0.536
      },
      {
       "from": 0.55,
       "to": 0.6,
-      "n": 13,
-      "board": 0.576,
-      "actual": 0.538
+      "n": 12,
+      "board": 0.579,
+      "actual": 0.5
      },
      {
       "from": 0.6,
@@ -52,7 +52,7 @@
     "lean_hits": 22,
     "lean_rate": 0.468,
     "keep": 0.0,
-    "keep_se": 0.44,
+    "keep_se": 1.2,
     "buckets": [
      {
       "from": 0.5,
@@ -82,7 +82,7 @@
     "lean_hits": 16,
     "lean_rate": 0.533,
     "keep": 1.2,
-    "keep_se": 1.08,
+    "keep_se": 1.05,
     "buckets": []
    }
   },
@@ -92,28 +92,28 @@
     "lean_hits": 55,
     "lean_rate": 0.47,
     "keep": 0.0,
-    "keep_se": 0.14,
+    "keep_se": 0.2,
     "buckets": [
      {
       "from": 0.5,
       "to": 0.55,
-      "n": 54,
+      "n": 57,
       "board": 0.523,
-      "actual": 0.5
+      "actual": 0.491
      },
      {
       "from": 0.55,
       "to": 0.6,
-      "n": 39,
-      "board": 0.571,
-      "actual": 0.538
+      "n": 38,
+      "board": 0.57,
+      "actual": 0.553
      },
      {
       "from": 0.6,
       "to": 0.65,
-      "n": 14,
-      "board": 0.623,
-      "actual": 0.214
+      "n": 12,
+      "board": 0.624,
+      "actual": 0.167
      },
      {
       "from": 0.65,
@@ -136,7 +136,7 @@
     "lean_hits": 55,
     "lean_rate": 0.455,
     "keep": 0.0,
-    "keep_se": 0.19,
+    "keep_se": 0.27,
     "buckets": [
      {
       "from": 0.5,
@@ -180,7 +180,7 @@
     "lean_hits": 46,
     "lean_rate": 0.387,
     "keep": 0.0,
-    "keep_se": 0.12,
+    "keep_se": 0.15,
     "buckets": []
    }
   }
