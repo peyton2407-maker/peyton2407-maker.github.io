@@ -201,7 +201,7 @@ def parse_odds_api(payload):
 
 
 def odds_api_main(key, nfl, fx):
-    mode = os.environ.get("ODDS_API_PLAN", "free").strip().lower()
+    mode = os.environ.get("ODDS_API_PLAN", "").strip().lower() or "free"
     now = datetime.now(timezone.utc).timestamp()
     old = {}
     try:
