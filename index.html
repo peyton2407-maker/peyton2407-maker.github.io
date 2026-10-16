@@ -833,6 +833,18 @@ button.prop-card.inj-open .report-full{display:block}
 .shop-na { color: var(--faint); }
 .shop-fair th, .shop-fair td { border-bottom: 0; color: var(--muted); }
 .shop-fair .shop-n, .shop-fair .shop-p { color: var(--muted); font-weight: 600; }
+.movebox { margin-top: 14px; }
+.movebox h3 { margin: 0 0 4px; }
+.movebox .subn { margin: 0 0 8px; }
+.move-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.move-grid figure { margin: 0; }
+.move-grid figcaption { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 2px; }
+.move-svg { width: 100%; height: auto; display: block; overflow: visible; }
+.move-open { stroke: var(--line-2); stroke-dasharray: 3 4; }
+.move-now { fill: var(--ink); font: 700 11px var(--body, sans-serif); }
+.move-axis { fill: var(--faint); font: 10px var(--body, sans-serif); }
+.move-chip { margin: 6px 0 2px; font-size: 12.5px; color: var(--ink-soft); }
+.move-chip b { color: var(--sun); }
 .shop-chip { margin-top: 6px; font-size: 12.5px; color: var(--ink-soft); }
 .shop-chip b { color: var(--sun); font-weight: 700; }
 .close {
@@ -8787,6 +8799,79 @@ function lineShopHtml(g) {
     </table></div>
   </div>`;
 }
+// ---- Line movement: data/line-history.json (scripts/books.py, hourly) ----
+function lineHist(g) {
+  const h = window.LINE_HIST && window.LINE_HIST.games && window.LINE_HIST.games[String(g.id)];
+  return Array.isArray(h) && h.length ? h : null;
+}
+function spLabelOf(g, hs) {
+  const v = Number(hs);
+  if (!Number.isFinite(v)) return "—";
+  if (Math.abs(v) < 0.01) return "Pick 'em";
+  return v < 0 ? `${g.home.abbr} ${pbLine(v)}` : `${g.away.abbr} ${pbLine(-v)}`;
+}
+function lineMove(g) {
+  const h = lineHist(g);
+  if (!h) return null;
+  const first = h.find((r) => r[1] != null), last = [...h].reverse().find((r) => r[1] != null);
+  const firstT = h.find((r) => r[2] != null), lastT = [...h].reverse().find((r) => r[2] != null);
+  return {
+    sp0: first ? first[1] : null, sp1: last ? last[1] : null,
+    t0: firstT ? firstT[2] : null, t1: lastT ? lastT[2] : null,
+    since: h[0][0] * 60000
+  };
+}
+function moveChipHtml(g) {
+  if (g.completed) return "";
+  const m = lineMove(g);
+  if (!m) return "";
+  const out = [];
+  if (m.sp0 != null && m.sp1 != null && Math.abs(m.sp1 - m.sp0) >= 1) out.push(`${spLabelOf(g, m.sp0)} → <b>${spLabelOf(g, m.sp1)}</b>`);
+  if (m.t0 != null && m.t1 != null && Math.abs(m.t1 - m.t0) >= 1.5) out.push(`total ${pbTot(m.t0)} → <b>${pbTot(m.t1)}</b>`);
+  return out.length ? `<div class="move-chip" title="Line movement since ${pbEsc(fmt.when(new Date(m.since).toISOString()))}">Line moved: ${out.join(", ")}</div>` : "";
+}
+function moveSvg(points, fmtV, color) {
+  // step chart of one number over time; points = [[ms, value], ...]
+  const pts = points.filter((p) => p[1] != null && Number.isFinite(Number(p[1])));
+  if (pts.length < 2) return "";
+  const W = 300, H = 84, L = 6, R = 50, T = 12, B = 14;
+  const t0 = pts[0][0], t1 = Math.max(Date.now(), pts[pts.length - 1][0] + 1);
+  const vs = pts.map((p) => Number(p[1]));
+  let lo = Math.min(...vs), hi = Math.max(...vs);
+  if (hi - lo < 1) { lo -= 0.5; hi += 0.5; }
+  const x = (t) => L + (W - L - R) * (t - t0) / (t1 - t0);
+  const y = (v) => T + (H - T - B) * (hi - v) / (hi - lo);
+  let d = `M${x(pts[0][0]).toFixed(1)},${y(vs[0]).toFixed(1)}`;
+  for (let i = 1; i < pts.length; i++) d += `H${x(pts[i][0]).toFixed(1)}V${y(vs[i]).toFixed(1)}`;
+  d += `H${x(t1).toFixed(1)}`;
+  const last = vs[vs.length - 1];
+  return `<svg viewBox="0 0 ${W} ${H}" class="move-svg" role="img" aria-label="Moved from ${fmtV(vs[0])} to ${fmtV(last)}">
+    <line x1="${L}" x2="${W - R}" y1="${y(vs[0]).toFixed(1)}" y2="${y(vs[0]).toFixed(1)}" class="move-open"/>
+    <path d="${d}" fill="none" stroke="${color}" stroke-width="2.2" stroke-linejoin="round"/>
+    <circle cx="${x(t1).toFixed(1)}" cy="${y(last).toFixed(1)}" r="3.4" fill="${color}"/>
+    <text x="${W - R + 6}" y="${(y(last) + 4).toFixed(1)}" class="move-now">${fmtV(last)}</text>
+    <text x="${L}" y="${H - 2}" class="move-axis">${pbEsc(fmt.when(new Date(t0).toISOString()))}</text>
+    <text x="${W - R}" y="${H - 2}" text-anchor="end" class="move-axis">now</text>
+  </svg>`;
+}
+function lineMoveHtml(g) {
+  const h = lineHist(g);
+  if (!h || h.length < 2 || g.completed) return "";
+  const m = lineMove(g);
+  const sp = moveSvg(h.map((r) => [r[0] * 60000, r[1]]), (v) => spLabelOf(g, v).replace(/^(\S+) /, "$1 "), "var(--sun)");
+  const tot = moveSvg(h.map((r) => [r[0] * 60000, r[2]]), (v) => pbTot(v), "var(--sky)");
+  if (!sp && !tot) return "";
+  const spTxt = m.sp0 != null && m.sp1 != null ? (m.sp0 === m.sp1 ? `Spread hasn't moved from ${spLabelOf(g, m.sp0)}.` : `Spread opened ${spLabelOf(g, m.sp0)}, now ${spLabelOf(g, m.sp1)}.`) : "";
+  const totTxt = m.t0 != null && m.t1 != null ? (m.t0 === m.t1 ? `Total steady at ${pbTot(m.t0)}.` : `Total opened ${pbTot(m.t0)}, now ${pbTot(m.t1)}.`) : "";
+  return `<div class="card movebox">
+    <h3>Line movement</h3>
+    <p class="subn">${spTxt} ${totTxt} DraftKings' number, checked every hour.</p>
+    <div class="move-grid">
+      ${sp ? `<figure><figcaption>Spread</figcaption>${sp}</figure>` : ""}
+      ${tot ? `<figure><figcaption>Total</figcaption>${tot}</figure>` : ""}
+    </div>
+  </div>`;
+}
 function card(g) {
   const p = g.proj || {};
   const o = g.odds || {};
@@ -8812,6 +8897,7 @@ function card(g) {
         <div class="kick">${g.league.toUpperCase()} · ${fmt.when(g.date)} ${g.broadcasts?.[0] ? "· " + g.broadcasts[0] : ""}</div>
         ${teamLine(g.away, o.away_favorite ? o.details : "")}
         ${teamLine(g.home, o.home_favorite ? o.details : "")}
+        ${moveChipHtml(g)}
         ${wxChip(g)}
         ${(g.injuries||[]).filter(r=>["OUT","IR","INACTIVE","DOUBTFUL"].includes(r.tag||r.status)).slice(0,3).length ? `<div class="inj-banner">${(g.injuries||[]).filter(r=>["OUT","IR","INACTIVE","DOUBTFUL"].includes(r.tag||r.status)).slice(0,3).map(r=>`<span class="inj-chip">${faceHtml(r.id, r.name, 28, r.league || g.league)}<span>${r.name} ${injTagText(r)}</span></span>`).join("")}</div>` : ""}
         ${deskPanelHtml(g)}
@@ -9978,6 +10064,7 @@ function openGame(id, opts) {
       <div class="kv"><div class="lbl">Weird-game chances</div><b>Very low scoring ${pct01(g.sim?.low_scoring)} · shootout ${pct01(g.sim?.high_scoring)}</b><div class="subn">Blowout ${g.home.abbr} ${pct01(g.sim?.blowout_home)} · ${g.away.abbr} ${pct01(g.sim?.blowout_away)}</div></div>
     </div>
     ${lineShopHtml(g)}
+    ${lineMoveHtml(g)}
     <div class="card" style="margin-top:14px">
       <h3 style="margin:0 0 8px">Kickoff weather</h3>
       ${wxPanel(g)}
@@ -15975,6 +16062,11 @@ async function boot() {
     if (saved === "nfl" || saved === "cfb") setActiveLeague(id, saved);
   });
   try {
+    pbFetchOnce("hist", "/data/line-history.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.LINE_HIST = d; }).then(() => {
+      if (!window.LINE_HIST) return;
+      if (view === "nfl" || view === "cfb" || view === "all" || view === "live") renderBoard();
+      if (window.__openGameId) openGame(window.__openGameId, { fromHash: true });
+    });
     pbFetchOnce("books", "/data/books.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_BOOKS = d; }).then(() => {
       if (!window.PB_BOOKS) return;
       if (view === "nfl" || view === "cfb" || view === "all" || view === "live") renderBoard();

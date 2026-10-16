@@ -46,6 +46,7 @@ jobs:
           git add data/snapshot.json data/week-results.json data/refresh-status.json
           if [ -f data/nfl-depth.json ]; then git add data/nfl-depth.json; fi
           if [ -f data/books.json ]; then git add data/books.json; fi
+          if [ -f data/line-history.json ]; then git add data/line-history.json; fi
           if [ -f data/props.json ]; then git add data/props.json; fi
           if [ -f data/props-status.json ]; then git add data/props-status.json; fi
           if git diff --cached --quiet; then

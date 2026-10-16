@@ -26,6 +26,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SNAP = ROOT / "data" / "snapshot.json"
 OUT = ROOT / "data" / "books.json"
+HIST = ROOT / "data" / "line-history.json"
 FEED = "https://api.actionnetwork.com/web/v1/scoreboard/{league}"
 LEAGUES = {"nfl": "nfl", "cfb": "ncaaf"}
 # Action Network's ids for the books we show.
@@ -165,8 +166,64 @@ def main():
     if not got_any:
         print("No lines matched; leaving data/books.json as it was.")
         return 0
+    # A league whose feed failed this hour keeps last hour's lines instead of vanishing.
+    try:
+        old = json.loads(OUT.read_text()) if OUT.exists() else {}
+    except Exception:
+        old = {}
+    league_of = {str(g["id"]): g.get("league") for g in upcoming}
+    for lg in LEAGUES:
+        if any(league_of.get(gid) == lg for gid in out["games"]):
+            continue
+        kept = {gid: v for gid, v in (old.get("games") or {}).items() if league_of.get(gid) == lg}
+        if kept:
+            print(f"{lg}: no lines this hour; keeping {len(kept)} games from the last pull")
+            out["games"].update(kept)
     OUT.write_text(json.dumps(out, separators=(",", ":")) + "\n")
+    record_history(out, upcoming, snap)
     return 0
+
+
+def median(xs):
+    xs = sorted(x for x in xs if x is not None)
+    if not xs:
+        return None
+    n = len(xs)
+    return xs[n // 2] if n % 2 else (xs[n // 2 - 1] + xs[n // 2]) / 2
+
+
+def record_history(out, upcoming, snap):
+    """data/line-history.json: each game's consensus line over time, for the movement charts.
+    One point per change (DraftKings' home spread, total and moneyline; the median across books
+    when DraftKings has none),
+    plus a point at least every 12 hours. Games drop off two days after kickoff."""
+    try:
+        hist = json.loads(HIST.read_text()) if HIST.exists() else {}
+    except Exception:
+        hist = {}
+    games = hist.get("games") or {}
+    now = datetime.now(timezone.utc)
+    t = int(now.timestamp() // 60)  # minutes since 1970
+    kick = {str(g["id"]): ts(g.get("date")) for g in snap.get("games") or []}
+    for gid, books in out["games"].items():
+        # DraftKings' number when it has one (the same book as the site's main line, so the
+        # history doesn't jump between sources); otherwise the median across books
+        dk = books.get("DraftKings") or {}
+        sp = dk.get("sp") if dk.get("sp") is not None else median([b.get("sp") for b in books.values()])
+        tot = dk.get("tot") if dk.get("tot") is not None else median([b.get("tot") for b in books.values()])
+        dk = dk or next(iter(books.values()), {})
+        row = [t, sp, tot, dk.get("mlh"), dk.get("mla")]
+        pts = games.setdefault(gid, [])
+        if pts and pts[-1][1:3] == row[1:3] and t - pts[-1][0] < 12 * 60:
+            continue
+        if pts and pts[-1][1:] == row[1:] and t - pts[-1][0] < 12 * 60:
+            continue
+        pts.append(row)
+    cutoff = now.timestamp() - 2 * 86400
+    games = {gid: pts for gid, pts in games.items() if (kick.get(gid) or 0) > cutoff}
+    HIST.write_text(json.dumps({"updated": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                                "fields": ["minute", "home_spread", "total", "home_ml", "away_ml"],
+                                "games": games}, separators=(",", ":")) + "\n")
 
 
 if __name__ == "__main__":
