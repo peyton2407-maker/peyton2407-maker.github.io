@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-16T13:37:40Z",
+ "updated": "2026-10-16T14:34:10Z",
  "method": "Every game since Sept 21: the last board posted before kickoff, the chance it gave each side, and the final score. keep = how much of the board's lean over the market's price held up.",
  "leagues": {
   "nfl": {
@@ -97,37 +97,37 @@
      {
       "from": 0.5,
       "to": 0.55,
-      "n": 66,
-      "board": 0.524,
-      "actual": 0.53
+      "n": 54,
+      "board": 0.523,
+      "actual": 0.5
      },
      {
       "from": 0.55,
       "to": 0.6,
-      "n": 33,
-      "board": 0.573,
-      "actual": 0.455
+      "n": 39,
+      "board": 0.571,
+      "actual": 0.538
      },
      {
       "from": 0.6,
       "to": 0.65,
-      "n": 11,
-      "board": 0.63,
-      "actual": 0.091
+      "n": 14,
+      "board": 0.623,
+      "actual": 0.214
      },
      {
       "from": 0.65,
       "to": 0.7,
-      "n": 4,
-      "board": 0.669,
-      "actual": 0.75
+      "n": 8,
+      "board": 0.67,
+      "actual": 0.375
      },
      {
       "from": 0.7,
       "to": 1.0,
-      "n": 3,
-      "board": 0.734,
-      "actual": 0.333
+      "n": 2,
+      "board": 0.786,
+      "actual": 0.5
      }
     ]
    },
@@ -136,51 +136,51 @@
     "lean_hits": 55,
     "lean_rate": 0.455,
     "keep": 0.0,
-    "keep_se": 0.17,
+    "keep_se": 0.19,
     "buckets": [
      {
       "from": 0.5,
       "to": 0.55,
-      "n": 40,
+      "n": 48,
       "board": 0.526,
-      "actual": 0.425
+      "actual": 0.458
      },
      {
       "from": 0.55,
       "to": 0.6,
-      "n": 35,
-      "board": 0.574,
-      "actual": 0.429
+      "n": 38,
+      "board": 0.576,
+      "actual": 0.447
      },
      {
       "from": 0.6,
       "to": 0.65,
-      "n": 21,
-      "board": 0.623,
-      "actual": 0.476
+      "n": 16,
+      "board": 0.624,
+      "actual": 0.312
      },
      {
       "from": 0.65,
       "to": 0.7,
       "n": 12,
-      "board": 0.673,
-      "actual": 0.5
+      "board": 0.674,
+      "actual": 0.75
      },
      {
       "from": 0.7,
       "to": 1.0,
-      "n": 13,
-      "board": 0.742,
-      "actual": 0.538
+      "n": 7,
+      "board": 0.73,
+      "actual": 0.286
      }
     ]
    },
    "ml": {
     "n": 119,
-    "lean_hits": 30,
-    "lean_rate": 0.252,
+    "lean_hits": 46,
+    "lean_rate": 0.387,
     "keep": 0.0,
-    "keep_se": 0.11,
+    "keep_se": 0.12,
     "buckets": []
    }
   }

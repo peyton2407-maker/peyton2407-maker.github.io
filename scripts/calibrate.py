@@ -24,7 +24,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-NFL_SIGMA, CFB_SIGMA, CFB_TOTAL_SIGMA, NFL_TOTAL_SIGMA = 13.0, 16.4, 13.5, 13.2
+NFL_SIGMA, CFB_SIGMA, CFB_TOTAL_SIGMA, NFL_TOTAL_SIGMA = 13.0, 15.25, 15.9, 13.2
+# College margins: same idea as KEYW, fit to 2021-2023 college games around the closing
+# spread (15.25-point spread of outcomes; no ties). Same table as PB_CFB_KEY in index.html.
+CFB_KEYW = [0.0004, 0.774, 0.8938, 2.674, 0.8834, 0.5773, 0.9259, 2.271, 0.7904, 0.3827, 1.2699, 0.5914, 0.4441, 0.6318, 1.4908, 0.578, 0.3662, 1.3878, 0.7773, 0.4635, 0.7638, 1.5479, 0.4416, 0.7585, 1.3767]
 # How much more (or less) often an NFL game ends on each final margin than a plain bell
 # curve says. Fit to every NFL game 2015-2024 (nflverse games.csv, 3,108 games) around the
 # closing spread with an outcome spread of 13 points; index = margin in points, margins past
@@ -42,10 +45,11 @@ def npdf(x, mu, sd):
     return math.exp(-0.5 * ((x - mu) / sd) ** 2) / (sd * math.sqrt(2 * math.pi))
 
 
-def nfl_margin_pmf(mu, sd):
+def nfl_margin_pmf(mu, sd, table=None):
+    table = table or KEYW
     pmf = {}
     for m in range(-70, 71):
-        w = KEYW[abs(m)] if abs(m) < len(KEYW) else 1.0
+        w = table[abs(m)] if abs(m) < len(table) else 1.0
         pmf[m] = npdf(m, mu, sd) * w
     s = sum(pmf.values())
     return {m: v / s for m, v in pmf.items()}
@@ -54,16 +58,16 @@ def nfl_margin_pmf(mu, sd):
 _CENTER = {}
 
 
-def nfl_center(x, sd=NFL_SIGMA):
+def nfl_center(x, sd=NFL_SIGMA, table=None):
     """A posted NFL line splits outcomes about 50/50; games bunch on 3 and 7, so find the
     center that puts as much weight above x as below it (same as pbNflCenter in index.html)."""
-    key = (round(x, 2), sd)
+    key = (round(x, 2), sd, "c" if table is CFB_KEYW else "n")
     if key in _CENTER:
         return _CENTER[key]
     lo, hi = x - 8, x + 8
     for _ in range(32):
         mid = (lo + hi) / 2
-        d = nfl_margin_pmf(mid, sd)
+        d = nfl_margin_pmf(mid, sd, table)
         above = sum(p for m, p in d.items() if m > x)
         below = sum(p for m, p in d.items() if m < x)
         if above < below:
@@ -82,13 +86,10 @@ def side_chance(league, mu, line_home):
         win = sum(p for m, p in pmf.items() if m + line_home > 0)
         push = sum(p for m, p in pmf.items() if m + line_home == 0)
         return win, push
-    sd = min(24, 13.2 + abs(mu) * 0.32)
-    whole = abs(line_home - round(line_home)) < 1e-9
-    if whole:
-        hi = ncdf((-line_home + 0.5 - mu) / sd)
-        lo = ncdf((-line_home - 0.5 - mu) / sd)
-        return 1 - hi, hi - lo
-    return 1 - ncdf((-line_home - mu) / sd), 0.0
+    pmf = nfl_margin_pmf(nfl_center(mu, CFB_SIGMA, CFB_KEYW), CFB_SIGMA, CFB_KEYW)
+    win = sum(p for m, p in pmf.items() if m + line_home > 0)
+    push = sum(p for m, p in pmf.items() if m + line_home == 0)
+    return win, push
 
 
 def total_chance(league, mu, line):
@@ -254,7 +255,8 @@ def main():
                 pmf = nfl_margin_pmf(nfl_center(mu), NFL_SIGMA)
                 bh = sum(p for m, p in pmf.items() if m > 0) / max(1e-9, 1 - pmf.get(0, 0))
             else:
-                bh = 1 - ncdf((0 - mu) / min(24, 13.2 + abs(mu) * 0.32))
+                pmf = nfl_margin_pmf(nfl_center(mu, CFB_SIGMA, CFB_KEYW), CFB_SIGMA, CFB_KEYW)
+                bh = sum(p for m, p in pmf.items() if m > 0) / max(1e-9, 1 - pmf.get(0, 0))
             # score the side the board liked more than the market did
             if bh >= mh:
                 data[lg]["ml"].append((bh, mh, margin > 0))

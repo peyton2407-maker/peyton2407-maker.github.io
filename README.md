@@ -37,6 +37,8 @@ Boom Room → Parlay builder (`#builder`). Tap spreads, totals, moneylines and N
 - Every chance is "checked": it starts from the book's own line and keeps only as much of our board's lean as `data/calibration.json` says held up this season (small samples keep half).
 - NFL margins are weighted by how often real games end on each number (3, 7, 10, 14...). The weights were fit to every NFL game from 2015 to 2024 and are in `index.html` (`PB_NFL_KEY`) and `scripts/calibrate.py`. Fit on 2015-2021, they predicted 2022-2024 teaser legs at 71.6% against 73.0% actual.
 - Legs from one game are priced together. Teasers and round robins take one leg per game.
+- College margins are weighted the same way (3 and 7 decide about 10% and 8% of college games) and land a typical 15.25 points from the line at every spread size; college totals land 15.9 points from the closing total. Fit to 2021-2023 college games (cfbfastR-data lines and scores) and checked on 2024-2025: better than the old formula at predicting final margins, who wins, teaser legs and totals.
+- Confidence labels on the board use the checked lean too, so college picks show about 50% until the board's college leans start beating the book.
 - The − and + buttons sell or buy half points at an estimated alternate-line price. Any price can be typed in.
 - Bet size uses the Kelly method on the bankroll you enter, with a profit boost if you have one.
 - The ticket is saved in the visitor's browser, and "Copy link" opens the same ticket anywhere.

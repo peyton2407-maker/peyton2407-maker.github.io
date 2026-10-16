@@ -2251,7 +2251,10 @@ const LIVE = {
   // the unit model ran ~2-6 points over the market on every slate, and its edges did not
   // predict results. Remove the slate's average lean and trust the model at 25%.
   CFB_TOTAL_TRUST: 0.25,
-  CFB_TOTAL_SIGMA: 13.5,
+  // College totals land a typical 15.9 points from the closing total (2021-2023 fit; better
+  // on 2024-2025 than the old 13.5).
+  CFB_TOTAL_SIGMA: 15.9,
+  CFB_SIGMA_FIT: 15.25,
   SIM_N: 30000,
   SIM_N_NFL: 2500,
   SIM_N_CFB: 1500,
@@ -4204,8 +4207,12 @@ function learnCfbPointScale(g, hs, as) {
   sc.n = (sc.n || 0) + 1;
   res.cfb_scale = sc;
 }
+// How far college final margins land from the line: about 15.25 points whatever the
+// spread (2021-2025 closing lines, 7,000 games). The old formula (13.2 + 0.32 x margin,
+// up to 24) made big favorites and big underdogs far too uncertain; on 2024-2025 games it
+// wasn't fit to, the constant predicts final margins and who wins better.
 function cfbSigma(margin) {
-  return Math.min(24, +(13.2 + Math.abs(Number(margin) || 0) * 0.32).toFixed(2));
+  return LIVE.CFB_SIGMA_FIT;
 }
 function cfbField(g) {
   const lines = [];
@@ -4408,13 +4415,20 @@ function cfbSlateLean() {
 }
 // College confidence = the estimated chance the best play on the game hits, in percent.
 // Both edges are already shrunk toward the market (model trusted at 25%).
+// Confidence keeps only as much of the lean as held up against this season's results
+// (data/calibration.json; half until a market has enough games).
+function checkedEdge(league, market, edge) {
+  let k = 0.5;
+  try { if (typeof pbKeep === "function") k = pbKeep(league, market).k; } catch (e) {}
+  return Math.abs(Number(edge) || 0) * k;
+}
 function cfbConfidence(edgeSpread, edgeTotal, margin, sidePlay, totalPlay) {
   let best = 0;
   if (sidePlay && edgeSpread != null) {
     const sig = typeof cfbSigma === "function" ? cfbSigma(margin) : LIVE.CFB_SIGMA;
-    best = Math.max(best, normCdf(Math.abs(edgeSpread) / sig));
+    best = Math.max(best, normCdf(checkedEdge("cfb", "spread", edgeSpread) / sig));
   }
-  if (totalPlay && edgeTotal != null) best = Math.max(best, normCdf(Math.abs(edgeTotal) / LIVE.CFB_TOTAL_SIGMA));
+  if (totalPlay && edgeTotal != null) best = Math.max(best, normCdf(checkedEdge("cfb", "total", edgeTotal) / LIVE.CFB_TOTAL_SIGMA));
   return best ? Math.round(best * 100) : 0;
 }
 function projectGame(game, ratings) {
@@ -6975,10 +6989,10 @@ function playChance(g) {
   let best = 0;
   if (pr.pick && pr.pick !== "NO PLAY" && pr.edge_spread != null) {
     const sig = nfl ? LIVE.NFL_SIGMA : (typeof cfbSigma === "function" ? cfbSigma(Number(pr.blended_margin) || 0) : LIVE.CFB_SIGMA);
-    best = Math.max(best, normCdf(Math.abs(Number(pr.edge_spread)) / sig));
+    best = Math.max(best, normCdf(checkedEdge(g.league, "spread", pr.edge_spread) / sig));
   }
   if (pr.total_pick && pr.total_pick !== "NO PLAY" && pr.edge_total != null) {
-    best = Math.max(best, normCdf(Math.abs(Number(pr.edge_total)) / (nfl ? 12 : LIVE.CFB_TOTAL_SIGMA)));
+    best = Math.max(best, normCdf(checkedEdge(g.league, "total", pr.edge_total) / (nfl ? 13.2 : LIVE.CFB_TOTAL_SIGMA)));
   }
   return best ? Math.round(best * 100) : 0;
 }
@@ -14052,8 +14066,10 @@ async function loadDeskData() {
     get("/data/desk-cfb.json").catch(() => []),
     get("/data/week-results.json").catch(() => []),
     get("/data/past-scorecards.json").catch(() => ({})),
-    get("/data/locks.json?t=" + Math.floor(Date.now() / 60000)).catch(() => null)
-  ]).then(([lines, polls, splitNotes, splitDesk, results, past, locks]) => {
+    get("/data/locks.json?t=" + Math.floor(Date.now() / 60000)).catch(() => null),
+    get("/data/calibration.json").catch(() => null)
+  ]).then(([lines, polls, splitNotes, splitDesk, results, past, locks, cal]) => {
+    if (cal) window.PB_CAL = cal;
     window.VALUE_LINES = lines || {};
     window.SPLIT_NOTES = splitNotes || {};
     window.SPLIT_DESK = splitDesk || [];
@@ -14108,6 +14124,9 @@ const PB_RR_MAX = 8;
 // NFL final margins: how much more (or less) often games end on each margin than a plain
 // bell curve says. Index = margin in points; past 24 = 1. Same table as scripts/calibrate.py.
 const PB_NFL_KEY = [0.1376, 0.8652, 0.903, 2.9525, 0.9423, 0.9163, 1.4725, 1.9058, 0.9768, 0.3872, 1.168, 0.5431, 0.5297, 0.5905, 1.5898, 0.5359, 0.8312, 1.362, 0.9512, 0.5198, 1.0436, 1.2415, 0.6583, 0.9334, 1.5674];
+// College final margins, same idea: real frequency vs a plain bell curve around the line
+// (fit 2021-2023 with a 15.25-point spread; no ties in college). Index = margin; past 24 = 1.
+const PB_CFB_KEY = [0.0004, 0.774, 0.8938, 2.674, 0.8834, 0.5773, 0.9259, 2.271, 0.7904, 0.3827, 1.2699, 0.5914, 0.4441, 0.6318, 1.4908, 0.578, 0.3662, 1.3878, 0.7773, 0.4635, 0.7638, 1.5479, 0.4416, 0.7585, 1.3767];
 const PB_NFL_TOTAL_SD = 13.2;     // NFL final totals land a typical 13.2 points from the closing total (2015-2024)
 const PB_HOLD_MAIN = 1.0476;      // -110 on both sides
 const PB_HOLD_ALT = 1.07;         // alternate lines carry a bigger cut
@@ -14186,14 +14205,15 @@ function pbEsc(s) { return String(s == null ? "" : s).replace(/[<>&"]/g, (c) => 
 // NFL margins: bell curve times the real key-number weights. Everything else: bell curve
 // split at half points, so whole-number lines can push.
 const PB_PMF_CACHE = new Map();
-function pbNflPmf(mu, sd) {
-  const key = mu.toFixed(2) + "|" + sd;
+function pbNflPmf(mu, sd, table) {
+  const keyW = table || PB_NFL_KEY;
+  const key = mu.toFixed(2) + "|" + sd + "|" + (keyW === PB_NFL_KEY ? "n" : "c");
   if (PB_PMF_CACHE.has(key)) return PB_PMF_CACHE.get(key);
   const p = new Float64Array(141);
   let s = 0;
   for (let m = -70; m <= 70; m++) {
     const z = (m - mu) / sd;
-    const w = Math.abs(m) < PB_NFL_KEY.length ? PB_NFL_KEY[Math.abs(m)] : 1;
+    const w = Math.abs(m) < keyW.length ? keyW[Math.abs(m)] : 1;
     const v = Math.exp(-0.5 * z * z) * w;
     p[m + 70] = v; s += v;
   }
@@ -14209,13 +14229,13 @@ function pbNflPmf(mu, sd) {
 // 2015-2024). Because games bunch on 3 and 7, the middle of the outcomes sits off the line
 // itself; find the center that puts as much weight above the line as below it.
 const PB_CENTER_CACHE = new Map();
-function pbNflCenter(x, sd) {
-  const key = x.toFixed(2) + "|" + sd;
+function pbNflCenter(x, sd, table) {
+  const key = x.toFixed(2) + "|" + sd + "|" + (table === PB_CFB_KEY ? "c" : "n");
   if (PB_CENTER_CACHE.has(key)) return PB_CENTER_CACHE.get(key);
   let lo = x - 8, hi = x + 8;
   for (let i = 0; i < 32; i++) {
     const mid = (lo + hi) / 2;
-    const d = pbNflPmf(mid, sd);
+    const d = pbNflPmf(mid, sd, table);
     if (pbRange(d, x, null) < pbRange(d, null, x)) lo = mid; else hi = mid;
   }
   const c = (lo + hi) / 2;
@@ -14223,7 +14243,8 @@ function pbNflCenter(x, sd) {
   PB_CENTER_CACHE.set(key, c);
   return c;
 }
-function pbDist(line, sd, nflMargin) { return nflMargin ? pbNflPmf(pbNflCenter(line, sd), sd) : { pmf: false, mu: line, sd }; }
+// Margins (NFL or college) use the key-number tables; totals use a plain bell curve.
+function pbDist(line, sd, marginTable) { return marginTable ? pbNflPmf(pbNflCenter(line, sd, marginTable), sd, marginTable) : { pmf: false, mu: line, sd }; }
 // chance the whole-number outcome x satisfies lo < x < hi (either side may be open)
 function pbRange(d, lo, hi) {
   if (d.pmf) {
@@ -14253,10 +14274,11 @@ function pbViews(g) {
   const sdM = (mu) => nfl ? LIVE.NFL_SIGMA : (typeof cfbSigma === "function" ? cfbSigma(mu) : LIVE.CFB_SIGMA);
   const sdT = nfl ? PB_NFL_TOTAL_SD : LIVE.CFB_TOTAL_SIGMA;
   const v = { nfl };
-  if (Number.isFinite(boardMu)) v.bM = pbDist(boardMu, sdM(boardMu), nfl);
-  if (mktMu != null && Number.isFinite(mktMu)) v.mM = pbDist(mktMu, sdM(mktMu), nfl);
-  if (Number.isFinite(boardTot)) v.bT = pbDist(boardTot, sdT, false);
-  if (mktTot != null && Number.isFinite(mktTot)) v.mT = pbDist(mktTot, sdT, false);
+  const table = nfl ? PB_NFL_KEY : PB_CFB_KEY;
+  if (Number.isFinite(boardMu)) v.bM = pbDist(boardMu, sdM(boardMu), table);
+  if (mktMu != null && Number.isFinite(mktMu)) v.mM = pbDist(mktMu, sdM(mktMu), table);
+  if (Number.isFinite(boardTot)) v.bT = pbDist(boardTot, sdT, null);
+  if (mktTot != null && Number.isFinite(mktTot)) v.mT = pbDist(mktTot, sdT, null);
   return v;
 }
 // How much of the board's lean to keep, per league and market. Small samples lean on the prior.
