@@ -1,132 +1,95 @@
 {
- "checked_at": "2026-10-15T22:01:46Z",
+ "checked_at": "2026-10-16T22:03:16Z",
  "errors": [],
- "console": [
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()"
- ],
+ "console": [],
  "failed_requests": {},
- "bad_status": {
-  "sports.core.api.espn.com": {
-   "count": 28,
-   "statuses": {
-    "404": 28
-   },
-   "example": "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/401873016/competitions/401873016/odds/100/propBets?lang=en&region=us&limit=1000&page=1"
-  }
- },
+ "bad_status": {},
  "screens": {
   "props": {
    "visible": true,
    "count": 72,
    "summary": [
-    "431 matching NFL players 16 QBs in this list 85% best our hit rate C Chr"
+    "396 matching NFL players 45 QBs in this list \u2014 best our hit rate J Josh "
    ],
    "empty": [],
-   "chars": 15590
+   "chars": 3417
   },
   "tds": {
    "visible": true,
    "count": 48,
    "summary": [
-    "165 TD tickets in this filter 68% top anytime (Henry) 219 first-TD names m"
+    "150 TD tickets in this filter 68% top anytime (Henry) 203 first-TD names m"
    ],
    "empty": [],
-   "chars": 11167
+   "chars": 3940
   },
   "charts": {
    "visible": true,
-   "count": 28,
+   "count": 27,
    "summary": [],
    "empty": [],
-   "chars": 3797
+   "chars": 3771
   },
   "value": {
    "visible": true,
    "count": 72,
    "summary": [
-    "137 value tickets in this filter 125 TD plus-money 7 spread / dog sides 56% b"
+    "134 value tickets in this filter 116 TD plus-money 11 spread / dog sides 53% "
    ],
    "empty": [],
-   "chars": 14302
+   "chars": 3975
   },
   "parlay": {
    "visible": true,
    "count": 30,
    "summary": [],
    "empty": [],
-   "chars": 63612
+   "chars": 10710
   },
   "live": {
    "visible": true,
    "count": 3,
    "summary": [
-    "4 games on this board 1 with score + yard projections 0 spread leans \u2265 0"
+    "3 games on this board 0 with score + yard projections 0 spread leans \u2265 0"
    ],
    "empty": [],
-   "chars": 5703
+   "chars": 4781
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "376 listed FRI \u00b7 11:00 AM ET Not posted SAT \u00b7 11:00 AM ET Not posted S",
-    "376 listed 0 probable \u00b7 75% 195 questionable / GTD \u00b7 50% 12 doubtful \u00b7"
+    "350 listed SAT \u00b7 11:00 AM ET Not posted SUN \u00b7 11:00 AM ET Not posted S",
+    "350 listed 0 probable \u00b7 75% 123 questionable / GTD \u00b7 50% 7 doubtful \u00b7 "
    ],
    "empty": [],
-   "chars": 28933
+   "chars": 5269
   },
   "nflwx": {
    "visible": true,
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 8019
+   "chars": 4025
   },
   "nflpotd": {
    "visible": true,
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 559
+   "chars": 564
   },
   "cfbpicks": {
    "visible": true,
    "count": 18,
    "summary": [
-    "18 featured CFB leans 1 spread tickets 11 O/U tickets AKR @ M-OH top ca"
+    "18 featured CFB leans 2 spread tickets 11 O/U tickets FAU @ ARMY top ca"
    ],
    "empty": [],
-   "chars": 4651
+   "chars": 3908
   }
  },
  "dk_lines_loaded": null,
- "games_with_props": 28,
- "nfl_games_upcoming": 28
+ "games_with_props": 27,
+ "nfl_games_upcoming": 27
 }
