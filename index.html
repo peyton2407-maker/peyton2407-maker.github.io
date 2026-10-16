@@ -1419,6 +1419,162 @@ img.share-card { display: none !important; }
   #homeSection > .home-split > div:last-child { grid-column: 2; grid-row: 2 / span 2; align-self: start; }
   #homeSection > .home-split > div:last-child .sec-h { margin-top: 0; }
 }
+/* ===== Parlay builder: the board on turf, the ticket as a printed stub ===== */
+#builderSection { --stub: #f3eedf; --stub-2: #e9e2cd; --stub-ink: #261803; --stub-soft: #6b5d3f; --stub-line: rgba(38,24,3,.16); --stub-good: #17643a; --stub-bad: #a3352a; }
+.pb-wrap { display: block; }
+.pb-intro h2 { font-family: var(--display); font-weight: 900; font-size: clamp(34px, 7vw, 52px); line-height: .95; margin: 4px 0 6px; letter-spacing: .005em; }
+.pb-intro p { margin: 0 0 14px; color: var(--ink-soft); max-width: 46ch; line-height: 1.45; }
+.pb-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 0 0 12px; }
+.pb-seg { display: inline-flex; padding: 3px; border: 1px solid var(--line-2); border-radius: 999px; background: rgba(0,0,0,.18); }
+.pb-seg button { border: 0; background: transparent; color: var(--ink-soft); font: 700 15px var(--body); padding: 8px 16px; min-height: 40px; border-radius: 999px; cursor: pointer; }
+.pb-seg button em { font-style: normal; font-weight: 600; opacity: .65; margin-left: 4px; font-size: 13px; }
+.pb-seg button.active { background: var(--ink); color: var(--paper); }
+.pb-seg.small button { font-size: 13px; padding: 6px 12px; min-height: 34px; }
+#pbSearch { flex: 1 1 160px; min-width: 0; min-height: 44px; border-radius: 999px; padding: 0 16px; border: 1px solid var(--line-2); background: rgba(0,0,0,.18); color: var(--ink); font: 500 15px var(--body); }
+#pbSearch::placeholder { color: var(--faint); }
+.pb-fill { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 12px; margin: 0 0 12px; border: 1px solid rgba(244,203,114,.28); border-radius: 14px; background: rgba(244,203,114,.06); }
+.pb-fill-label { font-weight: 700; color: var(--sun); margin-right: 2px; }
+.pb-fill-btns { display: flex; gap: 6px; }
+.pb-fill-btns button { border: 1px solid var(--sun); background: transparent; color: var(--sun); font: 700 14px var(--body); padding: 7px 12px; min-height: 38px; border-radius: 10px; cursor: pointer; }
+.pb-fill-btns button:hover { background: var(--sun); color: var(--brass-ink); }
+.pb-fill .pb-seg { margin-left: auto; }
+.pb-sortrow { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 0 0 10px; color: var(--muted); font-size: 13px; }
+.pb-sortrow > button { border: 1px solid var(--line); background: transparent; color: var(--ink-soft); font: 600 13px var(--body); padding: 5px 10px; border-radius: 999px; min-height: 32px; cursor: pointer; }
+.pb-sortrow > button.active { border-color: var(--ink-soft); color: var(--ink); }
+.pb-key { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; }
+.pb-key i { width: 4px; height: 16px; border-radius: 2px; background: var(--sun); display: inline-block; }
+
+.pb-board { display: grid; gap: 10px; }
+.pb-game { border: 1px solid var(--line); border-radius: 14px; background: rgba(21,53,38,.72); padding: 12px; }
+.pb-game-head { display: flex; align-items: center; gap: 10px; justify-content: space-between; }
+.pb-teams { display: flex; align-items: center; gap: 6px; font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: .01em; min-width: 0; }
+.pb-teams .tlogo { width: 26px; height: 26px; }
+.pb-at { font-family: var(--body); font-weight: 600; font-size: 13px; color: var(--muted); margin: 0 2px; }
+.pb-kick { font-size: 13px; color: var(--muted); white-space: nowrap; }
+.pb-ours { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+.pb-ours b { color: var(--ink-soft); font-weight: 700; }
+.pb-mkts { display: grid; grid-template-columns: 52px minmax(0,1fr) minmax(0,1fr); gap: 6px; align-items: stretch; margin-top: 10px; }
+.pb-mlabel { align-self: center; font-size: 12px; font-weight: 700; color: var(--muted); }
+.pb-btn {
+  position: relative; display: flex; align-items: center; justify-content: space-between; gap: 6px; min-height: 48px; min-width: 0;
+  padding: 7px 10px; border: 1px solid var(--line-2); border-radius: 10px; background: rgba(255,255,255,.035);
+  color: var(--ink); font-family: var(--body); text-align: left; cursor: pointer; transition: background .12s, border-color .12s;
+}
+.pb-btn b { font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.pb-btn-meta { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.05; flex: 0 0 auto; }
+.pb-price { font-family: var(--display); font-weight: 800; font-size: 17px; font-variant-numeric: tabular-nums; }
+.pb-ch { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.pb-btn:hover { border-color: rgba(241,237,225,.45); background: rgba(255,255,255,.06); }
+.pb-btn.plus { box-shadow: inset 4px 0 0 var(--sun); }
+.pb-btn.on { background: var(--sun); border-color: var(--sun); color: var(--brass-ink); box-shadow: none; }
+.pb-btn.on .pb-ch { color: rgba(38,24,3,.72); }
+.pb-btn.pb-na { cursor: default; justify-content: center; color: var(--faint); font-size: 13px; border-style: dashed; background: none; }
+.pb-props-toggle { margin-top: 10px; width: 100%; min-height: 40px; border: 1px dashed var(--line-2); border-radius: 10px; background: transparent; color: var(--ink-soft); font: 600 14px var(--body); cursor: pointer; }
+.pb-props { display: grid; gap: 6px; margin-top: 8px; }
+.pb-prop { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr); gap: 6px; align-items: center; }
+.pb-prop-name { font-size: 14px; font-weight: 700; min-width: 0; }
+.pb-prop-name em { display: block; font-style: normal; font-weight: 500; font-size: 12px; color: var(--muted); }
+
+/* the ticket */
+.pb-slip { background: var(--stub); color: var(--stub-ink); border-radius: 16px; overflow: hidden; }
+.pb-slip-head { display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: linear-gradient(160deg, #f4cb72, #c98a22); }
+.pb-slip-head h3 { margin: 0; font-family: var(--display); font-weight: 900; font-size: 28px; line-height: 1; color: var(--stub-ink); }
+.pb-count { font-weight: 700; font-size: 14px; color: rgba(38,24,3,.75); }
+.pb-clear, .pb-close { margin-left: auto; border: 1px solid rgba(38,24,3,.35); background: transparent; color: var(--stub-ink); font: 700 13px var(--body); padding: 6px 12px; min-height: 34px; border-radius: 999px; cursor: pointer; }
+.pb-clear + .pb-close { margin-left: 0; }
+.pb-empty { padding: 18px 16px 6px; color: var(--stub-soft); line-height: 1.5; }
+.pb-empty p { margin: 0; }
+.pb-legs { list-style: none; margin: 0; padding: 4px 0; }
+.pb-leg { display: grid; grid-template-columns: minmax(0,1fr) auto 32px; gap: 4px 10px; align-items: center; padding: 10px 12px 10px 16px; border-bottom: 1px solid var(--stub-line); }
+.pb-leg:last-child { border-bottom: 0; }
+.pb-leg-main { display: flex; flex-direction: column; min-width: 0; }
+.pb-leg-main b { font-size: 16px; line-height: 1.2; }
+.pb-leg-main span { font-size: 12px; color: var(--stub-soft); }
+.pb-leg-main .pb-moved { color: var(--stub-bad); font-weight: 600; }
+.pb-leg.gone b { text-decoration: line-through; opacity: .6; }
+.pb-leg-nums { display: flex; align-items: center; gap: 8px; }
+.pb-price-edit input {
+  width: 62px; min-height: 34px; padding: 0 6px; text-align: center; border: 1px solid rgba(38,24,3,.28); border-radius: 8px;
+  background: #fffaf0; color: var(--stub-ink); font: 800 16px var(--display); font-variant-numeric: tabular-nums;
+}
+.pb-price-edit input:focus { outline: 2px solid #c98a22; outline-offset: 1px; }
+.pb-leg-ch { display: flex; flex-direction: column; align-items: flex-end; font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums; min-width: 38px; }
+.pb-leg-ch em { font-style: normal; font-weight: 500; font-size: 11px; color: var(--stub-soft); }
+.pb-val { font-size: 12px; font-weight: 700; padding: 3px 6px; border-radius: 6px; background: var(--stub-2); color: var(--stub-soft); min-width: 42px; text-align: center; font-variant-numeric: tabular-nums; }
+.pb-val.plus { background: rgba(23,100,58,.14); color: var(--stub-good); }
+.pb-val.minus { background: rgba(163,53,42,.12); color: var(--stub-bad); }
+.pb-x { width: 32px; height: 32px; border-radius: 50%; border: 0; background: transparent; color: var(--stub-soft); font-size: 22px; line-height: 1; cursor: pointer; }
+.pb-x:hover { background: var(--stub-2); color: var(--stub-ink); }
+.pb-warn { margin: 0 16px 8px; padding: 8px 10px; border-radius: 8px; background: rgba(201,138,34,.16); font-size: 13px; line-height: 1.4; }
+.pb-perf { position: relative; height: 22px; margin: 4px 0;
+  background: radial-gradient(circle at 0 50%, var(--paper) 11px, transparent 11.5px), radial-gradient(circle at 100% 50%, var(--paper) 11px, transparent 11.5px); }
+.pb-perf::before { content: ""; position: absolute; left: 18px; right: 18px; top: 50%; border-top: 2px dashed rgba(38,24,3,.22); }
+.pb-stake { display: grid; grid-template-columns: auto 1fr; gap: 8px 10px; align-items: center; padding: 0 16px; }
+.pb-stake label { font-weight: 700; }
+.pb-stake-in { display: flex; align-items: center; border: 1px solid rgba(38,24,3,.28); border-radius: 10px; background: #fffaf0; padding: 0 10px; min-height: 42px; }
+.pb-stake-in span { font-weight: 700; color: var(--stub-soft); }
+.pb-stake-in input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--stub-ink); font: 800 20px var(--display); padding: 6px 4px; outline: none; }
+.pb-stake-in:focus-within { outline: 2px solid #c98a22; outline-offset: 1px; }
+.pb-chips { grid-column: 1 / -1; display: flex; gap: 6px; flex-wrap: wrap; }
+.pb-chips button { flex: 1 1 0; min-width: 48px; min-height: 34px; border: 1px solid rgba(38,24,3,.22); background: transparent; color: var(--stub-ink); font: 700 13px var(--body); border-radius: 8px; cursor: pointer; }
+.pb-chips button.on { background: var(--stub-ink); color: var(--stub); border-color: var(--stub-ink); }
+.pb-pay { padding: 14px 16px 4px; }
+.pb-pay-main { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 0 10px; }
+.pb-pay-main span { font-weight: 700; color: var(--stub-soft); }
+.pb-pay-main b { grid-row: span 2; font-family: var(--display); font-weight: 900; font-size: 48px; line-height: .9; font-variant-numeric: tabular-nums; text-align: right; }
+.pb-pay-main em { font-style: normal; font-size: 13px; color: var(--stub-soft); }
+.pb-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 14px 0 0; background: var(--stub-line); border: 1px solid var(--stub-line); border-radius: 10px; overflow: hidden; }
+.pb-stats div { background: var(--stub); padding: 8px 10px; }
+.pb-stats dt { font-size: 12px; color: var(--stub-soft); }
+.pb-stats dd { margin: 2px 0 0; font-family: var(--display); font-weight: 800; font-size: 22px; font-variant-numeric: tabular-nums; }
+.pb-verdict { margin: 12px 0 0; font-weight: 700; line-height: 1.35; }
+.pb-verdict.good { color: var(--stub-good); }
+.pb-verdict.bad { color: var(--stub-bad); }
+.pb-sugg { list-style: none; margin: 10px 16px 0; padding: 0; display: grid; gap: 6px; }
+.pb-sugg li { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 8px 10px; border: 1px solid var(--stub-line); border-radius: 10px; font-size: 13px; line-height: 1.35; }
+.pb-sugg button { border: 1px solid var(--stub-ink); background: transparent; color: var(--stub-ink); font: 700 13px var(--body); padding: 6px 10px; min-height: 34px; border-radius: 8px; cursor: pointer; white-space: nowrap; }
+.pb-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 14px 16px 0; }
+.pb-actions button { min-height: 44px; border-radius: 10px; font: 700 15px var(--body); cursor: pointer; border: 1px solid var(--stub-ink); }
+.pb-copy { background: var(--stub-ink); color: var(--stub); }
+.pb-share { background: transparent; color: var(--stub-ink); }
+.pb-status { margin: 8px 16px 0; min-height: 1em; font-size: 13px; font-weight: 600; color: var(--stub-good); }
+.pb-fine { margin: 10px 16px 16px; font-size: 12px; line-height: 1.45; color: var(--stub-soft); }
+#builderSection .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+#builderSection button:focus-visible, #builderSection input:focus-visible { outline: 2px solid var(--sun); outline-offset: 2px; }
+.pb-slip button:focus-visible { outline-color: #8a5a10; }
+
+/* phone: the board fills the page, the ticket rides in a dock and opens as a sheet */
+.pb-dock { display: none; }
+@media (max-width: 979px) {
+  body[data-view="builder"] .pb-dock {
+    position: fixed; left: 12px; right: 12px; bottom: calc(var(--bar-h) + var(--safe-b) + 8px); z-index: 65;
+    display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 6px 8px 6px 6px;
+    border: 0; border-radius: 14px; background: var(--stub, #f3eedf); color: #261803; font: 600 14px var(--body); text-align: left;
+    box-shadow: 0 10px 28px rgba(0,0,0,.45); cursor: pointer;
+  }
+  .pb-dock-n { display: grid; place-items: center; min-width: 40px; height: 40px; padding: 0 8px; border-radius: 10px; background: linear-gradient(160deg, #f4cb72, #c98a22); font: 900 20px var(--display); }
+  .pb-dock:not(.has) .pb-dock-n { font-size: 15px; }
+  .pb-dock-txt { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pb-dock-txt b { font: 900 20px var(--display); }
+  .pb-dock-go { font-weight: 700; font-size: 13px; padding: 8px 10px; border-radius: 10px; background: #261803; color: #f3eedf; white-space: nowrap; }
+  body[data-view="builder"] .app { padding-bottom: calc(var(--bar-h) + 96px + var(--safe-b)); }
+  .pb-slip {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 95; max-height: 88vh; overflow-y: auto; overscroll-behavior: contain;
+    border-radius: 18px 18px 0 0; padding-bottom: var(--safe-b);
+    transform: translateY(105%); transition: transform .22s ease; visibility: hidden;
+  }
+  body.pb-open[data-view="builder"] .pb-slip { transform: none; visibility: visible; box-shadow: 0 0 0 100vmax rgba(0,0,0,.6); }
+  .pb-perf { background: radial-gradient(circle at 0 50%, #0b2016 11px, transparent 11.5px), radial-gradient(circle at 100% 50%, #0b2016 11px, transparent 11.5px); }
+}
+@media (min-width: 980px) {
+  .pb-wrap { display: grid; grid-template-columns: minmax(0,1fr) 370px; gap: 24px; align-items: start; }
+  .pb-slip { position: sticky; top: 76px; max-height: calc(100vh - 96px); overflow-y: auto; }
+  .pb-close { display: none; }
+}
+@media (min-width: 1360px) {
+  .pb-board { grid-template-columns: 1fr 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { .pb-slip { transition: none; } }
 </style>
 </head>
 <body>
@@ -1441,7 +1597,7 @@ img.share-card { display: none !important; }
       <a href="#home" data-section="home"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 10.5 12 4l8.5 6.5V20H14.5v-5.5h-5V20h-6z"/></svg><span>Home</span></a>
       <a href="#nfl" data-section="nfl"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5c0-8.3 6.7-15 15-15 0 8.3-6.7 15-15 15z"/><path d="M9.5 14.5l5-5M10.6 11.4l2 2M12.6 9.4l2 2M8.6 13.4l2 2"/></svg><span>NFL</span></a>
       <a href="#cfb" data-section="cfb"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 3.5v17"/><path d="M5.5 4.5 19 9l-13.5 4.5"/></svg><span>College</span></a>
-      <a href="#parlay" data-section="boom"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5h17v3a1.5 1.5 0 0 0 0 3v3h-17v-3a1.5 1.5 0 0 0 0-3z"/><path d="M14 7.5v9" stroke-dasharray="1.6 1.6"/></svg><span>Boom Room</span></a>
+      <a href="#builder" data-section="boom"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5h17v3a1.5 1.5 0 0 0 0 3v3h-17v-3a1.5 1.5 0 0 0 0-3z"/><path d="M14 7.5v9" stroke-dasharray="1.6 1.6"/></svg><span>Boom Room</span></a>
       <a href="#score" data-section="record"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-7M12 20V5M19 20v-10"/></svg><span>Record</span></a>
       <a class="mainnav-split" href="/split/">The Split</a>
     </nav>
@@ -1457,7 +1613,7 @@ img.share-card { display: none !important; }
         <a class="tab star" href="#cfb" data-view="cfb">CFB Week</a><a class="tab star" href="#cfbpicks" data-view="cfbpicks">College picks</a><a class="tab star" href="#potd" data-view="potd">Play of the day</a><a class="tab" href="#cfbwx" data-view="cfbwx">Weather</a><a class="tab" href="#cfbinj" data-view="cfbinj">Injuries</a><a class="chip-link" href="/split/">The Split</a>
       </div>
       <div class="subnav-group" data-section="boom">
-        <a class="tab star" href="#parlay" data-view="parlay">Tickets</a><a class="tab" href="#card" data-view="card">This week's card</a>
+        <a class="tab star" href="#builder" data-view="builder">Parlay builder</a><a class="tab" href="#parlay" data-view="parlay">Ready-made tickets</a><a class="tab" href="#card" data-view="card">This week's card</a>
       </div>
       <div class="subnav-group" data-section="record">
         <a class="tab star" href="#score" data-view="score">Scorecard</a><a class="tab" href="#history" data-view="history">Past weeks</a><a class="tab" href="#ratings" data-view="ratings">Team rankings</a><a class="tab" href="#all" data-view="all">All games</a>
@@ -1623,6 +1779,45 @@ img.share-card { display: none !important; }
       <p class="subn" id="valStamp" style="margin:0 0 10px">These are the underdogs. Vegas isn't in love with them. We still think they have a real chance.</p>
       <div class="stat-row" id="valStats"></div>
       <div class="prop-board" id="valBoard"></div>
+    </section>
+
+    <section id="builderSection" style="display:none">
+      <div class="pb-wrap">
+        <div class="pb-main">
+          <div class="pb-intro">
+            <h2>Parlay builder</h2>
+            <p>Pick your legs. See what the book pays, our chance every leg hits, and whether the price is worth it.</p>
+          </div>
+          <div class="pb-controls">
+            <div class="pb-seg" role="group" aria-label="League">
+              <button type="button" data-pblg="nfl">NFL<em></em></button>
+              <button type="button" data-pblg="cfb">College<em></em></button>
+            </div>
+            <input id="pbSearch" type="search" placeholder="Find a team" aria-label="Find a team" autocomplete="off">
+          </div>
+          <div class="pb-fill">
+            <span class="pb-fill-label">Fill a ticket</span>
+            <div class="pb-fill-btns">
+              <button type="button" data-fill="2">2 legs</button>
+              <button type="button" data-fill="3">3 legs</button>
+              <button type="button" data-fill="4">4 legs</button>
+            </div>
+            <div class="pb-seg small" role="group" aria-label="Fill with">
+              <button type="button" data-pbmode="value">Most value</button>
+              <button type="button" data-pbmode="chance">Most likely</button>
+            </div>
+          </div>
+          <div class="pb-sortrow">
+            <span>Sort</span>
+            <button type="button" data-pbsort="kick">Kickoff</button>
+            <button type="button" data-pbsort="value">Most value</button>
+            <span class="pb-key"><i></i>Price pays more than our chance needs</span>
+          </div>
+          <div id="pbBoard" class="pb-board"></div>
+        </div>
+        <aside id="pbSlip" class="pb-slip" aria-label="Your ticket"></aside>
+      </div>
+      <button type="button" id="pbDock" class="pb-dock" aria-label="Open your ticket"></button>
     </section>
 
     <section id="parlaySection" style="display:none">
@@ -3780,6 +3975,7 @@ async function pullEpaAndMarkets() {
     if (typeof renderBoard === "function") renderBoard();
     if (view === "cfbpicks" && typeof renderCfbPicks === "function") renderCfbPicks();
     if (view === "parlay" && typeof renderParlays === "function") renderParlays();
+    if (view === "builder" && typeof renderBuilder === "function") renderBuilder();
     if (view === "props" && typeof renderProps === "function") renderProps();
     if (view === "value" && typeof renderValueDogs === "function") renderValueDogs();
     if (view === "nflwx" && typeof renderNflWeather === "function") renderNflWeather();
@@ -11672,7 +11868,7 @@ function renderHome() {
   const jumps = document.getElementById("homeJumps");
   if (jumps) {
     jumps.innerHTML = `
-      <a class="home-jump hot" href="#parlay" data-jump="parlay"><b>The Boom Boom Room</b><span>Start here. Game tickets and player props.</span></a>
+      <a class="home-jump hot" href="#builder" data-jump="builder"><b>Parlay builder</b><span>Build your own ticket and see if the price is worth it</span></a>
       <a class="home-jump hot" href="#props" data-jump="props"><b>Player props</b><span>Yard lines, hit rates, and the pick</span></a>
       <a class="home-jump hot" href="#card" data-jump="card"><b>This week's card</b><span>${card.frozen ? "Locked. These plays will not move." : (card.legs || []).length + " plays ready to lock"}</span></a>
       <a class="home-jump hot" href="#nfl" data-jump="nfl"><b>NFL board</b><span>This week's sides, totals, weather</span></a>
@@ -12369,6 +12565,7 @@ function paintDesk() {
     if (view === "alerts" && typeof renderAlerts === "function") renderAlerts();
     if (view === "value" && typeof renderValueDogs === "function") renderValueDogs();
     if (view === "parlay" && typeof renderParlays === "function") renderParlays();
+    if (view === "builder" && typeof renderBuilder === "function") renderBuilder();
     if (view === "tds" && typeof renderTdDesk === "function") renderTdDesk();
     if (view === "props" && typeof renderProps === "function") renderProps();
     if (view === "cfbpicks" && typeof renderCfbPicks === "function") renderCfbPicks();
@@ -13682,14 +13879,14 @@ function renderBoom() {
 
 function setView(next) {
   if (next === "heisman" || next === "recruit" || next === "awards") next = next === "awards" ? "nflpotd" : "home";
-  const allowed = {home:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,potd:1,nflpotd:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
+  const allowed = {home:1,builder:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,potd:1,nflpotd:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
   if (!allowed[next]) next = "home";
   const wantProps = next === "propp";
   if (wantProps) { window.__parlayLg = "props"; next = "parlay"; }
   view = next;
   try {
     document.body.dataset.view = next;
-    const SECTION_OF = { home: "home", card: "home", nfl: "nfl", prime: "nfl", props: "nfl", charts: "nfl", live: "nfl", tds: "nfl", value: "nfl", nflwx: "nfl", nflinj: "nfl", nflpotd: "nfl", cfb: "cfb", potd: "cfb", cfbpicks: "cfb", cfbwx: "cfb", cfbinj: "cfb", recruit: "cfb", parlay: "boom", score: "record", history: "record", ratings: "record", all: "record", alerts: "record" };
+    const SECTION_OF = { home: "home", card: "home", nfl: "nfl", prime: "nfl", props: "nfl", charts: "nfl", live: "nfl", tds: "nfl", value: "nfl", nflwx: "nfl", nflinj: "nfl", nflpotd: "nfl", cfb: "cfb", potd: "cfb", cfbpicks: "cfb", cfbwx: "cfb", cfbinj: "cfb", recruit: "cfb", parlay: "boom", builder: "boom", score: "record", history: "record", ratings: "record", all: "record", alerts: "record" };
     // Play of the day is reachable from Home too; stay in Home when coming from there.
     const keepHome = document.body.dataset.section === "home" && (next === "nflpotd" || next === "potd");
     document.body.dataset.section = keepHome ? "home" : (SECTION_OF[next] || "home");
@@ -13745,6 +13942,10 @@ function setView(next) {
   if (valS) valS.style.display = next === "value" ? "" : "none";
   const parS = document.getElementById("parlaySection");
   if (parS) parS.style.display = next === "parlay" ? "" : "none";
+  const pbS = document.getElementById("builderSection");
+  if (pbS) pbS.style.display = next === "builder" ? "" : "none";
+  if (next !== "builder") document.body.classList.remove("pb-open");
+  if (next === "builder") { try { installBuilder(); renderBuilder(); } catch (e) { console.warn("builder", e); } }
   const tdS = document.getElementById("tdSection");
   if (tdS) tdS.style.display = next === "tds" ? "" : "none";
   if (board) renderBoard();
@@ -13886,6 +14087,627 @@ async function loadDeskData() {
   const hash = (location.hash || "").replace("#", "");
   if (hash === "nflinj" || hash === "cfbinj" || hash === "nflwx" || hash === "cfbwx") loadHeavy();
   else setTimeout(loadHeavy, 8000);
+}
+
+// ===================================================================================
+// Parlay builder. Pick legs off this week's board; the slip shows what the book pays,
+// our chance that every leg hits, the chance the payout needs, and whether the price
+// is worth it. Chances come from the same projected scores as the board (same spread
+// and total spreads of outcomes as playChance), so a leg's chance matches its game card.
+// Legs from one game are priced together (a favorite covering and winning move as one).
+// ===================================================================================
+const PB_KEY = "gg-slip-v1";
+const PB_DEFAULT_PRICE = { sp: -110, tot: -110, ml: null, pp: -115 };
+const PB_MAX_LEGS = 12;
+const PB = { league: null, sort: "kick", q: "", open: false, fillMode: "value", stake: 10, legs: [] };
+
+function pbLoad() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(PB_KEY) || "null");
+    if (raw && Array.isArray(raw.legs)) {
+      PB.legs = raw.legs.filter((l) => l && l.id).slice(0, PB_MAX_LEGS);
+      if (Number(raw.stake) > 0) PB.stake = Number(raw.stake);
+      if (raw.league === "nfl" || raw.league === "cfb") PB.league = raw.league;
+      if (raw.fillMode === "value" || raw.fillMode === "chance") PB.fillMode = raw.fillMode;
+    }
+  } catch (e) {}
+}
+function pbSave() {
+  try { localStorage.setItem(PB_KEY, JSON.stringify({ legs: PB.legs, stake: PB.stake, league: PB.league, fillMode: PB.fillMode })); } catch (e) {}
+}
+
+// ---- price math ----------------------------------------------------------------------
+function pbParseAmerican(v) {
+  if (v == null || v === "") return null;
+  if (/^even$/i.test(String(v).trim())) return 100;
+  const n = Number(String(v).replace(/[^\d.+-]/g, ""));
+  if (!Number.isFinite(n) || Math.abs(n) < 100) return null;
+  return Math.round(n);
+}
+function pbDec(a) { return a > 0 ? 1 + a / 100 : 1 + 100 / -a; }
+function pbAmerican(dec) {
+  if (!(dec > 1)) return null;
+  return dec >= 2 ? Math.round((dec - 1) * 100) : -Math.round(100 / (dec - 1));
+}
+function pbAm(a) { return a == null ? "—" : (a > 0 ? "+" + a : String(a)); }
+function pbMoney(x) {
+  if (!Number.isFinite(x)) return "—";
+  return "$" + x.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function pbPct(p, digits) {
+  if (!Number.isFinite(p)) return "—";
+  const v = p * 100;
+  if (digits == null) digits = v < 1 ? 2 : v < 10 ? 1 : 0;
+  return v.toFixed(digits) + "%";
+}
+function pbLine(n) {
+  const v = Number(n);
+  if (!Number.isFinite(v)) return "";
+  if (v === 0) return "PK";
+  return (v > 0 ? "+" : "") + (Number.isInteger(v) ? v.toFixed(0) : v.toFixed(1));
+}
+
+// ---- the model: projected margin and total with their spread of outcomes ---------------
+function pbModel(g) {
+  const p = g.proj || {};
+  const nfl = g.league === "nfl";
+  let mu = p.hashmark_home_spread != null ? -Number(p.hashmark_home_spread) : Number(p.home_points) - Number(p.away_points);
+  if (!Number.isFinite(mu)) return null;
+  let tmu = p.hashmark_total != null ? Number(p.hashmark_total) : Number(p.home_points) + Number(p.away_points);
+  const sd = nfl ? LIVE.NFL_SIGMA : (typeof cfbSigma === "function" ? cfbSigma(mu) : LIVE.CFB_SIGMA);
+  const tsd = nfl ? 12 : LIVE.CFB_TOTAL_SIGMA;
+  return { mu, sd, tmu: Number.isFinite(tmu) ? tmu : null, tsd };
+}
+// Chance a normal outcome lands above / below a line. Whole-number lines can push.
+function pbSideChance(mu, sd, line, above) {
+  const whole = Math.abs(line - Math.round(line)) < 1e-9;
+  if (whole) {
+    const hiCut = normCdf((line + 0.5 - mu) / sd);
+    const loCut = normCdf((line - 0.5 - mu) / sd);
+    const push = Math.max(0, hiCut - loCut);
+    return { win: above ? 1 - hiCut : loCut, push };
+  }
+  const c = normCdf((line - mu) / sd);
+  return { win: above ? 1 - c : c, push: 0 };
+}
+
+// ---- legs ------------------------------------------------------------------------------
+// id: gid|sp|home  gid|sp|away  gid|tot|over  gid|tot|under  gid|ml|home  gid|ml|away
+//     gid|pp|playerId|stat|over|under
+function pbGame(gid) { return (DATA.games || []).find((g) => String(g.id) === String(gid)) || null; }
+function pbStarted(g) {
+  if (!g) return true;
+  if (g.completed || (typeof isLiveGame === "function" && isLiveGame(g))) return true;
+  const t = Date.parse(g.date);
+  return Number.isFinite(t) && t <= Date.now();
+}
+function pbPropRows(g) {
+  if (!g || g.league !== "nfl" || typeof dkFor !== "function") return [];
+  const out = [];
+  (g.props || []).forEach((pl) => {
+    if (!pl || pl.pos === "K") return;
+    if (pl.injury && /OUT|IR|INACTIVE|SUSP/.test(String(pl.injury).toUpperCase())) return;
+    const dk = dkFor(g.id, pl.id);
+    Object.keys(VAL_SIG).forEach((k) => {
+      const mu = Number(pl[k] || 0);
+      if (!(mu > 0) || dk[k] == null) return;
+      out.push({ pl, stat: k, mu, line: Number(dk[k]), gap: Math.abs(mu - Number(dk[k])) / VAL_SIG[k] });
+    });
+  });
+  return out.sort((a, b) => b.gap - a.gap);
+}
+// Everything about one leg as it stands right now (line, price, chance), or null.
+function pbLeg(id, price) {
+  const parts = String(id).split("|");
+  const g = pbGame(parts[0]);
+  if (!g || !g.home || !g.away) return null;
+  const o = g.odds || {};
+  const m = pbModel(g);
+  const kind = parts[1];
+  const side = parts[parts.length - 1];
+  const game = `${g.away.abbr} @ ${g.home.abbr}`;
+  let label = "", line = null, chance = null, bookPrice = null, cond = null, market = "";
+  if (kind === "sp") {
+    if (o.home_spread == null) return null;
+    const hs = Number(o.home_spread);
+    line = side === "home" ? hs : -hs;
+    label = `${side === "home" ? g.home.abbr : g.away.abbr} ${pbLine(line)}`;
+    market = "Spread";
+    if (m) {
+      // home covers when margin + home line > 0, i.e. margin > -hs
+      chance = pbSideChance(m.mu, m.sd, -hs, side === "home");
+      cond = side === "home" ? { v: "m", lo: -hs } : { v: "m", hi: -hs };
+    }
+  } else if (kind === "tot") {
+    if (o.total == null) return null;
+    line = Number(o.total);
+    label = `${side === "over" ? "Over" : "Under"} ${Number.isInteger(line) ? line : line.toFixed(1)}`;
+    market = "Total";
+    if (m && m.tmu != null) {
+      chance = pbSideChance(m.tmu, m.tsd, line, side === "over");
+      cond = side === "over" ? { v: "t", lo: line } : { v: "t", hi: line };
+    }
+  } else if (kind === "ml") {
+    bookPrice = pbParseAmerican(side === "home" ? o.home_ml : o.away_ml);
+    if (bookPrice == null) return null;
+    label = `${side === "home" ? g.home.abbr : g.away.abbr} to win`;
+    market = "Moneyline";
+    if (m) {
+      const c = normCdf((0 - m.mu) / m.sd);
+      chance = { win: side === "home" ? 1 - c : c, push: 0 };
+      cond = side === "home" ? { v: "m", lo: 0 } : { v: "m", hi: 0 };
+    }
+  } else if (kind === "pp") {
+    const pid = parts[2], stat = parts[3];
+    const pl = (g.props || []).find((x) => String(x.id) === String(pid));
+    const dk = typeof dkFor === "function" ? dkFor(g.id, pid) : {};
+    if (!pl || dk[stat] == null || !VAL_SIG[stat]) return null;
+    line = Number(dk[stat]);
+    const mu = Number(pl[stat] || 0);
+    const over = side === "over";
+    const po = typeof pOver === "function" ? pOver(mu, line, VAL_SIG[stat]) : 0.5;
+    chance = { win: over ? po : 1 - po, push: 0 };
+    label = `${pl.name} ${over ? "over" : "under"} ${line} ${VAL_LBL[stat]}`;
+    market = "Player prop";
+  } else {
+    return null;
+  }
+  if (!chance) return null;
+  const def = bookPrice != null ? bookPrice : PB_DEFAULT_PRICE[kind];
+  const used = pbParseAmerican(price) != null ? pbParseAmerican(price) : def;
+  const dec = pbDec(used);
+  const value = chance.win * dec + chance.push - 1;
+  // what the book's own prices say, when it posts both sides (moneyline only)
+  let bookChance = null;
+  if (kind === "sp" || kind === "tot") bookChance = 0.5;
+  if (kind === "ml") {
+    const a = pbParseAmerican(o.home_ml), b = pbParseAmerican(o.away_ml);
+    if (a != null && b != null) {
+      const ia = 1 / pbDec(a), ib = 1 / pbDec(b);
+      bookChance = (side === "home" ? ia : ib) / (ia + ib);
+    }
+  }
+  return {
+    id, g, gid: String(g.id), kind, side, game, label, line, market,
+    price: used, defaultPrice: def, edited: used !== def, priceNote: kind === "ml" ? (o.book || "Book") : "standard price",
+    dec, win: chance.win, push: chance.push, value, bookChance, cond,
+    started: pbStarted(g)
+  };
+}
+function pbOpposite(id) {
+  const p = String(id).split("|");
+  const flip = { home: "away", away: "home", over: "under", under: "over" };
+  p[p.length - 1] = flip[p[p.length - 1]] || p[p.length - 1];
+  return p.join("|");
+}
+
+// ---- pricing a whole ticket --------------------------------------------------------------
+// Legs in different games are independent. Legs in one game share the same margin/total,
+// so we price the overlap of their conditions directly: KC -3.5 with KC to win is just
+// KC -3.5, and BUF +3.5 with KC to win only hits when KC wins by 1 to 3.
+function pbTicket(legs) {
+  const live = legs.filter((l) => l && !l.started);
+  const byGame = new Map();
+  live.forEach((l) => { if (!byGame.has(l.gid)) byGame.set(l.gid, []); byGame.get(l.gid).push(l); });
+  let pAll = 1, evMult = 1, dec = 1;
+  const sameGame = [];
+  byGame.forEach((bag) => {
+    const d = bag.reduce((a, l) => a * l.dec, 1);
+    dec *= d;
+    if (bag.length === 1) {
+      const l = bag[0];
+      pAll *= l.win;
+      evMult *= l.win * d + l.push;
+      return;
+    }
+    sameGame.push(bag);
+    const m = pbModel(bag[0].g);
+    let p = 1;
+    const span = { m: { lo: -Infinity, hi: Infinity }, t: { lo: -Infinity, hi: Infinity } };
+    bag.forEach((l) => {
+      if (l.cond) {
+        const s = span[l.cond.v];
+        if (l.cond.lo != null) s.lo = Math.max(s.lo, l.cond.lo);
+        if (l.cond.hi != null) s.hi = Math.min(s.hi, l.cond.hi);
+      } else {
+        p *= l.win; // player props: treated as their own event
+      }
+    });
+    ["m", "t"].forEach((v) => {
+      const s = span[v];
+      if (s.lo === -Infinity && s.hi === Infinity) return;
+      const mu = v === "m" ? m.mu : m.tmu, sd = v === "m" ? m.sd : m.tsd;
+      const hi = s.hi === Infinity ? 1 : normCdf((s.hi - mu) / sd);
+      const lo = s.lo === -Infinity ? 0 : normCdf((s.lo - mu) / sd);
+      p *= Math.max(0, hi - lo);
+    });
+    pAll *= p;
+    evMult *= p * d;
+  });
+  const n = live.length;
+  return {
+    n, dec, american: n ? pbAmerican(dec) : null,
+    pAll: n ? pAll : 0, breakEven: n ? 1 / dec : 0,
+    ev: n ? evMult - 1 : 0, sameGame
+  };
+}
+
+// ---- the board -----------------------------------------------------------------------------
+function pbGamesFor(league) {
+  const now = Date.now();
+  return (DATA.games || []).filter((g) => {
+    if (!g || g.league !== league || !g.home || !g.away || !g.odds) return false;
+    if (pbStarted(g)) return false;
+    const t = Date.parse(g.date);
+    if (!Number.isFinite(t) || t - now > 9 * 86400000) return false;
+    return g.odds.home_spread != null || g.odds.total != null || g.odds.home_ml != null;
+  }).sort((a, b) => String(a.date).localeCompare(String(b.date)));
+}
+function pbAllLegs(league) {
+  const out = [];
+  pbGamesFor(league).forEach((g) => {
+    ["sp|home", "sp|away", "tot|over", "tot|under", "ml|home", "ml|away"].forEach((k) => {
+      const l = pbLeg(g.id + "|" + k);
+      if (l) out.push(l);
+    });
+  });
+  return out;
+}
+function pbPicked(id) { return PB.legs.some((l) => l.id === id); }
+function pbPriceFor(id) { const l = PB.legs.find((x) => x.id === id); return l ? l.price : null; }
+
+function pbBtn(id, top) {
+  const l = pbLeg(id, pbPriceFor(id));
+  if (!l) return `<span class="pb-btn pb-na">Off the board</span>`;
+  const on = pbPicked(id);
+  const tag = l.value >= 0.02 ? "plus" : "";
+  return `<button type="button" class="pb-btn ${on ? "on" : ""} ${tag}" data-leg="${id}" aria-pressed="${on}">
+    <b>${top || l.label}</b>
+    <span class="pb-btn-meta"><span class="pb-price">${pbAm(l.price)}</span><span class="pb-ch">${pbPct(l.win, 0)}</span></span>
+  </button>`;
+}
+function pbGameHtml(g) {
+  const k = typeof kickParts === "function" ? kickParts(g) : { day: "", time: "" };
+  const sp = typeof shownPick === "function" ? shownPick(g) : {};
+  const ours = [sp.side, sp.total].filter(Boolean).join(" · ");
+  const o = g.odds || {};
+  const tot = o.total != null ? (Number.isInteger(Number(o.total)) ? Number(o.total) : Number(o.total).toFixed(1)) : "";
+  const props = pbPropRows(g);
+  const open = PB.propsOpen === String(g.id);
+  return `<article class="pb-game" data-gid="${g.id}">
+    <header class="pb-game-head">
+      <div class="pb-teams">${teamLogo(g.away)}<b>${g.away.abbr}</b><span class="pb-at">at</span>${teamLogo(g.home)}<b>${g.home.abbr}</b></div>
+      <span class="pb-kick">${k.day} ${k.time}</span>
+    </header>
+    ${ours ? `<p class="pb-ours">Our pick: <b>${ours}</b></p>` : ""}
+    <div class="pb-mkts">
+      <span class="pb-mlabel">Spread</span>${pbBtn(g.id + "|sp|away")}${pbBtn(g.id + "|sp|home")}
+      <span class="pb-mlabel">Total</span>${pbBtn(g.id + "|tot|over", tot !== "" ? "Over " + tot : null)}${pbBtn(g.id + "|tot|under", tot !== "" ? "Under " + tot : null)}
+      <span class="pb-mlabel">To win</span>${pbBtn(g.id + "|ml|away", g.away.abbr)}${pbBtn(g.id + "|ml|home", g.home.abbr)}
+    </div>
+    ${props.length ? `<button type="button" class="pb-props-toggle" data-props="${g.id}" aria-expanded="${open}">${open ? "Hide" : "Show"} player props (${props.length})</button>
+      ${open ? `<div class="pb-props">${props.slice(0, 24).map((r) => `<div class="pb-prop"><span class="pb-prop-name">${r.pl.name}<em>${VAL_LBL[r.stat]} · we have ${r.mu.toFixed(1)}</em></span>${pbBtn(`${g.id}|pp|${r.pl.id}|${r.stat}|over`, "Over " + r.line)}${pbBtn(`${g.id}|pp|${r.pl.id}|${r.stat}|under`, "Under " + r.line)}</div>`).join("")}</div>` : ""}` : ""}
+  </article>`;
+}
+function pbBoardHtml() {
+  const league = PB.league;
+  let games = pbGamesFor(league);
+  const q = PB.q.trim().toLowerCase();
+  if (q) games = games.filter((g) => [g.home.abbr, g.away.abbr, g.home.name, g.away.name, g.home.location, g.away.location, g.short_name]
+    .some((s) => String(s || "").toLowerCase().includes(q)));
+  if (PB.sort === "value") {
+    const best = (g) => Math.max(...["sp|home", "sp|away", "tot|over", "tot|under", "ml|home", "ml|away"].map((k) => { const l = pbLeg(g.id + "|" + k); return l ? l.value : -1; }));
+    games = games.map((g) => ({ g, v: best(g) })).sort((a, b) => b.v - a.v).map((x) => x.g);
+  }
+  if (!games.length) {
+    return `<div class="empty">${q ? `No ${league === "nfl" ? "NFL" : "college"} game matches “${PB.q.replace(/[<>&"]/g, "")}”.` : `No ${league === "nfl" ? "NFL" : "college"} games with lines left this week. Try the other league.`}</div>`;
+  }
+  return games.map(pbGameHtml).join("");
+}
+
+// ---- auto-fill and suggestions --------------------------------------------------------------
+function pbBestLegs(league, n, mode, skipGames) {
+  const skip = new Set(skipGames || []);
+  const best = new Map();
+  pbAllLegs(league).forEach((l) => {
+    if (skip.has(l.gid)) return;
+    if (l.value < 0.01 || l.win < (mode === "chance" ? 0.5 : 0.38)) return;
+    if (l.kind === "ml" && (l.price < -400 || l.price > 400)) return;
+    const score = mode === "chance" ? l.win + l.value * 0.25 : l.value;
+    const cur = best.get(l.gid);
+    if (!cur || score > cur.score) best.set(l.gid, { l, score });
+  });
+  return [...best.values()].sort((a, b) => b.score - a.score).slice(0, n).map((x) => x.l);
+}
+function pbSuggest(legs) {
+  const live = legs.filter((l) => !l.started);
+  const out = [];
+  if (live.length >= 2) {
+    const worst = live.slice().sort((a, b) => a.value - b.value)[0];
+    if (worst.value < -0.015) out.push({ kind: "drop", id: worst.id, text: `Drop ${worst.label}. Its price pays less than our chance is worth (${Math.round(worst.value * 100)}% per dollar).`, btn: "Drop it" });
+  }
+  const lg = live[0] ? live[0].g.league : PB.league;
+  const add = pbBestLegs(lg, 1, PB.fillMode, live.map((l) => l.gid))[0];
+  if (add && live.length < PB_MAX_LEGS) out.push({ kind: "add", id: add.id, text: `Best leg not on your ticket: ${add.label} (${add.game}), ${pbPct(add.win, 0)} with ${Math.round(add.value * 100) > 0 ? "+" : ""}${Math.round(add.value * 100)}% value at ${pbAm(add.price)}.`, btn: "Add it" });
+  return out;
+}
+
+// ---- the slip ---------------------------------------------------------------------------------
+function pbVerdict(t) {
+  if (!t.n) return "";
+  if (t.sameGame.length) return "Same-game legs: books price these together and pay less than shown. Check your book's payout before you judge the price.";
+  if (t.n === 1) return t.ev >= 0.02 ? "One leg is a straight bet. Our chance beats the price." : "One leg is a straight bet. Add a second leg to make it a parlay.";
+  if (t.ev >= 0.05) return "Good price. Our chance is better than what the payout needs.";
+  if (t.ev >= 0) return "About fair. A small edge on our numbers.";
+  if (t.ev >= -0.12) return "The book has a small edge on this ticket.";
+  return "The book has the edge here. Drop the weakest leg or swap it.";
+}
+function pbSlipHtml() {
+  const legs = PB.legs.map((s) => pbLeg(s.id, s.price) || { id: s.id, label: s.label || "Leg", game: s.game || "", gone: true, started: true });
+  const t = pbTicket(legs.filter((l) => !l.gone));
+  const stake = PB.stake;
+  const pays = t.n ? stake * t.dec : 0;
+  const sgp = new Set(t.sameGame.flat().map((l) => l.id));
+  const rec = typeof seasonRecord === "function" ? (() => { try { return seasonRecord(); } catch (e) { return null; } })() : null;
+  const recLine = rec && rec.n ? `Our picks are ${rec.w}-${rec.l}${rec.psh ? "-" + rec.psh : ""} (${Math.round(100 * rec.w / rec.n)}%) this season, so treat value as a lean, not a lock.` : "";
+  const legHtml = legs.map((l) => {
+    if (l.gone || l.started) {
+      return `<li class="pb-leg gone"><div class="pb-leg-main"><b>${l.label}</b><span>${l.game} · ${l.gone ? "No longer on the board" : "Kicked off, so it is off the ticket"}</span></div>
+        <button type="button" class="pb-x" data-remove="${l.id}" aria-label="Remove ${l.label}">×</button></li>`;
+    }
+    const moved = (() => {
+      const saved = PB.legs.find((s) => s.id === l.id);
+      return saved && saved.line != null && l.line != null && Number(saved.line) !== Number(l.line) ? `Line moved from ${pbLine(saved.line)} to ${pbLine(l.line)}.` : "";
+    })();
+    const val = Math.round(l.value * 100);
+    return `<li class="pb-leg">
+      <div class="pb-leg-main"><b>${l.label}</b><span>${l.game} · ${l.market}${sgp.has(l.id) ? " · same game" : ""}</span>
+        ${moved ? `<span class="pb-moved">${moved}</span>` : ""}</div>
+      <div class="pb-leg-nums">
+        <label class="pb-price-edit" title="Type the price your book shows">
+          <span class="sr">Price for ${l.label}</span>
+          <input inputmode="numeric" value="${pbAm(l.price)}" data-price="${l.id}" aria-label="Price for ${l.label}">
+        </label>
+        <span class="pb-leg-ch">${pbPct(l.win, 0)}${l.bookChance != null ? `<em>book ${pbPct(l.bookChance, 0)}</em>` : ""}</span>
+        <span class="pb-val ${val >= 2 ? "plus" : val <= -2 ? "minus" : ""}">${val > 0 ? "+" : ""}${val}%</span>
+      </div>
+      <button type="button" class="pb-x" data-remove="${l.id}" aria-label="Remove ${l.label}">×</button>
+    </li>`;
+  }).join("");
+  const sugg = pbSuggest(legs.filter((l) => !l.gone));
+  const empty = !PB.legs.length;
+  return `
+    <div class="pb-slip-head">
+      <h3>Your ticket</h3>
+      <span class="pb-count">${t.n ? t.n + " leg" + (t.n === 1 ? "" : "s") : "Empty"}</span>
+      ${empty ? "" : `<button type="button" class="pb-clear" data-clear="1">Clear</button>`}
+      <button type="button" class="pb-close" data-close="1" aria-label="Close ticket">Close</button>
+    </div>
+    ${empty ? `<div class="pb-empty"><p>Tap any spread, total or moneyline to add it. Or let the board fill a ticket with the legs our numbers like most.</p></div>` : `
+    <ol class="pb-legs">${legHtml}</ol>
+    ${t.sameGame.length ? `<p class="pb-warn">${t.sameGame.map((bag) => bag[0].game).join(", ")}: more than one leg from the same game. Our chance prices them together. Most books call this a same-game parlay and pay less than shown here.</p>` : ""}
+    <div class="pb-perf" aria-hidden="true"></div>
+    <div class="pb-stake">
+      <label for="pbStake">Bet</label>
+      <div class="pb-stake-in"><span>$</span><input id="pbStake" inputmode="decimal" value="${stake}" aria-label="Bet amount in dollars"></div>
+      <div class="pb-chips">${[5, 10, 25, 50, 100].map((v) => `<button type="button" data-stake="${v}" class="${v === stake ? "on" : ""}">$${v}</button>`).join("")}</div>
+    </div>
+    <div class="pb-pay">
+      <div class="pb-pay-main"><span>${t.n ? `${pbMoney(stake)} pays` : "Pays"}</span><b>${t.n ? pbMoney(pays) : "—"}</b><em>${t.n ? `${pbMoney(pays - stake)} profit at ${pbAm(t.american)}` : ""}</em></div>
+      <dl class="pb-stats">
+        <div><dt>Our chance all hit</dt><dd>${pbPct(t.pAll)}</dd></div>
+        <div><dt>Chance it needs</dt><dd>${pbPct(t.breakEven)}</dd></div>
+        <div><dt>Fair price</dt><dd>${t.pAll > 0 ? pbAm(pbAmerican(1 / t.pAll)) : "—"}</dd></div>
+        <div><dt>Expected back</dt><dd>${t.n ? pbMoney(stake * (1 + t.ev)) : "—"}</dd></div>
+      </dl>
+      <p class="pb-verdict ${t.sameGame.length ? "" : t.ev >= 0 ? "good" : "bad"}">${pbVerdict(t)}</p>
+    </div>
+    ${sugg.length ? `<ul class="pb-sugg">${sugg.map((s) => `<li><span>${s.text}</span><button type="button" data-${s.kind}="${s.id}">${s.btn}</button></li>`).join("")}</ul>` : ""}
+    <div class="pb-actions">
+      <button type="button" class="pb-copy" data-copy="1">Copy ticket</button>
+      <button type="button" class="pb-share" data-share="1">Copy link</button>
+    </div>
+    <p class="pb-status" id="pbStatus" role="status" aria-live="polite"></p>`}
+    <p class="pb-fine">Spreads and totals use the standard -110 price; moneylines use the book's posted price. Tap any price on your ticket to type the one your book shows. Pushes drop a leg. ${recLine} For information and entertainment, not betting advice.</p>`;
+}
+function pbDockHtml() {
+  const legs = PB.legs.map((s) => pbLeg(s.id, s.price)).filter(Boolean);
+  const t = pbTicket(legs);
+  if (!t.n) return `<span class="pb-dock-n">Ticket</span><span class="pb-dock-txt">Tap a line to start a parlay</span>`;
+  return `<span class="pb-dock-n">${t.n}</span><span class="pb-dock-txt"><b>${pbAm(t.american)}</b> · ${pbMoney(PB.stake)} pays ${pbMoney(PB.stake * t.dec)}</span><span class="pb-dock-go">View ticket</span>`;
+}
+
+// ---- render + events ------------------------------------------------------------------------------
+function pbDefaultLeague() {
+  if (PB.league) return PB.league;
+  const fromSlip = PB.legs[0] && pbGame(PB.legs[0].id.split("|")[0]);
+  if (fromSlip) return fromSlip.league;
+  return pbGamesFor("nfl").length ? "nfl" : "cfb";
+}
+function renderBuilder() {
+  const root = document.getElementById("builderSection");
+  if (!root || !DATA) return;
+  if (!PB.__loaded) { pbLoad(); pbFromUrl(); PB.__loaded = true; }
+  PB.league = pbDefaultLeague();
+  root.querySelectorAll("[data-pblg]").forEach((b) => {
+    const on = b.dataset.pblg === PB.league;
+    b.classList.toggle("active", on);
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+    const n = pbGamesFor(b.dataset.pblg).length;
+    const c = b.querySelector("em"); if (c) c.textContent = n;
+  });
+  root.querySelectorAll("[data-pbsort]").forEach((b) => b.classList.toggle("active", b.dataset.pbsort === PB.sort));
+  root.querySelectorAll("[data-pbmode]").forEach((b) => b.classList.toggle("active", b.dataset.pbmode === PB.fillMode));
+  pbRefreshButtons();
+  const slip = document.getElementById("pbSlip");
+  const typing = slip && slip.contains(document.activeElement) && document.activeElement.tagName === "INPUT";
+  if (!typing) pbRenderSlip();
+}
+function pbRenderSlip(keepFocus) {
+  const slip = document.getElementById("pbSlip");
+  const dock = document.getElementById("pbDock");
+  const focusId = keepFocus && document.activeElement ? document.activeElement.id || (document.activeElement.dataset && document.activeElement.dataset.price) : null;
+  if (slip) slip.innerHTML = pbSlipHtml();
+  if (dock) { dock.innerHTML = pbDockHtml(); dock.classList.toggle("has", PB.legs.length > 0); }
+  document.body.classList.toggle("pb-open", !!PB.open);
+  if (focusId) {
+    const el = document.getElementById(focusId) || document.querySelector(`[data-price="${focusId}"]`);
+    if (el) { el.focus(); try { const v = el.value; el.setSelectionRange(v.length, v.length); } catch (e) {} }
+  }
+}
+function pbRefreshButtons() {
+  const board = document.getElementById("pbBoard");
+  if (!board) return;
+  const y = window.scrollY;
+  const focusLeg = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.leg : null;
+  board.innerHTML = pbBoardHtml();
+  if (focusLeg) { const b = board.querySelector(`[data-leg="${focusLeg}"]`); if (b) b.focus({ preventScroll: true }); }
+  if (Math.abs(window.scrollY - y) > 2) window.scrollTo(0, y);
+}
+function pbStatus(msg) {
+  const el = document.getElementById("pbStatus");
+  if (el) { el.textContent = msg; clearTimeout(pbStatus.t); pbStatus.t = setTimeout(() => { el.textContent = ""; }, 3500); }
+}
+function pbToggle(id) {
+  const i = PB.legs.findIndex((l) => l.id === id);
+  if (i >= 0) {
+    PB.legs.splice(i, 1);
+  } else {
+    // the other side of the same market replaces this one
+    const opp = pbOpposite(id);
+    PB.legs = PB.legs.filter((l) => l.id !== opp);
+    if (PB.legs.length >= PB_MAX_LEGS) { pbStatus(`A ticket holds ${PB_MAX_LEGS} legs at most.`); return; }
+    const l = pbLeg(id);
+    if (!l) return;
+    PB.legs.push({ id, line: l.line, label: l.label, game: l.game });
+  }
+  pbSave();
+  pbRefreshButtons();
+  pbRenderSlip();
+}
+function pbFill(n) {
+  const legs = pbBestLegs(PB.league, n, PB.fillMode, []);
+  if (legs.length < n) {
+    pbStatus(legs.length ? `Only ${legs.length} leg${legs.length === 1 ? "" : "s"} on the ${PB.league === "nfl" ? "NFL" : "college"} board clear the bar right now.` : "No leg on this board clears the bar right now.");
+  }
+  if (!legs.length) { pbRenderSlip(); return; }
+  PB.legs = legs.map((l) => ({ id: l.id, line: l.line, label: l.label, game: l.game }));
+  pbSave();
+  pbRefreshButtons();
+  pbRenderSlip();
+  if (legs.length >= n) pbStatus(`Filled with the ${legs.length} ${PB.fillMode === "chance" ? "most likely legs that still pay more than they should" : "legs where our chance beats the price by the most"}, one per game.`);
+}
+function pbTicketText() {
+  const legs = PB.legs.map((s) => pbLeg(s.id, s.price)).filter((l) => l && !l.started);
+  const t = pbTicket(legs);
+  if (!t.n) return "";
+  return [`Double Gs parlay · ${t.n} legs · ${pbAm(t.american)}`]
+    .concat(legs.map((l) => `${l.label} (${pbAm(l.price)}), ${l.game}`))
+    .concat([`${pbMoney(PB.stake)} pays ${pbMoney(PB.stake * t.dec)}`, `Our chance ${pbPct(t.pAll)}, needs ${pbPct(t.breakEven)}`])
+    .join("\n");
+}
+function pbLink() {
+  const enc = PB.legs.map((l) => {
+    const p = l.id.split("|");
+    const short = { sp: "s", tot: "t", ml: "m", pp: "p" }[p[1]] || p[1];
+    const side = p[p.length - 1][0];
+    const mid = p[1] === "pp" ? `.${p[2]}.${p[3]}` : "";
+    return `${p[0]}.${short}${mid}.${side}${l.price != null ? "_" + l.price : ""}`;
+  }).join("~");
+  return location.origin + location.pathname + "?ticket=" + encodeURIComponent(enc) + "#builder";
+}
+function pbFromUrl() {
+  let raw = null;
+  try { raw = new URLSearchParams(location.search).get("ticket"); } catch (e) {}
+  if (!raw) return;
+  const long = { s: "sp", t: "tot", m: "ml", p: "pp" };
+  const sides = { h: "home", a: "away", o: "over", u: "under" };
+  const legs = [];
+  raw.split("~").forEach((tok) => {
+    const [body, price] = tok.split("_");
+    const p = body.split(".");
+    if (p.length < 3 || !long[p[1]]) return;
+    const side = sides[p[p.length - 1]];
+    if (!side) return;
+    const id = p[1] === "p" ? `${p[0]}|pp|${p[2]}|${p[3]}|${side}` : `${p[0]}|${long[p[1]]}|${side}`;
+    const l = pbLeg(id, price);
+    if (!l || legs.some((x) => x.id === id)) return;
+    legs.push({ id, line: l.line, label: l.label, game: l.game, price: pbParseAmerican(price) != null ? pbParseAmerican(price) : undefined });
+  });
+  if (legs.length) {
+    PB.legs = legs.slice(0, PB_MAX_LEGS);
+    PB.league = legs[0] ? pbGame(legs[0].id.split("|")[0]).league : PB.league;
+    pbSave();
+  }
+  try { history.replaceState(null, "", location.pathname + "#builder"); } catch (e) {}
+}
+async function pbCopy(text, ok) {
+  try {
+    await navigator.clipboard.writeText(text);
+    pbStatus(ok);
+  } catch (e) {
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); pbStatus(ok); } catch (err) { pbStatus("Copy didn't work here. Select the ticket and copy it by hand."); }
+    ta.remove();
+  }
+}
+function installBuilder() {
+  const root = document.getElementById("builderSection");
+  if (!root || root.__wired) return;
+  root.__wired = true;
+  root.addEventListener("click", (e) => {
+    const t = e.target.closest("button, [data-leg]");
+    if (!t || !root.contains(t)) return;
+    const d = t.dataset;
+    if (d.leg) return pbToggle(d.leg);
+    if (d.pblg) { PB.league = d.pblg; PB.q = ""; const s = document.getElementById("pbSearch"); if (s) s.value = ""; pbSave(); return renderBuilder(); }
+    if (d.pbsort) { PB.sort = d.pbsort; return renderBuilder(); }
+    if (d.pbmode) { PB.fillMode = d.pbmode; pbSave(); renderBuilder(); return; }
+    if (d.fill) return pbFill(Number(d.fill));
+    if (d.props) { PB.propsOpen = PB.propsOpen === d.props ? null : d.props; return renderBuilder(); }
+    if (d.remove) { PB.legs = PB.legs.filter((l) => l.id !== d.remove); pbSave(); pbRefreshButtons(); return pbRenderSlip(); }
+    if (d.drop) { PB.legs = PB.legs.filter((l) => l.id !== d.drop); pbSave(); pbRefreshButtons(); return pbRenderSlip(); }
+    if (d.add) return pbToggle(d.add);
+    if (d.clear) { PB.legs = []; pbSave(); pbRefreshButtons(); return pbRenderSlip(); }
+    if (d.stake) { PB.stake = Number(d.stake); pbSave(); return pbRenderSlip(); }
+    if (d.copy) return pbCopy(pbTicketText(), "Ticket copied.");
+    if (d.share) return pbCopy(pbLink(), "Link copied. Anyone who opens it gets this ticket.");
+    if (d.close) { PB.open = false; return pbRenderSlip(); }
+  });
+  root.addEventListener("input", (e) => {
+    const el = e.target;
+    if (el.id === "pbSearch") { PB.q = el.value; const b = document.getElementById("pbBoard"); if (b) b.innerHTML = pbBoardHtml(); return; }
+  });
+  root.addEventListener("change", (e) => {
+    const el = e.target;
+    if (el.id === "pbStake") {
+      const v = Number(String(el.value).replace(/[^\d.]/g, ""));
+      PB.stake = v > 0 ? Math.min(100000, Math.round(v * 100) / 100) : 10;
+      pbSave(); return pbRenderSlip();
+    }
+    if (el.dataset && el.dataset.price) {
+      const leg = PB.legs.find((l) => l.id === el.dataset.price);
+      const a = pbParseAmerican(el.value);
+      if (leg) {
+        if (a == null) { pbStatus("Type a price like -110 or +150."); }
+        else {
+          const base = pbLeg(leg.id);
+          leg.price = base && a === base.defaultPrice ? undefined : a;
+        }
+      }
+      pbSave(); return pbRenderSlip();
+    }
+  });
+  root.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && (e.target.id === "pbStake" || (e.target.dataset && e.target.dataset.price))) e.target.blur();
+    if (e.key === "Escape" && PB.open) { PB.open = false; pbRenderSlip(); }
+  });
+  const dock = document.getElementById("pbDock");
+  if (dock) dock.addEventListener("click", () => { PB.open = true; pbRenderSlip(); const s = document.getElementById("pbSlip"); if (s) s.scrollTop = 0; });
+  // Lines and kickoffs change; keep the page honest while it sits open.
+  setInterval(() => { if (typeof view !== "undefined" && view === "builder" && !document.hidden) renderBuilder(); }, 60000);
 }
 
 async function boot() {
