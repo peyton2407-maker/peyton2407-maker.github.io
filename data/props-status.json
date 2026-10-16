@@ -1,30 +1,9 @@
 {
- "scoreboards": 2,
- "feed_games": 14,
+ "source": "The Odds API",
+ "plan": "",
  "board_games": 27,
- "matched": 13,
+ "fetched_now": 0,
  "errors": [],
- "shape": {
-  "keys": [
-   "game_props",
-   "player_props",
-   "prop_order",
-   "players",
-   "market_rules"
-  ],
-  "types": 0,
-  "first_type": null,
-  "row_keys": null,
-  "sample_line": null,
-  "player_keys": null,
-  "sizes": {
-   "game_props": 0,
-   "player_props": 0,
-   "prop_order": 0,
-   "players": 0,
-   "market_rules": 0
-  }
- },
- "games_with_prices": 0,
- "prices": 0
+ "credits_left": null,
+ "games_with_prices": 0
 }
