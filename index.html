@@ -184,7 +184,6 @@ button { touch-action: manipulation; cursor: pointer; }
   background: rgba(18, 32, 26, .8);
   padding: 8px 12px; border-radius: 999px;
   color: var(--ink-soft); font-size: 13px;
-  backdrop-filter: blur(8px);
 }
 .refresh-btn { cursor: pointer; }
 .refresh-btn:hover { border-color: var(--turf); color: var(--turf); }
@@ -1210,7 +1209,6 @@ body {
     repeating-linear-gradient(180deg, rgba(255,255,255,.018) 0 72px, transparent 72px 144px),
     radial-gradient(1200px 600px at 50% -240px, rgba(255,244,214,.07), transparent 70%),
     var(--paper);
-  background-attachment: fixed;
 }
 ::selection { background: var(--turf); color: var(--brass-ink); }
 :focus-visible { outline: 2px solid var(--sun); outline-offset: 2px; }
@@ -1224,7 +1222,7 @@ body {
   position: sticky; top: 0; z-index: 60;
   display: flex; align-items: center; gap: 10px;
   margin: 0 -16px 12px; padding: 10px 16px;
-  background: rgba(15,42,30,.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  background: rgb(15,42,30);
   border-bottom: 1px solid var(--line);
 }
 .appbar-brand, .mainnav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
@@ -1246,7 +1244,7 @@ body {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 70;
   display: grid; grid-template-columns: repeat(5, 1fr);
   padding: 6px 6px calc(6px + var(--safe-b));
-  background: rgba(12,34,24,.96); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  background: rgb(12,34,24);
   border-top: 1px solid var(--line);
 }
 .mainnav-brand, .mainnav-split { display: none; }
@@ -1575,6 +1573,12 @@ img.share-card { display: none !important; }
   .pb-board { grid-template-columns: 1fr 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { .pb-slip { transition: none; } }
+/* Long lists: the browser skips laying out cards that are off screen until you scroll
+   near them. The sizes are first guesses; after a card is drawn once its real size is kept. */
+#board > article.game { content-visibility: auto; contain-intrinsic-size: auto 760px; }
+.pb-board > .pb-game { content-visibility: auto; contain-intrinsic-size: auto 230px; }
+#parlayHero > .parlay-card { content-visibility: auto; contain-intrinsic-size: auto 600px; }
+.prop-board > .prop-card { content-visibility: auto; contain-intrinsic-size: auto 320px; }
 /* builder v2: checked chances, bet types, sizing */
 .pb-cal { margin: 0 0 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: rgba(0,0,0,.16); font-size: 14px; line-height: 1.45; color: var(--ink-soft); }
 .pb-cal p { margin: 0; }
@@ -4150,8 +4154,11 @@ function applyLiveBoard(games) {
   (games || []).forEach((g) => {
     projectInGame(g);
     if (g.live || isLiveGame(g)) {
+      const p = g.proj || {}, o = g.odds || {};
+      const key = [g.status, g.period, g.clock, g.home && g.home.score, g.away && g.away.score, p.blended_margin, p.hashmark_total, p.in_game, o.home_spread, o.total].join("|");
+      if (g.__simKey === key && g.sim) return;
       const sim = simulateGame(g);
-      if (sim) { g.sim = sim; if (g.proj) g.proj.sim = sim; }
+      if (sim) { g.sim = sim; if (g.proj) g.proj.sim = sim; g.__simKey = key; }
     }
   });
 }
@@ -5559,6 +5566,14 @@ function simulateGame(game) {
     }
   }
   const mean = (arr) => arr.reduce((s, x) => s + x, 0) / (arr.length || 1);
+  // sort each list once; every percentile below reads the sorted copy
+  const sortedOf = new Map();
+  const pctile = (xs, q) => {
+    let ys = sortedOf.get(xs);
+    if (!ys) { ys = Float64Array.from(xs).sort(); sortedOf.set(xs, ys); }
+    const i = Math.min(ys.length - 1, Math.max(0, Math.round(q * (ys.length - 1))));
+    return ys[i];
+  };
   let modeKey = "0-0", modeN = 0;
   for (const k in pair) if (pair[k] > modeN) { modeN = pair[k]; modeKey = k; }
   const modeParts = modeKey.split("-");
@@ -6807,7 +6822,7 @@ function renderPropParlays() {
 }
 
 function currentCfbWeekNumber() {
-  return rollMonday(collegeWeekOf(etYmd()) || 1);
+  return memoWeek("cfb", () => rollMonday(collegeWeekOf(etYmd()) || 1));
 }
 function isThisCfbWeek(g) {
   if (!g || g.league !== "cfb") return true;
@@ -7790,14 +7805,29 @@ function ensureInjPack(){
   }
   return window.__INJ;
 }
+// The injury report asks this once per player, often for the same team hundreds of times.
+// Team names are lowered once per board, and each answer is kept for 10 minutes.
+const __injMatch = { games: null, n: 0, bucket: 0, rows: [], memo: new Map() };
 function matchInjuryGame(team, league){
   const t = (team || "").toLowerCase().trim();
   if (!t || !DATA) return null;
-  const hits = (DATA.games || []).filter((g) => {
+  const games = DATA.games || [];
+  const bucket = Math.floor(Date.now() / 600000);
+  if (__injMatch.games !== games || __injMatch.n !== games.length || __injMatch.bucket !== bucket) {
+    __injMatch.games = games; __injMatch.n = games.length; __injMatch.bucket = bucket; __injMatch.memo.clear();
+    __injMatch.rows = games.map((g) => ({ g, names: [g.home, g.away].flatMap((x) => [x && x.name, x && x.short, x && x.abbr].map((n) => (n || "").toLowerCase())) }));
+  }
+  const mk = (league || "") + "|" + t;
+  if (__injMatch.memo.has(mk)) return __injMatch.memo.get(mk);
+  const found = matchInjuryGameNow(t, league);
+  __injMatch.memo.set(mk, found);
+  return found;
+}
+function matchInjuryGameNow(t, league){
+  const hits = __injMatch.rows.filter(({ g, names }) => {
     if (league && g.league !== league) return false;
-    const names = [g.home, g.away].flatMap((x) => [x.name, x.short, x.abbr].map((n) => (n || "").toLowerCase()));
     return names.some((n) => n && (t === n || t.startsWith(n + " ") || n.startsWith(t + " ")));
-  });
+  }).map((r) => r.g);
   if (!hits.length) return null;
   const now = Date.now() - 6 * 60 * 60 * 1000;
   const upcoming = hits.filter((g) => g.date && new Date(g.date).getTime() >= now).sort((a, b) => String(a.date).localeCompare(String(b.date)));
@@ -8023,6 +8053,8 @@ function seedInjuriesFromSnap(){
   if ((pack.nfl || []).length >= 20 && (pack.cfb || []).length) return pack;
   const snap = window.INJURY_SNAP;
   if (!snap) return pack;
+  if (pack.__seededFrom === snap && pack.__deskFrom === window.CFB_DESK) return pack;
+  pack.__seededFrom = snap; pack.__deskFrom = window.CFB_DESK;
   try {
     const nflRows = snap.nfl ? parseInjuryFeed(snap.nfl, "nfl") : [];
     if (nflRows.length > (pack.nfl || []).length) {
@@ -8434,18 +8466,13 @@ function repairCfbKickoffs(games) {
     if (!Number.isNaN(next.getTime())) g.date = next.toISOString();
   });
 }
+const WHEN_FMT = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
 const fmt = {
   when(iso) {
     if (!iso) return "TBD";
     const d = new Date(iso);
-    return d.toLocaleString("en-US", {
-      timeZone: "America/New_York",
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
-    });
+    if (!Number.isFinite(d.getTime())) return "TBD";
+    return WHEN_FMT.format(d);
   },
   n(v, digits = 1) {
     if (v === null || v === undefined || Number.isNaN(v)) return "—";
@@ -10962,9 +10989,20 @@ function loadDesk() {
   }
   return window.__DESK;
 }
+// Pages call this several times while they draw; write once, just after they finish.
 function saveDesk() {
-  try { localStorage.setItem(DESK_KEY, JSON.stringify(window.__DESK || emptyDesk())); } catch (e) {}
+  if (saveDesk.t) return;
+  saveDesk.t = setTimeout(() => {
+    saveDesk.t = null;
+    try { localStorage.setItem(DESK_KEY, JSON.stringify(window.__DESK || emptyDesk())); } catch (e) {}
+  }, 400);
 }
+// leaving the page: write anything still waiting
+window.addEventListener("pagehide", () => {
+  if (!saveDesk.t) return;
+  clearTimeout(saveDesk.t); saveDesk.t = null;
+  try { localStorage.setItem(DESK_KEY, JSON.stringify(window.__DESK || emptyDesk())); } catch (e) {}
+});
 function deskWeekKey() {
   try { return `nfl-${currentNflWeekNumber()}|cfb-${currentCfbWeekNumber()}`; } catch (e) {}
   const m = (DATA && DATA.meta) || {};
@@ -11775,13 +11813,12 @@ function shownPick(g) {
 function teamLogo(t) {
   return t && t.logo ? `<img class="tlogo" src="${t.logo}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">` : `<span class="tlogo tlogo-none">${(t && t.abbr || "").slice(0, 3)}</span>`;
 }
+const KICK_TIME_FMT = new Intl.DateTimeFormat([], { hour: "numeric", minute: "2-digit" });
+const KICK_DAY_FMT = new Intl.DateTimeFormat([], { weekday: "short" });
 function kickParts(g) {
   const d = new Date(g.date);
   if (!Number.isFinite(d.getTime())) return { time: "", day: "" };
-  return {
-    time: d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }),
-    day: d.toLocaleDateString([], { weekday: "short" })
-  };
+  return { time: KICK_TIME_FMT.format(d), day: KICK_DAY_FMT.format(d) };
 }
 // Stadium scoreboard for the featured game.
 function scoreboardHtml(g) {
@@ -12132,8 +12169,22 @@ function weekFromTuesday(ymd, openYmd) {
   if (!Number.isFinite(start) || !Number.isFinite(now) || now < start) return 1;
   return Math.floor((now - start) / (7 * 86400000)) + 1;
 }
+// Building a date formatter is slow; these are made once. The week number is asked for
+// once per game on every page, so it is worked out at most every 15 seconds.
+const ET_YMD_FMT = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" });
+const ET_DAYHOUR_FMT = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short", hour: "numeric", hourCycle: "h23" });
 function etYmd(date) {
-  return (date || new Date()).toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+  return ET_YMD_FMT.format(date || new Date());
+}
+const __weekMemo = {};
+function memoWeek(key, fn) {
+  const now = Date.now();
+  const data = typeof DATA !== "undefined" ? DATA : null;
+  const m = __weekMemo[key];
+  if (m && m.data === data && now - m.t < 15000 && now >= m.t) return m.v;
+  const v = fn();
+  __weekMemo[key] = { t: now, v, data };
+  return v;
 }
 function collegeWeekOf(iso) {
   const d = String(iso || "").slice(0, 10);
@@ -12141,10 +12192,10 @@ function collegeWeekOf(iso) {
   return weekFromTuesday(d, "2026-09-01");
 }
 function currentNflWeekNumber() {
-  return Math.max(1, Math.min(22, rollMonday(weekFromTuesday(etYmd(), "2026-09-08"), "nfl")));
+  return memoWeek("nfl", () => Math.max(1, Math.min(22, rollMonday(weekFromTuesday(etYmd(), "2026-09-08"), "nfl"))));
 }
 function rollMonday(week, league) {
-  const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short", hour: "numeric", hourCycle: "h23" }).formatToParts(new Date());
+  const parts = ET_DAYHOUR_FMT.formatToParts(new Date());
   const bag = {};
   parts.forEach((p) => { bag[p.type] = p.value; });
   if (bag.weekday === "Mon" && Number(bag.hour) >= 6 && !(league === "nfl" && nflWeekStillPlaying(Number(week)))) return Number(week) + 1;
@@ -14323,7 +14374,11 @@ function pbKeep(league, market) {
 
 // ---- legs ------------------------------------------------------------------------------
 // stored leg: { id, price?, line?, book? }   id: gid|sp|home  gid|tot|over  gid|ml|away  gid|pp|pid|stat|over
-function pbGame(gid) { return (DATA.games || []).find((g) => String(g.id) === String(gid)) || null; }
+function pbGame(gid) {
+  const games = DATA.games || [];
+  if (pbGame.src !== games || pbGame.n !== games.length) { pbGame.src = games; pbGame.n = games.length; pbGame.map = new Map(games.map((g) => [String(g.id), g])); }
+  return pbGame.map.get(String(gid)) || null;
+}
 function pbStarted(g) {
   if (!g) return true;
   if (g.completed || (typeof isLiveGame === "function" && isLiveGame(g))) return true;
@@ -14414,6 +14469,13 @@ function pbLeg(stored, opts) {
       const pr = kind === "sp" ? (side === "home" ? book.sph : book.spa) : (side === "over" ? book.over : book.under);
       const hasLine = kind === "sp" ? book.sp != null : book.tot != null;
       if (pr != null && hasLine && line === mainLine) { bookPrice = pbParseAmerican(pr); priceSource = st.book; }
+    }
+    if (bookPrice == null && !st.book && line === mainLine) {
+      // no book picked: use DraftKings' real price for this line when the hourly file has it
+      const dk = pbBookRow(g.id, "DraftKings");
+      const dkLine = dk ? (kind === "sp" ? (dk.sp != null ? (side === "home" ? dk.sp : -dk.sp) : null) : dk.tot) : null;
+      const pr = dk ? (kind === "sp" ? (side === "home" ? dk.sph : dk.spa) : (side === "over" ? dk.over : dk.under)) : null;
+      if (dkLine != null && Math.abs(dkLine - line) < 1e-9 && pbParseAmerican(pr) != null) { bookPrice = pbParseAmerican(pr); priceSource = "DraftKings"; }
     }
     if (bookPrice == null && line !== mainLine && mkt && mkt.win > 0) {
       // alternate line: price it off the market's own view of the game, with a bigger cut
@@ -14966,7 +15028,15 @@ function pbSlipHtml() {
   }
   const verdict = result && (result.ok || mode === "parlay") ? pbVerdict(result, mode) : null;
   const sugg = pbSuggest(legs || []);
-  const rec = (() => { try { return typeof seasonRecord === "function" ? seasonRecord() : null; } catch (e) { return null; } })();
+  const rec = (() => {
+    // the season record only changes when a game ends; reuse it for a minute
+    const c = pbSlipHtml.rec;
+    if (c && Date.now() - c.t < 60000) return c.v;
+    let v = null;
+    try { v = typeof seasonRecord === "function" ? seasonRecord() : null; } catch (e) {}
+    pbSlipHtml.rec = { t: Date.now(), v };
+    return v;
+  })();
   const recLine = rec && rec.n ? `Our posted picks are ${rec.w}-${rec.l}${rec.psh ? "-" + rec.psh : ""} this season.` : "";
   const canKelly = mode !== "rr";
   const kellyP = result ? result.pAll : 0;
@@ -15001,7 +15071,7 @@ function pbSlipHtml() {
     </div>
 `}
     <p class="pb-status" id="pbStatus" role="status" aria-live="polite"></p>
-    <p class="pb-fine">Spreads and totals start at -110 and moneylines at DraftKings' price. Tap a price to type your book's. The − and + buttons sell or buy half points at an estimated alternate-line price. Pushes drop a leg. ${recLine} For information and entertainment, not betting advice.</p>`;
+    <p class="pb-fine">Prices start at DraftKings' (spreads and totals use -110 when we don't have theirs).${window.PB_BOOKS && window.PB_BOOKS.updated ? ` Book lines as of ${pbEsc(fmt.when(window.PB_BOOKS.updated))}.` : ""} Tap a price to type your book's. The − and + buttons sell or buy half points at an estimated alternate-line price. Pushes drop a leg. ${recLine} For information and entertainment, not betting advice.</p>`;
 }
 function pbDockHtml() {
   if (!PB.legs.length) return `<span class="pb-dock-n">Ticket</span><span class="pb-dock-txt">Tap a line to start a ticket</span>`;
@@ -15027,6 +15097,10 @@ function pbDefaultLeague() {
   return pbGamesFor("nfl").length ? "nfl" : "cfb";
 }
 function renderBuilder() {
+  if (renderBuilder.q) return;
+  renderBuilder.q = requestAnimationFrame(() => { renderBuilder.q = 0; renderBuilderNow(); });
+}
+function renderBuilderNow() {
   const root = document.getElementById("builderSection");
   if (!root || !DATA) return;
   if (!PB.__loaded) { pbLoad(); pbFromUrl(); PB.__loaded = true; }

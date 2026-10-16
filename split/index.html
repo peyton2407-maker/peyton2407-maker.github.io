@@ -115,13 +115,12 @@ body {
     repeating-linear-gradient(180deg, rgba(255,255,255,.018) 0 72px, transparent 72px 144px),
     radial-gradient(1200px 600px at 50% -240px, rgba(255,244,214,.07), transparent 70%),
     var(--bg);
-  background-attachment: fixed;
 }
 :focus-visible { outline: 2px solid var(--chalk); outline-offset: 2px; }
 .wrap { padding: 8px 16px calc(64px + 40px + var(--safe-b)); }
 .gg-appbar {
   position: sticky; top: 0; z-index: 60; display: flex; align-items: center; gap: 10px;
-  padding: 10px 16px; background: rgba(15,42,30,.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  padding: 10px 16px; background: rgb(15,42,30);
   border-bottom: 1px solid var(--line);
 }
 .gg-brand, .gg-mainnav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg); }
@@ -135,7 +134,7 @@ body {
 .gg-mainnav {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 70; display: grid; grid-template-columns: repeat(5, 1fr);
   padding: 6px 6px calc(6px + var(--safe-b)); background: rgba(12,34,24,.96);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid var(--line);
+  border-top: 1px solid var(--line);
 }
 .gg-mainnav-brand { display: none !important; }
 .gg-mainnav a {
