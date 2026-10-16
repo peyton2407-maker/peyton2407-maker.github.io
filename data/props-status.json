@@ -1,0 +1,24 @@
+{
+ "ran_at": "2026-10-16T14:42:45Z",
+ "scoreboards": 2,
+ "feed_games": 14,
+ "board_games": 27,
+ "matched": 13,
+ "errors": [],
+ "shape": {
+  "keys": [
+   "game_props",
+   "player_props",
+   "prop_order",
+   "players",
+   "market_rules"
+  ],
+  "types": 0,
+  "first_type": null,
+  "row_keys": null,
+  "sample_line": null,
+  "player_keys": null
+ },
+ "games_with_prices": 0,
+ "prices": 0
+}
