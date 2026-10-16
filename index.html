@@ -1277,6 +1277,10 @@ body:not([data-section]) .subnav-group[data-section="home"] { display: flex; }
   display: inline-flex; align-items: center;
 }
 #tabBar a.tab.star { border-color: rgba(244,203,114,.45); color: var(--sun); }
+#tabBar a.chip-link {
+  flex: 0 0 auto; min-height: 38px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line-2);
+  color: var(--ink-soft); font-size: 14px; font-weight: 700; white-space: nowrap; text-decoration: none; display: inline-flex; align-items: center;
+}
 #tabBar a.tab::after, #tabBar a.tab.star::after { content: none !important; }
 #tabBar .tab.active, #tabBar a.tab.star.active { background: var(--sun); border-color: var(--sun); color: var(--brass-ink); }
 
@@ -1449,7 +1453,7 @@ img.share-card { display: none !important; }
         <a class="tab star" href="#nfl" data-view="nfl">NFL Week</a><a class="tab" href="#prime" data-view="prime">TNF · SNF · MNF</a><a class="tab star" href="#props" data-view="props">Player props</a><a class="tab" href="#tds" data-view="tds">Who scores TDs</a><a class="tab" href="#value" data-view="value">Underdogs</a><a class="tab star" href="#nflpotd" data-view="nflpotd">Play of the day</a><a class="tab" href="#live" data-view="live">Live scores</a><a class="tab" href="#charts" data-view="charts">Game charts</a><a class="tab" href="#nflwx" data-view="nflwx">Weather</a><a class="tab" href="#nflinj" data-view="nflinj">Injuries</a>
       </div>
       <div class="subnav-group" data-section="cfb">
-        <a class="tab star" href="#cfb" data-view="cfb">CFB Week</a><a class="tab star" href="#cfbpicks" data-view="cfbpicks">College picks</a><a class="tab star" href="#potd" data-view="potd">Play of the day</a><a class="tab" href="#cfbwx" data-view="cfbwx">Weather</a><a class="tab" href="#cfbinj" data-view="cfbinj">Injuries</a>
+        <a class="tab star" href="#cfb" data-view="cfb">CFB Week</a><a class="tab star" href="#cfbpicks" data-view="cfbpicks">College picks</a><a class="tab star" href="#potd" data-view="potd">Play of the day</a><a class="tab" href="#cfbwx" data-view="cfbwx">Weather</a><a class="tab" href="#cfbinj" data-view="cfbinj">Injuries</a><a class="chip-link" href="/split/">The Split</a>
       </div>
       <div class="subnav-group" data-section="boom">
         <a class="tab star" href="#parlay" data-view="parlay">Tickets</a><a class="tab" href="#card" data-view="card">This week's card</a>
