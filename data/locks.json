@@ -117,9 +117,9 @@
     "hitPct": 60,
     "why": "Our total is 3.5 points under DraftKings 49.5.",
     "label": "Thursday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "ECU 17 – UAB 30",
+    "resultWhy": "It hit. UNDER 49.5 cashed. Final was ECU 17 – UAB 30.",
     "locked": true,
     "kick": "2026-10-15T23:30Z",
     "big": false,
@@ -137,9 +137,9 @@
     "hitPct": 61,
     "why": "Our total is 3.8 points over DraftKings 69.5.",
     "label": "Thursday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "CSU 27 – TXST 66",
+    "resultWhy": "It hit. OVER 69.5 cashed. Final was CSU 27 – TXST 66.",
     "locked": true,
     "kick": "2026-10-16T00:00Z",
     "big": false,
@@ -285,5 +285,5 @@
    }
   ]
  },
- "updated": "2026-10-16T00:20:29.948Z"
+ "updated": "2026-10-16T03:43:29.031Z"
 }
