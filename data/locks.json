@@ -94,7 +94,12 @@
    "total_play": false,
    "spread": 2.5,
    "total": 40.5,
-   "lockedAt": "2026-10-15T22:53:28.834Z"
+   "lockedAt": "2026-10-15T22:53:28.834Z",
+   "close_spread": 2.5,
+   "close_total": 40.5,
+   "closeAt": "2026-10-16T00:20:29.948Z",
+   "clv_side": 0,
+   "clv_total": 0
   }
  },
  "potd": {
@@ -280,5 +285,5 @@
    }
   ]
  },
- "updated": "2026-10-15T23:50:15.106Z"
+ "updated": "2026-10-16T00:20:29.948Z"
 }
