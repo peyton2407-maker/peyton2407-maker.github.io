@@ -14,6 +14,8 @@ Live at https://peyton2407-maker.github.io/
 | `data/locks.json` | Picks, plays of the day and this week's card, locked 90 minutes before kickoff. Same for every visitor. |
 | `scripts/lock_runner.py` | Runs every 15 minutes from `.github/workflows/lock-picks.yml`: opens the live board, locks what's due, grades finished plays of the day, and moves finished weeks into `past-scorecards.json`. |
 | `scripts/refresh_data.py` | Runs every hour from `.github/workflows/refresh-data.yml`: updates scores, lines, new games, team ratings and finals in `snapshot.json` and `week-results.json` from ESPN, using the board's own parsers. Picks are never edited here. |
+| `scripts/books.py` | Runs inside the hourly Refresh data job: saves every big US sportsbook's spread, total and moneyline for this week's games to `data/books.json` (from Action Network's public feed), so the parlay builder can show the best number for each leg. If the feed is down the old file stays. |
+| `scripts/calibrate.py` | Runs every Tuesday from `.github/workflows/calibrate.yml`: takes the board posted before every kickoff this season, works out the chance it gave each side, compares with the final scores, and saves how much of the board's lean held up to `data/calibration.json`. The parlay builder blends the book's line with that much of our lean. |
 | `scripts/slim_injuries.py` | Shrinks `data/injuries.json` to the fields the board reads (about 9 MB down to about 0.6 MB). |
 
 GitHub Pages serves this branch directly (Settings → Pages → Deploy from a branch, `main`, root). There is no build step.
@@ -27,6 +29,17 @@ GitHub Pages serves this branch directly (Settings → Pages → Deploy from a b
 ## Locked picks
 
 The "Lock picks" GitHub job locks each game's scorecard pick 90 minutes before kickoff, the play of the day the same way, and this week's card at Thursday noon ET (or 90 minutes before its first game). Each run within 20 minutes of kickoff also saves the closing line, so every locked pick shows how many points it beat (or lost to) the close. Once every locked game of a week has a final, that week is added to `past-scorecards.json` (a week already there is never overwritten). Run it by hand from the Actions tab with "Run workflow". Test it locally with `python3 scripts/lock_runner.py --local . --now 2026-10-15T23:00:00Z --dry-run`.
+
+## Parlay builder
+
+Boom Room → Parlay builder (`#builder`). Tap spreads, totals, moneylines and NFL player props, then play them as a parlay, a teaser or a round robin.
+
+- Every chance is "checked": it starts from the book's own line and keeps only as much of our board's lean as `data/calibration.json` says held up this season (small samples keep half).
+- NFL margins are weighted by how often real games end on each number (3, 7, 10, 14...). The weights were fit to every NFL game from 2015 to 2024 and are in `index.html` (`PB_NFL_KEY`) and `scripts/calibrate.py`. Fit on 2015-2021, they predicted 2022-2024 teaser legs at 71.6% against 73.0% actual.
+- Legs from one game are priced together. Teasers and round robins take one leg per game.
+- The − and + buttons sell or buy half points at an estimated alternate-line price. Any price can be typed in.
+- Bet size uses the Kelly method on the bankroll you enter, with a profit boost if you have one.
+- The ticket is saved in the visitor's browser, and "Copy link" opens the same ticket anywhere.
 
 ## Week rules
 

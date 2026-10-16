@@ -1490,7 +1490,7 @@ img.share-card { display: none !important; }
 .pb-leg-main { display: flex; flex-direction: column; min-width: 0; }
 .pb-leg-main b { font-size: 16px; line-height: 1.2; }
 .pb-leg-main span { font-size: 12px; color: var(--stub-soft); }
-.pb-leg-main .pb-moved { color: var(--stub-bad); font-weight: 600; }
+.pb-leg-main .pb-moved { color: #7a5a12; font-weight: 600; }
 .pb-leg.gone b { text-decoration: line-through; opacity: .6; }
 .pb-leg-nums { display: flex; align-items: center; gap: 8px; }
 .pb-price-edit input {
@@ -1575,6 +1575,61 @@ img.share-card { display: none !important; }
   .pb-board { grid-template-columns: 1fr 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { .pb-slip { transition: none; } }
+/* builder v2: checked chances, bet types, sizing */
+.pb-cal { margin: 0 0 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: rgba(0,0,0,.16); font-size: 14px; line-height: 1.45; color: var(--ink-soft); }
+.pb-cal p { margin: 0; }
+.pb-cal .pb-cal-lead { font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.pb-cal ul { margin: 0 0 6px; padding-left: 18px; }
+.pb-cal li { margin: 2px 0; }
+.pb-cal .pb-cal-foot { font-size: 13px; color: var(--muted); }
+.pb-linkbtn { border: 0; background: none; padding: 0 2px; color: inherit; font: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.pb-cal .pb-linkbtn { color: var(--sun); }
+.pb-cal-table { width: 100%; margin-top: 8px; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+.pb-cal-table th, .pb-cal-table td { text-align: left; padding: 5px 6px; border-bottom: 1px solid var(--line); }
+.pb-cal-table th { color: var(--muted); font-weight: 600; }
+.pb-props-wait { margin: 10px 0 0; font-size: 13px; color: var(--muted); }
+.pb-prop-name .pb-hit { color: var(--sun); font-weight: 600; }
+
+.pb-modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin: 12px 16px 2px; padding: 3px; border-radius: 12px; background: var(--stub-2); }
+.pb-modes button { min-height: 38px; border: 0; border-radius: 9px; background: transparent; color: var(--stub-soft); font: 700 14px var(--body); cursor: pointer; }
+.pb-modes button.on { background: var(--stub); color: var(--stub-ink); box-shadow: 0 1px 2px rgba(38,24,3,.18); }
+.pb-tset { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px 16px 0; font-size: 13px; font-weight: 700; color: var(--stub-soft); }
+.pb-tset > span { margin-right: 2px; }
+.pb-tset button { min-width: 44px; min-height: 34px; padding: 0 10px; border: 1px solid rgba(38,24,3,.25); border-radius: 8px; background: transparent; color: var(--stub-ink); font: 700 14px var(--body); cursor: pointer; }
+.pb-tset button.on { background: var(--stub-ink); color: var(--stub); border-color: var(--stub-ink); }
+.pb-tprice { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; }
+.pb-tprice input { width: 66px; min-height: 34px; text-align: center; border: 1px solid rgba(38,24,3,.28); border-radius: 8px; background: #fffaf0; color: var(--stub-ink); font: 800 16px var(--display); }
+.pb-leg-main .pb-hit { color: #7a5a12; font-weight: 600; }
+.pb-best { margin-top: 2px; font-size: 12px; color: var(--stub-good) !important; font-weight: 600; }
+.pb-best .pb-linkbtn { color: var(--stub-ink); }
+.pb-step { display: inline-flex; border: 1px solid rgba(38,24,3,.28); border-radius: 8px; overflow: hidden; }
+.pb-step button { width: 30px; min-height: 34px; border: 0; background: #fffaf0; color: var(--stub-ink); font: 800 17px var(--body); cursor: pointer; }
+.pb-step button + button { border-left: 1px solid rgba(38,24,3,.2); }
+.pb-step button:hover { background: var(--stub-2); }
+.pb-leg-ch em { white-space: nowrap; }
+.pb-size { margin: 10px 16px 0; border: 1px solid var(--stub-line); border-radius: 10px; }
+.pb-size summary { list-style: none; cursor: pointer; padding: 10px 12px; font-weight: 700; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
+.pb-size summary::-webkit-details-marker { display: none; }
+.pb-size summary::after { content: "+"; font-size: 18px; color: var(--stub-soft); }
+.pb-size[open] summary::after { content: "–"; }
+.pb-size-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; padding: 0 12px; }
+.pb-size-grid label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 600; color: var(--stub-soft); min-width: 0; }
+.pb-in { display: flex; align-items: center; gap: 2px; min-height: 38px; padding: 0 8px; border: 1px solid rgba(38,24,3,.28); border-radius: 8px; background: #fffaf0; }
+.pb-in i { font-style: normal; color: var(--stub-soft); font-weight: 700; }
+.pb-in input, .pb-in select { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--stub-ink); font: 700 15px var(--body); outline: none; padding: 0; }
+.pb-in:focus-within { outline: 2px solid #c98a22; outline-offset: 1px; }
+.pb-kelly { margin: 8px 12px 10px; font-size: 13px; line-height: 1.45; }
+/* each leg: what it is on top, its numbers underneath */
+.pb-leg { grid-template-columns: minmax(0,1fr) 32px; row-gap: 8px; }
+.pb-leg-nums { grid-column: 1 / 2; grid-row: 2; justify-content: flex-start; flex-wrap: nowrap; }
+.pb-leg .pb-x { grid-column: 2; grid-row: 1; align-self: start; }
+.pb-leg-ch { flex-direction: row; align-items: baseline; gap: 6px; }
+.pb-leg.gone .pb-leg-nums { display: none; }
+@media (max-width: 420px) {
+  .pb-size-grid { grid-template-columns: 1fr 1fr; }
+  .pb-size-grid label:last-child { grid-column: 1 / -1; }
+}
+
 </style>
 </head>
 <body>
@@ -1786,7 +1841,7 @@ img.share-card { display: none !important; }
         <div class="pb-main">
           <div class="pb-intro">
             <h2>Parlay builder</h2>
-            <p>Pick your legs. See what the book pays, our chance every leg hits, and whether the price is worth it.</p>
+            <p>Pick your legs and play them as a parlay, a teaser or a round robin. See what the book pays, the chance it hits, and whether the price is worth it.</p>
           </div>
           <div class="pb-controls">
             <div class="pb-seg" role="group" aria-label="League">
@@ -1807,11 +1862,12 @@ img.share-card { display: none !important; }
               <button type="button" data-pbmode="chance">Most likely</button>
             </div>
           </div>
+          <div id="pbCal" class="pb-cal" aria-live="polite"></div>
           <div class="pb-sortrow">
             <span>Sort</span>
             <button type="button" data-pbsort="kick">Kickoff</button>
             <button type="button" data-pbsort="value">Most value</button>
-            <span class="pb-key"><i></i>Price pays more than our chance needs</span>
+            <span class="pb-key"><i></i>Price pays more than the checked chance needs</span>
           </div>
           <div id="pbBoard" class="pb-board"></div>
         </div>
@@ -14090,43 +14146,71 @@ async function loadDeskData() {
 }
 
 // ===================================================================================
-// Parlay builder. Pick legs off this week's board; the slip shows what the book pays,
-// our chance that every leg hits, the chance the payout needs, and whether the price
-// is worth it. Chances come from the same projected scores as the board (same spread
-// and total spreads of outcomes as playChance), so a leg's chance matches its game card.
-// Legs from one game are priced together (a favorite covering and winning move as one).
+// Parlay builder. Pick legs off this week's board, then play them as a parlay, a teaser
+// or a round robin. Every chance on this page is "checked": it starts from the book's own
+// line and keeps only as much of our board's lean as held up against this season's
+// finished games (data/calibration.json, built by scripts/calibrate.py). NFL margins are
+// weighted by how often real games land on each number (3, 7, 10, 14...), fit to every NFL
+// game since 2015, so teasers and bought half points are priced the way games really end.
+// Other books' lines come from data/books.json (scripts/books.py, hourly).
 // ===================================================================================
-const PB_KEY = "gg-slip-v1";
-const PB_DEFAULT_PRICE = { sp: -110, tot: -110, ml: null, pp: -115 };
+const PB_KEY = "gg-slip-v2";
 const PB_MAX_LEGS = 12;
-const PB = { league: null, sort: "kick", q: "", open: false, fillMode: "value", stake: 10, legs: [] };
+const PB_RR_MAX = 8;
+// NFL final margins: how much more (or less) often games end on each margin than a plain
+// bell curve says. Index = margin in points; past 24 = 1. Same table as scripts/calibrate.py.
+const PB_NFL_KEY = [0.1376, 0.8652, 0.903, 2.9525, 0.9423, 0.9163, 1.4725, 1.9058, 0.9768, 0.3872, 1.168, 0.5431, 0.5297, 0.5905, 1.5898, 0.5359, 0.8312, 1.362, 0.9512, 0.5198, 1.0436, 1.2415, 0.6583, 0.9334, 1.5674];
+const PB_NFL_TOTAL_SD = 13.2;     // NFL final totals land a typical 13.2 points from the closing total (2015-2024)
+const PB_HOLD_MAIN = 1.0476;      // -110 on both sides
+const PB_HOLD_ALT = 1.07;         // alternate lines carry a bigger cut
+const PB_PRIOR_KEEP = 0.5;        // before a market has enough games, keep half the lean
+const PB_PRIOR_SD = 0.5;
+// Typical US book teaser prices by number of teams (change them to your book's on the ticket).
+const PB_TEASER_PRICES = {
+  "6": { 2: -120, 3: 150, 4: 250, 5: 400, 6: 600 },
+  "6.5": { 2: -130, 3: 140, 4: 225, 5: 350, 6: 500 },
+  "7": { 2: -140, 3: 120, 4: 200, 5: 300, 6: 450 }
+};
+const PB = {
+  league: null, sort: "kick", q: "", open: false, fillMode: "value", stake: 10, legs: [],
+  mode: "parlay", teaserPts: "6", teaserPrice: null, rrSizes: [2], boost: 0, bankroll: 0, kelly: 0.25,
+  propsOpen: null, showCal: false
+};
 
 function pbLoad() {
   try {
-    const raw = JSON.parse(localStorage.getItem(PB_KEY) || "null");
-    if (raw && Array.isArray(raw.legs)) {
-      PB.legs = raw.legs.filter((l) => l && l.id).slice(0, PB_MAX_LEGS);
-      if (Number(raw.stake) > 0) PB.stake = Number(raw.stake);
-      if (raw.league === "nfl" || raw.league === "cfb") PB.league = raw.league;
-      if (raw.fillMode === "value" || raw.fillMode === "chance") PB.fillMode = raw.fillMode;
-    }
+    const raw = JSON.parse(localStorage.getItem(PB_KEY) || "null") || JSON.parse(localStorage.getItem("gg-slip-v1") || "null");
+    if (!raw) return;
+    if (Array.isArray(raw.legs)) PB.legs = raw.legs.filter((l) => l && l.id).slice(0, PB_MAX_LEGS);
+    ["stake", "boost", "bankroll", "kelly"].forEach((k) => { if (Number.isFinite(Number(raw[k])) && Number(raw[k]) >= 0) PB[k] = Number(raw[k]); });
+    if (!(PB.stake > 0)) PB.stake = 10;
+    if (raw.league === "nfl" || raw.league === "cfb") PB.league = raw.league;
+    if (raw.fillMode === "value" || raw.fillMode === "chance") PB.fillMode = raw.fillMode;
+    if (["parlay", "teaser", "rr"].includes(raw.mode)) PB.mode = raw.mode;
+    if (PB_TEASER_PRICES[raw.teaserPts]) PB.teaserPts = raw.teaserPts;
+    if (Number.isFinite(Number(raw.teaserPrice))) PB.teaserPrice = Number(raw.teaserPrice);
+    if (Array.isArray(raw.rrSizes) && raw.rrSizes.length) PB.rrSizes = raw.rrSizes.map(Number).filter((n) => n >= 2 && n <= 7);
   } catch (e) {}
 }
 function pbSave() {
-  try { localStorage.setItem(PB_KEY, JSON.stringify({ legs: PB.legs, stake: PB.stake, league: PB.league, fillMode: PB.fillMode })); } catch (e) {}
+  try {
+    const keep = {};
+    ["legs", "stake", "league", "fillMode", "mode", "teaserPts", "teaserPrice", "rrSizes", "boost", "bankroll", "kelly"].forEach((k) => { keep[k] = PB[k]; });
+    localStorage.setItem(PB_KEY, JSON.stringify(keep));
+  } catch (e) {}
 }
 
 // ---- price math ----------------------------------------------------------------------
 function pbParseAmerican(v) {
   if (v == null || v === "") return null;
-  if (/^even$/i.test(String(v).trim())) return 100;
+  if (/^\s*even\s*$/i.test(String(v))) return 100;
   const n = Number(String(v).replace(/[^\d.+-]/g, ""));
   if (!Number.isFinite(n) || Math.abs(n) < 100) return null;
   return Math.round(n);
 }
 function pbDec(a) { return a > 0 ? 1 + a / 100 : 1 + 100 / -a; }
 function pbAmerican(dec) {
-  if (!(dec > 1)) return null;
+  if (!(dec > 1.0001)) return null;
   return dec >= 2 ? Math.round((dec - 1) * 100) : -Math.round(100 / (dec - 1));
 }
 function pbAm(a) { return a == null ? "—" : (a > 0 ? "+" + a : String(a)); }
@@ -14140,40 +14224,105 @@ function pbPct(p, digits) {
   if (digits == null) digits = v < 1 ? 2 : v < 10 ? 1 : 0;
   return v.toFixed(digits) + "%";
 }
+function pbSigned(p) { const v = Math.round(p * 1000) / 10; return (v > 0 ? "+" : "") + v.toFixed(1) + "%"; }
 function pbLine(n) {
   const v = Number(n);
   if (!Number.isFinite(v)) return "";
   if (v === 0) return "PK";
   return (v > 0 ? "+" : "") + (Number.isInteger(v) ? v.toFixed(0) : v.toFixed(1));
 }
+function pbTot(n) { const v = Number(n); return Number.isInteger(v) ? String(v) : v.toFixed(1); }
+function pbEsc(s) { return String(s == null ? "" : s).replace(/[<>&"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c])); }
 
-// ---- the model: projected margin and total with their spread of outcomes ---------------
-function pbModel(g) {
-  const p = g.proj || {};
-  const nfl = g.league === "nfl";
-  let mu = p.hashmark_home_spread != null ? -Number(p.hashmark_home_spread) : Number(p.home_points) - Number(p.away_points);
-  if (!Number.isFinite(mu)) return null;
-  let tmu = p.hashmark_total != null ? Number(p.hashmark_total) : Number(p.home_points) + Number(p.away_points);
-  const sd = nfl ? LIVE.NFL_SIGMA : (typeof cfbSigma === "function" ? cfbSigma(mu) : LIVE.CFB_SIGMA);
-  const tsd = nfl ? 12 : LIVE.CFB_TOTAL_SIGMA;
-  return { mu, sd, tmu: Number.isFinite(tmu) ? tmu : null, tsd };
-}
-// Chance a normal outcome lands above / below a line. Whole-number lines can push.
-function pbSideChance(mu, sd, line, above) {
-  const whole = Math.abs(line - Math.round(line)) < 1e-9;
-  if (whole) {
-    const hiCut = normCdf((line + 0.5 - mu) / sd);
-    const loCut = normCdf((line - 0.5 - mu) / sd);
-    const push = Math.max(0, hiCut - loCut);
-    return { win: above ? 1 - hiCut : loCut, push };
+// ---- outcome distributions (whole-point scores) ----------------------------------------
+// NFL margins: bell curve times the real key-number weights. Everything else: bell curve
+// split at half points, so whole-number lines can push.
+const PB_PMF_CACHE = new Map();
+function pbNflPmf(mu, sd) {
+  const key = mu.toFixed(2) + "|" + sd;
+  if (PB_PMF_CACHE.has(key)) return PB_PMF_CACHE.get(key);
+  const p = new Float64Array(141);
+  let s = 0;
+  for (let m = -70; m <= 70; m++) {
+    const z = (m - mu) / sd;
+    const w = Math.abs(m) < PB_NFL_KEY.length ? PB_NFL_KEY[Math.abs(m)] : 1;
+    const v = Math.exp(-0.5 * z * z) * w;
+    p[m + 70] = v; s += v;
   }
-  const c = normCdf((line - mu) / sd);
-  return { win: above ? 1 - c : c, push: 0 };
+  for (let i = 0; i < p.length; i++) p[i] /= s;
+  const cum = new Float64Array(142);
+  for (let i = 0; i < p.length; i++) cum[i + 1] = cum[i] + p[i];
+  const out = { pmf: true, p, cum };
+  if (PB_PMF_CACHE.size > 400) PB_PMF_CACHE.clear();
+  PB_PMF_CACHE.set(key, out);
+  return out;
+}
+// A posted NFL line splits outcomes about 50/50 (favorites cover 48-50% at every number,
+// 2015-2024). Because games bunch on 3 and 7, the middle of the outcomes sits off the line
+// itself; find the center that puts as much weight above the line as below it.
+const PB_CENTER_CACHE = new Map();
+function pbNflCenter(x, sd) {
+  const key = x.toFixed(2) + "|" + sd;
+  if (PB_CENTER_CACHE.has(key)) return PB_CENTER_CACHE.get(key);
+  let lo = x - 8, hi = x + 8;
+  for (let i = 0; i < 32; i++) {
+    const mid = (lo + hi) / 2;
+    const d = pbNflPmf(mid, sd);
+    if (pbRange(d, x, null) < pbRange(d, null, x)) lo = mid; else hi = mid;
+  }
+  const c = (lo + hi) / 2;
+  if (PB_CENTER_CACHE.size > 400) PB_CENTER_CACHE.clear();
+  PB_CENTER_CACHE.set(key, c);
+  return c;
+}
+function pbDist(line, sd, nflMargin) { return nflMargin ? pbNflPmf(pbNflCenter(line, sd), sd) : { pmf: false, mu: line, sd }; }
+// chance the whole-number outcome x satisfies lo < x < hi (either side may be open)
+function pbRange(d, lo, hi) {
+  if (d.pmf) {
+    const a = lo == null ? -70 : Math.max(-70, Math.floor(lo) + 1);
+    const b = hi == null ? 70 : Math.min(70, Math.ceil(hi) - 1);
+    if (b < a) return 0;
+    return d.cum[b + 71] - d.cum[a + 70];
+  }
+  const top = hi == null ? 1 : normCdf((Math.ceil(hi) - 0.5 - d.mu) / d.sd);
+  const bot = lo == null ? 0 : normCdf((Math.floor(lo) + 0.5 - d.mu) / d.sd);
+  return Math.max(0, top - bot);
+}
+function pbAt(d, x) {
+  if (Math.abs(x - Math.round(x)) > 1e-9) return 0;
+  if (d.pmf) return Math.abs(x) <= 70 ? d.p[Math.round(x) + 70] : 0;
+  return Math.max(0, normCdf((x + 0.5 - d.mu) / d.sd) - normCdf((x - 0.5 - d.mu) / d.sd));
+}
+
+// ---- the board's view and the market's view of a game ---------------------------------
+function pbViews(g) {
+  const p = g.proj || {}, o = g.odds || {};
+  const nfl = g.league === "nfl";
+  const boardMu = p.hashmark_home_spread != null ? -Number(p.hashmark_home_spread) : Number(p.home_points) - Number(p.away_points);
+  const boardTot = p.hashmark_total != null ? Number(p.hashmark_total) : Number(p.home_points) + Number(p.away_points);
+  const mktMu = o.home_spread != null ? -Number(o.home_spread) : (Number.isFinite(boardMu) ? boardMu : null);
+  const mktTot = o.total != null ? Number(o.total) : (Number.isFinite(boardTot) ? boardTot : null);
+  const sdM = (mu) => nfl ? LIVE.NFL_SIGMA : (typeof cfbSigma === "function" ? cfbSigma(mu) : LIVE.CFB_SIGMA);
+  const sdT = nfl ? PB_NFL_TOTAL_SD : LIVE.CFB_TOTAL_SIGMA;
+  const v = { nfl };
+  if (Number.isFinite(boardMu)) v.bM = pbDist(boardMu, sdM(boardMu), nfl);
+  if (mktMu != null && Number.isFinite(mktMu)) v.mM = pbDist(mktMu, sdM(mktMu), nfl);
+  if (Number.isFinite(boardTot)) v.bT = pbDist(boardTot, sdT, false);
+  if (mktTot != null && Number.isFinite(mktTot)) v.mT = pbDist(mktTot, sdT, false);
+  return v;
+}
+// How much of the board's lean to keep, per league and market. Small samples lean on the prior.
+function pbKeep(league, market) {
+  const c = window.PB_CAL && window.PB_CAL.leagues && window.PB_CAL.leagues[league] && window.PB_CAL.leagues[league][market];
+  if (!c || c.keep == null || !(c.n >= 20)) return { k: PB_PRIOR_KEEP, checked: false, n: c ? c.n : 0 };
+  const se = c.keep_se && c.keep_se > 0 ? c.keep_se : 0.5;
+  const w1 = 1 / (se * se), w0 = 1 / (PB_PRIOR_SD * PB_PRIOR_SD);
+  const k = Math.max(0, Math.min(1, (c.keep * w1 + PB_PRIOR_KEEP * w0) / (w1 + w0)));
+  return { k, checked: true, n: c.n, raw: c.keep, se };
 }
 
 // ---- legs ------------------------------------------------------------------------------
-// id: gid|sp|home  gid|sp|away  gid|tot|over  gid|tot|under  gid|ml|home  gid|ml|away
-//     gid|pp|playerId|stat|over|under
+// stored leg: { id, price?, line?, book? }   id: gid|sp|home  gid|tot|over  gid|ml|away  gid|pp|pid|stat|over
 function pbGame(gid) { return (DATA.games || []).find((g) => String(g.id) === String(gid)) || null; }
 function pbStarted(g) {
   if (!g) return true;
@@ -14181,6 +14330,7 @@ function pbStarted(g) {
   const t = Date.parse(g.date);
   return Number.isFinite(t) && t <= Date.now();
 }
+function pbPropSig(stat) { return typeof propSigma === "function" ? propSigma(stat) : VAL_SIG[stat]; }
 function pbPropRows(g) {
   if (!g || g.league !== "nfl" || typeof dkFor !== "function") return [];
   const out = [];
@@ -14191,52 +14341,105 @@ function pbPropRows(g) {
     Object.keys(VAL_SIG).forEach((k) => {
       const mu = Number(pl[k] || 0);
       if (!(mu > 0) || dk[k] == null) return;
-      out.push({ pl, stat: k, mu, line: Number(dk[k]), gap: Math.abs(mu - Number(dk[k])) / VAL_SIG[k] });
+      out.push({ pl, stat: k, mu, line: Number(dk[k]), gap: Math.abs(mu - Number(dk[k])) / pbPropSig(k) });
     });
   });
   return out.sort((a, b) => b.gap - a.gap);
 }
-// Everything about one leg as it stands right now (line, price, chance), or null.
-function pbLeg(id, price) {
-  const parts = String(id).split("|");
+// win/push for a side at a line under one view; cond describes the leg for same-game math
+function pbSideAt(kind, side, line, dM, dT) {
+  if (kind === "sp") {
+    if (!dM) return null;
+    // home covers when margin + home line > 0
+    const cut = side === "home" ? -line : line;           // margin vs cut
+    if (side === "home") return { win: pbRange(dM, cut, null), push: pbAt(dM, cut) };
+    return { win: pbRange(dM, null, cut), push: pbAt(dM, cut) };
+  }
+  if (kind === "tot") {
+    if (!dT) return null;
+    return side === "over" ? { win: pbRange(dT, line, null), push: pbAt(dT, line) } : { win: pbRange(dT, null, line), push: pbAt(dT, line) };
+  }
+  if (kind === "ml") {
+    if (!dM) return null;
+    return side === "home" ? { win: pbRange(dM, 0, null), push: pbAt(dM, 0) } : { win: pbRange(dM, null, 0), push: pbAt(dM, 0) };
+  }
+  return null;
+}
+function pbCond(kind, side, line) {
+  if (kind === "sp") return side === "home" ? { v: "m", lo: -line } : { v: "m", hi: line };
+  if (kind === "tot") return side === "over" ? { v: "t", lo: line } : { v: "t", hi: line };
+  if (kind === "ml") return side === "home" ? { v: "m", lo: 0 } : { v: "m", hi: 0 };
+  return null;
+}
+function pbBookRow(gid, book) { const b = window.PB_BOOKS && window.PB_BOOKS.games && window.PB_BOOKS.games[String(gid)]; return b && book ? b[book] || null : null; }
+// A leg as it stands right now. opts.shift moves a spread/total line in the bettor's favor (teasers).
+function pbLeg(stored, opts) {
+  const st = typeof stored === "string" ? { id: stored } : (stored || {});
+  const parts = String(st.id || "").split("|");
   const g = pbGame(parts[0]);
   if (!g || !g.home || !g.away) return null;
   const o = g.odds || {};
-  const m = pbModel(g);
   const kind = parts[1];
   const side = parts[parts.length - 1];
   const game = `${g.away.abbr} @ ${g.home.abbr}`;
-  let label = "", line = null, chance = null, bookPrice = null, cond = null, market = "";
-  if (kind === "sp") {
-    if (o.home_spread == null) return null;
-    const hs = Number(o.home_spread);
-    line = side === "home" ? hs : -hs;
-    label = `${side === "home" ? g.home.abbr : g.away.abbr} ${pbLine(line)}`;
-    market = "Spread";
-    if (m) {
-      // home covers when margin + home line > 0, i.e. margin > -hs
-      chance = pbSideChance(m.mu, m.sd, -hs, side === "home");
-      cond = side === "home" ? { v: "m", lo: -hs } : { v: "m", hi: -hs };
+  const team = side === "home" ? g.home.abbr : g.away.abbr;
+  const views = pbViews(g);
+  const shift = (opts && opts.shift) || 0;
+  let label = "", line = null, mainLine = null, market = "", bookPrice = null, priceSource = "standard", keepInfo;
+  let board = null, mkt = null, cond = null;
+  const book = st.book ? pbBookRow(g.id, st.book) : null;
+  if (kind === "sp" || kind === "tot") {
+    if (kind === "sp") {
+      if (o.home_spread == null) return null;
+      const hs = Number(o.home_spread);
+      mainLine = side === "home" ? hs : -hs;
+      if (book && book.sp != null) mainLine = side === "home" ? book.sp : -book.sp;
+    } else {
+      if (o.total == null) return null;
+      mainLine = Number(o.total);
+      if (book && book.tot != null) mainLine = book.tot;
     }
-  } else if (kind === "tot") {
-    if (o.total == null) return null;
-    line = Number(o.total);
-    label = `${side === "over" ? "Over" : "Under"} ${Number.isInteger(line) ? line : line.toFixed(1)}`;
-    market = "Total";
-    if (m && m.tmu != null) {
-      chance = pbSideChance(m.tmu, m.tsd, line, side === "over");
-      cond = side === "over" ? { v: "t", lo: line } : { v: "t", hi: line };
+    line = st.line != null && Number.isFinite(Number(st.line)) ? Number(st.line) : mainLine;
+    if (shift) line = kind === "sp" ? line + shift : (side === "over" ? line - shift : line + shift);
+    // spread lines here are the picked side's line; convert to the home line for the math
+    const homeLine = kind === "sp" ? (side === "home" ? line : -line) : line;
+    const calc = (dM, dT) => kind === "sp" ? pbSideAt("sp", side, side === "home" ? homeLine : line, dM, dT) : pbSideAt("tot", side, line, dM, dT);
+    board = calc(views.bM, views.bT);
+    mkt = calc(views.mM, views.mT);
+    cond = kind === "sp" ? (side === "home" ? { v: "m", lo: -homeLine } : { v: "m", hi: line }) : pbCond("tot", side, line);
+    keepInfo = pbKeep(g.league, kind === "sp" ? "spread" : "total");
+    market = kind === "sp" ? "Spread" : "Total";
+    label = kind === "sp" ? `${team} ${pbLine(line)}` : `${side === "over" ? "Over" : "Under"} ${pbTot(line)}`;
+    if (book) {
+      const pr = kind === "sp" ? (side === "home" ? book.sph : book.spa) : (side === "over" ? book.over : book.under);
+      const hasLine = kind === "sp" ? book.sp != null : book.tot != null;
+      if (pr != null && hasLine && line === mainLine) { bookPrice = pbParseAmerican(pr); priceSource = st.book; }
     }
+    if (bookPrice == null && line !== mainLine && mkt && mkt.win > 0) {
+      // alternate line: price it off the market's own view of the game, with a bigger cut
+      bookPrice = pbAmerican(Math.max(1.01, ((1 - mkt.push) / mkt.win) / PB_HOLD_ALT));
+      priceSource = "estimated";
+    }
+    if (bookPrice == null) bookPrice = -110;
   } else if (kind === "ml") {
-    bookPrice = pbParseAmerican(side === "home" ? o.home_ml : o.away_ml);
+    const raw = book && (side === "home" ? book.mlh : book.mla) != null ? (side === "home" ? book.mlh : book.mla) : (side === "home" ? o.home_ml : o.away_ml);
+    bookPrice = pbParseAmerican(raw);
     if (bookPrice == null) return null;
-    label = `${side === "home" ? g.home.abbr : g.away.abbr} to win`;
-    market = "Moneyline";
-    if (m) {
-      const c = normCdf((0 - m.mu) / m.sd);
-      chance = { win: side === "home" ? 1 - c : c, push: 0 };
-      cond = side === "home" ? { v: "m", lo: 0 } : { v: "m", hi: 0 };
+    priceSource = book ? st.book : (o.book || "Book");
+    board = pbSideAt("ml", side, 0, views.bM, views.bT);
+    // the market's view of a moneyline is its own two prices with the cut taken out
+    const a = pbParseAmerican(o.home_ml), b = pbParseAmerican(o.away_ml);
+    const pushM = views.mM ? pbAt(views.mM, 0) : 0;
+    if (a != null && b != null) {
+      const ia = 1 / pbDec(a), ib = 1 / pbDec(b);
+      mkt = { win: (side === "home" ? ia : ib) / (ia + ib) * (1 - pushM), push: pushM };
+    } else {
+      mkt = pbSideAt("ml", side, 0, views.mM, views.mT);
     }
+    cond = pbCond("ml", side, 0);
+    keepInfo = pbKeep(g.league, "ml");
+    market = "Moneyline";
+    label = `${team} to win`;
   } else if (kind === "pp") {
     const pid = parts[2], stat = parts[3];
     const pl = (g.props || []).find((x) => String(x.id) === String(pid));
@@ -14245,33 +14448,34 @@ function pbLeg(id, price) {
     line = Number(dk[stat]);
     const mu = Number(pl[stat] || 0);
     const over = side === "over";
-    const po = typeof pOver === "function" ? pOver(mu, line, VAL_SIG[stat]) : 0.5;
-    chance = { win: over ? po : 1 - po, push: 0 };
-    label = `${pl.name} ${over ? "over" : "under"} ${line} ${VAL_LBL[stat]}`;
+    const po = pOver(mu, line, pbPropSig(stat));
+    board = { win: over ? po : 1 - po, push: 0 };
+    mkt = { win: 0.5, push: 0 };
+    keepInfo = { k: PB_PRIOR_KEEP, checked: false, n: 0 };
+    bookPrice = -115; priceSource = "typical";
     market = "Player prop";
+    label = `${pl.name} ${over ? "over" : "under"} ${line} ${VAL_LBL[stat]}`;
+    return pbFinish({ st, g, kind, side, game, label, line, mainLine: line, market, bookPrice, priceSource, board, mkt, keepInfo, cond: null, pid, stat, player: pl.name });
   } else {
     return null;
   }
-  if (!chance) return null;
-  const def = bookPrice != null ? bookPrice : PB_DEFAULT_PRICE[kind];
-  const used = pbParseAmerican(price) != null ? pbParseAmerican(price) : def;
-  const dec = pbDec(used);
-  const value = chance.win * dec + chance.push - 1;
-  // what the book's own prices say, when it posts both sides (moneyline only)
-  let bookChance = null;
-  if (kind === "sp" || kind === "tot") bookChance = 0.5;
-  if (kind === "ml") {
-    const a = pbParseAmerican(o.home_ml), b = pbParseAmerican(o.away_ml);
-    if (a != null && b != null) {
-      const ia = 1 / pbDec(a), ib = 1 / pbDec(b);
-      bookChance = (side === "home" ? ia : ib) / (ia + ib);
-    }
-  }
+  if (!board || !mkt) return null;
+  return pbFinish({ st, g, kind, side, game, label, line, mainLine, market, bookPrice, priceSource, board, mkt, keepInfo, cond });
+}
+function pbFinish(x) {
+  const k = x.keepInfo.k;
+  const win = Math.min(0.999, Math.max(0.001, x.mkt.win + k * (x.board.win - x.mkt.win)));
+  const push = Math.max(0, Math.min(1 - win, x.mkt.push + k * (x.board.push - x.mkt.push)));
+  const typed = pbParseAmerican(x.st.price);
+  const price = typed != null ? typed : x.bookPrice;
+  const dec = pbDec(price);
   return {
-    id, g, gid: String(g.id), kind, side, game, label, line, market,
-    price: used, defaultPrice: def, edited: used !== def, priceNote: kind === "ml" ? (o.book || "Book") : "standard price",
-    dec, win: chance.win, push: chance.push, value, bookChance, cond,
-    started: pbStarted(g)
+    id: x.st.id, stored: x.st, g: x.g, gid: String(x.g.id), kind: x.kind, side: x.side, game: x.game, label: x.label,
+    line: x.line, mainLine: x.mainLine, market: x.market, price, defaultPrice: x.bookPrice, typed: typed != null,
+    priceSource: typed != null ? "you" : x.priceSource, dec, win, push, boardWin: x.board.win, bookWin: x.mkt.win,
+    keep: k, checked: x.keepInfo.checked, value: win * dec + push - 1, cond: x.cond,
+    pid: x.pid, stat: x.stat, player: x.player, book: x.st.book || null,
+    started: pbStarted(x.g)
   };
 }
 function pbOpposite(id) {
@@ -14281,55 +14485,229 @@ function pbOpposite(id) {
   return p.join("|");
 }
 
-// ---- pricing a whole ticket --------------------------------------------------------------
-// Legs in different games are independent. Legs in one game share the same margin/total,
-// so we price the overlap of their conditions directly: KC -3.5 with KC to win is just
-// KC -3.5, and BUF +3.5 with KC to win only hits when KC wins by 1 to 3.
-function pbTicket(legs) {
-  const live = legs.filter((l) => l && !l.started);
+// ---- pricing tickets ---------------------------------------------------------------------
+// Legs in different games are independent. Legs in one game share its margin and total, so
+// the overlap of their conditions is priced directly, under both views, then blended.
+function pbGroupChance(bag) {
+  const g = bag[0].g;
+  const views = pbViews(g);
+  const span = { m: { lo: null, hi: null }, t: { lo: null, hi: null } };
+  let other = 1;
+  bag.forEach((l) => {
+    if (!l.cond) { other *= l.win; return; }
+    const s = span[l.cond.v];
+    if (l.cond.lo != null) s.lo = s.lo == null ? l.cond.lo : Math.max(s.lo, l.cond.lo);
+    if (l.cond.hi != null) s.hi = s.hi == null ? l.cond.hi : Math.min(s.hi, l.cond.hi);
+  });
+  let p = other;
+  [["m", "bM", "mM", "spread"], ["t", "bT", "mT", "total"]].forEach(([v, bk, mk, name]) => {
+    const s = span[v];
+    if (s.lo == null && s.hi == null) return;
+    const k = pbKeep(g.league, name).k;
+    const pb = views[bk] ? pbRange(views[bk], s.lo, s.hi) : 0;
+    const pm = views[mk] ? pbRange(views[mk], s.lo, s.hi) : pb;
+    p *= pm + k * (pb - pm);
+  });
+  return p;
+}
+// outcomes per independent unit: [{ p, d }] for non-losing results (d = payout multiplier)
+function pbUnits(legs) {
   const byGame = new Map();
-  live.forEach((l) => { if (!byGame.has(l.gid)) byGame.set(l.gid, []); byGame.get(l.gid).push(l); });
-  let pAll = 1, evMult = 1, dec = 1;
-  const sameGame = [];
+  legs.forEach((l) => { if (!byGame.has(l.gid)) byGame.set(l.gid, []); byGame.get(l.gid).push(l); });
+  const units = [], sameGame = [];
   byGame.forEach((bag) => {
-    const d = bag.reduce((a, l) => a * l.dec, 1);
-    dec *= d;
     if (bag.length === 1) {
       const l = bag[0];
-      pAll *= l.win;
-      evMult *= l.win * d + l.push;
+      units.push({ legs: bag, outs: [{ p: l.win, d: l.dec, w: 1 }, { p: l.push, d: 1, w: 0 }] });
+    } else {
+      sameGame.push(bag);
+      units.push({ legs: bag, outs: [{ p: pbGroupChance(bag), d: bag.reduce((a, l) => a * l.dec, 1), w: bag.length }] });
+    }
+  });
+  return { units, sameGame };
+}
+function pbParlay(legs, boost) {
+  const live = legs.filter((l) => l && !l.started);
+  const { units, sameGame } = pbUnits(live);
+  const n = live.length;
+  const b = Math.max(0, Number(boost) || 0) / 100;
+  const dec = live.reduce((a, l) => a * l.dec, 1);
+  let ev = 0, pAll = 1, pCash = 0;
+  units.forEach((u) => { pAll *= u.outs[0].p; });
+  // walk every non-losing combination of units (pushes drop a leg, all pushes = money back)
+  const walk = (i, p, d) => {
+    if (p < 1e-12) return;
+    if (i === units.length) {
+      const pay = d > 1.0000001 ? 1 + (d - 1) * (1 + b) : 1;
+      ev += p * pay;
+      if (d > 1.0000001) pCash += p;
       return;
     }
-    sameGame.push(bag);
-    const m = pbModel(bag[0].g);
-    let p = 1;
-    const span = { m: { lo: -Infinity, hi: Infinity }, t: { lo: -Infinity, hi: Infinity } };
-    bag.forEach((l) => {
-      if (l.cond) {
-        const s = span[l.cond.v];
-        if (l.cond.lo != null) s.lo = Math.max(s.lo, l.cond.lo);
-        if (l.cond.hi != null) s.hi = Math.min(s.hi, l.cond.hi);
-      } else {
-        p *= l.win; // player props: treated as their own event
-      }
-    });
-    ["m", "t"].forEach((v) => {
-      const s = span[v];
-      if (s.lo === -Infinity && s.hi === Infinity) return;
-      const mu = v === "m" ? m.mu : m.tmu, sd = v === "m" ? m.sd : m.tsd;
-      const hi = s.hi === Infinity ? 1 : normCdf((s.hi - mu) / sd);
-      const lo = s.lo === -Infinity ? 0 : normCdf((s.lo - mu) / sd);
-      p *= Math.max(0, hi - lo);
-    });
-    pAll *= p;
-    evMult *= p * d;
-  });
-  const n = live.length;
-  return {
-    n, dec, american: n ? pbAmerican(dec) : null,
-    pAll: n ? pAll : 0, breakEven: n ? 1 / dec : 0,
-    ev: n ? evMult - 1 : 0, sameGame
+    units[i].outs.forEach((o) => { if (o.p > 0) walk(i + 1, p * o.p, d * o.d); });
   };
+  if (n) walk(0, 1, 1);
+  const decEff = 1 + (dec - 1) * (1 + b);
+  return { n, dec, decEff, american: n ? pbAmerican(decEff) : null, pAll: n ? pAll : 0, pCash, breakEven: n ? 1 / decEff : 0, ev: n ? ev - 1 : 0, sameGame };
+}
+// full = the whole ticket (a typed price applies); otherwise the smaller teaser after a push
+function pbTeaserPrice(n, full) {
+  const table = PB_TEASER_PRICES[PB.teaserPts] || PB_TEASER_PRICES["6"];
+  if (full && PB.teaserPrice != null) return PB.teaserPrice;
+  return n > 6 ? null : table[n] || null;
+}
+function pbTeaserLegs() {
+  const pts = Number(PB.teaserPts);
+  return PB.legs.map((s) => {
+    const base = pbLeg(s);
+    if (!base || (base.kind !== "sp" && base.kind !== "tot")) return base ? Object.assign(base, { teaserBad: true }) : null;
+    const l = pbLeg(Object.assign({}, s, { price: undefined }), { shift: pts });
+    if (!l) return null;
+    l.from = base.line;
+    // the classic teaser: NFL favorite of 7.5-8.5 or underdog of 1.5-2.5, moved through 3 and 7
+    if (l.kind === "sp" && l.g.league === "nfl") {
+      const f = base.line;
+      l.wong = (f <= -7.5 && f >= -8.5) || (f >= 1.5 && f <= 2.5);
+    }
+    return l;
+  });
+}
+function pbTeaser(legs, boost) {
+  const live = legs.filter((l) => l && !l.started && !l.teaserBad);
+  const n = live.length;
+  const price = pbTeaserPrice(n, true);
+  const games = new Set(live.map((l) => l.gid));
+  if (n < 2 || price == null) return { n, price, ok: false, why: n < 2 ? "A teaser needs at least 2 legs." : "Teasers go up to 6 legs." };
+  if (games.size < n) return { n, price, ok: false, why: "Teasers here take one leg per game." };
+  const b = Math.max(0, Number(boost) || 0) / 100;
+  let ev = 0, pAll = 1, pCash = 0;
+  live.forEach((l) => { pAll *= l.win; });
+  const walk = (i, p, wins, pushes) => {
+    if (p < 1e-12) return;
+    if (i === n) {
+      let pay;
+      if (wins === n) pay = pbDec(price);
+      else if (wins >= 2) pay = pbDec(pbTeaserPrice(wins) || price);
+      else if (wins === 1) pay = pbDec(-110);
+      else pay = 1;
+      if (pay > 1) { pay = 1 + (pay - 1) * (1 + b); pCash += p; }
+      ev += p * pay;
+      return;
+    }
+    const l = live[i];
+    walk(i + 1, p * l.win, wins + 1, pushes);
+    if (l.push > 0) walk(i + 1, p * l.push, wins, pushes + 1);
+  };
+  walk(0, 1, 0, 0);
+  const dec = pbDec(price), decEff = 1 + (dec - 1) * (1 + b);
+  return { n, ok: true, price, dec, decEff, american: pbAmerican(decEff), pAll, pCash, ev: ev - 1, breakEven: 1 / decEff, perLeg: Math.pow(1 / decEff, 1 / n) };
+}
+function pbCombos(n, k) {
+  const out = [];
+  const walk = (start, cur) => {
+    if (cur.length === k) { out.push(cur.slice()); return; }
+    for (let i = start; i < n; i++) { cur.push(i); walk(i + 1, cur); cur.pop(); }
+  };
+  walk(0, []);
+  return out;
+}
+function pbRoundRobin(legs) {
+  const live = legs.filter((l) => l && !l.started);
+  const n = live.length;
+  const sizes = PB.rrSizes.filter((s) => s < n);
+  if (n < 3) return { ok: false, why: "A round robin needs at least 3 legs." };
+  if (n > PB_RR_MAX) return { ok: false, why: `Round robins here take up to ${PB_RR_MAX} legs.` };
+  if (new Set(live.map((l) => l.gid)).size < n) return { ok: false, why: "Round robins here take one leg per game." };
+  if (!sizes.length) return { ok: false, why: "Pick at least one size, like by 2s." };
+  const combos = [];
+  sizes.forEach((s) => pbCombos(n, s).forEach((c) => combos.push(c)));
+  const stake = PB.stake;
+  const cost = stake * combos.length;
+  let ev = 0, pProfit = 0, pAny = 0, best = 0;
+  const res = new Array(n);
+  const walk = (i, p) => {
+    if (p < 1e-12) return;
+    if (i === n) {
+      let back = 0, cashed = false;
+      combos.forEach((c) => {
+        let d = 1;
+        for (let j = 0; j < c.length; j++) {
+          const r = res[c[j]];
+          if (r === 0) { d = 0; break; }
+          d *= r;
+        }
+        if (d > 0) { back += stake * d; if (d > 1.0000001) cashed = true; }
+      });
+      ev += p * back;
+      if (back > cost + 1e-9) pProfit += p;
+      if (cashed) pAny += p;
+      best = Math.max(best, back);
+      return;
+    }
+    const l = live[i];
+    res[i] = l.dec; walk(i + 1, p * l.win);
+    if (l.push > 0) { res[i] = 1; walk(i + 1, p * l.push); }
+    res[i] = 0; walk(i + 1, p * Math.max(0, 1 - l.win - l.push));
+  };
+  walk(0, 1);
+  return { ok: true, n, combos: combos.length, sizes, cost, ev: ev / cost - 1, back: ev, pProfit, pAny, best };
+}
+function pbKelly(p, decEff) {
+  const b = decEff - 1;
+  if (!(b > 0)) return 0;
+  return Math.max(0, (b * p - (1 - p)) / b);
+}
+
+// ---- outside data: calibration, other books, player game logs -------------------------------
+function pbFetchOnce(key, url, apply) {
+  window.__pbFetch = window.__pbFetch || {};
+  if (window.__pbFetch[key]) return window.__pbFetch[key];
+  window.__pbFetch[key] = fetch(url).then((r) => (r.ok ? r.json() : null)).then((d) => { if (d) apply(d); }).catch(() => {}).then(() => { if (typeof view !== "undefined" && view === "builder") renderBuilder(); });
+  return window.__pbFetch[key];
+}
+function pbSeasonYear() { const d = new Date(); return d.getMonth() < 2 ? d.getFullYear() - 1 : d.getFullYear(); }
+function pbHitsFor(pid) {
+  window.__pbHits = window.__pbHits || {};
+  const c = window.__pbHits[pid];
+  if (c && c.rows) return c.rows;
+  if (c && c.loading) return null;
+  if (window.__PLOGS && window.__PLOGS[pid]) {
+    const yr = pbSeasonYear();
+    const rows = window.__PLOGS[pid].filter((r) => Number(r.season) === yr);
+    window.__pbHits[pid] = { rows };
+    return rows;
+  }
+  window.__pbHits[pid] = { loading: true };
+  const yr = pbSeasonYear();
+  getJSON(`https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/${pid}/gamelog?season=${yr}`)
+    .then((d) => { window.__pbHits[pid] = { rows: d && typeof parseGamelog === "function" ? parseGamelog(d, yr) : [] }; })
+    .catch(() => { window.__pbHits[pid] = { rows: [] }; })
+    .then(() => {
+      clearTimeout(pbHitsFor.t);
+      pbHitsFor.t = setTimeout(() => { if (typeof view !== "undefined" && view === "builder") { pbRefreshButtons(); pbRenderSlip(true); } }, 250);
+    });
+  return null;
+}
+function pbHitText(pid, stat, line, side) {
+  const rows = pbHitsFor(pid);
+  if (rows == null) return "Checking this season…";
+  const r = typeof hitRate === "function" ? hitRate(rows, stat, Number(line), side === "under") : null;
+  if (!r || !r.n) return "No games this season yet";
+  const last = rows.slice(-5);
+  const l5 = typeof hitRate === "function" ? hitRate(last, stat, Number(line), side === "under") : null;
+  return `Hit ${r.hits} of ${r.n} this season` + (l5 && l5.n && r.n > 5 ? `, ${l5.hits} of the last ${l5.n}` : "");
+}
+function pbBestBook(l) {
+  const books = window.PB_BOOKS && window.PB_BOOKS.games && window.PB_BOOKS.games[l.gid];
+  if (!books || (l.kind !== "sp" && l.kind !== "tot" && l.kind !== "ml") || l.typed) return null;
+  let best = null;
+  Object.keys(books).forEach((name) => {
+    const c = pbLeg({ id: l.id, book: name });
+    if (!c || c.priceSource !== name) return;
+    if (!best || c.value > best.value) best = c;
+  });
+  if (!best || best.book === l.book) return null;
+  if (best.value - l.value < 0.004) return null;
+  return best;
 }
 
 // ---- the board -----------------------------------------------------------------------------
@@ -14343,25 +14721,19 @@ function pbGamesFor(league) {
     return g.odds.home_spread != null || g.odds.total != null || g.odds.home_ml != null;
   }).sort((a, b) => String(a.date).localeCompare(String(b.date)));
 }
+const PB_MARKETS = ["sp|home", "sp|away", "tot|over", "tot|under", "ml|home", "ml|away"];
 function pbAllLegs(league) {
   const out = [];
-  pbGamesFor(league).forEach((g) => {
-    ["sp|home", "sp|away", "tot|over", "tot|under", "ml|home", "ml|away"].forEach((k) => {
-      const l = pbLeg(g.id + "|" + k);
-      if (l) out.push(l);
-    });
-  });
+  pbGamesFor(league).forEach((g) => PB_MARKETS.forEach((k) => { const l = pbLeg(g.id + "|" + k); if (l) out.push(l); }));
   return out;
 }
 function pbPicked(id) { return PB.legs.some((l) => l.id === id); }
-function pbPriceFor(id) { const l = PB.legs.find((x) => x.id === id); return l ? l.price : null; }
-
 function pbBtn(id, top) {
-  const l = pbLeg(id, pbPriceFor(id));
+  const l = pbLeg({ id });
   if (!l) return `<span class="pb-btn pb-na">Off the board</span>`;
   const on = pbPicked(id);
   const tag = l.value >= 0.02 ? "plus" : "";
-  return `<button type="button" class="pb-btn ${on ? "on" : ""} ${tag}" data-leg="${id}" aria-pressed="${on}">
+  return `<button type="button" class="pb-btn ${on ? "on" : ""} ${tag}" data-leg="${id}" aria-pressed="${on}" title="Checked chance ${pbPct(l.win, 0)} · our board ${pbPct(l.boardWin, 0)} · book ${pbPct(l.bookWin, 0)}">
     <b>${top || l.label}</b>
     <span class="pb-btn-meta"><span class="pb-price">${pbAm(l.price)}</span><span class="pb-ch">${pbPct(l.win, 0)}</span></span>
   </button>`;
@@ -14371,22 +14743,36 @@ function pbGameHtml(g) {
   const sp = typeof shownPick === "function" ? shownPick(g) : {};
   const ours = [sp.side, sp.total].filter(Boolean).join(" · ");
   const o = g.odds || {};
-  const tot = o.total != null ? (Number.isInteger(Number(o.total)) ? Number(o.total) : Number(o.total).toFixed(1)) : "";
+  const tot = o.total != null ? pbTot(o.total) : "";
   const props = pbPropRows(g);
   const open = PB.propsOpen === String(g.id);
+  const nBooks = window.PB_BOOKS && window.PB_BOOKS.games && window.PB_BOOKS.games[String(g.id)] ? Object.keys(window.PB_BOOKS.games[String(g.id)]).length : 0;
+  let propBlock = "";
+  if (g.league === "nfl") {
+    if (props.length) {
+      propBlock = `<button type="button" class="pb-props-toggle" data-props="${g.id}" aria-expanded="${open}">${open ? "Hide" : "Show"} player props (${props.length})</button>`;
+      if (open) {
+        propBlock += `<div class="pb-props">${props.slice(0, 24).map((r) => {
+          const lead = r.mu > r.line ? "over" : "under";
+          return `<div class="pb-prop"><span class="pb-prop-name">${pbEsc(r.pl.name)}<em>${VAL_LBL[r.stat]} · we have ${r.mu.toFixed(1)}</em><em class="pb-hit">${pbHitText(r.pl.id, r.stat, r.line, lead)} (${lead} ${r.line})</em></span>${pbBtn(`${g.id}|pp|${r.pl.id}|${r.stat}|over`, "Over " + r.line)}${pbBtn(`${g.id}|pp|${r.pl.id}|${r.stat}|under`, "Under " + r.line)}</div>`;
+        }).join("")}</div>`;
+      }
+    } else if (window.__pbPropPull) {
+      propBlock = `<p class="pb-props-wait">Loading player props…</p>`;
+    }
+  }
   return `<article class="pb-game" data-gid="${g.id}">
     <header class="pb-game-head">
       <div class="pb-teams">${teamLogo(g.away)}<b>${g.away.abbr}</b><span class="pb-at">at</span>${teamLogo(g.home)}<b>${g.home.abbr}</b></div>
       <span class="pb-kick">${k.day} ${k.time}</span>
     </header>
-    ${ours ? `<p class="pb-ours">Our pick: <b>${ours}</b></p>` : ""}
+    ${ours || nBooks ? `<p class="pb-ours">${ours ? `Our pick: <b>${ours}</b>` : ""}${ours && nBooks > 1 ? " · " : ""}${nBooks > 1 ? `${nBooks} books priced` : ""}</p>` : ""}
     <div class="pb-mkts">
       <span class="pb-mlabel">Spread</span>${pbBtn(g.id + "|sp|away")}${pbBtn(g.id + "|sp|home")}
       <span class="pb-mlabel">Total</span>${pbBtn(g.id + "|tot|over", tot !== "" ? "Over " + tot : null)}${pbBtn(g.id + "|tot|under", tot !== "" ? "Under " + tot : null)}
       <span class="pb-mlabel">To win</span>${pbBtn(g.id + "|ml|away", g.away.abbr)}${pbBtn(g.id + "|ml|home", g.home.abbr)}
     </div>
-    ${props.length ? `<button type="button" class="pb-props-toggle" data-props="${g.id}" aria-expanded="${open}">${open ? "Hide" : "Show"} player props (${props.length})</button>
-      ${open ? `<div class="pb-props">${props.slice(0, 24).map((r) => `<div class="pb-prop"><span class="pb-prop-name">${r.pl.name}<em>${VAL_LBL[r.stat]} · we have ${r.mu.toFixed(1)}</em></span>${pbBtn(`${g.id}|pp|${r.pl.id}|${r.stat}|over`, "Over " + r.line)}${pbBtn(`${g.id}|pp|${r.pl.id}|${r.stat}|under`, "Under " + r.line)}</div>`).join("")}</div>` : ""}` : ""}
+    ${propBlock}
   </article>`;
 }
 function pbBoardHtml() {
@@ -14396,22 +14782,46 @@ function pbBoardHtml() {
   if (q) games = games.filter((g) => [g.home.abbr, g.away.abbr, g.home.name, g.away.name, g.home.location, g.away.location, g.short_name]
     .some((s) => String(s || "").toLowerCase().includes(q)));
   if (PB.sort === "value") {
-    const best = (g) => Math.max(...["sp|home", "sp|away", "tot|over", "tot|under", "ml|home", "ml|away"].map((k) => { const l = pbLeg(g.id + "|" + k); return l ? l.value : -1; }));
+    const best = (g) => Math.max(...PB_MARKETS.map((k) => { const l = pbLeg(g.id + "|" + k); return l ? l.value : -1; }));
     games = games.map((g) => ({ g, v: best(g) })).sort((a, b) => b.v - a.v).map((x) => x.g);
   }
   if (!games.length) {
-    return `<div class="empty">${q ? `No ${league === "nfl" ? "NFL" : "college"} game matches “${PB.q.replace(/[<>&"]/g, "")}”.` : `No ${league === "nfl" ? "NFL" : "college"} games with lines left this week. Try the other league.`}</div>`;
+    return `<div class="empty">${q ? `No ${league === "nfl" ? "NFL" : "college"} game matches “${pbEsc(PB.q)}”.` : `No ${league === "nfl" ? "NFL" : "college"} games with lines left this week. Try the other league.`}</div>`;
   }
   return games.map(pbGameHtml).join("");
 }
+// What the calibration found, in plain words.
+function pbCalHtml() {
+  const cal = window.PB_CAL;
+  const lg = PB.league;
+  const name = lg === "nfl" ? "NFL" : "college";
+  if (!cal || !cal.leagues || !cal.leagues[lg]) return `<p>Checking our chances against this season's results…</p>`;
+  const sp = pbKeep(lg, "spread"), tot = pbKeep(lg, "total");
+  const c = cal.leagues[lg];
+  const say = (info, what, row) => {
+    if (!info.checked) return `${what}: only ${row ? row.n : 0} games so far, too few to judge, so we keep half of our board's lean.`;
+    const pct = Math.round(info.k * 100);
+    if (info.se > 0.3) return `${what}: ${row.n} games is still too few to judge, so we keep ${pct}% of our board's lean.`;
+    if (info.raw < 0.3) return `${what}: over ${row.n} games our board's leans did no better than the book's line, so these chances stay close to the book's (${pct}% of our lean kept).`;
+    if (info.raw < 0.7) return `${what}: over ${row.n} games our board's leans partly held up, so we keep ${pct}% of them.`;
+    return `${what}: over ${row.n} games our board's leans held up, so we keep ${pct}% of them.`;
+  };
+  const rows = [say(sp, `${name[0].toUpperCase() + name.slice(1)} spreads and moneylines`, c.spread), say(tot, `${name[0].toUpperCase() + name.slice(1)} totals`, c.total)];
+  const table = PB.showCal ? `<table class="pb-cal-table"><thead><tr><th>Board said</th><th>Games</th><th>Board's chance</th><th>Actually hit</th></tr></thead><tbody>${
+    ["spread", "total"].map((m) => (c[m].buckets || []).map((b) => `<tr><td>${m === "spread" ? "Spread" : "Total"} ${Math.round(b.from * 100)}–${Math.round(b.to * 100)}%</td><td>${b.n}</td><td>${pbPct(b.board, 0)}</td><td>${pbPct(b.actual, 0)}</td></tr>`).join("")).join("")
+  }</tbody></table>` : "";
+  return `<p class="pb-cal-lead">Every chance here is checked against this season's finished games.</p><ul>${rows.map((r) => `<li>${r}</li>`).join("")}</ul>
+    <p class="pb-cal-foot">NFL margins are weighted by how often real games end on each number (3 decides 15% of games, 7 decides 9%), from every NFL game since 2015. Player props haven't been checked yet, so they keep half of our lean.
+    <button type="button" class="pb-linkbtn" data-showcal="1">${PB.showCal ? "Hide the numbers" : "See the numbers"}</button></p>${table}`;
+}
 
-// ---- auto-fill and suggestions --------------------------------------------------------------
+// ---- fill and suggestions --------------------------------------------------------------------
 function pbBestLegs(league, n, mode, skipGames) {
   const skip = new Set(skipGames || []);
   const best = new Map();
   pbAllLegs(league).forEach((l) => {
     if (skip.has(l.gid)) return;
-    if (l.value < 0.01 || l.win < (mode === "chance" ? 0.5 : 0.38)) return;
+    if (l.value < 0.005 || l.win < (mode === "chance" ? 0.5 : 0.36)) return;
     if (l.kind === "ml" && (l.price < -400 || l.price > 400)) return;
     const score = mode === "chance" ? l.win + l.value * 0.25 : l.value;
     const cur = best.get(l.gid);
@@ -14419,229 +14829,372 @@ function pbBestLegs(league, n, mode, skipGames) {
   });
   return [...best.values()].sort((a, b) => b.score - a.score).slice(0, n).map((x) => x.l);
 }
+// Best teaser legs: spreads and totals moved by the teaser points, highest checked chance.
+function pbBestTeaserLegs(league, n) {
+  const pts = Number(PB.teaserPts);
+  const best = new Map();
+  pbGamesFor(league).forEach((g) => ["sp|home", "sp|away", "tot|over", "tot|under"].forEach((k) => {
+    const l = pbLeg({ id: g.id + "|" + k }, { shift: pts });
+    if (!l) return;
+    const cur = best.get(l.gid);
+    if (!cur || l.win > cur.win) best.set(l.gid, l);
+  }));
+  return [...best.values()].sort((a, b) => b.win - a.win).slice(0, n);
+}
 function pbSuggest(legs) {
-  const live = legs.filter((l) => !l.started);
+  const live = legs.filter((l) => l && !l.started);
   const out = [];
-  if (live.length >= 2) {
+  if (PB.mode === "parlay" && live.length >= 2) {
     const worst = live.slice().sort((a, b) => a.value - b.value)[0];
-    if (worst.value < -0.015) out.push({ kind: "drop", id: worst.id, text: `Drop ${worst.label}. Its price pays less than our chance is worth (${Math.round(worst.value * 100)}% per dollar).`, btn: "Drop it" });
+    if (worst.value < -0.03) out.push({ kind: "drop", id: worst.id, text: `Drop ${worst.label}. At ${pbAm(worst.price)} it gives back ${Math.round(-worst.value * 100)} cents on the dollar against its chance.`, btn: "Drop it" });
   }
-  const lg = live[0] ? live[0].g.league : PB.league;
-  const add = pbBestLegs(lg, 1, PB.fillMode, live.map((l) => l.gid))[0];
-  if (add && live.length < PB_MAX_LEGS) out.push({ kind: "add", id: add.id, text: `Best leg not on your ticket: ${add.label} (${add.game}), ${pbPct(add.win, 0)} with ${Math.round(add.value * 100) > 0 ? "+" : ""}${Math.round(add.value * 100)}% value at ${pbAm(add.price)}.`, btn: "Add it" });
+  if (PB.mode === "parlay" && live.length < PB_MAX_LEGS) {
+    const lg = live[0] ? live[0].g.league : PB.league;
+    const add = pbBestLegs(lg, 1, PB.fillMode, live.map((l) => l.gid))[0];
+    if (add && add.value > 0) out.push({ kind: "add", id: add.id, text: `Best leg not on your ticket: ${add.label} (${add.game}), ${pbPct(add.win, 0)} at ${pbAm(add.price)}, ${pbSigned(add.value)} value.`, btn: "Add it" });
+  }
   return out;
 }
 
 // ---- the slip ---------------------------------------------------------------------------------
-function pbVerdict(t) {
-  if (!t.n) return "";
-  if (t.sameGame.length) return "Same-game legs: books price these together and pay less than shown. Check your book's payout before you judge the price.";
-  if (t.n === 1) return t.ev >= 0.02 ? "One leg is a straight bet. Our chance beats the price." : "One leg is a straight bet. Add a second leg to make it a parlay.";
-  if (t.ev >= 0.05) return "Good price. Our chance is better than what the payout needs.";
-  if (t.ev >= 0) return "About fair. A small edge on our numbers.";
-  if (t.ev >= -0.12) return "The book has a small edge on this ticket.";
-  return "The book has the edge here. Drop the weakest leg or swap it.";
+function pbVerdict(r, mode) {
+  if (!r || !r.n) return "";
+  if (mode === "parlay" && r.sameGame && r.sameGame.length) return { cls: "", text: "Same-game legs: books price these together and pay less than shown. Check your book's payout before you judge the price." };
+  if (mode === "parlay" && r.n === 1) return { cls: r.ev >= 0.01 ? "good" : "", text: r.ev >= 0.01 ? "One leg is a straight bet, and the price beats its chance." : "One leg is a straight bet. Add a second leg to make it a parlay." };
+  if (r.ev >= 0.03) return { cls: "good", text: "Good price. The checked chance beats what the payout needs." };
+  if (r.ev >= -0.01) return { cls: "", text: "About fair. No real edge either way." };
+  if (r.ev >= -0.1) return { cls: "bad", text: "The book has the edge, about what a normal bet costs." };
+  return { cls: "bad", text: "The book has a big edge on this ticket." };
+}
+function pbLegRow(l, opts) {
+  const o = opts || {};
+  if (!l || l.gone || l.started) {
+    return `<li class="pb-leg gone"><div class="pb-leg-main"><b>${pbEsc(l ? l.label : "Leg")}</b><span>${pbEsc(l && l.game || "")} · ${l && l.started && !l.gone ? "Kicked off, so it is off the ticket" : "No longer on the board"}</span></div>
+      <span></span><button type="button" class="pb-x" data-remove="${l ? l.id : ""}" aria-label="Remove">×</button></li>`;
+  }
+  const val = Math.round(l.value * 100);
+  const stepper = o.stepper && (l.kind === "sp" || l.kind === "tot");
+  const moved = o.teaser && l.from != null ? `<span class="pb-moved">Moved ${PB.teaserPts} points from ${l.kind === "sp" ? pbLine(l.from) : pbTot(l.from)}${l.wong ? " · crosses 3 and 7" : ""}</span>` : "";
+  const alt = !o.teaser && l.line != null && l.mainLine != null && l.line !== l.mainLine ? `<span class="pb-moved">${(l.kind === "sp" ? l.line > l.mainLine : (l.side === "over" ? l.line < l.mainLine : l.line > l.mainLine)) ? "Bought" : "Sold"} ${Math.abs(l.line - l.mainLine)} pt${Math.abs(l.line - l.mainLine) === 1 ? "" : "s"} from ${l.kind === "sp" ? pbLine(l.mainLine) : pbTot(l.mainLine)}</span>` : "";
+  const best = !o.teaser ? pbBestBook(l) : null;
+  const hit = l.kind === "pp" ? `<span class="pb-hit">${pbHitText(l.pid, l.stat, l.line, l.side)}</span>` : "";
+  const src = l.priceSource === "estimated" ? "estimated price" : l.priceSource === "you" ? "your price" : l.priceSource === "typical" ? "typical price" : l.priceSource === "standard" ? "standard price" : l.priceSource;
+  return `<li class="pb-leg">
+    <div class="pb-leg-main"><b>${pbEsc(l.label)}</b><span>${pbEsc(l.game)} · ${l.market}${o.sgp && o.sgp.has(l.id) ? " · same game" : ""} · board ${pbPct(l.boardWin, 0)}, book ${pbPct(l.bookWin, 0)}</span>${moved}${alt}${hit}
+      ${best ? `<span class="pb-best">${pbEsc(best.book)} has ${pbEsc(best.label)} at ${pbAm(best.price)}: ${pbSigned(best.value - l.value)} better. <button type="button" class="pb-linkbtn" data-usebook="${l.id}" data-book="${pbEsc(best.book)}">Use it</button></span>` : ""}
+    </div>
+    <div class="pb-leg-nums">
+      ${stepper ? `<span class="pb-step"><button type="button" data-step="${l.id}" data-dir="-1" aria-label="Worse line, better price">−</button><button type="button" data-step="${l.id}" data-dir="1" aria-label="Buy half a point">+</button></span>` : ""}
+      ${o.teaser ? "" : `<label class="pb-price-edit" title="${src}. Type the price your book shows."><input inputmode="numeric" value="${pbAm(l.price)}" data-price="${l.id}" aria-label="Price for ${pbEsc(l.label)}"></label>`}
+      <span class="pb-leg-ch" title="Checked chance (board ${pbPct(l.boardWin, 0)}, book ${pbPct(l.bookWin, 0)})">${pbPct(l.win, 0)}<em>chance</em></span>
+      ${o.teaser ? "" : `<span class="pb-val ${val >= 2 ? "plus" : val <= -2 ? "minus" : ""}">${val > 0 ? "+" : ""}${val}%</span>`}
+    </div>
+    <button type="button" class="pb-x" data-remove="${l.id}" aria-label="Remove ${pbEsc(l.label)}">×</button>
+  </li>`;
+}
+function pbModeTabs() {
+  return `<div class="pb-modes" role="group" aria-label="Bet type">${[["parlay", "Parlay"], ["teaser", "Teaser"], ["rr", "Round robin"]].map(([k, t]) => `<button type="button" data-mode="${k}" class="${PB.mode === k ? "on" : ""}" aria-pressed="${PB.mode === k}">${t}</button>`).join("")}</div>`;
+}
+function pbSizingHtml(p, decEff, canKelly) {
+  const k = PB.bankroll > 0 && canKelly ? pbKelly(p, decEff) : null;
+  const sug = k != null ? PB.bankroll * k * PB.kelly : null;
+  return `<details class="pb-size" ${PB.bankroll > 0 || PB.boost > 0 ? "open" : ""}>
+    <summary>Bet size and boosts</summary>
+    <div class="pb-size-grid">
+      <label>Profit boost<span class="pb-in"><input inputmode="decimal" id="pbBoost" value="${PB.boost || ""}" placeholder="0" aria-label="Profit boost percent"><i>%</i></span></label>
+      <label>Bankroll<span class="pb-in"><i>$</i><input inputmode="decimal" id="pbBank" value="${PB.bankroll || ""}" placeholder="0" aria-label="Bankroll in dollars"></span></label>
+      <label>Size by<span class="pb-in"><select id="pbKelly" aria-label="How much of the full edge-based size to bet">
+        ${[[0.1, "Tenth"], [0.25, "Quarter"], [0.5, "Half"], [1, "Full"]].map(([v, t]) => `<option value="${v}" ${PB.kelly === v ? "selected" : ""}>${t} Kelly</option>`).join("")}
+      </select></span></label>
+    </div>
+    ${PB.bankroll > 0 ? (canKelly ? `<p class="pb-kelly">${sug > 0.005 ? `Suggested bet: <b>${pbMoney(sug)}</b>, ${(k * PB.kelly * 100).toFixed(2)}% of your bankroll. That's ${PB.kelly === 1 ? "the full" : PB.kelly === 0.5 ? "half the" : PB.kelly === 0.25 ? "a quarter of the" : "a tenth of the"} size the edge supports.` : "Suggested bet: <b>$0</b>. The price doesn't beat the checked chance, so there's no edge to size."} <button type="button" class="pb-linkbtn" data-usekelly="${sug > 0.005 ? Math.round(sug * 100) / 100 : 0}">Use it</button></p>` : `<p class="pb-kelly">Bet sizing works on one ticket at a time. For a round robin, size each ticket small.</p>`) : `<p class="pb-kelly">Enter your bankroll and the ticket suggests a bet size from its edge (the Kelly method).</p>`}
+  </details>`;
 }
 function pbSlipHtml() {
-  const legs = PB.legs.map((s) => pbLeg(s.id, s.price) || { id: s.id, label: s.label || "Leg", game: s.game || "", gone: true, started: true });
-  const t = pbTicket(legs.filter((l) => !l.gone));
-  const stake = PB.stake;
-  const pays = t.n ? stake * t.dec : 0;
-  const sgp = new Set(t.sameGame.flat().map((l) => l.id));
-  const rec = typeof seasonRecord === "function" ? (() => { try { return seasonRecord(); } catch (e) { return null; } })() : null;
-  const recLine = rec && rec.n ? `Our picks are ${rec.w}-${rec.l}${rec.psh ? "-" + rec.psh : ""} (${Math.round(100 * rec.w / rec.n)}%) this season, so treat value as a lean, not a lock.` : "";
-  const legHtml = legs.map((l) => {
-    if (l.gone || l.started) {
-      return `<li class="pb-leg gone"><div class="pb-leg-main"><b>${l.label}</b><span>${l.game} · ${l.gone ? "No longer on the board" : "Kicked off, so it is off the ticket"}</span></div>
-        <button type="button" class="pb-x" data-remove="${l.id}" aria-label="Remove ${l.label}">×</button></li>`;
-    }
-    const moved = (() => {
-      const saved = PB.legs.find((s) => s.id === l.id);
-      return saved && saved.line != null && l.line != null && Number(saved.line) !== Number(l.line) ? `Line moved from ${pbLine(saved.line)} to ${pbLine(l.line)}.` : "";
-    })();
-    const val = Math.round(l.value * 100);
-    return `<li class="pb-leg">
-      <div class="pb-leg-main"><b>${l.label}</b><span>${l.game} · ${l.market}${sgp.has(l.id) ? " · same game" : ""}</span>
-        ${moved ? `<span class="pb-moved">${moved}</span>` : ""}</div>
-      <div class="pb-leg-nums">
-        <label class="pb-price-edit" title="Type the price your book shows">
-          <span class="sr">Price for ${l.label}</span>
-          <input inputmode="numeric" value="${pbAm(l.price)}" data-price="${l.id}" aria-label="Price for ${l.label}">
-        </label>
-        <span class="pb-leg-ch">${pbPct(l.win, 0)}${l.bookChance != null ? `<em>book ${pbPct(l.bookChance, 0)}</em>` : ""}</span>
-        <span class="pb-val ${val >= 2 ? "plus" : val <= -2 ? "minus" : ""}">${val > 0 ? "+" : ""}${val}%</span>
-      </div>
-      <button type="button" class="pb-x" data-remove="${l.id}" aria-label="Remove ${l.label}">×</button>
-    </li>`;
-  }).join("");
-  const sugg = pbSuggest(legs.filter((l) => !l.gone));
   const empty = !PB.legs.length;
+  const mode = PB.mode;
+  let legs, result, legsHtml = "", settings = "", numbers = "", warn = "";
+  const stake = PB.stake;
+  if (mode === "teaser") {
+    legs = pbTeaserLegs();
+    result = pbTeaser(legs, PB.boost);
+    const bad = legs.filter((l) => l && l.teaserBad);
+    legsHtml = legs.map((l, i) => l && l.teaserBad ? `<li class="pb-leg gone"><div class="pb-leg-main"><b>${pbEsc(l.label)}</b><span>${pbEsc(l.game)} · teasers only take spreads and totals</span></div><span></span><button type="button" class="pb-x" data-remove="${l.id}" aria-label="Remove">×</button></li>` : pbLegRow(l || { id: PB.legs[i].id, label: PB.legs[i].label, game: PB.legs[i].game, gone: true }, { teaser: true })).join("");
+    const price = result.price != null ? result.price : pbTeaserPrice(Math.max(2, Math.min(6, legs.filter((l) => l && !l.teaserBad).length)), true);
+    settings = `<div class="pb-tset"><span>Points</span>${["6", "6.5", "7"].map((k) => `<button type="button" data-tpts="${k}" class="${PB.teaserPts === k ? "on" : ""}">${k}</button>`).join("")}
+      <label class="pb-tprice">Price<input inputmode="numeric" id="pbTPrice" value="${pbAm(price)}" aria-label="Teaser price"></label></div>`;
+    if (bad.length) warn = `<p class="pb-warn">Teasers only take spreads and totals, so ${bad.map((l) => pbEsc(l.label)).join(", ")} ${bad.length === 1 ? "is" : "are"} left out.</p>`;
+    if (!result.ok) warn += `<p class="pb-warn">${result.why}</p>`;
+    if (result.ok) numbers = `
+      <div class="pb-pay-main"><span>${pbMoney(stake)} pays</span><b>${pbMoney(stake * result.decEff)}</b><em>${pbMoney(stake * (result.decEff - 1))} profit at ${pbAm(result.american)}${PB.boost ? `, boosted ${PB.boost}%` : ""}</em></div>
+      <dl class="pb-stats">
+        <div><dt>Checked chance all hit</dt><dd>${pbPct(result.pAll)}</dd></div>
+        <div><dt>Each leg needs</dt><dd>${pbPct(result.perLeg)}</dd></div>
+        <div><dt>Chance it pays</dt><dd>${pbPct(result.pCash)}</dd></div>
+        <div><dt>Expected back</dt><dd>${pbMoney(stake * (1 + result.ev))}</dd></div>
+      </dl>`;
+  } else {
+    legs = PB.legs.map((s) => pbLeg(s) || { id: s.id, label: s.label || "Leg", game: s.game || "", gone: true });
+    const live = legs.filter((l) => !l.gone);
+    if (mode === "rr") {
+      result = pbRoundRobin(live);
+      const n = live.filter((l) => !l.started).length;
+      settings = `<div class="pb-tset"><span>By</span>${[2, 3, 4, 5, 6, 7].filter((s) => s < Math.max(3, n)).map((s) => `<button type="button" data-rr="${s}" class="${PB.rrSizes.includes(s) ? "on" : ""}">${s}s</button>`).join("")}</div>`;
+      if (!result.ok) warn = `<p class="pb-warn">${result.why}</p>`;
+      if (result.ok) numbers = `
+        <div class="pb-pay-main"><span>${result.combos} tickets × ${pbMoney(stake)}</span><b>${pbMoney(result.cost)}</b><em>total cost · best case pays ${pbMoney(result.best)}</em></div>
+        <dl class="pb-stats">
+          <div><dt>Chance a ticket cashes</dt><dd>${pbPct(result.pAny)}</dd></div>
+          <div><dt>Chance you profit</dt><dd>${pbPct(result.pProfit)}</dd></div>
+          <div><dt>Expected back</dt><dd>${pbMoney(result.back)}</dd></div>
+          <div><dt>Value</dt><dd>${pbSigned(result.ev)}</dd></div>
+        </dl>`;
+    } else {
+      result = pbParlay(live, PB.boost);
+      if (result.sameGame.length) warn = `<p class="pb-warn">${result.sameGame.map((bag) => pbEsc(bag[0].game)).join(", ")}: more than one leg from the same game. The chance prices them together. Most books call this a same-game parlay and pay less than shown here.</p>`;
+      if (result.n) numbers = `
+        <div class="pb-pay-main"><span>${pbMoney(stake)} pays</span><b>${pbMoney(stake * result.decEff)}</b><em>${pbMoney(stake * (result.decEff - 1))} profit at ${pbAm(result.american)}${PB.boost ? `, boosted ${PB.boost}%` : ""}</em></div>
+        <dl class="pb-stats">
+          <div><dt>Checked chance all hit</dt><dd>${pbPct(result.pAll)}</dd></div>
+          <div><dt>Chance it needs</dt><dd>${pbPct(result.breakEven)}</dd></div>
+          <div><dt>Fair price</dt><dd>${result.pAll > 0 ? pbAm(pbAmerican(1 / result.pAll)) : "—"}</dd></div>
+          <div><dt>Expected back</dt><dd>${pbMoney(stake * (1 + result.ev))}</dd></div>
+        </dl>`;
+    }
+    const sgp = new Set(((result && result.sameGame) || []).flat().map((l) => l.id));
+    legsHtml = legs.map((l) => pbLegRow(l, { stepper: mode === "parlay", sgp })).join("");
+  }
+  const verdict = result && (result.ok || mode === "parlay") ? pbVerdict(result, mode) : null;
+  const sugg = pbSuggest(legs || []);
+  const rec = (() => { try { return typeof seasonRecord === "function" ? seasonRecord() : null; } catch (e) { return null; } })();
+  const recLine = rec && rec.n ? `Our posted picks are ${rec.w}-${rec.l}${rec.psh ? "-" + rec.psh : ""} this season.` : "";
+  const canKelly = mode !== "rr";
+  const kellyP = result ? result.pAll : 0;
+  const kellyDec = result ? (result.decEff || 0) : 0;
   return `
     <div class="pb-slip-head">
       <h3>Your ticket</h3>
-      <span class="pb-count">${t.n ? t.n + " leg" + (t.n === 1 ? "" : "s") : "Empty"}</span>
+      <span class="pb-count">${PB.legs.length ? PB.legs.length + " leg" + (PB.legs.length === 1 ? "" : "s") : "Empty"}</span>
       ${empty ? "" : `<button type="button" class="pb-clear" data-clear="1">Clear</button>`}
       <button type="button" class="pb-close" data-close="1" aria-label="Close ticket">Close</button>
     </div>
-    ${empty ? `<div class="pb-empty"><p>Tap any spread, total or moneyline to add it. Or let the board fill a ticket with the legs our numbers like most.</p></div>` : `
-    <ol class="pb-legs">${legHtml}</ol>
-    ${t.sameGame.length ? `<p class="pb-warn">${t.sameGame.map((bag) => bag[0].game).join(", ")}: more than one leg from the same game. Our chance prices them together. Most books call this a same-game parlay and pay less than shown here.</p>` : ""}
+    ${pbModeTabs()}
+    ${empty ? `<div class="pb-empty"><p>Tap any spread, total or moneyline to add it. Or let the board fill a ${mode === "teaser" ? "teaser" : mode === "rr" ? "round robin" : "parlay"} with the legs that rate best.</p></div>` : `
+    ${settings}
+    <ol class="pb-legs">${legsHtml}</ol>
+    ${warn}
     <div class="pb-perf" aria-hidden="true"></div>
     <div class="pb-stake">
-      <label for="pbStake">Bet</label>
+      <label for="pbStake">${mode === "rr" ? "Per ticket" : "Bet"}</label>
       <div class="pb-stake-in"><span>$</span><input id="pbStake" inputmode="decimal" value="${stake}" aria-label="Bet amount in dollars"></div>
       <div class="pb-chips">${[5, 10, 25, 50, 100].map((v) => `<button type="button" data-stake="${v}" class="${v === stake ? "on" : ""}">$${v}</button>`).join("")}</div>
     </div>
     <div class="pb-pay">
-      <div class="pb-pay-main"><span>${t.n ? `${pbMoney(stake)} pays` : "Pays"}</span><b>${t.n ? pbMoney(pays) : "—"}</b><em>${t.n ? `${pbMoney(pays - stake)} profit at ${pbAm(t.american)}` : ""}</em></div>
-      <dl class="pb-stats">
-        <div><dt>Our chance all hit</dt><dd>${pbPct(t.pAll)}</dd></div>
-        <div><dt>Chance it needs</dt><dd>${pbPct(t.breakEven)}</dd></div>
-        <div><dt>Fair price</dt><dd>${t.pAll > 0 ? pbAm(pbAmerican(1 / t.pAll)) : "—"}</dd></div>
-        <div><dt>Expected back</dt><dd>${t.n ? pbMoney(stake * (1 + t.ev)) : "—"}</dd></div>
-      </dl>
-      <p class="pb-verdict ${t.sameGame.length ? "" : t.ev >= 0 ? "good" : "bad"}">${pbVerdict(t)}</p>
+      ${numbers}
+      ${verdict && verdict.text ? `<p class="pb-verdict ${verdict.cls}">${verdict.text}</p>` : ""}
     </div>
+    ${pbSizingHtml(kellyP, kellyDec, canKelly && result && (result.ok || (mode === "parlay" && result.n)))}
     ${sugg.length ? `<ul class="pb-sugg">${sugg.map((s) => `<li><span>${s.text}</span><button type="button" data-${s.kind}="${s.id}">${s.btn}</button></li>`).join("")}</ul>` : ""}
     <div class="pb-actions">
       <button type="button" class="pb-copy" data-copy="1">Copy ticket</button>
       <button type="button" class="pb-share" data-share="1">Copy link</button>
     </div>
-    <p class="pb-status" id="pbStatus" role="status" aria-live="polite"></p>`}
-    <p class="pb-fine">Spreads and totals use the standard -110 price; moneylines use the book's posted price. Tap any price on your ticket to type the one your book shows. Pushes drop a leg. ${recLine} For information and entertainment, not betting advice.</p>`;
+`}
+    <p class="pb-status" id="pbStatus" role="status" aria-live="polite"></p>
+    <p class="pb-fine">Spreads and totals start at -110 and moneylines at DraftKings' price. Tap a price to type your book's. The − and + buttons sell or buy half points at an estimated alternate-line price. Pushes drop a leg. ${recLine} For information and entertainment, not betting advice.</p>`;
 }
 function pbDockHtml() {
-  const legs = PB.legs.map((s) => pbLeg(s.id, s.price)).filter(Boolean);
-  const t = pbTicket(legs);
-  if (!t.n) return `<span class="pb-dock-n">Ticket</span><span class="pb-dock-txt">Tap a line to start a parlay</span>`;
-  return `<span class="pb-dock-n">${t.n}</span><span class="pb-dock-txt"><b>${pbAm(t.american)}</b> · ${pbMoney(PB.stake)} pays ${pbMoney(PB.stake * t.dec)}</span><span class="pb-dock-go">View ticket</span>`;
+  if (!PB.legs.length) return `<span class="pb-dock-n">Ticket</span><span class="pb-dock-txt">Tap a line to start a ticket</span>`;
+  let txt = "";
+  if (PB.mode === "teaser") {
+    const r = pbTeaser(pbTeaserLegs(), PB.boost);
+    txt = r.ok ? `<b>${pbAm(r.american)}</b> · ${PB.teaserPts}-pt teaser · ${pbMoney(PB.stake)} pays ${pbMoney(PB.stake * r.decEff)}` : "Teaser · " + r.why;
+  } else if (PB.mode === "rr") {
+    const r = pbRoundRobin(PB.legs.map((s) => pbLeg(s)).filter(Boolean));
+    txt = r.ok ? `<b>${r.combos}</b> tickets · costs ${pbMoney(r.cost)}` : "Round robin · " + r.why;
+  } else {
+    const r = pbParlay(PB.legs.map((s) => pbLeg(s)).filter(Boolean), PB.boost);
+    txt = r.n ? `<b>${pbAm(r.american)}</b> · ${pbMoney(PB.stake)} pays ${pbMoney(PB.stake * r.decEff)}` : "Ticket";
+  }
+  return `<span class="pb-dock-n">${PB.legs.length}</span><span class="pb-dock-txt">${txt}</span><span class="pb-dock-go">View ticket</span>`;
 }
 
 // ---- render + events ------------------------------------------------------------------------------
 function pbDefaultLeague() {
   if (PB.league) return PB.league;
-  const fromSlip = PB.legs[0] && pbGame(PB.legs[0].id.split("|")[0]);
-  if (fromSlip) return fromSlip.league;
+  const first = PB.legs[0] && pbGame(PB.legs[0].id.split("|")[0]);
+  if (first) return first.league;
   return pbGamesFor("nfl").length ? "nfl" : "cfb";
 }
 function renderBuilder() {
   const root = document.getElementById("builderSection");
   if (!root || !DATA) return;
   if (!PB.__loaded) { pbLoad(); pbFromUrl(); PB.__loaded = true; }
+  pbFetchOnce("cal", "/data/calibration.json", (d) => { window.PB_CAL = d; });
+  pbFetchOnce("books", "/data/books.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_BOOKS = d; });
+  if (!window.__pbPropPull && !window.__pbPropDone && typeof ensureWeekProps === "function") {
+    window.__pbPropPull = Promise.resolve()
+      .then(() => ensureWeekProps())
+      .then(() => (typeof pullDkLines === "function" ? pullDkLines() : null))
+      .catch(() => {})
+      .then(() => { window.__pbPropPull = null; window.__pbPropDone = true; if (view === "builder") renderBuilder(); });
+  }
   PB.league = pbDefaultLeague();
   root.querySelectorAll("[data-pblg]").forEach((b) => {
     const on = b.dataset.pblg === PB.league;
     b.classList.toggle("active", on);
     b.setAttribute("aria-pressed", on ? "true" : "false");
-    const n = pbGamesFor(b.dataset.pblg).length;
-    const c = b.querySelector("em"); if (c) c.textContent = n;
+    const c = b.querySelector("em"); if (c) c.textContent = pbGamesFor(b.dataset.pblg).length;
   });
   root.querySelectorAll("[data-pbsort]").forEach((b) => b.classList.toggle("active", b.dataset.pbsort === PB.sort));
   root.querySelectorAll("[data-pbmode]").forEach((b) => b.classList.toggle("active", b.dataset.pbmode === PB.fillMode));
+  const fillLbl = root.querySelector(".pb-fill-label");
+  if (fillLbl) fillLbl.textContent = PB.mode === "teaser" ? "Fill a teaser" : PB.mode === "rr" ? "Fill a round robin" : "Fill a parlay";
+  root.querySelectorAll("[data-fill]").forEach((b) => { b.textContent = (PB.mode === "rr" ? Number(b.dataset.fill) + 1 : b.dataset.fill) + " legs"; });
+  const modeSeg = root.querySelector(".pb-fill .pb-seg"); if (modeSeg) modeSeg.style.display = PB.mode === "teaser" ? "none" : "";
+  const cal = document.getElementById("pbCal"); if (cal) cal.innerHTML = pbCalHtml();
   pbRefreshButtons();
   const slip = document.getElementById("pbSlip");
-  const typing = slip && slip.contains(document.activeElement) && document.activeElement.tagName === "INPUT";
+  const typing = slip && slip.contains(document.activeElement) && /INPUT|SELECT/.test(document.activeElement.tagName);
   if (!typing) pbRenderSlip();
 }
 function pbRenderSlip(keepFocus) {
   const slip = document.getElementById("pbSlip");
   const dock = document.getElementById("pbDock");
-  const focusId = keepFocus && document.activeElement ? document.activeElement.id || (document.activeElement.dataset && document.activeElement.dataset.price) : null;
-  if (slip) slip.innerHTML = pbSlipHtml();
+  const a = document.activeElement;
+  const focusSel = keepFocus && a && slip && slip.contains(a) ? (a.id ? "#" + a.id : a.dataset && a.dataset.price ? `[data-price="${a.dataset.price}"]` : null) : null;
+  if (focusSel && /INPUT|SELECT/.test(a.tagName)) { if (dock) dock.innerHTML = pbDockHtml(); return; }
+  const sTop = slip ? slip.scrollTop : 0;
+  if (slip) { slip.innerHTML = pbSlipHtml(); slip.scrollTop = sTop; }
   if (dock) { dock.innerHTML = pbDockHtml(); dock.classList.toggle("has", PB.legs.length > 0); }
   document.body.classList.toggle("pb-open", !!PB.open);
-  if (focusId) {
-    const el = document.getElementById(focusId) || document.querySelector(`[data-price="${focusId}"]`);
-    if (el) { el.focus(); try { const v = el.value; el.setSelectionRange(v.length, v.length); } catch (e) {} }
-  }
 }
 function pbRefreshButtons() {
   const board = document.getElementById("pbBoard");
   if (!board) return;
   const y = window.scrollY;
-  const focusLeg = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.leg : null;
+  const a = document.activeElement;
+  const focusLeg = a && a.dataset ? a.dataset.leg || null : null;
   board.innerHTML = pbBoardHtml();
   if (focusLeg) { const b = board.querySelector(`[data-leg="${focusLeg}"]`); if (b) b.focus({ preventScroll: true }); }
   if (Math.abs(window.scrollY - y) > 2) window.scrollTo(0, y);
 }
 function pbStatus(msg) {
   const el = document.getElementById("pbStatus");
-  if (el) { el.textContent = msg; clearTimeout(pbStatus.t); pbStatus.t = setTimeout(() => { el.textContent = ""; }, 3500); }
+  if (el) { el.textContent = msg; clearTimeout(pbStatus.t); pbStatus.t = setTimeout(() => { el.textContent = ""; }, 4000); }
 }
+function pbChanged() { pbSave(); pbRefreshButtons(); pbRenderSlip(); }
 function pbToggle(id) {
   const i = PB.legs.findIndex((l) => l.id === id);
   if (i >= 0) {
     PB.legs.splice(i, 1);
   } else {
-    // the other side of the same market replaces this one
     const opp = pbOpposite(id);
     PB.legs = PB.legs.filter((l) => l.id !== opp);
     if (PB.legs.length >= PB_MAX_LEGS) { pbStatus(`A ticket holds ${PB_MAX_LEGS} legs at most.`); return; }
-    const l = pbLeg(id);
+    const l = pbLeg({ id });
     if (!l) return;
-    PB.legs.push({ id, line: l.line, label: l.label, game: l.game });
+    PB.legs.push({ id, label: l.label, game: l.game });
   }
-  pbSave();
-  pbRefreshButtons();
-  pbRenderSlip();
+  pbChanged();
 }
 function pbFill(n) {
-  const legs = pbBestLegs(PB.league, n, PB.fillMode, []);
-  if (legs.length < n) {
-    pbStatus(legs.length ? `Only ${legs.length} leg${legs.length === 1 ? "" : "s"} on the ${PB.league === "nfl" ? "NFL" : "college"} board clear the bar right now.` : "No leg on this board clears the bar right now.");
-  }
-  if (!legs.length) { pbRenderSlip(); return; }
-  PB.legs = legs.map((l) => ({ id: l.id, line: l.line, label: l.label, game: l.game }));
-  pbSave();
-  pbRefreshButtons();
-  pbRenderSlip();
-  if (legs.length >= n) pbStatus(`Filled with the ${legs.length} ${PB.fillMode === "chance" ? "most likely legs that still pay more than they should" : "legs where our chance beats the price by the most"}, one per game.`);
+  const lg = PB.league;
+  let legs;
+  if (PB.mode === "teaser") legs = pbBestTeaserLegs(lg, n);
+  else legs = pbBestLegs(lg, PB.mode === "rr" ? n + 1 : n, PB.fillMode, []);
+  const want = PB.mode === "rr" ? n + 1 : n;
+  if (!legs.length) { pbRenderSlip(); pbStatus(PB.mode === "teaser" ? "No spreads or totals left on this board." : `No ${lg === "nfl" ? "NFL" : "college"} leg beats its price after the check. That's common: the book's line is usually right.`); return; }
+  PB.legs = legs.map((l) => ({ id: l.id, label: l.label, game: l.game }));
+  pbChanged();
+  if (legs.length < want) pbStatus(`Only ${legs.length} leg${legs.length === 1 ? "" : "s"} on the ${lg === "nfl" ? "NFL" : "college"} board beat their price after the check.`);
+  else pbStatus(PB.mode === "teaser" ? `Filled with the ${legs.length} legs most likely to hit after moving ${PB.teaserPts} points, one per game.` : `Filled with the ${legs.length} ${PB.fillMode === "chance" ? "most likely legs that still beat their price" : "legs that beat their price by the most"}, one per game.`);
+}
+function pbStep(id, dir) {
+  const s = PB.legs.find((x) => x.id === id);
+  if (!s) return;
+  const cur = pbLeg(s);
+  if (!cur || cur.mainLine == null) return;
+  // "+" always means a better number for this bet: higher spread, lower over, higher under
+  const better = cur.kind === "sp" ? 0.5 : (cur.side === "over" ? -0.5 : 0.5);
+  let next = cur.line + better * dir;
+  if (Math.abs(next - cur.mainLine) > 3.01) { pbStatus("Alternate lines go up to 3 points either way here."); return; }
+  if (Math.abs(next - cur.mainLine) < 1e-9) { delete s.line; } else s.line = next;
+  delete s.price; delete s.book;
+  pbChanged();
 }
 function pbTicketText() {
-  const legs = PB.legs.map((s) => pbLeg(s.id, s.price)).filter((l) => l && !l.started);
-  const t = pbTicket(legs);
-  if (!t.n) return "";
-  return [`Double Gs parlay · ${t.n} legs · ${pbAm(t.american)}`]
-    .concat(legs.map((l) => `${l.label} (${pbAm(l.price)}), ${l.game}`))
-    .concat([`${pbMoney(PB.stake)} pays ${pbMoney(PB.stake * t.dec)}`, `Our chance ${pbPct(t.pAll)}, needs ${pbPct(t.breakEven)}`])
-    .join("\n");
+  if (PB.mode === "teaser") {
+    const legs = pbTeaserLegs().filter((l) => l && !l.teaserBad && !l.started);
+    const r = pbTeaser(legs, PB.boost);
+    if (!r.ok) return "";
+    return [`Double Gs ${PB.teaserPts}-point teaser · ${r.n} legs · ${pbAm(r.american)}`].concat(legs.map((l) => `${l.label} (from ${l.kind === "sp" ? pbLine(l.from) : pbTot(l.from)}), ${l.game}`))
+      .concat([`${pbMoney(PB.stake)} pays ${pbMoney(PB.stake * r.decEff)}`, `Checked chance ${pbPct(r.pAll)}, each leg needs ${pbPct(r.perLeg)}`]).join("\n");
+  }
+  const legs = PB.legs.map((s) => pbLeg(s)).filter((l) => l && !l.started);
+  if (PB.mode === "rr") {
+    const r = pbRoundRobin(legs);
+    if (!r.ok) return "";
+    return [`Double Gs round robin by ${r.sizes.join("s, ")}s · ${r.combos} tickets × ${pbMoney(PB.stake)} = ${pbMoney(r.cost)}`].concat(legs.map((l) => `${l.label} (${pbAm(l.price)}), ${l.game}`))
+      .concat([`Chance you profit ${pbPct(r.pProfit)}, best case ${pbMoney(r.best)}`]).join("\n");
+  }
+  const r = pbParlay(legs, PB.boost);
+  if (!r.n) return "";
+  return [`Double Gs parlay · ${r.n} legs · ${pbAm(r.american)}${PB.boost ? ` (${PB.boost}% boost)` : ""}`]
+    .concat(legs.map((l) => `${l.label} (${pbAm(l.price)}${l.book ? " " + l.book : ""}), ${l.game}`))
+    .concat([`${pbMoney(PB.stake)} pays ${pbMoney(PB.stake * r.decEff)}`, `Checked chance ${pbPct(r.pAll)}, needs ${pbPct(r.breakEven)}`]).join("\n");
 }
 function pbLink() {
   const enc = PB.legs.map((l) => {
     const p = l.id.split("|");
     const short = { sp: "s", tot: "t", ml: "m", pp: "p" }[p[1]] || p[1];
-    const side = p[p.length - 1][0];
     const mid = p[1] === "pp" ? `.${p[2]}.${p[3]}` : "";
-    return `${p[0]}.${short}${mid}.${side}${l.price != null ? "_" + l.price : ""}`;
+    let tok = `${p[0]}.${short}${mid}.${p[p.length - 1][0]}`;
+    if (l.price != null) tok += "_" + l.price;
+    if (l.line != null) tok += "!" + l.line;
+    return tok;
   }).join("~");
-  return location.origin + location.pathname + "?ticket=" + encodeURIComponent(enc) + "#builder";
+  const extra = PB.mode !== "parlay" ? `&mode=${PB.mode}${PB.mode === "teaser" ? "&pts=" + PB.teaserPts : ""}${PB.mode === "rr" ? "&by=" + PB.rrSizes.join(",") : ""}` : "";
+  return location.origin + location.pathname + "?ticket=" + encodeURIComponent(enc) + extra + "#builder";
 }
 function pbFromUrl() {
-  let raw = null;
-  try { raw = new URLSearchParams(location.search).get("ticket"); } catch (e) {}
+  let qs = null;
+  try { qs = new URLSearchParams(location.search); } catch (e) {}
+  const raw = qs && qs.get("ticket");
   if (!raw) return;
   const long = { s: "sp", t: "tot", m: "ml", p: "pp" };
   const sides = { h: "home", a: "away", o: "over", u: "under" };
   const legs = [];
   raw.split("~").forEach((tok) => {
-    const [body, price] = tok.split("_");
-    const p = body.split(".");
+    const m = tok.match(/^([^_!]+)(?:_([^!]+))?(?:!(.+))?$/);
+    if (!m) return;
+    const p = m[1].split(".");
     if (p.length < 3 || !long[p[1]]) return;
     const side = sides[p[p.length - 1]];
     if (!side) return;
     const id = p[1] === "p" ? `${p[0]}|pp|${p[2]}|${p[3]}|${side}` : `${p[0]}|${long[p[1]]}|${side}`;
-    const l = pbLeg(id, price);
+    const st = { id };
+    if (pbParseAmerican(m[2]) != null) st.price = pbParseAmerican(m[2]);
+    if (m[3] != null && Number.isFinite(Number(m[3]))) st.line = Number(m[3]);
+    const l = pbLeg(st);
     if (!l || legs.some((x) => x.id === id)) return;
-    legs.push({ id, line: l.line, label: l.label, game: l.game, price: pbParseAmerican(price) != null ? pbParseAmerican(price) : undefined });
+    legs.push(Object.assign(st, { label: l.label, game: l.game }));
   });
   if (legs.length) {
     PB.legs = legs.slice(0, PB_MAX_LEGS);
-    PB.league = legs[0] ? pbGame(legs[0].id.split("|")[0]).league : PB.league;
+    const g = pbGame(legs[0].id.split("|")[0]);
+    if (g) PB.league = g.league;
+    const mode = qs.get("mode");
+    if (["parlay", "teaser", "rr"].includes(mode)) PB.mode = mode;
+    if (PB_TEASER_PRICES[qs.get("pts")]) PB.teaserPts = qs.get("pts");
+    const by = (qs.get("by") || "").split(",").map(Number).filter((n) => n >= 2 && n <= 7);
+    if (by.length) PB.rrSizes = by;
     pbSave();
   }
   try { history.replaceState(null, "", location.pathname + "#builder"); } catch (e) {}
 }
 async function pbCopy(text, ok) {
+  if (!text) { pbStatus("Nothing to copy yet."); return; }
   try {
     await navigator.clipboard.writeText(text);
     pbStatus(ok);
@@ -14652,6 +15205,10 @@ async function pbCopy(text, ok) {
     try { document.execCommand("copy"); pbStatus(ok); } catch (err) { pbStatus("Copy didn't work here. Select the ticket and copy it by hand."); }
     ta.remove();
   }
+}
+function pbNum(v, max) {
+  const n = Number(String(v).replace(/[^\d.]/g, ""));
+  return Number.isFinite(n) && n > 0 ? Math.min(max, Math.round(n * 100) / 100) : 0;
 }
 function installBuilder() {
   const root = document.getElementById("builderSection");
@@ -14664,49 +15221,51 @@ function installBuilder() {
     if (d.leg) return pbToggle(d.leg);
     if (d.pblg) { PB.league = d.pblg; PB.q = ""; const s = document.getElementById("pbSearch"); if (s) s.value = ""; pbSave(); return renderBuilder(); }
     if (d.pbsort) { PB.sort = d.pbsort; return renderBuilder(); }
-    if (d.pbmode) { PB.fillMode = d.pbmode; pbSave(); renderBuilder(); return; }
+    if (d.pbmode) { PB.fillMode = d.pbmode; pbSave(); return renderBuilder(); }
     if (d.fill) return pbFill(Number(d.fill));
-    if (d.props) { PB.propsOpen = PB.propsOpen === d.props ? null : d.props; return renderBuilder(); }
-    if (d.remove) { PB.legs = PB.legs.filter((l) => l.id !== d.remove); pbSave(); pbRefreshButtons(); return pbRenderSlip(); }
-    if (d.drop) { PB.legs = PB.legs.filter((l) => l.id !== d.drop); pbSave(); pbRefreshButtons(); return pbRenderSlip(); }
+    if (d.props) { PB.propsOpen = PB.propsOpen === d.props ? null : d.props; return pbRefreshButtons(); }
+    if (d.showcal) { PB.showCal = !PB.showCal; const c = document.getElementById("pbCal"); if (c) c.innerHTML = pbCalHtml(); return; }
+    if (d.mode) { PB.mode = d.mode; PB.teaserPrice = null; pbSave(); return renderBuilder(); }
+    if (d.tpts) { PB.teaserPts = d.tpts; PB.teaserPrice = null; return pbChanged(); }
+    if (d.rr) { const n = Number(d.rr); PB.rrSizes = PB.rrSizes.includes(n) ? PB.rrSizes.filter((x) => x !== n) : PB.rrSizes.concat(n).sort(); return pbChanged(); }
+    if (d.step) return pbStep(d.step, Number(d.dir));
+    if (d.usebook) { const s = PB.legs.find((x) => x.id === d.usebook); if (s) { s.book = d.book; delete s.line; delete s.price; } return pbChanged(); }
+    if (d.usekelly != null && t.hasAttribute("data-usekelly")) { const v = Number(d.usekelly); if (v > 0) { PB.stake = v; pbSave(); pbRenderSlip(); } return; }
+    if (d.remove) { PB.legs = PB.legs.filter((l) => l.id !== d.remove); return pbChanged(); }
+    if (d.drop) { PB.legs = PB.legs.filter((l) => l.id !== d.drop); return pbChanged(); }
     if (d.add) return pbToggle(d.add);
-    if (d.clear) { PB.legs = []; pbSave(); pbRefreshButtons(); return pbRenderSlip(); }
+    if (d.clear) { PB.legs = []; return pbChanged(); }
     if (d.stake) { PB.stake = Number(d.stake); pbSave(); return pbRenderSlip(); }
     if (d.copy) return pbCopy(pbTicketText(), "Ticket copied.");
     if (d.share) return pbCopy(pbLink(), "Link copied. Anyone who opens it gets this ticket.");
     if (d.close) { PB.open = false; return pbRenderSlip(); }
   });
   root.addEventListener("input", (e) => {
-    const el = e.target;
-    if (el.id === "pbSearch") { PB.q = el.value; const b = document.getElementById("pbBoard"); if (b) b.innerHTML = pbBoardHtml(); return; }
+    if (e.target.id === "pbSearch") { PB.q = e.target.value; const b = document.getElementById("pbBoard"); if (b) b.innerHTML = pbBoardHtml(); }
   });
   root.addEventListener("change", (e) => {
     const el = e.target;
-    if (el.id === "pbStake") {
-      const v = Number(String(el.value).replace(/[^\d.]/g, ""));
-      PB.stake = v > 0 ? Math.min(100000, Math.round(v * 100) / 100) : 10;
-      pbSave(); return pbRenderSlip();
-    }
+    if (el.id === "pbStake") { PB.stake = pbNum(el.value, 100000) || 10; pbSave(); return pbRenderSlip(); }
+    if (el.id === "pbBoost") { PB.boost = pbNum(el.value, 500); pbSave(); return pbRenderSlip(); }
+    if (el.id === "pbBank") { PB.bankroll = pbNum(el.value, 10000000); pbSave(); return pbRenderSlip(); }
+    if (el.id === "pbKelly") { PB.kelly = Number(el.value) || 0.25; pbSave(); return pbRenderSlip(); }
+    if (el.id === "pbTPrice") { const a = pbParseAmerican(el.value); PB.teaserPrice = a; if (a == null && el.value.trim()) pbStatus("Type a price like -120 or +150."); pbSave(); return pbRenderSlip(); }
     if (el.dataset && el.dataset.price) {
-      const leg = PB.legs.find((l) => l.id === el.dataset.price);
+      const s = PB.legs.find((l) => l.id === el.dataset.price);
       const a = pbParseAmerican(el.value);
-      if (leg) {
-        if (a == null) { pbStatus("Type a price like -110 or +150."); }
-        else {
-          const base = pbLeg(leg.id);
-          leg.price = base && a === base.defaultPrice ? undefined : a;
-        }
+      if (s) {
+        if (a == null) pbStatus("Type a price like -110 or +150.");
+        else { const base = pbLeg(Object.assign({}, s, { price: undefined })); if (base && a === base.defaultPrice) delete s.price; else s.price = a; }
       }
       pbSave(); return pbRenderSlip();
     }
   });
   root.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && (e.target.id === "pbStake" || (e.target.dataset && e.target.dataset.price))) e.target.blur();
+    if (e.key === "Enter" && e.target.tagName === "INPUT" && e.target.id !== "pbSearch") e.target.blur();
     if (e.key === "Escape" && PB.open) { PB.open = false; pbRenderSlip(); }
   });
   const dock = document.getElementById("pbDock");
-  if (dock) dock.addEventListener("click", () => { PB.open = true; pbRenderSlip(); const s = document.getElementById("pbSlip"); if (s) s.scrollTop = 0; });
-  // Lines and kickoffs change; keep the page honest while it sits open.
+  if (dock) dock.addEventListener("click", () => { PB.open = true; pbRenderSlip(); const s = document.getElementById("pbSlip"); if (s) { s.scrollTop = 0; const c = s.querySelector(".pb-close"); if (c) c.focus({ preventScroll: true }); } });
   setInterval(() => { if (typeof view !== "undefined" && view === "builder" && !document.hidden) renderBuilder(); }, 60000);
 }
 

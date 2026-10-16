@@ -26,12 +26,17 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Refresh from ESPN
         run: python3 scripts/refresh_data.py
+      - name: Save every book's lines for the parlay builder
+        # Never blocks the refresh: if the feed is down, the old file stays.
+        continue-on-error: true
+        run: python3 scripts/books.py
       - name: Commit any changes
         run: |
           git config user.name "peyton2407-maker"
           git config user.email "331867039+peyton2407-maker@users.noreply.github.com"
           git add data/snapshot.json data/week-results.json data/refresh-status.json
           if [ -f data/nfl-depth.json ]; then git add data/nfl-depth.json; fi
+          if [ -f data/books.json ]; then git add data/books.json; fi
           if git diff --cached --quiet; then
             echo "Nothing new."
             exit 0

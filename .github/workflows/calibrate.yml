@@ -1,0 +1,43 @@
+name: Check chances
+# Every Tuesday after the NFL week ends: compare the chances the board posted before each
+# kickoff with the final scores, and save how much of the board's lean to keep
+# (data/calibration.json, read by the parlay builder). Needs the full history.
+on:
+  schedule:
+    - cron: "37 12 * * 2"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: calibrate
+  cancel-in-progress: false
+jobs:
+  calibrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check this season's chances against results
+        run: python3 scripts/calibrate.py
+      - name: Commit any changes
+        run: |
+          git config user.name "peyton2407-maker"
+          git config user.email "331867039+peyton2407-maker@users.noreply.github.com"
+          git add data/calibration.json
+          if git diff --cached --quiet; then
+            echo "Nothing new."
+            exit 0
+          fi
+          git commit -m "Check chances: $(date -u +'%a %b %d')"
+          for i in 1 2 3; do
+            if git pull --rebase --quiet origin main && git push; then
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1
