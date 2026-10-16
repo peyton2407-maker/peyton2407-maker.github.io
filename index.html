@@ -1573,6 +1573,14 @@ img.share-card { display: none !important; }
   .pb-board { grid-template-columns: 1fr 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { .pb-slip { transition: none; } }
+/* Ticket grid: columns share the width instead of growing to the widest card. */
+#parlayHero.parlay-hero { grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); }
+#parlayHero > * { min-width: 0; }
+.parlay-card.ready .ready-val { margin-top: 6px; font-weight: 700; font-size: 14px; color: var(--ink-soft); }
+.parlay-card.ready .ready-val.good { color: var(--win); }
+.parlay-card.ready .ready-val.bad { color: var(--rose); }
+.ready-open { margin-top: 10px; width: 100%; min-height: 42px; border-radius: 10px; border: 1px solid var(--sun); background: transparent; color: var(--sun); font: 700 14px var(--body); cursor: pointer; }
+.ready-open:hover { background: var(--sun); color: var(--brass-ink); }
 /* Long lists: the browser skips laying out cards that are off screen until you scroll
    near them. The sizes are first guesses; after a card is drawn once its real size is kept. */
 #board > article.game { content-visibility: auto; contain-intrinsic-size: auto 760px; }
@@ -6560,103 +6568,84 @@ function buildTotalParlays(league) {
     ? "Only totals where our score and the posted number disagree by enough to take a side. Different games, so one weather swing does not decide both."
     : "A longer totals ticket. Read the reason on each leg before you stack them. The 2-leg is the cleaner play.");
 }
-function parlayCardHtml(r) {
-  return `<article class="parlay-card">
-    <div class="td-mkt">${r.title} parlay</div>
-    <div class="parlay-odds">${r.label}</div>
-    <div class="subn">${Math.round(r.p * 100)}% chance all of these hit · payout if they do</div>
-    ${r.thought ? `<p class="subn" style="color:var(--ink);margin:8px 0 10px">${r.thought}</p>` : ""}
-    <ul class="parlay-legs">${r.legs.map((l) => `<li data-id="${l.game_id}"><b>${l.label}</b><div class="subn">${l.detail} · ${Math.round(l.hit * 100)}% · ${l.odds > 0 ? "+" : ""}${l.odds}</div>${l.why ? `<div class="prop-why">${l.why}</div>` : ""}</li>`).join("")}</ul>
+// ---- Ready-made tickets, priced like the parlay builder -------------------------------
+// Each leg is matched to the same leg in the builder (pbLeg), so the card shows the book's
+// real price (DraftKings, or the standard -110 when we don't have theirs, or a typical -115
+// for player props), the chance checked against this season's results, what $10 pays, and
+// whether the price is worth it. Legs we can't price for real (anytime TDs) are left out.
+function readyLegId(l) {
+  const g = typeof pbGame === "function" ? pbGame(l && l.game_id) : null;
+  if (!g || !g.home || !g.away || l.kind === "td") return null;
+  const lab = String(l.label || "").trim();
+  const side = (ab) => ab === g.home.abbr ? "home" : ab === g.away.abbr ? "away" : null;
+  if (l.player) {
+    const low = lab.toLowerCase();
+    const stat = Object.keys(VAL_LBL).sort((a, b) => VAL_LBL[b].length - VAL_LBL[a].length).find((k) => low.endsWith(" " + VAL_LBL[k]));
+    const sd = /\bunder\b/i.test(lab) ? "under" : /\bover\b/i.test(lab) ? "over" : null;
+    return stat && sd && l.id ? `${g.id}|pp|${l.id}|${stat}|${sd}` : null;
+  }
+  if (l.kind === "ml" || /\sML$/i.test(lab)) { const s = side(lab.split(/\s+/)[0]); return s ? `${g.id}|ml|${s}` : null; }
+  if (l.kind === "total" || /^(OVER|UNDER)\b/i.test(lab)) return `${g.id}|tot|${/^OVER/i.test(lab) ? "over" : "under"}`;
+  const s = side(lab.split(/\s+/)[0].toUpperCase());
+  return s ? `${g.id}|sp|${s}` : null;
+}
+function readyPrice(legs) {
+  if (typeof pbLeg !== "function") return null;
+  const mapped = (legs || []).map((l) => { const id = readyLegId(l); return { l, id, pb: id ? pbLeg({ id }) : null }; });
+  if (!mapped.length || mapped.some((m) => !m.pb || m.pb.started)) return null;
+  return { mapped, r: pbParlay(mapped.map((m) => m.pb), 0) };
+}
+function readyCardHtml(title, thought, legs) {
+  const x = readyPrice(legs);
+  if (!x) return "";
+  const { r, mapped } = x;
+  const ev = Math.round(r.ev * 100);
+  const sgp = r.sameGame && r.sameGame.length;
+  const val = sgp
+    ? { cls: "", text: "Same-game legs: your book will pay less than this" }
+    : r.ev >= 0.03 ? { cls: "good", text: `Good price: +${ev}% value` }
+    : r.ev >= -0.01 ? { cls: "", text: "About a fair price" }
+    : { cls: "bad", text: `The book has the edge: ${ev}% value` };
+  const src = (pb) => pb.priceSource === "typical" ? " (typical price)" : pb.priceSource === "standard" ? " (standard price)" : "";
+  return `<article class="parlay-card ready">
+    <div class="td-mkt">${title}</div>
+    <div class="parlay-odds">${pbAm(r.american)}</div>
+    <div class="subn">$10 pays ${pbMoney(10 * r.decEff)} · checked chance ${pbPct(r.pAll)}, needs ${pbPct(r.breakEven)}</div>
+    <div class="ready-val ${val.cls}">${val.text}</div>
+    ${thought ? `<p class="subn" style="color:var(--ink);margin:8px 0 10px">${thought}</p>` : ""}
+    <ul class="parlay-legs">${mapped.map((m) => {
+      const posted = String(m.l.label || "").trim();
+      // compare as numbers, so "HOU -7.0" and "HOU -7" count as the same line
+      const norm = (t) => String(t).toUpperCase().replace(/([+-]?\d+(?:\.\d+)?)/g, (n) => String(Number(n))).replace(/\s+/g, " ").replace(/\bPK\b/, "0");
+      const moved = posted && norm(posted) !== norm(m.pb.label) && m.pb.kind !== "pp" && m.pb.kind !== "ml" ? `<div class="prop-why">Posted as ${pbEsc(posted)}; the line is now ${pbEsc(m.pb.label)}.</div>` : "";
+      return `<li data-id="${m.pb.gid}"><b>${pbEsc(m.pb.label)}</b><div class="subn">${pbEsc(m.pb.game)} · ${pbAm(m.pb.price)}${src(m.pb)} · ${pbPct(m.pb.win, 0)}</div>${moved}${m.l.why ? `<div class="prop-why">${m.l.why}</div>` : ""}</li>`;
+    }).join("")}</ul>
+    <button type="button" class="ready-open" data-openpb="${mapped.map((m) => m.id).join("~")}">Open in parlay builder</button>
   </article>`;
 }
-function lockedUnderdogParlays() {
-  const id = (away, home) => {
-    const g = (DATA.games || []).find((x) => x.league === "nfl" && x.away && x.home && x.away.abbr === away && x.home.abbr === home);
-    return g ? g.id : "";
-  };
-  const leg = (label, away, home, hit, odds, cover) => ({
-    label,
-    detail: `${away} @ ${home}`,
-    game_id: id(away, home),
-    hit,
-    odds,
-    why: `${label.split(" ")[0]} is getting ${Number(label.split("+")[1]).toFixed(1)}. Our score has them covering by ${cover.toFixed(1)} points. That is not enough to bet them alone. It is enough to put on an underdog ticket.`
-  });
-  const ind = leg("IND +1.5", "HOU", "IND", 0.50, -101, 1.4);
-  const dal = leg("DAL +3.5", "BAL", "DAL", 0.49, 103, 1.3);
-  const ne = leg("NE +3.0", "NE", "JAX", 0.46, 116, 1.1);
-  const ten = leg("TEN +2.5", "TEN", "NYG", 0.47, 113, 1.1);
-  const two = "These underdogs did not clear the single-game bar, so we would not bet them by themselves. Our score still has each one covering by at least a point. This 2-leg is the underdog ticket. It is a lean, not a lock.";
-  const more = "Same leans, more legs. The chance they all cover drops fast. Read the 2-leg first.";
-  return [
-    { title: "2-leg", legs: [ind, dal], p: 0.25, label: "+304", thought: two },
-    { title: "3-leg", legs: [ind, dal, ne], p: 0.11, label: "+777", thought: more },
-    { title: "4-leg", legs: [ind, dal, ne, ten], p: 0.05, label: "+1150", thought: more }
-  ];
+function openInBuilder(ids) {
+  if (!PB.__loaded) { pbLoad(); PB.__loaded = true; }
+  PB.legs = String(ids || "").split("~").filter(Boolean).slice(0, PB_MAX_LEGS).map((id) => {
+    const l = pbLeg({ id });
+    return l ? { id, label: l.label, game: l.game } : null;
+  }).filter(Boolean);
+  const g = PB.legs[0] && pbGame(PB.legs[0].id.split("|")[0]);
+  if (g) PB.league = g.league;
+  PB.mode = "parlay";
+  pbSave();
+  setView("builder");
+  window.scrollTo(0, 0);
 }
-function lockedFavoriteParlays() {
-  const id = (away, home) => {
-    const g = (DATA.games || []).find((x) => x.league === "nfl" && x.away && x.home && x.away.abbr === away && x.home.abbr === home);
-    return g ? g.id : "";
-  };
-  const sf = { label: "SF -8.5", detail: "ARI @ SF", game_id: id("ARI", "SF"), hit: 0.52, odds: -110, why: "SF is laying 8.5. Our score still makes that number short by 1.6 points." };
-  const buf = { label: "BUF -7.0", detail: "LAC @ BUF", game_id: id("LAC", "BUF"), hit: 0.50, odds: 102, why: "BUF is laying 7.0. Our score still makes that number short by 1.3 points." };
-  const car = { label: "CAR -2.5", detail: "CAR @ CLE", game_id: id("CAR", "CLE"), hit: 0.47, odds: 111, why: "CAR is laying 2.5. Our score still makes that number short by 1.2 points." };
-  const skip = new Set(["GB", "SF", "BUF", "CAR"]);
-  const ranked = typeof leanSideLegs === "function" ? leanSideLegs("nfl", false) : [];
-  const next = ranked.find((l) => !skip.has(String(l.label || "").split(" ")[0]));
-  const lead = next || {
-    label: "DET -6.5",
-    detail: "NYJ @ DET",
-    game_id: id("NYJ", "DET"),
-    hit: 0.54,
-    odds: -115,
-    why: "DET is laying 6.5. Green Bay is off this ticket. Detroit is the next favorite our score likes."
-  };
-  const two = "These favorites are the sides our score likes by at least a point. The payout is smaller because they are supposed to win. The 2-leg is the steadier ticket.";
-  const more = "One favorite miss sinks the longer ticket. Read the 2-leg first.";
-  return [[lead, sf], [lead, sf, buf], [lead, sf, buf, car]].map((bag, i) => {
-    const pay = parlayPayout(bag.map((l) => l.hit));
-    return {
-      title: (bag.length) + "-leg",
-      legs: bag,
-      p: pay.p,
-      label: pay.odds > 0 ? "+" + pay.odds : String(pay.odds),
-      thought: i === 0 ? two : more
-    };
-  });
-}
-function lockedTotalParlays() {
-  const id = (away, home) => {
-    const g = (DATA.games || []).find((x) => x.league === "nfl" && x.away && x.home && x.away.abbr === away && x.home.abbr === home);
-    return g ? g.id : "";
-  };
-  const kc = {
-    label: "UNDER 45.5", detail: "KC @ MIA total", game_id: id("KC", "MIA"), hit: 0.65, odds: -127,
-    why: "We have fewer points than the posted total. The gap is 1.8 points. Breezy enough to nudge deep shots down. Precip 51% / 0.00\" — expect shorter throws and more run."
-  };
-  const lar = {
-    label: "UNDER 43.5", detail: "LAR @ DEN total", game_id: id("LAR", "DEN"), hit: 0.55, odds: -123,
-    why: "The total moved from 45.5 to 43.5. Our number was 1.9 under the old line, so most of that gap is gone. Benign conditions — little weather tax."
-  };
-  const min = {
-    label: "UNDER 42.5", detail: "MIN @ TB total", game_id: id("MIN", "TB"), hit: 0.55, odds: -123,
-    why: "We have fewer points than the posted total. The gap is 1.8 points. Benign conditions — little weather tax."
-  };
-  const two = "Only totals where our score and the posted number disagree by enough to take a side. Different games, so one weather swing does not decide both.";
-  const more = "A longer totals ticket. Read the reason on each leg before you stack them. The 2-leg is the cleaner play.";
-  return [
-    { title: "2-leg", legs: [kc, lar], p: 0.36, label: "+179", thought: two },
-    { title: "3-leg", legs: [kc, lar, min], p: 0.20, label: "+407", thought: more },
-    { title: "4-leg", legs: [kc, lar, min], p: 0.20, label: "+407", thought: more }
-  ];
+function parlayCardHtml(r) {
+  return readyCardHtml(`${r.title} parlay`, r.thought, r.legs);
 }
 function parlayGroupHtml(rows) {
   if (!rows || !rows.length) return "";
   return [2, 3, 4, 5, 6].map((n) => {
     const bag = rows.filter((r) => Number(r.n || (r.legs && r.legs.length)) === n);
     if (!bag.length) return "";
-    return `<div class="home-label" style="grid-column:1/-1;margin-top:8px">${n}-leg tickets</div>` + bag.map(parlayCardHtml).join("");
+    const cards = bag.map(parlayCardHtml).join("");
+    return cards ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">${n}-leg tickets</div>` + cards : "";
   }).join("");
 }
 function parlayHeroHtml(league) {
@@ -6673,7 +6662,8 @@ function collectPropParlayLegs() {
     const g = (DATA.games || []).find((x) => String(x.id) === String(r.game_id));
     if (g && (g.completed || (g.date && new Date(g.date).getTime() < Date.now()))) return false;
     if (/ATL\s*@\s*GB/i.test(String(r.game || ""))) return false;
-    if (r.kind === "td") return r.hit >= 0.22 && Number(r.odds) >= 100;
+    if (r.kind === "td") return false; // no real book price for anytime TDs, so no ticket
+
     if (r.kind === "over" || r.kind === "under") return r.hit >= 0.54 && r.source === "DraftKings";
     return false;
   });
@@ -6791,18 +6781,12 @@ function propLadderHtml(rows) {
   return [1, 2, 3, 4, 5, 6].map((n) => {
     const bag = rows.filter((r) => r.n === n);
     if (!bag.length) return "";
-    return `<div class="home-label" style="grid-column:1/-1;margin-top:8px">${n}-leg player props</div>` + bag.map(propParlayCardHtml).join("");
+    const cards = bag.map(propParlayCardHtml).join("");
+    return cards ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">${n}-leg player props</div>` + cards : "";
   }).join("");
 }
 function propParlayCardHtml(r) {
-  return `<article class="parlay-card">
-    <div class="td-mkt">${r.title}</div>
-    <div class="parlay-odds">${r.label}</div>
-    <div class="subn">${Math.round(r.p * 100)}% chance it cashes${r.n === 1 ? (r.money ? " · plus-money single" : " · best single on the board") : " · plus-money if it does"}</div>
-    <ul class="parlay-legs">${r.legs.map((l) => `<li data-id="${l.game_id}">
-      <div class="who-row">${faceHtml(l.id, l.player || l.label, 48)}<div><b>${l.label}</b><div class="subn">${l.detail} · ${Math.round(l.hit * 100)}% · ${l.odds > 0 ? "+" : ""}${l.odds}</div>${l.why ? `<div class="prop-why">${l.why}</div>` : ""}</div></div>
-    </li>`).join("")}</ul>
-  </article>`;
+  return readyCardHtml(r.title, "", r.legs);
 }
 function renderPropParlays() {
   const size = (document.getElementById("propParlaySize") || {}).value || "mix";
@@ -7164,82 +7148,7 @@ function kindChip(kind) {
   return `<span class="kind-chip kind-${kind}">${label}</span>`;
 }
 function collegeParlayCardHtml(r) {
-  return `<article class="parlay-card">
-    <div class="td-mkt">${r.groupLabel}</div>
-    <div class="parlay-odds">${Math.round(r.p * 100)}%</div>
-    <div class="subn">${r.legs.length} legs all hit · fair price ${r.label}</div>
-    <ul class="parlay-legs">${r.legs.map((l) => `<li data-id="${l.game_id}"><b>${kindChip(l.kind)}${l.label}</b><div class="subn">${l.detail} · ${Math.round(l.hit * 100)}%</div>${l.why ? `<div class="prop-why">${l.why}</div>` : ""}</li>`).join("")}</ul>
-  </article>`;
-}
-function lockedCollegeBoard() {
-  const id = (away, home) => {
-    const g = (DATA.games || []).find((x) => x.league === "cfb" && x.away && x.home && x.away.abbr === away && x.home.abbr === home);
-    return g ? g.id : "";
-  };
-  const ml = (abbr, away, home, hit) => ({
-    kind: "ml", label: abbr + " ML", detail: away + " @ " + home, game_id: id(away, home), hit,
-    why: abbr + " wins outright in " + Math.round(hit * 100) + "% of our sims. Moneyline only, not the spread."
-  });
-  const sp = (abbr, line, away, home, hit) => ({
-    kind: "spread", label: abbr + " " + line, detail: away + " @ " + home, game_id: id(away, home), hit,
-    why: "Our sims have " + abbr + " covering " + abbr + " " + line + " in " + Math.round(hit * 100) + "% of runs."
-  });
-  const tot = (side, line, away, home, hit, ours) => ({
-    kind: "total", label: side + " " + line, detail: away + " @ " + home + " total", game_id: id(away, home), hit,
-    why: side + " " + line + " hits in " + Math.round(hit * 100) + "% of sims. Our total is " + ours + "."
-  });
-  const ticket = (group, legs, p, price) => {
-    const names = { ml: "Moneyline", spread: "Spread", total: "Total points", mix: "All three" };
-    return { group, groupLabel: names[group] + " · " + legs.length + "-leg", n: legs.length, legs, p, label: price > 0 ? "+" + price : String(price) };
-  };
-  const mia = ml("MIA", "CMU", "MIA", 0.96);
-  const smu = ml("SMU", "MOST", "SMU", 0.91);
-  const ttu = ml("TTU", "SHSU", "TTU", 0.91);
-  const nd = ml("ND", "ND", "PUR", 0.89);
-  const osu = ml("OSU", "ILL", "OSU", 0.89);
-  const usf = ml("USF", "USF", "BGSU", 0.84);
-  const rut = ml("RUT", "HOW", "RUT", 0.84);
-  const shsu = sp("SHSU", "+34.5", "SHSU", "TTU", 0.61);
-  const clem = sp("CLEM", "-1.5", "CLEM", "CAL", 0.58);
-  const most = sp("MOST", "+34.5", "MOST", "SMU", 0.58);
-  const psu = sp("PSU", "-10", "WIS", "PSU", 0.58);
-  const mass = sp("MASS", "-4.5", "MASS", "SAC", 0.57);
-  const iowa = tot("OVER", "38.5", "IOWA", "MICH", 0.77, "39.9");
-  const uga = tot("OVER", "44.5", "OU", "UGA", 0.68, "49.2");
-  const rice = tot("OVER", "44.5", "RICE", "FRES", 0.68, "44.9");
-  const wpsu = tot("OVER", "44.5", "WIS", "PSU", 0.66, "50.1");
-  const wash = tot("OVER", "45.5", "MINN", "WASH", 0.65, "46.7");
-  const usc = tot("UNDER", "61.5", "ORE", "USC", 0.64, "65.9");
-  return {
-    ml: [
-      ticket("ml", [mia, smu], 0.87, -491),
-      ticket("ml", [mia, smu, ttu], 0.79, -383),
-      ticket("ml", [mia, smu, ttu, nd], 0.71, -240),
-      ticket("ml", [mia, smu, ttu, nd, osu], 0.63, -167),
-      ticket("ml", [mia, smu, ttu, nd, osu, usf], 0.53, -112),
-      ticket("ml", [mia, smu, ttu, nd, osu, usf, rut], 0.44, 125)
-    ],
-    spread: [
-      ticket("spread", [shsu, clem], 0.36, 179),
-      ticket("spread", [shsu, clem, most], 0.21, 378),
-      ticket("spread", [shsu, clem, most, psu], 0.12, 720),
-      ticket("spread", [shsu, clem, most, psu, mass], 0.07, 1350)
-    ],
-    total: [
-      ticket("total", [iowa, uga], 0.52, -109),
-      ticket("total", [iowa, uga, rice], 0.35, 186),
-      ticket("total", [iowa, uga, rice, wpsu], 0.23, 332),
-      ticket("total", [iowa, uga, rice, wpsu, wash], 0.15, 568),
-      ticket("total", [iowa, uga, rice, wpsu, wash, usc], 0.10, 945)
-    ],
-    mix: [
-      ticket("mix", [mia, iowa], 0.73, -277),
-      ticket("mix", [mia, iowa, shsu], 0.45, 122),
-      ticket("mix", [mia, iowa, shsu, smu], 0.41, 144),
-      ticket("mix", [mia, iowa, shsu, smu, uga], 0.28, 257),
-      ticket("mix", [mia, iowa, shsu, smu, uga, clem], 0.16, 532)
-    ]
-  };
+  return readyCardHtml(r.groupLabel, "", r.legs);
 }
 function renderCollegeParlayBoard() {
   const board = buildCollegeParlayBoard();
@@ -7264,35 +7173,23 @@ function renderCollegeParlayBoard() {
       ? [2, 3, 4, 5, 6].map((n) => {
         const bag = rows.filter((r) => Number(r.n) === n);
         if (!bag.length) return "";
-        return `<div class="home-label" style="grid-column:1/-1">${n}-leg</div>` + bag.map(collegeParlayCardHtml).join("");
+        const cards = bag.map(collegeParlayCardHtml).join("");
+        return cards ? `<div class="home-label" style="grid-column:1/-1">${n}-leg</div>` + cards : "";
       }).join("")
       : `<div class="empty" style="grid-column:1/-1">Not enough ${g.title.toLowerCase()} legs this weekend.</div>`;
   });
   return { html, count: board.count };
 }
 
-function lockedWeek4Html() {
-  const card = (title, price, chance, note, legs) => `<article class="parlay-card">
-    <div class="td-mkt">${title}</div>
-    <div class="parlay-odds">${price}</div>
-    <div class="subn">${chance} chance all of these hit</div>
-    <ul class="parlay-legs">${legs.map((l) => `<li><b>${l[0]}</b><div class="subn">${l[1]} · ${l[2]}</div><div class="prop-why">${l[3]}</div></li>`).join("")}</ul>
-    <div class="subn">${note}</div>
-  </article>`;
-  const lac = ["LAC +7.0", "LAC @ SEA", "59%", "Los Angeles is getting 7. Our number has them covering by about a point."];
-  const nyg = ["NYG +2.5", "ARI @ NYG", "58%", "The Giants are getting 2.5 at home. Our number covers that by about a point."];
-  const wsh = ["WSH +3.5", "IND @ WSH", "57%", "Washington is getting 3.5. Our number still likes the points."];
-  const sf = ["SF -3.0", "DEN @ SF", "57%", "San Francisco is laying 3. Our number makes that line short."];
-  const no = ["UNDER 48.5", "ATL @ NO total", "56%", "Our total is 47. The posted number is 48.5."];
-  const gb = ["OVER 39.5", "GB @ TB total", "55%", "Our total is 40.8. The posted number is 39.5."];
-  return [
-    card("2-leg spread", "+186", "34%", "Week 4. Different games. The 2-leg is the ticket.", [lac, nyg]),
-    card("3-leg spread", "+340", "20%", "Same sides, one more leg. The price gets longer.", [lac, nyg, wsh]),
-    card("4-leg spread", "+620", "11%", "Read the 2-leg first. One miss sinks this.", [lac, nyg, wsh, sf]),
-    card("2-leg total", "+155", "31%", "Totals only. These are the two biggest gaps this week.", [no, gb])
-  ].join("");
-}
 function renderParlays() {
+  const heroEl = document.getElementById("parlayHero");
+  if (heroEl && !heroEl.__readyWired) {
+    heroEl.__readyWired = true;
+    heroEl.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-openpb]");
+      if (b) { e.stopPropagation(); openInBuilder(b.dataset.openpb); }
+    });
+  }
   let league = window.__parlayLg || "nfl";
   if (league === "propp") league = "props";
   $$("#parlayTabs .ptab").forEach((t) => t.classList.toggle("active", t.dataset.parlay === league));
@@ -7300,7 +7197,7 @@ function renderParlays() {
   const hero = document.getElementById("parlayHero");
   if (!hero) return;
   if (league === "props") {
-    if (stamp) stamp.textContent = "Player props. A full card of 1-leg through 6-leg tickets off DraftKings numbers. Anyone who already played is off.";
+    if (stamp) stamp.textContent = "Player props on DraftKings' lines, at a typical -115 price (type your book's in the builder). Anyone who already played is off.";
     const needLines = (DATA.games || []).some((g) => g.league === "nfl" && !g.completed && !Object.keys((window.VALUE_LINES || {})[String(g.id)] || {}).length);
     if ((needLines || (DATA.games || []).some((g) => g.league === "nfl" && !g.completed && !(g.props && g.props.length))) && !window.__propLinePull) {
       window.__propLinePull = Promise.resolve()
@@ -7323,13 +7220,13 @@ function renderParlays() {
     cdogs: { rows: buildDogParlays("cfb"), stamp: "College underdogs only. No NFL teams on this ticket.", empty: "No college underdog parlay this week." }
   };
   if (themed[league]) {
-    if (stamp) stamp.textContent = "Built off the board. Tap a leg for the why. NFL and college stay in their own tabs so a ticket never mixes the two.";
+    if (stamp) stamp.textContent = "Our leans at DraftKings' prices, with chances checked against this season's results. Each ticket says whether the price is worth it.";
     hero.innerHTML = parlayGroupHtml(themed[league].rows) || `<div class="empty">${themed[league].empty}</div>`;
     hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
     return;
   }
   if (league === "cfb") {
-    if (stamp) stamp.textContent = "College parlays. Moneyline, spread, and totals are separate. All three mixes them. No next-week games.";
+    if (stamp) stamp.textContent = "College parlays at DraftKings' prices, with chances checked against this season's results. Moneyline, spread and totals are separate; All three mixes them.";
     const board = renderCollegeParlayBoard();
     hero.innerHTML = board.html;
     hero.querySelectorAll("[data-cgroup]").forEach((btn) => btn.addEventListener("click", () => {
@@ -7340,7 +7237,7 @@ function renderParlays() {
     return;
   }
   const week = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : "";
-  if (stamp) stamp.textContent = "NFL Week " + week + ". Several tickets under each size, from 2 legs through 6. The first ticket in each size is the biggest gaps.";
+  if (stamp) stamp.textContent = "NFL Week " + week + ". Our biggest leans at DraftKings' prices, 2 legs through 6, with chances checked against this season's results. Each ticket says whether the price is worth it.";
   let extra = "";
   try { extra = parlayHeroHtml(league) || ""; } catch (e) { extra = ""; }
   hero.innerHTML = extra || `<div class="empty">No NFL parlay this week. We do not have two plays far enough off the number.</div>`;
