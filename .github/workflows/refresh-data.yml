@@ -1,10 +1,10 @@
 name: Refresh data
-# Every 2 hours: pull ESPN scoreboards (last, this and next week) and power indexes,
+# Every hour: pull ESPN scoreboards (last, this and next week) and power indexes,
 # update scores, lines, new games, team ratings and finals in data/snapshot.json and
 # data/week-results.json. Commits only when something changed.
 on:
   schedule:
-    - cron: "7 */2 * * *"
+    - cron: "7 * * * *"
   workflow_dispatch:
 permissions:
   contents: write

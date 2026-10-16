@@ -1135,6 +1135,46 @@ a[data-view="heisman"], a[href="#heisman"], a[data-view="recruit"], a[href="#rec
 #tabBar a.tab.star { flex-wrap: wrap; align-content: center; }
 #tabBar a.tab.star::after { content: "tap"; flex-basis: 100%; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; margin-top: 2px; }
 .stat.plays-stat { grid-column: 1 / -1; }
+/* Live and finished games: the real score leads. */
+.score-now b { font-size: 16px; }
+.home-game.is-live { border-color: var(--turf); }
+.home-game.result .home-pick { gap: 4px; }
+.res-line { display: block; font-weight: 800; white-space: nowrap; }
+.res-line .result-hit, .res-line .result-miss, .res-line .result-push, .res-line .result-pending { font-size: 11px; letter-spacing: .06em; margin-left: 4px; }
+.result-pending { color: var(--muted); }
+#alertBell { display: none !important; }
+/* Desk (Home, Boom Boom Room, card, scorecard) is the main menu: show it first. */
+#tabBar .tile-group:nth-child(3) { order: -1; }
+#tabBar { display: grid; gap: 12px; }
+/* Banner only on Home, and never taller than a strip. */
+body[data-view]:not([data-view="home"]) img.share-card { display: none; }
+img.share-card { max-height: 230px; object-fit: contain; background: #050b08; }
+@media (max-width: 759px) {
+  img.share-card { max-height: 150px; object-fit: contain; background: #050b08; }
+  .topbar { gap: 10px; margin-bottom: 10px; }
+  .brand .mark { width: 40px; height: 40px; font-size: 15px; border-radius: 12px; }
+  .brand h1 { font-size: 22px; }
+  .brand p { font-size: 13px; margin-top: 2px; }
+  body[data-view]:not([data-view="home"]) .brand p { display: none; }
+  .meta-chip .pill:nth-child(2), #injRefreshBtn, #downloadBtn { display: none; }
+  #tabBar .tile-group:nth-child(3) .tile-row {
+    display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 8px; padding: 2px 2px 8px;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  #tabBar .tile-group:nth-child(3) .tile-row .tab { flex: 0 0 auto; min-width: 112px; }
+  #tabBar .tab, #tabBar a.tab { min-height: 42px; padding: 8px 10px; font-size: 14px; border-radius: 12px; }
+  #tabBar a.tab.star::after { display: none; }
+  .tile-row.slide .tab { flex: 0 0 132px; }
+  .slide-wrap { grid-template-columns: minmax(0, 1fr); }
+  .slide-btn { display: none; }
+  .home-intro h2 { font-size: 20px; }
+  /* Home on a phone: live games and picks first, shortcut tiles after. */
+  #homeSection { display: flex; flex-direction: column; }
+  #homeSection > .home-intro { order: 0; }
+  #homeSection > #homeFeature { order: 1; }
+  #homeSection > .home-split { order: 2; }
+  #homeSection > #homeJumps { order: 3; margin-top: 14px; }
+}
 .pick-tag { display: inline-block; font-size: 10.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 1px 6px; border-radius: 6px; vertical-align: 1px; }
 .pick-tag.play { background: var(--turf-soft); color: var(--turf); }
 .pick-tag.lean { background: rgba(255,255,255,.06); color: var(--muted); }
@@ -3569,8 +3609,17 @@ function remainingSeconds(g) {
   if (!live) return 3600;
   if (/HALFTIME/i.test(g.status || "") || /HALFTIME/i.test(g.status_detail || "")) return 1800;
   const qlen = 900, qmax = 4;
-  const period = Number(g.period || 1);
-  const clock = parseClockSec(g.clock);
+  let period = Number(g.period || 0);
+  let clock = parseClockSec(g.clock);
+  // No period/clock saved (e.g. from a data file): read ESPN's "7:24 - 3rd" / "End of 3rd".
+  if (!period) {
+    const d = String(g.status_detail || "");
+    const m = d.match(/(\d{1,2}):(\d{2})\s*-\s*(\d)(?:st|nd|rd|th)/i) || d.match(/(\d{1,2}):(\d{2})\s*-\s*(OT)/i);
+    const end = d.match(/end of (?:the )?(\d)(?:st|nd|rd|th)/i);
+    if (m) { period = m[3] === "OT" ? 5 : Number(m[3]); clock = Number(m[1]) * 60 + Number(m[2]); }
+    else if (end) { period = Number(end[1]); clock = 0; }
+    else period = 1;
+  }
   if (period > qmax) return Math.max(0, clock);
   const played = Math.max(0, (period - 1) * qlen + (qlen - clock));
   return Math.max(0, qmax * qlen - played);
@@ -6473,26 +6522,29 @@ function buildCollegeMixParlays() {
 
 
 
+// Estimated chance the best play on a game hits, from its current edges (both leagues
+// trust the model at about 25-30%, so these edges are already shrunk toward the market).
+function playChance(g) {
+  const pr = (g && g.proj) || {};
+  const nfl = g && g.league === "nfl";
+  let best = 0;
+  if (pr.pick && pr.pick !== "NO PLAY" && pr.edge_spread != null) {
+    const sig = nfl ? LIVE.NFL_SIGMA : (typeof cfbSigma === "function" ? cfbSigma(Number(pr.blended_margin) || 0) : LIVE.CFB_SIGMA);
+    best = Math.max(best, normCdf(Math.abs(Number(pr.edge_spread)) / sig));
+  }
+  if (pr.total_pick && pr.total_pick !== "NO PLAY" && pr.edge_total != null) {
+    best = Math.max(best, normCdf(Math.abs(Number(pr.edge_total)) / (nfl ? 12 : LIVE.CFB_TOTAL_SIGMA)));
+  }
+  return best ? Math.round(best * 100) : 0;
+}
 function pickConfidence(g) {
-  const pr = g.proj || {};
-  const s = g.sim || pr.sim || {};
-  const hasPlay = !!(pr.pick && pr.pick !== "NO PLAY") || !!(pr.total_pick && pr.total_pick !== "NO PLAY");
-  if (!hasPlay) return { c: 38, label: "No play" };
-  if (((g.league === "cfb" && !pr._deskConf) || (g.league === "nfl" && pr.conf_pct)) && pr.confidence) {
-    const pc = Math.round(Number(pr.confidence));
-    return { c: pc, label: pc >= 58 ? "High" : pc >= 54 ? "Medium" : "Low", pct: true };
-  }
-  let c = pr.confidence;
-  if (c == null || c === 0) {
-    const edge = Math.abs(Number(pr.edge_spread) || 0);
-    const cover = Math.max(Number(s.cover_home) || 0, Number(s.cover_away) || 0);
-    c = Math.round(Math.min(96, 40 + edge * 12 + Math.max(0, cover - 0.52) * 90));
-  }
-  c = Math.max(40, Math.min(96, Number(c) || 50));
-  return { c, label: c >= 72 ? "High" : c >= 55 ? "Medium" : "Low" };
+  const c = playChance(g);
+  if (!c) return { c: 0, label: "No play", pct: true };
+  return { c, label: c >= 58 ? "High" : c >= 54 ? "Medium" : "Low", pct: true };
 }
 function confHtml(g) {
   const { c, label, pct } = pickConfidence(g);
+  if (label === "No play") return `<div class="conf none"><em>No play</em></div>`;
   const cls = label === "No play" ? "none" : label === "High" ? "hi" : label === "Medium" ? "mid" : "lo";
   // College shows the hit chance itself; the bar spans 50% (coin flip) to 65%.
   const width = pct ? Math.max(4, Math.min(100, Math.round((c - 50) / 15 * 100))) : c;
@@ -10653,7 +10705,7 @@ function pushAlert(kind, title, body, hot) {
     try { new Notification(title, { body, silent: false }); } catch (e) {}
   }
   const bell = document.getElementById("alertBell");
-  if (bell) {
+  if (bell && false) {
     bell.style.display = "block";
     bell.textContent = title + " — " + body;
     setTimeout(() => { if (bell.textContent.indexOf(title) === 0) bell.style.display = "none"; }, 8000);
@@ -11010,7 +11062,7 @@ function ggLockRun(prev) {
         // confidence. These make every finished week a clean backtest.
         our_margin: k.g.proj && k.g.proj.blended_margin != null ? Number(k.g.proj.blended_margin) : null,
         our_total: k.g.proj && k.g.proj.hashmark_total != null ? Number(k.g.proj.hashmark_total) : null,
-        confidence: k.g.proj && k.g.proj.confidence != null ? Number(k.g.proj.confidence) : null,
+        confidence: playChance(k.g) || null,
         total_play: !!(k.g.proj && k.g.proj.total_pick && k.g.proj.total_pick !== "NO PLAY"),
         spread: k.g.odds && k.g.odds.home_spread != null ? Number(k.g.odds.home_spread) : null,
         total: k.g.odds && k.g.odds.total != null ? Number(k.g.odds.total) : null,
@@ -11019,20 +11071,29 @@ function ggLockRun(prev) {
       changes.push("locked pick " + (r.short || r.id));
     });
   });
-  // Closing line: the run nearest kickoff (20 minutes either side) saves the line.
+  // Closing line: every run in the hour before kickoff saves the current line (the last
+  // one before kickoff wins). If no run landed before kickoff, one within 15 minutes after
+  // is used. GitHub's 15-minute schedule often runs about every 30 minutes.
   Object.values(out.plays).forEach((lock) => {
-    if (!lock || lock.close_spread != null || lock.close_total != null) return;
+    if (!lock) return;
     const k = kickOf(lock.id);
-    if (!k || !Number.isFinite(k.kick) || now < k.kick - 20 * 60000 || now > k.kick + 20 * 60000) return;
+    if (!k || !Number.isFinite(k.kick)) return;
+    const pre = now < k.kick && now >= k.kick - 60 * 60000;
+    const post = now >= k.kick && now <= k.kick + 15 * 60000 && !lock.closeAt;
+    if (!pre && !post) return;
     const o = k.g.odds || {};
     if (o.home_spread == null && o.total == null) return;
-    lock.close_spread = o.home_spread != null ? Number(o.home_spread) : null;
-    lock.close_total = o.total != null ? Number(o.total) : null;
+    const cs = o.home_spread != null ? Number(o.home_spread) : null;
+    const ct = o.total != null ? Number(o.total) : null;
+    if (lock.closeAt && lock.close_spread === cs && lock.close_total === ct) return;
+    const first = !lock.closeAt;
+    lock.close_spread = cs;
+    lock.close_total = ct;
     lock.closeAt = iso;
     const c = lockClv(lock);
     lock.clv_side = c.side;
     lock.clv_total = c.total;
-    changes.push("closing line " + lock.short);
+    changes.push((first ? "closing line " : "closing line moved ") + lock.short);
   });
   const key = deskWeekKey();
   if (!out.card || out.card.weekKey !== key) {
@@ -11232,6 +11293,81 @@ function realPlaysStat(rows, kind) {
   return `<div class="stat plays-stat${lead ? " lead" : ""}"><b>${rec}${pct}</b><span>${lead ? "Real plays: the picks the board called a play when they locked. This is our record." : sub}</span></div>`;
 }
 
+// What a visitor should see as a game's pick: the locked pick once it is locked.
+function shownPick(g) {
+  const lock = window.GG_LOCKS && window.GG_LOCKS.plays && window.GG_LOCKS.plays[String(g.id)];
+  const p = g.proj || {};
+  if (lock) {
+    return {
+      side: lock.side_play && lock.pick_line ? lock.pick_line : null,
+      total: lock.total_play && lock.total_pick && lock.total_pick !== "NO PLAY" ? lock.total_pick : null,
+      lock
+    };
+  }
+  return {
+    side: p.pick && p.pick !== "NO PLAY" ? (p.pick_line || p.pick) : null,
+    total: p.total_pick && p.total_pick !== "NO PLAY" ? p.total_pick : null,
+    lock: null
+  };
+}
+// The real score and clock for live or finished games; our projected score otherwise.
+function scoreLineHtml(g) {
+  const p = g.proj || {};
+  const live = typeof isLiveGame === "function" && isLiveGame(g);
+  if (g.completed || live) {
+    const a = g.away.score != null && g.away.score !== "" ? g.away.score : "0";
+    const h = g.home.score != null && g.home.score !== "" ? g.home.score : "0";
+    const state = g.completed ? "Final" : (g.status_detail || "Live");
+    const proj = live && p.away_points != null && p.home_points != null
+      ? ` · we project ${Math.round(p.away_points)}–${Math.round(p.home_points)}` : "";
+    return `<div class="score-now"><b>${g.away.abbr} ${a} – ${g.home.abbr} ${h}</b><span class="subn"> ${state}${proj}</span></div>`;
+  }
+  const r = (x) => x == null ? "—" : (Math.round(Number(x) * 10) / 10);
+  return `<div class="subn">Our score ${g.away.abbr} ${r(p.away_points)} – ${g.home.abbr} ${r(p.home_points)}</div>`;
+}
+function pickHtml(g) {
+  const sp = shownPick(g);
+  const parts = [];
+  if (sp.side) parts.push(`<b>${sp.side}</b>`);
+  if (sp.total) parts.push(`<b>${sp.total}</b>`);
+  const lockTag = sp.lock ? `<span class="pick-tag play" title="Locked ${new Date(sp.lock.lockedAt).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" })}">locked</span>` : "";
+  if (!parts.length) return `<div class="home-pick"><span class="subn">No play</span>${lockTag}</div>`;
+  return `<div class="home-pick">${parts.join("")}${lockTag}${sp.lock ? "" : confHtml(g)}</div>`;
+}
+// Locked real plays on games that finished in the last 36 hours, graded.
+function recentResults() {
+  const L = (window.GG_LOCKS && window.GG_LOCKS.plays) || {};
+  const since = Date.now() - 36 * 3600 * 1000;
+  const out = [];
+  (DATA.games || []).forEach((g) => {
+    const lock = L[String(g.id)];
+    if (!lock || !g.completed || !(Date.parse(g.date) >= since)) return;
+    const hs = Number(g.home.score), as = Number(g.away.score);
+    if (!Number.isFinite(hs) || !Number.isFinite(as)) return;
+    const graded = gradeHistoryRow(Object.assign({}, lock), { hs, as, homeAbbr: g.home.abbr, awayAbbr: g.away.abbr });
+    const plays = [];
+    if (lock.side_play && lock.pick_line) plays.push({ text: lock.pick_line, res: graded.ats });
+    if (lock.total_play && lock.total_pick && lock.total_pick !== "NO PLAY") plays.push({ text: lock.total_pick, res: graded.ou });
+    out.push({ g, plays, final: `${g.away.abbr} ${as} – ${g.home.abbr} ${hs}` });
+  });
+  return out.sort((a, b) => String(b.g.date).localeCompare(String(a.g.date)));
+}
+function resultsHtml() {
+  const rows = recentResults();
+  if (!rows.length) return "";
+  const tally = { w: 0, l: 0, p: 0 };
+  rows.forEach((r) => r.plays.forEach((x) => { if (x.res === "HIT") tally.w++; else if (x.res === "MISS") tally.l++; else if (x.res === "PUSH") tally.p++; }));
+  const head = tally.w + tally.l + tally.p ? ` · ${tally.w}-${tally.l}${tally.p ? "-" + tally.p : ""}` : "";
+  return `<div class="home-label">Latest results${head}</div>` + rows.slice(0, 8).map((r) => `
+    <article class="home-game result" data-id="${r.g.id}">
+      <div>
+        <div class="kick">${r.g.league.toUpperCase()} · Final</div>
+        <h3>${r.final}</h3>
+      </div>
+      <div class="home-pick">${r.plays.length ? r.plays.map((x) => `<span class="res-line">${x.text} <span class="result-${String(x.res || "pending").toLowerCase()}">${x.res || "pending"}</span></span>`).join("") : `<span class="subn">No play</span>`}</div>
+    </article>`).join("");
+}
+
 // One season record for everyone: the published past scorecards plus this week's
 // graded plays. Same numbers as Scorecard + Past weeks, never rebuilt per visitor.
 function seasonRecord() {
@@ -11276,14 +11412,16 @@ function renderHome() {
     // clicks handled globally via href + hash
   }
   const feat = document.getElementById("homeFeature");
-  const liveOrNext = (DATA.games || []).filter((g) => typeof isLiveGame === "function" && isLiveGame(g))[0]
-    || todayGames()[0]
-    || (DATA.games || []).filter((g) => !g.completed && !isPastKickoff(g)).sort((a, b) => String(a.date).localeCompare(String(b.date)))[0];
+  // Feature: a live game we have a play on, else the next game we have a play on, else
+  // any live game, else the next game.
+  const hasPlay = (g) => { const sp = shownPick(g); return !!(sp.side || sp.total); };
+  const lives = (DATA.games || []).filter((g) => typeof isLiveGame === "function" && isLiveGame(g));
+  const nexts = (DATA.games || []).filter((g) => !g.completed && !isLiveGame(g) && !isPastKickoff(g)).sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  const liveOrNext = lives.find(hasPlay) || nexts.find(hasPlay) || lives[0] || todayGames()[0] || nexts[0];
   if (feat && liveOrNext) {
     const g = liveOrNext;
     const p = g.proj || {};
     const live = typeof isLiveGame === "function" && isLiveGame(g);
-    const pick = (p.pick && p.pick !== "NO PLAY") ? (p.pick_line || p.pick) : "market aligned";
     feat.className = "home-feature on";
     feat.dataset.id = g.id;
     feat.innerHTML = `
@@ -11294,10 +11432,10 @@ function renderHome() {
           <h3>${g.away.abbr} @ ${g.home.abbr}</h3>
           <img src="${g.home.logo || ""}" alt="">
         </div>
-        <div class="subn" style="margin-top:6px">${p.away_points ?? "—"} – ${p.home_points ?? "—"} · ${injLine(g)}</div>
-        ${periodLine(g)}
+        <div style="margin-top:6px">${scoreLineHtml(g)}</div>
+        ${live || g.completed ? "" : `<div class="subn">${injLine(g)}</div>`}
       </div>
-      <div class="home-pick"><b>${pick}</b><span class="subn">${(p.total_pick && p.total_pick !== "NO PLAY") ? p.total_pick : ""}</span>${confHtml(g)}</div>`;
+      ${pickHtml(g)}`;
     feat.onclick = () => openGame(g.id);
   } else if (feat) feat.className = "home-feature";
   const teaser = document.getElementById("homeCardTeaser");
@@ -11318,24 +11456,20 @@ function renderHome() {
   const block = (list, title) => {
     if (!list.length) return "";
     return (title ? `<div class="home-label">${title}</div>` : "") + list.map((g) => {
-      const p = g.proj || {};
-      const pick = (p.pick && p.pick !== "NO PLAY") ? (p.pick_line || p.pick) : "no side";
-      const tot = (p.total_pick && p.total_pick !== "NO PLAY") ? p.total_pick : "";
       const live = typeof isLiveGame === "function" && isLiveGame(g);
-      return `<article class="home-game" data-id="${g.id}">
+      return `<article class="home-game${live ? " is-live" : ""}" data-id="${g.id}">
         <div class="mini"><img src="${g.away.logo || ""}" alt=""><img src="${g.home.logo || ""}" alt=""></div>
         <div>
           <div class="kick">${g.league.toUpperCase()} · ${live ? "LIVE" : fmt.when(g.date)}</div>
           <h3>${g.away.abbr} @ ${g.home.abbr}</h3>
-          <div class="subn">${p.away_points ?? "—"} – ${p.home_points ?? "—"}</div>
-          ${periodLine(g)}
+          ${scoreLineHtml(g)}
         </div>
-        <div class="home-pick"><b>${pick}</b><span class="subn">${tot}</span>${confHtml(g)}</div>
+        ${pickHtml(g)}
       </article>`;
     }).join("");
   };
-  board.innerHTML = block(games, "") + block(upcoming, games.length ? "Up next" : "");
-  if (!games.length && !upcoming.length) board.innerHTML = `<div class="empty">No games on the board.</div>`;
+  board.innerHTML = block(games, "") + resultsHtml() + block(upcoming, games.length ? "Up next" : "");
+  if (!games.length && !upcoming.length && !recentResults().length) board.innerHTML = `<div class="empty">No games on the board.</div>`;
   board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 function cardShareText() {
@@ -13283,6 +13417,7 @@ function setView(next) {
   const wantProps = next === "propp";
   if (wantProps) { window.__parlayLg = "props"; next = "parlay"; }
   view = next;
+  try { document.body.dataset.view = next; } catch (e) {}
   try { if (location.hash.replace("#","") !== next) history.replaceState(null, "", "#" + next); } catch (e) {}
   if (next === "cfb") {
     sortKey = "kick";

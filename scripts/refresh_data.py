@@ -63,7 +63,7 @@ def efficiency_count(payload):
                 n += 1
     return n
 # Fields that change on a game that is already in the snapshot.
-LIVE_FIELDS = ["date", "status", "status_detail", "completed", "broadcasts"]
+LIVE_FIELDS = ["date", "status", "status_detail", "completed", "broadcasts", "period", "clock"]
 TEAM_FIELDS = ["score", "record", "rank", "winner"]
 RATING_FIELDS = ["fpi", "fpi_rank", "off", "def"]
 

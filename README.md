@@ -13,7 +13,7 @@ Live at https://peyton2407-maker.github.io/
 | `hashmark.html`, `boom.html` | Old addresses. They now forward to `/` and keep the `#tab`. |
 | `data/locks.json` | Picks, plays of the day and this week's card, locked 90 minutes before kickoff. Same for every visitor. |
 | `scripts/lock_runner.py` | Runs every 15 minutes from `.github/workflows/lock-picks.yml`: opens the live board, locks what's due, grades finished plays of the day, and moves finished weeks into `past-scorecards.json`. |
-| `scripts/refresh_data.py` | Runs every 2 hours from `.github/workflows/refresh-data.yml`: updates scores, lines, new games, team ratings and finals in `snapshot.json` and `week-results.json` from ESPN, using the board's own parsers. Picks are never edited here. |
+| `scripts/refresh_data.py` | Runs every hour from `.github/workflows/refresh-data.yml`: updates scores, lines, new games, team ratings and finals in `snapshot.json` and `week-results.json` from ESPN, using the board's own parsers. Picks are never edited here. |
 | `scripts/slim_injuries.py` | Shrinks `data/injuries.json` to the fields the board reads (about 9 MB down to about 0.6 MB). |
 
 GitHub Pages serves this branch directly (Settings → Pages → Deploy from a branch, `main`, root). There is no build step.
