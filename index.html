@@ -846,6 +846,33 @@ button.prop-card.inj-open .report-full{display:block}
 .move-chip { margin: 6px 0 2px; font-size: 12.5px; color: var(--ink-soft); }
 .move-chip b { color: var(--sun); }
 .shop-chip { margin-top: 6px; font-size: 12.5px; color: var(--ink-soft); }
+#betsSection { max-width: 860px; margin: 0 auto; padding: 4px 14px 24px; }
+.mb-head h2 { margin: 0 0 4px; font-family: var(--display); font-size: 34px; }
+.mb-head p { margin: 0 0 14px; color: var(--ink-soft); }
+.mb-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
+.mb-stats > div { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+.mb-stats b { display: block; font: 800 22px var(--display); font-variant-numeric: tabular-nums; }
+.mb-stats b.up { color: #5fd38d; } .mb-stats b.down { color: var(--rose); }
+.mb-stats span { font-size: 12px; color: var(--muted); }
+.mb-curve { margin: 0 0 14px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; }
+.mb-curve figcaption { font-size: 12px; color: var(--muted); font-weight: 600; }
+.mb h3 { margin: 18px 0 8px; }
+.mb-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.mb-t { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+.mb-t.mb-won { border-color: rgba(95,211,141,.45); } .mb-t.mb-lost { border-color: rgba(255,122,104,.4); }
+.mb-top { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+.mb-top span { color: var(--ink-soft); font-size: 13px; }
+.mb-state { margin-left: auto; font-weight: 700; color: var(--ink) !important; }
+.mb-legs { list-style: none; margin: 8px 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+.mb-legs em { display: block; font-style: normal; color: var(--muted); font-size: 12px; margin-left: 2px; }
+.mb-r { display: inline-block; min-width: 54px; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 6px; background: var(--paper-2); color: var(--muted); text-align: center; margin-right: 6px; }
+.mb-r-won { background: rgba(95,211,141,.16); color: #5fd38d; } .mb-r-lost { background: rgba(255,122,104,.14); color: var(--rose); }
+.mb-r-push { color: var(--sky); } .mb-r-check { color: var(--sun); }
+.mb-mark { display: inline-flex; gap: 6px; margin-top: 4px; }
+.mb-mark button, .mb-foot button, .mb-tools button { background: var(--paper-2); border: 1px solid var(--line-2); border-radius: 8px; padding: 6px 10px; font-size: 12.5px; min-height: 32px; }
+.mb-foot { display: flex; justify-content: space-between; align-items: center; color: var(--faint); font-size: 12px; }
+.mb-tools { margin-top: 14px; }
+@media (max-width: 600px) { .mb-stats { grid-template-columns: repeat(2, 1fr); } }
 .shop-chip b { color: var(--sun); font-weight: 700; }
 .close {
   background: var(--paper-2); border: 1px solid var(--line);
@@ -1569,6 +1596,7 @@ img.share-card { display: none !important; }
 .pb-sugg button { border: 1px solid var(--stub-ink); background: transparent; color: var(--stub-ink); font: 700 13px var(--body); padding: 6px 10px; min-height: 34px; border-radius: 8px; cursor: pointer; white-space: nowrap; }
 .pb-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 14px 16px 0; }
 .pb-actions button { min-height: 44px; border-radius: 10px; font: 700 15px var(--body); cursor: pointer; border: 1px solid var(--stub-ink); }
+.pb-save { grid-column: 1 / -1; background: linear-gradient(160deg, #f4cb72, #c98a22); color: #261803; border-color: #c98a22 !important; }
 .pb-copy { background: var(--stub-ink); color: var(--stub); }
 .pb-share { background: transparent; color: var(--stub-ink); }
 .pb-status { margin: 8px 16px 0; min-height: 1em; font-size: 13px; font-weight: 600; color: var(--stub-good); }
@@ -1734,7 +1762,7 @@ img.share-card { display: none !important; }
         <a class="tab star" href="#cfb" data-view="cfb">CFB Week</a><a class="tab star" href="#cfbpicks" data-view="cfbpicks">College picks</a><a class="tab star" href="#potd" data-view="potd">Play of the day</a><a class="tab" href="#cfbwx" data-view="cfbwx">Weather</a><a class="tab" href="#cfbinj" data-view="cfbinj">Injuries</a><a class="chip-link" href="/split/">The Split</a>
       </div>
       <div class="subnav-group" data-section="boom">
-        <a class="tab star" href="#builder" data-view="builder">Parlay builder</a><a class="tab" href="#parlay" data-view="parlay">Ready-made tickets</a><a class="tab" href="#card" data-view="card">This week's card</a>
+        <a class="tab star" href="#builder" data-view="builder">Parlay builder</a><a class="tab" href="#parlay" data-view="parlay">Ready-made tickets</a><a class="tab" href="#bets" data-view="bets">My bets</a><a class="tab" href="#card" data-view="card">This week's card</a>
       </div>
       <div class="subnav-group" data-section="record">
         <a class="tab star" href="#score" data-view="score">Scorecard</a><a class="tab" href="#history" data-view="history">Past weeks</a><a class="tab" href="#ratings" data-view="ratings">Team rankings</a><a class="tab" href="#all" data-view="all">All games</a>
@@ -1902,6 +1930,7 @@ img.share-card { display: none !important; }
       <div class="prop-board" id="valBoard"></div>
     </section>
 
+    <section id="betsSection" style="display:none"></section>
     <section id="builderSection" style="display:none">
       <div class="pb-wrap">
         <div class="pb-main">
@@ -14233,7 +14262,7 @@ const VIEW_TITLE = {
   charts: "NFL game charts", live: "Live scores", tds: "Anytime TD odds", value: "Underdog value", nflwx: "NFL weather", nflinj: "NFL injuries",
   nflpotd: "NFL play of the day", cfb: "College football Week {cw} projections", potd: "College play of the day", cfbpicks: "College picks",
   cfbwx: "College weather", cfbinj: "College injuries", parlay: "Ready-made tickets", builder: "Parlay builder", score: "Scorecard",
-  history: "Past weeks", ratings: "Team rankings", all: "All games", alerts: "Alerts", model: "How the model works", boom: "Boom Room"
+  history: "Past weeks", bets: "My bets", ratings: "Team rankings", all: "All games", alerts: "Alerts", model: "How the model works", boom: "Boom Room"
 };
 function viewTitle(v) {
   let t = VIEW_TITLE[v] || "Today";
@@ -14242,14 +14271,14 @@ function viewTitle(v) {
 }
 function setView(next, opts) {
   if (next === "heisman" || next === "recruit" || next === "awards") next = next === "awards" ? "nflpotd" : "home";
-  const allowed = {home:1,builder:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,potd:1,nflpotd:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
+  const allowed = {home:1,builder:1,bets:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,potd:1,nflpotd:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
   if (!allowed[next]) next = "home";
   const wantProps = next === "propp";
   if (wantProps) { window.__parlayLg = "props"; next = "parlay"; }
   view = next;
   try {
     document.body.dataset.view = next;
-    const SECTION_OF = { home: "home", card: "home", nfl: "nfl", prime: "nfl", props: "nfl", charts: "nfl", live: "nfl", tds: "nfl", value: "nfl", nflwx: "nfl", nflinj: "nfl", nflpotd: "nfl", cfb: "cfb", potd: "cfb", cfbpicks: "cfb", cfbwx: "cfb", cfbinj: "cfb", recruit: "cfb", parlay: "boom", builder: "boom", score: "record", history: "record", ratings: "record", all: "record", alerts: "record" };
+    const SECTION_OF = { home: "home", card: "home", nfl: "nfl", prime: "nfl", props: "nfl", charts: "nfl", live: "nfl", tds: "nfl", value: "nfl", nflwx: "nfl", nflinj: "nfl", nflpotd: "nfl", cfb: "cfb", potd: "cfb", cfbpicks: "cfb", cfbwx: "cfb", cfbinj: "cfb", recruit: "cfb", parlay: "boom", builder: "boom", bets: "boom", score: "record", history: "record", ratings: "record", all: "record", alerts: "record" };
     // Play of the day is reachable from Home too; stay in Home when coming from there.
     const keepHome = document.body.dataset.section === "home" && (next === "nflpotd" || next === "potd");
     document.body.dataset.section = keepHome ? "home" : (SECTION_OF[next] || "home");
@@ -14313,6 +14342,9 @@ function setView(next, opts) {
   if (parS) parS.style.display = next === "parlay" ? "" : "none";
   const pbS = document.getElementById("builderSection");
   if (pbS) pbS.style.display = next === "builder" ? "" : "none";
+  const mbS = document.getElementById("betsSection");
+  if (mbS) mbS.style.display = next === "bets" ? "" : "none";
+  if (next === "bets") { try { renderMyBets(); } catch (e) { console.warn("my bets", e); } }
   if (next !== "builder") document.body.classList.remove("pb-open");
   if (next === "builder") { try { installBuilder(); renderBuilder(); } catch (e) { console.warn("builder", e); } }
   const tdS = document.getElementById("tdSection");
@@ -15388,6 +15420,7 @@ function pbSlipHtml() {
     ${pbSizingHtml(kellyP, kellyDec, canKelly && result && (result.ok || (mode === "parlay" && result.n)))}
     ${sugg.length ? `<ul class="pb-sugg">${sugg.map((s) => `<li><span>${s.text}</span><button type="button" data-${s.kind}="${s.id}">${s.btn}</button></li>`).join("")}</ul>` : ""}
     <div class="pb-actions">
+      <button type="button" class="pb-save" data-track="1">Save to My bets</button>
       <button type="button" class="pb-copy" data-copy="1">Copy ticket</button>
       <button type="button" class="pb-share" data-share="1">Copy link</button>
     </div>
@@ -15416,6 +15449,180 @@ function pbDockHtml() {
     txt = r.n ? `<b>${pbAm(r.american)}</b> · ${pbMoney(PB.stake)} pays ${pbMoney(PB.stake * r.decEff)}` : "Ticket";
   }
   return `<span class="pb-dock-n">${PB.legs.length}</span><span class="pb-dock-txt">${txt}</span><span class="pb-dock-go">View ticket</span>`;
+}
+
+// ---- My bets: tickets saved from the builder, graded from final scores ----------------------
+// Saved in this browser only (localStorage "gg-bets-v1"). Each leg keeps the line and price it
+// was saved with. Spreads, totals and moneylines grade themselves from finals; player props
+// are marked won/lost/push by hand once the game is over.
+const MB_KEY = "gg-bets-v1";
+function mbLoad() { try { const v = JSON.parse(localStorage.getItem(MB_KEY) || "[]"); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
+function mbSave(list) { try { localStorage.setItem(MB_KEY, JSON.stringify(list.slice(-500))); } catch (e) {} }
+function mbSaveTicket() {
+  const mode = PB.mode;
+  let legs = [], price = null, combos = null, cost = PB.stake;
+  if (mode === "teaser") {
+    const tl = pbTeaserLegs().filter((l) => l && !l.teaserBad);
+    const r = pbTeaser(tl, PB.boost);
+    if (!r.ok) return pbStatus(r.why || "This teaser can't be saved yet.");
+    legs = tl; price = r.american;
+  } else if (mode === "rr") {
+    const ll = PB.legs.map((st) => pbLeg(st)).filter((l) => l && !l.started);
+    const r = pbRoundRobin(ll);
+    if (!r.ok) return pbStatus(r.why);
+    legs = ll; combos = []; r.sizes.forEach((k) => pbCombos(ll.length, k).forEach((c) => combos.push(c))); cost = r.cost;
+  } else {
+    const ll = PB.legs.map((st) => pbLeg(st)).filter(Boolean);
+    if (ll.some((l) => l.started)) return pbStatus("A leg has already started. Save tickets before kickoff.");
+    const r = pbParlay(ll, PB.boost);
+    if (!r.n) return pbStatus("Add a leg first.");
+    legs = ll; price = r.american;
+  }
+  const t = {
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), at: new Date().toISOString(), mode,
+    teaserPts: mode === "teaser" ? PB.teaserPts : null, stake: PB.stake, cost, boost: mode === "rr" ? 0 : (PB.boost || 0), price, combos,
+    legs: legs.map((l) => ({ id: l.id, gid: l.gid, kind: l.kind, side: l.side, line: l.line, price: l.price, label: l.label, game: l.game, date: l.g && l.g.date, league: l.g && l.g.league, win: l.win }))
+  };
+  const list = mbLoad(); list.push(t); mbSave(list);
+  pbStatus(`Saved to My bets. ${pbMoney(cost)} ${mode === "rr" ? "across " + combos.length + " tickets" : "to win " + pbMoney(cost * (pbDec(price) - 1) * (1 + (t.boost || 0) / 100))}.`);
+}
+function mbFinal(gid) {
+  const g = pbGame(gid);
+  if (g && g.completed && g.home && g.away) {
+    const hs = Number(g.home.score), as = Number(g.away.score);
+    if (Number.isFinite(hs) && Number.isFinite(as)) return { hs, as };
+  }
+  const r = (window.WEEK_RESULTS || []).find((x) => x && String(x.id) === String(gid) && x.hs != null && x.as != null);
+  return r ? { hs: Number(r.hs), as: Number(r.as) } : null;
+}
+function mbLegResult(l) {
+  if (l.result) return l.result;                    // already settled (or marked by hand)
+  const f = mbFinal(l.gid);
+  if (!f) {
+    const t = Date.parse(l.date || "");
+    return Number.isFinite(t) && Date.now() - t > 5 * 86400000 ? "void" : "open";
+  }
+  let r = "check";
+  if (l.kind === "sp") {
+    const m = (l.side === "home" ? f.hs - f.as : f.as - f.hs) + Number(l.line);
+    r = Math.abs(m) < 1e-9 ? "push" : m > 0 ? "won" : "lost";
+  } else if (l.kind === "tot") {
+    const d = f.hs + f.as - Number(l.line);
+    r = Math.abs(d) < 1e-9 ? "push" : (l.side === "over" ? d > 0 : d < 0) ? "won" : "lost";
+  } else if (l.kind === "ml") {
+    const m = l.side === "home" ? f.hs - f.as : f.as - f.hs;
+    r = m === 0 ? "push" : m > 0 ? "won" : "lost";
+  }
+  if (r !== "check") {
+    const [aw, hm] = String(l.game || "").split(" @ ");
+    l.result = r; l.final = aw && hm ? `${aw} ${f.as}, ${hm} ${f.hs}` : `${f.as}-${f.hs}`;
+  }
+  return r;
+}
+function mbGrade(t) {
+  // returns { state: "open"|"won"|"lost"|"push"|"check", profit }
+  const res = t.legs.map(mbLegResult);
+  const decOf = (i) => pbDec(Number(t.legs[i].price));
+  if (t.mode === "rr") {
+    let profit = 0, open = false, check = false;
+    (t.combos || []).forEach((c) => {
+      const rs = c.map((i) => res[i]);
+      if (rs.includes("lost")) { profit -= t.stake; return; }
+      if (rs.some((x) => x === "open")) { open = true; return; }
+      if (rs.some((x) => x === "check")) { check = true; return; }
+      const d = c.reduce((a, i) => a * (res[i] === "won" ? decOf(i) : 1), 1);
+      profit += t.stake * (d - 1);
+    });
+    if (open || check) return { state: open ? "open" : "check", profit: null, legs: res };
+    return { state: profit > 1e-9 ? "won" : profit < -1e-9 ? "lost" : "push", profit, legs: res };
+  }
+  if (res.includes("lost")) return { state: "lost", profit: -t.stake, legs: res };
+  if (res.includes("open")) return { state: "open", profit: null, legs: res };
+  if (res.includes("check")) return { state: "check", profit: null, legs: res };
+  const won = res.map((r, i) => r === "won" ? i : -1).filter((i) => i >= 0);
+  if (!won.length) return { state: "push", profit: 0, legs: res };
+  let dec;
+  if (t.mode === "teaser") {
+    const full = won.length === t.legs.length;
+    const table = PB_TEASER_PRICES[t.teaserPts] || PB_TEASER_PRICES["6"];
+    const pr = full ? Number(t.price) : won.length >= 2 ? table[won.length] : -110;
+    dec = pbDec(pr);
+  } else {
+    dec = won.reduce((a, i) => a * decOf(i), 1);
+  }
+  const decEff = 1 + (dec - 1) * (1 + (Number(t.boost) || 0) / 100);
+  return { state: "won", profit: t.stake * (decEff - 1), legs: res };
+}
+function mbCsv(list) {
+  const rows = [["saved", "type", "legs", "price", "risk", "result", "profit"]];
+  list.forEach((t) => {
+    const g = mbGrade(t);
+    rows.push([t.at, t.mode, t.legs.map((l) => l.label + " (" + l.game + ")").join(" | "), t.price != null ? pbAm(t.price) : "", (t.cost || t.stake).toFixed(2), g.state, g.profit == null ? "" : g.profit.toFixed(2)]);
+  });
+  return rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
+}
+function renderMyBets() {
+  const root = document.getElementById("betsSection");
+  if (!root) return;
+  const list = mbLoad();
+  const graded = list.map((t) => ({ t, g: mbGrade(t) }));
+  mbSave(list); // keep settled leg results, so old games don't need to stay on the board
+  const done = graded.filter((x) => x.g.state === "won" || x.g.state === "lost" || x.g.state === "push");
+  const open = graded.filter((x) => x.g.state === "open" || x.g.state === "check");
+  const staked = done.reduce((a, x) => a + (x.t.cost || x.t.stake), 0);
+  const profit = done.reduce((a, x) => a + x.g.profit, 0);
+  const w = done.filter((x) => x.g.state === "won").length, l = done.filter((x) => x.g.state === "lost").length, pu = done.filter((x) => x.g.state === "push").length;
+  const atRisk = open.reduce((a, x) => a + (x.t.cost || x.t.stake), 0);
+  let run = 0;
+  const curve = done.slice().sort((a, b) => String(a.t.at).localeCompare(String(b.t.at))).map((x) => { run += x.g.profit; return [Date.parse(x.t.at), Math.round(run * 100) / 100]; });
+  if (curve.length) curve.unshift([curve[0][0] - 3600000, 0]);
+  const chip = (st) => ({ won: "Won", lost: "Lost", push: "Push", open: "Open", check: "Mark result", void: "No final" }[st] || st);
+  const ticketHtml = ({ t, g }) => `<li class="mb-t mb-${g.state}">
+    <div class="mb-top">
+      <b>${t.mode === "teaser" ? t.teaserPts + "-pt teaser" : t.mode === "rr" ? "Round robin (" + (t.combos || []).length + " tickets)" : t.legs.length === 1 ? "Straight bet" : t.legs.length + "-leg parlay"}</b>
+      <span>${t.price != null ? pbAm(t.price) + " · " : ""}${pbMoney(t.cost || t.stake)} risk</span>
+      <span class="mb-state">${chip(g.state)}${g.profit != null ? " " + (g.profit >= 0 ? "+" : "") + pbMoney(g.profit) : ""}</span>
+    </div>
+    <ul class="mb-legs">${t.legs.map((lg, i) => `<li><span class="mb-r mb-r-${g.legs[i]}">${chip(g.legs[i])}</span> ${pbEsc(lg.label)} <em>${pbEsc(lg.game)}${lg.price != null ? " · " + pbAm(lg.price) : ""}${lg.final ? " · final " + pbEsc(lg.final) : ""}</em>
+      ${g.legs[i] === "check" || (lg.kind === "pp" && g.legs[i] !== "open" && !lg.manual) ? `<span class="mb-mark">${["won", "lost", "push"].map((r) => `<button type="button" data-mbset="${t.id}|${i}|${r}">${r[0].toUpperCase() + r.slice(1)}</button>`).join("")}</span>` : ""}</li>`).join("")}</ul>
+    <div class="mb-foot"><span>Saved ${pbEsc(fmt.when(t.at))}</span><button type="button" data-mbdel="${t.id}">Delete</button></div>
+  </li>`;
+  root.innerHTML = `<div class="mb">
+    <div class="mb-head"><h2>My bets</h2><p>Save a ticket from the parlay builder and it's graded here from the final scores. Your record stays in this browser.</p></div>
+    <div class="mb-stats">
+      <div><b>${w}-${l}${pu ? "-" + pu : ""}</b><span>Record</span></div>
+      <div><b class="${profit >= 0 ? "up" : "down"}">${profit >= 0 ? "+" : ""}${pbMoney(profit)}</b><span>Profit</span></div>
+      <div><b>${staked ? (profit / staked * 100 >= 0 ? "+" : "") + (profit / staked * 100).toFixed(1) + "%" : "—"}</b><span>Return on risk</span></div>
+      <div><b>${open.length}</b><span>Open · ${pbMoney(atRisk)} at risk</span></div>
+    </div>
+    ${curve.length >= 3 ? `<figure class="mb-curve"><figcaption>Profit over time</figcaption>${moveSvg(curve, (v) => (v >= 0 ? "+$" : "-$") + Math.abs(v).toFixed(0), "var(--sun)")}</figure>` : ""}
+    ${!list.length ? `<div class="empty">No saved bets yet. Build a ticket in the <a href="#builder" data-jump="builder">parlay builder</a> and tap <b>Save to My bets</b>.</div>` : ""}
+    ${open.length ? `<h3>Open</h3><ol class="mb-list">${open.slice().reverse().map(ticketHtml).join("")}</ol>` : ""}
+    ${done.length ? `<h3>Settled</h3><ol class="mb-list">${done.slice().reverse().map(ticketHtml).join("")}</ol>` : ""}
+    ${list.length ? `<div class="mb-tools"><button type="button" data-mbcsv="1">Download as a spreadsheet (CSV)</button></div>` : ""}
+  </div>`;
+  if (!root.__wired) {
+    root.__wired = true;
+    root.addEventListener("click", (e) => {
+      const b = e.target.closest("button");
+      if (!b) return;
+      if (b.dataset.mbdel) {
+        if (!confirm("Delete this ticket from My bets?")) return;
+        mbSave(mbLoad().filter((t) => t.id !== b.dataset.mbdel)); return renderMyBets();
+      }
+      if (b.dataset.mbset) {
+        const [tid, i, r] = b.dataset.mbset.split("|");
+        const all = mbLoad(); const t = all.find((x) => x.id === tid);
+        if (t && t.legs[Number(i)]) { t.legs[Number(i)].result = r; t.legs[Number(i)].manual = true; mbSave(all); }
+        return renderMyBets();
+      }
+      if (b.dataset.mbcsv) {
+        const blob = new Blob([mbCsv(mbLoad())], { type: "text/csv" });
+        const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "double-gs-my-bets.csv";
+        document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+      }
+    });
+  }
 }
 
 // ---- live sweat and hedge ------------------------------------------------------------------
@@ -15825,6 +16032,7 @@ function installBuilder() {
     if (d.add) return pbToggle(d.add);
     if (d.clear) { PB.legs = []; return pbChanged(); }
     if (d.stake) { PB.stake = Number(d.stake); pbSave(); return pbRenderSlip(); }
+    if (d.track) return mbSaveTicket();
     if (d.copy) return pbCopy(pbTicketText(), "Ticket copied.");
     if (d.share) return pbCopy(pbLink(), "Link copied. Anyone who opens it gets this ticket.");
     if (d.close) { PB.open = false; return pbRenderSlip(); }
