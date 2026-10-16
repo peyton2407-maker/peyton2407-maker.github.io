@@ -75,6 +75,16 @@ def num(v):
 
 
 def describe(payload):
+    """Shape of a props response (also how full each top-level part is), for the status file."""
+    try:
+        base = describe_props(payload)
+        base["sizes"] = {k: (len(v) if hasattr(v, "__len__") else None) for k, v in (payload or {}).items()}
+        return base
+    except Exception as e:
+        return {"error": str(e)}
+
+
+def describe_props(payload):
     """One line about the shape of a props response, for the job log."""
     try:
         keys = list(payload.keys())[:12]
@@ -166,7 +176,17 @@ def main():
     n_prices = 0
     for gid, a in matched.items():
         try:
-            payload = json.loads((fx / f"props-{a['id']}.json").read_text()) if fx else get_json(PROPS.format(id=a["id"]), {"bookIds": ",".join(map(str, BOOK_IDS))})
+            if fx:
+                payload = json.loads((fx / f"props-{a['id']}.json").read_text())
+            else:
+                # The feed has come back empty when asked for several books at once; try the
+                # form the player pages use (DraftKings only), then every book, then no filter.
+                payload = None
+                for params in ({"bookIds": "68"}, {"bookIds": ",".join(map(str, BOOK_IDS))}, None):
+                    payload = get_json(PROPS.format(id=a["id"]), params)
+                    if (payload or {}).get("player_props"):
+                        status.setdefault("worked_with", str(params))
+                        break
         except Exception as e:
             print(f"{gid}: props error {e}", file=sys.stderr)
             if len(status["errors"]) < 5:
