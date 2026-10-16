@@ -873,6 +873,18 @@ button.prop-card.inj-open .report-full{display:block}
 .mb-foot { display: flex; justify-content: space-between; align-items: center; color: var(--faint); font-size: 12px; }
 .mb-tools { margin-top: 14px; }
 @media (max-width: 600px) { .mb-stats { grid-template-columns: repeat(2, 1fr); } }
+#calcSection { max-width: 980px; margin: 0 auto; padding: 4px 14px 24px; }
+.calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-bottom: 12px; }
+.calc-card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 10px; align-content: start; }
+.calc-card h3 { margin: 0; }
+.calc-card label { display: grid; gap: 4px; font-size: 12.5px; color: var(--muted); font-weight: 600; }
+.calc-card input { background: var(--paper-2); border: 1px solid var(--line-2); border-radius: 10px; padding: 10px 12px; font-size: 16px; color: var(--ink); min-width: 0; }
+.calc-card input:focus-visible { outline: 2px solid var(--sun); outline-offset: 1px; }
+.calc-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.calc-card dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; font-size: 14px; }
+.calc-card dt { color: var(--muted); }
+.calc-card dd { margin: 0; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+.calc-bad { color: var(--rose); font-size: 13px; }
 .shop-chip b { color: var(--sun); font-weight: 700; }
 .close {
   background: var(--paper-2); border: 1px solid var(--line);
@@ -1762,7 +1774,7 @@ img.share-card { display: none !important; }
         <a class="tab star" href="#cfb" data-view="cfb">CFB Week</a><a class="tab star" href="#cfbpicks" data-view="cfbpicks">College picks</a><a class="tab star" href="#potd" data-view="potd">Play of the day</a><a class="tab" href="#cfbwx" data-view="cfbwx">Weather</a><a class="tab" href="#cfbinj" data-view="cfbinj">Injuries</a><a class="chip-link" href="/split/">The Split</a>
       </div>
       <div class="subnav-group" data-section="boom">
-        <a class="tab star" href="#builder" data-view="builder">Parlay builder</a><a class="tab" href="#parlay" data-view="parlay">Ready-made tickets</a><a class="tab" href="#bets" data-view="bets">My bets</a><a class="tab" href="#card" data-view="card">This week's card</a>
+        <a class="tab star" href="#builder" data-view="builder">Parlay builder</a><a class="tab" href="#parlay" data-view="parlay">Ready-made tickets</a><a class="tab" href="#bets" data-view="bets">My bets</a><a class="tab" href="#calc" data-view="calc">Calculators</a><a class="tab" href="#card" data-view="card">This week's card</a>
       </div>
       <div class="subnav-group" data-section="record">
         <a class="tab star" href="#score" data-view="score">Scorecard</a><a class="tab" href="#history" data-view="history">Past weeks</a><a class="tab" href="#ratings" data-view="ratings">Team rankings</a><a class="tab" href="#all" data-view="all">All games</a>
@@ -1931,6 +1943,7 @@ img.share-card { display: none !important; }
     </section>
 
     <section id="betsSection" style="display:none"></section>
+    <section id="calcSection" style="display:none"></section>
     <section id="builderSection" style="display:none">
       <div class="pb-wrap">
         <div class="pb-main">
@@ -14262,7 +14275,7 @@ const VIEW_TITLE = {
   charts: "NFL game charts", live: "Live scores", tds: "Anytime TD odds", value: "Underdog value", nflwx: "NFL weather", nflinj: "NFL injuries",
   nflpotd: "NFL play of the day", cfb: "College football Week {cw} projections", potd: "College play of the day", cfbpicks: "College picks",
   cfbwx: "College weather", cfbinj: "College injuries", parlay: "Ready-made tickets", builder: "Parlay builder", score: "Scorecard",
-  history: "Past weeks", bets: "My bets", ratings: "Team rankings", all: "All games", alerts: "Alerts", model: "How the model works", boom: "Boom Room"
+  history: "Past weeks", bets: "My bets", calc: "Betting calculators", ratings: "Team rankings", all: "All games", alerts: "Alerts", model: "How the model works", boom: "Boom Room"
 };
 function viewTitle(v) {
   let t = VIEW_TITLE[v] || "Today";
@@ -14271,14 +14284,14 @@ function viewTitle(v) {
 }
 function setView(next, opts) {
   if (next === "heisman" || next === "recruit" || next === "awards") next = next === "awards" ? "nflpotd" : "home";
-  const allowed = {home:1,builder:1,bets:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,potd:1,nflpotd:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
+  const allowed = {home:1,builder:1,bets:1,calc:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,potd:1,nflpotd:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
   if (!allowed[next]) next = "home";
   const wantProps = next === "propp";
   if (wantProps) { window.__parlayLg = "props"; next = "parlay"; }
   view = next;
   try {
     document.body.dataset.view = next;
-    const SECTION_OF = { home: "home", card: "home", nfl: "nfl", prime: "nfl", props: "nfl", charts: "nfl", live: "nfl", tds: "nfl", value: "nfl", nflwx: "nfl", nflinj: "nfl", nflpotd: "nfl", cfb: "cfb", potd: "cfb", cfbpicks: "cfb", cfbwx: "cfb", cfbinj: "cfb", recruit: "cfb", parlay: "boom", builder: "boom", bets: "boom", score: "record", history: "record", ratings: "record", all: "record", alerts: "record" };
+    const SECTION_OF = { home: "home", card: "home", nfl: "nfl", prime: "nfl", props: "nfl", charts: "nfl", live: "nfl", tds: "nfl", value: "nfl", nflwx: "nfl", nflinj: "nfl", nflpotd: "nfl", cfb: "cfb", potd: "cfb", cfbpicks: "cfb", cfbwx: "cfb", cfbinj: "cfb", recruit: "cfb", parlay: "boom", builder: "boom", bets: "boom", calc: "boom", score: "record", history: "record", ratings: "record", all: "record", alerts: "record" };
     // Play of the day is reachable from Home too; stay in Home when coming from there.
     const keepHome = document.body.dataset.section === "home" && (next === "nflpotd" || next === "potd");
     document.body.dataset.section = keepHome ? "home" : (SECTION_OF[next] || "home");
@@ -14345,6 +14358,9 @@ function setView(next, opts) {
   const mbS = document.getElementById("betsSection");
   if (mbS) mbS.style.display = next === "bets" ? "" : "none";
   if (next === "bets") { try { renderMyBets(); } catch (e) { console.warn("my bets", e); } }
+  const caS = document.getElementById("calcSection");
+  if (caS) caS.style.display = next === "calc" ? "" : "none";
+  if (next === "calc") { try { renderCalc(); } catch (e) { console.warn("calc", e); } }
   if (next !== "builder") document.body.classList.remove("pb-open");
   if (next === "builder") { try { installBuilder(); renderBuilder(); } catch (e) { console.warn("builder", e); } }
   const tdS = document.getElementById("tdSection");
@@ -15623,6 +15639,83 @@ function renderMyBets() {
       }
     });
   }
+}
+
+// ---- Calculators: odds converter, no-vig fair price, parlay, hedge ------------------------
+function calcHtml() {
+  return `<div class="calc">
+    <div class="mb-head"><h2>Betting calculators</h2><p>Quick math for any bet. Type American odds like -110 or +150.</p></div>
+    <div class="calc-grid">
+      <form class="calc-card" data-calc="convert" onsubmit="return false">
+        <h3>Odds converter</h3>
+        <label>American odds<input name="am" inputmode="text" value="-110"></label>
+        <output></output>
+      </form>
+      <form class="calc-card" data-calc="novig" onsubmit="return false">
+        <h3>Fair odds (no vig)</h3>
+        <div class="calc-row"><label>Side A<input name="a" inputmode="text" value="-110"></label><label>Side B<input name="b" inputmode="text" value="-110"></label></div>
+        <output></output>
+      </form>
+      <form class="calc-card" data-calc="parlay" onsubmit="return false">
+        <h3>Parlay payout</h3>
+        <label>Each leg's odds, separated by commas<input name="legs" inputmode="text" value="-110, -110, +150"></label>
+        <div class="calc-row"><label>Bet ($)<input name="stake" inputmode="decimal" value="10"></label><label>Profit boost (%)<input name="boost" inputmode="decimal" value="0"></label></div>
+        <output></output>
+      </form>
+      <form class="calc-card" data-calc="hedge" onsubmit="return false">
+        <h3>Hedge</h3>
+        <div class="calc-row"><label>Ticket pays ($)<input name="pays" inputmode="decimal" value="100"></label><label>You bet ($)<input name="stake" inputmode="decimal" value="10"></label></div>
+        <label>Odds on the other side<input name="odds" inputmode="text" value="-150"></label>
+        <output></output>
+      </form>
+    </div>
+    <p class="subn">For information and entertainment, not betting advice.</p>
+  </div>`;
+}
+function calcRun(form) {
+  const out = form.querySelector("output");
+  const f = (n) => form.elements[n] ? form.elements[n].value : "";
+  const money = (x) => pbMoney(x);
+  const bad = (msg) => { out.innerHTML = `<span class="calc-bad">${msg}</span>`; };
+  const kind = form.dataset.calc;
+  if (kind === "convert") {
+    const a = pbParseAmerican(f("am"));
+    if (a == null) return bad("Type odds like -110 or +150.");
+    const d = pbDec(a);
+    out.innerHTML = `<dl><dt>Decimal</dt><dd>${d.toFixed(3)}</dd><dt>Implied chance</dt><dd>${(100 / d).toFixed(1)}%</dd><dt>$100 bet profit</dt><dd>${money(100 * (d - 1))}</dd><dt>To win $100, bet</dt><dd>${money(100 / (d - 1))}</dd></dl>`;
+  } else if (kind === "novig") {
+    const a = pbParseAmerican(f("a")), b = pbParseAmerican(f("b"));
+    if (a == null || b == null) return bad("Type both sides' odds.");
+    const ia = 1 / pbDec(a), ib = 1 / pbDec(b), t = ia + ib;
+    const fa = ia / t, fb = ib / t;
+    const am = (p) => { let x = pbAmerican(1 / p); if (x === -100) x = 100; return pbAm(x); };
+    out.innerHTML = `<dl><dt>Book's cut</dt><dd>${((t - 1) / t * 100).toFixed(2)}%</dd><dt>Side A fair</dt><dd>${(fa * 100).toFixed(1)}% · ${am(fa)}</dd><dt>Side B fair</dt><dd>${(fb * 100).toFixed(1)}% · ${am(fb)}</dd></dl>`;
+  } else if (kind === "parlay") {
+    const legs = String(f("legs")).split(/[,\s]+/).filter(Boolean).map(pbParseAmerican);
+    const stake = Number(f("stake")), boost = Math.max(0, Number(f("boost")) || 0);
+    if (!legs.length || legs.some((x) => x == null)) return bad("Type each leg's odds, like -110, +150.");
+    if (!(stake > 0)) return bad("Type a bet amount.");
+    const dec = legs.reduce((x, a) => x * pbDec(a), 1);
+    const decEff = 1 + (dec - 1) * (1 + boost / 100);
+    const fair = legs.reduce((x, a) => x / pbDec(a), 1);
+    out.innerHTML = `<dl><dt>Parlay odds</dt><dd>${pbAm(pbAmerican(decEff))}</dd><dt>Pays</dt><dd>${money(stake * decEff)}</dd><dt>Profit</dt><dd>${money(stake * (decEff - 1))}</dd><dt>Chance at these prices</dt><dd>${(fair * 100).toFixed(1)}% (cut included)</dd></dl>`;
+  } else if (kind === "hedge") {
+    const R = Number(f("pays")), stake = Number(f("stake")), o = pbParseAmerican(f("odds"));
+    if (!(R > 0) || !(stake >= 0) || o == null) return bad("Fill in all three.");
+    const d = pbDec(o);
+    const even = R / d, back = stake / (d - 1);
+    out.innerHTML = `<dl><dt>Lock the same profit either way</dt><dd>Bet ${money(even)} · profit ${money(R - even - stake)} either way</dd><dt>Just get your bet back</dt><dd>Bet ${money(back)} · ticket wins ${money(R - back - stake)}, hedge wins $0.00</dd></dl>`;
+  }
+}
+function renderCalc() {
+  const root = document.getElementById("calcSection");
+  if (!root) return;
+  if (!root.__built) {
+    root.__built = true;
+    root.innerHTML = calcHtml();
+    root.addEventListener("input", (e) => { const f = e.target.closest("form[data-calc]"); if (f) calcRun(f); });
+  }
+  root.querySelectorAll("form[data-calc]").forEach(calcRun);
 }
 
 // ---- live sweat and hedge ------------------------------------------------------------------
