@@ -1,6 +1,26 @@
 {
  "v": 1,
  "plays": {
+  "401858493": {
+   "id": "401858493",
+   "league": "cfb",
+   "week": 7,
+   "short": "WASH @ PUR",
+   "home": "PUR",
+   "away": "WASH",
+   "date": "2026-10-17T00:00Z",
+   "pick": "WASH",
+   "pick_line": "WASH +3.0",
+   "total_pick": "OVER 50.5",
+   "side_play": false,
+   "our_margin": 2.87,
+   "our_total": 60.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -3,
+   "total": 50.5,
+   "lockedAt": "2026-10-16T22:41:43.748Z"
+  },
   "401860923": {
    "id": "401860923",
    "league": "cfb",
@@ -69,7 +89,32 @@
    "total_play": true,
    "spread": 6.5,
    "total": 55.5,
-   "lockedAt": "2026-10-16T22:09:22.620Z"
+   "lockedAt": "2026-10-16T22:09:22.620Z",
+   "close_spread": 6.5,
+   "close_total": 55.5,
+   "closeAt": "2026-10-16T22:41:43.748Z",
+   "clv_side": 0,
+   "clv_total": 0
+  },
+  "401869844": {
+   "id": "401869844",
+   "league": "cfb",
+   "week": 7,
+   "short": "APP @ CCU",
+   "home": "CCU",
+   "away": "APP",
+   "date": "2026-10-17T00:00Z",
+   "pick": "CCU",
+   "pick_line": "CCU +1.5",
+   "total_pick": "OVER 48.5",
+   "side_play": false,
+   "our_margin": -1.24,
+   "our_total": 51.7,
+   "confidence": 51,
+   "total_play": true,
+   "spread": 1.5,
+   "total": 48.5,
+   "lockedAt": "2026-10-16T22:41:43.748Z"
   },
   "401869950": {
    "id": "401869950",
@@ -325,5 +370,5 @@
    }
   ]
  },
- "updated": "2026-10-16T22:09:22.620Z"
+ "updated": "2026-10-16T22:41:43.748Z"
 }
