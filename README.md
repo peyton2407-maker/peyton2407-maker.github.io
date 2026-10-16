@@ -14,6 +14,7 @@ Live at https://peyton2407-maker.github.io/
 | `data/locks.json` | Picks, plays of the day and this week's card, locked 90 minutes before kickoff. Same for every visitor. |
 | `scripts/lock_runner.py` | Runs every 15 minutes from `.github/workflows/lock-picks.yml`: opens the live board, locks what's due, grades finished plays of the day, and moves finished weeks into `past-scorecards.json`. |
 | `scripts/refresh_data.py` | Runs every hour from `.github/workflows/refresh-data.yml`: updates scores, lines, new games, team ratings and finals in `snapshot.json` and `week-results.json` from ESPN, using the board's own parsers. Picks are never edited here. |
+| `scripts/props.py` | Runs inside the hourly Refresh data job after `books.py`: saves player-prop prices from the big books to `data/props.json` when Action Network's feed has them (it has returned none to GitHub's servers so far; see `data/props-status.json`). |
 | `scripts/books.py` | Runs inside the hourly Refresh data job: saves every big US sportsbook's spread, total and moneyline for this week's games to `data/books.json` (from Action Network's public feed), so the parlay builder can show the best number for each leg. If the feed is down the old file stays. |
 | `scripts/calibrate.py` | Runs every Tuesday from `.github/workflows/calibrate.yml`: takes the board posted before every kickoff this season, works out the chance it gave each side, compares with the final scores, and saves how much of the board's lean held up to `data/calibration.json`. The parlay builder blends the book's line with that much of our lean. |
 | `scripts/slim_injuries.py` | Shrinks `data/injuries.json` to the fields the board reads (about 9 MB down to about 0.6 MB). |
@@ -41,6 +42,8 @@ Boom Room → Parlay builder (`#builder`). Tap spreads, totals, moneylines and N
 - Confidence labels on the board use the checked lean too, so college picks show about 50% until the board's college leans start beating the book.
 - The − and + buttons sell or buy half points at an estimated alternate-line price. Any price can be typed in.
 - Bet size uses the Kelly method on the bankroll you enter, with a profit boost if you have one.
+- Player props use real prices when we have them: `scripts/props.py` (hourly) saves every big book's prop prices to `data/props.json`, and the builder also tries DraftKings' prices from the visitor's browser (the player pages' source). Without either, a prop shows a typical -115 and says so. `data/props-status.json` records what the feed returned on the last run.
+- Live sweat: once a leg's game kicks off, the ticket turns into a tracker (won, lost, push, or the live chance from the board's in-game projection, refreshed every minute). Each leg keeps the line and price it had before kickoff. With one leg left on a parlay, it works out the hedge: the bet on the other side that locks in a profit, the one that just gets your stake back, and what certainty costs on average.
 - The ticket is saved in the visitor's browser, and "Copy link" opens the same ticket anywhere.
 
 ## Week rules

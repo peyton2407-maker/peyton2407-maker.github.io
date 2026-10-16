@@ -1576,6 +1576,24 @@ img.share-card { display: none !important; }
 /* Ticket grid: columns share the width instead of growing to the widest card. */
 #parlayHero.parlay-hero { grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); }
 #parlayHero > * { min-width: 0; }
+.pb-live-head { margin: 12px 16px 4px; padding: 12px 14px; border-radius: 12px; background: var(--stub-2); font: 800 22px/1.15 var(--display); }
+.pb-live-head.good { background: rgba(23,100,58,.14); color: var(--stub-good); }
+.pb-live-head.bad { background: rgba(163,53,42,.12); color: var(--stub-bad); }
+.pb-leg.pb-live-leg { grid-template-columns: minmax(0,1fr) auto; }
+.pb-leg.pb-live-leg .pb-chip { grid-column: 2; grid-row: 1; align-self: center; }
+.pb-live-score { color: var(--stub-ink) !important; font-weight: 600; }
+.pb-chip { display: inline-block; padding: 5px 10px; border-radius: 999px; font: 800 14px var(--body); white-space: nowrap; background: var(--stub-2); color: var(--stub-soft); }
+.pb-chip.won { background: rgba(23,100,58,.16); color: var(--stub-good); }
+.pb-chip.lost { background: rgba(163,53,42,.14); color: var(--stub-bad); }
+.pb-chip.push { background: rgba(201,138,34,.18); color: #7a5a12; }
+.pb-chip.live { background: var(--stub-ink); color: var(--stub); }
+.pb-live-note { margin: 8px 16px 0; font-size: 13px; line-height: 1.45; color: var(--stub-soft); }
+.pb-hedge { margin: 12px 16px 0; padding: 12px; border: 1px solid var(--stub-line); border-radius: 12px; }
+.pb-hedge h4 { margin: 0 0 8px; font: 800 20px var(--display); }
+.pb-hedge .pb-live-note { margin: 10px 0 0; }
+.pb-hedge-src { font-size: 12px; font-weight: 600; color: var(--stub-soft); }
+.pb-hedge .pb-stats { margin-top: 10px; }
+.pb-hedge .pb-stats dd.pb-hedge-sub { font: 500 12px/1.35 var(--body); color: var(--stub-soft); margin-top: 2px; }
 .parlay-card.ready .ready-val { margin-top: 6px; font-weight: 700; font-size: 14px; color: var(--ink-soft); }
 .parlay-card.ready .ready-val.good { color: var(--win); }
 .parlay-card.ready .ready-val.bad { color: var(--rose); }
@@ -7211,7 +7229,10 @@ function renderParlays() {
   const hero = document.getElementById("parlayHero");
   if (!hero) return;
   if (league === "props") {
-    if (stamp) stamp.textContent = "Player props on DraftKings' lines, at a typical -115 price (type your book's in the builder). Anyone who already played is off.";
+    if (typeof pbFetchOnce === "function") {
+      pbFetchOnce("props", "/data/props.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_PROPS = d; if (view === "parlay") renderParlays(); });
+    }
+    if (stamp) stamp.textContent = "Player props at DraftKings' prices (a typical -115 where we don't have theirs yet). Anyone who already played is off.";
     const needLines = (DATA.games || []).some((g) => g.league === "nfl" && !g.completed && !Object.keys((window.VALUE_LINES || {})[String(g.id)] || {}).length);
     if ((needLines || (DATA.games || []).some((g) => g.league === "nfl" && !g.completed && !(g.props && g.props.length))) && !window.__propLinePull) {
       window.__propLinePull = Promise.resolve()
@@ -14183,7 +14204,7 @@ function pbAmerican(dec) {
 function pbAm(a) { return a == null ? "—" : (a > 0 ? "+" + a : String(a)); }
 function pbMoney(x) {
   if (!Number.isFinite(x)) return "—";
-  return "$" + x.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return (x < 0 ? "-$" : "$") + Math.abs(x).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 function pbPct(p, digits) {
   if (!Number.isFinite(p)) return "—";
@@ -14429,11 +14450,27 @@ function pbLeg(stored, opts) {
     line = Number(dk[stat]);
     const mu = Number(pl[stat] || 0);
     const over = side === "over";
+    bookPrice = -115; priceSource = "typical";
+    mkt = { win: 0.5, push: 0 };
+    // real prices from the hourly props file: the chosen book (DraftKings by default), its
+    // line and price, and the market's own chance from its over and under prices
+    const offers = pbPropOffers(g.id, pl.name, stat);
+    const want = st.book || "DraftKings";
+    const mine = offers.filter((o) => o.book === want && o.side === side);
+    const pick = mine.find((o) => Math.abs(o.line - line) < 1e-9) || mine[0];
+    if (pick) {
+      line = pick.line; bookPrice = pick.odds; priceSource = pick.book;
+      const other = offers.find((o) => o.book === pick.book && o.side !== side && Math.abs(o.line - pick.line) < 1e-9);
+      if (other) {
+        const a = 1 / pbDec(pick.odds), b = 1 / pbDec(other.odds);
+        mkt = { win: a / (a + b), push: 0 };
+      }
+    } else if (st.book) {
+      return null;
+    }
     const po = pOver(mu, line, pbPropSig(stat));
     board = { win: over ? po : 1 - po, push: 0 };
-    mkt = { win: 0.5, push: 0 };
     keepInfo = { k: PB_PRIOR_KEEP, checked: false, n: 0 };
-    bookPrice = -115; priceSource = "typical";
     market = "Player prop";
     label = `${pl.name} ${over ? "over" : "under"} ${line} ${VAL_LBL[stat]}`;
     return pbFinish({ st, g, kind, side, game, label, line, mainLine: line, market, bookPrice, priceSource, board, mkt, keepInfo, cond: null, pid, stat, player: pl.name });
@@ -14677,11 +14714,43 @@ function pbHitText(pid, stat, line, side) {
   const l5 = typeof hitRate === "function" ? hitRate(last, stat, Number(line), side === "under") : null;
   return `Hit ${r.hits} of ${r.n} this season` + (l5 && l5.n && r.n > 5 ? `, ${l5.hits} of the last ${l5.n}` : "");
 }
+// Real prop prices: the hourly file first (every big book), then what this browser could
+// read from DraftKings via the player pages' own source (loadAnOdds). Empty = no real price.
+function pbPropOffers(gid, name, stat) {
+  const key = typeof oddsKey === "function" ? oddsKey(name) : "";
+  const games = window.PB_PROPS && window.PB_PROPS.games;
+  const pack = games && games[String(gid)];
+  const ent = pack ? pack[key] : null;
+  if (ent && ent.stats && ent.stats[stat] && ent.stats[stat].length) return ent.stats[stat];
+  const dk = ((window.__DKODDS || {})[String(gid)] || {})[key];
+  const rows = (dk && dk[stat]) || [];
+  const out = [];
+  rows.forEach((r) => {
+    if (r.over != null && Math.abs(r.over) >= 100) out.push({ line: r.line, side: "over", odds: Math.round(r.over), book: "DraftKings" });
+    if (r.under != null && Math.abs(r.under) >= 100) out.push({ line: r.line, side: "under", odds: Math.round(r.under), book: "DraftKings" });
+  });
+  return out;
+}
+// Ask this browser to read DraftKings prop prices for a game once (same source as the player pages).
+function pbPullPropPrices(gid) {
+  window.__pbPropPrice = window.__pbPropPrice || {};
+  if (window.__pbPropPrice[gid] || typeof loadAnOdds !== "function") return;
+  window.__pbPropPrice[gid] = true;
+  loadAnOdds({ game_id: gid }).then(() => { if (typeof view !== "undefined" && view === "builder") renderBuilder(); }).catch(() => {});
+}
 function pbBestBook(l) {
-  const books = window.PB_BOOKS && window.PB_BOOKS.games && window.PB_BOOKS.games[l.gid];
-  if (!books || (l.kind !== "sp" && l.kind !== "tot" && l.kind !== "ml") || l.typed) return null;
+  if (!l || l.typed) return null;
+  let names;
+  if (l.kind === "pp") {
+    names = [...new Set(pbPropOffers(l.gid, l.player, l.stat).filter((o) => o.side === l.side).map((o) => o.book))];
+  } else {
+    const books = window.PB_BOOKS && window.PB_BOOKS.games && window.PB_BOOKS.games[l.gid];
+    if (!books || (l.kind !== "sp" && l.kind !== "tot" && l.kind !== "ml")) return null;
+    names = Object.keys(books);
+  }
+  if (!names.length) return null;
   let best = null;
-  Object.keys(books).forEach((name) => {
+  names.forEach((name) => {
     const c = pbLeg({ id: l.id, book: name });
     if (!c || c.priceSource !== name) return;
     if (!best || c.value > best.value) best = c;
@@ -14892,6 +14961,9 @@ function pbSizingHtml(p, decEff, canKelly) {
   </details>`;
 }
 function pbSlipHtml() {
+  pbSnapBets();
+  const liveHtml = pbLiveView();
+  if (liveHtml) return liveHtml;
   const empty = !PB.legs.length;
   const mode = PB.mode;
   let legs, result, legsHtml = "", settings = "", numbers = "", warn = "";
@@ -14994,6 +15066,13 @@ function pbSlipHtml() {
 }
 function pbDockHtml() {
   if (!PB.legs.length) return `<span class="pb-dock-n">Ticket</span><span class="pb-dock-txt">Tap a line to start a ticket</span>`;
+  const live = PB.legs.some((st) => { const g = pbGame(String(st.id).split("|")[0]); return g && pbStarted(g); });
+  if (live) {
+    const tmp = document.createElement("div");
+    tmp.innerHTML = pbLiveView() || "";
+    const head = tmp.querySelector(".pb-live-head");
+    return `<span class="pb-dock-n">Live</span><span class="pb-dock-txt">${head ? pbEsc(head.textContent) : "Ticket is live"}</span><span class="pb-dock-go">View ticket</span>`;
+  }
   let txt = "";
   if (PB.mode === "teaser") {
     const r = pbTeaser(pbTeaserLegs(), PB.boost);
@@ -15006,6 +15085,180 @@ function pbDockHtml() {
     txt = r.n ? `<b>${pbAm(r.american)}</b> · ${pbMoney(PB.stake)} pays ${pbMoney(PB.stake * r.decEff)}` : "Ticket";
   }
   return `<span class="pb-dock-n">${PB.legs.length}</span><span class="pb-dock-txt">${txt}</span><span class="pb-dock-go">View ticket</span>`;
+}
+
+// ---- live sweat and hedge ------------------------------------------------------------------
+// Once a leg's game kicks off, the ticket turns into a tracker. Each leg's line and price
+// are saved while its game is still to come (st.bet), so the ticket is graded on the
+// number you bet, not on where the line went after.
+function pbSnapBets() {
+  let changed = false;
+  PB.legs.forEach((st) => { const parts = String(st.id).split("|"); if (parts[1] === "pp") pbPullPropPrices(parts[0]); });
+  PB.legs.forEach((st) => {
+    const g = pbGame(String(st.id).split("|")[0]);
+    if (!g || pbStarted(g)) return;
+    const l = pbLeg(st);
+    if (!l) return;
+    const bet = { line: l.line, price: l.price, label: l.label, game: l.game };
+    const old = st.bet || {};
+    if (old.line !== bet.line || old.price !== bet.price || old.label !== bet.label) { st.bet = bet; changed = true; }
+  });
+  if (changed) pbSave();
+}
+function pbTeaseLine(kind, side, line, shift) {
+  if (!shift || (kind !== "sp" && kind !== "tot")) return line;
+  return kind === "sp" ? line + shift : (side === "over" ? line - shift : line + shift);
+}
+function pbLegStatus(st, shift) {
+  const parts = String(st.id).split("|");
+  const g = pbGame(parts[0]);
+  const kind = parts[1], side = parts[parts.length - 1];
+  const bet = st.bet || (() => { const l = pbLeg(st); return l ? { line: l.line, price: l.price, label: l.label, game: l.game } : null; })();
+  if (!g || !bet) return { state: "gone", label: st.label || "Leg", game: st.game || "" };
+  const line = pbTeaseLine(kind, side, bet.line, shift);
+  const team = side === "home" ? g.home.abbr : g.away.abbr;
+  const label = kind === "sp" ? `${team} ${pbLine(line)}` : kind === "tot" ? `${side === "over" ? "Over" : "Under"} ${pbTot(line)}` : bet.label;
+  const base = { st, g, kind, side, line, label, price: bet.price, dec: pbDec(bet.price), game: bet.game || `${g.away.abbr} @ ${g.home.abbr}` };
+  if (!pbStarted(g)) {
+    const l = pbLeg(Object.assign({}, st, { line: bet.line, price: bet.price }), shift ? { shift } : null);
+    return Object.assign(base, { state: "pre", win: l ? l.win : 0.5, push: l ? l.push : 0 });
+  }
+  const hs = Number(g.home && g.home.score) || 0, as = Number(g.away && g.away.score) || 0;
+  const score = `${g.away.abbr} ${as} – ${g.home.abbr} ${hs}`;
+  if (kind === "pp") return Object.assign(base, { state: g.completed ? "check" : "inplay", score, win: null, push: 0 });
+  const grade = (m, t) => {
+    const r = kind === "sp" ? (side === "home" ? m + line : -m + line) : kind === "tot" ? (side === "over" ? t - line : line - t) : (side === "home" ? m : -m);
+    return r > 0 ? "won" : r < 0 ? "lost" : "push";
+  };
+  if (g.completed) return Object.assign(base, { state: grade(hs - as, hs + as), score: score + " · Final" });
+  // live: projected final from the board's in-game projection, spread narrowing as time runs out
+  if (!g.live && typeof projectInGame === "function") { try { projectInGame(g); } catch (e) {} }
+  const lv = g.live;
+  if (!lv) {
+    // kicked off but no live score yet: keep the pregame chance
+    const l = pbLeg(Object.assign({}, st, { line: bet.line, price: bet.price }), shift ? { shift } : null);
+    return Object.assign(base, { state: "live", score: "Kicked off · waiting for the score", win: l ? l.win : 0.5, push: l ? l.push : 0 });
+  }
+  const frac = lv ? Number(lv.frac) : Math.max(0, (typeof remainingSeconds === "function" ? remainingSeconds(g) : 1800) / 3600);
+  const nfl = g.league === "nfl";
+  const muM = lv ? Number(lv.home_points) - Number(lv.away_points) : hs - as;
+  const muT = Math.max(hs + as, lv ? Number(lv.total) : hs + as);
+  const shrink = Math.sqrt(Math.max(0.02, frac));
+  const dM = { pmf: false, mu: muM, sd: Math.max(1.2, (nfl ? LIVE.NFL_SIGMA : LIVE.CFB_SIGMA_FIT) * shrink) };
+  const dT = { pmf: false, mu: muT, sd: Math.max(1.2, (nfl ? PB_NFL_TOTAL_SD : LIVE.CFB_TOTAL_SIGMA) * shrink) };
+  const c = kind === "ml" ? pbSideAt("ml", side, 0, dM, dT) : pbSideAt(kind, side, line, dM, dT);
+  return Object.assign(base, { state: "live", score: score + (g.status_detail ? " · " + g.status_detail : ""), win: c ? c.win : 0.5, push: c ? c.push : 0 });
+}
+function pbStatusChip(s) {
+  if (s.state === "won") return `<span class="pb-chip won">Won</span>`;
+  if (s.state === "lost") return `<span class="pb-chip lost">Lost</span>`;
+  if (s.state === "push") return `<span class="pb-chip push">Push</span>`;
+  if (s.state === "live") return `<span class="pb-chip live">Live ${pbPct(s.win, 0)}</span>`;
+  if (s.state === "pre") return `<span class="pb-chip pre">${pbPct(s.win, 0)}</span>`;
+  if (s.state === "inplay") return `<span class="pb-chip live">In play</span>`;
+  if (s.state === "check") return `<span class="pb-chip pre">Check your book</span>`;
+  return `<span class="pb-chip pre">—</span>`;
+}
+function pbLiveView() {
+  if (!PB.legs.length) return null;
+  const shift = PB.mode === "teaser" ? Number(PB.teaserPts) : 0;
+  const stats = PB.legs.map((st) => pbLegStatus(st, shift));
+  if (!stats.some((s) => s.state !== "pre" && s.state !== "gone")) return null;
+  const stake = PB.stake;
+  const lost = stats.some((s) => s.state === "lost");
+  const open = stats.filter((s) => s.state === "live" || s.state === "pre" || s.state === "inplay");
+  const unknown = stats.some((s) => s.state === "inplay" || s.state === "check");
+  const b = Math.max(0, Number(PB.boost) || 0) / 100;
+  let head = "", body = "", hedge = "";
+  if (PB.mode === "rr") {
+    const alive = stats.filter((s) => s.state !== "lost").length;
+    head = `${alive} of ${stats.length} legs still alive`;
+    body = `<p class="pb-live-note">Each round-robin ticket cashes if all its legs win. Tickets with a lost leg are done; the rest are still going.</p>`;
+  } else if (lost) {
+    head = "This ticket lost";
+    body = `<p class="pb-live-note">${stats.filter((s) => s.state === "lost").map((s) => pbEsc(s.label)).join(", ")} didn't come through.</p>`;
+  } else {
+    // payout if every remaining leg wins; pushes drop out
+    let dec;
+    if (PB.mode === "teaser") {
+      const wins = stats.filter((s) => s.state !== "push").length;
+      const price = wins >= 2 ? pbTeaserPrice(wins, wins === stats.length) : wins === 1 ? -110 : null;
+      dec = price != null ? pbDec(price) : 1;
+    } else {
+      dec = stats.filter((s) => s.state !== "push").reduce((a, s) => a * s.dec, 1);
+    }
+    const decEff = dec > 1 ? 1 + (dec - 1) * (1 + b) : 1;
+    const R = stake * decEff;
+    if (!open.length) {
+      head = decEff > 1 ? `This ticket won ${pbMoney(R)}` : "Every leg pushed: money back";
+    } else {
+      const chance = open.reduce((a, s) => a * (s.win == null ? 0.5 : s.win + s.push), 1);
+      head = `${pbPct(chance)} to cash · pays ${pbMoney(R)}`;
+      if (unknown) body += `<p class="pb-live-note">Player props can't be tracked live here, so their chance counts as a coin flip. Check your book for them.</p>`;
+      const last = open.length === 1 ? open[0] : null;
+      if (PB.mode === "parlay" && last && last.kind !== "pp") hedge = pbHedgeHtml(last, R, stake);
+    }
+  }
+  const rows = stats.map((s) => `<li class="pb-leg pb-live-leg">
+      <div class="pb-leg-main"><b>${pbEsc(s.label || "")}</b><span>${pbEsc(s.game || "")}${s.price != null ? ` · ${pbAm(s.price)}` : ""}</span>${s.score ? `<span class="pb-live-score">${pbEsc(s.score)}</span>` : s.state === "pre" && s.g ? `<span class="pb-live-score">Starts ${pbEsc(fmt.when(s.g.date))}</span>` : ""}</div>
+      ${pbStatusChip(s)}
+    </li>`).join("");
+  return `
+    <div class="pb-slip-head">
+      <h3>Live ticket</h3>
+      <span class="pb-count">${PB.mode === "teaser" ? PB.teaserPts + "-pt teaser" : PB.mode === "rr" ? "Round robin" : "Parlay"}</span>
+      <button type="button" class="pb-clear" data-clear="1">${lost || (!open.length) ? "New ticket" : "Clear"}</button>
+      <button type="button" class="pb-close" data-close="1" aria-label="Close ticket">Close</button>
+    </div>
+    <div class="pb-live-head ${lost ? "bad" : !open.length ? "good" : ""}">${head}</div>
+    <ol class="pb-legs">${rows}</ol>
+    ${body}
+    ${hedge}
+    <p class="pb-fine">Live chances come from the board's in-game projection and update every minute while a game is on. Each leg keeps the line and price it had at kickoff. For information and entertainment, not betting advice.</p>`;
+}
+function pbHedgeHtml(last, R, stake) {
+  const oppId = pbOpposite(last.st.id);
+  const typed = (PB.hedge || {})[last.st.id];
+  let price = pbParseAmerican(typed);
+  let src = "your price";
+  if (price == null && last.state === "pre") {
+    const opp = pbLeg({ id: oppId });
+    if (opp) { price = opp.price; src = opp.priceSource === "standard" ? "standard price" : opp.priceSource; }
+  }
+  if (price == null && last.kind !== "ml") { price = -110; src = "standard price; type the live price"; }
+  const p = last.win, push = last.push || 0;
+  const input = `<label class="pb-tprice">Other side's price<input inputmode="numeric" id="pbHedgePrice" data-hedge="${last.st.id}" value="${price != null ? pbAm(price) : ""}" placeholder="+150" aria-label="Price on the other side"></label>`;
+  if (price == null) {
+    return `<div class="pb-hedge"><h4>Hedge the last leg</h4><p class="pb-live-note">Type the price your book has on the other side of ${pbEsc(last.label)} and this works out the hedge.</p>${input}</div>`;
+  }
+  const d = pbDec(price);
+  const Heq = R / d;                       // same profit whatever happens
+  const locked = R - stake - Heq;
+  const Hbe = stake / (d - 1);             // just get your stake back if the last leg loses
+  const ifHitBe = R - stake - Hbe;
+  const evNone = p * R + push * (R / last.dec) - stake; // a push drops the last leg: the rest of the ticket pays
+  const cost = evNone - locked;
+  const other = last.kind === "sp" ? `${last.side === "home" ? last.g.away.abbr : last.g.home.abbr} ${pbLine(-last.line)}` : last.kind === "tot" ? `${last.side === "over" ? "Under" : "Over"} ${pbTot(last.line)}` : `${last.side === "home" ? last.g.away.abbr : last.g.home.abbr} to win`;
+  return `<div class="pb-hedge">
+    <h4>Hedge the last leg</h4>
+    <div class="pb-tset" style="padding:0">${input}<span class="pb-hedge-src">${pbEsc(src)}</span></div>
+    <dl class="pb-stats">
+      <div><dt>Lock in a profit</dt><dd>${locked > 0 ? pbMoney(Heq) : "—"}</dd><dd class="pb-hedge-sub">${locked > 0 ? `on ${pbEsc(other)}: win ${pbMoney(locked)} either way` : "No price locks a profit here"}</dd></div>
+      <div><dt>Just get your bet back</dt><dd>${pbMoney(Hbe)}</dd><dd class="pb-hedge-sub">on ${pbEsc(other)}: ${pbMoney(ifHitBe)} if your leg hits, $0 if not</dd></div>
+    </dl>
+    <p class="pb-live-note">Without a hedge: ${pbMoney(R - stake)} profit if ${pbEsc(last.label)} hits (${pbPct(p, 0)} right now), ${pbMoney(-stake)} if it doesn't. ${locked > 0 ? (cost > 0.005 ? `Locking in costs about ${pbMoney(cost)} of expected value: that's the price of certainty.` : cost < -0.005 ? `At this price, locking in is worth about ${pbMoney(-cost)} more on average than letting it ride.` : `At this price, locking in costs nothing on average.`) : ""}</p>
+  </div>`;
+}
+function pbLivePoll() {
+  const anyLive = PB.legs.some((st) => { const g = pbGame(String(st.id).split("|")[0]); return g && pbStarted(g) && !g.completed; });
+  if (anyLive && !window.__pbLivePoll) {
+    window.__pbLivePoll = setInterval(() => {
+      if (typeof view === "undefined" || view !== "builder" || document.hidden || typeof pullLiveScores !== "function") return;
+      pullLiveScores(true).then(() => renderBuilder()).catch(() => {});
+    }, 60000);
+  } else if (!anyLive && window.__pbLivePoll) {
+    clearInterval(window.__pbLivePoll); window.__pbLivePoll = null;
+  }
 }
 
 // ---- render + events ------------------------------------------------------------------------------
@@ -15025,6 +15278,7 @@ function renderBuilderNow() {
   if (!PB.__loaded) { pbLoad(); pbFromUrl(); PB.__loaded = true; }
   pbFetchOnce("cal", "/data/calibration.json", (d) => { window.PB_CAL = d; });
   pbFetchOnce("books", "/data/books.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_BOOKS = d; });
+  pbFetchOnce("props", "/data/props.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_PROPS = d; });
   if (!window.__pbPropPull && !window.__pbPropDone && typeof ensureWeekProps === "function") {
     window.__pbPropPull = Promise.resolve()
       .then(() => ensureWeekProps())
@@ -15033,6 +15287,7 @@ function renderBuilderNow() {
       .then(() => { window.__pbPropPull = null; window.__pbPropDone = true; if (view === "builder") renderBuilder(); });
   }
   PB.league = pbDefaultLeague();
+  pbLivePoll();
   root.querySelectorAll("[data-pblg]").forEach((b) => {
     const on = b.dataset.pblg === PB.league;
     b.classList.toggle("active", on);
@@ -15077,8 +15332,12 @@ function pbStatus(msg) {
   if (el) { el.textContent = msg; clearTimeout(pbStatus.t); pbStatus.t = setTimeout(() => { el.textContent = ""; }, 4000); }
 }
 function pbChanged() { pbSave(); pbRefreshButtons(); pbRenderSlip(); }
+function pbTicketIsLive() {
+  return PB.legs.some((st) => { const g = pbGame(String(st.id).split("|")[0]); return g && pbStarted(g); });
+}
 function pbToggle(id) {
   const i = PB.legs.findIndex((l) => l.id === id);
+  if (i < 0 && pbTicketIsLive()) { PB.open = true; pbRenderSlip(); pbStatusSoon("Your ticket is already live. Tap New ticket or Clear to start another."); return; }
   if (i >= 0) {
     PB.legs.splice(i, 1);
   } else {
@@ -15091,7 +15350,9 @@ function pbToggle(id) {
   }
   pbChanged();
 }
+function pbStatusSoon(msg) { setTimeout(() => { const el = document.getElementById("pbStatus") || document.querySelector(".pb-live-note"); if (el && el.id === "pbStatus") pbStatus(msg); else if (el) el.textContent = msg; }, 0); }
 function pbFill(n) {
+  if (pbTicketIsLive()) { PB.open = true; pbRenderSlip(); pbStatusSoon("Your ticket is already live. Tap New ticket or Clear to start another."); return; }
   const lg = PB.league;
   let legs;
   if (PB.mode === "teaser") legs = pbBestTeaserLegs(lg, n);
@@ -15216,7 +15477,7 @@ function installBuilder() {
     if (d.pbsort) { PB.sort = d.pbsort; return renderBuilder(); }
     if (d.pbmode) { PB.fillMode = d.pbmode; pbSave(); return renderBuilder(); }
     if (d.fill) return pbFill(Number(d.fill));
-    if (d.props) { PB.propsOpen = PB.propsOpen === d.props ? null : d.props; return pbRefreshButtons(); }
+    if (d.props) { PB.propsOpen = PB.propsOpen === d.props ? null : d.props; if (PB.propsOpen) pbPullPropPrices(PB.propsOpen); return pbRefreshButtons(); }
     if (d.showcal) { PB.showCal = !PB.showCal; const c = document.getElementById("pbCal"); if (c) c.innerHTML = pbCalHtml(); return; }
     if (d.mode) { PB.mode = d.mode; PB.teaserPrice = null; pbSave(); return renderBuilder(); }
     if (d.tpts) { PB.teaserPts = d.tpts; PB.teaserPrice = null; return pbChanged(); }
@@ -15242,6 +15503,7 @@ function installBuilder() {
     if (el.id === "pbBoost") { PB.boost = pbNum(el.value, 500); pbSave(); return pbRenderSlip(); }
     if (el.id === "pbBank") { PB.bankroll = pbNum(el.value, 10000000); pbSave(); return pbRenderSlip(); }
     if (el.id === "pbKelly") { PB.kelly = Number(el.value) || 0.25; pbSave(); return pbRenderSlip(); }
+    if (el.dataset && el.dataset.hedge) { PB.hedge = PB.hedge || {}; PB.hedge[el.dataset.hedge] = el.value; return pbRenderSlip(); }
     if (el.id === "pbTPrice") { const a = pbParseAmerican(el.value); PB.teaserPrice = a; if (a == null && el.value.trim()) pbStatus("Type a price like -120 or +150."); pbSave(); return pbRenderSlip(); }
     if (el.dataset && el.dataset.price) {
       const s = PB.legs.find((l) => l.id === el.dataset.price);

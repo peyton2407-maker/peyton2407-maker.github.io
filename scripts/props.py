@@ -169,7 +169,8 @@ def main():
                 boards_err.append(str(e)[:200])
     merged = books.merge_feeds(boards)
     matched = books.match(merged, nfl)
-    status = {"ran_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "scoreboards": len(boards),
+    # no timestamp here, so an unchanged result doesn't make a new commit every hour
+    status = {"scoreboards": len(boards),
               "feed_games": len(merged), "board_games": len(nfl), "matched": len(matched), "errors": list(boards_err), "shape": None}
     out = {"updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "source": "Action Network", "games": {}}
     described = False
