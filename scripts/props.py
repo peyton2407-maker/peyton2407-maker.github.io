@@ -17,6 +17,7 @@ Usage:
 """
 import argparse
 import json
+import os
 import re
 import sys
 import urllib.parse
@@ -147,10 +148,135 @@ def parse(payload):
     return out
 
 
+# ---- The Odds API (licensed odds data; needs the ODDS_API_KEY repository secret) ----------
+ODDS_API = "https://api.the-odds-api.com/v4/sports/americanfootball_nfl"
+ODDS_MARKETS = {"player_pass_yds": "pass_yds", "player_pass_tds": "pass_td", "player_rush_yds": "rush_yds",
+                "player_reception_yds": "rec_yds", "player_receptions": "rec"}
+ODDS_BOOKS = {"draftkings": "DraftKings", "fanduel": "FanDuel", "betmgm": "BetMGM", "betrivers": "BetRivers",
+              "williamhill_us": "Caesars", "fanatics": "Fanatics", "espnbet": "ESPN BET"}
+FREE_BOOKS = ["draftkings", "fanduel", "betmgm", "betrivers"]   # Caesars and Fanatics need a paid plan
+RESERVE = 25   # never spend the last credits
+
+
+def odds_get(path, params, key):
+    q = dict(params or {}, apiKey=key)
+    req = urllib.request.Request(f"{ODDS_API}{path}?{urllib.parse.urlencode(q)}", headers={"Accept": "application/json"})
+    with urllib.request.urlopen(req, timeout=30) as res:
+        return json.loads(res.read().decode("utf-8")), res.headers.get("x-requests-remaining")
+
+
+def due(kick, fetched, now, mode):
+    """Should this game's props be fetched now?
+    free (500 credits a month): once per game, about a day before kickoff. A full NFL slate
+    is ~15 games x 5 markets = ~75 credits a week, ~325 a month.
+    paid: every 6 hours, then hourly in the last day."""
+    hours = (kick - now) / 3600
+    age = (now - fetched) / 3600 if fetched else 1e9
+    if hours < 0:
+        return False
+    if mode == "paid":
+        return age >= (1 if hours <= 24 else 6)
+    return hours <= 30 and age >= 30
+
+
+def parse_odds_api(payload):
+    out = {}
+    for bk in payload.get("bookmakers") or []:
+        book = ODDS_BOOKS.get(bk.get("key"))
+        if not book:
+            continue
+        for mk in bk.get("markets") or []:
+            stat = ODDS_MARKETS.get(mk.get("key"))
+            if not stat:
+                continue
+            for oc in mk.get("outcomes") or []:
+                side = str(oc.get("name") or "").lower()
+                name = oc.get("description")
+                line, odds = num(oc.get("point")), num(oc.get("price"))
+                if side not in ("over", "under") or not name or line is None or odds is None or abs(odds) < 100:
+                    continue
+                ent = out.setdefault(name_key(name), {"name": name, "stats": {}})
+                ent["stats"].setdefault(stat, []).append({"line": line, "side": side, "odds": int(odds), "book": book})
+    return out
+
+
+def odds_api_main(key, nfl, fx):
+    mode = os.environ.get("ODDS_API_PLAN", "free").strip().lower()
+    now = datetime.now(timezone.utc).timestamp()
+    old = {}
+    try:
+        old = json.loads(OUT.read_text()) if OUT.exists() else {}
+    except Exception:
+        old = {}
+    out = {"updated": old.get("updated"), "source": "The Odds API", "games": {}, "fetched": {}}
+    # keep what we already have for games still to come
+    keep = {str(g["id"]) for g in nfl}
+    for gid, v in (old.get("games") or {}).items():
+        if gid in keep and old.get("source") == "The Odds API":
+            out["games"][gid] = v
+            out["fetched"][gid] = (old.get("fetched") or {}).get(gid)
+    status = {"source": "The Odds API", "plan": mode, "board_games": len(nfl), "fetched_now": 0, "errors": []}
+    try:
+        events, _ = (json.loads((fx / "events.json").read_text()), None) if fx else odds_get("/events", {}, key)
+    except Exception as e:
+        status["errors"].append(f"events: {str(e)[:200]}")
+        STATUS.write_text(json.dumps(status, indent=1) + "\n")
+        print("Odds API events error", e)
+        return 0
+    by_names = {}
+    for ev in events or []:
+        by_names.setdefault((books.norm(ev.get("away_team")), books.norm(ev.get("home_team"))), []).append(ev)
+    remaining = None
+    for g in sorted(nfl, key=lambda x: x.get("date") or ""):
+        gid = str(g["id"])
+        kick = books.ts(g.get("date")) or 0
+        cands = by_names.get((books.norm(g["away"].get("name")), books.norm(g["home"].get("name"))), [])
+        ev = next((e for e in cands if abs((books.ts(e.get("commence_time")) or 0) - kick) < 36 * 3600), None)
+        if not ev:
+            continue
+        fetched = books.ts(out["fetched"].get(gid)) if out["fetched"].get(gid) else None
+        if not due(kick, fetched, now, mode):
+            continue
+        if remaining is not None and int(remaining) - len(ODDS_MARKETS) < RESERVE:
+            status["errors"].append("stopped to keep the last credits")
+            break
+        bks = list(ODDS_BOOKS) if mode == "paid" else FREE_BOOKS
+        try:
+            if fx:
+                payload, remaining = json.loads((fx / f"event-{ev['id']}.json").read_text()), None
+            else:
+                payload, remaining = odds_get(f"/events/{ev['id']}/odds", {"bookmakers": ",".join(bks), "markets": ",".join(ODDS_MARKETS), "oddsFormat": "american"}, key)
+        except Exception as e:
+            if len(status["errors"]) < 5:
+                status["errors"].append(f"{gid}: {str(e)[:200]}")
+            continue
+        players = parse_odds_api(payload)
+        status["fetched_now"] += 1
+        if players:
+            out["games"][gid] = players
+            out["fetched"][gid] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    status["credits_left"] = remaining
+    status["games_with_prices"] = len(out["games"])
+    STATUS.write_text(json.dumps(status, indent=1) + "\n")
+    print(f"Odds API ({mode}): fetched {status['fetched_now']} games now, {len(out['games'])} games with prop prices, credits left {remaining}")
+    if status["fetched_now"] and out["games"]:
+        out["updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        OUT.write_text(json.dumps(out, separators=(",", ":")) + "\n")
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--fixture")
+    ap.add_argument("--odds-api-fixture", help="DIR with events.json and event-<id>.json (Odds API test)")
     args = ap.parse_args()
+    key = os.environ.get("ODDS_API_KEY", "").strip()
+    if key or args.odds_api_fixture:
+        snap0 = json.loads(SNAP.read_text())
+        now0 = datetime.now(timezone.utc).timestamp()
+        nfl0 = [g for g in snap0.get("games") or [] if g.get("league") == "nfl" and not g.get("completed")
+                and (books.ts(g.get("date")) or 0) > now0 - 6 * 3600]
+        return odds_api_main(key, nfl0, Path(args.odds_api_fixture) if args.odds_api_fixture else None)
     snap = json.loads(SNAP.read_text())
     now = datetime.now(timezone.utc).timestamp()
     nfl = [g for g in snap.get("games") or [] if g.get("league") == "nfl" and not g.get("completed")

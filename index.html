@@ -15062,7 +15062,7 @@ function pbSlipHtml() {
     </div>
 `}
     <p class="pb-status" id="pbStatus" role="status" aria-live="polite"></p>
-    <p class="pb-fine">Prices start at DraftKings' (spreads and totals use -110 when we don't have theirs).${window.PB_BOOKS && window.PB_BOOKS.updated ? ` Book lines as of ${pbEsc(fmt.when(window.PB_BOOKS.updated))}.` : ""} Tap a price to type your book's. The − and + buttons sell or buy half points at an estimated alternate-line price. Pushes drop a leg. ${recLine} For information and entertainment, not betting advice.</p>`;
+    <p class="pb-fine">Prices start at DraftKings' (spreads and totals use -110 when we don't have theirs).${window.PB_BOOKS && window.PB_BOOKS.updated ? ` Book lines as of ${pbEsc(fmt.when(window.PB_BOOKS.updated))}.` : ""}${window.PB_PROPS && window.PB_PROPS.updated ? ` Prop prices as of ${pbEsc(fmt.when(window.PB_PROPS.updated))}.` : ""} Tap a price to type your book's. The − and + buttons sell or buy half points at an estimated alternate-line price. Pushes drop a leg. ${recLine} For information and entertainment, not betting advice.</p>`;
 }
 function pbDockHtml() {
   if (!PB.legs.length) return `<span class="pb-dock-n">Ticket</span><span class="pb-dock-txt">Tap a line to start a ticket</span>`;
