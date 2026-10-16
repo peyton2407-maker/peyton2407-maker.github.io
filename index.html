@@ -2,29 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="desk-version" content="96" />
   <title>Double Gs — NFL &amp; College Football Projections, Picks and Props</title>
   <meta name="description" content="NFL and college football projections: predicted scores, spreads, totals, player props, anytime TD odds, weather and injuries. Every locked pick is graded on a public scorecard." />
   <link rel="canonical" href="https://peyton2407-maker.github.io/" />
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <meta name="theme-color" content="var(--paper)" />
+  <link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48" />
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+  <meta name="theme-color" content="#0f2a1e" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Big+Shoulders+Display:wght@700;800;900&display=swap" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Double Gs" />
   <meta property="og:url" content="https://peyton2407-maker.github.io/" />
-  <meta property="og:title" content="Double Gs · The Split" />
+  <meta property="og:title" content="Double Gs: NFL and college football projections, picks and props" />
   <meta property="og:description" content="NFL and college football projections, picks, player props and a public scorecard." />
   <meta property="og:image" content="https://peyton2407-maker.github.io/og.jpg?v=3" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Double G's and The Split logos" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Double Gs · The Split" />
+  <meta name="twitter:title" content="Double Gs: NFL and college football projections, picks and props" />
   <meta name="twitter:description" content="NFL and college football projections, picks, player props and a public scorecard." />
   <meta name="twitter:image" content="https://peyton2407-maker.github.io/og.jpg?v=3" />
   <style>
-@import url("https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Big+Shoulders+Display:wght@700;800;900&display=swap");
 
 :root {
   --paper: #0f2a1e;
@@ -811,6 +815,7 @@ button.prop-card.inj-open .report-full{display:block}
   color: var(--ink);
 }
 .modal-head { display: flex; justify-content: space-between; gap: 10px; }
+.modal-actions { display: flex; gap: 8px; align-items: flex-start; flex-shrink: 0; }
 .close {
   background: var(--paper-2); border: 1px solid var(--line);
   border-radius: 12px; padding: 8px 12px; cursor: pointer; color: var(--ink);
@@ -4405,7 +4410,7 @@ function cfbReadHtml(g, full) {
   return `<div class="split-note">
     <div class="lbl">Matchup · from The Split</div>
     <ul>${show.map((n) => `<li><b>${n.edge}</b> ${n.line}</li>`).join("")}</ul>
-    <a href="/split/games/${encodeURIComponent(String(g.id))}" target="_top" onclick="event.stopPropagation()">Open the full sheet</a>
+    <a href="/split/#${encodeURIComponent(String(g.id))}" target="_top" onclick="event.stopPropagation()">Open the full sheet</a>
   </div>`;
 }
 // The college unit model's average distance from the market total across this week's
@@ -6665,7 +6670,7 @@ function openInBuilder(ids) {
   if (g) PB.league = g.league;
   PB.mode = "parlay";
   pbSave();
-  setView("builder");
+  setView("builder", { push: true });
   window.scrollTo(0, 0);
 }
 function parlayCardHtml(r) {
@@ -8666,7 +8671,7 @@ function card(g) {
       ${propPreview(g)}
       ${simStrip(g)}
       <div class="linebox">
-        <div class="lbl">Market / HASHMARK</div>
+        <div class="lbl">Market / Double Gs</div>
         <div class="num">${o.details || "No line"}</div>
         <div class="subn">DG ${cfbSideLabel(g, p.hashmark_home_spread) || "—"} · ${preferLine(g)}</div>
         ${pickBadge}
@@ -9583,7 +9588,7 @@ function sideBySide(p) {
     add("Spread", cfbSideLabel(g, proj.hashmark_home_spread) || "—", price ? `${price.spread || "—"} (${american(price.homeSpread) || "—"})` : "—");
     add("Total", cell(proj.hashmark_total, 1), price ? `${price.total ?? "—"} · over ${american(price.over) || "—"} · under ${american(price.under) || "—"}` : "—");
   }
-  return `<table class="ladder"><thead><tr><th></th><th>HASHMARK</th><th>DraftKings</th></tr></thead><tbody>${rows.join("")}</tbody></table>`;
+  return `<table class="ladder"><thead><tr><th></th><th>Double Gs</th><th>DraftKings</th></tr></thead><tbody>${rows.join("")}</tbody></table>`;
 }
 
 function unplayedTable(p, sched, season) {
@@ -9599,8 +9604,8 @@ function unplayedTable(p, sched, season) {
     if (modeled) {
       const dk = dkLine(p, p.pos === "QB" ? "pass_yds" : (p.pos === "RB" ? "rush_yds" : "rec_yds"));
       proj = p.pos === "QB"
-        ? `HASHMARK ${cell(p.pass_yds, 0)} pass${dk != null ? " (DK " + dk + ")" : ""} · ${cell(p.pass_td, 1)} pass TD · ${cell(p.rush_yds, 0)} rush · ${cell(p.fp, 1)} pts`
-        : `HASHMARK ${cell(p.rush_yds, 0)} rush · ${cell(p.rec, 1)} rec · ${cell(p.rec_yds, 0)} rec yds · ${cell(p.fp, 1)} pts`;
+        ? `Double Gs ${cell(p.pass_yds, 0)} pass${dk != null ? " (DK " + dk + ")" : ""} · ${cell(p.pass_td, 1)} pass TD · ${cell(p.rush_yds, 0)} rush · ${cell(p.fp, 1)} pts`
+        : `Double Gs ${cell(p.rush_yds, 0)} rush · ${cell(p.rec, 1)} rec · ${cell(p.rec_yds, 0)} rec yds · ${cell(p.fp, 1)} pts`;
     } else if (p.pos === "QB") {
       proj = `2026 pace ${cell(paceOf(season, "pass_yds"), 0)} pass · ${cell(paceOf(season, "pass_td"), 1)} pass TD · ${cell(paceOf(season, "rush_yds"), 0)} rush`;
     } else {
@@ -9727,11 +9732,30 @@ async function openPlayer(id, gameId) {
   if (closer1) closer1.onclick = closeModal;
 }
 
-function openGame(id) {
+function shareGame(id, btn) {
+  const g = (DATA.games || []).find((x) => String(x.id) === String(id));
+  const url = "https://peyton2407-maker.github.io/#game-" + encodeURIComponent(String(id));
+  const title = g ? `${g.away.abbr} at ${g.home.abbr}: Double Gs projection` : "Double Gs projection";
+  const p = (g && g.proj) || {};
+  const text = g && p.away_points != null ? `${g.away.abbr} ${p.away_points}, ${g.home.abbr} ${p.home_points}${p.pick_line ? ". We like " + p.pick_line : ""}.` : "";
+  const done = (msg) => { if (btn) { const t = btn.textContent; btn.textContent = msg; setTimeout(() => { btn.textContent = t; }, 1600); } };
+  if (navigator.share) { navigator.share({ title, text, url }).catch(() => {}); return; }
+  try { navigator.clipboard.writeText(url).then(() => done("Link copied"), () => done("Copy failed")); } catch (e) { done("Copy failed"); }
+}
+function openGame(id, opts) {
   const g = (DATA.games || []).find((x) => String(x.id) === String(id));
   const ov = document.getElementById("overlay");
   const modal = document.getElementById("modal");
   if (!g || !ov || !modal) return;
+  window.__openGameId = String(g.id);
+  try {
+    const want = "#game-" + encodeURIComponent(String(g.id));
+    if (location.hash !== want) {
+      if (opts && opts.push) { history.pushState({ game: String(g.id), view }, "", want); window.__gamePushed = true; }
+      else { history.replaceState({ game: String(g.id), view }, "", want); window.__gamePushed = false; }
+    }
+    document.title = `${g.away.name} at ${g.home.name} | Double Gs`;
+  } catch (e) {}
   placeOverlay(ov);
   try {
   const p = g.proj || {};
@@ -9743,7 +9767,7 @@ function openGame(id) {
         <div class="lbl">${g.league.toUpperCase()} · ${g.status_detail || g.status}</div>
         <div class="kick">${fmt.when(g.date)} · ${g.venue || ""} ${g.city ? "· " + g.city : ""} ${g.state || ""}</div>
       </div>
-      <button class="close" id="closeModal">Close</button>
+      <div class="modal-actions"><button class="close share" type="button" data-share-game="${g.id}">Share</button><button class="close" id="closeModal" type="button">Close</button></div>
     </div>
     <div class="vs">
       <div class="side">
@@ -9802,7 +9826,16 @@ function openGame(id) {
   }
 }
 
-function closeModal() {
+function closeModal(opts) {
+  const wasOpen = window.__openGameId;
+  window.__openGameId = null;
+  if (wasOpen && !(opts && opts.fromHash) && /^#game-/.test(location.hash)) {
+    try {
+      if (window.__gamePushed) { window.__gamePushed = false; history.back(); }
+      else history.replaceState({ view }, "", "#" + view);
+    } catch (e) {}
+  }
+  if (wasOpen) { try { document.title = viewTitle(view); } catch (e) {} }
   const ov = document.getElementById("overlay");
   if (ov) {
     ov.classList.remove("show");
@@ -10995,7 +11028,7 @@ function buildWeeklyLegs(games) {
   }
   return legs.slice(0, 10);
 }
-const LOCKED_CARD = {"weekKey":"nfl-3|cfb-4-5","frozen":true,"lockedAt":"2026-09-25T14:12:00Z","title":"HASHMARK weekly card","legs":[{"id":"401862779","league":"cfb","short":"ARMY @ TEM","date":"2026-09-25T20:00Z","home":"TEM","away":"ARMY","text":"TEM +3.0 · OVER 47.5","pick":"TEM +3.0","total":"OVER 47.5","proj":"ARMY 31.6 – TEM 30.8","edge":2.1},{"id":"401858478","league":"cfb","short":"WASH @ USC","date":"2026-10-03T04:00Z","home":"USC","away":"WASH","text":"USC -10.0 · OVER 57.5","pick":"USC -10.0","total":"OVER 57.5","proj":"WASH 28.1 – USC 40.9","edge":2.88},{"id":"401858249","league":"cfb","short":"MIA @ CLEM","date":"2026-10-03T04:00Z","home":"CLEM","away":"MIA","text":"CLEM +17.5 · OVER 50.5","pick":"CLEM +17.5","total":"OVER 50.5","proj":"MIA 32.2 – CLEM 20.4","edge":5.75},{"id":"401858245","league":"cfb","short":"PITT @ VT","date":"2026-10-02T23:00Z","home":"VT","away":"PITT","text":"PITT +6.0 · OVER 56.5","pick":"PITT +6.0","total":"OVER 56.5","proj":"PITT 29.9 – VT 31.9","edge":-4.02},{"id":"401858248","league":"cfb","short":"LOU @ NCSU","date":"2026-10-03T04:00Z","home":"NCSU","away":"LOU","text":"LOU -7.5 · OVER 59.5","pick":"LOU -7.5","total":"OVER 59.5","proj":"LOU 40.1 – NCSU 30.9","edge":-1.65},{"id":"401858466","league":"cfb","short":"WIS @ PSU","date":"2026-09-26T21:00Z","home":"PSU","away":"WIS","text":"PSU -10.0 · OVER 44.5","pick":"PSU -10.0","total":"OVER 44.5","proj":"WIS 18.5 – PSU 31.6","edge":3.18},{"id":"401856707","league":"cfb","short":"ALA @ MSST","date":"2026-10-03T04:00Z","home":"MSST","away":"ALA","text":"ALA -3.5 · OVER 58.5","pick":"ALA -3.5","total":"OVER 58.5","proj":"ALA 36.2 – MSST 30.5","edge":-2.13},{"id":"401861970","league":"cfb","short":"CONN @ M-OH","date":"2026-09-26T19:30Z","home":"M-OH","away":"CONN","text":"CONN +3.5 · OVER 51.5","pick":"CONN +3.5","total":"OVER 51.5","proj":"CONN 29.1 – M-OH 30.5","edge":-2.01},{"id":"401860896","league":"cfb","short":"CSU @ UTSA","date":"2026-09-26T16:00Z","home":"UTSA","away":"CSU","text":"CSU +14.0 · OVER 56.5","pick":"CSU +14.0","total":"OVER 56.5","proj":"CSU 24.1 – UTSA 34","edge":-4.16},{"id":"401866429","league":"cfb","short":"MASS @ SAC","date":"2026-09-27T01:00Z","home":"SAC","away":"MASS","text":"MASS -4.5 · UNDER 48.5","pick":"MASS -4.5","total":"UNDER 48.5","proj":"MASS 26.8 – SAC 18.6","edge":-3.63}]};
+const LOCKED_CARD = {"weekKey":"nfl-3|cfb-4-5","frozen":true,"lockedAt":"2026-09-25T14:12:00Z","title":"Double Gs weekly card","legs":[{"id":"401862779","league":"cfb","short":"ARMY @ TEM","date":"2026-09-25T20:00Z","home":"TEM","away":"ARMY","text":"TEM +3.0 · OVER 47.5","pick":"TEM +3.0","total":"OVER 47.5","proj":"ARMY 31.6 – TEM 30.8","edge":2.1},{"id":"401858478","league":"cfb","short":"WASH @ USC","date":"2026-10-03T04:00Z","home":"USC","away":"WASH","text":"USC -10.0 · OVER 57.5","pick":"USC -10.0","total":"OVER 57.5","proj":"WASH 28.1 – USC 40.9","edge":2.88},{"id":"401858249","league":"cfb","short":"MIA @ CLEM","date":"2026-10-03T04:00Z","home":"CLEM","away":"MIA","text":"CLEM +17.5 · OVER 50.5","pick":"CLEM +17.5","total":"OVER 50.5","proj":"MIA 32.2 – CLEM 20.4","edge":5.75},{"id":"401858245","league":"cfb","short":"PITT @ VT","date":"2026-10-02T23:00Z","home":"VT","away":"PITT","text":"PITT +6.0 · OVER 56.5","pick":"PITT +6.0","total":"OVER 56.5","proj":"PITT 29.9 – VT 31.9","edge":-4.02},{"id":"401858248","league":"cfb","short":"LOU @ NCSU","date":"2026-10-03T04:00Z","home":"NCSU","away":"LOU","text":"LOU -7.5 · OVER 59.5","pick":"LOU -7.5","total":"OVER 59.5","proj":"LOU 40.1 – NCSU 30.9","edge":-1.65},{"id":"401858466","league":"cfb","short":"WIS @ PSU","date":"2026-09-26T21:00Z","home":"PSU","away":"WIS","text":"PSU -10.0 · OVER 44.5","pick":"PSU -10.0","total":"OVER 44.5","proj":"WIS 18.5 – PSU 31.6","edge":3.18},{"id":"401856707","league":"cfb","short":"ALA @ MSST","date":"2026-10-03T04:00Z","home":"MSST","away":"ALA","text":"ALA -3.5 · OVER 58.5","pick":"ALA -3.5","total":"OVER 58.5","proj":"ALA 36.2 – MSST 30.5","edge":-2.13},{"id":"401861970","league":"cfb","short":"CONN @ M-OH","date":"2026-09-26T19:30Z","home":"M-OH","away":"CONN","text":"CONN +3.5 · OVER 51.5","pick":"CONN +3.5","total":"OVER 51.5","proj":"CONN 29.1 – M-OH 30.5","edge":-2.01},{"id":"401860896","league":"cfb","short":"CSU @ UTSA","date":"2026-09-26T16:00Z","home":"UTSA","away":"CSU","text":"CSU +14.0 · OVER 56.5","pick":"CSU +14.0","total":"OVER 56.5","proj":"CSU 24.1 – UTSA 34","edge":-4.16},{"id":"401866429","league":"cfb","short":"MASS @ SAC","date":"2026-09-27T01:00Z","home":"SAC","away":"MASS","text":"MASS -4.5 · UNDER 48.5","pick":"MASS -4.5","total":"UNDER 48.5","proj":"MASS 26.8 – SAC 18.6","edge":-3.63}]};
 window.LOCKED_CARD = LOCKED_CARD;
 function ensureWeeklyCard(force) {
   const desk = loadDesk();
@@ -11006,7 +11039,7 @@ function ensureWeeklyCard(force) {
       : buildWeeklyLegs(DATA.games || []);
     desk.card = {
       weekKey: key, frozen: true, lockedAt: new Date().toISOString(),
-      title: "HASHMARK weekly card", legs
+      title: "Double Gs weekly card", legs
     };
     window.LOCKED_CARD = desk.card;
     saveDesk();
@@ -11022,7 +11055,7 @@ function ensureWeeklyCard(force) {
   const legs = buildWeeklyLegs(DATA.games || []);
   desk.card = {
     weekKey: key, frozen: false, lockedAt: null,
-    title: "HASHMARK weekly card",
+    title: "Double Gs weekly card",
     legs
   };
   return desk.card;
@@ -13612,7 +13645,7 @@ function showPropSheet(html) {
   if (!sheet) return;
   sheet.style.display = "block";
   sheet.innerHTML = `<div class="game-sheet">${html}</div>`;
-  const closer = sheet.querySelector(".close");
+  const closer = sheet.querySelector(".close:not(.share)");
   if (closer) closer.onclick = function (e) { e.preventDefault(); e.stopPropagation(); closeModal(); };
   try { sheet.scrollIntoView({ block: "start" }); } catch (e) {}
 }
@@ -13622,7 +13655,7 @@ function showGameSheet(html) {
   if (!sheet) return;
   sheet.style.display = "block";
   sheet.innerHTML = `<div class="game-sheet">${html}</div>`;
-  const closer = sheet.querySelector(".close");
+  const closer = sheet.querySelector(".close:not(.share)");
   if (closer) closer.onclick = function (e) { e.preventDefault(); e.stopPropagation(); closeModal(); };
   try { sheet.scrollIntoView({ block: "start" }); } catch (e) {}
 }
@@ -13916,7 +13949,19 @@ function renderBoom() {
     }).join("") || `<p class="hm-sub">No touchdown lean is up yet.</p>`);
 }
 
-function setView(next) {
+const VIEW_TITLE = {
+  home: "Today", card: "This week's card", nfl: "NFL Week {nw} projections", prime: "Prime-time NFL games", props: "NFL player props",
+  charts: "NFL game charts", live: "Live scores", tds: "Anytime TD odds", value: "Underdog value", nflwx: "NFL weather", nflinj: "NFL injuries",
+  nflpotd: "NFL play of the day", cfb: "College football Week {cw} projections", potd: "College play of the day", cfbpicks: "College picks",
+  cfbwx: "College weather", cfbinj: "College injuries", parlay: "Ready-made tickets", builder: "Parlay builder", score: "Scorecard",
+  history: "Past weeks", ratings: "Team rankings", all: "All games", alerts: "Alerts", model: "How the model works", boom: "Boom Room"
+};
+function viewTitle(v) {
+  let t = VIEW_TITLE[v] || "Today";
+  try { t = t.replace("{nw}", currentNflWeekNumber() || "").replace("{cw}", currentCfbWeekNumber() || ""); } catch (e) { t = t.replace(/ Week \{[nc]w\}/, ""); }
+  return v === "home" ? "Double Gs — NFL & College Football Projections, Picks and Props" : t.replace(/\s+/g, " ").trim() + " | Double Gs";
+}
+function setView(next, opts) {
   if (next === "heisman" || next === "recruit" || next === "awards") next = next === "awards" ? "nflpotd" : "home";
   const allowed = {home:1,builder:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,potd:1,nflpotd:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
   if (!allowed[next]) next = "home";
@@ -13930,7 +13975,13 @@ function setView(next) {
     const keepHome = document.body.dataset.section === "home" && (next === "nflpotd" || next === "potd");
     document.body.dataset.section = keepHome ? "home" : (SECTION_OF[next] || "home");
   } catch (e) {}
-  try { if (location.hash.replace("#","") !== next) history.replaceState(null, "", "#" + next); } catch (e) {}
+  try {
+    if (location.hash.replace("#","") !== next) {
+      if (opts && opts.push) history.pushState({ view: next }, "", "#" + next);
+      else history.replaceState({ view: next }, "", "#" + next);
+    }
+  } catch (e) {}
+  try { document.title = viewTitle(next); } catch (e) {}
   if (next === "cfb") {
     sortKey = "kick";
     const sortSel = document.getElementById("sortKey");
@@ -15560,33 +15611,46 @@ async function boot() {
   $$(".tab").forEach((t) => t.addEventListener("click", (e) => {
     e.preventDefault();
     if (t.dataset.view === "parlay") window.__parlayLg = "nfl";
-    setView(t.dataset.view);
+    setView(t.dataset.view, { push: true });
   }));
   document.addEventListener("click", (e) => {
     const jump = e.target.closest("[data-jump]");
     if (jump && jump.getAttribute("data-jump")) {
       if (jump.getAttribute("data-lg")) window.__parlayLg = jump.getAttribute("data-lg");
       else if (jump.getAttribute("data-jump") === "parlay") window.__parlayLg = "nfl";
-      setView(jump.getAttribute("data-jump"));
+      setView(jump.getAttribute("data-jump"), { push: true });
       return;
     }
     const tab = e.target.closest(".tab");
     if (tab && tab.dataset.view) {
       e.preventDefault();
       if (tab.dataset.view === "parlay") window.__parlayLg = "nfl";
-      setView(tab.dataset.view);
+      setView(tab.dataset.view, { push: true });
+      return;
+    }
+    const closeBtn = e.target.closest("#overlay .close:not(.share), #gameSheet .close:not(.share), #propSheet .close:not(.share)");
+    if (closeBtn) { e.preventDefault(); closeModal(); return; }
+    const share = e.target.closest("[data-share-game]");
+    if (share) {
+      e.preventDefault(); e.stopPropagation();
+      shareGame(share.getAttribute("data-share-game"), share);
       return;
     }
     const hit = e.target.closest("[data-open-game]");
     if (hit && typeof openGame === "function") {
       e.preventDefault();
-      openGame(hit.getAttribute("data-open-game"));
+      openGame(hit.getAttribute("data-open-game"), { push: true });
     }
   });
-  window.addEventListener("hashchange", () => {
+  const routeHash = () => {
     const h = (location.hash || "").replace("#","");
+    const gm = h.match(/^game-(.+)$/);
+    if (gm) { if (window.__openGameId !== gm[1]) openGame(decodeURIComponent(gm[1]), { fromHash: true }); return; }
+    if (window.__openGameId) closeModal({ fromHash: true });
     if (h && h !== view) setView(h);
-  });
+  };
+  window.addEventListener("hashchange", routeHash);
+  window.addEventListener("popstate", routeHash);
   (function bindTabSlider() {
     document.querySelectorAll(".slide-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -15683,7 +15747,7 @@ async function boot() {
   document.getElementById("shareCardBtn")?.addEventListener("click", async () => {
     const txt = cardShareText();
     if (navigator.share) {
-      try { await navigator.share({ title: "HASHMARK weekly card", text: txt, url: "https://peyton2407-maker.github.io/#card" }); return; } catch (e) {}
+      try { await navigator.share({ title: "Double Gs weekly card", text: txt, url: "https://peyton2407-maker.github.io/#card" }); return; } catch (e) {}
     }
     try { await navigator.clipboard.writeText(txt); setStamp("Card copied", true); } catch (e) { prompt("Copy this week's card", txt); }
   });
@@ -15714,7 +15778,16 @@ async function boot() {
     try { saved = sessionStorage.getItem("gg-league-" + id) || ""; } catch (err) {}
     if (saved === "nfl" || saved === "cfb") setActiveLeague(id, saved);
   });
-  setView((location.hash || "").replace("#","") || "home");
+  {
+    const h0 = (location.hash || "").replace("#","");
+    const gm0 = h0.match(/^game-(.+)$/);
+    if (gm0) {
+      const gid = decodeURIComponent(gm0[1]);
+      const g0 = (DATA.games || []).find((x) => String(x.id) === gid);
+      setView(g0 && g0.league === "cfb" ? "cfb" : "nfl");
+      if (g0) openGame(gid, { fromHash: true, replace: true });
+    } else setView(h0 || "home");
+  }
   setTimeout(() => {
     try {
       const learn = window.rebuildSharedLearning || rebuildSharedLearning;

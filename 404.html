@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Page not found | Double Gs</title>
+<meta name="robots" content="noindex" />
+<meta name="theme-color" content="#0f2a1e" />
+<link rel="icon" href="/favicon-48.png" type="image/png" />
+<script>
+// Old links: /split/games/<id> → /split/#<id>; anything else with a hash → home with that hash.
+(function () {
+  var m = location.pathname.match(/^\/split\/games\/([^\/]+)/);
+  if (m) { location.replace("/split/#" + m[1]); return; }
+  if (location.hash) location.replace("/" + location.hash);
+})();
+</script>
+<style>
+  html, body { margin: 0; background: #0f2a1e; color: #e9f3ec; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 34rem; margin: 0 auto; padding: 18vh 20px 40px; }
+  h1 { font-size: 2rem; margin: 0 0 .4em; color: #f4cb72; }
+  p { color: #c5d6c9; line-height: 1.55; }
+  nav { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.6em; }
+  a { color: #0f2a1e; background: #f4cb72; text-decoration: none; font-weight: 700; padding: 10px 16px; border-radius: 10px; }
+  a.alt { background: transparent; color: #f4cb72; border: 1px solid rgba(244,203,114,.45); }
+  a:focus-visible { outline: 3px solid #e9f3ec; outline-offset: 2px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>That page isn't here</h1>
+  <p>The link may be old, or the page may have moved. This week's picks, props and the scorecard are on the main page.</p>
+  <nav>
+    <a href="/#home">Go to Double Gs</a>
+    <a class="alt" href="/#nfl">NFL picks</a>
+    <a class="alt" href="/#cfb">College picks</a>
+    <a class="alt" href="/split/">The Split</a>
+    <a class="alt" href="/#score">Scorecard</a>
+  </nav>
+</main>
+</body>
+</html>

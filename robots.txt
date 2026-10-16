@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /boom.html
+Disallow: /hashmark.html
+
+Sitemap: https://peyton2407-maker.github.io/sitemap.xml
