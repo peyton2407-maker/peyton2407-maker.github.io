@@ -30,6 +30,7 @@ import books  # noqa: E402  (scoreboard matching is shared)
 ROOT = Path(__file__).resolve().parents[1]
 SNAP = ROOT / "data" / "snapshot.json"
 OUT = ROOT / "data" / "props.json"
+STATUS = ROOT / "data" / "props-status.json"   # what the feed returned on the last run
 PROPS = "https://api.actionnetwork.com/web/v2/games/{id}/props"
 BOOK_IDS = [68, 69, 75, 123, 79, 71]
 # feed prop type -> the board's stat names
@@ -145,6 +146,7 @@ def main():
     nfl = [g for g in snap.get("games") or [] if g.get("league") == "nfl" and not g.get("completed")
            and (books.ts(g.get("date")) or 0) > now - 6 * 3600]
     fx = Path(args.fixture) if args.fixture else None
+    boards_err = []
     if fx:
         boards = [json.loads((fx / "scoreboard.json").read_text())]
     else:
@@ -154,7 +156,11 @@ def main():
                 boards.append(get_json(books.FEED.format(league="nfl"), {"period": "game"}))
             except Exception as e:
                 print("scoreboard error", e, file=sys.stderr)
-    matched = books.match(books.merge_feeds(boards), nfl)
+                boards_err.append(str(e)[:200])
+    merged = books.merge_feeds(boards)
+    matched = books.match(merged, nfl)
+    status = {"ran_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "scoreboards": len(boards),
+              "feed_games": len(merged), "board_games": len(nfl), "matched": len(matched), "errors": list(boards_err), "shape": None}
     out = {"updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "source": "Action Network", "games": {}}
     described = False
     n_prices = 0
@@ -163,15 +169,23 @@ def main():
             payload = json.loads((fx / f"props-{a['id']}.json").read_text()) if fx else get_json(PROPS.format(id=a["id"]), {"bookIds": ",".join(map(str, BOOK_IDS))})
         except Exception as e:
             print(f"{gid}: props error {e}", file=sys.stderr)
+            if len(status["errors"]) < 5:
+                status["errors"].append(f"{gid}: {str(e)[:200]}")
             continue
         if not described:
-            print("props feed shape:", json.dumps(describe(payload))[:1500])
+            status["shape"] = describe(payload)
+            print("props feed shape:", json.dumps(status["shape"])[:1500])
             described = True
         players = parse(payload)
         if players:
             out["games"][gid] = players
             n_prices += sum(len(v) for p in players.values() for v in p["stats"].values())
     print(f"nfl: {len(matched)} games matched, {len(out['games'])} with prop prices, {n_prices} prices")
+    status.update({"games_with_prices": len(out["games"]), "prices": n_prices})
+    try:
+        STATUS.write_text(json.dumps(status, indent=1, default=str)[:20000] + "\n")
+    except Exception:
+        pass
     if not out["games"]:
         print("No prop prices; leaving data/props.json as it was.")
         return 0
