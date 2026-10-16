@@ -51,6 +51,26 @@
    "clv_side": 0,
    "clv_total": 0
   },
+  "401862801": {
+   "id": "401862801",
+   "league": "cfb",
+   "week": 7,
+   "short": "MEM @ TULN",
+   "home": "TULN",
+   "away": "MEM",
+   "date": "2026-10-16T23:30Z",
+   "pick": "TULN",
+   "pick_line": "TULN +6.5",
+   "total_pick": "OVER 55.5",
+   "side_play": false,
+   "our_margin": -6.15,
+   "our_total": 61.5,
+   "confidence": 52,
+   "total_play": true,
+   "spread": 6.5,
+   "total": 55.5,
+   "lockedAt": "2026-10-16T22:09:22.620Z"
+  },
   "401869950": {
    "id": "401869950",
    "league": "cfb",
@@ -144,6 +164,26 @@
     "kick": "2026-10-16T00:00Z",
     "big": false,
     "savedAt": 1792108215134
+   },
+   {
+    "key": "game:401862801",
+    "week": 7,
+    "day": "2026-10-16",
+    "league": "cfb",
+    "id": "401862801",
+    "game": "MEM @ TULN",
+    "kind": "Over",
+    "line": "OVER 55.5",
+    "hitPct": 67,
+    "why": "Our total is 6.0 points over DraftKings 55.5.",
+    "label": "Friday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "locked": true,
+    "kick": "2026-10-16T23:30Z",
+    "big": false,
+    "savedAt": 1792188562626
    }
   ]
  },
@@ -285,5 +325,5 @@
    }
   ]
  },
- "updated": "2026-10-16T03:43:29.031Z"
+ "updated": "2026-10-16T22:09:22.620Z"
 }
