@@ -816,6 +816,25 @@ button.prop-card.inj-open .report-full{display:block}
 }
 .modal-head { display: flex; justify-content: space-between; gap: 10px; }
 .modal-actions { display: flex; gap: 8px; align-items: flex-start; flex-shrink: 0; }
+.shop { margin-top: 14px; }
+.shop h3 { margin: 0 0 4px; }
+.shop .subn { margin: 0 0 10px; }
+.shop-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.shop-table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; min-width: 460px; }
+.shop-table th, .shop-table td { padding: 7px 6px; text-align: center; border-bottom: 1px solid var(--line); }
+.shop-table thead th { color: var(--muted); font-weight: 600; font-size: 12px; }
+.shop-table tbody th { text-align: left; font-weight: 600; color: var(--ink-soft); white-space: nowrap; }
+.shop-table td span { display: block; line-height: 1.25; }
+.shop-n { font-weight: 700; color: var(--ink); }
+.shop-p { color: var(--ink-soft); }
+.shop-ev { color: #5fd38d; font-size: 11px; font-weight: 700; }
+.shop-best { background: var(--sun-soft); box-shadow: inset 0 0 0 1px var(--line-2); border-radius: 8px; }
+.shop-best .shop-n, .shop-best .shop-p { color: var(--sun); }
+.shop-na { color: var(--faint); }
+.shop-fair th, .shop-fair td { border-bottom: 0; color: var(--muted); }
+.shop-fair .shop-n, .shop-fair .shop-p { color: var(--muted); font-weight: 600; }
+.shop-chip { margin-top: 6px; font-size: 12.5px; color: var(--ink-soft); }
+.shop-chip b { color: var(--sun); font-weight: 700; }
 .close {
   background: var(--paper-2); border: 1px solid var(--line);
   border-radius: 12px; padding: 8px 12px; cursor: pointer; color: var(--ink);
@@ -8677,6 +8696,97 @@ function deskStripHtml(games) {
     </table>`}
   </div>`;
 }
+// ---- Line shopping: every book's number for a game, with our checked value on each ----
+// data/books.json (hourly, scripts/books.py). A book's row older than two days is left out.
+function shopBooks(g) {
+  const all = window.PB_BOOKS && window.PB_BOOKS.games && window.PB_BOOKS.games[String(g.id)];
+  if (!all) return [];
+  const upd = Date.parse((window.PB_BOOKS || {}).updated || "") || Date.now();
+  return Object.keys(all).filter((name) => {
+    const at = Date.parse(all[name].at || "");
+    return !Number.isFinite(at) || upd - at < 48 * 3600 * 1000;
+  }).sort();
+}
+function shopBest(g, id) {
+  // the book with the most value for one bet (better number first, then better price)
+  let best = null;
+  shopBooks(g).forEach((name) => {
+    let l = null;
+    try { l = pbLeg({ id, book: name }); } catch (e) { l = null; }
+    if (!l || l.priceSource !== name) return;
+    if (!best || l.value > best.value + 1e-9) best = l;
+  });
+  return best;
+}
+function shopChipHtml(g, kind, pickText) {
+  if (!pickText || pickText === "NO PLAY" || g.completed) return "";
+  let id = null;
+  if (kind === "sp") {
+    const t = String(pickText).trim().split(/\s+/)[0].toUpperCase();
+    if (t === String(g.home.abbr).toUpperCase()) id = g.id + "|sp|home";
+    else if (t === String(g.away.abbr).toUpperCase()) id = g.id + "|sp|away";
+  } else if (kind === "tot") {
+    id = g.id + "|tot|" + (/^over/i.test(pickText) ? "over" : "under");
+  }
+  if (!id) return "";
+  const b = shopBest(g, id);
+  if (!b) return "";
+  return `<div class="shop-chip" title="Best price across ${shopBooks(g).length} books">Best: <b>${pbEsc(b.label)} ${pbAm(b.price)}</b> at ${pbEsc(b.priceSource)}</div>`;
+}
+function lineShopHtml(g) {
+  const books = shopBooks(g);
+  if (!books.length || g.completed) return "";
+  const cols = [
+    { id: g.id + "|sp|away", head: g.away.abbr, grp: "Spread" },
+    { id: g.id + "|sp|home", head: g.home.abbr, grp: "Spread" },
+    { id: g.id + "|tot|over", head: "Over", grp: "Total" },
+    { id: g.id + "|tot|under", head: "Under", grp: "Total" },
+    { id: g.id + "|ml|away", head: g.away.abbr, grp: "Moneyline" },
+    { id: g.id + "|ml|home", head: g.home.abbr, grp: "Moneyline" }
+  ];
+  const cell = {};
+  const best = {};
+  books.forEach((name) => cols.forEach((c) => {
+    let l = null;
+    try { l = pbLeg({ id: c.id, book: name }); } catch (e) { l = null; }
+    if (!l || l.priceSource !== name) return;
+    cell[name + "~" + c.id] = l;
+    if (!best[c.id] || l.value > best[c.id].value + 1e-9) best[c.id] = l;
+  }));
+  const num = (l, c) => c.grp === "Spread" ? pbLine(l.line) : c.grp === "Total" ? pbTot(l.line) : "";
+  const td = (name, c) => {
+    const l = cell[name + "~" + c.id];
+    if (!l) return `<td class="shop-na">—</td>`;
+    const top = best[c.id] === l;
+    const ev = l.value * 100;
+    return `<td class="${top ? "shop-best" : ""}"><span class="shop-n">${num(l, c)}</span><span class="shop-p">${pbAm(l.price)}</span>${ev >= 1 ? `<span class="shop-ev">+${ev.toFixed(1)}%</span>` : ""}</td>`;
+  };
+  // our fair price at the main line: the price where the checked chance breaks even
+  const fair = (c) => {
+    let l = null;
+    try { l = pbLeg({ id: c.id }); } catch (e) { l = null; }
+    if (!l || !(l.win > 0)) return `<td class="shop-na">—</td>`;
+    const dec = (1 - l.push) / l.win;
+    let am = pbAmerican(Math.max(1.01, dec));
+    if (am === -100) am = 100;
+    return `<td><span class="shop-n">${num(l, c)}</span><span class="shop-p">${pbAm(am)}</span></td>`;
+  };
+  const upd = (window.PB_BOOKS || {}).updated;
+  return `<div class="card shop">
+    <h3>Shop the line</h3>
+    <p class="subn">Every book we track, with the best number in each column highlighted. A green percent is the edge our checked chance sees at that price.${upd ? " Prices as of " + pbEsc(fmt.when(upd)) + "." : ""}</p>
+    <div class="shop-wrap"><table class="shop-table">
+      <thead>
+        <tr><th></th><th colspan="2">Spread</th><th colspan="2">Total</th><th colspan="2">Moneyline</th></tr>
+        <tr><th>Book</th>${cols.map((c) => `<th>${pbEsc(c.head)}</th>`).join("")}</tr>
+      </thead>
+      <tbody>
+        ${books.map((name) => `<tr><th scope="row">${pbEsc(name)}</th>${cols.map((c) => td(name, c)).join("")}</tr>`).join("")}
+        <tr class="shop-fair"><th scope="row">Our fair price</th>${cols.map(fair).join("")}</tr>
+      </tbody>
+    </table></div>
+  </div>`;
+}
 function card(g) {
   const p = g.proj || {};
   const o = g.odds || {};
@@ -8730,6 +8840,8 @@ function card(g) {
         <div class="num">${o.details || "No line"}</div>
         <div class="subn">DG ${cfbSideLabel(g, p.hashmark_home_spread) || "—"} · ${preferLine(g)}</div>
         ${pickBadge}
+        ${sidePick && sidePick !== "NO PLAY" ? shopChipHtml(g, "sp", sideLine) : ""}
+        ${totLine && totLine !== "NO PLAY" ? shopChipHtml(g, "tot", totLine) : ""}
         ${cfbReadHtml(g)}
       </div>
     </article>`;
@@ -9865,6 +9977,7 @@ function openGame(id, opts) {
       <div class="kv"><div class="lbl">Average score</div><b>${g.away.abbr} ${g.sim?.away_avg ?? g.proj?.away_points ?? "—"} – ${g.home.abbr} ${g.sim?.home_avg ?? g.proj?.home_points ?? "—"}</b><div class="subn">Most likely ${g.away.abbr} ${g.sim?.away_mode ?? "—"} – ${g.home.abbr} ${g.sim?.home_mode ?? "—"} · average total ${g.sim?.total_avg ?? "—"}</div></div>
       <div class="kv"><div class="lbl">Weird-game chances</div><b>Very low scoring ${pct01(g.sim?.low_scoring)} · shootout ${pct01(g.sim?.high_scoring)}</b><div class="subn">Blowout ${g.home.abbr} ${pct01(g.sim?.blowout_home)} · ${g.away.abbr} ${pct01(g.sim?.blowout_away)}</div></div>
     </div>
+    ${lineShopHtml(g)}
     <div class="card" style="margin-top:14px">
       <h3 style="margin:0 0 8px">Kickoff weather</h3>
       ${wxPanel(g)}
@@ -15861,6 +15974,13 @@ async function boot() {
     try { saved = sessionStorage.getItem("gg-league-" + id) || ""; } catch (err) {}
     if (saved === "nfl" || saved === "cfb") setActiveLeague(id, saved);
   });
+  try {
+    pbFetchOnce("books", "/data/books.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_BOOKS = d; }).then(() => {
+      if (!window.PB_BOOKS) return;
+      if (view === "nfl" || view === "cfb" || view === "all" || view === "live") renderBoard();
+      if (window.__openGameId) openGame(window.__openGameId, { fromHash: true });
+    });
+  } catch (e) {}
   {
     const h0 = (location.hash || "").replace("#","");
     const gm0 = h0.match(/^game-(.+)$/);
