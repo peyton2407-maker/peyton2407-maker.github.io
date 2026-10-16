@@ -1135,6 +1135,7 @@ a[data-view="heisman"], a[href="#heisman"], a[data-view="recruit"], a[href="#rec
 #tabBar a.tab.star { flex-wrap: wrap; align-content: center; }
 #tabBar a.tab.star::after { content: "tap"; flex-basis: 100%; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; margin-top: 2px; }
 .stat.plays-stat { grid-column: 1 / -1; }
+.coverage-note { margin: 0 0 12px; padding: 10px 12px; border: 1px dashed var(--line-2); border-radius: 12px; color: var(--muted); font-size: 14px; line-height: 1.5; }
 /* Live and finished games: the real score leads. */
 .score-now b { font-size: 16px; }
 .home-game.is-live { border-color: var(--turf); }
@@ -11125,13 +11126,29 @@ function playsForScorecard(league) {
     return graded;
   });
 }
+// Everything the Scorecard counts, one row per game. Finished weeks come only from the
+// saved scorecards (the picks as they stood before kickoff, same rows as Past weeks), so
+// an old week is never re-graded from today's board. The current and upcoming weeks come
+// from the live board, plus any locked play from a week that hasn't been archived yet.
+function scorecardRows(league) {
+  const current = league === "cfb" ? currentCfbWeekNumber() : currentNflWeekNumber();
+  const archived = savedPastRows(league).length ? historyPlays(league) : [];
+  const done = new Set(archived.map((r) => Number(r.week)));
+  archived.forEach((r) => { r.archived = true; });
+  const live = playsForScorecard(league).filter((r) => {
+    const w = Number(r.week) || 0;
+    if (done.has(w)) return false;
+    return w >= current || r.published;
+  });
+  return archived.concat(live);
+}
 function fillScoreWeeks(league) {
   const root = document.getElementById("scoreWeek");
   if (!root) return;
   const current = league === "cfb" ? currentCfbWeekNumber() : currentNflWeekNumber();
   const weeks = [];
   const seen = new Set();
-  playsForScorecard(league).forEach((p) => {
+  scorecardRows(league).forEach((p) => {
     const w = String(p.week || "");
     if (!w || seen.has(w)) return;
     seen.add(w);
@@ -11159,7 +11176,7 @@ function fillScoreWeeks(league) {
   });
 }
 function scoreTally(league, kind, week) {
-  const source = (league === "nfl" || league === "cfb") ? playsForScorecard(league) : Object.values((loadDesk().plays) || {});
+  const source = (league === "nfl" || league === "cfb") ? scorecardRows(league) : Object.values((loadDesk().plays) || {});
   const rows = source.filter((p) => {
     if (!p) return false;
     if (league && league !== "all" && p.league !== league) return false;
@@ -11644,8 +11661,7 @@ function seasonRecord() {
   };
   const all = [];
   ["nfl", "cfb"].forEach((lg) => {
-    try { (historyPlays(lg) || []).forEach((r) => { if (add(lg, r)) all.push(r); }); } catch (e) {}
-    try { (scoreTally(lg, "all").rows || []).forEach((r) => { if (add(lg, r)) all.push(r); }); } catch (e) {}
+    try { (scorecardRows(lg) || []).forEach((r) => { if (add(lg, r)) all.push(r); }); } catch (e) {}
   });
   return { w, l, psh, n: w + l, plays: realPlaysTally(all, "all") };
 }
@@ -11797,7 +11813,7 @@ function renderScorecard() {
     <div class="stat"><b>${t.clvAvg ? (t.clvAvg > 0 ? "+" : "") + t.clvAvg.toFixed(1) : "—"}</b><span>avg vs close</span></div>
     ${realPlaysStat(t.rows, kind)}`;
   const wrap = document.getElementById("scoreWrap");
-  let rows = playsForScorecard(league);
+  let rows = scorecardRows(league);
   if (week && week !== "all") rows = rows.filter((r) => String(r.week || "") === String(week));
   rows = rows.filter((r) => {
     if (kind === "spread" && !(r.pick && r.pick !== "NO PLAY")) return false;
@@ -11808,9 +11824,17 @@ function renderScorecard() {
   if (!wrap) return;
   const leagueName = league === "nfl" ? "NFL" : "College";
   const stamp = document.getElementById("scoreStamp");
-  if (stamp) stamp.textContent = String(week) === String(currentWeek)
-    ? "Current week. Every play on this slate is listed. Picks lock before kickoff. After the game we mark hit, miss, or push."
-    : scoreWeekLabel(league, week) + ". These games are finished. Hit, miss, or push is the locked pick against the final.";
+  if (stamp) {
+    stamp.textContent = String(week) === String(currentWeek)
+      ? "Current week. Every play on this slate is listed. Picks lock before kickoff. After the game we mark hit, miss, or push."
+      : week === "all"
+        ? scoreWeekLabel(league, week) + ". Every saved week plus this one. Finished weeks use the picks as they stood before kickoff."
+        : scoreWeekLabel(league, week) + ". These games are finished. Hit, miss, or push is the locked pick against the final.";
+    let cov = document.getElementById("scoreCoverage");
+    if (!cov) { cov = document.createElement("p"); cov.id = "scoreCoverage"; cov.className = "coverage-note"; stamp.insertAdjacentElement("afterend", cov); }
+    cov.textContent = week === "all" ? ((window.PAST_COVERAGE || {})[league] || "") : "";
+    cov.style.display = cov.textContent ? "" : "none";
+  }
   if (!rows.length) { wrap.innerHTML = `<div class="empty">No locked ${leagueName} picks on this week. Switch the week, or open the other league tab.</div>`; return; }
   const groups = [];
   const byKey = new Map();
@@ -12112,7 +12136,13 @@ function renderHistory() {
   const stamp = document.getElementById("historyStamp");
   const leagueName = league === "nfl" ? "NFL" : "College";
   const weekName = week === "all" ? "All past weeks" : (league === "nfl" ? "NFL Week " : "College Week ") + week;
-  if (stamp) stamp.textContent = weekName + ". These are the old scorecards only. The current week stays on Scorecard.";
+  if (stamp) {
+    stamp.textContent = weekName + ". These are the old scorecards only. The current week stays on Scorecard.";
+    let cov = document.getElementById("historyCoverage");
+    if (!cov) { cov = document.createElement("p"); cov.id = "historyCoverage"; cov.className = "coverage-note"; stamp.insertAdjacentElement("afterend", cov); }
+    cov.textContent = (window.PAST_COVERAGE || {})[league] || "";
+    cov.style.display = cov.textContent ? "" : "none";
+  }
   if (!wrap) return;
   if (!rows.length) {
     wrap.innerHTML = `<div class="empty">No past ${leagueName} scorecards are locked yet.</div>`;
@@ -13824,6 +13854,7 @@ async function loadDeskData() {
     window.SPLIT_DESK = splitDesk || [];
     window.WEEK_RESULTS = results || [];
     window.PAST_CARDS = { nfl: (past && past.nfl) || {}, cfb: (past && past.cfb) || {} };
+    window.PAST_COVERAGE = (past && past.coverage) || {};
     window.POTD_LOG = (past && past.potd) || { nfl: [], cfb: [] };
     if (typeof applyPublishedLocks === "function") applyPublishedLocks(locks);
     if (typeof mergePotdLog === "function") mergePotdLog();
