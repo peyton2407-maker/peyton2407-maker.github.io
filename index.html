@@ -14390,7 +14390,7 @@ function viewTitle(v) {
   return v === "home" ? "Double Gs — NFL & College Football Projections, Picks and Props" : t.replace(/\s+/g, " ").trim() + " | Double Gs";
 }
 function setView(next, opts) {
-  if (next === "heisman" || next === "recruit" || next === "awards") next = next === "awards" ? "nflpotd" : "home";
+  if (next === "heisman" || next === "recruit" || next === "awards" || next === "model") next = next === "awards" ? "nflpotd" : "home";
   const allowed = {home:1,builder:1,bets:1,calc:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,potd:1,nflpotd:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
   if (!allowed[next]) next = "home";
   const wantProps = next === "propp";
@@ -15514,7 +15514,7 @@ function pbSlipHtml() {
     pbSlipHtml.rec = { t: Date.now(), v };
     return v;
   })();
-  const recLine = rec && rec.n ? `Our posted picks are ${rec.w}-${rec.l}${rec.psh ? "-" + rec.psh : ""} this season.` : "";
+  const recLine = rec && rec.n ? `Every pick we've graded this season, leans included, is ${rec.w}-${rec.l}${rec.psh ? "-" + rec.psh : ""} (the scorecard splits out real plays).` : "";
   const canKelly = mode !== "rr";
   const kellyP = result ? result.pAll : 0;
   const kellyDec = result ? (result.decEff || 0) : 0;
