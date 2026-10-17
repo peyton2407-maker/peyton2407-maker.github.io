@@ -1,93 +1,195 @@
 {
- "checked_at": "2026-10-17T21:57:34Z",
+ "checked_at": "2026-10-17T23:49:39Z",
  "errors": [],
  "console": [],
  "failed_requests": {},
  "bad_status": {},
  "screens": {
+  "home": {
+   "visible": true,
+   "count": 34,
+   "summary": [],
+   "empty": [],
+   "chars": 2258,
+   "images": 80,
+   "broken_images": []
+  },
+  "nfl": {
+   "visible": true,
+   "count": 13,
+   "summary": [],
+   "empty": [],
+   "chars": 4656,
+   "images": 26,
+   "broken_images": []
+  },
+  "cfb": {
+   "visible": true,
+   "count": 23,
+   "summary": [],
+   "empty": [],
+   "chars": 5942,
+   "images": 46,
+   "broken_images": []
+  },
+  "builder": {
+   "visible": true,
+   "count": 26,
+   "summary": [],
+   "empty": [],
+   "chars": 2740,
+   "images": 46,
+   "broken_images": []
+  },
+  "season": {
+   "visible": true,
+   "count": 42,
+   "summary": [],
+   "empty": [],
+   "chars": 3208,
+   "images": 42,
+   "broken_images": []
+  },
+  "score": {
+   "visible": true,
+   "count": 64,
+   "summary": [],
+   "empty": [],
+   "chars": 4843,
+   "images": 0,
+   "broken_images": []
+  },
+  "ratings": {
+   "visible": true,
+   "count": 35,
+   "summary": [],
+   "empty": [],
+   "chars": 3414,
+   "images": 35,
+   "broken_images": []
+  },
+  "card": {
+   "visible": true,
+   "count": 10,
+   "summary": [],
+   "empty": [],
+   "chars": 941,
+   "images": 20,
+   "broken_images": []
+  },
   "props": {
    "visible": true,
    "count": 72,
    "summary": [
-    "397 matching NFL players 47 QBs in this list \u2014 best our hit rate J Josh "
+    "342 matching NFL players 45 QBs in this list \u2014 best our hit rate J Josh "
    ],
    "empty": [],
-   "chars": 3395
+   "chars": 3395,
+   "images": 19,
+   "broken_images": []
   },
   "tds": {
    "visible": true,
    "count": 48,
    "summary": [
-    "158 TD tickets in this filter 68% top anytime (Taylor) 203 first-TD names "
+    "151 TD tickets in this filter 68% top anytime (III) 203 first-TD names mod"
    ],
    "empty": [],
-   "chars": 4007
+   "chars": 3992,
+   "images": 18,
+   "broken_images": []
   },
   "charts": {
    "visible": true,
    "count": 27,
    "summary": [],
    "empty": [],
-   "chars": 3771
+   "chars": 3771,
+   "images": 4,
+   "broken_images": []
   },
   "value": {
    "visible": true,
    "count": 72,
    "summary": [
-    "341 value tickets in this filter 116 TD plus-money 7 spread / dog sides 58% b"
+    "342 value tickets in this filter 115 TD plus-money 8 spread / dog sides 88% b"
    ],
    "empty": [],
-   "chars": 3566
+   "chars": 3568,
+   "images": 27,
+   "broken_images": []
   },
   "parlay": {
    "visible": true,
    "count": 30,
    "summary": [],
    "empty": [],
-   "chars": 7959
+   "chars": 7731,
+   "images": 0,
+   "broken_images": []
   },
   "live": {
    "visible": true,
-   "count": 3,
-   "summary": [
-    "13 games on this board 0 with score + yard projections 8 spread leans \u2265 0"
-   ],
+   "count": 2,
+   "summary": [],
    "empty": [],
-   "chars": 15377
+   "chars": 4905,
+   "images": 28,
+   "broken_images": []
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "602 listed SUN \u00b7 11:00 AM ET Not posted SEA @ DEN Window passed HOU VS",
-    "602 listed 0 probable \u00b7 75% 130 questionable / GTD \u00b7 50% 6 doubtful \u00b7 "
+    "603 listed SUN \u00b7 11:00 AM ET Not posted SEA @ DEN Window passed HOU VS",
+    "603 listed 0 probable \u00b7 75% 133 questionable / GTD \u00b7 50% 5 doubtful \u00b7 "
    ],
    "empty": [],
-   "chars": 4815
+   "chars": 4815,
+   "images": 6,
+   "broken_images": []
   },
   "nflwx": {
    "visible": true,
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 4027
+   "chars": 3962,
+   "images": 28,
+   "broken_images": []
   },
   "nflpotd": {
    "visible": true,
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 564
+   "chars": 555,
+   "images": 0,
+   "broken_images": []
   },
   "cfbpicks": {
    "visible": true,
    "count": 18,
    "summary": [
-    "18 featured CFB leans 13 spread tickets 10 O/U tickets OHIO @ SAC top c"
+    "18 featured CFB leans 10 spread tickets 12 O/U tickets OHIO @ SAC top c"
    ],
    "empty": [],
-   "chars": 6176
+   "chars": 6244,
+   "images": 36,
+   "broken_images": []
   }
+ },
+ "game_popup": {
+  "open": true,
+  "hero": true,
+  "shown_twice": false,
+  "logos_ok": 17
+ },
+ "split": {
+  "games": 0,
+  "images": 32,
+  "broken_images": [],
+  "errors": []
  },
  "dk_lines_loaded": null,
  "games_with_props": 27,
