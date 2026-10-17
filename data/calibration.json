@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-16T18:30:58Z",
+ "updated": "2026-10-17T14:49:36Z",
  "method": "Every game since Sept 21: the last board posted before kickoff, the chance it gave each side, and the final score. keep = how much of the board's lean over the market's price held up.",
  "leagues": {
   "nfl": {
@@ -88,18 +88,18 @@
   },
   "cfb": {
    "spread": {
-    "n": 117,
-    "lean_hits": 55,
-    "lean_rate": 0.47,
+    "n": 120,
+    "lean_hits": 57,
+    "lean_rate": 0.475,
     "keep": 0.0,
     "keep_se": 0.2,
     "buckets": [
      {
       "from": 0.5,
       "to": 0.55,
-      "n": 57,
+      "n": 60,
       "board": 0.523,
-      "actual": 0.491
+      "actual": 0.5
      },
      {
       "from": 0.55,
@@ -132,11 +132,11 @@
     ]
    },
    "total": {
-    "n": 121,
-    "lean_hits": 55,
-    "lean_rate": 0.455,
+    "n": 124,
+    "lean_hits": 57,
+    "lean_rate": 0.46,
     "keep": 0.0,
-    "keep_se": 0.27,
+    "keep_se": 0.3,
     "buckets": [
      {
       "from": 0.5,
@@ -148,16 +148,16 @@
      {
       "from": 0.55,
       "to": 0.6,
-      "n": 38,
+      "n": 39,
       "board": 0.576,
-      "actual": 0.447
+      "actual": 0.462
      },
      {
       "from": 0.6,
       "to": 0.65,
-      "n": 16,
-      "board": 0.624,
-      "actual": 0.312
+      "n": 17,
+      "board": 0.626,
+      "actual": 0.294
      },
      {
       "from": 0.65,
@@ -169,16 +169,16 @@
      {
       "from": 0.7,
       "to": 1.0,
-      "n": 7,
-      "board": 0.73,
-      "actual": 0.286
+      "n": 8,
+      "board": 0.731,
+      "actual": 0.375
      }
     ]
    },
    "ml": {
-    "n": 119,
-    "lean_hits": 46,
-    "lean_rate": 0.387,
+    "n": 122,
+    "lean_hits": 49,
+    "lean_rate": 0.402,
     "keep": 0.0,
     "keep_se": 0.15,
     "buckets": []
