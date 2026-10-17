@@ -12066,15 +12066,27 @@ function applyPublishedLocks(locks) {
 // Points gained against the closing line (positive = we beat the close).
 // Spreads are home spreads: a home pick at -3 that closes -4 gained a point.
 function lockClv(lock) {
+  // Measured from the number the pick is graded at (the line in pick_line / total_pick),
+  // which can be earlier in the week than the line on the board when the lock was taken.
   if (!lock) return { side: null, total: null };
   let side = null, total = null;
-  if (lock.pick && lock.pick !== "NO PLAY" && lock.spread != null && lock.close_spread != null) {
-    const open = Number(lock.spread), close = Number(lock.close_spread);
-    side = +(lock.pick === lock.home ? open - close : close - open).toFixed(1);
+  if (lock.pick && lock.pick !== "NO PLAY" && lock.close_spread != null) {
+    const m = String(lock.pick_line || "").trim().match(/([+-]?\d+(?:\.\d+)?|PK|pk)\s*$/);
+    const n = m ? (/^pk$/i.test(m[1]) ? 0 : Number(m[1])) : null;
+    const isHome = lock.pick === lock.home;
+    const homeLine = n != null ? (isHome ? n : -n) : (lock.spread != null ? Number(lock.spread) : null);
+    if (homeLine != null) {
+      const close = Number(lock.close_spread);
+      side = +(isHome ? homeLine - close : close - homeLine).toFixed(1);
+    }
   }
-  if (lock.total_pick && lock.total_pick !== "NO PLAY" && lock.total != null && lock.close_total != null) {
-    const open = Number(lock.total), close = Number(lock.close_total);
-    total = +(/^OVER/i.test(lock.total_pick) ? close - open : open - close).toFixed(1);
+  if (lock.total_pick && lock.total_pick !== "NO PLAY" && lock.close_total != null) {
+    const m = String(lock.total_pick).match(/(\d+(?:\.\d+)?)/);
+    const open = m ? Number(m[1]) : (lock.total != null ? Number(lock.total) : null);
+    if (open != null) {
+      const close = Number(lock.close_total);
+      total = +(/^OVER/i.test(lock.total_pick) ? close - open : open - close).toFixed(1);
+    }
   }
   return { side, total };
 }
