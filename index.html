@@ -16648,6 +16648,24 @@ async function boot() {
     if (phone) setTimeout(startScores, 3000);
     else startScores();
     window.__slateClock = setInterval(() => { pullLiveScores(); }, 60 * 60 * 1000);
+    // While any game is being played, refresh scores every 90 seconds (only while the page is
+    // open and visible), so Live, the boards and the scorecard keep up with the games.
+    window.__liveClock = setInterval(() => {
+      if (document.hidden || window.__liveScorePull) return;
+      const now = Date.now();
+      const playing = (DATA.games || []).some((g) => {
+        if (!g || g.completed) return false;
+        const t = Date.parse(g.date);
+        return (typeof isLiveGame === "function" && isLiveGame(g)) || (Number.isFinite(t) && t <= now && now - t < 4.5 * 3600 * 1000);
+      });
+      if (!playing) return;
+      window.__liveScorePull = true;
+      Promise.resolve(pullLiveScores(true)).catch(() => {}).then(() => {
+        window.__liveScorePull = false;
+        const liveViews = ["home", "nfl", "cfb", "all", "live", "score", "card", "builder"];
+        if (liveViews.indexOf(view) !== -1 && typeof paintDesk === "function") { try { paintDesk(); } catch (e) {} }
+      });
+    }, 90 * 1000);
   }
   document.getElementById("injRefreshBtn")?.addEventListener("click", () => {
     setStamp("Updating injuries…", true);
