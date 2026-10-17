@@ -19,6 +19,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "assets" / "logos"
 LIST = ROOT / "data" / "logos.json"
+FACES = ROOT / "assets" / "faces" / "nfl"
+FACE_LIST = ROOT / "data" / "faces.json"
 SIZE = 128
 
 
@@ -73,7 +75,52 @@ def sized(path):
     return "https://a.espncdn.com/combiner/i?" + q
 
 
+def players():
+    """NFL players the site shows: everyone with game logs (the props board) and every
+    player with props in the snapshot."""
+    ids = set(str(k) for k in (load("gamelogs.json").get("players") or {}))
+    for g in load("snapshot.json").get("games") or []:
+        if g.get("league") == "nfl":
+            for pl in g.get("props") or []:
+                if pl.get("id"):
+                    ids.add(str(pl["id"]))
+    return sorted(i for i in ids if i.isdigit())
+
+
+def faces():
+    have = load("faces.json")
+    out = {"v": int(have.get("v") or 0), "nfl": dict(have.get("nfl") or {})}
+    new = 0
+    for pid in players():
+        f = FACES / f"{pid}.png"
+        if f.exists() and out["nfl"].get(pid):
+            continue
+        path = f"/i/headshots/nfl/players/full/{pid}.png"
+        body = None
+        for u in ("https://a.espncdn.com/combiner/i?" + urllib.parse.urlencode({"img": path, "w": 132, "h": 96, "transparent": "true"}), "https://a.espncdn.com" + path):
+            try:
+                body = fetch(u)
+                break
+            except Exception:
+                body = None
+        if not body:
+            continue
+        FACES.mkdir(parents=True, exist_ok=True)
+        f.write_bytes(body)
+        out["nfl"][pid] = 1
+        new += 1
+        time.sleep(0.03)
+    if new:
+        out["v"] += 1
+        FACE_LIST.write_text(json.dumps(out, separators=(",", ":"), sort_keys=True) + "\n")
+    print(f"{new} new headshots; {len(out['nfl'])} saved")
+
+
 def main():
+    try:
+        faces()
+    except Exception as e:
+        print("headshots error:", e)
     found = teams()
     have = load("logos.json")
     out = {"v": int(have.get("v") or 0), "nfl": dict(have.get("nfl") or {}), "cfb": dict(have.get("cfb") or {})}

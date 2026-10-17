@@ -102,6 +102,45 @@ def pick_text(g):
 
 
 _FONTS = {}
+_NFL_ABBR = None
+
+
+def local_logo(url):
+    """The site's own copy of an ESPN team logo (scripts/logos.py), or None."""
+    global _NFL_ABBR
+    import re
+    m = re.search(r"/i/teamlogos/(nfl|ncaa)/500(?:-dark)?/([A-Za-z0-9]+)\.png", url or "")
+    if not m:
+        return None
+    lg = "cfb" if m.group(1) == "ncaa" else "nfl"
+    if lg == "nfl":
+        if _NFL_ABBR is None:
+            _NFL_ABBR = {}
+            try:
+                snap = json.loads((ROOT / "data" / "snapshot.json").read_text())
+                for g in snap.get("games") or []:
+                    for side in ("home", "away"):
+                        t = g.get(side) or {}
+                        mm = re.search(r"/nfl/500(?:-dark)?/([a-z0-9]+)\.png", str(t.get("logo") or ""), re.I)
+                        if g.get("league") == "nfl" and mm and t.get("id") is not None:
+                            _NFL_ABBR[mm.group(1).lower()] = str(t["id"])
+            except Exception:
+                pass
+        tid = _NFL_ABBR.get(m.group(2).lower())
+    else:
+        tid = m.group(2)
+    f = ROOT / "assets" / "logos" / lg / f"{tid}.png"
+    return f if tid and f.exists() else None
+
+
+def logo_src(url, inline=False):
+    f = local_logo(url)
+    if not f:
+        return url
+    if inline:
+        import base64
+        return "data:image/png;base64," + base64.b64encode(f.read_bytes()).decode()
+    return "/" + str(f.relative_to(ROOT)).replace("\\", "/")
 
 
 def FONT64(name):
@@ -119,7 +158,7 @@ def card_html(g):
     h_num = g["home"]["score"] if final else whole(g["homePts"])
     head = "Final" if final else "Projected score"
     font = lambda n: "data:font/woff2;base64," + FONT64(n)
-    logo = lambda t: (f'<img src="{esc(t["logo"])}" alt="" onerror="this.replaceWith(Object.assign(document.createElement(\'div\'),{{className:\'nologo\',textContent:\'{esc(t["abbr"][:3])}\'}}))">'
+    logo = lambda t: (f'<img src="{esc(logo_src(t["logo"], inline=True))}" alt="" onerror="this.replaceWith(Object.assign(document.createElement(\'div\'),{{className:\'nologo\',textContent:\'{esc(t["abbr"][:3])}\'}}))">'
                       if t["logo"] else f'<div class="nologo">{esc(t["abbr"][:3])}</div>')
     return f"""<!doctype html><html><head><meta charset="utf-8"><style>
 @font-face{{font-family:BS;src:url({font('big-shoulders-800.woff2')});font-weight:800}}
@@ -240,9 +279,9 @@ ul{{padding-left:20px;color:var(--soft)}}
 <h1>{esc(a['name'])} at {esc(h['name'])}</h1>
 <section class="card">
   <div class="score">
-    <div>{f'<img src="{esc(a["logo"])}" alt="" loading="lazy" onerror="this.style.visibility=\'hidden\'">' if a['logo'] else ''}<b>{esc(a['abbr'])}</b><small>{esc(a['record'])}</small></div>
+    <div>{f'<img src="{esc(logo_src(a["logo"]))}" alt="" loading="lazy" onerror="this.style.visibility=\'hidden\'">' if a['logo'] else ''}<b>{esc(a['abbr'])}</b><small>{esc(a['record'])}</small></div>
     <div class="num">{esc(a['score'] if final else r1(g['awayPts']))} – {esc(h['score'] if final else r1(g['homePts']))}</div>
-    <div>{f'<img src="{esc(h["logo"])}" alt="" loading="lazy" onerror="this.style.visibility=\'hidden\'">' if h['logo'] else ''}<b>{esc(h['abbr'])}</b><small>{esc(h['record'])}</small></div>
+    <div>{f'<img src="{esc(logo_src(h["logo"]))}" alt="" loading="lazy" onerror="this.style.visibility=\'hidden\'">' if h['logo'] else ''}<b>{esc(h['abbr'])}</b><small>{esc(h['record'])}</small></div>
   </div>
   <div class="lbl">{'Final score' if final else 'Our projected score'}</div>
   <div class="pick"><span>{esc(pick_lbl)}</span><strong>{esc(pick)}</strong>{f'<span>{esc(g["chance"])}% to hit, checked against this season</span>' if g.get('chance') and (g['side'] or g['tot']) else ''}</div>

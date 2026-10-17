@@ -242,6 +242,8 @@ def team_dict(c, fbs, ap):
     cur = (c.get("curatedRank") or {}).get("current")
     rank = ap.get(str(t["id"])) or (cur if cur and cur <= 25 else None)
     logo = t.get("logo") or ""
+    if (ROOT / "assets" / "logos" / "cfb" / f"{t['id']}.png").exists():
+        logo = f"/assets/logos/cfb/{t['id']}.png"   # the site's own copy (scripts/logos.py)
     return {
         "id": str(t["id"]), "abbrev": t.get("abbreviation") or "", "name": t.get("displayName") or "",
         "location": t.get("location") or "", "color": t.get("color") or "343c2e", "logo": logo,
