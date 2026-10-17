@@ -15551,7 +15551,7 @@ function pbGroupChance(bag) {
     if (l.cond.hi != null) s.hi = s.hi == null ? l.cond.hi : Math.min(s.hi, l.cond.hi);
   });
   let p = other;
-  const marg = [];
+  const marg = [], qs = {};
   [["m", "bM", "mM", "spread"], ["t", "bT", "mT", "total"]].forEach(([v, bk, mk, name]) => {
     const s = span[v];
     if (s.lo == null && s.hi == null) return;
@@ -15559,9 +15559,28 @@ function pbGroupChance(bag) {
     const pb = views[bk] ? pbRange(views[bk], s.lo, s.hi) : 0;
     const pm = views[mk] ? pbRange(views[mk], s.lo, s.hi) : pb;
     const q = pm + k * (pb - pm);
+    qs[v] = q;
     marg.push(q);
     p *= q;
   });
+  // player props in the bag: price everything together with the measured correlations
+  const props = bag.filter((l) => l.kind === "pp");
+  if (props.length) {
+    const vars = [], q = [], sg = [];
+    const dir = (sp) => sp.lo != null && sp.hi == null ? 1 : sp.hi != null && sp.lo == null ? -1 : 0;
+    if (qs.m != null) { vars.push({ v: "m" }); q.push(qs.m); sg.push(dir(span.m)); }
+    if (qs.t != null) { vars.push({ v: "t" }); q.push(qs.t); sg.push(dir(span.t)); }
+    props.forEach((l) => {
+      const pl = (g.props || []).find((x) => String(x.id) === String(l.pid)) || {};
+      vars.push({ v: "p", pos: pl.pos || "WR", stat: l.stat, team: pl.side || "home", pid: String(l.pid) });
+      q.push(l.win); sg.push(l.side === "over" ? 1 : -1);
+    });
+    const R = vars.map((x, i) => vars.map((y, j) => (i === j ? 1 : sg[i] * sg[j] * pbVarCorr(x, y, g))));
+    const joint = pbCopula(q, R);
+    const indep = q.reduce((a, x) => a * x, 1);
+    bag.__corr = indep > 1e-9 ? joint / indep : null;
+    return joint;
+  }
   // margin and total legs together: scale by how much more (or less) often they land
   // together than two unrelated bets would (see pbRho)
   bag.__corr = null;
@@ -15763,6 +15782,97 @@ function pbJoint(dM, dT, rho, sM, sT) {
     const bot = sT.lo == null ? 0 : normCdf((Math.floor(sT.lo) + 0.5 - mu) / csd);
     p += pm * Math.max(0, top - bot);
   }
+  return p;
+}
+
+// ---- same-game parlays with player props ---------------------------------------------------
+// How player stats move with the game and with each other, measured from every NFL regular-
+// season game 2021-2024 (10,942 player-games, nflverse). Each number is the correlation of
+// "how far above his usual" against how far the game beat its spread (m, from the player's
+// team) or its total (t), or against another player in the same game. Shrunk toward zero for
+// small samples. Example: a QB's passing yards and his WR's receiving yards, .38; a RB's
+// rushing yards and his team covering, .26.
+const PB_PROP_CORR = {"game":{"QB.pass_yds|m":0.089,"QB.pass_yds|t":0.309,"QB.pass_td|m":0.274,"QB.pass_td|t":0.453,"QB.rush_yds|t":0.066,"RB.rush_yds|m":0.259,"RB.rush_yds|t":0.082,"RB.rec|m":-0.072,"RB.rec|t":0.05,"RB.rec_yds|t":0.082,"WR.rec|t":0.112,"WR.rec_yds|m":0.073,"WR.rec_yds|t":0.173,"TE.rec|m":-0.076,"TE.rec|t":0.073,"TE.rec_yds|t":0.12},"self":{"QB.pass_yds|QB.pass_td":0.418,"RB.rec|RB.rec_yds":0.688,"WR.rec|WR.rec_yds":0.739,"TE.rec|TE.rec_yds":0.731},"team":{"QB.pass_yds|TE.rec":0.212,"QB.pass_yds|TE.rec_yds":0.264,"QB.pass_td|TE.rec":0.074,"QB.pass_td|TE.rec_yds":0.117,"QB.rush_yds|TE.rec":0.042,"QB.rush_yds|TE.rec_yds":0.032,"QB.pass_yds|WR.rec":0.301,"QB.pass_yds|WR.rec_yds":0.382,"QB.pass_td|WR.rec":0.124,"QB.pass_td|WR.rec_yds":0.189,"QB.pass_yds|RB.rush_yds":-0.103,"QB.pass_yds|RB.rec":0.15,"QB.pass_yds|RB.rec_yds":0.204,"QB.pass_td|RB.rec":0.054,"QB.pass_td|RB.rec_yds":0.089,"QB.rush_yds|RB.rec":0.038,"RB.rush_yds|WR.rec":-0.061,"RB.rush_yds|WR.rec_yds":-0.036,"RB.rush_yds|TE.rec":-0.056,"RB.rec|TE.rec":0.054,"RB.rec|RB.rush_yds":-0.095,"RB.rec|RB.rec":0.057,"RB.rec_yds|RB.rush_yds":-0.075,"QB.pass_yds|QB.pass_yds":-0.045,"QB.pass_yds|QB.rush_yds":-0.041,"QB.pass_td|QB.pass_yds":-0.031,"TE.rec|TE.rec":0.045,"TE.rec|TE.rec_yds":0.036,"TE.rec_yds|TE.rec_yds":0.034},"opp":{"QB.pass_yds|WR.rec_yds":0.043,"QB.pass_td|WR.rec":0.048,"QB.pass_td|WR.rec_yds":0.053,"QB.pass_yds|QB.pass_yds":0.076,"QB.pass_td|QB.pass_yds":0.114,"QB.pass_td|QB.pass_td":0.119,"QB.pass_td|TE.rec":0.084,"QB.pass_td|TE.rec_yds":0.064,"QB.rush_yds|TE.rec":-0.037,"TE.rec|WR.rec_yds":0.031,"TE.rec_yds|WR.rec_yds":0.032,"RB.rec|TE.rec":-0.046,"RB.rec|TE.rec_yds":-0.03,"RB.rec|WR.rec":-0.037,"RB.rush_yds|RB.rush_yds":-0.127,"RB.rec|RB.rec":-0.046,"RB.rec_yds|RB.rec_yds":0.042}};
+function pbNormInv(p) {
+  // Acklam's approximation of the inverse normal
+  const a = [-39.6968302866538, 220.946098424521, -275.928510446969, 138.357751867269, -30.6647980661472, 2.50662827745924];
+  const b = [-54.4760987982241, 161.585836858041, -155.698979859887, 66.8013118877197, -13.2806815528857];
+  const c = [-0.00778489400243029, -0.322396458041136, -2.40075827716184, -2.54973253934373, 4.37466414146497, 2.93816398269878];
+  const d = [0.00778469570904146, 0.32246712907004, 2.445134137143, 3.75440866190742];
+  const q0 = Math.min(1 - 1e-9, Math.max(1e-9, p));
+  if (q0 < 0.02425) { const q = Math.sqrt(-2 * Math.log(q0)); return (((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1); }
+  if (q0 > 1 - 0.02425) { const q = Math.sqrt(-2 * Math.log(1 - q0)); return -(((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1); }
+  const q = q0 - 0.5, r = q * q;
+  return (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) * q / (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1);
+}
+function pbPropPair(kind, a, b) {
+  const t = PB_PROP_CORR[kind] || {};
+  const v = t[a + "|" + b];
+  if (v != null) return v;
+  const w = t[b + "|" + a];
+  return w != null ? w : 0;
+}
+// correlation between two variables in one game; each is { v: "m"|"t"|"p", pos, stat, team, pid }
+function pbVarCorr(x, y, g) {
+  if (x.v === "p" && y.v === "p") {
+    if (x.pid === y.pid) return x.stat === y.stat ? 1 : pbPropPair("self", x.pos + "." + x.stat, y.pos + "." + y.stat);
+    return pbPropPair(x.team === y.team ? "team" : "opp", x.pos + "." + x.stat, y.pos + "." + y.stat);
+  }
+  if (x.v === "p" || y.v === "p") {
+    const p = x.v === "p" ? x : y, o = x.v === "p" ? y : x;
+    const base = PB_PROP_CORR.game[p.pos + "." + p.stat + "|" + o.v] || 0;
+    // the table's margin is the player's own team; ours is the home team's
+    return o.v === "m" ? base * (p.team === "home" ? 1 : -1) : base;
+  }
+  const hs = g.odds && g.odds.home_spread != null ? Number(g.odds.home_spread) : 0;
+  return hs ? pbRho(g.league, hs) * (hs < 0 ? 1 : -1) : 0;
+}
+// Chance every leg wins when they share a game: a normal copula over the legs' own chances
+// and the measured correlations, by a fixed-seed simulation (same answer every time).
+function pbCopula(q, R) {
+  const n = q.length;
+  const key = q.map((x) => x.toFixed(4)).join(",") + "|" + R.map((r) => r.map((x) => x.toFixed(3)).join(",")).join(";");
+  pbCopula.cache = pbCopula.cache || new Map();
+  if (pbCopula.cache.has(key)) return pbCopula.cache.get(key);
+  // Cholesky; if the table's numbers don't fit together, shrink them until they do
+  let L = null, M = R.map((r) => r.slice());
+  for (let tries = 0; tries < 12 && !L; tries++) {
+    L = (() => {
+      const out = Array.from({ length: n }, () => new Array(n).fill(0));
+      for (let i = 0; i < n; i++) for (let j = 0; j <= i; j++) {
+        let s = M[i][j];
+        for (let k = 0; k < j; k++) s -= out[i][k] * out[j][k];
+        if (i === j) { if (s <= 1e-6) return null; out[i][i] = Math.sqrt(s); } else out[i][j] = s / out[j][j];
+      }
+      return out;
+    })();
+    if (!L) M = M.map((r, i) => r.map((x, j) => (i === j ? 1 : x * 0.85)));
+  }
+  if (!L) return q.reduce((a, x) => a * x, 1);
+  const z = q.map(pbNormInv);
+  let seed = 20261017;
+  const rnd = () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  const N = 60000;
+  let hit = 0;
+  const e = new Array(n), w = new Array(n);
+  for (let s = 0; s < N; s++) {
+    for (let i = 0; i < n; i += 2) {
+      const u1 = Math.max(1e-12, rnd()), u2 = rnd(), r = Math.sqrt(-2 * Math.log(u1));
+      e[i] = r * Math.cos(2 * Math.PI * u2);
+      if (i + 1 < n) e[i + 1] = r * Math.sin(2 * Math.PI * u2);
+    }
+    let ok = true;
+    for (let i = 0; i < n && ok; i++) {
+      let v = 0;
+      for (let k = 0; k <= i; k++) v += L[i][k] * e[k];
+      w[i] = v;
+      if (v > z[i]) ok = false;
+    }
+    if (ok) hit++;
+  }
+  const p = hit / N;
+  if (pbCopula.cache.size > 300) pbCopula.cache.clear();
+  pbCopula.cache.set(key, p);
   return p;
 }
 
@@ -16161,9 +16271,56 @@ function pbBestTeaserLegs(league, n) {
   }));
   return [...best.values()].sort((a, b) => b.win - a.win).slice(0, n);
 }
+// A leg as a variable in its game, with the direction it wins in (for correlation)
+function pbLegVar(l) {
+  if (!l) return null;
+  if (l.kind === "sp" || l.kind === "ml") return { x: { v: "m" }, s: l.side === "home" ? 1 : -1 };
+  if (l.kind === "tot") return { x: { v: "t" }, s: l.side === "over" ? 1 : -1 };
+  if (l.kind === "pp") {
+    const pl = (l.g.props || []).find((x) => String(x.id) === String(l.pid)) || {};
+    return { x: { v: "p", pos: pl.pos || "WR", stat: l.stat, team: pl.side || "home", pid: String(l.pid) }, s: l.side === "over" ? 1 : -1 };
+  }
+  return null;
+}
+function pbLegCorr(a, b) {
+  const A = pbLegVar(a), B = pbLegVar(b);
+  if (!A || !B || a.gid !== b.gid) return 0;
+  if (A.x.v !== "p" && A.x.v === B.x.v) return A.s * B.s;
+  return A.s * B.s * pbVarCorr(A.x, B.x, a.g);
+}
+// The same-game leg that moves most with what's already on the ticket
+function pbPairFor(live) {
+  if (!live.length || live.length >= PB_MAX_LEGS) return null;
+  const have = new Set(live.map((l) => l.id));
+  let best = null;
+  [...new Set(live.map((l) => l.gid))].forEach((gid) => {
+    const g = pbGame(gid);
+    if (!g || pbStarted(g)) return;
+    const mine = live.filter((l) => l.gid === gid);
+    const ids = PB_MARKETS.map((k) => gid + "|" + k);
+    pbPropRows(g).slice(0, 30).forEach((r) => ["over", "under"].forEach((sd) => ids.push(`${gid}|pp|${r.pl.id}|${r.stat}|${sd}`)));
+    ids.forEach((id) => {
+      if (have.has(id) || have.has(pbOpposite(id))) return;
+      const c = pbLeg({ id });
+      if (!c || c.value < -0.03 || c.win < 0.3) return;
+      // a second spread or moneyline, or a second total, is the same bet twice
+      if (mine.some((m) => (m.kind === "sp" || m.kind === "ml")) && (c.kind === "sp" || c.kind === "ml")) return;
+      if (mine.some((m) => m.kind === "tot") && c.kind === "tot") return;
+      const top = mine.map((m) => ({ m, r: pbLegCorr(m, c) })).sort((x, y) => y.r - x.r)[0];
+      if (!top || top.r < 0.12) return;
+      const score = top.r + c.value;
+      if (!best || score > best.score) best = { c, with: top.m, r: top.r, score };
+    });
+  });
+  return best;
+}
 function pbSuggest(legs) {
   const live = legs.filter((l) => l && !l.started);
   const out = [];
+  if (PB.mode === "parlay") {
+    const pair = pbPairFor(live);
+    if (pair) out.push({ kind: "add", id: pair.c.id, text: `Pairs with ${pair.with.label}: ${pair.c.label} tends to hit when it does (correlation ${pair.r.toFixed(2)}). ${pbPct(pair.c.win, 0)} on its own at ${pbAm(pair.c.price)}. Books know this too and pay less on same-game parlays, so check your book's price.`, btn: "Add it" });
+  }
   if (PB.mode === "parlay" && live.length >= 2) {
     const worst = live.slice().sort((a, b) => a.value - b.value)[0];
     if (worst.value < -0.03) out.push({ kind: "drop", id: worst.id, text: `Drop ${worst.label}. At ${pbAm(worst.price)} it gives back ${Math.round(-worst.value * 100)} cents on the dollar against its chance.`, btn: "Drop it" });
@@ -16282,7 +16439,7 @@ function pbSlipHtml() {
           const together = pbGroupChance(bag);
           if (bag.__corr == null || Math.abs(bag.__corr - 1) < 0.015) return;
           const apart = bag.reduce((a, l) => a * l.win, 1);
-          warn += `<p class="pb-warn pb-corr">${bag.map((l) => pbEsc(l.label)).join(" + ")} ${bag.__corr > 1 ? "tend to land together" : "tend to work against each other"} in a game with this spread: ${pbPct(together)} together, against ${pbPct(apart)} if they were unrelated. Measured from about ${bag[0].g.league === "nfl" ? "4,400 NFL" : "7,000 college"} games.</p>`;
+          warn += `<p class="pb-warn pb-corr">${bag.map((l) => pbEsc(l.label)).join(" + ")} ${bag.__corr > 1 ? "tend to land together" : "tend to work against each other"}${bag.some((l) => l.kind === "pp") ? "" : " in a game with this spread"}: ${pbPct(together)} together, against ${pbPct(apart)} if they were unrelated. ${bag.some((l) => l.kind === "pp") ? "Measured from 10,942 NFL player-games." : `Measured from about ${bag[0].g.league === "nfl" ? "4,400 NFL" : "7,000 college"} games.`}</p>`;
         });
       }
       if (result.n) numbers = `
