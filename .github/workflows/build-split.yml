@@ -1,0 +1,66 @@
+name: Build The Split
+# Rebuilds The Split for the current college week from ESPN: games, lines, records, ranks,
+# leaders, every stat on the sheets, the projected scores and the desk's picks. Mondays it
+# moves to the new week on its own. Every 6 hours, so new lines become picks the same day;
+# the play-by-play grades (split/advanced.json) are rebuilt once a day, at the morning run.
+# A game within two hours of kickoff keeps its pick (scripts/build_split.py).
+on:
+  schedule:
+    - cron: "20 11 * * *"
+    - cron: "20 17 * * *"
+    - cron: "20 23 * * *"
+    - cron: "20 5 * * *"
+  workflow_dispatch:
+    inputs:
+      week:
+        description: "College week to build (blank = this week)"
+        required: false
+      plays:
+        description: "Rebuild the play-by-play grades too"
+        type: boolean
+        default: true
+permissions:
+  contents: write
+concurrency:
+  group: build-split
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install the browser
+        run: |
+          pip install --quiet playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Build The Split
+        run: |
+          args=""
+          if [ -n "${{ github.event.inputs.week }}" ]; then args="$args --week ${{ github.event.inputs.week }}"; fi
+          plays="${{ github.event.inputs.plays }}"
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$(date -u +%H)" != "11" ]; then plays="false"; fi
+          if [ "$plays" = "false" ]; then args="$args --no-plays"; fi
+          python3 scripts/build_split.py $args
+      - name: Copy the picks and matchup notes to the main site
+        run: python3 scripts/sync_split.py
+      - name: Commit any changes
+        run: |
+          git config user.name "peyton2407-maker"
+          git config user.email "331867039+peyton2407-maker@users.noreply.github.com"
+          git add split/index.html split/advanced.json data/desk-cfb.json data/split-notes.json
+          if git diff --cached --quiet; then
+            echo "Nothing new."
+            exit 0
+          fi
+          git commit -m "Build The Split: $(date -u +'%a %H:%M UTC')"
+          for i in 1 2 3 4; do
+            if git pull --rebase --quiet origin main && git push; then
+              exit 0
+            fi
+            sleep 8
+          done
+          exit 1
