@@ -66,10 +66,12 @@ Monday mornings by itself:
 - **Play grades:** `split/advanced.json` is rebuilt once a day by running The Split's own
   play-by-play grading on the server, which also refreshes against-the-spread records.
   Coaches and roster talent carry over.
-- **Projections and picks:** each projection starts at the market's number and moves 35% of
-  the way toward a blend of the stats matchup and the FPI gap. A side is picked only when
-  both are 3+ points off the line in the same direction, and a total only when the stats
-  total is 6+ off. A game within two hours of kickoff keeps its pick.
+- **Projections and picks:** the projected margin starts at the market's line and moves 35% of
+  the way toward a blend of the stats matchup and the FPI gap; the projected total is the
+  market's. A side is picked only when both are 3+ points off the line in the same
+  direction. No totals are picked: in a 2021-2025 backtest (`scripts/backtest_split.py`) a
+  stats total far off the line lost 44% of the time, and side picks were about 50-51%.
+  A game within two hours of kickoff keeps its pick.
 
 `scripts/sync_split.py` then copies the picks, leading passers and matchup notes to the
 main site.

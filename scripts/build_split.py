@@ -11,11 +11,14 @@ Every run (daily, see .github/workflows/build-split.yml):
        - stats matchup: each offense's points a game against what the other defense allows,
          plus 2.5 points to the home team
        - power rating: the FPI gap plus 2.5 to the home team
-       - the projection starts at the market's own number and moves 35% of the way toward
-         the blend of those two. A side is picked only when BOTH the stats matchup and FPI
-         are 3+ points off the line in the same direction; a total only when the stats total
-         is 6+ points off. (This season, FPI alone against the line went 10-19 at 3+
-         points, so neither signal is trusted on its own.)
+       - the projected margin starts at the market's line and moves 35% of the way toward
+         the blend of those two; the projected total is the market's total. A side is
+         picked only when BOTH the stats matchup and the power rating are 3+ points off the
+         line in the same direction. No totals are picked.
+     Backtest, 2021-2025 FBS games (scripts/backtest_split.py, Elo standing in for FPI):
+       sides, both 3+ off the line: 50.2% in 2021-22, 51.0% in 2023-25 (break-even is 52.4%)
+       totals, season points-for/against 8+ off the line: 44% (the line was right), so the
+       stats total isn't used. This season, FPI alone against the line went 10-19 at 3+.
      A game within two hours of kickoff, or already played, keeps the desk row it had, so
      a pick never changes once it can be locked. Desk rows made by hand (no "model" tag)
      are kept for the week they were made.
@@ -54,7 +57,7 @@ HFA = 2.5
 SIGMA = 15.25
 PULL = 0.35          # how far the desk moves from the market toward our blend
 SIDE_GAP = 3.0       # stats matchup and FPI must each be this far off the line, same way
-TOTAL_GAP = 6.0      # stats total this far off the posted total
+TOTAL_GAP = None     # no totals picks: a stats total far off the line lost (44%, 2021-25)
 MODEL = "dg-split-1"
 
 
@@ -437,7 +440,7 @@ def build(week, old):
         if model_m is None and mm is None:
             continue  # nothing to project (an FCS game with no line)
         dm = (mm + PULL * (model_m - mm)) if (mm is not None and model_m is not None) else (model_m if model_m is not None else mm)
-        dt = (total + PULL * (st - total)) if (total is not None and st is not None) else (total if total is not None else st)
+        dt = total if total is not None else st   # the market's total; ours only when none is posted
         if dt is None:
             continue
         home_pts, away_pts = round((dt + dm) / 2, 1), round((dt - dm) / 2, 1)
@@ -450,7 +453,7 @@ def build(week, old):
                 else:
                     pick = f"{aa} {-spread:+.1f}"
                 conf = int(min(95, 50 + 4 * min(abs(es), abs(ef))))
-        if total is not None and st is not None and abs(st - total) >= TOTAL_GAP:
+        if TOTAL_GAP and total is not None and st is not None and abs(st - total) >= TOTAL_GAP:
             tpick = f"{'OVER' if st > total else 'UNDER'} {f1(total)}"
         desk.append({
             "id": gid, "name": ev.get("name") or "", "short": ev.get("shortName") or f"{aa} @ {ha}", "date": ev["date"],
