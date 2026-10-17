@@ -1,0 +1,44 @@
+name: Probe ESPN feeds (temporary)
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch samples
+        run: |
+          mkdir -p probe
+          ua="Mozilla/5.0 (Double Gs probe)"
+          get() { curl -sS -m 40 -A "$ua" "$2" -o "probe/$1.json" || echo "fail $1"; }
+          get cfb_cal "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?groups=80&limit=1"
+          get nfl_cal "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?limit=1"
+          get cfb_post25 "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?dates=2025&seasontype=3&week=1&groups=80&limit=300"
+          get cfb_post25_999 "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?dates=2025&seasontype=3&week=999&groups=80&limit=300"
+          get cfb_reg25_w15 "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?dates=2025&seasontype=2&week=15&groups=80&limit=300"
+          get cfb_reg25_w16 "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?dates=2025&seasontype=2&week=16&groups=80&limit=300"
+          for w in 1 2 3 4 5; do get nfl_post25_$w "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=2025&seasontype=3&week=$w&limit=50"; done
+          get nfl_reg25_w18 "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=2025&seasontype=2&week=18&limit=50"
+          python3 - <<'PY'
+          import json, glob
+          for f in sorted(glob.glob("probe/*.json")):
+              try:
+                  d = json.load(open(f))
+              except Exception as e:
+                  print(f, "bad", e); continue
+              ev = d.get("events") or []
+              print(f, "events", len(ev), "week", d.get("week"), "season", d.get("season"),
+                    [ (e.get("date"), e.get("shortName"), (e.get("week") or {}).get("number"), ((e.get("season") or {}).get("type"))) for e in ev[:2]])
+          PY
+      - name: Push samples to the probe branch
+        run: |
+          git config user.name "peyton2407-maker"
+          git config user.email "331867039+peyton2407-maker@users.noreply.github.com"
+          git checkout --orphan probe
+          git rm -rq --cached . >/dev/null
+          find probe -name '*.json' -size +3M -delete
+          git add probe
+          git commit -qm "ESPN feed samples"
+          git push -f origin probe
