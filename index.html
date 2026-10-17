@@ -874,6 +874,16 @@ button.prop-card.inj-open .report-full{display:block}
 .move-chip { margin: 6px 0 2px; font-size: 12.5px; color: var(--ink-soft); }
 .move-chip b { color: var(--sun); }
 .shop-chip { margin-top: 6px; font-size: 12.5px; color: var(--ink-soft); }
+.ph { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+.ph .lbl { font-size: 11.5px; }
+.ph-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 8px; }
+.ph-chip { font-weight: 800; font-size: 13px; padding: 3px 8px; border-radius: 8px; background: var(--paper-2); color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.ph-chip em { font-style: normal; font-weight: 600; color: var(--muted); margin-right: 5px; }
+.ph-chip.up { background: rgba(95,211,141,.14); color: #5fd38d; } .ph-chip.down { background: rgba(255,122,104,.12); color: var(--rose); }
+.ph-bars { position: relative; display: flex; align-items: flex-end; gap: 4px; height: 46px; }
+.ph-bar { flex: 1; border-radius: 3px 3px 0 0; min-width: 6px; }
+.ph-bar.hit { background: rgba(95,211,141,.75); } .ph-bar.miss { background: rgba(255,122,104,.55); }
+.ph-line { position: absolute; left: 0; right: 0; border-top: 1.5px dashed var(--sun); opacity: .8; }
 #betsSection { max-width: 860px; margin: 0 auto; padding: 4px 14px 24px; }
 .mb-head h2 { margin: 0 0 4px; font-family: var(--display); font-size: 34px; }
 .mb-head p { margin: 0 0 14px; color: var(--ink-soft); }
@@ -10479,12 +10489,47 @@ function renderProps() {
         <div class="dk-wrap"><span class="lbl">DraftKings</span><b class="dk-all">${dkTileText(p)}</b></div>
       </div>
       <div class="dg-box"><div class="lbl">Our hit rate</div><b>${p._hit ? Math.round(p._hit * 100) + "% · " : ""}${pick}</b></div>
+      ${propHistoryHtml(p)}
     </article>`;
   }).join("");
   $$("#propBoard .prop-card").forEach((el) => el.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); openPlayer(el.dataset.player, el.dataset.id); }));
 }
 
 
+// How often the player cleared this exact line: last 5, last 10 and this season, from
+// data/gamelogs.json (scripts/gamelogs.py, refreshed every few hours), with a bar per game.
+function loadGamelogs() {
+  if (typeof pbFetchOnce !== "function") return;
+  pbFetchOnce("gamelogs", "/data/gamelogs.json?t=" + Math.floor(Date.now() / 3600000), (d) => { window.GAMELOGS = (d && d.players) || {}; })
+    .then(() => { if (window.GAMELOGS && typeof view !== "undefined" && view === "props") renderProps(); });
+}
+function propHistoryHtml(p) {
+  const lean = p && p._lean;
+  const pack = window.GAMELOGS && window.GAMELOGS[String(p.id)];
+  if (!lean || !pack || !(pack.rows || []).length) return "";
+  const key = lean.m.key, line = Number(lean.line), under = lean.take === "Under";
+  const rows = pack.rows.filter((r) => Number.isFinite(Number(r[key])));
+  if (!rows.length) return "";
+  const hit = (r) => under ? Number(r[key]) < line : Number(r[key]) > line;
+  const yr = new Date().getFullYear();
+  const part = (list, name) => {
+    if (!list.length) return "";
+    const h = list.filter(hit).length;
+    const cls = h / list.length >= 0.6 ? "up" : h / list.length <= 0.4 ? "down" : "";
+    return `<span class="ph-chip ${cls}"><em>${name}</em>${h}/${list.length}</span>`;
+  };
+  const last10 = rows.slice(0, 10).reverse();  // oldest to newest, left to right
+  const top = Math.max(line * 1.6, ...last10.map((r) => Number(r[key])), 1);
+  const bars = last10.map((r) => {
+    const v = Number(r[key]);
+    return `<span class="ph-bar ${hit(r) ? "hit" : "miss"}" style="height:${Math.max(4, Math.round(v / top * 100))}%" title="${pbEsc(r.d)} vs ${pbEsc(r.o)}: ${v}"></span>`;
+  }).join("");
+  return `<div class="ph" aria-label="How often ${pbEsc(p.name)} went ${lean.take.toLowerCase()} ${line}">
+    <div class="lbl">${lean.take} ${line} ${pbEsc(lean.m.label.toLowerCase())}, game by game</div>
+    <div class="ph-row">${part(rows.slice(0, 5), "Last 5")}${part(rows.slice(0, 10), "Last 10")}${part(rows.filter((r) => Number(r.s) === yr), String(yr))}</div>
+    <div class="ph-bars"><span class="ph-line" style="bottom:${Math.round(line / top * 100)}%"></span>${bars}</div>
+  </div>`;
+}
 function estTds(pts) {
   if (pts == null) return null;
   return +Math.max(0.4, Number(pts) / 6.85).toFixed(2);
@@ -14562,6 +14607,7 @@ function setView(next, opts) {
   const alertS = document.getElementById("alertsSection");
   if (alertS) alertS.style.display = next === "alerts" ? "" : "none";
   $("#propsSection").style.display = next === "props" ? "" : "none";
+  if (next === "props" || next === "builder") { try { loadGamelogs(); } catch (e) {} }
   $("#cfbPicksSection").style.display = next === "cfbpicks" ? "" : "none";
   const potdS = document.getElementById("potdSection");
   if (potdS) potdS.style.display = next === "potd" ? "" : "none";
@@ -15302,6 +15348,13 @@ function pbHitsFor(pid) {
   window.__pbHits = window.__pbHits || {};
   const c = window.__pbHits[pid];
   if (c && c.rows) return c.rows;
+  const saved = window.GAMELOGS && window.GAMELOGS[String(pid)];
+  if (saved && (saved.rows || []).length) {
+    const yr = pbSeasonYear();
+    const rows = saved.rows.filter((r) => Number(r.s) === yr).reverse();
+    window.__pbHits[pid] = { rows };
+    return rows;
+  }
   if (c && c.loading) return null;
   if (window.__PLOGS && window.__PLOGS[pid]) {
     const yr = pbSeasonYear();
