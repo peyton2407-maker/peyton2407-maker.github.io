@@ -151,6 +151,26 @@
    "clv_side": 0,
    "clv_total": null
   },
+  "401856726": {
+   "id": "401856726",
+   "league": "cfb",
+   "week": 7,
+   "short": "ARK @ VAN",
+   "home": "VAN",
+   "away": "ARK",
+   "date": "2026-10-17T23:00Z",
+   "pick": "ARK",
+   "pick_line": "ARK +5.5",
+   "total_pick": "OVER 50.5",
+   "side_play": false,
+   "our_margin": 1.18,
+   "our_total": 51,
+   "confidence": null,
+   "total_play": false,
+   "spread": -5.5,
+   "total": 48.5,
+   "lockedAt": "2026-10-17T21:38:35.051Z"
+  },
   "401856828": {
    "id": "401856828",
    "league": "cfb",
@@ -226,6 +246,26 @@
    "clv_side": -1.5,
    "clv_total": 0
   },
+  "401856832": {
+   "id": "401856832",
+   "league": "cfb",
+   "week": 7,
+   "short": "TCU @ BAY",
+   "home": "BAY",
+   "away": "TCU",
+   "date": "2026-10-17T23:00Z",
+   "pick": "TCU",
+   "pick_line": "TCU +4.5",
+   "total_pick": "UNDER 48.5",
+   "side_play": false,
+   "our_margin": 5.35,
+   "our_total": 46.4,
+   "confidence": 51,
+   "total_play": true,
+   "spread": -4.5,
+   "total": 50.5,
+   "lockedAt": "2026-10-17T21:38:35.051Z"
+  },
   "401858261": {
    "id": "401858261",
    "league": "cfb",
@@ -250,6 +290,26 @@
    "closeAt": "2026-10-17T15:43:39.531Z",
    "clv_side": null,
    "clv_total": -1
+  },
+  "401858263": {
+   "id": "401858263",
+   "league": "cfb",
+   "week": 7,
+   "short": "FSU @ MIA",
+   "home": "MIA",
+   "away": "FSU",
+   "date": "2026-10-17T23:00Z",
+   "pick": "FSU",
+   "pick_line": "FSU +19.5",
+   "total_pick": "OVER 55.5",
+   "side_play": false,
+   "our_margin": 20.32,
+   "our_total": 66.4,
+   "confidence": null,
+   "total_play": false,
+   "spread": -19.5,
+   "total": 56.5,
+   "lockedAt": "2026-10-17T21:38:35.051Z"
   },
   "401858264": {
    "id": "401858264",
@@ -651,6 +711,46 @@
    "clv_side": 0.5,
    "clv_total": 1
   },
+  "401862806": {
+   "id": "401862806",
+   "league": "cfb",
+   "week": 7,
+   "short": "KENT @ USF",
+   "home": "USF",
+   "away": "KENT",
+   "date": "2026-10-17T23:00Z",
+   "pick": "USF",
+   "pick_line": "USF -20.5",
+   "total_pick": "OVER 45.5",
+   "side_play": true,
+   "our_margin": 24.13,
+   "our_total": 53.5,
+   "confidence": 53,
+   "total_play": true,
+   "spread": -20.5,
+   "total": 46.5,
+   "lockedAt": "2026-10-17T21:38:35.051Z"
+  },
+  "401864520": {
+   "id": "401864520",
+   "league": "cfb",
+   "week": 7,
+   "short": "NEV @ NDSU",
+   "home": "NDSU",
+   "away": "NEV",
+   "date": "2026-10-17T23:00Z",
+   "pick": "NEV",
+   "pick_line": "NEV +14.5",
+   "total_pick": "UNDER 42.5",
+   "side_play": false,
+   "our_margin": 11.96,
+   "our_total": 41.9,
+   "confidence": null,
+   "total_play": false,
+   "spread": -14.5,
+   "total": 42.5,
+   "lockedAt": "2026-10-17T21:38:35.051Z"
+  },
   "401864522": {
    "id": "401864522",
    "league": "cfb",
@@ -850,6 +950,26 @@
    "closeAt": "2026-10-16T23:06:31.555Z",
    "clv_side": 0,
    "clv_total": 0
+  },
+  "401869934": {
+   "id": "401869934",
+   "league": "cfb",
+   "week": 7,
+   "short": "ARST @ USM",
+   "home": "USM",
+   "away": "ARST",
+   "date": "2026-10-17T23:00Z",
+   "pick": "USM",
+   "pick_line": "USM +7.0",
+   "total_pick": "UNDER 62.5",
+   "side_play": true,
+   "our_margin": -1.93,
+   "our_total": 57,
+   "confidence": 52,
+   "total_play": true,
+   "spread": 6,
+   "total": 61.5,
+   "lockedAt": "2026-10-17T21:38:35.051Z"
   },
   "401869950": {
    "id": "401869950",
@@ -1195,5 +1315,5 @@
    }
   ]
  },
- "updated": "2026-10-17T21:05:59.564Z"
+ "updated": "2026-10-17T21:38:35.051Z"
 }
