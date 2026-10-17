@@ -52,3 +52,24 @@ Boom Room → Parlay builder (`#builder`). Tap spreads, totals, moneylines and N
 - A quarterback on the injury report only moves a line when ESPN's depth chart has him as the starter (or he is on the season-out list in `index.html`).
 
 Projections are for information and entertainment, not betting advice.
+
+## The Split, built automatically
+
+`scripts/build_split.py` rebuilds The Split (`split/index.html`) for the current college week
+from ESPN every 6 hours (`.github/workflows/build-split.yml`), and moves to the new week on
+Monday mornings by itself:
+
+- **Games:** each week's FBS games, DraftKings lines and prices, records, rankings, TV,
+  venue and each team's leading passer, rusher and receiver.
+- **Sheets:** power and résumé from ESPN's power index, then about 40 season stats for
+  every FBS team (own and allowed, from one league-wide request), each ranked across FBS.
+- **Play grades:** `split/advanced.json` is rebuilt once a day by running The Split's own
+  play-by-play grading on the server, which also refreshes against-the-spread records.
+  Coaches and roster talent carry over.
+- **Projections and picks:** each projection starts at the market's number and moves 35% of
+  the way toward a blend of the stats matchup and the FPI gap. A side is picked only when
+  both are 3+ points off the line in the same direction, and a total only when the stats
+  total is 6+ off. A game within two hours of kickoff keeps its pick.
+
+`scripts/sync_split.py` then copies the picks, leading passers and matchup notes to the
+main site.
