@@ -16177,7 +16177,7 @@ function renderSeason() {
         <td data-lbl="Team">${seasonTeamCell(t)}</td>
         <td data-lbl="Projected">${seasonProj(t)}</td>
         <td data-lbl="Playoff">${seasonBar(t.playoff)}</td>
-        ${hasDiv ? `<td data-lbl="Win conf.">${seasonPct(t.conf)}</td><td data-lbl="Title game">${seasonPct(t.titleGame)}</td><td data-lbl="Title">${seasonPct(t.title)}</td>` : ""}
+        ${hasDiv ? `<td data-lbl="Win conf.">${/^(ND|CONN|UCONN)$/.test(t.abbr || "") ? "Indep." : seasonPct(t.conf)}</td><td data-lbl="Title game">${seasonPct(t.titleGame)}</td><td data-lbl="Title">${seasonPct(t.title)}</td>` : ""}
       </tr>`).join("")}</tbody>
     </table>${show === "top" && !q && rows.length > 30 ? `<p class="subn" style="margin:8px 0 0">Top 30 by playoff chance. Pick "Every team" to see all ${rows.length}.</p>` : ""}</div>`;
   }
