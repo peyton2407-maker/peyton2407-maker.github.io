@@ -76,6 +76,26 @@
    "clv_side": -2,
    "clv_total": 1
   },
+  "401856722": {
+   "id": "401856722",
+   "league": "cfb",
+   "week": 7,
+   "short": "UK @ OU",
+   "home": "OU",
+   "away": "UK",
+   "date": "2026-10-17T23:30Z",
+   "pick": "OU",
+   "pick_line": "OU -6.5",
+   "total_pick": "UNDER 43.5",
+   "side_play": false,
+   "our_margin": 7.5,
+   "our_total": 41.5,
+   "confidence": 51,
+   "total_play": true,
+   "spread": -6.5,
+   "total": 43.5,
+   "lockedAt": "2026-10-17T22:03:21.800Z"
+  },
   "401856723": {
    "id": "401856723",
    "league": "cfb",
@@ -169,7 +189,32 @@
    "total_play": false,
    "spread": -5.5,
    "total": 48.5,
-   "lockedAt": "2026-10-17T21:38:35.051Z"
+   "lockedAt": "2026-10-17T21:38:35.051Z",
+   "close_spread": -5.5,
+   "close_total": 48.5,
+   "closeAt": "2026-10-17T22:03:21.800Z",
+   "clv_side": 0,
+   "clv_total": -2
+  },
+  "401856809": {
+   "id": "401856809",
+   "league": "cfb",
+   "week": 7,
+   "short": "ND @ BYU",
+   "home": "BYU",
+   "away": "ND",
+   "date": "2026-10-17T23:30Z",
+   "pick": "BYU",
+   "pick_line": "BYU +10.5",
+   "total_pick": "OVER 47.5",
+   "side_play": false,
+   "our_margin": -9.73,
+   "our_total": 53.4,
+   "confidence": 52,
+   "total_play": true,
+   "spread": 10.5,
+   "total": 46.5,
+   "lockedAt": "2026-10-17T22:03:21.800Z"
   },
   "401856828": {
    "id": "401856828",
@@ -246,6 +291,26 @@
    "clv_side": -1.5,
    "clv_total": 0
   },
+  "401856831": {
+   "id": "401856831",
+   "league": "cfb",
+   "week": 7,
+   "short": "OKST @ HOU",
+   "home": "HOU",
+   "away": "OKST",
+   "date": "2026-10-17T23:30Z",
+   "pick": "HOU",
+   "pick_line": "HOU -4.5",
+   "total_pick": "UNDER 62.5",
+   "side_play": true,
+   "our_margin": 6.33,
+   "our_total": 61.1,
+   "confidence": 50,
+   "total_play": false,
+   "spread": -4,
+   "total": 62.5,
+   "lockedAt": "2026-10-17T22:03:21.800Z"
+  },
   "401856832": {
    "id": "401856832",
    "league": "cfb",
@@ -264,7 +329,12 @@
    "total_play": true,
    "spread": -4.5,
    "total": 50.5,
-   "lockedAt": "2026-10-17T21:38:35.051Z"
+   "lockedAt": "2026-10-17T21:38:35.051Z",
+   "close_spread": -4.5,
+   "close_total": 50.5,
+   "closeAt": "2026-10-17T22:03:21.800Z",
+   "clv_side": 0,
+   "clv_total": -2
   },
   "401858261": {
    "id": "401858261",
@@ -309,7 +379,12 @@
    "total_play": false,
    "spread": -19.5,
    "total": 56.5,
-   "lockedAt": "2026-10-17T21:38:35.051Z"
+   "lockedAt": "2026-10-17T21:38:35.051Z",
+   "close_spread": -19.5,
+   "close_total": 56.5,
+   "closeAt": "2026-10-17T22:03:21.800Z",
+   "clv_side": 0,
+   "clv_total": 1
   },
   "401858264": {
    "id": "401858264",
@@ -335,6 +410,26 @@
    "closeAt": "2026-10-17T19:17:20.394Z",
    "clv_side": -1.5,
    "clv_total": 0
+  },
+  "401858265": {
+   "id": "401858265",
+   "league": "cfb",
+   "week": 7,
+   "short": "LOU @ SYR",
+   "home": "SYR",
+   "away": "LOU",
+   "date": "2026-10-17T23:30Z",
+   "pick": "SYR",
+   "pick_line": "SYR +15.5",
+   "total_pick": "OVER 55.5",
+   "side_play": true,
+   "our_margin": -11.54,
+   "our_total": 59.5,
+   "confidence": 51,
+   "total_play": true,
+   "spread": 14.5,
+   "total": 55.5,
+   "lockedAt": "2026-10-17T22:03:21.800Z"
   },
   "401858266": {
    "id": "401858266",
@@ -536,6 +631,26 @@
    "clv_side": 0,
    "clv_total": 0
   },
+  "401858494": {
+   "id": "401858494",
+   "league": "cfb",
+   "week": 7,
+   "short": "WIS @ UCLA",
+   "home": "UCLA",
+   "away": "WIS",
+   "date": "2026-10-17T23:30Z",
+   "pick": "WIS",
+   "pick_line": "WIS +3.0",
+   "total_pick": "OVER 46.5",
+   "side_play": true,
+   "our_margin": -0.98,
+   "our_total": 50.1,
+   "confidence": 51,
+   "total_play": true,
+   "spread": -1.5,
+   "total": 42.5,
+   "lockedAt": "2026-10-17T22:03:21.800Z"
+  },
   "401860903": {
    "id": "401860903",
    "league": "cfb",
@@ -729,7 +844,12 @@
    "total_play": true,
    "spread": -20.5,
    "total": 46.5,
-   "lockedAt": "2026-10-17T21:38:35.051Z"
+   "lockedAt": "2026-10-17T21:38:35.051Z",
+   "close_spread": -20.5,
+   "close_total": 46.5,
+   "closeAt": "2026-10-17T22:03:21.800Z",
+   "clv_side": 0,
+   "clv_total": 1
   },
   "401864520": {
    "id": "401864520",
@@ -749,7 +869,12 @@
    "total_play": false,
    "spread": -14.5,
    "total": 42.5,
-   "lockedAt": "2026-10-17T21:38:35.051Z"
+   "lockedAt": "2026-10-17T21:38:35.051Z",
+   "close_spread": -14.5,
+   "close_total": 42.5,
+   "closeAt": "2026-10-17T22:03:21.800Z",
+   "clv_side": 0,
+   "clv_total": 0
   },
   "401864522": {
    "id": "401864522",
@@ -969,7 +1094,12 @@
    "total_play": true,
    "spread": 6,
    "total": 61.5,
-   "lockedAt": "2026-10-17T21:38:35.051Z"
+   "lockedAt": "2026-10-17T21:38:35.051Z",
+   "close_spread": 6,
+   "close_total": 61.5,
+   "closeAt": "2026-10-17T22:03:21.800Z",
+   "clv_side": 1,
+   "clv_total": 1
   },
   "401869950": {
    "id": "401869950",
@@ -1315,5 +1445,5 @@
    }
   ]
  },
- "updated": "2026-10-17T21:38:35.051Z"
+ "updated": "2026-10-17T22:03:21.800Z"
 }
