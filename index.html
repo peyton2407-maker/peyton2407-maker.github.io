@@ -16149,7 +16149,7 @@ function renderSeason() {
   const S = window.SEASON || {};
   const stamp = S.updated ? `Updated ${new Date(S.updated).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" })}.` : "";
   let html = "";
-  const hasDiv = rows.some((t) => t.div != null);
+  const hasDiv = rows.some((t) => t.div != null || t.title != null);
   if (lg === "nfl") {
     const byAbbr = {};
     rows.forEach((t) => { byAbbr[t.abbr] = t; if (t.abbr === "WAS") byAbbr.WSH = t; if (t.abbr === "LA") byAbbr.LAR = t; });

@@ -36,9 +36,21 @@ def get_json(url, headers=False):
         return (body, res.headers) if headers else body
 
 
-def fpi_teams(league):
+def pick(v, *patterns, skip=()):
+    """The first value whose field name matches a pattern (ESPN names the same number
+    differently by league: college "fpi.probmakeplayoffs", NFL "projections.playoffpct")."""
+    for pat in patterns:
+        for k, x in v.items():
+            name = k.split(".", 1)[1]
+            if x is not None and re.search(pat, name) and not re.search(r"rank|change", name) and k not in skip:
+                return x, k
+    return None, None
+
+
+def fpi_teams(league, fields):
     d = get_json(FPI[league])
     names = {c["name"]: c["names"] for c in d.get("categories") or []}
+    fields[league] = {k: v for k, v in names.items()}
     out = []
     for t in d.get("teams") or []:
         v = {}
@@ -47,15 +59,17 @@ def fpi_teams(league):
                 v.setdefault(c["name"] + "." + n, x)
         team = t["team"]
         logo = next((L["href"] for L in team.get("logos") or [] if "default" in (L.get("rel") or [])), "")
-        g = lambda k: v.get(k)
+        g = lambda *pats, skip=(): pick(v, *pats, skip=skip)[0]
+        tg, tg_key = pick(v, r"maketitlegame", r"make(super)?bowl|makesb|superbowlapp|reachsb")
+        title, _ = pick(v, r"wintitle", r"win(super)?bowl|winsb|superbowlwin|sbwin|champ", skip=(tg_key,))
         out.append({
             "id": str(team["id"]), "abbr": team.get("abbreviation"), "name": team.get("displayName"),
             "short": team.get("shortDisplayName") or team.get("nickname"), "logo": logo,
-            "fpi": g("fpi.fpi"), "rank": g("fpi.fpirank"),
-            "w": g("fpi.numwins"), "l": g("fpi.numlosses"), "t": g("fpi.numties"),
-            "projW": g("fpi.projectedw"), "projL": g("fpi.projectedl"),
-            "playoff": g("fpi.probmakeplayoffs"), "div": g("fpi.probwindiv"), "conf": g("fpi.probwinconf"),
-            "titleGame": g("fpi.probmaketitlegame"), "title": g("fpi.probwintitle"), "winOut": g("fpi.probwinout"),
+            "fpi": v.get("fpi.fpi"), "rank": v.get("fpi.fpirank"),
+            "w": g(r"^numwins$", r"^wins$"), "l": g(r"^numlosses$", r"^losses$"), "t": g(r"^numties$", r"^ties$"),
+            "projW": g(r"^projectedw(ins)?$", r"projw"), "projL": g(r"^projectedl(osses)?$", r"projl"),
+            "playoff": g(r"makeplayoffs", r"playoff"), "div": g(r"windiv", r"div"), "conf": g(r"winconf", r"conf"),
+            "titleGame": tg, "title": title, "winOut": g(r"winout"),
         })
     return out
 
@@ -113,10 +127,10 @@ def main():
     except Exception:
         old = {}
     now = datetime.now(timezone.utc)
-    out = {"updated": old.get("updated"), "futuresAt": old.get("futuresAt"), "credits": old.get("credits"), "nfl": [], "cfb": []}
+    out = {"updated": old.get("updated"), "futuresAt": old.get("futuresAt"), "credits": old.get("credits"), "nfl": [], "cfb": [], "fields": {}}
     for lg in ("nfl", "cfb"):
         try:
-            out[lg] = fpi_teams(lg)
+            out[lg] = fpi_teams(lg, out["fields"])
         except Exception as e:
             print(lg, "power index error:", e)
             out[lg] = old.get(lg) or []
