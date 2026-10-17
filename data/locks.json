@@ -46,10 +46,10 @@
    "total": 50.5,
    "lockedAt": "2026-10-17T14:51:53.990Z",
    "close_spread": -11.5,
-   "close_total": 50.5,
-   "closeAt": "2026-10-17T15:16:37.713Z",
+   "close_total": 51.5,
+   "closeAt": "2026-10-17T15:26:53.714Z",
    "clv_side": 0,
-   "clv_total": 0
+   "clv_total": 1
   },
   "401856829": {
    "id": "401856829",
@@ -71,10 +71,10 @@
    "total": 63.5,
    "lockedAt": "2026-10-17T14:51:53.990Z",
    "close_spread": -1.5,
-   "close_total": 63.5,
-   "closeAt": "2026-10-17T15:16:37.713Z",
+   "close_total": 64.5,
+   "closeAt": "2026-10-17T15:26:53.714Z",
    "clv_side": 0,
-   "clv_total": 0
+   "clv_total": 1
   },
   "401856830": {
    "id": "401856830",
@@ -720,5 +720,5 @@
    }
   ]
  },
- "updated": "2026-10-17T15:16:37.713Z"
+ "updated": "2026-10-17T15:26:53.714Z"
 }
