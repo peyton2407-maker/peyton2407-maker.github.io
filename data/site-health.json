@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-10-17T14:51:35Z",
+ "checked_at": "2026-10-17T21:57:34Z",
  "errors": [],
  "console": [],
  "failed_requests": {},
@@ -9,19 +9,19 @@
    "visible": true,
    "count": 72,
    "summary": [
-    "396 matching NFL players 45 QBs in this list \u2014 best our hit rate J Josh "
+    "397 matching NFL players 47 QBs in this list \u2014 best our hit rate J Josh "
    ],
    "empty": [],
-   "chars": 3417
+   "chars": 3395
   },
   "tds": {
    "visible": true,
    "count": 48,
    "summary": [
-    "150 TD tickets in this filter 68% top anytime (Taylor) 203 first-TD names "
+    "158 TD tickets in this filter 68% top anytime (Taylor) 203 first-TD names "
    ],
    "empty": [],
-   "chars": 3977
+   "chars": 4007
   },
   "charts": {
    "visible": true,
@@ -34,58 +34,59 @@
    "visible": true,
    "count": 72,
    "summary": [
-    "344 value tickets in this filter 120 TD plus-money 8 spread / dog sides 89% b"
+    "341 value tickets in this filter 116 TD plus-money 7 spread / dog sides 58% b"
    ],
    "empty": [],
-   "chars": 3548
+   "chars": 3566
   },
   "parlay": {
    "visible": true,
    "count": 30,
    "summary": [],
    "empty": [],
-   "chars": 8325
+   "chars": 7959
   },
   "live": {
    "visible": true,
    "count": 3,
    "summary": [
-    "45 games on this board 0 with score + yard projections 27 spread leans \u2265 0"
+    "13 games on this board 0 with score + yard projections 8 spread leans \u2265 0"
    ],
    "empty": [],
-   "chars": 14249
+   "chars": 15377
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "329 listed 0 probable \u00b7 75% 66 questionable / GTD \u00b7 50% 6 doubtful \u00b7 2"
+    "602 listed SUN \u00b7 11:00 AM ET Not posted SEA @ DEN Window passed HOU VS",
+    "602 listed 0 probable \u00b7 75% 130 questionable / GTD \u00b7 50% 6 doubtful \u00b7 "
    ],
    "empty": [],
-   "chars": 5068
+   "chars": 4815
   },
   "nflwx": {
    "visible": true,
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 3914
+   "chars": 4027
   },
   "nflpotd": {
    "visible": true,
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 552
+   "chars": 564
   },
   "cfbpicks": {
    "visible": true,
    "count": 18,
    "summary": [
-    "18 featured CFB leans 14 spread tickets 11 O/U tickets OHIO @ SAC top c"
+    "18 featured CFB leans 13 spread tickets 10 O/U tickets OHIO @ SAC top c"
    ],
    "empty": [],
-   "chars": 6162
+   "chars": 6176
   }
  },
  "dk_lines_loaded": null,
