@@ -49,7 +49,7 @@ ET = ZoneInfo("America/New_York")
 SEASON = 2026
 SEASON_OPEN = datetime(2026, 9, 1, 12, 0, tzinfo=ET)  # weeks start Tuesdays, like the site
 SITE = "https://peyton2407-maker.github.io"
-SB = "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week={w}&seasontype=2&groups=80&limit=300"
+SB = "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?{q}&groups=80&limit=300"
 FPI = "https://site.web.api.espn.com/apis/fitt/v3/sports/football/college-football/powerindex?limit=150"
 STATS = ("https://site.web.api.espn.com/apis/common/v3/sports/football/college-football/statistics/byteam?region=us&lang=en"
          "&contentorigin=espn&isqualified=true&page=1&limit=200&category=offense&season={s}&seasontype=2&groups=80")
@@ -270,7 +270,8 @@ def when_et(iso, valid=True):
 
 def build(week, old):
     print(f"Building The Split for college week {week}")
-    board = get_json(SB.format(w=week))
+    # weeks 16+ are bowl season: ESPN keeps every bowl and Playoff game in postseason week 1
+    board = get_json(SB.format(q="seasontype=3&week=1" if week >= 16 else f"seasontype=2&week={week}"))
     fpi = parse_fpi(get_json(FPI))
     stats = parse_stats(get_json(STATS.format(s=SEASON)))
     metrics = {tid: team_metrics(s) for tid, s in stats.items()}
@@ -428,6 +429,8 @@ def build(week, old):
         if prev and (state != "pre" or kick - now < timedelta(hours=2) or not prev.get("model")):
             desk.append(prev)  # lockable, played, or made by hand this week: keep it
             continue
+        if state != "pre" or kick - now < timedelta(hours=2):
+            continue  # never make a pick for a game that's started or about to (no hindsight)
         if ma and mh and ma.get("off_ppg") is not None and mh.get("off_ppg") is not None:
             ha_ = 0 if neutral else HFA / 2
             s_home = (mh["off_ppg"] + ma["def_ppg"]) / 2 + ha_

@@ -3362,9 +3362,36 @@ function extractCompetitor(c, league) {
   };
 }
 
+// ESPN numbers the postseason on its own: every college bowl and Playoff game is postseason
+// week 1, and the NFL's Wild Card to Super Bowl are postseason weeks 1-4. The site's week
+// counter keeps going (college 16+, NFL 19+). espnWeekQuery turns our week into ESPN's
+// request; postseason games get our week from their date (siteWeekOf).
+function espnWeekQuery(league, w) {
+  w = Number(w) || 1;
+  if (league === "nfl") return w >= 19 ? "seasontype=3&week=" + Math.min(4, w - 18) : "seasontype=2&week=" + w;
+  return w >= 16 ? "seasontype=3&week=1" : "seasontype=2&week=" + w;
+}
+function siteWeekOf(league, iso) {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return null;
+  const ymd = etYmd(d);
+  return league === "nfl" ? weekFromTuesday(ymd, "2026-09-08") : collegeWeekOf(ymd);
+}
+function weekLabel(league, w) {
+  w = Number(w);
+  if (league === "nfl") {
+    if (w === 19) return "Wild Card";
+    if (w === 20) return "Divisional round";
+    if (w === 21) return "Conference title games";
+    if (w >= 22) return "Super Bowl";
+    return "NFL Week " + w;
+  }
+  return w >= 16 ? "Bowls and the Playoff" : "College Week " + w;
+}
 function parseGames(payload, league) {
   if (!payload) return [];
-  const week = payload.week?.number;
+  const post = Number((payload.season || {}).type) === 3;
+  const espnWeek = payload.week?.number;
   return (payload.events || []).map((ev) => {
     const comp = (ev.competitions || [])[0] || {};
     const comps = comp.competitors || [];
@@ -3401,7 +3428,7 @@ function parseGames(payload, league) {
       home: extractCompetitor(home, league),
       away: extractCompetitor(away, league),
       odds: extractOdds(comp),
-      week,
+      week: post ? siteWeekOf(league, ev.date) : espnWeek,
       period: (comp.status || {}).period || (ev.status || {}).period || 0,
       clock: (comp.status || {}).displayClock || (ev.status || {}).displayClock || "",
       situation: (() => {
@@ -3767,7 +3794,7 @@ async function pullNflCloseMiss() {
     const need = [];
     const start = (book.throughWeek || 0) + 1;
     for (let w = start; w <= week; w++) {
-      const data = await getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?seasontype=2&week=" + w + "&dates=2026&limit=50");
+      const data = await getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?" + espnWeekQuery("nfl", w) + "&dates=2026&limit=50");
       (data.events || []).forEach((ev) => {
         const comp = (ev.competitions || [])[0] || {};
         if (!(comp.status && comp.status.type && comp.status.type.completed)) return;
@@ -5196,7 +5223,7 @@ async function pullCfbCloseMiss() {
     const need = [];
     const start = Math.max(1, (book.throughWeek || 0) + 1);
     for (let w = start; w <= week; w++) {
-      const data = await getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?seasontype=2&week=" + w + "&dates=2026&groups=80&limit=400");
+      const data = await getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?" + espnWeekQuery("cfb", w) + "&dates=2026&groups=80&limit=400");
       (data.events || []).forEach((ev) => {
         const comp = (ev.competitions || [])[0] || {};
         if (!(comp.status && comp.status.type && comp.status.type.completed)) return;
@@ -5428,7 +5455,7 @@ async function pullCfbCloseLines() {
   if (window.__cfbClosePull) return window.__cfbClosePull;
   window.__cfbClosePull = (async () => {
     const week = typeof currentCfbWeekNumber === "function" ? currentCfbWeekNumber() : 5;
-    const url = "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=" + week + "&seasontype=2&groups=80&limit=400";
+    const url = "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?" + espnWeekQuery("cfb", week) + "&groups=80&limit=400";
     const data = await getJSON(url);
     const byId = {};
     (typeof parseGames === "function" ? parseGames(data, "cfb") : []).forEach((row) => {
@@ -5462,7 +5489,7 @@ async function pullNflCloseLines() {
   if (window.__nflClosePull) return window.__nflClosePull;
   window.__nflClosePull = (async () => {
     const week = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : 4;
-    const url = "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=" + week + "&seasontype=2&limit=50";
+    const url = "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?" + espnWeekQuery("nfl", week) + "&limit=50";
     const data = await getJSON(url);
     const byId = {};
     (typeof parseGames === "function" ? parseGames(data, "nfl") : []).forEach((row) => {
@@ -9121,7 +9148,7 @@ function projectionTable(games) {
   if (!rows.length) return "";
   return `
     <div class="card board-card">
-      <h3 style="margin:0 0 10px">${view === "nfl" ? "Best projections" : view === "cfb" ? ("College Week " + currentCfbWeekNumber() + " by start time") : view === "live" ? "Live board" : "Full projection board"}</h3>
+      <h3 style="margin:0 0 10px">${view === "nfl" ? "Best projections" : view === "cfb" ? (weekLabel("cfb", currentCfbWeekNumber()) + " by start time") : view === "live" ? "Live board" : "Full projection board"}</h3>
       <div class="tablewrap">
       <table class="boardtable">
         <thead>
@@ -11292,20 +11319,20 @@ async function ensureWeekProps() {
 function refreshWeekLabels() {
   const nfl = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : "";
   const cfb = typeof currentCfbWeekNumber === "function" ? currentCfbWeekNumber() : "";
-  document.querySelectorAll('a.tab[data-view="nfl"]').forEach((a) => { a.textContent = "NFL Week " + nfl; });
-  document.querySelectorAll('a.tab[data-view="cfb"]').forEach((a) => { a.textContent = "CFB Week " + cfb; });
+  document.querySelectorAll('a.tab[data-view="nfl"]').forEach((a) => { a.textContent = weekLabel("nfl", nfl); });
+  document.querySelectorAll('a.tab[data-view="cfb"]').forEach((a) => { a.textContent = Number(cfb) >= 16 ? "Bowls" : "CFB Week " + cfb; });
   const jump = document.querySelector('a.home-jump[href="#nfl"] span');
-  if (jump) jump.textContent = "Week " + nfl + " sides, totals, weather";
+  if (jump) jump.textContent = (Number(nfl) >= 19 ? weekLabel("nfl", nfl) : "Week " + nfl) + " sides, totals, weather";
 }
 async function pullLiveScores(light) {
   try {
     const nflW = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : 5;
     const cfbW = typeof currentCfbWeekNumber === "function" ? currentCfbWeekNumber() : 6;
     const jobs = [
-      getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=${nflW}&seasontype=2&limit=50`).then((d) => parseGames(d, "nfl")).catch(() => []),
-      light ? Promise.resolve([]) : getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=${Math.max(1, nflW - 1)}&seasontype=2&limit=50`).then((d) => parseGames(d, "nfl")).catch(() => []),
-      getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=${cfbW}&seasontype=2&groups=80&limit=300`).then((d) => parseGames(d, "cfb")).catch(() => []),
-      light ? Promise.resolve([]) : getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=${Math.max(1, cfbW - 1)}&seasontype=2&groups=80&limit=300`).then((d) => parseGames(d, "cfb")).catch(() => [])
+      getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?${espnWeekQuery("nfl", nflW)}&limit=50`).then((d) => parseGames(d, "nfl")).catch(() => []),
+      light ? Promise.resolve([]) : getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?${espnWeekQuery("nfl", Math.max(1, nflW - 1))}&limit=50`).then((d) => parseGames(d, "nfl")).catch(() => []),
+      getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?${espnWeekQuery("cfb", cfbW)}&groups=80&limit=300`).then((d) => parseGames(d, "cfb")).catch(() => []),
+      light ? Promise.resolve([]) : getJSON(`https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?${espnWeekQuery("cfb", Math.max(1, cfbW - 1))}&groups=80&limit=300`).then((d) => parseGames(d, "cfb")).catch(() => [])
     ];
     const packs = await Promise.all(jobs);
     const byId = {};
@@ -11705,7 +11732,7 @@ function scoreWeekLabel(league, week) {
     ? currentCfbWeekNumber()
     : currentNflWeekNumber();
   if (String(week) === String(current)) return "Current week";
-  return (league === "nfl" ? "NFL Week " : "College Week ") + (week || "—");
+  return week ? weekLabel(league, week) : (league === "nfl" ? "NFL Week —" : "College Week —");
 }
 function scoreWeekValue() {
   const root = document.getElementById("scoreWeek");
@@ -12508,8 +12535,8 @@ async function stampFinalScores() {
   const nflW = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : 4;
   const cfbW = typeof currentCfbWeekNumber === "function" ? currentCfbWeekNumber() : 5;
   window.__finalStamp = Promise.all([
-    getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=" + nflW + "&seasontype=2&limit=50").then((d) => parseGames(d, "nfl")).catch(() => []),
-    getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=" + cfbW + "&seasontype=2&groups=80&limit=300").then((d) => parseGames(d, "cfb")).catch(() => [])
+    getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?" + espnWeekQuery("nfl", nflW) + "&limit=50").then((d) => parseGames(d, "nfl")).catch(() => []),
+    getJSON("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?" + espnWeekQuery("cfb", cfbW) + "&groups=80&limit=300").then((d) => parseGames(d, "cfb")).catch(() => [])
   ]).then((packs) => {
     const byId = {};
     packs.flat().forEach((g) => { if (g && g.id) byId[String(g.id)] = g; });
@@ -12643,7 +12670,7 @@ function collegeWeekOf(iso) {
   return weekFromTuesday(d, "2026-09-01");
 }
 function currentNflWeekNumber() {
-  return memoWeek("nfl", () => Math.max(1, Math.min(22, rollMonday(weekFromTuesday(etYmd(), "2026-09-08"), "nfl"))));
+  return memoWeek("nfl", () => Math.max(1, Math.min(23, rollMonday(weekFromTuesday(etYmd(), "2026-09-08"), "nfl"))));
 }
 function rollMonday(week, league) {
   const parts = ET_DAYHOUR_FMT.formatToParts(new Date());
@@ -14469,7 +14496,9 @@ const VIEW_TITLE = {
 };
 function viewTitle(v) {
   let t = VIEW_TITLE[v] || "Today";
-  try { t = t.replace("{nw}", currentNflWeekNumber() || "").replace("{cw}", currentCfbWeekNumber() || ""); } catch (e) { t = t.replace(/ Week \{[nc]w\}/, ""); }
+  try {
+    t = t.replace("NFL Week {nw}", weekLabel("nfl", currentNflWeekNumber())).replace("College football Week {cw}", Number(currentCfbWeekNumber()) >= 16 ? "College bowls and Playoff" : "College football Week " + currentCfbWeekNumber());
+  } catch (e) { t = t.replace(/ Week \{[nc]w\}/, ""); }
   return v === "home" ? "Double Gs — NFL & College Football Projections, Picks and Props" : t.replace(/\s+/g, " ").trim() + " | Double Gs";
 }
 function setView(next, opts) {

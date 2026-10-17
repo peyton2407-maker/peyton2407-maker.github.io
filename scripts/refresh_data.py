@@ -39,9 +39,18 @@ DEPTH_URL = "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/team
 REPORT = {"sources": []}  # what each feed returned; saved to data/refresh-status.json
 SITE = "https://peyton2407-maker.github.io"
 SB = {
-    "nfl": "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week={w}&seasontype=2&limit=50",
-    "cfb": "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week={w}&seasontype=2&groups=80&limit=300",
+    "nfl": "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?{q}&limit=50",
+    "cfb": "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?{q}&groups=80&limit=300",
 }
+
+
+def espn_week_query(league, w):
+    """ESPN numbers the postseason on its own: college bowls and the Playoff are postseason
+    week 1; the NFL's Wild Card to Super Bowl are postseason weeks 1-4. Our week counter keeps
+    going (college 16+, NFL 19+). Same mapping as espnWeekQuery in index.html."""
+    if league == "nfl":
+        return f"seasontype=3&week={min(4, w - 18)}" if w >= 19 else f"seasontype=2&week={w}"
+    return "seasontype=3&week=1" if w >= 16 else f"seasontype=2&week={w}"
 FPI = {
     "nfl": "https://site.web.api.espn.com/apis/fitt/v3/sports/football/nfl/powerindex?limit=50",
     "cfb": "https://site.web.api.espn.com/apis/fitt/v3/sports/football/college-football/powerindex?limit=200",
@@ -87,9 +96,14 @@ def week_numbers(now):
 def load_feeds(args, nfl_w, cfb_w):
     boards, fpi = [], {}
     for lg, cur in (("nfl", nfl_w), ("cfb", cfb_w)):
+        asked = set()
         for w in (cur - 1, cur, cur + 1):
             if w < 1:
                 continue
+            q = espn_week_query(lg, w)
+            if q in asked:  # bowl weeks all ask for the same postseason board
+                continue
+            asked.add(q)
             if args.fixtures:
                 f = Path(args.fixtures) / f"{lg}-{w}.json"
                 if not f.exists():
@@ -97,7 +111,7 @@ def load_feeds(args, nfl_w, cfb_w):
                 payload = json.loads(f.read_text())
             else:
                 try:
-                    payload = get_json(SB[lg].format(w=w))
+                    payload = get_json(SB[lg].format(q=q))
                 except Exception as e:  # one week missing is not fatal
                     print(f"skip {lg} week {w}: {e}")
                     REPORT["sources"].append({"feed": f"{lg} scoreboard week {w}", "error": str(e)[:200]})

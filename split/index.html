@@ -195,6 +195,7 @@ const GLOSSARY = new Map(DATA.glossary.map((e) => [e.id, e]));
 const DESK = new Map(DATA.desk.map((g) => [String(g.id), g]));
 const SHEETS = DATA.sheets;
 const GAMES = DATA.slate.games;
+function weekName(w) { return Number(w) >= 16 ? "Bowl season" : "Week " + w; }
 let mode = "week";
 let filter = "ranked";
 let query = "";
@@ -245,7 +246,7 @@ function mark() {
 }
 function header() {
   return `<div class="row">${mark()}<div><h1 class="display h1" style="display:block;font-size:30px;line-height:1;margin:0">THE SPLIT</h1><span class="kicker">2026 college football</span></div></div>
-  <p class="lede">Week ${esc(DATA.slate.week)} matchup sheets. The live numbers are this season. Every stat from the full sheet is explained in plain English, including the ones a public feed cannot fill in. College only — NFL stays on Double Gs.</p>
+  <p class="lede">${esc(weekName(DATA.slate.week))} matchup sheets. The live numbers are this season. Every stat from the full sheet is explained in plain English, including the ones a public feed cannot fill in. College only — NFL stays on Double Gs.</p>
   <div class="toggle">
     <button type="button" data-mode="week" class="${mode==="week"?"on":"off"}">This week</button>
     <button type="button" data-mode="guide" class="${mode==="guide"?"on":"off"}">Every stat</button>
@@ -543,7 +544,7 @@ function levelLabel(team) {
 function sheetView() {
   const sheet = SHEETS[sheetId];
   if (!sheet) {
-    return `<a class="back" href="#">Week ${esc((DATA.slate && DATA.slate.week) || "")}</a><h1 class="display" style="margin-top:16px;text-transform:uppercase">That game isn’t on the sheet</h1><p class="lede">It may be an NFL game. Those stay on Double Gs.</p>`;
+    return `<a class="back" href="#">${esc(weekName((DATA.slate && DATA.slate.week) || ""))}</a><h1 class="display" style="margin-top:16px;text-transform:uppercase">That game isn’t on the sheet</h1><p class="lede">It may be an NFL game. Those stay on Double Gs.</p>`;
   }
   const desk = DESK.get(String(sheet.id));
   loadOpen(sheet.id);
@@ -578,7 +579,7 @@ function sheetView() {
     const name = (GLOSSARY.get(row.id) || {}).name || row.id;
     return `<div><button type="button" class="statbtn" data-open="${esc(key)}"><div class="statgrid">${statCell(row.left,"left")}<div class="display midname">${esc(name)}</div>${statCell(row.right,"right")}</div></button>${open===key?explain(row.id):""}</div>`;
   }).join("")}</div></section>`).join("");
-  return `<a class="back" href="#">Week ${esc(sheet.week)}</a><p class="sheet-meta">${esc(meta)}</p>
+  return `<a class="back" href="#">${esc(weekName(sheet.week))}</a><p class="sheet-meta">${esc(meta)}</p>
     <div class="head"><div class="bar" style="background:linear-gradient(90deg,#${sheet.away.color},#${sheet.home.color})"></div><div class="panes">${pane("away")}${pane("home")}</div></div>
     ${deskHtml}
     <div class="toggle"><button type="button" data-smode="game" class="${mode!=="guide"?"on":"off"}">This game</button><button type="button" data-smode="guide" class="${mode==="guide"?"on":"off"}">Every stat</button></div>
@@ -702,7 +703,7 @@ function applyLiveTeam(team, comp) {
 function refreshLines() {
   const week = (DATA.slate && DATA.slate.week) || 4;
   const season = (DATA.slate && DATA.slate.season) || 2026;
-  const boardUrl = "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=" + week + "&seasontype=2&groups=80&limit=200";
+  const boardUrl = "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?" + (Number(week) >= 16 ? "seasontype=3&week=1" : "seasontype=2&week=" + week) + "&groups=80&limit=200";
   const powerUrl = "https://sports.core.api.espn.com/v2/sports/football/leagues/college-football/seasons/" + season + "/powerindex?limit=200";
   Promise.all([
     fetch(boardUrl).then((res) => res.json()).catch(() => null),
@@ -976,7 +977,8 @@ function refreshPlays() {
     const seen = {};
     for (let w = 1; w <= week; w += 1) {
       try {
-        const board = await fetch("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?week=" + w + "&seasontype=2&groups=80&limit=200").then((res) => res.json());
+        if (w > 16) break;  // weeks 16+ are all one postseason board
+        const board = await fetch("https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?" + (w >= 16 ? "seasontype=3&week=1" : "seasontype=2&week=" + w) + "&groups=80&limit=200").then((res) => res.json());
         (board.events || []).forEach((ev) => {
           const st = (((ev.competitions || [])[0] || {}).status || {}).type || {};
           const name = st.name || "";
