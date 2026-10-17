@@ -4956,6 +4956,7 @@ function cfbStarterNudge(g, scale) {
     const side = r.side === "home" || r.side === "away" ? r.side : "";
     if (!side) return;
     if (pos === "QB" && scale && scale.nfl && !nflQbIsStarter(g, r, side)) return;
+    if (pos === "QB" && g.league === "cfb" && !cfbIsLeadingPasser(g, r, side)) return;
     if (pos === "QB" && !(/\b(backup|third string|qb2|qb3|emergency)\b/.test(blob) && !/starter|starting|ruled out|will not play/.test(blob))) {
       let pts = /season|indefinitely|torn|surgery/.test(blob) ? qbSeason : qbBase;
       const backupCut = scale && scale.backup != null ? scale.backup : 0.55;
@@ -8117,23 +8118,52 @@ function injPosGroup(pos){
   if(["ILB","OLB","MLB","LB"].includes(p)) return "LB";
   return p;
 }
+// Does an injury report's team name ("Kansas", "Miami (OH)", "Mississippi State Bulldogs")
+// mean this team? Strict: "Kansas" is not Kansas State, "Texas" is not Texas A&M or Texas
+// Tech, "Western Kentucky" is not Kentucky, "South Alabama" is not Alabama.
+const SQUAD_ALIAS = {
+  "mississippi": "ole miss", "miami (fl)": "miami", "miami fl": "miami", "north carolina state": "nc state",
+  "umass": "massachusetts", "louisiana-monroe": "ul monroe", "louisiana monroe": "ul monroe",
+  "appalachian state": "app state", "southern mississippi": "southern miss", "hawaii": "hawai'i",
+  "san jose state": "san jose state", "ucf": "ucf", "fiu": "florida international", "fau": "florida atlantic",
+  "connecticut": "uconn", "southern california": "usc", "louisiana state": "lsu", "brigham young": "byu",
+  "texas christian": "tcu", "southern methodist": "smu", "central florida": "ucf"
+};
+function squadNorm(s) {
+  return String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/\s+/g, " ").trim();
+}
 function sameSquad(team, tm) {
-  const t = String(team || "").toLowerCase().trim();
-  const full = String((tm && tm.name) || "").toLowerCase().trim();
-  const short = String((tm && tm.short) || "").toLowerCase().trim();
-  const abbr = String((tm && tm.abbr) || "").toLowerCase().trim();
+  let t = squadNorm(team);
+  const full = squadNorm(tm && tm.name);
+  const short = squadNorm(tm && tm.short);
+  const abbr = squadNorm(tm && tm.abbr);
   if (!t || !full) return false;
   if (t === full || t === abbr) return true;
-  if (short.length > 3 && (t === short || t.endsWith(" " + short))) return true;
-  const longer = t.length >= full.length ? t : full;
-  const shorter = t.length >= full.length ? full : t;
-  if (!longer.startsWith(shorter + " ")) return false;
-  if (shorter.split(" ").length >= 2) return true;
-  return !!(short && longer.includes(short));
+  t = SQUAD_ALIAS[t] || t;
+  if (t === full || (short.length > 3 && t === short)) return true;
+  // the report gives the school; the team's full name is school + mascot
+  if (full.startsWith(t + " ")) {
+    const rest = full.slice(t.length + 1);
+    // the rest must be only a mascot, not a different school ("State", "Tech", "A&M"...)
+    if (/^(state|st\.?|tech|a&m|southern|international|atlantic|christian|methodist|\()/.test(rest)) return false;
+    return rest.split(" ").length <= 3;
+  }
+  // the report gives the full name with a mascot the board spells differently
+  if (t.startsWith(full + " ")) return true;
+  return false;
 }
 // A college team's leading passer (from The Split's sheet) listed out or doubtful: the
 // market has already moved for it and our score hasn't, so the game is a pass, side and
 // total, instead of a fake edge on the team that lost its quarterback.
+// Is this injured college QB his team's leading passer (from The Split's sheet)? A backup or
+// a QB out since August isn't worth points; the line and ratings already reflect him.
+function cfbIsLeadingPasser(g, r, side) {
+  const row = (window.SPLIT_DESK || []).find((x) => x && String(x.id) === String(g.id));
+  const qb = row && row[side + "Qb"];
+  if (!qb) return false;
+  const last = (n) => String(n || "").toLowerCase().replace(/[.,]/g, " ").replace(/\b(jr|sr|ii|iii|iv)\b/g, "").trim().split(/\s+/).pop();
+  return last(r.name) === last(qb) && String(r.name || "").trim().charAt(0).toLowerCase() === String(qb).trim().charAt(0).toLowerCase();
+}
 function cfbStarterOut(g) {
   const row = (window.SPLIT_DESK || []).find((r) => r && String(r.id) === String(g.id));
   if (!row) return null;
@@ -8804,7 +8834,10 @@ function cfbPickWhy(g) {
     if (p.pick && p.pick !== "NO PLAY") {
       notes.push("We like " + (p.pick_line || p.pick) + ". " + score + (line ? " The posted line is " + line + "." : "") + (gap ? " " + p.pick + " covers that number by " + gap + "." : ""));
     } else if (line) {
-      notes.push("No side. " + score + " The posted line is " + line + "." + (gap ? " The cover is only " + gap + ", so we pass." : ""));
+      const gapN = Number(gap);
+      notes.push("No side. " + score + " The posted line is " + line + "." + (gap ? (gapN >= 10
+        ? " We're " + gap + " points off the line. A gap that big usually means our numbers are missing something, so we pass."
+        : " We're only " + gap + " points off the line, so we pass.") : ""));
     } else {
       notes.push(score);
     }
@@ -11706,6 +11739,10 @@ function nflSlateLean(g) {
 }
 function cfbListedPick(g) {
   if (g && g.proj && g.proj.qb_pass) return { pick: "NO PLAY", pick_line: null, total_pick: "NO PLAY" };
+  // 10+ points off the line (e.g. a team new to FBS with thin data): no lean, side or total
+  if (g && g.proj && g.proj.edge_spread != null && Math.abs(Number(g.proj.edge_spread)) >= 10 && !(g.proj.pick && g.proj.pick !== "NO PLAY")) {
+    return { pick: "NO PLAY", pick_line: null, total_pick: "NO PLAY" };
+  }
   const src = (window.SPLIT_DESK || []).find((r) => r && String(r.id) === String(g.id));
   const lean = nflSlateLean(g);
   const out = { pick: lean.pick, pick_line: lean.pick_line, total_pick: lean.total_pick };
