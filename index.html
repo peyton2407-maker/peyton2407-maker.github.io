@@ -16097,7 +16097,7 @@ function seasonBar(x) {
   const v = Math.max(0, Math.min(100, Number(x) || 0));
   return `<span class="so-pct"><i style="width:${v.toFixed(1)}%"></i><b>${seasonPct(x)}</b></span>`;
 }
-function seasonRecord(t) {
+function soRecord(t) {
   if (t.w == null) return "";
   return t.w + "-" + t.l + (Number(t.t) ? "-" + t.t : "");
 }
@@ -16114,7 +16114,7 @@ function seasonNextGame(teamId) {
 }
 function seasonTeamCell(t) {
   const logo = t.logo ? `<img src="${escHtml(t.logo)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">` : `<span class="tlogo-none"></span>`;
-  const rec = seasonRecord(t);
+  const rec = soRecord(t);
   return `<div class="rteam so-team">${logo}<span><b>${escHtml(t.name || t.abbr || "")}</b>${rec ? `<small>${rec} now</small>` : ""}</span></div>`;
 }
 function seasonPrice(p) { return p > 0 ? "+" + p : String(p); }
