@@ -846,10 +846,10 @@
    "total": 54.5,
    "lockedAt": "2026-10-17T22:37:26.030Z",
    "close_spread": -5.5,
-   "close_total": 54.5,
-   "closeAt": "2026-10-17T23:00:54.605Z",
+   "close_total": 53.5,
+   "closeAt": "2026-10-17T23:46:27.065Z",
    "clv_side": -1,
-   "clv_total": 0
+   "clv_total": -1
   },
   "401862805": {
    "id": "401862805",
@@ -950,6 +950,26 @@
    "closeAt": "2026-10-17T18:48:42.627Z",
    "clv_side": 0,
    "clv_total": 2
+  },
+  "401864523": {
+   "id": "401864523",
+   "league": "cfb",
+   "week": 7,
+   "short": "SJSU @ UTEP",
+   "home": "UTEP",
+   "away": "SJSU",
+   "date": "2026-10-18T01:00Z",
+   "pick": "SJSU",
+   "pick_line": "SJSU -7.5",
+   "total_pick": "OVER 48.5",
+   "side_play": true,
+   "our_margin": -12.15,
+   "our_total": 49.6,
+   "confidence": 51,
+   "total_play": false,
+   "spread": 6.5,
+   "total": 45.5,
+   "lockedAt": "2026-10-17T23:46:27.065Z"
   },
   "401864524": {
    "id": "401864524",
@@ -1520,5 +1540,5 @@
    }
   ]
  },
- "updated": "2026-10-17T23:22:33.408Z"
+ "updated": "2026-10-17T23:46:27.065Z"
 }
