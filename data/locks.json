@@ -476,6 +476,26 @@
    "clv_side": 0,
    "clv_total": 0
   },
+  "401860903": {
+   "id": "401860903",
+   "league": "cfb",
+   "week": 7,
+   "short": "WSU @ ORST",
+   "home": "ORST",
+   "away": "WSU",
+   "date": "2026-10-17T22:00Z",
+   "pick": "WSU",
+   "pick_line": "WSU +17.5",
+   "total_pick": "UNDER 53.5",
+   "side_play": true,
+   "our_margin": 14.15,
+   "our_total": 51.1,
+   "confidence": 51,
+   "total_play": true,
+   "spread": -18.5,
+   "total": 52.5,
+   "lockedAt": "2026-10-17T20:43:14.386Z"
+  },
   "401860923": {
    "id": "401860923",
    "league": "cfb",
@@ -1022,9 +1042,9 @@
     "hitPct": 72,
     "why": "Our total is 7.9 points over DraftKings 46.5.",
     "label": "Best of Saturday's 33 games",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "CLT 38 – TEM 31",
+    "resultWhy": "It hit. OVER 46.5 cashed. Final was CLT 38 – TEM 31.",
     "locked": true,
     "kick": "2026-10-17T17:00Z",
     "big": true,
@@ -1170,5 +1190,5 @@
    }
   ]
  },
- "updated": "2026-10-17T20:14:35.312Z"
+ "updated": "2026-10-17T20:43:14.386Z"
 }
