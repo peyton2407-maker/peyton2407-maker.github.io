@@ -26,6 +26,12 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Refresh from ESPN
         run: python3 scripts/refresh_data.py
+      - name: Live weather and injury reports (NFL and college) for every visitor
+        # Runs the site's own weather and injury code in headless Chromium; college
+        # injuries come from Covers directly. Never blocks the refresh.
+        continue-on-error: true
+        timeout-minutes: 12
+        run: python3 scripts/gameday.py
       - name: Save this week's college polls
         continue-on-error: true
         run: python3 scripts/polls.py
@@ -53,7 +59,7 @@ jobs:
           if [ -f data/nfl-depth.json ]; then git add data/nfl-depth.json; fi
           if [ -f data/books.json ]; then git add data/books.json; fi
           if [ -f data/line-history.json ]; then git add data/line-history.json; fi
-          git add data/desk-cfb.json data/split-notes.json data/cfb-polls.json
+          git add data/desk-cfb.json data/split-notes.json data/cfb-polls.json data/eleven.json
           if [ -f data/props.json ]; then git add data/props.json; fi
           if [ -f data/props-status.json ]; then git add data/props-status.json; fi
           if git diff --cached --quiet; then
