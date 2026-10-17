@@ -8,7 +8,7 @@
 <link rel="canonical" href="https://peyton2407-maker.github.io/split/" />
 <link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48" />
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
-<meta name="theme-color" content="#0f2a1e" />
+<meta name="theme-color" content="#0d1628" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/manifest.webmanifest" />
 <meta property="og:type" content="website" />
@@ -24,11 +24,14 @@
 <meta name="twitter:title" content="The Split · Double Gs" />
 <meta name="twitter:description" content="College football matchup sheets for every game this week." />
 <meta name="twitter:image" content="https://peyton2407-maker.github.io/og.jpg?v=3" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Big+Shoulders+Display:wght@700;800;900&display=swap" rel="stylesheet" />
+<link rel="preload" href="/assets/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/fonts/big-shoulders-800.woff2" as="font" type="font/woff2" crossorigin />
 <style>
-:root { --bg:#0f2a1e; --surface:#153526; --surface-2:#1c4231; --fg:#f1ede1; --muted:#a7bbad; --chalk:#f4cb72; --good:#4fd08a; --bad:#ff6a5c; --line:rgba(241,237,225,.12); --line-2:rgba(241,237,225,.24); --brass:#e3a83e; --brass-ink:#261803; --flame:#ff7139; --display:"Big Shoulders Display","Barlow Condensed",Impact,sans-serif; --body:Barlow,"Segoe UI",system-ui,sans-serif; --safe-b:env(safe-area-inset-bottom, 10px); }
+@font-face { font-family: "Barlow"; src: url("/assets/fonts/barlow-400.woff2") format("woff2"); font-weight: 300 500; font-display: swap; }
+@font-face { font-family: "Barlow"; src: url("/assets/fonts/barlow-600.woff2") format("woff2"); font-weight: 600 700; font-display: swap; }
+@font-face { font-family: "Barlow"; src: url("/assets/fonts/barlow-800.woff2") format("woff2"); font-weight: 800 900; font-display: swap; }
+@font-face { font-family: "Big Shoulders Display"; src: url("/assets/fonts/big-shoulders-800.woff2") format("woff2"); font-weight: 600 900; font-display: swap; }
+:root { --bg:#0d1628; --surface:#141f36; --surface-2:#1b2945; --fg:#edf1f7; --muted:#8d99b1; --chalk:#f2b840; --good:#3cc47e; --bad:#f2545b; --line:rgba(237,241,247,.09); --line-2:rgba(237,241,247,.18); --brass:#e0a531; --brass-ink:#241602; --flame:#ff6a33; --display:"Big Shoulders Display","Barlow Condensed",Impact,sans-serif; --body:Barlow,"Segoe UI",system-ui,sans-serif; --safe-b:env(safe-area-inset-bottom, 10px); }
 * { box-sizing:border-box; }
 html, body { margin:0; background:var(--bg); color:var(--fg); font-family:var(--body); }
 button, input { font:inherit; color:inherit; }
@@ -111,23 +114,18 @@ h1 { margin:0; font-size:30px; line-height:1; font-weight:600; }
 .gname { font-size:20px; line-height:1; text-transform:uppercase; }
 .live { font-size:12px; color:var(--chalk); }
 
-.site-switch{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:#1b2118;border-bottom:1px solid #343c2e}
-.site-switch a{display:grid;place-items:center;min-height:44px;border-radius:999px;text-decoration:none;font-size:14px;font-weight:500;color:#a7ad9c}
-.site-switch a.on{background:#e4ff4a;color:#12140f;font-weight:700}
+.site-switch{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:#131926;border-bottom:1px solid #242f46}
+.site-switch a{display:grid;place-items:center;min-height:44px;border-radius:999px;text-decoration:none;font-size:14px;font-weight:500;color:#97a0b2}
+.site-switch a.on{background:#e4ff4a;color:#0c1017;font-weight:700}
 .site-banner{display:block;width:100%;max-height:160px;object-fit:cover;object-position:center}
 
 /* ===== Under the lights: same shell and palette as Double Gs ===== */
-body {
-  background:
-    repeating-linear-gradient(180deg, rgba(255,255,255,.018) 0 72px, transparent 72px 144px),
-    radial-gradient(1200px 600px at 50% -240px, rgba(255,244,214,.07), transparent 70%),
-    var(--bg);
-}
+body { background: var(--bg); }
 :focus-visible { outline: 2px solid var(--chalk); outline-offset: 2px; }
 .wrap { padding: 8px 16px calc(64px + 40px + var(--safe-b)); }
 .gg-appbar {
   position: sticky; top: 0; z-index: 60; display: flex; align-items: center; gap: 10px;
-  padding: 10px 16px; background: rgb(15,42,30);
+  padding: 10px 16px; background: rgb(15,24,42);
   border-bottom: 1px solid var(--line);
 }
 .gg-brand, .gg-mainnav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg); }
@@ -140,7 +138,7 @@ body {
 .gg-note { margin-left: auto; font-size: 12px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 6px 10px; white-space: nowrap; }
 .gg-mainnav {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 70; display: grid; grid-template-columns: repeat(5, 1fr);
-  padding: 6px 6px calc(6px + var(--safe-b)); background: rgba(12,34,24,.96);
+  padding: 6px 6px calc(6px + var(--safe-b)); background: rgba(12,19,34,.96);
   border-top: 1px solid var(--line);
 }
 .gg-mainnav-brand { display: none !important; }
@@ -160,7 +158,7 @@ body {
 
 /* The Split content in the shared style */
 h1 { font-family: var(--display); font-weight: 900; letter-spacing: .01em; }
-.card, .head, .desk, .box, .lineblock { border-radius: 14px; background: rgba(21,53,38,.72); }
+.card, .head, .desk, .box, .lineblock { border-radius: 14px; background: rgba(21,32,53,.72); }
 .card:hover { border-color: var(--line-2); }
 .team { font-family: var(--display); font-weight: 800; font-size: 24px; }
 .score, .num, .val, .abbr, .desk .pts { font-family: var(--display); font-weight: 800; font-variant-numeric: tabular-nums; }
@@ -170,7 +168,7 @@ h1 { font-family: var(--display); font-weight: 900; letter-spacing: .01em; }
 .desk { border-color: rgba(244,203,114,.35); }
 .desk a { background: linear-gradient(180deg, #f4cb72, #e3a83e); color: var(--brass-ink); }
 .search { border-radius: 12px; }
-.guide h2 { background: rgba(15,42,30,.96); }
+.guide h2 { background: rgba(15,24,42,.96); }
 @media (min-width: 980px) {
   body { padding-left: 224px; }
   .gg-appbar { padding: 12px 28px; }
@@ -178,12 +176,18 @@ h1 { font-family: var(--display); font-weight: 900; letter-spacing: .01em; }
   .gg-note { margin-left: 0; }
   .gg-mainnav {
     top: 0; right: auto; width: 224px; display: flex; flex-direction: column; gap: 4px; padding: 18px 14px;
-    border-top: 0; border-right: 1px solid var(--line); background: rgba(10,30,21,.9);
+    border-top: 0; border-right: 1px solid var(--line); background: rgba(10,17,30,.9);
   }
   .gg-mainnav-brand { display: flex !important; padding: 4px 8px 18px; }
   .gg-mainnav a { flex-direction: row; justify-content: flex-start; gap: 12px; padding: 10px 12px; min-height: 46px; font-size: 16px; }
   .wrap { padding-bottom: 48px; }
 }
+
+/* section tabs as on Double Gs: an underline strip */
+.gg-subnav { gap: 2px; border-bottom: 1px solid var(--line); padding-top: 6px; padding-bottom: 0; }
+.gg-subnav a { border: 0 !important; border-radius: 0 !important; background: none !important; min-height: 44px; padding: 10px 14px; color: var(--muted); box-shadow: inset 0 -2px 0 transparent; opacity: 1; }
+.gg-subnav a:hover { color: var(--fg); }
+.gg-subnav a.on { background: none !important; color: var(--fg) !important; box-shadow: inset 0 -2px 0 var(--chalk); }
 </style>
 </head>
 <body><header class="gg-appbar"><a class="gg-brand" href="/#home" aria-label="Double Gs home"><span class="gg-mark">GG</span><span class="gg-word">Double Gs</span></a><span class="gg-note">College matchup sheets</span></header><nav class="gg-mainnav" aria-label="Sections"><a class="gg-mainnav-brand" href="/#home" aria-hidden="true" tabindex="-1"><span class="gg-mark">GG</span><span class="gg-word">Double Gs</span></a><a href="/#home"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 10.5 12 4l8.5 6.5V20H14.5v-5.5h-5V20h-6z"/></svg><span>Home</span></a><a href="/#nfl"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5c0-8.3 6.7-15 15-15 0 8.3-6.7 15-15 15z"/><path d="M9.5 14.5l5-5M10.6 11.4l2 2M12.6 9.4l2 2M8.6 13.4l2 2"/></svg><span>NFL</span></a><a class="on" href="/#cfb" aria-current="page"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 3.5v17"/><path d="M5.5 4.5 19 9l-13.5 4.5"/></svg><span>College</span></a><a href="/#builder"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5h17v3a1.5 1.5 0 0 0 0 3v3h-17v-3a1.5 1.5 0 0 0 0-3z"/><path d="M14 7.5v9" stroke-dasharray="1.6 1.6"/></svg><span>Boom Room</span></a><a href="/#score"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-7M12 20V5M19 20v-10"/></svg><span>Record</span></a></nav><nav class="gg-subnav" aria-label="College pages"><a href="/#cfb">CFB Week</a><a href="/#cfbpicks">College picks</a><a href="/#potd">Play of the day</a><a href="/#cfbwx">Weather</a><a href="/#cfbinj">Injuries</a><a class="on" href="/split/" aria-current="page">The Split</a></nav>

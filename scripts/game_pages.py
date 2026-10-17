@@ -126,23 +126,23 @@ def card_html(g):
 @font-face{{font-family:B;src:url({font('barlow-600.woff2')});font-weight:600}}
 @font-face{{font-family:B;src:url({font('barlow-800.woff2')});font-weight:800}}
 html,body{{margin:0;width:1200px;height:630px;overflow:hidden}}
-body{{background:radial-gradient(900px 500px at 85% -10%,rgba(227,168,62,.22),transparent 60%),linear-gradient(160deg,#0a1a12,#0f2a1e 55%,#14301f);color:#f1ede1;font-family:B;}}
+body{{background:radial-gradient(900px 500px at 85% -10%,rgba(242,184,64,.20),transparent 60%),linear-gradient(160deg,#08101e,#0d1628 55%,#141f36);color:#edf1f7;font-family:B;}}
 .wrap{{position:absolute;inset:44px 56px}}
-.top{{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:26px;color:#f4cb72;letter-spacing:.02em}}
-.brand{{display:flex;align-items:center;gap:14px}} .mark{{background:linear-gradient(160deg,#f4cb72,#c98a22);color:#261803;font-family:BS;font-size:30px;padding:4px 12px;border-radius:10px}}
-.when{{color:#c5d6c9;font-weight:600;font-size:24px}}
+.top{{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:26px;color:#f2b840;letter-spacing:.02em}}
+.brand{{display:flex;align-items:center;gap:14px}} .mark{{background:linear-gradient(160deg,#f2b840,#d39a2a);color:#241602;font-family:BS;font-size:30px;padding:4px 12px;border-radius:10px}}
+.when{{color:#c2cbdb;font-weight:600;font-size:24px}}
 .teams{{display:grid;grid-template-columns:330px 1fr 330px;align-items:center;margin-top:40px}}
 .t{{display:flex;align-items:center;gap:20px;min-width:0}} .t.home{{justify-content:flex-end;text-align:right}}
-.t img,.nologo{{width:112px;height:112px;object-fit:contain;flex:none}} .nologo{{display:grid;place-items:center;border-radius:50%;background:#1c4231;font-family:BS;font-size:40px}}
-.ab{{font-family:BS;font-size:84px;line-height:.9}} .nm{{font-size:22px;color:#c5d6c9;font-weight:600;line-height:1.15;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}}
-.score{{font-family:BS;font-size:150px;line-height:.9;color:#f4cb72;text-align:center;white-space:nowrap}}
-.score span{{color:#6b7d70;font-size:90px;padding:0 14px;vertical-align:middle}}
-.lbl{{text-align:center;color:#8aa090;font-weight:800;font-size:22px;letter-spacing:.14em;text-transform:uppercase;margin-top:6px}}
-.wins{{text-align:center;color:#c5d6c9;font-weight:600;font-size:28px;margin-top:22px}}
+.t img,.nologo{{width:112px;height:112px;object-fit:contain;flex:none}} .nologo{{display:grid;place-items:center;border-radius:50%;background:#1b2945;font-family:BS;font-size:40px}}
+.ab{{font-family:BS;font-size:84px;line-height:.9}} .nm{{font-size:22px;color:#c2cbdb;font-weight:600;line-height:1.15;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}}
+.score{{font-family:BS;font-size:150px;line-height:.9;color:#f2b840;text-align:center;white-space:nowrap}}
+.score span{{color:#6c7892;font-size:90px;padding:0 14px;vertical-align:middle}}
+.lbl{{text-align:center;color:#8d99b1;font-weight:800;font-size:22px;letter-spacing:.14em;text-transform:uppercase;margin-top:6px}}
+.wins{{text-align:center;color:#c2cbdb;font-weight:600;font-size:28px;margin-top:22px}}
 .bottom{{position:absolute;left:0;right:0;bottom:0;display:flex;gap:18px}}
 .box{{flex:1;background:rgba(21,53,38,.85);border:2px solid rgba(227,168,62,.32);border-radius:18px;padding:16px 22px}}
-.box b{{display:block;font-family:BS;font-size:46px;line-height:1;color:#f1ede1}} .box small{{color:#8aa090;font-size:20px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}}
-.box.pick{{flex:1.5;border-color:#f4cb72}} .box.pick b{{color:#f4cb72}}
+.box b{{display:block;font-family:BS;font-size:46px;line-height:1;color:#edf1f7}} .box small{{color:#8d99b1;font-size:20px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}}
+.box.pick{{flex:1.5;border-color:#f2b840}} .box.pick b{{color:#f2b840}}
 </style></head><body><div class="wrap">
 <div class="top"><div class="brand"><span class="mark">GG</span>Double Gs · {esc(g['weekLabel'])}</div><div class="when">{esc(kick_et(g['date']))}</div></div>
 <div class="teams">
@@ -200,7 +200,7 @@ def page_html(g, slug, img_ver):
 <link rel="canonical" href="{url}">
 <link rel="icon" href="/favicon-48.png" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta name="theme-color" content="#0f2a1e">
+<meta name="theme-color" content="#0d1628">
 <meta property="og:type" content="article"><meta property="og:site_name" content="Double Gs">
 <meta property="og:url" content="{url}"><meta property="og:title" content="{esc(a['abbr'])} at {esc(h['abbr'])}: {esc(proj or 'our projection')} | Double Gs">
 <meta property="og:description" content="{esc(desc)}">
@@ -212,12 +212,12 @@ def page_html(g, slug, img_ver):
 @font-face{{font-family:BS;src:url(/assets/fonts/big-shoulders-800.woff2) format("woff2");font-weight:800;font-display:swap}}
 @font-face{{font-family:B;src:url(/assets/fonts/barlow-400.woff2) format("woff2");font-weight:400;font-display:swap}}
 @font-face{{font-family:B;src:url(/assets/fonts/barlow-800.woff2) format("woff2");font-weight:800;font-display:swap}}
-:root{{--bg:#0f2a1e;--card:#153526;--line:rgba(227,168,62,.22);--ink:#f1ede1;--soft:#c5d6c9;--muted:#8aa090;--sun:#f4cb72}}
+:root{{--bg:#0d1628;--card:#141f36;--line:rgba(242,184,64,.20);--ink:#edf1f7;--soft:#c2cbdb;--muted:#8d99b1;--sun:#f2b840}}
 *{{box-sizing:border-box}} html,body{{margin:0;background:var(--bg);color:var(--ink);font-family:B,system-ui,sans-serif;line-height:1.5}}
 main{{max-width:760px;margin:0 auto;padding:20px 16px 48px}}
 header{{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}}
 .brand{{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font-family:BS;font-size:26px}}
-.mark{{background:linear-gradient(160deg,#f4cb72,#c98a22);color:#261803;padding:2px 9px;border-radius:9px}}
+.mark{{background:linear-gradient(160deg,#f2b840,#d39a2a);color:#241602;padding:2px 9px;border-radius:9px}}
 .kicker{{color:var(--sun);font-weight:800;font-size:14px;letter-spacing:.06em}}
 h1{{font-family:BS;font-size:clamp(30px,7vw,48px);line-height:1.02;margin:6px 0 14px}}
 .card{{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}}
@@ -230,7 +230,7 @@ h1{{font-family:BS;font-size:clamp(30px,7vw,48px);line-height:1.02;margin:6px 0 
 dl{{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin:16px 0 0}} dt{{color:var(--muted)}} dd{{margin:0}}
 ul{{padding-left:20px;color:var(--soft)}}
 .btns{{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}}
-.btn{{background:var(--sun);color:#261803;text-decoration:none;font-weight:800;padding:12px 18px;border-radius:12px}}
+.btn{{background:var(--sun);color:#241602;text-decoration:none;font-weight:800;padding:12px 18px;border-radius:12px}}
 .btn.alt{{background:transparent;color:var(--sun);border:1px solid rgba(244,203,114,.5)}}
 .btn:focus-visible{{outline:3px solid var(--ink);outline-offset:2px}}
 .fine{{color:var(--muted);font-size:13px;margin-top:22px}}
