@@ -28,6 +28,14 @@ SITE = "https://peyton2407-maker.github.io"
 
 # view -> (selector to count, how to set it up before reading)
 SCREENS = {  # view -> (section id, what to count, setup before reading)
+    "home": ("homeSection", "#homeBoard .game-row", None),
+    "nfl": ("boardSection", ".slate-row, article.game", None),
+    "cfb": ("boardSection", ".slate-row, article.game", None),
+    "builder": ("builderSection", ".pb-game", None),
+    "season": ("seasonSection", "tr[data-team]", None),
+    "score": ("scoreSection", "tr, .score-row", None),
+    "ratings": ("ratingsSection", "tr[data-id], .rank-card", None),
+    "card": ("cardSection", ".share-legs li", None),
     "props": ("propsSection", ".prop-card", "document.getElementById('propDay') && (document.getElementById('propDay').value='week', document.getElementById('propDay').dispatchEvent(new Event('change')))"),
     "tds": ("tdSection", "#tdBoard > *", None),
     "charts": ("chartsSection", "#chartGames [data-chart-game]", None),
@@ -88,11 +96,30 @@ async def main():
                     const text = sec.innerText.replace(/\\s+/g, ' ');
                     const summary = (text.match(/\\b\\d+ (featured|matching|TD tickets|value tickets|games on this board|listed|spread tickets|first-TD)[^.]{0,60}/g) || []).slice(0, 4);
                     const empty = [...sec.querySelectorAll('.empty')].filter((e) => e.offsetParent).map((e) => e.textContent.trim().slice(0, 140));
-                    return { visible: !!sec.offsetParent, count: sec.querySelectorAll(sel).length, summary, empty, chars: text.length };
+                    // pictures: anything that finished loading with nothing to show is broken
+                    const imgs = [...sec.querySelectorAll('img')].filter((i) => i.offsetParent && i.complete && getComputedStyle(i).visibility !== 'hidden');
+                    const broken = imgs.filter((i) => i.naturalWidth === 0).map((i) => i.src.slice(-60)).slice(0, 5);
+                    return { visible: !!sec.offsetParent, count: sec.querySelectorAll(sel).length, summary, empty, chars: text.length, images: imgs.length, broken_images: broken };
                 }""",
                 [sec_id, sel],
             )
             report["screens"][view] = info
+        # a game opens in the pop-up, once
+        await page.evaluate("location.hash = '#nfl'")
+        await page.wait_for_timeout(3000)
+        report["game_popup"] = await page.evaluate("""() => { const r = document.querySelector('.slate-row[data-id], article.game[data-id]'); if (!r) return 'no game row';
+            r.click(); return new Promise((res) => setTimeout(() => { const ov = document.getElementById('overlay'); const sheet = document.getElementById('gameSheet');
+              res({ open: !!(ov && ov.classList.contains('show')), hero: !!document.querySelector('#modal .gm-hero'), shown_twice: !!(sheet && sheet.offsetParent && sheet.innerHTML.length > 50),
+                    logos_ok: [...document.querySelectorAll('#modal img')].filter((i) => i.complete && i.naturalWidth > 0).length }); }, 2500)); }""")
+        # The Split
+        sp = await (await browser.new_context(viewport={"width": 1280, "height": 900})).new_page()
+        sp_err = []
+        sp.on("pageerror", lambda e: sp_err.append(str(e)[:200]))
+        await sp.goto(SITE + "/split/", wait_until="load", timeout=120000)
+        await sp.wait_for_timeout(5000)
+        report["split"] = await sp.evaluate("""() => { const imgs = [...document.querySelectorAll('img')].filter((i) => i.complete && i.offsetParent);
+            return { games: document.querySelectorAll('[data-gid], .game, article').length, images: imgs.length, broken_images: imgs.filter((i) => i.naturalWidth === 0).map((i) => i.src.slice(-60)).slice(0, 5) }; }""")
+        report["split"]["errors"] = sp_err
         report["dk_lines_loaded"] = await page.evaluate("Object.keys(window.__DK_LINES || window.DK_LINES || {}).length || null")
         report["games_with_props"] = await page.evaluate("(DATA.games || []).filter((g) => g.league === 'nfl' && !g.completed && (g.props || []).length).length")
         report["nfl_games_upcoming"] = await page.evaluate("(DATA.games || []).filter((g) => g.league === 'nfl' && !g.completed).length")

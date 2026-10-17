@@ -15,6 +15,36 @@ OUT = Path(__file__).resolve().parents[1] / "data" / "cfb-polls.json"
 URL = "https://site.api.espn.com/apis/site/v2/sports/football/college-football/rankings"
 
 
+TEAM_KEYS = ("id", "uid", "displayName", "location", "name", "nickname", "abbreviation", "shortDisplayName", "color")
+RANK_KEYS = ("current", "previous", "points", "firstPlaceVotes", "trend", "recordSummary", "date")
+
+
+def slim(poll):
+    """Only what the site reads (parseCfbPoll): about a tenth of ESPN's full answer."""
+    if not poll:
+        return poll
+
+    def row(x):
+        t = x.get("team") or {}
+        team = {k: t[k] for k in TEAM_KEYS if k in t}
+        logo = next((L.get("href") for L in t.get("logos") or [] if "default" in (L.get("rel") or [])), None) or next((L.get("href") for L in t.get("logos") or []), None)
+        if logo:
+            team["logos"] = [{"href": logo, "rel": ["full", "default"]}]
+        grp = t.get("groups") or {}
+        if grp.get("shortName"):
+            team["groups"] = {"shortName": grp["shortName"]}
+        out = {k: x[k] for k in RANK_KEYS if k in x}
+        out["team"] = team
+        return out
+
+    keep = {k: poll[k] for k in ("name", "shortName", "type", "headline", "shortHeadline", "lastUpdated", "date") if k in poll}
+    if poll.get("occurrence"):
+        keep["occurrence"] = {"displayValue": poll["occurrence"].get("displayValue"), "number": poll["occurrence"].get("number")}
+    for k in ("ranks", "others", "droppedOut"):
+        keep[k] = [row(x) for x in poll.get(k) or []]
+    return keep
+
+
 def main():
     try:
         req = urllib.request.Request(URL, headers={"Accept": "application/json", "User-Agent": "Mozilla/5.0 (Double Gs polls)"})
@@ -29,6 +59,7 @@ def main():
             out["ap"] = p
         elif p.get("type") == "usa":
             out["coaches"] = p
+    out["ap"], out["coaches"] = slim(out["ap"]), slim(out["coaches"])
     if not out["ap"] or len(out["ap"].get("ranks") or []) < 25:
         print("no full AP poll in the feed; keeping the old file")
         return 0
