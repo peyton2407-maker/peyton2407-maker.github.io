@@ -26,6 +26,9 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Refresh from ESPN
         run: python3 scripts/refresh_data.py
+      - name: Copy The Split's college picks and matchup notes to the main site
+        continue-on-error: true
+        run: python3 scripts/sync_split.py
       - name: Save every book's lines for the parlay builder
         # Never blocks the refresh: if the feed is down, the old file stays.
         continue-on-error: true
@@ -47,6 +50,7 @@ jobs:
           if [ -f data/nfl-depth.json ]; then git add data/nfl-depth.json; fi
           if [ -f data/books.json ]; then git add data/books.json; fi
           if [ -f data/line-history.json ]; then git add data/line-history.json; fi
+          git add data/desk-cfb.json data/split-notes.json
           if [ -f data/props.json ]; then git add data/props.json; fi
           if [ -f data/props-status.json ]; then git add data/props-status.json; fi
           if git diff --cached --quiet; then
