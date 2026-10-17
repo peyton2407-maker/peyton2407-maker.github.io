@@ -619,7 +619,12 @@
    "total_play": true,
    "spread": 4.5,
    "total": 46.5,
-   "lockedAt": "2026-10-17T19:17:20.394Z"
+   "lockedAt": "2026-10-17T19:17:20.394Z",
+   "close_spread": 4.5,
+   "close_total": 46.5,
+   "closeAt": "2026-10-17T19:48:36.932Z",
+   "clv_side": 0.5,
+   "clv_total": 1
   },
   "401864522": {
    "id": "401864522",
@@ -870,6 +875,26 @@
    "closeAt": "2026-10-17T15:16:37.713Z",
    "clv_side": 4,
    "clv_total": -1
+  },
+  "401869966": {
+   "id": "401869966",
+   "league": "cfb",
+   "week": 7,
+   "short": "TROY @ UL",
+   "home": "UL",
+   "away": "TROY",
+   "date": "2026-10-17T21:00Z",
+   "pick": "TROY",
+   "pick_line": "TROY +3.0",
+   "total_pick": "UNDER 49.5",
+   "side_play": false,
+   "our_margin": 4.32,
+   "our_total": 45.1,
+   "confidence": 51,
+   "total_play": true,
+   "spread": -3,
+   "total": 48.5,
+   "lockedAt": "2026-10-17T19:48:36.932Z"
   },
   "401872995": {
    "id": "401872995",
@@ -1140,5 +1165,5 @@
    }
   ]
  },
- "updated": "2026-10-17T19:17:20.394Z"
+ "updated": "2026-10-17T19:48:36.932Z"
 }
