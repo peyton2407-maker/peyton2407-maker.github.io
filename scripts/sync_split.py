@@ -85,8 +85,20 @@ def main():
     except Exception:
         old = []
     by_id = {str(r["id"]): r for r in old if r and r.get("id") is not None}
+
+    def passer(leaders):
+        # "B. Brown · 104/159, 1055 YDS, 7 TD, 7 INT" -> "B. Brown"
+        for L in leaders or []:
+            if L.get("role") == "Pass" and L.get("line"):
+                return str(L["line"]).split("·")[0].strip()
+        return None
+
     for r in desk_rows:
         if r and r.get("id") is not None:
+            sh = sheets.get(str(r["id"])) or {}
+            r = dict(r)
+            r["awayQb"] = passer(sh.get("awayLeaders"))
+            r["homeQb"] = passer(sh.get("homeLeaders"))
             by_id[str(r["id"])] = r
     merged = sorted(by_id.values(), key=lambda r: (str(r.get("date") or ""), str(r["id"])))
     DESK.write_text(json.dumps(merged, ensure_ascii=False, separators=(",", ":")) + "\n")

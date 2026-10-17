@@ -5624,6 +5624,7 @@ function applySplitDesk() {
       notes: moved.notes.length ? moved.notes : ["Nothing since the locked score was big enough to move the line."]
     };
   });
+  applyCfbQbPass();
   } finally {
     window.__splitDeskRunning = false;
     if (window.__splitDeskAgain) {
@@ -8130,6 +8131,38 @@ function sameSquad(team, tm) {
   if (shorter.split(" ").length >= 2) return true;
   return !!(short && longer.includes(short));
 }
+// A college team's leading passer (from The Split's sheet) listed out or doubtful: the
+// market has already moved for it and our score hasn't, so the game is a pass, side and
+// total, instead of a fake edge on the team that lost its quarterback.
+function cfbStarterOut(g) {
+  const row = (window.SPLIT_DESK || []).find((r) => r && String(r.id) === String(g.id));
+  if (!row) return null;
+  const bag = (((typeof DATA !== "undefined" && DATA && DATA.injuries) || window.__INJ || {}).cfb) || [];
+  const last = (n) => String(n || "").toLowerCase().replace(/[.,]/g, " ").replace(/\b(jr|sr|ii|iii|iv)\b/g, "").trim().split(/\s+/).pop();
+  const first = (n) => String(n || "").trim().charAt(0).toLowerCase();
+  for (const side of ["away", "home"]) {
+    const qb = row[side + "Qb"];
+    if (!qb) continue;
+    const hit = bag.find((r) => String(r.pos || "").toUpperCase() === "QB"
+      && /OUT|DOUBT|IR|SUSP|INACTIVE/.test(String(r.tag || r.status || "").toUpperCase())
+      && sameSquad(r.team, g[side]) && last(r.name) === last(qb) && first(r.name) === first(qb));
+    if (hit) return { side, qb, name: hit.name, tag: String(hit.tag || hit.status || "").toUpperCase() };
+  }
+  return null;
+}
+function applyCfbQbPass() {
+  if (typeof DATA === "undefined" || !DATA) return;
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.league !== "cfb" || g.completed || !g.proj) return;
+    const out = cfbStarterOut(g);
+    if (!out) { delete g.proj.qb_pass; return; }
+    const team = g[out.side].abbr;
+    g.proj.qb_pass = `${team}'s starting quarterback, ${out.qb}, is listed ${/DOUBT/.test(out.tag) ? "doubtful" : "out"}. The line has already moved for that and our number hasn't, so we pass on this game.`;
+    g.proj.pick = "NO PLAY";
+    g.proj.pick_line = null;
+    g.proj.total_pick = "NO PLAY";
+  });
+}
 function attachInjuriesToGames(){
   try { lockSeasonQbs(); } catch (e) {}
   const bag = (DATA && DATA.injuries) || window.__INJ || {};
@@ -8161,6 +8194,8 @@ function attachInjuriesToGames(){
     });
   });
   try { reshapeSeasonQbProps(); } catch (e) {}
+  // college picks depend on who's hurt (applyCfbQbPass); rebuild them when injuries change
+  try { if (typeof applySplitDesk === "function" && (window.SPLIT_DESK || []).length) applySplitDesk(); } catch (e) {}
 }
 function seedInjuriesFromSnap(){
   const pack = ensureInjPack();
@@ -8756,6 +8791,7 @@ function cfbPickWhy(g) {
   const p = g.proj || {};
   const o = g.odds || {};
   const notes = [];
+  if (p.qb_pass) return [p.qb_pass];
   const away = Number(p.away_points);
   const home = Number(p.home_points);
   if (Number.isFinite(away) && Number.isFinite(home) && g.away && g.home) {
@@ -11669,6 +11705,7 @@ function nflSlateLean(g) {
   return out;
 }
 function cfbListedPick(g) {
+  if (g && g.proj && g.proj.qb_pass) return { pick: "NO PLAY", pick_line: null, total_pick: "NO PLAY" };
   const src = (window.SPLIT_DESK || []).find((r) => r && String(r.id) === String(g.id));
   const lean = nflSlateLean(g);
   const out = { pick: lean.pick, pick_line: lean.pick_line, total_pick: lean.total_pick };
@@ -13417,26 +13454,35 @@ function etWeekday(iso) {
   } catch (e) { return ""; }
 }
 
+// Covers' page text: drop tags, decode entities (&#x27; &amp; &nbsp; ...), tidy spaces.
+function coversText(h) {
+  return String(h || "").replace(/<[^>]*>/g, " ")
+    .replace(/&#x([0-9a-f]+);/gi, (m, x) => String.fromCodePoint(parseInt(x, 16)))
+    .replace(/&#(\d+);/g, (m, d) => String.fromCodePoint(Number(d)))
+    .replace(/&nbsp;/g, " ").replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&")
+    .replace(/\s+/g, " ").trim();
+}
 function parseCoversInjuries(html) {
   const rows = [];
   String(html || "").split('<a id="').forEach((sec) => {
     const teamM = sec.match(/covers-CoversMatchups-teamName[\s\S]*?<a[^>]*>\s*([^<]+)/);
     if (!teamM) return;
-    const team = teamM[1].replace(/\s+/g, " ").trim();
+    const team = coversText(teamM[1]);
     let last = null;
     sec.split("<tr").forEach((b) => {
       if (/covers-CoversMatchups-injuryCopy/.test(b) && last) {
-        last.long = b.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+        // b starts inside the <tr ...> tag; skip to its end before reading the text
+        last.long = coversText(b.slice(b.indexOf(">") + 1));
         return;
       }
       const playerM = b.match(/player-link'>\s*([\s\S]*?)<\/span>/);
       if (!playerM) return;
-      const name = playerM[1].replace(/\s+/g, " ").trim();
+      const name = coversText(playerM[1]);
       if (!name || /no injuries/i.test(name)) return;
       const posM = b.match(/<\/span>\s*<\/td>\s*<td>([^<]+)<\/td>/i) || b.match(/<td>([A-Z]{1,3})<\/td>/);
       const stM = b.match(/<b>([^<]+)<\/b>/);
       const dtM = b.match(/\(\s*([^)<]+)\s*\)/);
-      const statusLine = (stM && stM[1] || "").trim();
+      const statusLine = coversText(stM && stM[1] || "");
       const kind = statusLine.split("-")[0].trim() || "Questionable";
       const type = (statusLine.split("-").slice(1).join("-") || "").trim();
       const kindLow = `${kind} ${statusLine}`.toLowerCase();
