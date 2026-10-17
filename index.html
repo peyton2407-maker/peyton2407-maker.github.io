@@ -2001,6 +2001,52 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
   .home-feature.scoreboard .sb-row { flex: 1 1 auto; }
   .home-feature.scoreboard .sb-foot { margin-top: auto; }
 }
+
+/* builder v3: correlation, landing odds, every book, aim for a payout, leg details */
+.pb-aim { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding-top: 8px; border-top: 1px dashed rgba(242,184,64,.25); }
+.pb-corr { background: rgba(23,100,58,.10) !important; }
+.pb-land, .pb-books { margin: 14px 0 0; padding: 12px; border: 1px solid var(--stub-line); border-radius: 12px; }
+.pb-land h4, .pb-books h4 { margin: 0 0 8px; font: 800 19px var(--display); letter-spacing: .01em; }
+.pb-land-row { display: grid; grid-template-columns: 9.5em minmax(0,1fr) 4.2em; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 600; margin: 4px 0; }
+.pb-land-row i { display: block; height: 10px; width: var(--w); border-radius: 5px; background: var(--stub-soft); opacity: .45; }
+.pb-land-row.all i { background: var(--stub-good); opacity: .85; }
+.pb-land-row.one i { background: #c98a22; opacity: .8; }
+.pb-land-row b { text-align: right; font-variant-numeric: tabular-nums; }
+.pb-land-note { margin: 8px 0 0; font-size: 12.5px; line-height: 1.45; color: var(--stub-soft); }
+.pb-books table { width: 100%; border-collapse: collapse; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.pb-books th { text-align: left; font-weight: 600; font-size: 12px; color: var(--stub-soft); padding: 4px 4px; border-bottom: 1px solid var(--stub-line); }
+.pb-books td { padding: 6px 4px; border-bottom: 1px solid var(--stub-line); }
+.pb-books td em { display: block; font-style: normal; font-size: 11px; color: var(--stub-soft); }
+.pb-books td small { font-size: 11px; font-weight: 700; color: var(--stub-good); }
+.pb-books tr.best td:first-child { font-weight: 800; }
+.pb-books td.plus { color: var(--stub-good); font-weight: 700; }
+.pb-books td.minus { color: var(--stub-bad); }
+.pb-books .pb-linkbtn { color: var(--stub-ink); }
+.pb-more { grid-column: 1 / -1; justify-self: start; border: 0; background: none; padding: 0; color: var(--stub-soft); font: 600 12.5px var(--body); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.pb-detail { grid-column: 1 / -1; display: grid; gap: 8px; padding: 10px 12px; border-radius: 10px; background: var(--stub-2); font-size: 13px; line-height: 1.45; }
+.pb-detail p { margin: 0; }
+.pb-detail .move-chip { color: var(--stub-ink); font-size: 13px; }
+.pb-detail .wxchip { color: var(--stub-ink); border-color: var(--stub-line); background: transparent; }
+.pb-detail .pb-linkbtn { color: var(--stub-ink); }
+.pb-shop { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.pb-shop > b { flex-basis: 100%; }
+.pb-shop span { display: inline-flex; flex-direction: column; padding: 5px 8px; border: 1px solid var(--stub-line); border-radius: 8px; font-weight: 700; font-variant-numeric: tabular-nums; background: var(--stub); }
+.pb-shop span em { font-style: normal; font-weight: 600; font-size: 11px; color: var(--stub-soft); }
+.pb-shop span.best { border-color: var(--stub-good); box-shadow: inset 0 0 0 1px var(--stub-good); }
+.pb-shop span.mine em::after { content: " · yours"; }
+
+.pb-top { margin: 0 0 12px; }
+.pb-top:empty { display: none; }
+.pb-top h3 { margin: 0 0 8px; font: 800 20px var(--display); letter-spacing: .01em; }
+.pb-top-row { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(170px, 1fr); gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.pb-top-row::-webkit-scrollbar { display: none; }
+.pb-top-leg { display: grid; gap: 2px; text-align: left; padding: 10px 12px; border: 1px solid var(--line-2); border-radius: 12px; background: var(--card); color: var(--ink); cursor: pointer; font-family: var(--body); box-shadow: inset 3px 0 0 var(--sun); }
+.pb-top-leg b { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pb-top-leg span { font-size: 12.5px; color: var(--muted); }
+.pb-top-leg em { font-style: normal; font-size: 12.5px; font-weight: 700; color: var(--win); }
+.pb-top-leg:hover { border-color: var(--sun); }
+.pb-top-leg.on { background: var(--sun); border-color: var(--sun); color: var(--brass-ink); }
+.pb-top-leg.on span, .pb-top-leg.on em { color: rgba(36,22,2,.75); }
 </style>
 </head>
 <body>
@@ -2213,7 +2259,7 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
         <div class="pb-main">
           <div class="pb-intro">
             <h2>Parlay builder</h2>
-            <p>Pick your legs and play them as a parlay, a teaser or a round robin. See what the book pays, the chance it hits, and whether the price is worth it.</p>
+            <p>Pick your legs, or name a payout and let the board build it. Play it as a parlay, teaser or round robin. See what every book pays, the chance it hits, how same-game legs move together, and whether the price is worth it.</p>
           </div>
           <div class="pb-controls">
             <div class="pb-seg" role="group" aria-label="League">
@@ -2233,7 +2279,17 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
               <button type="button" data-pbmode="value">Most value</button>
               <button type="button" data-pbmode="chance">Most likely</button>
             </div>
+            <div class="pb-aim">
+              <span class="pb-fill-label">Aim for a payout</span>
+              <div class="pb-fill-btns">
+                <button type="button" data-aim="250">+250</button>
+                <button type="button" data-aim="500">+500</button>
+                <button type="button" data-aim="1000">+1000</button>
+                <button type="button" data-aim="2500">+2500</button>
+              </div>
+            </div>
           </div>
+          <div id="pbTop" class="pb-top"></div>
           <div id="pbCal" class="pb-cal" aria-live="polite"></div>
           <div class="pb-sortrow">
             <span>Sort</span>
@@ -15495,14 +15551,34 @@ function pbGroupChance(bag) {
     if (l.cond.hi != null) s.hi = s.hi == null ? l.cond.hi : Math.min(s.hi, l.cond.hi);
   });
   let p = other;
+  const marg = [];
   [["m", "bM", "mM", "spread"], ["t", "bT", "mT", "total"]].forEach(([v, bk, mk, name]) => {
     const s = span[v];
     if (s.lo == null && s.hi == null) return;
     const k = pbKeep(g.league, name).k;
     const pb = views[bk] ? pbRange(views[bk], s.lo, s.hi) : 0;
     const pm = views[mk] ? pbRange(views[mk], s.lo, s.hi) : pb;
-    p *= pm + k * (pb - pm);
+    const q = pm + k * (pb - pm);
+    marg.push(q);
+    p *= q;
   });
+  // margin and total legs together: scale by how much more (or less) often they land
+  // together than two unrelated bets would (see pbRho)
+  bag.__corr = null;
+  if (marg.length === 2) {
+    const dM = views.mM || views.bM, dT = views.mT || views.bT;
+    const hs = g.odds && g.odds.home_spread != null ? Number(g.odds.home_spread) : null;
+    if (dM && dT && hs != null && hs !== 0) {
+      const rho = pbRho(g.league, hs) * (hs < 0 ? 1 : -1);
+      const j = pbJoint(dM, dT, rho, span.m, span.t);
+      const ind = pbRange(dM, span.m.lo, span.m.hi) * pbRange(dT, span.t.lo, span.t.hi);
+      if (j != null && ind > 1e-6) {
+        const f = Math.max(0.4, Math.min(2.5, j / ind));
+        p = Math.min(p * f, other * Math.min(marg[0], marg[1]));
+        bag.__corr = f;
+      }
+    }
+  }
   return p;
 }
 // outcomes per independent unit: [{ p, d }] for non-losing results (d = payout multiplier)
@@ -15650,6 +15726,216 @@ function pbKelly(p, decEff) {
   const b = decEff - 1;
   if (!(b > 0)) return 0;
   return Math.max(0, (b * p - (1 - p)) / b);
+}
+
+// ---- same-game correlation ------------------------------------------------------------------
+// How much the favorite's margin and the total move together, measured from closing lines and
+// final scores (NFL 2010-2025, 4,438 games; college 2015-2025, 6,990 games). Near zero for
+// close games; about .19 for NFL favorites of 10+ and .30 for college favorites of 21+. So a
+// big favorite covering and the over (or the underdog and the under) land together more often
+// than two unrelated bets would.
+function pbRho(league, spread) {
+  const s = Math.abs(Number(spread) || 0);
+  return league === "nfl" ? Math.min(0.25, 0.02 + 0.0009 * s * s) : Math.min(0.35, 0.025 + 0.0004 * s * s);
+}
+function pbMoments(d) {
+  if (d.__mom) return d.__mom;
+  let m = 0, v = 0;
+  for (let i = 0; i < d.p.length; i++) m += d.p[i] * (i - 70);
+  for (let i = 0; i < d.p.length; i++) v += d.p[i] * (i - 70 - m) * (i - 70 - m);
+  d.__mom = { mu: m, sd: Math.sqrt(v) || 1 };
+  return d.__mom;
+}
+// chance the margin lands in sM and the total in sT together, with correlation rho
+// (margin from the home side, so rho is negative when the road team is the favorite)
+function pbJoint(dM, dT, rho, sM, sT) {
+  if (!dM || !dT || !dM.pmf || dT.pmf) return null;
+  const mom = pbMoments(dM);
+  const csd = dT.sd * Math.sqrt(Math.max(0.01, 1 - rho * rho));
+  const a = sM.lo == null ? -70 : Math.max(-70, Math.floor(sM.lo) + 1);
+  const b = sM.hi == null ? 70 : Math.min(70, Math.ceil(sM.hi) - 1);
+  let p = 0;
+  for (let m = a; m <= b; m++) {
+    const pm = dM.p[m + 70];
+    if (pm < 1e-10) continue;
+    const mu = dT.mu + rho * dT.sd * (m - mom.mu) / mom.sd;
+    const top = sT.hi == null ? 1 : normCdf((Math.ceil(sT.hi) - 0.5 - mu) / csd);
+    const bot = sT.lo == null ? 0 : normCdf((Math.floor(sT.lo) + 0.5 - mu) / csd);
+    p += pm * Math.max(0, top - bot);
+  }
+  return p;
+}
+
+// ---- how a parlay can land ------------------------------------------------------------------
+// Chance of exactly k legs losing (pushes count as not losing). Legs are treated one by one,
+// so same-game legs are approximate here; the headline chance above prices them together.
+function pbMissDist(legs) {
+  let dist = [1];
+  legs.forEach((l) => {
+    const lose = Math.max(0, 1 - l.win - l.push);
+    const next = new Array(dist.length + 1).fill(0);
+    dist.forEach((p, k) => { next[k] += p * (1 - lose); next[k + 1] += p * lose; });
+    dist = next;
+  });
+  return dist;
+}
+function pbLandHtml(live, r) {
+  if (!live.length || live.length < 2) return "";
+  const dist = pbMissDist(live);
+  const n = live.length;
+  const rows = [
+    ["Cashes", r.pCash, "all"],
+    ["One leg short", dist[1] || 0, "one"],
+    ["Two or more short", Math.max(0, 1 - (dist[0] || 0) - (dist[1] || 0)), "more"]
+  ];
+  const max = Math.max(...rows.map((x) => x[1]), 0.0001);
+  const weakest = live.slice().sort((a, b) => a.win - b.win)[0];
+  const cutWeak = weakest && n > 2 ? (() => {
+    const rest = live.filter((l) => l !== weakest);
+    const rr = pbParlay(rest, PB.boost);
+    return `Without it the ticket hits ${pbPct(rr.pCash)} of the time at ${pbAm(rr.american)}.`;
+  })() : "";
+  return `<div class="pb-land">
+    <h4>How this ticket lands</h4>
+    ${rows.map(([t, p, cls]) => `<div class="pb-land-row ${cls}"><span>${t}</span><i style="--w:${Math.max(2, Math.round(p / max * 100))}%"></i><b>${pbPct(p)}</b></div>`).join("")}
+    <p class="pb-land-note">A push just drops that leg, so "cashes" runs a bit above "all hit".</p>
+    ${weakest ? `<p class="pb-land-note">Weakest leg: <b>${pbEsc(weakest.label)}</b> at ${pbPct(weakest.win, 0)}. ${cutWeak}</p>` : ""}
+  </div>`;
+}
+
+// ---- the whole ticket at each book --------------------------------------------------------
+// Every leg priced at one book (its own line and price), so you can see where the parlay
+// pays the most and where the value is best. A book is listed only if it prices every leg.
+function pbBookCompare(live) {
+  if (!live.length || live.some((l) => l.typed || l.started)) return [];
+  const names = new Set();
+  live.forEach((l) => {
+    if (l.kind === "pp") pbPropOffers(l.gid, l.player, l.stat).filter((o) => o.side === l.side).forEach((o) => names.add(o.book));
+    else Object.keys((window.PB_BOOKS && window.PB_BOOKS.games && window.PB_BOOKS.games[l.gid]) || {}).forEach((b) => names.add(b));
+  });
+  const out = [];
+  names.forEach((book) => {
+    const legs = [];
+    let ok = true, diff = 0;
+    live.forEach((l) => {
+      if (!ok) return;
+      const st = Object.assign({}, l.stored, { book, price: undefined });
+      delete st.line;
+      const c = pbLeg(st);
+      if (!c || c.priceSource !== book) { ok = false; return; }
+      if (c.line != null && l.line != null && Math.abs(c.line - l.line) > 1e-9) diff++;
+      legs.push(c);
+    });
+    if (!ok || !legs.length) return;
+    const r = pbParlay(legs, PB.boost);
+    out.push({ book, dec: r.decEff, american: r.american, ev: r.ev, pCash: r.pCash, diff });
+  });
+  return out.sort((a, b) => b.ev - a.ev || b.dec - a.dec);
+}
+function pbBookCompareHtml(live, stake) {
+  if (live.length < 2) return "";
+  const rows = pbBookCompare(live);
+  if (rows.length < 2) return "";
+  const bestPay = Math.max(...rows.map((r) => r.dec));
+  return `<div class="pb-books">
+    <h4>This ticket at each book</h4>
+    <table><thead><tr><th>Book</th><th>Pays</th><th>Price</th><th>Value</th><th></th></tr></thead><tbody>
+    ${rows.slice(0, 6).map((r, i) => `<tr class="${i === 0 ? "best" : ""}">
+      <td>${pbEsc(r.book)}${r.diff ? `<em>${r.diff} line${r.diff === 1 ? " differs" : "s differ"}</em>` : ""}</td>
+      <td>${pbMoney(stake * r.dec)}${r.dec === bestPay ? " <small>most</small>" : ""}</td>
+      <td>${pbAm(r.american)}</td>
+      <td class="${r.ev >= 0.01 ? "plus" : r.ev <= -0.05 ? "minus" : ""}">${pbSigned(r.ev)}</td>
+      <td><button type="button" class="pb-linkbtn" data-allbook="${pbEsc(r.book)}">Use</button></td>
+    </tr>`).join("")}
+    </tbody></table>
+    <p class="pb-land-note">Each book's own lines and prices, with our checked chances. Value counts a better number as well as a better price, so the top row isn't always the biggest payout.</p>
+  </div>`;
+}
+
+// ---- aim for a payout ------------------------------------------------------------------------
+// Find the ticket closest to a target price (one leg per game) with the best value, or the
+// best chance when "Most likely" is on. A short beam search over the board's legs.
+function pbTarget(league, targetAm, mode) {
+  const T = pbDec(targetAm);
+  const lo = 1 + (T - 1) * 0.82, hi = 1 + (T - 1) * 1.3;
+  const cands = pbAllLegs(league).filter((l) => !l.started && l.win >= 0.22 && l.value >= -0.035 && !(l.kind === "ml" && (l.price < -450 || l.price > 450)));
+  if (!cands.length) return null;
+  cands.sort((a, b) => b.value - a.value);
+  const C = cands.slice(0, 160);
+  const score = (s) => mode === "chance" ? s.lp + 0.6 * s.lv : s.lv + 0.15 * s.lp;
+  let beam = [{ idx: -1, games: new Set(), legs: [], dec: 1, lp: 0, lv: 0 }];
+  let best = null;
+  for (let depth = 1; depth <= 8; depth++) {
+    const next = [];
+    beam.forEach((s) => {
+      for (let i = s.idx + 1; i < C.length; i++) {
+        const l = C[i];
+        if (s.games.has(l.gid)) continue;
+        const dec = s.dec * l.dec;
+        if (dec > hi) continue;
+        const ns = { idx: i, games: new Set(s.games).add(l.gid), legs: s.legs.concat(l), dec, lp: s.lp + Math.log(l.win + 0.5 * l.push), lv: s.lv + Math.log(Math.max(1e-6, l.win * l.dec + l.push)) };
+        next.push(ns);
+        if (dec >= lo && depth >= 2) {
+          const v = { s: ns, sc: score(ns) - Math.abs(Math.log((dec - 1) / (T - 1))) * 0.25 };
+          if (!best || v.sc > best.sc) best = v;
+        }
+      }
+    });
+    if (!next.length) break;
+    next.sort((a, b) => score(b) - score(a) + 0.05 * (Math.log(b.dec) - Math.log(a.dec)));
+    beam = next.slice(0, 220);
+  }
+  return best ? best.s.legs : null;
+}
+
+// ---- one leg up close ----------------------------------------------------------------------
+function pbLegDetail(l) {
+  const g = l.g;
+  const p = g.proj || {};
+  const bits = [];
+  if (l.kind !== "pp" && p.home_points != null && p.away_points != null) {
+    bits.push(`<p><b>Our score</b> ${g.away.abbr} ${Number(p.away_points).toFixed(1)} – ${g.home.abbr} ${Number(p.home_points).toFixed(1)}. Our board gives this leg ${pbPct(l.boardWin, 0)}, the book's price ${pbPct(l.bookWin, 0)}; we keep ${Math.round(l.keep * 100)}% of the difference, so ${pbPct(l.win, 0)}.</p>`);
+  } else if (l.kind === "pp") {
+    const pl = (g.props || []).find((x) => String(x.id) === String(l.pid));
+    if (pl && pl[l.stat] != null) bits.push(`<p><b>Our projection</b> ${Number(pl[l.stat]).toFixed(1)} ${VAL_LBL[l.stat]} against a line of ${l.line}. ${pbHitText(l.pid, l.stat, l.line, l.side)}.</p>`);
+  }
+  // every book's number for this side
+  let shop = [];
+  if (l.kind === "pp") {
+    shop = pbPropOffers(l.gid, l.player, l.stat).filter((o) => o.side === l.side).map((o) => ({ book: o.book, line: o.line, price: o.odds }));
+  } else {
+    const all = (window.PB_BOOKS && window.PB_BOOKS.games && window.PB_BOOKS.games[l.gid]) || {};
+    Object.keys(all).forEach((book) => {
+      const b = all[book];
+      if (l.kind === "sp" && b.sp != null) shop.push({ book, line: l.side === "home" ? b.sp : -b.sp, price: l.side === "home" ? b.sph : b.spa });
+      if (l.kind === "tot" && b.tot != null) shop.push({ book, line: b.tot, price: l.side === "over" ? b.over : b.under });
+      if (l.kind === "ml") shop.push({ book, line: null, price: l.side === "home" ? b.mlh : b.mla });
+    });
+  }
+  shop = shop.filter((r) => pbParseAmerican(r.price) != null);
+  if (shop.length) {
+    const better = (a, b) => {
+      if (a.line != null && b.line != null && a.line !== b.line) {
+        const goodHigh = l.kind === "sp" || (l.kind === "tot" && l.side === "under") || (l.kind === "pp" && l.side === "under");
+        return goodHigh ? b.line - a.line : a.line - b.line;
+      }
+      return pbDec(pbParseAmerican(b.price)) - pbDec(pbParseAmerican(a.price));
+    };
+    shop.sort(better);
+    bits.push(`<div class="pb-shop"><b>Every book</b>${shop.slice(0, 8).map((r, i) => `<span class="${i === 0 ? "best" : ""}${l.book === r.book || (!l.book && r.book === l.priceSource) ? " mine" : ""}"><em>${pbEsc(r.book)}</em>${r.line != null ? (l.kind === "sp" ? pbLine(r.line) : r.line) + " " : ""}${pbAm(pbParseAmerican(r.price))}</span>`).join("")}</div>`);
+  }
+  if (l.kind !== "pp" && typeof moveChipHtml === "function") { const mv = moveChipHtml(g); if (mv) bits.push(mv); }
+  if (typeof wxChip === "function" && (g.weather || g.indoor)) bits.push(`<p>${wxChip(g)}</p>`);
+  // this week's absences that matter most (long-term IR is already in the line)
+  const outs = (g.injuries || []).filter((r) => /QB|RB|WR|TE/.test(r.pos || "") && /^(OUT|DOUBT)/i.test(r.tag || r.status || ""))
+    .sort((a, b) => (b.score || 0) - (a.score || 0)).slice(0, 4);
+  if (outs.length) bits.push(`<p><b>Out or doubtful</b> ${outs.map((r) => `${pbEsc(r.name)} (${r.side === "home" ? g.home.abbr : r.side === "away" ? g.away.abbr : ""} ${pbEsc(r.pos || "")}${/DOUBT/i.test(r.tag || r.status || "") ? ", doubtful" : ""})`).join(", ")}</p>`);
+  if (l.kind === "sp" && g.league === "nfl") {
+    const keys = [3, 7, 10, 14].filter((k) => Math.abs(Math.abs(l.line) - k) <= 0.5);
+    if (keys.length) bits.push(`<p><b>Key number</b> ${pbLine(l.line)} sits on ${keys.join(" and ")}, where NFL games end most often. Half a point here is worth more than usual.</p>`);
+  }
+  bits.push(`<p><button type="button" class="pb-linkbtn" data-open-game="${l.gid}">Open the full game</button></p>`);
+  return `<div class="pb-detail">${bits.join("")}</div>`;
 }
 
 // ---- outside data: calibration, other books, player game logs -------------------------------
@@ -15924,6 +16210,8 @@ function pbLegRow(l, opts) {
       ${o.teaser ? "" : `<span class="pb-val ${val >= 2 ? "plus" : val <= -2 ? "minus" : ""}">${val > 0 ? "+" : ""}${val}%</span>`}
     </div>
     <button type="button" class="pb-x" data-remove="${l.id}" aria-label="Remove ${pbEsc(l.label)}">×</button>
+    <button type="button" class="pb-more" data-legmore="${l.id}" aria-expanded="${PB.legOpen === l.id}">${PB.legOpen === l.id ? "Hide details" : "Details: every book, our number, line moves"}</button>
+    ${PB.legOpen === l.id ? pbLegDetail(l) : ""}
   </li>`;
 }
 function pbModeTabs() {
@@ -15950,7 +16238,7 @@ function pbSlipHtml() {
   if (liveHtml) return liveHtml;
   const empty = !PB.legs.length;
   const mode = PB.mode;
-  let legs, result, legsHtml = "", settings = "", numbers = "", warn = "";
+  let legs, result, legsHtml = "", settings = "", numbers = "", warn = "", extras = "";
   const stake = PB.stake;
   if (mode === "teaser") {
     legs = pbTeaserLegs();
@@ -15988,7 +16276,15 @@ function pbSlipHtml() {
         </dl>`;
     } else {
       result = pbParlay(live, PB.boost);
-      if (result.sameGame.length) warn = `<p class="pb-warn">${result.sameGame.map((bag) => pbEsc(bag[0].game)).join(", ")}: more than one leg from the same game. The chance prices them together. Most books call this a same-game parlay and pay less than shown here.</p>`;
+      if (result.sameGame.length) {
+        warn = `<p class="pb-warn">${result.sameGame.map((bag) => pbEsc(bag[0].game)).join(", ")}: more than one leg from the same game. The chance prices them together. Most books call this a same-game parlay and pay less than shown here.</p>`;
+        result.sameGame.forEach((bag) => {
+          const together = pbGroupChance(bag);
+          if (bag.__corr == null || Math.abs(bag.__corr - 1) < 0.015) return;
+          const apart = bag.reduce((a, l) => a * l.win, 1);
+          warn += `<p class="pb-warn pb-corr">${bag.map((l) => pbEsc(l.label)).join(" + ")} ${bag.__corr > 1 ? "tend to land together" : "tend to work against each other"} in a game with this spread: ${pbPct(together)} together, against ${pbPct(apart)} if they were unrelated. Measured from about ${bag[0].g.league === "nfl" ? "4,400 NFL" : "7,000 college"} games.</p>`;
+        });
+      }
       if (result.n) numbers = `
         <div class="pb-pay-main"><span>${pbMoney(stake)} pays</span><b>${pbMoney(stake * result.decEff)}</b><em>${pbMoney(stake * (result.decEff - 1))} profit at ${pbAm(result.american)}${PB.boost ? `, boosted ${PB.boost}%` : ""}</em></div>
         <dl class="pb-stats">
@@ -15997,6 +16293,7 @@ function pbSlipHtml() {
           <div><dt>Fair price</dt><dd>${result.pAll > 0 ? pbAm(pbAmerican(1 / result.pAll)) : "—"}</dd></div>
           <div><dt>Expected back</dt><dd>${pbMoney(stake * (1 + result.ev))}</dd></div>
         </dl>`;
+      extras = pbLandHtml(live.filter((l) => !l.started), result) + pbBookCompareHtml(live.filter((l) => !l.started), stake);
     }
     const sgp = new Set(((result && result.sameGame) || []).flat().map((l) => l.id));
     legsHtml = legs.map((l) => pbLegRow(l, { stepper: mode === "parlay", sgp })).join("");
@@ -16037,6 +16334,7 @@ function pbSlipHtml() {
     <div class="pb-pay">
       ${numbers}
       ${verdict && verdict.text ? `<p class="pb-verdict ${verdict.cls}">${verdict.text}</p>` : ""}
+      ${extras}
     </div>
     ${pbSizingHtml(kellyP, kellyDec, canKelly && result && (result.ok || (mode === "parlay" && result.n)))}
     ${sugg.length ? `<ul class="pb-sugg">${sugg.map((s) => `<li><span>${s.text}</span><button type="button" data-${s.kind}="${s.id}">${s.btn}</button></li>`).join("")}</ul>` : ""}
@@ -16678,7 +16976,9 @@ function renderBuilderNow() {
   if (fillLbl) fillLbl.textContent = PB.mode === "teaser" ? "Fill a teaser" : PB.mode === "rr" ? "Fill a round robin" : "Fill a parlay";
   root.querySelectorAll("[data-fill]").forEach((b) => { b.textContent = (PB.mode === "rr" ? Number(b.dataset.fill) + 1 : b.dataset.fill) + " legs"; });
   const modeSeg = root.querySelector(".pb-fill .pb-seg"); if (modeSeg) modeSeg.style.display = PB.mode === "teaser" ? "none" : "";
+  const aim = root.querySelector(".pb-aim"); if (aim) aim.style.display = PB.mode === "parlay" ? "" : "none";
   const cal = document.getElementById("pbCal"); if (cal) cal.innerHTML = pbCalHtml();
+  const topEl = document.getElementById("pbTop"); if (topEl) topEl.innerHTML = pbTopHtml();
   pbRefreshButtons();
   const slip = document.getElementById("pbSlip");
   const typing = slip && slip.contains(document.activeElement) && /INPUT|SELECT/.test(document.activeElement.tagName);
@@ -16709,7 +17009,7 @@ function pbStatus(msg) {
   const el = document.getElementById("pbStatus");
   if (el) { el.textContent = msg; clearTimeout(pbStatus.t); pbStatus.t = setTimeout(() => { el.textContent = ""; }, 4000); }
 }
-function pbChanged() { pbSave(); pbRefreshButtons(); pbRenderSlip(); }
+function pbChanged() { pbSave(); pbRefreshButtons(); pbRenderSlip(); const t = document.getElementById("pbTop"); if (t) t.innerHTML = pbTopHtml(); }
 function pbTicketIsLive() {
   return PB.legs.some((st) => { const g = pbGame(String(st.id).split("|")[0]); return g && pbStarted(g); });
 }
@@ -16741,6 +17041,28 @@ function pbFill(n) {
   pbChanged();
   if (legs.length < want) pbStatus(`Only ${legs.length} leg${legs.length === 1 ? "" : "s"} on the ${lg === "nfl" ? "NFL" : "college"} board beat their price after the check.`);
   else pbStatus(PB.mode === "teaser" ? `Filled with the ${legs.length} legs most likely to hit after moving ${PB.teaserPts} points, one per game.` : `Filled with the ${legs.length} ${PB.fillMode === "chance" ? "most likely legs that still beat their price" : "legs that beat their price by the most"}, one per game.`);
+}
+// The legs on this board whose price beats their checked chance by the most, kicking off soon.
+function pbTopHtml() {
+  const soon = Date.now() + 4 * 86400000;
+  const rows = pbAllLegs(PB.league).filter((l) => !l.started && l.value >= 0.02 && l.win >= 0.4 && Date.parse(l.g.date) < soon
+    && !(l.kind === "ml" && (l.price < -400 || l.price > 400)));
+  const seen = new Set();
+  const top = rows.sort((a, b) => b.value - a.value).filter((l) => !seen.has(l.gid) && seen.add(l.gid)).slice(0, 6);
+  if (!top.length) return "";
+  return `<h3>Best prices on the board</h3>
+    <div class="pb-top-row">${top.map((l) => `<button type="button" class="pb-top-leg ${pbPicked(l.id) ? "on" : ""}" data-leg="${l.id}" aria-pressed="${pbPicked(l.id)}">
+      <b>${pbEsc(l.label)}</b><span>${pbEsc(l.game)} · ${pbAm(l.price)}</span><em>${pbPct(l.win, 0)} chance · ${pbSigned(l.value)}</em></button>`).join("")}</div>`;
+}
+function pbAim(am) {
+  if (pbTicketIsLive()) { PB.open = true; pbRenderSlip(); pbStatusSoon("Your ticket is already live. Tap New ticket or Clear to start another."); return; }
+  if (PB.mode !== "parlay") PB.mode = "parlay";
+  const legs = pbTarget(PB.league, am, PB.fillMode);
+  if (!legs || !legs.length) { pbRenderSlip(); pbStatus(`No ${pbAm(am)} ticket on this board without giving the book a big edge. Try a smaller payout or the other league.`); return; }
+  PB.legs = legs.map((l) => ({ id: l.id, label: l.label, game: l.game }));
+  pbChanged();
+  const r = pbParlay(legs, PB.boost);
+  pbStatus(`Built ${pbAm(r.american)} from ${legs.length} legs, one per game: ${pbPct(r.pCash)} to hit, ${pbSigned(r.ev)} value.`);
 }
 function pbStep(id, dir) {
   const s = PB.legs.find((x) => x.id === id);
@@ -16857,6 +17179,9 @@ function installBuilder() {
     if (d.pbsort) { PB.sort = d.pbsort; return renderBuilder(); }
     if (d.pbmode) { PB.fillMode = d.pbmode; pbSave(); return renderBuilder(); }
     if (d.fill) return pbFill(Number(d.fill));
+    if (d.aim) return pbAim(Number(d.aim));
+    if (d.legmore) { PB.legOpen = PB.legOpen === d.legmore ? null : d.legmore; return pbRenderSlip(); }
+    if (d.allbook) { PB.legs.forEach((s) => { s.book = d.allbook; delete s.line; delete s.price; }); pbChanged(); return pbStatus("Every leg now priced at " + d.allbook + "."); }
     if (d.props) { PB.propsOpen = PB.propsOpen === d.props ? null : d.props; if (PB.propsOpen) pbPullPropPrices(PB.propsOpen); return pbRefreshButtons(); }
     if (d.showcal) { PB.showCal = !PB.showCal; const c = document.getElementById("pbCal"); if (c) c.innerHTML = pbCalHtml(); return; }
     if (d.mode) { PB.mode = d.mode; PB.teaserPrice = null; pbSave(); return renderBuilder(); }
