@@ -2123,7 +2123,7 @@ img.share-card { display: none !important; }
     <section id="propsSection" style="display:none">
       <div class="controls props-controls">
         <select id="propDay" class="lg-select">
-          <option value="best">Best picks of the day</option>
+          <option value="best">Best picks</option>
           <option value="week">Whole NFL week</option>
           <option value="thu">Thursday / Friday</option>
           <option value="sun">Sunday slate</option>
@@ -2140,11 +2140,11 @@ img.share-card { display: none !important; }
           <option value="REC">Receiving-yard leans</option>
         </select>
         <select id="propSort" class="lg-select">
-          <option value="best">Sort: best pick score</option>
+          <option value="best">Sort: best picks</option>
           <option value="fp">Sort: fantasy points</option>
           <option value="pass">Sort: pass yards</option>
           <option value="rush">Sort: rush yards</option>
-          <option value="rec">Sort: receiving yards</option>
+          <option value="rec">Sort: rec yards</option>
           <option value="td">Sort: touchdowns</option>
         </select>
         <select id="propHit" class="lg-select" aria-label="Our hit rate">
@@ -2165,7 +2165,7 @@ img.share-card { display: none !important; }
     <section id="cfbPicksSection" style="display:none">
       <div class="controls props-controls">
         <select id="cfbDay" class="lg-select">
-          <option value="best">Best picks of the day</option>
+          <option value="best">Best picks</option>
           <option value="week">Whole college week</option>
           <option value="thu">Thu / Friday</option>
           <option value="sat">Saturday slate</option>
@@ -6844,7 +6844,12 @@ function readyCardHtml(title, thought, legs) {
       // compare as numbers, so "HOU -7.0" and "HOU -7" count as the same line
       const norm = (t) => String(t).toUpperCase().replace(/([+-]?\d+(?:\.\d+)?)/g, (n) => String(Number(n))).replace(/\s+/g, " ").replace(/\bPK\b/, "0");
       const moved = posted && norm(posted) !== norm(m.pb.label) && m.pb.kind !== "pp" && m.pb.kind !== "ml" ? `<div class="prop-why">Posted as ${pbEsc(posted)}; the line is now ${pbEsc(m.pb.label)}.</div>` : "";
-      return `<li data-id="${m.pb.gid}"><b>${pbEsc(m.pb.label)}</b><div class="subn">${pbEsc(m.pb.game)} · ${pbAm(m.pb.price)}${src(m.pb)} · ${pbPct(m.pb.win, 0)}</div>${moved}${m.l.why ? `<div class="prop-why">${m.l.why}</div>` : ""}</li>`;
+      // each leg's reason is written out once per page; later tickets point back to it
+      const seen = window.__readyWhySeen || (window.__readyWhySeen = new Set());
+      const whyKey = m.id + "|" + (m.l.why || "");
+      const why = !m.l.why ? "" : seen.has(whyKey) ? `<div class="prop-why" style="opacity:.7">Reason on the first ticket with this leg.</div>` : `<div class="prop-why">${m.l.why}</div>`;
+      if (m.l.why) seen.add(whyKey);
+      return `<li data-id="${m.pb.gid}"><b>${pbEsc(m.pb.label)}</b><div class="subn">${pbEsc(m.pb.game)} · ${pbAm(m.pb.price)}${src(m.pb)} · ${pbPct(m.pb.win, 0)}</div>${moved}${why}</li>`;
     }).join("")}</ul>
     <button type="button" class="ready-open" data-openpb="${mapped.map((m) => m.id).join("~")}">Open in parlay builder</button>
   </article>`;
@@ -7405,6 +7410,7 @@ function renderCollegeParlayBoard() {
 }
 
 function renderParlays() {
+  window.__readyWhySeen = new Set();
   const heroEl = document.getElementById("parlayHero");
   if (heroEl && !heroEl.__readyWired) {
     heroEl.__readyWired = true;
@@ -9122,7 +9128,7 @@ function card(g) {
         ${totPick}
         ${periodHtml(g)}
       </div>
-      <div class="yardgrid">
+      <div class="yardgrid"${[b.away_rush_yds, b.away_rec_yds, b.home_rush_yds, b.home_rec_yds].every((v) => v == null || v === "") ? ' hidden style="display:none"' : ""}>
         <div><span class="lbl">${g.away.abbr} rush</span><b>${fmt.n(b.away_rush_yds, 0)}</b></div>
         <div><span class="lbl">${g.away.abbr} rec</span><b>${fmt.n(b.away_rec_yds, 0)}</b></div>
         <div><span class="lbl">${g.home.abbr} rush</span><b>${fmt.n(b.home_rush_yds, 0)}</b></div>
@@ -12442,7 +12448,11 @@ function renderHome() {
   const hasPlay = (g) => { const sp = shownPick(g); return !!(sp.side || sp.total); };
   const lives = (DATA.games || []).filter((g) => typeof isLiveGame === "function" && isLiveGame(g));
   const nexts = (DATA.games || []).filter((g) => !g.completed && !isLiveGame(g) && !isPastKickoff(g)).sort((a, b) => String(a.date).localeCompare(String(b.date)));
-  const liveOrNext = lives.find(hasPlay) || nexts.find(hasPlay) || lives[0] || todayGames()[0] || nexts[0];
+  // the strongest play (highest chance) among live games, else among games in the next day
+  const chanceOf = (g) => (typeof playChance === "function" ? Number(playChance(g)) || 0 : 0);
+  const best = (list) => list.filter(hasPlay).sort((a, b) => chanceOf(b) - chanceOf(a))[0];
+  const soon = nexts.length ? nexts.filter((g) => Date.parse(g.date) - Date.parse(nexts[0].date) < 24 * 3600 * 1000) : [];
+  const liveOrNext = best(lives) || best(soon) || nexts.find(hasPlay) || lives[0] || todayGames()[0] || nexts[0];
   if (feat && liveOrNext) {
     const g = liveOrNext;
     const p = g.proj || {};

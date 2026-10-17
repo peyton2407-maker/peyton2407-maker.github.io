@@ -25,7 +25,7 @@ import json
 import mimetypes
 import sys
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from playwright.async_api import async_playwright
@@ -192,6 +192,32 @@ async def parse_in_page(args, feeds):
         return out
 
 
+_BOOKS = None
+
+
+def pulled_off_board(old, gid, now_iso):
+    """True when an upcoming game in the next 3 days had a line, ESPN now shows none, and
+    no book in data/books.json (the last hourly pull) has one either."""
+    global _BOOKS
+    o = old.get("odds") or {}
+    if old.get("completed") or (o.get("home_spread") is None and o.get("total") is None) or o.get("off_board"):
+        return False
+    try:
+        kick = datetime.fromisoformat(str(old.get("date")).replace("Z", "+00:00"))
+        now = datetime.fromisoformat(str(now_iso).replace("Z", "+00:00"))
+    except Exception:
+        return False
+    if not (now < kick < now + timedelta(days=3)):
+        return False
+    if _BOOKS is None:
+        try:
+            _BOOKS = json.loads((ROOT / "data" / "books.json").read_text()).get("games") or {}
+        except Exception:
+            _BOOKS = {}
+    rows = _BOOKS.get(str(gid)) or {}
+    return not any(r.get("sp") is not None or r.get("tot") is not None for r in rows.values())
+
+
 def merge(snap, results, parsed, nfl_w, cfb_w, now_iso):
     changes = []
     games = snap.get("games", [])
@@ -248,6 +274,13 @@ def merge(snap, results, parsed, nfl_w, cfb_w, now_iso):
         o = g.get("odds") or {}
         if o.get("home_spread") is not None or o.get("total") is not None:
             old["odds"] = {**(old.get("odds") or {}), **{k: v for k, v in o.items() if v is not None}}
+            old["odds"].pop("off_board", None)
+        elif pulled_off_board(old, gid, now_iso):
+            # ESPN and every book we track have taken this game's line down (QB news, say):
+            # stop showing the old number instead of keeping it forever.
+            keep = {k: v for k, v in (old.get("odds") or {}).items() if k in ("book",)}
+            old["odds"] = {**keep, "off_board": True, "details": "Off the board"}
+            changes.append(f"line pulled: {old.get('short_name') or gid}")
         # Refresh team ratings inside upcoming games (the browser rebuilds the numbers).
         if not old.get("completed"):
             p = old.setdefault("proj", {})
