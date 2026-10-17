@@ -912,6 +912,32 @@ button.prop-card.inj-open .report-full{display:block}
 .mb-tools { margin-top: 14px; }
 @media (max-width: 600px) { .mb-stats { grid-template-columns: repeat(2, 1fr); } }
 #calcSection { max-width: 980px; margin: 0 auto; padding: 4px 14px 24px; }
+.so-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 12px; }
+.so-div h3, .so-market h3 { margin: 0 0 6px; }
+.so-team > span { display: grid; gap: 1px; }
+.so-team b { font-size: 14px; font-weight: 800; }
+.so-team small, .so-book { font-size: 12px; font-weight: 500; color: var(--muted); }
+.so-market { margin-top: 12px; }
+.so-table { width: 100%; }
+.so-table tr[data-team] { cursor: pointer; }
+.so-table td { vertical-align: middle; font-variant-numeric: tabular-nums; }
+.so-pct { display: inline-grid; grid-template-columns: 56px auto; align-items: center; gap: 8px; }
+.so-pct i { display: block; height: 7px; border-radius: 4px; background: var(--sun); box-shadow: inset 0 0 0 1px var(--line); max-width: 56px; }
+.so-pct::before { content: ""; grid-area: 1 / 1; height: 7px; border-radius: 4px; background: var(--line); }
+.so-pct i { grid-area: 1 / 1; }
+.so-flag { display: inline-block; font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--ink-soft); white-space: nowrap; }
+.so-flag.up { color: var(--ink); border-color: var(--sun); }
+.so-foot { margin: 12px 0 0; }
+@media (max-width: 640px) {
+  .so-grid { grid-template-columns: 1fr; }
+  .so-table thead { display: none; }
+  .so-table tr { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .so-table td { display: flex; justify-content: space-between; gap: 10px; padding: 0 !important; border: 0 !important; }
+  .so-table td[data-lbl="Team"] { grid-column: 1 / -1; }
+  .so-table td[data-lbl="#"] { display: none; }
+  .so-table td::before { content: attr(data-lbl); color: var(--muted); font-size: 12px; }
+  .so-table td[data-lbl="Team"]::before, .so-table td[data-lbl=""]::before { content: none; }
+}
 .calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-bottom: 12px; }
 .calc-card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 10px; align-content: start; }
 .calc-card h3 { margin: 0; }
@@ -1843,7 +1869,7 @@ img.share-card { display: none !important; }
         <a class="tab star" href="#builder" data-view="builder">Parlay builder</a><a class="tab" href="#parlay" data-view="parlay">Ready-made tickets</a><a class="tab" href="#bets" data-view="bets">My bets</a><a class="tab" href="#calc" data-view="calc">Calculators</a><a class="tab" href="#card" data-view="card">This week's card</a>
       </div>
       <div class="subnav-group" data-section="record">
-        <a class="tab star" href="#score" data-view="score">Scorecard</a><a class="tab" href="#history" data-view="history">Past weeks</a><a class="tab" href="#ratings" data-view="ratings">Team rankings</a><a class="tab" href="#all" data-view="all">All games</a>
+        <a class="tab star" href="#score" data-view="score">Scorecard</a><a class="tab" href="#history" data-view="history">Past weeks</a><a class="tab" href="#ratings" data-view="ratings">Team rankings</a><a class="tab" href="#season" data-view="season">Playoff odds</a><a class="tab" href="#all" data-view="all">All games</a>
       </div>
     </nav>
 
@@ -2324,6 +2350,22 @@ img.share-card { display: none !important; }
       <div class="card" id="ratingsWrap"></div>
     </section>
 
+
+    <section id="seasonSection" style="display:none">
+      <div class="mb-head"><h2>Playoff odds</h2><p>Each team's projected record and its chances to make the playoff, win the division or conference, and win it all. The chances are ESPN's Football Power Index season simulation, updated every hour. Below that, the title chances next to the futures market.</p></div>
+      <div class="controls">
+        <div class="league-tabs" id="seasonLeague" role="tablist" aria-label="League">
+          <button type="button" class="active" data-league="nfl">NFL</button>
+          <button type="button" data-league="cfb">College</button>
+        </div>
+        <select id="seasonShow" aria-label="Which teams">
+          <option value="top">Contenders</option>
+          <option value="all">Every team</option>
+        </select>
+        <input id="seasonQ" placeholder="Search a team…" aria-label="Search a team" />
+      </div>
+      <div id="seasonWrap"></div>
+    </section>
 
     <section id="primeSection" style="display:none">
       <p class="subn" id="primeStamp" style="margin:0 0 12px">Thursday night, Sunday night, and Monday night. The best pick is the one furthest from the market. If we are too close, it says no play.</p>
@@ -14554,7 +14596,7 @@ const VIEW_TITLE = {
   charts: "NFL game charts", live: "Live scores", tds: "Anytime TD odds", value: "Underdog value", nflwx: "NFL weather", nflinj: "NFL injuries",
   nflpotd: "NFL play of the day", cfb: "College football Week {cw} projections", potd: "College play of the day", cfbpicks: "College picks",
   cfbwx: "College weather", cfbinj: "College injuries", parlay: "Ready-made tickets", builder: "Parlay builder", score: "Scorecard",
-  history: "Past weeks", bets: "My bets", calc: "Betting calculators", ratings: "Team rankings", all: "All games", alerts: "Alerts", model: "How the model works", boom: "Boom Room"
+  history: "Past weeks", season: "Playoff odds", bets: "My bets", calc: "Betting calculators", ratings: "Team rankings", all: "All games", alerts: "Alerts", model: "How the model works", boom: "Boom Room"
 };
 function viewTitle(v) {
   let t = VIEW_TITLE[v] || "Today";
@@ -14565,14 +14607,14 @@ function viewTitle(v) {
 }
 function setView(next, opts) {
   if (next === "heisman" || next === "recruit" || next === "awards" || next === "model") next = next === "awards" ? "nflpotd" : "home";
-  const allowed = {home:1,builder:1,bets:1,calc:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,potd:1,nflpotd:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
+  const allowed = {home:1,builder:1,bets:1,calc:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,potd:1,nflpotd:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,season:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
   if (!allowed[next]) next = "home";
   const wantProps = next === "propp";
   if (wantProps) { window.__parlayLg = "props"; next = "parlay"; }
   view = next;
   try {
     document.body.dataset.view = next;
-    const SECTION_OF = { home: "home", card: "home", nfl: "nfl", prime: "nfl", props: "nfl", charts: "nfl", live: "nfl", tds: "nfl", value: "nfl", nflwx: "nfl", nflinj: "nfl", nflpotd: "nfl", cfb: "cfb", potd: "cfb", cfbpicks: "cfb", cfbwx: "cfb", cfbinj: "cfb", recruit: "cfb", parlay: "boom", builder: "boom", bets: "boom", calc: "boom", score: "record", history: "record", ratings: "record", all: "record", alerts: "record" };
+    const SECTION_OF = { home: "home", card: "home", nfl: "nfl", prime: "nfl", props: "nfl", charts: "nfl", live: "nfl", tds: "nfl", value: "nfl", nflwx: "nfl", nflinj: "nfl", nflpotd: "nfl", cfb: "cfb", potd: "cfb", cfbpicks: "cfb", cfbwx: "cfb", cfbinj: "cfb", recruit: "cfb", parlay: "boom", builder: "boom", bets: "boom", calc: "boom", score: "record", history: "record", ratings: "record", season: "record", all: "record", alerts: "record" };
     // Play of the day is reachable from Home too; stay in Home when coming from there.
     const keepHome = document.body.dataset.section === "home" && (next === "nflpotd" || next === "potd");
     document.body.dataset.section = keepHome ? "home" : (SECTION_OF[next] || "home");
@@ -14616,6 +14658,9 @@ function setView(next, opts) {
   $("#nflWxSection").style.display = next === "nflwx" ? "" : "none";
   $("#cfbWxSection").style.display = next === "cfbwx" ? "" : "none";
   $("#ratingsSection").style.display = next === "ratings" ? "" : "none";
+  const seaS = document.getElementById("seasonSection");
+  if (seaS) seaS.style.display = next === "season" ? "" : "none";
+  if (next === "season") { try { renderSeason(); } catch (e) { console.warn("season", e); } }
   $("#modelSection").style.display = next === "model" ? "" : "none";
   const awS = document.getElementById("awardsSection");
   if (awS) awS.style.display = next === "awards" ? "" : "none";
@@ -16007,6 +16052,144 @@ function renderCalc() {
   root.querySelectorAll("form[data-calc]").forEach(calcRun);
 }
 
+// ---- playoff odds ---------------------------------------------------------------------------
+// data/season.json (scripts/season.py, hourly): ESPN's FPI season simulation for every team,
+// plus Super Bowl and college title futures twice a week. Before the first file lands, the
+// projected wins and playoff chance already in the snapshot fill in.
+const NFL_DIVS = [
+  ["AFC East", ["BUF", "MIA", "NE", "NYJ"]], ["AFC North", ["BAL", "CIN", "CLE", "PIT"]],
+  ["AFC South", ["HOU", "IND", "JAX", "TEN"]], ["AFC West", ["DEN", "KC", "LV", "LAC"]],
+  ["NFC East", ["DAL", "NYG", "PHI", "WSH"]], ["NFC North", ["CHI", "DET", "GB", "MIN"]],
+  ["NFC South", ["ATL", "CAR", "NO", "TB"]], ["NFC West", ["ARI", "LAR", "SF", "SEA"]]
+];
+function loadSeason() {
+  return pbFetchOnce("season", "/data/season.json?t=" + Math.floor(Date.now() / 3600000), (d) => { window.SEASON = d; })
+    .then(() => { if (typeof view !== "undefined" && view === "season") renderSeason(); });
+}
+function seasonRows(lg) {
+  const S = window.SEASON;
+  if (S && (S[lg] || []).length) return S[lg];
+  return ((DATA.ratings || {})[lg] || []).map((r) => ({
+    id: String(r.id), abbr: r.abbr, name: r.name, logo: r.logo, fpi: r.fpi, rank: r.fpi_rank,
+    projW: r.proj_wins, playoff: r.playoff_pct
+  }));
+}
+function seasonPct(x) {
+  const v = Number(x);
+  if (x == null || !Number.isFinite(v)) return "—";
+  if (v >= 99.5) return ">99%";
+  if (v > 0 && v < 0.5) return "<1%";
+  return Math.round(v) + "%";
+}
+function seasonBar(x) {
+  const v = Math.max(0, Math.min(100, Number(x) || 0));
+  return `<span class="so-pct"><i style="width:${v.toFixed(1)}%"></i><b>${seasonPct(x)}</b></span>`;
+}
+function seasonRecord(t) {
+  if (t.w == null) return "";
+  return t.w + "-" + t.l + (Number(t.t) ? "-" + t.t : "");
+}
+function seasonProj(t) {
+  if (t.projW == null) return "—";
+  const w = Number(t.projW), l = t.projL != null ? Number(t.projL) : null;
+  return w.toFixed(1) + (l != null ? "-" + l.toFixed(1) : " wins");
+}
+function seasonNextGame(teamId) {
+  const now = Date.now() - 4 * 3600e3;
+  return (DATA.games || []).filter((g) => !g.completed && g.date && Date.parse(g.date) > now &&
+    (String(g.home && g.home.id) === teamId || String(g.away && g.away.id) === teamId))
+    .sort((a, b) => Date.parse(a.date) - Date.parse(b.date))[0] || null;
+}
+function seasonTeamCell(t) {
+  const logo = t.logo ? `<img src="${escHtml(t.logo)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">` : `<span class="tlogo-none"></span>`;
+  const rec = seasonRecord(t);
+  return `<div class="rteam so-team">${logo}<span><b>${escHtml(t.name || t.abbr || "")}</b>${rec ? `<small>${rec} now</small>` : ""}</span></div>`;
+}
+function seasonPrice(p) { return p > 0 ? "+" + p : String(p); }
+// The sim's title chance against the market's, when the books have a price.
+function seasonMarketHtml(rows, lg) {
+  const priced = rows.filter((t) => t.futures && Number(t.title) >= 0).sort((a, b) => (b.title || 0) - (a.title || 0) || (b.futures.market - a.futures.market)).slice(0, 10);
+  if (!priced.length) return "";
+  const S = window.SEASON || {};
+  const when = S.futuresAt ? new Date(S.futuresAt).toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" }) : "";
+  const prize = lg === "nfl" ? "Super Bowl" : "national title";
+  return `<div class="card so-market">
+    <h3>${lg === "nfl" ? "Super Bowl" : "National title"}: ESPN's sim vs the market</h3>
+    <p class="subn">Market chance is the middle of the books' prices with their cut taken out. "Sim higher" means ESPN gives the team a clearly better shot than the price does; it is a lead to look into, not one of our picks. Prices from ${when || "the last pull"}.</p>
+    <table class="ratings so-table">
+      <thead><tr><th>Team</th><th>ESPN</th><th>Market</th><th>Best price</th><th></th></tr></thead>
+      <tbody>${priced.map((t) => {
+        const f = t.futures, sim = Number(t.title) || 0, mkt = Number(f.market) || 0;
+        const gap = sim - mkt;
+        const flag = gap >= 1 && sim >= mkt * 1.3 ? `<span class="so-flag up">Sim higher</span>` : gap <= -1 && mkt >= sim * 1.3 ? `<span class="so-flag">Market higher</span>` : "";
+        return `<tr data-team="${t.id}">
+          <td data-lbl="Team">${seasonTeamCell(t)}</td>
+          <td data-lbl="ESPN">${seasonPct(sim)}</td>
+          <td data-lbl="Market">${seasonPct(mkt)}</td>
+          <td data-lbl="Best price"><span><b>${seasonPrice(f.price)}</b> <small class="so-book">${escHtml(f.book || "")}</small></span></td>
+          <td data-lbl="">${flag}</td>
+        </tr>`;
+      }).join("")}</tbody>
+    </table>
+    <p class="subn" style="margin:8px 0 0">To win the ${prize}. Futures tie up your money for months, so the price has to be a lot better than the chance to be worth it.</p>
+  </div>`;
+}
+function renderSeason() {
+  const root = document.getElementById("seasonWrap");
+  if (!root) return;
+  if (!window.SEASON && !window.__seasonAsked) { window.__seasonAsked = true; loadSeason(); }
+  const lg = activeLeague("seasonLeague", "nfl");
+  const showSel = document.getElementById("seasonShow");
+  if (showSel) showSel.style.display = lg === "cfb" ? "" : "none";
+  const show = (document.getElementById("seasonShow") || {}).value || "top";
+  const q = ((document.getElementById("seasonQ") || {}).value || "").trim().toLowerCase();
+  let rows = seasonRows(lg).slice();
+  if (!rows.length) { root.innerHTML = `<div class="card"><p class="subn">The season numbers aren't in yet. They update every hour.</p></div>`; return; }
+  const hit = (t) => !q || `${t.name} ${t.abbr} ${t.short || ""}`.toLowerCase().includes(q);
+  const S = window.SEASON || {};
+  const stamp = S.updated ? `Updated ${new Date(S.updated).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" })}.` : "";
+  let html = "";
+  const hasDiv = rows.some((t) => t.div != null);
+  if (lg === "nfl") {
+    const byAbbr = {};
+    rows.forEach((t) => { byAbbr[t.abbr] = t; if (t.abbr === "WAS") byAbbr.WSH = t; if (t.abbr === "LA") byAbbr.LAR = t; });
+    const divs = NFL_DIVS.map(([name, abbrs]) => [name, abbrs.map((a) => byAbbr[a]).filter(Boolean).filter(hit)
+      .sort((a, b) => (b.div || 0) - (a.div || 0) || (b.playoff || 0) - (a.playoff || 0))]).filter(([, list]) => list.length);
+    html += `<div class="so-grid">${divs.map(([name, list]) => `<div class="card so-div">
+      <h3>${name}</h3>
+      <table class="ratings so-table">
+        <thead><tr><th>Team</th><th>Proj.</th><th>Playoffs</th>${hasDiv ? "<th>Division</th><th>Super Bowl</th>" : ""}</tr></thead>
+        <tbody>${list.map((t) => `<tr data-team="${t.id}">
+          <td data-lbl="Team">${seasonTeamCell(t)}</td>
+          <td data-lbl="Projected">${seasonProj(t)}</td>
+          <td data-lbl="Playoffs">${seasonBar(t.playoff)}</td>
+          ${hasDiv ? `<td data-lbl="Division">${seasonPct(t.div)}</td><td data-lbl="Super Bowl">${seasonPct(t.title)}</td>` : ""}
+        </tr>`).join("")}</tbody>
+      </table></div>`).join("")}</div>`;
+  } else {
+    rows.sort((a, b) => (b.playoff || 0) - (a.playoff || 0) || (b.projW || 0) - (a.projW || 0) || (a.rank || 999) - (b.rank || 999));
+    let list = rows.filter(hit);
+    if (show === "top" && !q) list = list.slice(0, 30);
+    html += `<div class="card"><table class="ratings so-table">
+      <thead><tr><th>#</th><th>Team</th><th>Proj.</th><th>Playoff</th>${hasDiv ? "<th>Win conf.</th><th>Title game</th><th>Title</th>" : ""}</tr></thead>
+      <tbody>${list.map((t) => `<tr data-team="${t.id}">
+        <td data-lbl="#"><b>${rows.indexOf(t) + 1}</b></td>
+        <td data-lbl="Team">${seasonTeamCell(t)}</td>
+        <td data-lbl="Projected">${seasonProj(t)}</td>
+        <td data-lbl="Playoff">${seasonBar(t.playoff)}</td>
+        ${hasDiv ? `<td data-lbl="Win conf.">${seasonPct(t.conf)}</td><td data-lbl="Title game">${seasonPct(t.titleGame)}</td><td data-lbl="Title">${seasonPct(t.title)}</td>` : ""}
+      </tr>`).join("")}</tbody>
+    </table>${show === "top" && !q && rows.length > 30 ? `<p class="subn" style="margin:8px 0 0">Top 30 by playoff chance. Pick "Every team" to see all ${rows.length}.</p>` : ""}</div>`;
+  }
+  html += seasonMarketHtml(rows, lg);
+  html += `<p class="subn so-foot">Chances from ESPN's Football Power Index, which plays out the rest of the season thousands of times. ${lg === "cfb" ? "Playoff means the 12-team College Football Playoff. " : ""}Tap a team to open its next game. ${stamp}</p>`;
+  root.innerHTML = html;
+  root.querySelectorAll("tr[data-team]").forEach((tr) => tr.addEventListener("click", () => {
+    const g = seasonNextGame(tr.dataset.team);
+    if (g) openGame(g.id, { push: true });
+  }));
+}
+
 // ---- live sweat and hedge ------------------------------------------------------------------
 // Once a leg's game kicks off, the ticket turns into a tracker. Each leg's line and price
 // are saved while its game is still to come (st.bet), so the ticket is graded on the
@@ -16540,6 +16723,9 @@ async function boot() {
   $("#openOnly").addEventListener("change", renderBoard);
   $("#sortKey").addEventListener("change", () => { sortKey = $("#sortKey").value; renderBoard(); });
   $("#ratingLeague") && bindLeagueTabs("ratingLeague", renderRatings);
+  $("#seasonLeague") && bindLeagueTabs("seasonLeague", renderSeason);
+  document.getElementById("seasonShow")?.addEventListener("change", renderSeason);
+  document.getElementById("seasonQ")?.addEventListener("input", renderSeason);
   ["ratingView","ratingSort","ratingPoll"].forEach((id) => document.getElementById(id)?.addEventListener("change", renderRatings));
   document.getElementById("ratingQ")?.addEventListener("input", renderRatings);
   ["propDay","propPos","propSort","propHit"].forEach((id) => {
@@ -16648,7 +16834,7 @@ async function boot() {
     try { saved = sessionStorage.getItem("gg-league-" + id) || ""; } catch (err) {}
     if (saved === "nfl" || saved === "cfb") setActiveLeague(id, saved);
   });
-  ["ratingLeague", "valLeague"].forEach((id) => {
+  ["ratingLeague", "valLeague", "seasonLeague"].forEach((id) => {
     let saved = "";
     try { saved = sessionStorage.getItem("gg-league-" + id) || ""; } catch (err) {}
     if (saved === "nfl" || saved === "cfb") setActiveLeague(id, saved);

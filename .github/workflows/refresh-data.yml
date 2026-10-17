@@ -51,6 +51,11 @@ jobs:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           ODDS_API_PLAN: ${{ vars.ODDS_API_PLAN }}
         run: python3 scripts/props.py
+      - name: Season odds (ESPN's season simulation and the futures market)
+        continue-on-error: true
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: python3 scripts/season.py
       - name: Commit any changes
         run: |
           git config user.name "peyton2407-maker"
@@ -61,6 +66,7 @@ jobs:
           if [ -f data/line-history.json ]; then git add data/line-history.json; fi
           git add data/desk-cfb.json data/split-notes.json data/cfb-polls.json data/eleven.json
           if [ -f data/props.json ]; then git add data/props.json; fi
+          if [ -f data/season.json ]; then git add data/season.json; fi
           if [ -f data/props-status.json ]; then git add data/props-status.json; fi
           if git diff --cached --quiet; then
             echo "Nothing new."
