@@ -21,10 +21,10 @@
    "total": 50.5,
    "lockedAt": "2026-10-17T18:16:15.120Z",
    "close_spread": -19.5,
-   "close_total": 50.5,
-   "closeAt": "2026-10-17T18:48:42.627Z",
+   "close_total": 49.5,
+   "closeAt": "2026-10-17T19:17:20.394Z",
    "clv_side": -1,
-   "clv_total": 1
+   "clv_total": 0
   },
   "401856720": {
    "id": "401856720",
@@ -71,10 +71,10 @@
    "total": 58.5,
    "lockedAt": "2026-10-17T18:16:15.120Z",
    "close_spread": -4,
-   "close_total": 58.5,
-   "closeAt": "2026-10-17T18:48:42.627Z",
+   "close_total": 57.5,
+   "closeAt": "2026-10-17T19:17:20.394Z",
    "clv_side": -2,
-   "clv_total": 0
+   "clv_total": 1
   },
   "401856723": {
    "id": "401856723",
@@ -271,10 +271,10 @@
    "total": 56.5,
    "lockedAt": "2026-10-17T18:16:15.120Z",
    "close_spread": -8.5,
-   "close_total": 56.5,
-   "closeAt": "2026-10-17T18:48:42.627Z",
+   "close_total": 55.5,
+   "closeAt": "2026-10-17T19:17:20.394Z",
    "clv_side": -1.5,
-   "clv_total": 1
+   "clv_total": 0
   },
   "401858266": {
    "id": "401858266",
@@ -601,6 +601,26 @@
    "clv_side": 4,
    "clv_total": 0
   },
+  "401862805": {
+   "id": "401862805",
+   "league": "cfb",
+   "week": 7,
+   "short": "TLSA @ RICE",
+   "home": "RICE",
+   "away": "TLSA",
+   "date": "2026-10-17T20:30Z",
+   "pick": "TLSA",
+   "pick_line": "TLSA -4.0",
+   "total_pick": "OVER 45.5",
+   "side_play": true,
+   "our_margin": -7.34,
+   "our_total": 47.2,
+   "confidence": 51,
+   "total_play": true,
+   "spread": 4.5,
+   "total": 46.5,
+   "lockedAt": "2026-10-17T19:17:20.394Z"
+  },
   "401864522": {
    "id": "401864522",
    "league": "cfb",
@@ -646,10 +666,10 @@
    "total": 48.5,
    "lockedAt": "2026-10-17T18:16:15.120Z",
    "close_spread": 1.5,
-   "close_total": 48.5,
-   "closeAt": "2026-10-17T18:48:42.627Z",
+   "close_total": 49.5,
+   "closeAt": "2026-10-17T19:17:20.394Z",
    "clv_side": 0,
-   "clv_total": 0
+   "clv_total": 1
   },
   "401866441": {
    "id": "401866441",
@@ -745,10 +765,10 @@
    "spread": 7,
    "total": 52.5,
    "lockedAt": "2026-10-17T18:16:15.120Z",
-   "close_spread": 7,
+   "close_spread": 7.5,
    "close_total": 52.5,
-   "closeAt": "2026-10-17T18:48:42.627Z",
-   "clv_side": 0.5,
+   "closeAt": "2026-10-17T19:17:20.394Z",
+   "clv_side": 1,
    "clv_total": 0
   },
   "401866478": {
@@ -1120,5 +1140,5 @@
    }
   ]
  },
- "updated": "2026-10-17T18:48:42.627Z"
+ "updated": "2026-10-17T19:17:20.394Z"
 }
