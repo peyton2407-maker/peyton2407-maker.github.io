@@ -2047,6 +2047,139 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .pb-top-leg:hover { border-color: var(--sun); }
 .pb-top-leg.on { background: var(--sun); border-color: var(--sun); color: var(--brass-ink); }
 .pb-top-leg.on span, .pb-top-leg.on em { color: rgba(36,22,2,.75); }
+
+/* ---- the slate (default board) ---- */
+#stats.stat-row { display: flex; align-items: center; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap; margin: 0 0 16px; grid-template-columns: none; }
+.board-sum { margin: 0; color: var(--ink-soft); font-size: 14.5px; }
+.board-sum b { color: var(--ink); font: 800 19px var(--display); }
+.board-mode { display: inline-flex; padding: 3px; border: 1px solid var(--line-2); border-radius: 10px; }
+.board-mode button { border: 0; background: none; color: var(--muted); font: 700 14px var(--body); padding: 7px 14px; border-radius: 8px; cursor: pointer; min-height: 36px; }
+.board-mode button.on { background: var(--card-2); color: var(--ink); }
+#board.is-slate { display: block; }
+.slate-day { margin: 0 0 26px; }
+.slate-day h3 { display: flex; align-items: baseline; gap: 10px; margin: 0 0 8px; font: 800 24px var(--display); letter-spacing: .005em; }
+.slate-day h3 span { font: 600 13px var(--body); color: var(--muted); }
+.slate-head, .slate-row { display: grid; grid-template-columns: 74px minmax(210px, 1.6fr) minmax(96px, .8fr) minmax(96px, .8fr) minmax(180px, 1.3fr); gap: 16px; align-items: center; }
+.slate-head { padding: 0 16px 6px; font-size: 12px; font-weight: 600; color: var(--muted); }
+.slate-head span:last-child { text-align: right; }
+.slate-row { background: var(--card); border: 1px solid var(--line); border-top: 0; padding: 11px 16px; cursor: pointer; }
+.slate-head + .slate-row { border-top: 1px solid var(--line); border-radius: 12px 12px 0 0; }
+.slate-row:last-child { border-radius: 0 0 12px 12px; }
+.slate-head + .slate-row:last-child { border-radius: 12px; }
+.slate-row:hover { background: #18243e; }
+.slate-row:focus-visible { outline: 2px solid var(--sun); outline-offset: -2px; }
+.slate-row.is-live { box-shadow: inset 3px 0 0 var(--flame); }
+.sl-when { display: grid; gap: 2px; }
+.sl-when b { font-weight: 700; font-size: 15px; }
+.sl-when small { color: var(--muted); font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sl-teams { display: grid; gap: 5px; min-width: 0; }
+.sl-team { display: grid; grid-template-columns: 22px auto minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+.sl-team .tlogo { width: 22px; height: 22px; }
+.sl-team b { font-weight: 700; font-size: 15.5px; white-space: nowrap; }
+.sl-team b i { font-style: normal; font-size: 11px; font-weight: 700; color: var(--sun); margin-right: 4px; }
+.sl-team span { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sl-team em { font: 800 21px var(--display); font-style: normal; font-variant-numeric: tabular-nums; min-width: 2ch; text-align: right; }
+.sl-team em.proj { color: var(--muted); }
+.sl-num { min-width: 0; }
+.sl-num span { display: block; font-size: 11.5px; color: var(--muted); font-weight: 600; }
+.sl-num b { display: block; font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sl-num small { display: block; font-size: 12.5px; color: var(--ink-soft); }
+.sl-pick { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; justify-content: flex-end; text-align: right; }
+.sl-pick .gr-tk { justify-items: end; }
+.sl-pick .ticket { font-size: 13.5px; padding: 4px 9px 4px 12px; }
+.sl-lean { font-size: 13px; font-weight: 700; color: var(--ink-soft); border: 1px dashed var(--line-2); border-radius: 8px; padding: 4px 8px; }
+.sl-flags { flex-basis: 100%; display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap; }
+.sl-flag { font-size: 11.5px; font-weight: 700; color: var(--ink-soft); background: rgba(237,241,247,.06); border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
+.sl-flag.hot { color: #ff8a8f; background: rgba(242,84,91,.13); }
+@media (max-width: 760px) {
+  .slate-head { display: none; }
+  .slate-row, .slate-head + .slate-row { grid-template-columns: 54px minmax(0, 1fr) minmax(0, max-content); gap: 6px 10px; padding: 11px 12px; border-radius: 0; }
+  .slate-row:first-of-type { border-top: 1px solid var(--line); border-radius: 12px 12px 0 0; }
+  .slate-row:last-child { border-radius: 0 0 12px 12px; }
+  .sl-when { grid-row: 1 / span 2; align-self: start; padding-top: 2px; }
+  .sl-teams { grid-column: 2; grid-row: 1; }
+  .sl-pick { grid-column: 3; grid-row: 1; max-width: 44vw; }
+  .sl-num { grid-row: 2; display: flex; align-items: baseline; gap: 6px; }
+  .sl-num:nth-of-type(3) { grid-column: 2; }
+  .sl-num:nth-of-type(4) { grid-column: 3; justify-content: flex-end; }
+  .sl-num span { display: inline; }
+  .sl-num b { display: inline; font-size: 13.5px; }
+  .sl-num small { display: none; }
+  .sl-team span { display: none; }
+  .sl-team { grid-template-columns: 20px auto minmax(0, 1fr) auto; }
+  .board-sum { font-size: 13.5px; }
+}
+
+/* slate: the column header labels the numbers on wide screens */
+@media (min-width: 761px) { .slate-row .sl-num span { display: none; } }
+@media (min-width: 761px) { .slate-head, .slate-row { grid-template-columns: 74px minmax(180px, 1.1fr) minmax(100px, .7fr) minmax(100px, .7fr) minmax(200px, 1.3fr); } }
+@media (max-width: 760px) { .sl-num { flex-wrap: wrap; } .sl-num b { overflow: visible; } }
+
+/* top bar: one refresh button; saving the page lives in the footer */
+.appbar-tools #injRefreshBtn, .appbar-tools #downloadBtn { display: none !important; }
+#refreshBtn { display: inline-flex; align-items: center; gap: 6px; }
+.foot-link { display: block; margin: 10px auto 0; border: 0; background: none; color: var(--muted); font: 600 13px var(--body); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.foot-link:hover { color: var(--ink); }
+
+/* section tabs stay on one line and scroll */
+@media (min-width: 980px) {
+  .subnav-group { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-mask: linear-gradient(90deg, #000 calc(100% - 40px), transparent); mask: linear-gradient(90deg, #000 calc(100% - 40px), transparent); padding-right: 40px; }
+  .subnav-group::-webkit-scrollbar { display: none; }
+}
+
+/* game sheet: a scoreboard-style top, then the details as a quiet list */
+.gm-hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 0; margin: 14px 0; border: 1px solid rgba(242,184,64,.28); border-radius: 14px; overflow: hidden;
+  background: radial-gradient(circle at 1px 1px, rgba(255,255,255,.04) 1px, transparent 1.5px) 0 0 / 6px 6px, #0a1120; }
+.gm-score { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 6px 10px; padding: 16px 18px; border-right: 1px solid var(--line); }
+.gm-score > div { display: flex; align-items: baseline; gap: 8px; }
+.gm-score > div:first-child { justify-content: flex-end; }
+.gm-score span { font: 800 18px var(--display); color: var(--ink-soft); }
+.gm-score b { font: 900 54px/0.9 var(--display); color: var(--ink); font-variant-numeric: tabular-nums; }
+.gm-hero.real .gm-score b { color: #ffe7ad; text-shadow: 0 0 16px rgba(255,190,80,.35); }
+.gm-score i { font-style: normal; color: var(--muted); font-size: 26px; }
+.gm-score small { grid-column: 1 / -1; text-align: center; color: var(--muted); font-size: 13px; font-weight: 600; }
+.gm-pick { display: grid; align-content: center; gap: 6px; padding: 16px 18px; }
+.gm-lbl { font-size: 12px; font-weight: 700; color: var(--muted); }
+.gm-tix { display: flex; flex-wrap: wrap; gap: 8px; }
+.gm-tix .gr-tk { justify-items: start; }
+.gm-pick small { color: var(--muted); font-size: 13px; font-weight: 600; }
+.gm-none { font: 800 24px var(--display); color: var(--ink-soft); }
+.gm-lines { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, 1fr); margin: 0; border-top: 1px solid var(--line); }
+.gm-lines > div { padding: 10px 18px; }
+.gm-lines > div + div { border-left: 1px solid var(--line); }
+.gm-lines dt { font-size: 12px; font-weight: 700; color: var(--muted); }
+.gm-lines dd { margin: 2px 0 0; font-weight: 700; font-size: 15.5px; }
+.gm-lines dd.sub { font-weight: 600; font-size: 12.5px; color: var(--ink-soft); }
+@media (max-width: 640px) {
+  .gm-hero { grid-template-columns: 1fr; }
+  .gm-score { border-right: 0; border-bottom: 1px solid var(--line); }
+  .gm-score b { font-size: 46px; }
+  .gm-lines > div { padding: 10px 12px; }
+}
+#modal .grid2, #gameSheet .grid2 { gap: 0 !important; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--card); }
+#modal .grid2 > .kv, #gameSheet .grid2 > .kv { background: none !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; border-bottom: 1px solid var(--line) !important; padding: 11px 14px !important; margin: 0 !important; }
+@media (min-width: 641px) { #modal .grid2 > .kv:nth-child(odd), #gameSheet .grid2 > .kv:nth-child(odd) { border-right: 1px solid var(--line) !important; } }
+#modal .grid2 > .kv b, #gameSheet .grid2 > .kv b { font-size: 16px; }
+
+@media (max-width: 760px) {
+  .sl-when { grid-row: 1 / span 3; }
+  .slate-row .sl-num:nth-of-type(3), .slate-row .sl-num:nth-of-type(4) { grid-column: 2 / -1; justify-content: flex-start; font-size: 13px; }
+  .slate-row .sl-num:nth-of-type(3) { grid-row: 2; margin-top: 4px; }
+  .slate-row .sl-num:nth-of-type(4) { grid-row: 3; }
+  .slate-row .sl-num small { display: inline; color: var(--muted); }
+  .slate-row .sl-num small::before { content: "· "; }
+  .slate-row .sl-num b { white-space: nowrap; }
+}
+.shop-table { display: block; overflow-x: auto; max-width: 100%; }
+.gm-score small .live-dot { font: 800 13px var(--body); color: var(--flame); }
+
+/* flatten boxes-inside-boxes: stat groups become one panel split by hairlines */
+.prop-stats, .yardgrid, .simgrid, .wxbar { gap: 1px !important; background: var(--line) !important; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.prop-stats > div, .yardgrid > div, .simgrid > div, .wxbar > div { background: var(--card) !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; margin: 0 !important; }
+.prop-stats .lbl, .yardgrid .lbl, .simgrid .lbl, .wxbar .lbl { letter-spacing: 0; text-transform: none; font-size: 12px; font-weight: 600; color: var(--muted); }
+.stat-row .stat { padding: 12px 14px; }
+.stat-row .stat b { font-size: 28px; }
+.stat-row .stat span { font-size: 13px; }
 </style>
 </head>
 <body>
@@ -2057,7 +2190,7 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
       <a class="appbar-brand" href="#home" aria-label="Double Gs home"><span class="mark">GG</span><span class="wordmark">Double Gs</span></a>
       <span class="pill" id="stamp">Loading…</span>
       <div class="appbar-tools">
-        <button class="refresh-btn" id="refreshBtn" type="button">Update scores</button>
+        <button class="refresh-btn" id="refreshBtn" type="button" title="Update scores, lines and injuries"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/></svg>Refresh</button>
         <button class="refresh-btn" id="injRefreshBtn" type="button">Update injuries</button>
         <button class="refresh-btn" id="downloadBtn" type="button">Save this page</button>
         <a class="split-link" href="/split/">The Split</a>
@@ -2659,6 +2792,7 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
     Double Gs projections are for information and entertainment. They are not betting advice and no pick is a sure thing.
     21+ where sports betting is legal. If gambling stops being fun, call or text <a href="tel:18004262537">1-800-GAMBLER</a>.
     Scores, lines and injury data come from ESPN and DraftKings; weather from Open-Meteo.
+    <button type="button" class="foot-link" onclick="document.getElementById('downloadBtn').click()">Save this page to use offline</button>
   </footer>
 
   <div class="overlay" id="overlay">
@@ -9135,13 +9269,18 @@ function cfbPickWhy(g) {
   const o = g.odds || {};
   const notes = [];
   if (p.qb_pass) return [p.qb_pass];
-  const away = Number(p.away_points);
-  const home = Number(p.home_points);
+  // once a game starts, home/away points become the live projection; the pick was made on
+  // the pregame score, so explain it with that
+  const away = Number(p.pregame_away_points != null ? p.pregame_away_points : p.away_points);
+  const home = Number(p.pregame_home_points != null ? p.pregame_home_points : p.home_points);
   if (Number.isFinite(away) && Number.isFinite(home) && g.away && g.home) {
     const margin = +(home - away).toFixed(1);
     const winner = margin >= 0 ? g.home.abbr : g.away.abbr;
     const by = Math.abs(margin).toFixed(1);
-    const score = "Our score is " + g.away.abbr + " " + away + ", " + g.home.abbr + " " + home + ". " + winner + " wins by " + by + ".";
+    // the gap is measured from our line (score plus injuries, weather and form), so say that line
+    const hl = p.hashmark_home_spread != null && Number.isFinite(Number(p.hashmark_home_spread)) ? Number(p.hashmark_home_spread) : null;
+    const lineTxt = hl != null && Math.abs(-hl - margin) >= 0.5 ? " With injuries, weather and form, our line is " + cfbSideLabel(g, hl) + "." : "";
+    const score = "Our score is " + g.away.abbr + " " + away + ", " + g.home.abbr + " " + home + ". " + winner + " wins by " + by + "." + lineTxt;
     const line = o.locked_details || o.details || "";
     const gap = p.edge_spread == null ? "" : Math.abs(Number(p.edge_spread)).toFixed(1);
     if (p.pick && p.pick !== "NO PLAY") {
@@ -9486,15 +9625,91 @@ function projectionTable(games) {
     </div>`;
 }
 
+// ---- the slate: every game on one line ------------------------------------------------------
+// The default board. Kickoff, both teams with the score (real once it starts, ours before),
+// the Vegas line, our line, our pick and what to know, grouped by day. Tap a row for the
+// whole game. "Full cards" switches back to the long cards.
+function boardMode() { try { return localStorage.getItem("gg-board-mode") === "cards" ? "cards" : "slate"; } catch (e) { return "slate"; } }
+function slateRowHtml(g) {
+  const p = g.proj || {}, o = g.odds || {};
+  const live = typeof isLiveGame === "function" && isLiveGame(g);
+  const done = !!g.completed;
+  const k = kickParts(g);
+  const tv = (g.broadcasts || [])[0];
+  const when = live ? `<span class="live-dot">Live</span><small>${pbEsc(g.status_detail || "")}</small>`
+    : done ? `<b>Final</b><small>${k.day}</small>`
+    : `<b>${k.time}</b><small>${tv ? pbEsc(tv) : k.day}</small>`;
+  const num = (side) => (live || done)
+    ? (g[side].score != null && g[side].score !== "" ? g[side].score : "0")
+    : (p[side + "_points"] != null ? Math.round(Number(p[side + "_points"])) : "");
+  const team = (side) => `<div class="sl-team">${teamLogo(g[side])}<b>${g[side].rank && g[side].rank <= 25 ? `<i>${g[side].rank}</i>` : ""}${g[side].abbr}</b><span>${pbEsc(g[side].record || "")}</span><em class="${live || done ? "" : "proj"}">${num(side)}</em></div>`;
+  const ourLine = p.hashmark_home_spread != null ? cfbSideLabel(g, p.hashmark_home_spread) : "";
+  const ourTot = p.hashmark_total != null ? Number(p.hashmark_total).toFixed(1) : (p.home_points != null && p.away_points != null ? (Number(p.home_points) + Number(p.away_points)).toFixed(1) : "");
+  const sp = shownPick(g);
+  let parts = [sp.side, sp.total].filter(Boolean);
+  let lean = "";
+  if (!parts.length && g.league === "cfb" && typeof cfbListedPick === "function" && !done) {
+    try { const L = cfbListedPick(g); if (L && L.pick && L.pick !== "NO PLAY") lean = L.pick_line || L.pick; } catch (e) {}
+  }
+  const chance = !sp.lock && parts.length && !live && !done && typeof playChance === "function" ? playChance(g) : 0;
+  const pick = parts.length
+    ? parts.map((t) => ticketHtml(g, t)).join("") + (!live && !done ? (sp.lock ? `<span class="gr-sub">Locked</span>` : chance ? `<span class="gr-sub">${chance}% to hit</span>` : "") : "")
+    : lean ? `<span class="sl-lean">Lean ${pbEsc(lean)}</span>` : `<span class="gr-none">No play</span>`;
+  // what to know: weather that matters, a starter out, a line that moved
+  const flags = [];
+  const wx = g.weather;
+  if (!g.indoor && wx) {
+    if (Number(wx.wind_mph) >= 15) flags.push(`<span class="sl-flag">Wind ${Math.round(wx.wind_mph)}</span>`);
+    if (Number(wx.precip_prob) >= 50) flags.push(`<span class="sl-flag">Rain ${wx.precip_prob}%</span>`);
+    if (wx.temp_f != null && Number(wx.temp_f) <= 32) flags.push(`<span class="sl-flag">${Math.round(wx.temp_f)}°</span>`);
+  }
+  const qbOut = (g.injuries || []).filter((r) => r.pos === "QB" && /^(OUT|DOUBT)/i.test(r.tag || r.status || "") && (r.score || 0) >= 150);
+  qbOut.slice(0, 1).forEach((r) => flags.push(`<span class="sl-flag hot">QB ${pbEsc(String(r.name).split(" ").slice(-1)[0])} out</span>`));
+  if (!done && typeof lineMove === "function") {
+    const m = lineMove(g);
+    if (m && m.sp0 != null && m.sp1 != null && Math.abs(m.sp1 - m.sp0) >= 1.5) flags.push(`<span class="sl-flag">Moved ${Math.abs(m.sp1 - m.sp0)}</span>`);
+  }
+  return `<article class="slate-row${live ? " is-live" : ""}${done ? " is-final" : ""}" data-id="${g.id}" tabindex="0" role="button" aria-label="${pbEsc(g.away.abbr + " at " + g.home.abbr)}">
+    <div class="sl-when">${when}</div>
+    <div class="sl-teams">${team("away")}${team("home")}</div>
+    <div class="sl-num"><span>Vegas</span><b>${pbEsc(o.details || "—")}</b><small>${o.total != null ? "O/U " + pbTot(o.total) : ""}</small></div>
+    <div class="sl-num"><span>Ours</span><b>${pbEsc(ourLine || "—")}</b><small>${ourTot ? "Total " + ourTot : ""}</small></div>
+    <div class="sl-pick">${pick}${flags.length ? `<div class="sl-flags">${flags.join("")}</div>` : ""}</div>
+  </article>`;
+}
+function boardSlateHtml(games) {
+  const fmtDay = new Intl.DateTimeFormat([], { weekday: "long", month: "short", day: "numeric" });
+  const groups = [];
+  games.forEach((g) => {
+    const d = new Date(g.date);
+    const key = Number.isFinite(d.getTime()) ? fmtDay.format(d) : "Time to be set";
+    let grp = groups.find((x) => x.key === key);
+    if (!grp) { grp = { key, games: [] }; groups.push(grp); }
+    grp.games.push(g);
+  });
+  return `<div class="slate">${groups.map((grp) => `<section class="slate-day">
+    <h3>${grp.key}<span>${grp.games.length} game${grp.games.length === 1 ? "" : "s"}</span></h3>
+    <div class="slate-head" aria-hidden="true"><span>Kickoff</span><span>Matchup · score</span><span>Vegas</span><span>Our line</span><span>Our pick</span></div>
+    ${grp.games.map(slateRowHtml).join("")}
+  </section>`).join("")}</div>`;
+}
 function renderBoard() {
   const games = gamesForView();
   const upcoming = games.filter((g) => !g.completed);
   const plays = upcoming.filter((g) => g.proj?.pick && g.proj.pick !== "NO PLAY");
-  $("#stats").innerHTML = `
-    <div class="stat"><b>${upcoming.length}</b><span>games on this board</span></div>
-    <div class="stat"><b>${games.filter((g) => g.box).length}</b><span>with score + yard projections</span></div>
-    <div class="stat"><b>${plays.length}</b><span>spread leans ≥ 0.6 pts</span></div>
-    <div class="stat"><b>${view === "cfb" ? Object.values((DATA.residuals && DATA.residuals.games_learned) || {}).filter((x)=>x.league==="cfb").length : games.filter((g) => g.indoor || g.weather).length}</b><span>${view === "cfb" ? "finals already learned" : "with kickoff weather"}</span></div>`;
+  const mode = boardMode();
+  const nPlays = upcoming.filter((g) => { const sp = shownPick(g); return sp.side || sp.total; }).length;
+  $("#stats").innerHTML = `<p class="board-sum"><b>${upcoming.length}</b> game${upcoming.length === 1 ? "" : "s"} to come · <b>${nPlays}</b> with a pick. Tap a game for everything we have on it.</p>
+    <div class="board-mode" role="group" aria-label="Board layout"><button type="button" data-bmode="slate" class="${mode === "slate" ? "on" : ""}" aria-pressed="${mode === "slate"}">Slate</button><button type="button" data-bmode="cards" class="${mode === "cards" ? "on" : ""}" aria-pressed="${mode === "cards"}">Full cards</button></div>`;
+  if (!window.__boardModeBound) {
+    window.__boardModeBound = true;
+    document.getElementById("stats").addEventListener("click", (e) => {
+      const b = e.target.closest("[data-bmode]");
+      if (!b) return;
+      try { localStorage.setItem("gg-board-mode", b.dataset.bmode); } catch (err) {}
+      renderBoard();
+    });
+  }
   if (!games.length) {
     $("#board").innerHTML = `<div class="empty">No games in this filter. Switch the dropdown to “Upcoming only” or “All games”.</div>`;
     return;
@@ -9502,14 +9717,22 @@ function renderBoard() {
   const kickList = view === "cfb" ? `<div class="card board-card" style="margin-bottom:14px"><h3 style="margin:0 0 10px">College Week ${currentCfbWeekNumber()} by start time</h3><table class="ratings"><tbody>${games.map((g) => `<tr data-id="${g.id}"><td><b>${fmt.when(g.date)}</b></td><td>${g.away.abbr} @ ${g.home.abbr}</td><td>${(g.odds && g.odds.details) || ""}</td></tr>`).join("")}</tbody></table></div>` : "";
   const table = projectionTable(games);
   const desk = (view === "nfl" || view === "cfb" || view === "live") ? deskStripHtml(games) : "";
-  const cards = games.map(card).join("");
+  const cards = mode === "slate" ? boardSlateHtml(games) : games.map(card).join("");
   const dogs = (view === "nfl" || view === "live" || view === "cfb") ? valueStripHtml() : "";
-  $("#board").innerHTML = kickList + cards + table + desk + dogs;
+  $("#board").innerHTML = mode === "slate" ? cards + desk + dogs : kickList + cards + table + desk + dogs;
+  $("#board").classList.toggle("is-slate", mode === "slate");
   if (!window.__boardClickBound) {
     window.__boardClickBound = true;
     document.getElementById("board").addEventListener("click", (e) => {
       const row = e.target.closest("[data-id]");
       if (!row || !row.dataset.id) return;
+      openGame(row.dataset.id);
+    });
+    document.getElementById("board").addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      const row = e.target.closest(".slate-row[data-id]");
+      if (!row) return;
+      e.preventDefault();
       openGame(row.dataset.id);
     });
   }
@@ -10544,6 +10767,7 @@ function openGame(id, opts) {
         <div class="subn">${g.home.record || ""} · ranking ${fmt.n(p.home_fpi, 2)} (#${fmt.n(p.home_fpi_rank, 0)})</div>
       </div>
     </div>
+    ${gameHeroHtml(g)}
     ${deskPanelHtml(g)}
     ${g.league === "cfb" ? cfbReadHtml(g) : ""}
     ${g.live ? `<div class="card" style="margin:12px 0;border-color:var(--rose)">
@@ -10590,6 +10814,34 @@ function openGame(id, opts) {
   }
 }
 
+// The top of a game: the score (real once it starts, ours before), our pick, and the lines.
+function gameHeroHtml(g) {
+  const p = g.proj || {}, o = g.odds || {};
+  const live = typeof isLiveGame === "function" && isLiveGame(g);
+  const done = !!g.completed;
+  const real = live || done;
+  const n = (side) => real ? (g[side].score != null && g[side].score !== "" ? g[side].score : "0") : (p[side + "_points"] != null ? Number(p[side + "_points"]).toFixed(1) : "—");
+  const sp = shownPick(g);
+  const parts = [sp.side, sp.total].filter(Boolean);
+  const chance = !sp.lock && parts.length && !real && typeof playChance === "function" ? playChance(g) : 0;
+  const ourLine = p.hashmark_home_spread != null ? cfbSideLabel(g, p.hashmark_home_spread) : "";
+  const ourTot = p.hashmark_total != null ? Number(p.hashmark_total).toFixed(1) : "";
+  return `<div class="gm-hero${real ? " real" : ""}">
+    <div class="gm-score">
+      <div><span>${g.away.abbr}</span><b>${n("away")}</b></div><i>–</i><div><b>${n("home")}</b><span>${g.home.abbr}</span></div>
+      <small>${live ? `<span class="live-dot">Live</span> ${pbEsc(g.status_detail || "")}` : done ? "Final" : "Our projected score"}</small>
+    </div>
+    <div class="gm-pick">
+      <span class="gm-lbl">Our pick</span>
+      ${parts.length ? `<div class="gm-tix">${parts.map((t) => ticketHtml(g, t)).join("")}</div>${sp.lock ? `<small>Locked before kickoff</small>` : chance ? `<small>${chance}% to hit</small>` : ""}` : `<b class="gm-none">No play</b><small>Too close to the line to call</small>`}
+    </div>
+    <dl class="gm-lines">
+      <div><dt>Vegas</dt><dd>${pbEsc(o.details || "—")}</dd><dd class="sub">${o.total != null ? "O/U " + pbTot(o.total) : ""}</dd></div>
+      <div><dt>Our line</dt><dd>${pbEsc(ourLine || "—")}</dd><dd class="sub">${ourTot ? "Total " + ourTot : ""}</dd></div>
+      <div><dt>To win</dt><dd>${g.away.abbr} ${fmt.pct(p.win_prob_away)}</dd><dd class="sub">${g.home.abbr} ${fmt.pct(p.win_prob_home)}</dd></div>
+    </dl>
+  </div>`;
+}
 function closeModal(opts) {
   const wasOpen = window.__openGameId;
   window.__openGameId = null;
@@ -14615,6 +14867,10 @@ function showPropSheet(html) {
 function showGameSheet(html) {
   const sheet = document.getElementById("gameSheet");
   if (!sheet) return;
+  // The pop-up is the one place a game shows. This inline copy is only a fallback for when
+  // the pop-up can't open, so the game never appears twice.
+  const ov = document.getElementById("overlay");
+  if (ov && ov.classList.contains("show") && getComputedStyle(ov).display !== "none") { sheet.style.display = "none"; sheet.innerHTML = ""; return; }
   sheet.style.display = "block";
   sheet.innerHTML = `<div class="game-sheet">${html}</div>`;
   const closer = sheet.querySelector(".close:not(.share)");
@@ -17725,6 +17981,8 @@ async function boot() {
   $("#refreshBtn")?.addEventListener("click", () => {
     __deskFreshAt = 0;
     scheduleDeskRefresh(false);
+    // one button updates scores and injuries
+    setTimeout(() => document.getElementById("injRefreshBtn")?.click(), 1500);
   });
   document.getElementById("downloadBtn")?.addEventListener("click", () => {
     const html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
