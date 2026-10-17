@@ -12,6 +12,9 @@
 (function () {
   var m = location.pathname.match(/^\/split\/games\/([^\/]+)/);
   if (m) { location.replace("/split/#" + m[1]); return; }
+  // a game page not built yet (or retired): the slug ends in the game's id
+  var gm = location.pathname.match(/^\/g\/[a-z0-9-]*?-(\d{6,})\/?$/);
+  if (gm) { location.replace("/#game-" + gm[1]); return; }
   if (location.hash) location.replace("/" + location.hash);
 })();
 </script>

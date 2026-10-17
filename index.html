@@ -10207,9 +10207,16 @@ async function openPlayer(id, gameId) {
   if (closer1) closer1.onclick = closeModal;
 }
 
+// Same slug as scripts/game_pages.py: each game's own page, with its share image.
+function gameSlug(g) {
+  return (g.league + "-2026-w" + (Number(g.week) || 0) + "-" + g.away.abbr + "-at-" + g.home.abbr + "-" + g.id)
+    .toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
 function shareGame(id, btn) {
   const g = (DATA.games || []).find((x) => String(x.id) === String(id));
-  const url = "https://peyton2407-maker.github.io/#game-" + encodeURIComponent(String(id));
+  // the game's own page (a share image and the pick in the preview); a game too new to have
+  // one yet still opens, through 404.html, at the game on the main site
+  const url = g ? "https://peyton2407-maker.github.io/g/" + gameSlug(g) + "/" : "https://peyton2407-maker.github.io/#game-" + encodeURIComponent(String(id));
   const title = g ? `${g.away.abbr} at ${g.home.abbr}: Double Gs projection` : "Double Gs projection";
   const p = (g && g.proj) || {};
   const text = g && p.away_points != null ? `${g.away.abbr} ${p.away_points}, ${g.home.abbr} ${p.home_points}${p.pick_line ? ". We like " + p.pick_line : ""}.` : "";

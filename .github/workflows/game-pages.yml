@@ -1,0 +1,44 @@
+name: Game pages
+# A page and share image for every game from three days ago to nine days ahead
+# (scripts/game_pages.py), plus sitemap.xml. Images are redrawn only when their text changes.
+on:
+  schedule:
+    - cron: "40 */4 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: game-pages
+  cancel-in-progress: false
+jobs:
+  pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install the browser
+        run: |
+          pip install --quiet playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Build the game pages
+        run: python3 scripts/game_pages.py
+      - name: Commit any changes
+        run: |
+          git config user.name "peyton2407-maker"
+          git config user.email "331867039+peyton2407-maker@users.noreply.github.com"
+          git add -A g data/game-pages.json sitemap.xml
+          if git diff --cached --quiet; then
+            echo "Nothing new."
+            exit 0
+          fi
+          git commit -m "Game pages: $(date -u +'%a %H:%M UTC')"
+          for i in 1 2 3 4; do
+            if git pull --rebase --quiet origin main && git push; then
+              exit 0
+            fi
+            sleep 8
+          done
+          exit 1
