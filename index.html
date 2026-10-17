@@ -13456,7 +13456,7 @@ function etWeekday(iso) {
 
 // Covers' page text: drop tags, decode entities (&#x27; &amp; &nbsp; ...), tidy spaces.
 function coversText(h) {
-  return String(h || "").replace(/<[^>]*>/g, " ")
+  return String(h || "").replace(/<script[\s\S]*?(<\/script>|$)/gi, " ").replace(/<style[\s\S]*?(<\/style>|$)/gi, " ").replace(/<[^>]*>/g, " ")
     .replace(/&#x([0-9a-f]+);/gi, (m, x) => String.fromCodePoint(parseInt(x, 16)))
     .replace(/&#(\d+);/g, (m, d) => String.fromCodePoint(Number(d)))
     .replace(/&nbsp;/g, " ").replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&")
@@ -13472,7 +13472,7 @@ function parseCoversInjuries(html) {
     sec.split("<tr").forEach((b) => {
       if (/covers-CoversMatchups-injuryCopy/.test(b) && last) {
         // b starts inside the <tr ...> tag; skip to its end before reading the text
-        last.long = coversText(b.slice(b.indexOf(">") + 1));
+        last.long = coversText(b.slice(b.indexOf(">") + 1).split(/<\/tr>|<script/i)[0]);
         return;
       }
       const playerM = b.match(/player-link'>\s*([\s\S]*?)<\/span>/);
