@@ -45,11 +45,31 @@
    "spread": -11.5,
    "total": 50.5,
    "lockedAt": "2026-10-17T14:51:53.990Z",
-   "close_spread": -11.5,
+   "close_spread": -12.5,
    "close_total": 51.5,
-   "closeAt": "2026-10-17T15:26:53.714Z",
-   "clv_side": 0,
+   "closeAt": "2026-10-17T15:43:39.531Z",
+   "clv_side": 1,
    "clv_total": 1
+  },
+  "401856725": {
+   "id": "401856725",
+   "league": "cfb",
+   "week": 7,
+   "short": "CIT @ TA&M",
+   "home": "TA&M",
+   "away": "CIT",
+   "date": "2026-10-17T17:00Z",
+   "pick": "CIT",
+   "pick_line": "CIT +46.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 45.5,
+   "our_total": 55.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -46.5,
+   "total": 55.5,
+   "lockedAt": "2026-10-17T15:43:39.531Z"
   },
   "401856829": {
    "id": "401856829",
@@ -121,10 +141,10 @@
    "total": 54.5,
    "lockedAt": "2026-10-17T14:51:53.990Z",
    "close_spread": -42.5,
-   "close_total": 54.5,
-   "closeAt": "2026-10-17T15:16:37.713Z",
+   "close_total": 53.5,
+   "closeAt": "2026-10-17T15:43:39.531Z",
    "clv_side": null,
-   "clv_total": 0
+   "clv_total": -1
   },
   "401858267": {
    "id": "401858267",
@@ -219,7 +239,12 @@
    "total_play": false,
    "spread": -6,
    "total": 55.5,
-   "lockedAt": "2026-10-17T15:16:37.713Z"
+   "lockedAt": "2026-10-17T15:16:37.713Z",
+   "close_spread": -5.5,
+   "close_total": 55.5,
+   "closeAt": "2026-10-17T15:43:39.531Z",
+   "clv_side": -0.5,
+   "clv_total": 0
   },
   "401858491": {
    "id": "401858491",
@@ -241,10 +266,10 @@
    "total": 49.5,
    "lockedAt": "2026-10-17T14:51:53.990Z",
    "close_spread": 7,
-   "close_total": 49.5,
-   "closeAt": "2026-10-17T15:16:37.713Z",
+   "close_total": 50.5,
+   "closeAt": "2026-10-17T15:43:39.531Z",
    "clv_side": 0,
-   "clv_total": 0
+   "clv_total": 1
   },
   "401858493": {
    "id": "401858493",
@@ -371,6 +396,26 @@
    "clv_side": 0,
    "clv_total": 0
   },
+  "401862803": {
+   "id": "401862803",
+   "league": "cfb",
+   "week": 7,
+   "short": "CLT @ TEM",
+   "home": "TEM",
+   "away": "CLT",
+   "date": "2026-10-17T17:00Z",
+   "pick": "CLT",
+   "pick_line": "CLT +21.5",
+   "total_pick": "OVER 47.5",
+   "side_play": true,
+   "our_margin": 15.7,
+   "our_total": 54.7,
+   "confidence": 52,
+   "total_play": true,
+   "spread": -17.5,
+   "total": 45.5,
+   "lockedAt": "2026-10-17T15:43:39.531Z"
+  },
   "401866441": {
    "id": "401866441",
    "league": "cfb",
@@ -395,6 +440,26 @@
    "closeAt": "2026-10-17T15:16:37.713Z",
    "clv_side": 0.5,
    "clv_total": 0
+  },
+  "401866442": {
+   "id": "401866442",
+   "league": "cfb",
+   "week": 7,
+   "short": "MASS @ BUFF",
+   "home": "BUFF",
+   "away": "MASS",
+   "date": "2026-10-17T17:00Z",
+   "pick": "MASS",
+   "pick_line": "MASS +6.5",
+   "total_pick": "OVER 42.5",
+   "side_play": true,
+   "our_margin": 0.23,
+   "our_total": 42.7,
+   "confidence": 51,
+   "total_play": false,
+   "spread": -7,
+   "total": 42.5,
+   "lockedAt": "2026-10-17T15:43:39.531Z"
   },
   "401869844": {
    "id": "401869844",
@@ -720,5 +785,5 @@
    }
   ]
  },
- "updated": "2026-10-17T15:26:53.714Z"
+ "updated": "2026-10-17T15:43:39.531Z"
 }
