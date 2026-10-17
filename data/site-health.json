@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-10-16T22:03:16Z",
+ "checked_at": "2026-10-17T14:51:35Z",
  "errors": [],
  "console": [],
  "failed_requests": {},
@@ -18,10 +18,10 @@
    "visible": true,
    "count": 48,
    "summary": [
-    "150 TD tickets in this filter 68% top anytime (Henry) 203 first-TD names m"
+    "150 TD tickets in this filter 68% top anytime (Taylor) 203 first-TD names "
    ],
    "empty": [],
-   "chars": 3940
+   "chars": 3977
   },
   "charts": {
    "visible": true,
@@ -34,59 +34,58 @@
    "visible": true,
    "count": 72,
    "summary": [
-    "134 value tickets in this filter 116 TD plus-money 11 spread / dog sides 53% "
+    "344 value tickets in this filter 120 TD plus-money 8 spread / dog sides 89% b"
    ],
    "empty": [],
-   "chars": 3975
+   "chars": 3548
   },
   "parlay": {
    "visible": true,
    "count": 30,
    "summary": [],
    "empty": [],
-   "chars": 10710
+   "chars": 8325
   },
   "live": {
    "visible": true,
    "count": 3,
    "summary": [
-    "3 games on this board 0 with score + yard projections 0 spread leans \u2265 0"
+    "45 games on this board 0 with score + yard projections 27 spread leans \u2265 0"
    ],
    "empty": [],
-   "chars": 4781
+   "chars": 14249
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "350 listed SAT \u00b7 11:00 AM ET Not posted SUN \u00b7 11:00 AM ET Not posted S",
-    "350 listed 0 probable \u00b7 75% 123 questionable / GTD \u00b7 50% 7 doubtful \u00b7 "
+    "329 listed 0 probable \u00b7 75% 66 questionable / GTD \u00b7 50% 6 doubtful \u00b7 2"
    ],
    "empty": [],
-   "chars": 5269
+   "chars": 5068
   },
   "nflwx": {
    "visible": true,
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 4025
+   "chars": 3914
   },
   "nflpotd": {
    "visible": true,
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 564
+   "chars": 552
   },
   "cfbpicks": {
    "visible": true,
    "count": 18,
    "summary": [
-    "18 featured CFB leans 2 spread tickets 11 O/U tickets FAU @ ARMY top ca"
+    "18 featured CFB leans 14 spread tickets 11 O/U tickets OHIO @ SAC top c"
    ],
    "empty": [],
-   "chars": 3908
+   "chars": 6162
   }
  },
  "dk_lines_loaded": null,
