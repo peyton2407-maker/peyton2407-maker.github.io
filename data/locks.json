@@ -232,9 +232,9 @@
     "hitPct": 67,
     "why": "Our total is 6.0 points over DraftKings 55.5.",
     "label": "Friday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "MEM 17 – TULN 31",
+    "resultWhy": "It missed. OVER 55.5 did not cash. Final was MEM 17 – TULN 31.",
     "locked": true,
     "kick": "2026-10-16T23:30Z",
     "big": false,
@@ -252,9 +252,9 @@
     "hitPct": 59,
     "why": "Our total is 3.2 points over DraftKings 48.5.",
     "label": "Friday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "APP 35 – CCU 32",
+    "resultWhy": "It hit. OVER 48.5 cashed. Final was APP 35 – CCU 32.",
     "locked": true,
     "kick": "2026-10-17T00:00Z",
     "big": false,
@@ -400,5 +400,5 @@
    }
   ]
  },
- "updated": "2026-10-16T23:36:28.781Z"
+ "updated": "2026-10-17T03:23:04.618Z"
 }
