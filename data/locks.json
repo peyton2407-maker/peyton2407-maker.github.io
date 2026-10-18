@@ -1650,10 +1650,91 @@
    "closeAt": "2026-10-18T16:17:55.430Z",
    "clv_side": 0,
    "clv_total": 0
+  },
+  "401873004": {
+   "id": "401873004",
+   "league": "nfl",
+   "week": 6,
+   "short": "ARI @ LAR",
+   "home": "LAR",
+   "away": "ARI",
+   "date": "2026-10-18T20:05Z",
+   "pick": "LAR",
+   "pick_line": "LAR -12.5",
+   "total_pick": "UNDER 51.5",
+   "side_play": false,
+   "our_margin": 14.21,
+   "our_total": 51,
+   "confidence": null,
+   "total_play": false,
+   "spread": -12.5,
+   "total": 51.5,
+   "lockedAt": "2026-10-18T18:56:23.222Z"
+  },
+  "401873005": {
+   "id": "401873005",
+   "league": "nfl",
+   "week": 6,
+   "short": "BUF @ LV",
+   "home": "LV",
+   "away": "BUF",
+   "date": "2026-10-18T20:25Z",
+   "pick": "LV",
+   "pick_line": "LV +5.5",
+   "total_pick": "OVER 53.5",
+   "side_play": false,
+   "our_margin": -4.24,
+   "our_total": 53.9,
+   "confidence": null,
+   "total_play": false,
+   "spread": 5.5,
+   "total": 53.5,
+   "lockedAt": "2026-10-18T18:56:23.222Z"
+  },
+  "401873006": {
+   "id": "401873006",
+   "league": "nfl",
+   "week": 6,
+   "short": "LAC @ KC",
+   "home": "KC",
+   "away": "LAC",
+   "date": "2026-10-18T20:25Z",
+   "pick": "KC",
+   "pick_line": "KC -7.5",
+   "total_pick": "OVER 41.5",
+   "side_play": true,
+   "our_margin": 11.98,
+   "our_total": 41.7,
+   "confidence": 59,
+   "total_play": false,
+   "spread": -7.5,
+   "total": 41.5,
+   "lockedAt": "2026-10-18T18:56:23.222Z"
   }
  },
  "potd": {
-  "nfl": [],
+  "nfl": [
+   {
+    "key": "game:401873006",
+    "week": 6,
+    "day": "2026-10-18",
+    "league": "nfl",
+    "id": "401873006",
+    "game": "LAC @ KC",
+    "kind": "Spread",
+    "line": "KC -7.5",
+    "hitPct": 63,
+    "why": "The play is KC -7.5. Our number is KC -12.0, 4.5 points off DraftKings.",
+    "label": "Sunday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "locked": true,
+    "kick": "2026-10-18T20:25Z",
+    "big": false,
+    "savedAt": 1792349783227
+   }
+  ],
   "cfb": [
    {
     "key": "game:401862800",
@@ -1915,5 +1996,5 @@
    }
   ]
  },
- "updated": "2026-10-18T16:54:27.380Z"
+ "updated": "2026-10-18T18:56:23.222Z"
 }
