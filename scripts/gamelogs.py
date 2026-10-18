@@ -5,7 +5,7 @@ Opens this checkout's index.html in headless Chromium (internet allowed), finds 
 with a projection in an NFL game from now to nine days out, and reads each one's ESPN game
 log for this season and last (the page's own parseGamelog), keeping the 17 most recent
 games. A player fetched in the last 20 hours is skipped, so the job is cheap to run often.
-Writes data/gamelogs.json: {"updated", "players": {id: {"at", "rows": [...]}}}; each row has
+Writes data/gamelogs.json: {"updated", "players": {id: {"at", "pos", "rows": [...]}}}; each row has
 date, opp and the stats (pass_yds, pass_td, pass_att, cmp, rush_yds, rush_att, rec, rec_yds,
 td). Players no longer on the board drop off after two weeks.
 Usage: python3 scripts/gamelogs.py
@@ -30,11 +30,12 @@ async (skip) => {
   try { if (typeof ensureWeekProps === "function") await ensureWeekProps(); } catch (e) {}
   const now = Date.now();
   const ids = new Set();
+  const pos = {};
   (DATA.games || []).forEach((g) => {
     if (g.league !== "nfl" || g.completed || !g.date) return;
     const t = Date.parse(g.date);
     if (!(t > now - 4 * 3600e3 && t < now + 9 * 86400e3)) return;
-    (g.props || []).forEach((p) => { if (p && p.id && ["QB", "RB", "WR", "TE"].includes(p.pos)) ids.add(String(p.id)); });
+    (g.props || []).forEach((p) => { if (p && p.id && ["QB", "RB", "WR", "TE"].includes(p.pos)) { ids.add(String(p.id)); pos[String(p.id)] = p.pos; } });
   });
   const want = [...ids].filter((id) => !skip.includes(id));
   const yr = new Date().getFullYear();
@@ -56,7 +57,7 @@ async (skip) => {
     }
   }
   await Promise.all([worker(), worker(), worker(), worker(), worker(), worker()]);
-  return { all: [...ids], got: out };
+  return { all: [...ids], got: out, pos };
 }
 """
 
@@ -120,6 +121,9 @@ def main():
             slim.append(row)
         players[pid] = {"at": stamp, "rows": slim}
         got += 1
+    for pid, ps in (res.get("pos") or {}).items():   # position, for the matchup ranks
+        if pid in players and ps:
+            players[pid]["pos"] = ps
     on_board = set(res.get("all") or [])
     for pid in list(players):
         if pid in on_board:

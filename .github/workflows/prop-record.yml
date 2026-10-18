@@ -1,0 +1,44 @@
+name: Prop record
+# Every hour: save the props page's posted side for each player with sportsbook lines
+# (frozen at kickoff) and grade finished games from ESPN's box scores (scripts/prop_record.py).
+on:
+  schedule:
+    - cron: "23 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: prop-record
+  cancel-in-progress: false
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install the browser
+        run: |
+          pip install --quiet playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Log and grade prop picks
+        run: python3 scripts/prop_record.py
+      - name: Commit any changes
+        run: |
+          git config user.name "peyton2407-maker"
+          git config user.email "331867039+peyton2407-maker@users.noreply.github.com"
+          if [ -f data/prop-record.json ]; then git add data/prop-record.json; fi
+          if git diff --cached --quiet; then
+            echo "Nothing new."
+            exit 0
+          fi
+          git commit -m "Prop record: $(date -u +'%a %H:%M UTC')"
+          for i in 1 2 3 4; do
+            if git pull --rebase --quiet origin main && git push; then
+              exit 0
+            fi
+            sleep 8
+          done
+          exit 1

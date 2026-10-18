@@ -2219,6 +2219,21 @@ button:active, a.tab:active, .mainnav a:active, .slate-row:active, .game-row:act
 .pp-bars { display: flex; align-items: flex-end; gap: 4px; height: 54px; margin-top: 6px; }
 .pp-bars i { position: relative; flex: 1; height: var(--h); min-height: 3px; border-radius: 3px 3px 0 0; background: rgba(237,241,247,.18); }
 .pp-bars i em { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); font-style: normal; font-size: 10px; color: var(--muted); }
+.pp-ctx { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; }
+.pp-chip { font-size: 12px; line-height: 1.3; padding: 3px 8px; border-radius: 999px; background: rgba(237,241,247,.06); color: var(--ink-soft); border: 1px solid var(--line); }
+.pp-chip.soft { color: var(--win); border-color: rgba(60,196,126,.35); background: rgba(60,196,126,.08); }
+.pp-chip.tough { color: #ff9b8f; border-color: rgba(242,84,91,.35); background: rgba(242,84,91,.08); }
+.pp-rec { margin: 10px 0 2px; padding: 10px 12px; border: 1px solid var(--line-2); border-radius: 10px; background: rgba(237,241,247,.03); }
+.pp-rec summary { cursor: pointer; font-size: 14.5px; color: var(--ink); }
+.pp-rec summary .up, .pp-rec .num.up { color: var(--win); }
+.pp-rec summary .down, .pp-rec .num.down { color: #ff9b8f; }
+.pp-rec p { margin: 8px 0 0; font-size: 13px; }
+.pp-rec .pp-lines { max-width: 560px; }
+.pp-rec .pp-lines td.num { white-space: nowrap; }
+.pp-recent { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 4px; font-size: 13px; }
+.pp-recent li b { display: inline-block; width: 18px; }
+.pp-recent li.win b { color: var(--win); }
+.pp-recent li.loss b { color: #ff9b8f; }
 .prop-card .inj { margin-left: 6px; font-size: 11px; font-weight: 700; color: #ff8a8f; background: rgba(242,84,91,.13); padding: 2px 6px; border-radius: 999px; vertical-align: middle; }
 </style>
 </head>
@@ -11144,6 +11159,143 @@ function propFormHtml(p) {
   return `<div class="pp-form"><span class="lbl">Last ${rows.length} games · ${PROP_LBL[key]} · avg ${Math.round(avg)}</span>
     <div class="pp-bars">${rows.slice().reverse().map((r) => `<i style="--h:${Math.max(4, Math.round(Number(r[key]) / max * 100))}%" title="${pbEsc(r.d)} vs ${pbEsc(r.o)}: ${r[key]}"><em>${r[key]}</em></i>`).join("")}</div></div>`;
 }
+// ---- matchup: how each defense has done against a position this season ------------------
+// From the game logs of every player on the board (data/gamelogs.json): per opponent and game,
+// the yards, catches and TDs the tracked players at a position put up, averaged per game and
+// ranked against the other 31 defenses (1 = gives up the most).
+const PROP_DEF_STAT = { pass_yds: "pass yds", pass_td: "pass TDs", rush_yds: "rush yds", rec_yds: "rec yds", rec: "catches" };
+function propDefTable() {
+  const logs = window.GAMELOGS;
+  if (!logs) return null;
+  if (propDefTable.c && propDefTable.c.src === logs) return propDefTable.c.t;
+  const pos = {};
+  (DATA.games || []).forEach((g) => (g.props || []).forEach((p) => { if (p && p.id) pos[String(p.id)] = p.pos; }));
+  let season = 0;
+  Object.values(logs).forEach((pk) => (pk.rows || []).forEach((r) => { if (Number(r.s) > season) season = Number(r.s); }));
+  const games = {}, sums = {};   // games[opp] = Set(dates); sums[opp|pos|stat] = total
+  Object.keys(logs).forEach((id) => {
+    const ps = logs[id].pos || pos[id];
+    (logs[id].rows || []).forEach((r) => {
+      if (Number(r.s) !== season || !r.o) return;
+      (games[r.o] = games[r.o] || new Set()).add(r.d);
+      if (!ps) return;
+      Object.keys(PROP_DEF_STAT).forEach((k) => {
+        const v = Number(r[k]);
+        if (Number.isFinite(v)) sums[`${r.o}|${ps}|${k}`] = (sums[`${r.o}|${ps}|${k}`] || 0) + v;
+      });
+    });
+  });
+  const t = {};
+  ["QB", "RB", "WR", "TE"].forEach((ps) => Object.keys(PROP_DEF_STAT).forEach((k) => {
+    const list = Object.keys(games).filter((o) => games[o].size >= 2).map((o) => ({ o, avg: (sums[`${o}|${ps}|${k}`] || 0) / games[o].size }));
+    if (list.filter((x) => x.avg > 0).length < 20) return;
+    list.sort((a, b) => b.avg - a.avg);
+    list.forEach((x, i) => { t[`${x.o}|${ps}|${k}`] = { rank: i + 1, of: list.length, avg: x.avg, games: games[x.o].size }; });
+  }));
+  propDefTable.c = { src: logs, t };
+  return t;
+}
+function propMatchHtml(p, key) {
+  const t = propDefTable();
+  if (!t) return "";
+  const k = PROP_DEF_STAT[key] ? key : p.pos === "QB" ? "pass_yds" : p.pos === "RB" ? "rush_yds" : "rec_yds";
+  const r = t[`${p.opp}|${p.pos}|${k}`];
+  if (!r) return "";
+  const cls = r.rank <= 8 ? "soft" : r.rank > r.of - 8 ? "tough" : "";
+  const nth = (n) => n + (n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th");
+  const avg = k === "pass_td" || k === "rec" ? r.avg.toFixed(1) : Math.round(r.avg);
+  const fewest = r.of - r.rank + 1;
+  const text = r.rank <= 10 ? `${pbEsc(p.opp)} allows the ${r.rank === 1 ? "most" : nth(r.rank) + "-most"} ${PROP_DEF_STAT[k]} to ${p.pos}s`
+    : fewest <= 10 ? `${pbEsc(p.opp)} allows the ${fewest === 1 ? "fewest" : nth(fewest) + "-fewest"} ${PROP_DEF_STAT[k]} to ${p.pos}s`
+    : `${pbEsc(p.opp)} is average against ${p.pos} ${PROP_DEF_STAT[k]} (${nth(r.rank)} of ${r.of})`;
+  return `<span class="pp-chip ${cls}" title="${pbEsc(p.opp)} has allowed ${avg} ${PROP_DEF_STAT[k]} a game to the ${p.pos}s we track, over ${r.games} games this season. 1st = gives up the most.">${text}</span>`;
+}
+// the game around the player: his team's expected points from the spread and total, and weather
+function propContextHtml(p) {
+  const g = (DATA.games || []).find((x) => String(x.id) === String(p.game_id));
+  if (!g) return "";
+  const bits = [];
+  const o = g.odds || {};
+  const hs = Number(o.home_spread), tot = Number(o.total);
+  if (Number.isFinite(hs) && Number.isFinite(tot) && tot > 0) {
+    const home = p.side ? p.side === "home" : (g.home && g.home.abbr) === p.team;
+    const pts = home ? tot / 2 - hs / 2 : tot / 2 + hs / 2;
+    const spread = home ? hs : -hs;
+    bits.push(`<span class="pp-chip ${pts >= 26 ? "soft" : pts <= 18 ? "tough" : ""}" title="From the ${tot} total and ${spread > 0 ? "+" : ""}${spread} spread">${pbEsc(p.team)} expected ${pts.toFixed(1)} pts</span>`);
+  }
+  const w = g.weather || {};
+  if (g.indoor) bits.push(`<span class="pp-chip">Indoors</span>`);
+  else if (w.wind_mph >= 15 || /Rain|Snow|Shower|Thunder|Drizzle/i.test(w.condition || "") || (w.temp_f != null && w.temp_f <= 32)) {
+    const parts = [w.condition, w.temp_f != null ? Math.round(w.temp_f) + "°" : "", w.wind_mph >= 15 ? Math.round(w.wind_mph) + " mph wind" : ""].filter(Boolean);
+    bits.push(`<span class="pp-chip tough">${pbEsc(parts.join(", "))}</span>`);
+  }
+  return bits.join("");
+}
+
+// ---- the prop record: every side the page posted, graded --------------------------------
+// scripts/prop_record.py opens this page every hour, saves each player's posted side with its
+// line, best price and chances (propRecordPicks below), freezes it at kickoff and grades it
+// from ESPN's box score. data/prop-record.json.
+async function propRecordPicks() {
+  try { if (typeof ensureWeekProps === "function") await ensureWeekProps(); } catch (e) {}
+  try { pullDkLines.at = 0; await pullDkLines(); } catch (e) {}
+  const now = Date.now();
+  const lined = Object.keys(((window.PB_PROPS || {}).games) || {}).filter((gid) => {
+    const g = (DATA.games || []).find((x) => String(x.id) === gid);
+    return g && !g.completed && Date.parse(g.date) > now;
+  });
+  const picks = nextPropRows().map((p) => {
+    const L = postedLean(p);
+    if (!L || L.price == null || L.fair == null || L.value == null) return null;
+    return {
+      gid: String(p.game_id), pid: String(p.id), name: p.name, pos: p.pos, team: p.team, opp: p.opp, kick: p.date, week: p.week,
+      stat: L.m.key, take: L.take.toLowerCase(), line: L.line, price: L.price, book: L.book, mean: +Number(L.m.mean).toFixed(2),
+      chance: +L.chance.toFixed(4), model: +L.raw.toFixed(4), books: +L.fair.toFixed(4), value: +L.value.toFixed(4),
+    };
+  }).filter(Boolean);
+  return { picks, lined };
+}
+function loadPropRecord() {
+  if (typeof pbFetchOnce !== "function" || loadPropRecord.asked) return;
+  loadPropRecord.asked = true;
+  pbFetchOnce("proprecord", "/data/prop-record.json?t=" + Math.floor(Date.now() / 900000), (d) => { window.PROP_RECORD = d || { picks: [] }; })
+    .then(() => { if (typeof view !== "undefined" && view === "props") renderProps(); });
+}
+function propRecordHtml() {
+  const R = window.PROP_RECORD;
+  if (!R) return "";
+  const all = R.picks || [];
+  const graded = all.filter((x) => x.result && x.result.out !== "void");
+  const plus = graded.filter((x) => x.value > 0);
+  const pending = all.filter((x) => !x.result && Date.parse(x.kick) > Date.now() - 6 * 3600e3);
+  const tally = (list) => {
+    const w = list.filter((x) => x.result.out === "win").length, l = list.filter((x) => x.result.out === "loss").length, pu = list.filter((x) => x.result.out === "push").length;
+    const u = list.reduce((a, x) => a + Number(x.result.units || 0), 0);
+    const said = list.length ? list.reduce((a, x) => a + x.chance, 0) / list.length : 0;
+    return { w, l, pu, n: list.length, u, roi: list.length ? u / list.length : 0, said, hit: w + l ? w / (w + l) : 0 };
+  };
+  const rec = (t) => `${t.w}-${t.l}${t.pu ? "-" + t.pu : ""}`;
+  const units = (u) => `${u >= 0 ? "+" : "−"}${Math.abs(u).toFixed(1)}u`;
+  if (!plus.length) {
+    return `<details class="pp-rec"><summary><b>Prop record</b> starts with the next kickoff: ${pending.length} pick${pending.length === 1 ? "" : "s"} logged so far</summary>
+      <p class="muted">Every side this page posts is saved with its line and best price before kickoff, frozen when the game starts and graded from the box score. Results show here after each game, wins and losses alike.</p></details>`;
+  }
+  const T = tally(plus);
+  const row = (name, list) => { if (!list.length) return ""; const t = tally(list); return `<tr><td>${name}</td><td class="num">${rec(t)}</td><td class="num ${t.u >= 0 ? "up" : "down"}">${units(t.u)}</td><td class="num">${Math.round(t.said * 100)}% · ${Math.round(t.hit * 100)}%</td></tr>`; };
+  const byMk = Object.keys(PROP_LBL).map((k) => row(PROP_LBL[k], plus.filter((x) => x.stat === k))).join("");
+  const byTier = [row("Value 0-3%", plus.filter((x) => x.value < 0.03)), row("Value 3-6%", plus.filter((x) => x.value >= 0.03 && x.value < 0.06)), row("Value 6%+", plus.filter((x) => x.value >= 0.06))].join("");
+  const sides = [row("Overs", plus.filter((x) => x.take === "over")), row("Unders", plus.filter((x) => x.take === "under"))].join("");
+  const recent = graded.slice().sort((a, b) => String(b.kick).localeCompare(String(a.kick))).slice(0, 12).map((x) => {
+    const o = x.result.out;
+    return `<li class="${o}"><b>${o === "win" ? "W" : o === "loss" ? "L" : "P"}</b> ${pbEsc(x.name)} ${x.take} ${x.line} ${PROP_LBL[x.stat] || x.stat} <span class="muted">(${x.result.actual}) ${pbAm(x.price)}${x.value > 0 ? "" : " · didn't beat the price"}</span></li>`;
+  }).join("");
+  const allT = tally(graded);
+  return `<details class="pp-rec"><summary><b>Prop record</b> ${rec(T)} · <span class="${T.u >= 0 ? "up" : "down"}">${units(T.u)}</span> · ${T.roi >= 0 ? "+" : "−"}${Math.abs(T.roi * 100).toFixed(1)}% a bet<span class="muted"> on sides that beat the price</span></summary>
+    <p class="muted">One unit on each posted side at the best price we listed, saved before kickoff and graded from the box score. ${pending.length} more logged for games not played yet. Every lean, including ones that didn't beat the price: ${rec(allT)}, ${units(allT.u)}.</p>
+    <table class="pp-lines"><thead><tr><th></th><th>Record</th><th>Units</th><th title="Our average chance on these picks, and how often they actually won">Said · won</th></tr></thead><tbody>${byMk}${sides}${byTier}</tbody></table>
+    <ul class="pp-recent">${recent}</ul></details>`;
+}
+
 function nextPropRows() {
   const now = Date.now();
   const all = collectNflProps().filter((p) => {
@@ -11164,6 +11316,7 @@ function renderProps() {
   }
   // ask for the game logs once; when they land they redraw this page one time
   if (!window.GAMELOGS && !renderProps.__logsAsked && typeof loadGamelogs === "function") { renderProps.__logsAsked = true; loadGamelogs(); }
+  if (!window.PROP_RECORD) loadPropRecord();
   const day = ($("#propDay") && $("#propDay").value) || "best";
   const pos = ($("#propPos") && $("#propPos").value) || "ALL";
   const sort = ($("#propSort") && $("#propSort").value) || "best";
@@ -11205,7 +11358,7 @@ function renderProps() {
       .sort((a, b) => String(a.date).localeCompare(String(b.date)))[0];
     return g ? `${g.short_name} lines post about a day before its ${fmt.when(g.date)} kickoff.` : "";
   })();
-  $("#propStats").innerHTML = `<p class="board-sum"><b>${rows.length}</b> players with a game coming · <b>${withLines}</b> with sportsbook lines · <b>${plus}</b> where our side beats the price. ${nextLines}</p>`;
+  $("#propStats").innerHTML = `<p class="board-sum"><b>${rows.length}</b> players with a game coming · <b>${withLines}</b> with sportsbook lines · <b>${plus}</b> where our side beats the price. ${nextLines}</p>${propRecordHtml()}`;
   if (!shown.length) {
     const anyProps = (DATA.games || []).some((g) => g.league === "nfl" && !g.completed && (g.props || []).length);
     $("#propBoard").innerHTML = anyProps
@@ -11245,6 +11398,7 @@ function renderProps() {
         <div class="pick-score">${L ? Math.round(L.chance * 100) + "%" : "—"}</div>
       </div>
       <div class="pp-proj"><span class="lbl">Our projection</span><b>${proj}</b></div>
+      ${(() => { const c = propContextHtml(p) + propMatchHtml(p, L ? L.m.key : null); return c ? `<div class="pp-ctx">${c}</div>` : ""; })()}
       ${pick}
       ${propLinesHtml(p)}
       ${L ? propHistoryHtml(p) : propFormHtml(p)}
