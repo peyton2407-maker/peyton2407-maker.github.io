@@ -1744,7 +1744,12 @@
    "total_play": false,
    "spread": 1.5,
    "total": 53.5,
-   "lockedAt": "2026-10-18T23:01:58.672Z"
+   "lockedAt": "2026-10-18T23:01:58.672Z",
+   "close_spread": 1.5,
+   "close_total": 53.5,
+   "closeAt": "2026-10-18T23:35:06.932Z",
+   "clv_side": 0,
+   "clv_total": 0
   }
  },
  "potd": {
@@ -1761,9 +1766,9 @@
     "hitPct": 63,
     "why": "The play is KC -7.5. Our number is KC -12.0, 4.5 points off DraftKings.",
     "label": "Sunday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "LAC 6 – KC 22",
+    "resultWhy": "It hit. KC -7.5 cashed. Final was LAC 6 – KC 22.",
     "locked": true,
     "kick": "2026-10-18T20:25Z",
     "big": false,
@@ -1781,9 +1786,9 @@
     "hitPct": 57,
     "why": "The play is LV +5.5. Our number is BUF -3.3, 2.2 points off DraftKings.",
     "label": "Sunday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "BUF 33 – LV 30",
+    "resultWhy": "It hit. LV +5.5 cashed. Final was BUF 33 – LV 30.",
     "locked": true,
     "kick": "2026-10-18T20:25Z",
     "big": false,
@@ -2051,5 +2056,5 @@
    }
   ]
  },
- "updated": "2026-10-18T23:01:58.672Z"
+ "updated": "2026-10-18T23:35:06.932Z"
 }
