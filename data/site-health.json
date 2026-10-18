@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-10-17T23:49:39Z",
+ "checked_at": "2026-10-18T01:09:54Z",
  "errors": [],
  "console": [],
  "failed_requests": {},
@@ -7,11 +7,11 @@
  "screens": {
   "home": {
    "visible": true,
-   "count": 34,
+   "count": 44,
    "summary": [],
    "empty": [],
-   "chars": 2258,
-   "images": 80,
+   "chars": 2662,
+   "images": 100,
    "broken_images": []
   },
   "nfl": {
@@ -19,26 +19,26 @@
    "count": 13,
    "summary": [],
    "empty": [],
-   "chars": 4656,
+   "chars": 4571,
    "images": 26,
    "broken_images": []
   },
   "cfb": {
    "visible": true,
-   "count": 23,
+   "count": 22,
    "summary": [],
    "empty": [],
-   "chars": 5942,
-   "images": 46,
+   "chars": 5732,
+   "images": 44,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 26,
+   "count": 27,
    "summary": [],
    "empty": [],
-   "chars": 2740,
-   "images": 46,
+   "chars": 2626,
+   "images": 30,
    "broken_images": []
   },
   "season": {
@@ -55,7 +55,7 @@
    "count": 64,
    "summary": [],
    "empty": [],
-   "chars": 4843,
+   "chars": 4848,
    "images": 0,
    "broken_images": []
   },
@@ -64,7 +64,7 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3414,
+   "chars": 3445,
    "images": 35,
    "broken_images": []
   },
@@ -112,10 +112,10 @@
    "visible": true,
    "count": 72,
    "summary": [
-    "342 value tickets in this filter 115 TD plus-money 8 spread / dog sides 88% b"
+    "344 value tickets in this filter 116 TD plus-money 9 spread / dog sides 65% b"
    ],
    "empty": [],
-   "chars": 3568,
+   "chars": 3575,
    "images": 27,
    "broken_images": []
   },
@@ -133,8 +133,8 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 4905,
-   "images": 28,
+   "chars": 5062,
+   "images": 32,
    "broken_images": []
   },
   "nflinj": {
@@ -154,7 +154,7 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 3962,
+   "chars": 3887,
    "images": 28,
    "broken_images": []
   },
@@ -171,11 +171,11 @@
    "visible": true,
    "count": 18,
    "summary": [
-    "18 featured CFB leans 10 spread tickets 12 O/U tickets OHIO @ SAC top c"
+    "18 featured CFB leans 10 spread tickets 13 O/U tickets OHIO @ SAC top c"
    ],
    "empty": [],
-   "chars": 6244,
-   "images": 36,
+   "chars": 6240,
+   "images": 32,
    "broken_images": []
   }
  },
