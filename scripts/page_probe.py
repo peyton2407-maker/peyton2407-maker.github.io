@@ -34,7 +34,7 @@ PROPS_DIAG = """() => {
 }"""
 
 
-async def main(view):
+async def main(view, js=None):
     OUT.mkdir(exist_ok=True)
     async with async_playwright() as p:
         browser = await p.chromium.launch()
@@ -52,6 +52,11 @@ async def main(view):
             (OUT / f"{view}-{name}.txt").write_text(text)
             if name == "desktop":
                 diag = await page.evaluate(PROPS_DIAG) if view == "props" else {}
+                if js:
+                    try:
+                        diag["eval"] = await page.evaluate(js)
+                    except Exception as e:
+                        diag["eval_error"] = str(e)[:500]
                 diag["errors"] = errors
                 (OUT / f"{view}-diag.json").write_text(json.dumps(diag, indent=1))
             await ctx.close()
@@ -59,4 +64,5 @@ async def main(view):
 
 
 if __name__ == "__main__":
-    asyncio.run(main(sys.argv[1] if len(sys.argv) > 1 else "props"))
+    js = Path(sys.argv[2]).read_text() if len(sys.argv) > 2 and Path(sys.argv[2]).exists() else None
+    asyncio.run(main(sys.argv[1] if len(sys.argv) > 1 else "props", js))
