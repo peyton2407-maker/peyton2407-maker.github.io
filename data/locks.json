@@ -1725,6 +1725,26 @@
    "closeAt": "2026-10-18T19:47:52.925Z",
    "clv_side": 0,
    "clv_total": 0
+  },
+  "401873007": {
+   "id": "401873007",
+   "league": "nfl",
+   "week": 6,
+   "short": "DAL @ GB",
+   "home": "GB",
+   "away": "DAL",
+   "date": "2026-10-19T00:20Z",
+   "pick": "GB",
+   "pick_line": "GB +1.5",
+   "total_pick": "OVER 53.5",
+   "side_play": false,
+   "our_margin": -1.37,
+   "our_total": 53.9,
+   "confidence": null,
+   "total_play": false,
+   "spread": 1.5,
+   "total": 53.5,
+   "lockedAt": "2026-10-18T23:01:58.672Z"
   }
  },
  "potd": {
@@ -2031,5 +2051,5 @@
    }
   ]
  },
- "updated": "2026-10-18T19:47:52.925Z"
+ "updated": "2026-10-18T23:01:58.672Z"
 }
