@@ -2052,6 +2052,7 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 #stats.stat-row { display: flex; align-items: center; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap; margin: 0 0 16px; grid-template-columns: none; }
 .board-sum { margin: 0; color: var(--ink-soft); font-size: 14.5px; }
 .board-sum b { color: var(--ink); font: 800 19px var(--display); }
+.prop-board > .empty { grid-column: 1 / -1; }
 .board-mode { display: inline-flex; padding: 3px; border: 1px solid var(--line-2); border-radius: 10px; }
 .board-mode button { border: 0; background: none; color: var(--muted); font: 700 14px var(--body); padding: 7px 14px; border-radius: 8px; cursor: pointer; min-height: 36px; }
 .board-mode button.on { background: var(--card-2); color: var(--ink); }
@@ -2193,6 +2194,32 @@ h4.mu .mlogo { width: 24px; height: 24px; }
 a, button, select, input, label, [role="button"], .slate-row, .game-row, .pb-btn, .tab, [data-id], [data-leg] { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 button:active, a.tab:active, .mainnav a:active, .slate-row:active, .game-row:active, .pb-btn:active, .pb-top-leg:active, .home-filter button:active, .board-mode button:active { transform: translateY(1px); filter: brightness(1.12); }
 @media (prefers-reduced-motion: reduce) { button:active, a.tab:active, .slate-row:active, .game-row:active, .pb-btn:active { transform: none; } }
+
+/* props page */
+.pp-proj { margin: 10px 0 0; }
+.pp-proj .lbl, .pp-pick .lbl, .pp-form .lbl { display: block; font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 0; text-transform: none; }
+.pp-proj b { font-size: 15px; }
+.pp-pick { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 6px 10px; margin: 10px 0 0; padding: 10px 12px; border: 1px solid var(--line-2); border-radius: 10px; }
+.pp-pick.plus { border-color: rgba(242,184,64,.55); background: rgba(242,184,64,.06); }
+.pp-pick b { font-size: 16px; }
+.pp-pick small { display: block; color: var(--ink-soft); font-size: 12.5px; margin-top: 2px; }
+.pp-pick.none b { color: var(--ink-soft); }
+.pp-val { font: 800 18px var(--display); padding: 2px 8px; border-radius: 8px; }
+.pp-val.plus { color: var(--win); background: rgba(60,196,126,.12); }
+.pp-val.minus { color: var(--muted); background: rgba(237,241,247,.05); }
+.pp-add { grid-column: 1 / -1; justify-self: start; min-height: 36px; padding: 6px 12px; border-radius: 9px; border: 1px solid var(--sun); background: transparent; color: var(--sun); font: 700 13.5px var(--body); cursor: pointer; }
+.pp-add[aria-pressed="true"] { background: var(--sun); color: var(--brass-ink); }
+.pp-lines { width: 100%; margin: 10px 0 0; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+.pp-lines th { text-align: left; font-weight: 600; font-size: 11.5px; color: var(--muted); padding: 4px 6px; border-bottom: 1px solid var(--line); }
+.pp-lines td { padding: 5px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.pp-lines td.num, .pp-lines th:not(:first-child) { text-align: right; }
+.pp-lines td small { display: block; font-size: 11px; color: var(--muted); }
+.pp-lines td.muted { color: var(--muted); text-align: right; }
+.pp-form { margin: 10px 0 0; }
+.pp-bars { display: flex; align-items: flex-end; gap: 4px; height: 54px; margin-top: 6px; }
+.pp-bars i { position: relative; flex: 1; height: var(--h); min-height: 3px; border-radius: 3px 3px 0 0; background: rgba(237,241,247,.18); }
+.pp-bars i em { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); font-style: normal; font-size: 10px; color: var(--muted); }
+.prop-card .inj { margin-left: 6px; font-size: 11px; font-weight: 700; color: #ff8a8f; background: rgba(242,84,91,.13); padding: 2px 6px; border-radius: 999px; vertical-align: middle; }
 </style>
 </head>
 <body>
@@ -2534,7 +2561,7 @@ button:active, a.tab:active, .mainnav a:active, .slate-row:active, .game-row:act
       <div class="controls props-controls">
         <select id="propDay" class="lg-select">
           <option value="best">Best picks</option>
-          <option value="week">Whole NFL week</option>
+          <option value="week">Every player</option>
           <option value="thu">Thursday / Friday</option>
           <option value="sun">Sunday slate</option>
           <option value="night">Sunday / Monday night</option>
@@ -2556,18 +2583,19 @@ button:active, a.tab:active, .mainnav a:active, .slate-row:active, .game-row:act
           <option value="rush">Sort: rush yards</option>
           <option value="rec">Sort: rec yards</option>
           <option value="td">Sort: touchdowns</option>
+          <option value="kick">Sort: kickoff</option>
         </select>
-        <select id="propHit" class="lg-select" aria-label="Our hit rate">
-          <option value="all">Our hit rate: all</option>
-          <option value="best">Best projected hit rate</option>
-          <option value="60">60% and up</option>
-          <option value="65">65% and up</option>
-          <option value="70">70% and up</option>
+        <select id="propHit" class="lg-select" aria-label="Which players">
+          <option value="all">All players</option>
+          <option value="lines">Lines posted</option>
+          <option value="value">Our side beats the price</option>
+          <option value="v3">Beats the price by 3%+</option>
+          <option value="v5">Beats the price by 5%+</option>
         </select>
         <input id="propQ" placeholder="Search a player or team…" />
       </div>
-      <p class="subn" style="margin:8px 0 0">Every card has our number and every DraftKings line for that player. Those lines refresh every 2 minutes. Tap a player for the hit rate.</p>
-      <div class="stat-row" id="propStats"></div>
+      <p class="subn" style="margin:8px 0 0">Each player's next game: our projection, every sportsbook's line and best price, and the side that beats the books' own odds. Lines are saved about a day before each kickoff. Tap a player for his full game log.</p>
+      <div id="propStats" style="margin:12px 0 4px"></div>
       <div id="propSheet" style="display:none"></div>
       <div class="prop-board" id="propBoard"></div>
     </section>
@@ -6490,7 +6518,21 @@ async function collectProps() {
     const num = (bag, k) => Number((bag || {})[S[k]] || 0);
     const projSum = num(projRaw, "pass_yds") + num(projRaw, "rush_yds") + num(projRaw, "rec_yds");
     const proj = projSum >= 1 ? projRaw : pickStat(1, 1);
+    // ESPN projects every week separately; keep them all so each game gets its own week's
+    // numbers (next week's game used to get this week's, against this week's opponent)
+    const byWeek = {};
+    stats.forEach((st) => {
+      if (st.seasonId !== 2026 || st.statSourceId !== 1 || !(st.scoringPeriodId >= 1)) return;
+      const b = st.stats || {};
+      if (num(b, "pass_yds") + num(b, "rush_yds") + num(b, "rec_yds") < 1) return;
+      byWeek[st.scoringPeriodId] = {
+        pass_yds: +num(b, "pass_yds").toFixed(1), pass_td: +num(b, "pass_td").toFixed(2),
+        rush_yds: +num(b, "rush_yds").toFixed(1), rush_td: +num(b, "rush_td").toFixed(2), rush_att: +num(b, "rush_att").toFixed(1),
+        rec: +num(b, "rec").toFixed(1), rec_yds: +num(b, "rec_yds").toFixed(1), rec_td: +num(b, "rec_td").toFixed(2)
+      };
+    });
     players.push({
+      byWeek,
       id: pl.id, name: pl.fullName, pos, team_id: String(pl.proTeamId || ""),
       injury: pl.injuryStatus || "ACTIVE",
       pass_yds: +num(proj, "pass_yds").toFixed(1), pass_td: +num(proj, "pass_td").toFixed(2),
@@ -6509,7 +6551,16 @@ async function collectProps() {
 function attachProps(game, players) {
   if (game.league !== "nfl") return [];
   const ids = new Set([game.home.id, game.away.id]);
-  const pool = players.filter((p) => ids.has(p.team_id));
+  // a fresh copy per game with that game's week (scaling below changes the numbers, and a
+  // player with two games on the board must not be scaled twice)
+  const wk = Number(game.week);
+  const pool = players.filter((p) => ids.has(p.team_id)).map((p) => {
+    const w = p.byWeek && p.byWeek[wk];
+    if (p.byWeek && Object.keys(p.byWeek).length && !w) return null;   // no projection that week (bye, out)
+    const c = Object.assign({}, p, w || {}, { week: wk });
+    delete c.byWeek;
+    return c;
+  }).filter(Boolean);
   const box = game.box || {};
   function scale(group, key, target) {
     if (!target) return;
@@ -6876,6 +6927,62 @@ function renderTdDesk() {
     </article>`).join("");
   board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
+
+// ---- player prop chances, measured --------------------------------------------------------
+// How far a player's game lands from his average, from every NFL regular-season game
+// 2021-2024 (nflverse): the swing grows with the average (a 65-yard receiver swings about 38
+// yards game to game, a 20-yard one about 21). Yards, catches and touchdown passes are
+// lopsided, more games a little under the average and a few big ones above, so they use a
+// skewed (gamma) curve; passing yards fit a bell curve. Checked against those games, the
+// curves land within about 2 points of how often overs really hit.
+const PROP_SD = { pass_yds: [74.9, -0.007], rush_yds: [14.8, 0.307], rec_yds: [12.85, 0.384], rec: [1.07, 0.263], pass_td: [0.77, 0.223], rush_att: [2.2, 0.2], pass_int: [0.75, 0.2] };
+function propSd(key, mean) {
+  const c = PROP_SD[key];
+  const m = Math.max(0, Number(mean) || 0);
+  if (!c) return typeof propSigma === "function" ? propSigma(key) : 1;
+  return Math.max(c[0] * 0.6, c[0] + c[1] * m);
+}
+function lnGammaFn(z) {
+  const g = [76.18009172947146, -86.50532032941677, 24.01409824083091, -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5];
+  let x = z, y = z, t = x + 5.5;
+  t -= (x + 0.5) * Math.log(t);
+  let ser = 1.000000000190015;
+  for (let j = 0; j < 6; j++) ser += g[j] / ++y;
+  return -t + Math.log(2.5066282746310005 * ser / x);
+}
+// regularized lower incomplete gamma P(a, x)
+function gammaP(a, x) {
+  if (x <= 0) return 0;
+  const gln = lnGammaFn(a);
+  if (x < a + 1) {
+    let ap = a, sum = 1 / a, del = sum;
+    for (let n = 0; n < 200; n++) { ap += 1; del *= x / ap; sum += del; if (Math.abs(del) < Math.abs(sum) * 1e-10) break; }
+    return Math.min(1, sum * Math.exp(-x + a * Math.log(x) - gln));
+  }
+  let b = x + 1 - a, c = 1e300, d = 1 / b, h = d;
+  for (let i = 1; i < 200; i++) {
+    const an = -i * (i - a);
+    b += 2;
+    d = an * d + b; if (Math.abs(d) < 1e-300) d = 1e-300;
+    c = b + an / c; if (Math.abs(c) < 1e-300) c = 1e-300;
+    d = 1 / d;
+    const del = d * c; h *= del;
+    if (Math.abs(del - 1) < 1e-10) break;
+  }
+  return Math.max(0, 1 - Math.exp(-x + a * Math.log(x) - gln) * h);
+}
+// chance the stat goes over the line, given our average for the game
+function propOverP(key, mean, line) {
+  const m = Number(mean), L = Number(line);
+  if (!(m > 0) || !Number.isFinite(L)) return 0.5;
+  if (key === "td") return L < 1 ? 1 - Math.exp(-m) : 1 - Math.exp(-m) * (1 + m);   // anytime TD: 1+ (or 2+)
+  const sd = propSd(key, m);
+  if (key === "pass_yds") return 1 - normCdf((L - m) / sd);
+  // shape floor of 1: below it the curve piles too much on zero for low averages (a QB's
+  // rushing, a back's catches); with it, low averages land within about 5 points of reality
+  const k = Math.max(1, (m / sd) * (m / sd)), theta = m / k;
+  return 1 - gammaP(k, Math.max(0, L) / theta);
+}
 function pOver(mu, line, sig) {
   if (typeof normCdf !== "function") return 0.5;
   return 1 - normCdf((line - mu) / sig);
@@ -6983,7 +7090,7 @@ function collectValueDogs() {
         if (mu <= 0) return;
         if (dk[k] == null) return;
         const line = Number(dk[k]);
-        const po = pOver(mu, line, VAL_SIG[k]);
+        const po = propOverP(k, mu, line);
         const pu = 1 - po;
         if (po >= 0.54 && mu > line) {
           push({
@@ -8704,6 +8811,10 @@ function attachInjuriesToGames(){
     });
   });
   try { reshapeSeasonQbProps(); } catch (e) {}
+  // the props page lists who's healthy: redraw it when the injury news changes
+  if (typeof view !== "undefined" && view === "props" && typeof renderProps === "function" && !attachInjuriesToGames.__q) {
+    attachInjuriesToGames.__q = setTimeout(() => { attachInjuriesToGames.__q = 0; if (view === "props") renderProps(); }, 300);
+  }
   // college picks depend on who's hurt (applyCfbQbPass); rebuild them when injuries change
   try { if (typeof applySplitDesk === "function" && (window.SPLIT_DESK || []).length) applySplitDesk(); } catch (e) {}
 }
@@ -10107,8 +10218,7 @@ function hitRate(rows, key, line, under) {
   return { hits, n: vals.length, pct: hits / vals.length };
 }
 function ourChance(mean, line, key, under) {
-  const z = (line - Number(mean)) / propSigma(key);
-  const over = 1 - (typeof normCdf === "function" ? normCdf(z) : 0.5);
+  const over = PROP_SD[key] || key === "td" ? propOverP(key, mean, line) : 1 - (typeof normCdf === "function" ? normCdf((line - Number(mean)) / propSigma(key)) : 0.5);
   return under ? 1 - over : over;
 }
 async function playerLogs(id) {
@@ -10661,21 +10771,6 @@ function ladderTable(m, season, vs) {
   }).join("");
   return `<h3 style="margin:14px 0 0">${m.label}</h3>${head}${body}</tbody></table>`;
 }
-function postedLean(p) {
-  const order = p.pos === "QB" ? ["pass_yds", "pass_td", "rush_yds"] : p.pos === "RB" ? ["rush_yds", "rec_yds", "rec"] : ["rec_yds", "rec", "rush_yds"];
-  const markets = marketsFor(p);
-  for (let i = 0; i < order.length; i++) {
-    const m = markets.find((row) => row.key === order[i]);
-    if (!m) continue;
-    const line = typeof dkLine === "function" ? dkLine(p, m.key) : null;
-    if (line == null || !Number.isFinite(Number(line))) continue;
-    const over = ourChance(m.mean, Number(line), m.key, false);
-    if (!Number.isFinite(over)) continue;
-    const takeUnder = over < 0.5;
-    return { m, line: Number(line), chance: takeUnder ? 1 - over : over, take: takeUnder ? "Under" : "Over" };
-  }
-  return null;
-}
 function bestDoubleG(markets, season, vs) {
   let best = null;
   markets.forEach((m) => m.lines.forEach((line) => {
@@ -10959,106 +11054,222 @@ function sameLocalDay(iso, weekdaySet) {
   return weekdaySet.has(d.getDay());
 }
 
+// ---- player props: real lines, prices and the side that beats them -------------------------
+// Lines and prices come from data/props.json (The Odds API: DraftKings, FanDuel, BetMGM,
+// BetRivers and more), saved for each game about a day before kickoff. The market's own chance
+// is each book's over/under prices with the cut taken out (the middle book counts).
+const PROP_LBL = { pass_yds: "pass yds", pass_td: "pass TDs", rush_yds: "rush yds", rec_yds: "rec yds", rec: "receptions", rush_att: "carries", td: "anytime TD", pass_int: "INT" };
+function propMarket(p, key) {
+  const offers = typeof pbPropOffers === "function" ? pbPropOffers(p.game_id, p.name, key) : [];
+  if (!offers.length) {
+    const line = dkLine(p, key);
+    return line == null ? null : { line: Number(line), fairOver: null, best: {}, dk: {}, books: 0 };
+  }
+  const dkOver = offers.find((o) => o.book === "DraftKings" && o.side === "over");
+  let line = dkOver ? dkOver.line : null;
+  if (line == null) {
+    const n = {};
+    offers.forEach((o) => { n[o.line] = (n[o.line] || 0) + 1; });
+    line = Number(Object.keys(n).sort((a, b) => n[b] - n[a])[0]);
+  }
+  const at = offers.filter((o) => Math.abs(o.line - line) < 1e-9);
+  const best = {}, dk = {};
+  ["over", "under"].forEach((side) => {
+    at.filter((o) => o.side === side).forEach((o) => {
+      if (!best[side] || pbDec(o.odds) > pbDec(best[side].odds)) best[side] = o;
+      if (o.book === "DraftKings") dk[side] = o;
+    });
+  });
+  const fair = [];
+  [...new Set(at.map((o) => o.book))].forEach((book) => {
+    const ov = at.find((o) => o.book === book && o.side === "over"), un = at.find((o) => o.book === book && o.side === "under");
+    if (!ov || !un) return;
+    const a = 1 / pbDec(ov.odds), b = 1 / pbDec(un.odds);
+    fair.push(a / (a + b));
+  });
+  fair.sort((a, b) => a - b);
+  return { line, fairOver: fair.length ? fair[Math.floor(fair.length / 2)] : null, best, dk, books: new Set(at.map((o) => o.book)).size };
+}
+// the side, of every market with a line, that beats the books' own chance by the most
+function postedLean(p) {
+  let pick = null;
+  marketsFor(p).forEach((m) => {
+    if (m.key === "pass_int" || m.key === "rush_att") return;
+    const mk = propMarket(p, m.key);
+    if (!mk) return;
+    const over = ourChance(m.mean, mk.line, m.key, false);
+    if (!Number.isFinite(over)) return;
+    ["Over", "Under"].forEach((take) => {
+      const raw = take === "Over" ? over : 1 - over;
+      const side = take.toLowerCase();
+      const fair = mk.fairOver == null ? null : (take === "Over" ? mk.fairOver : 1 - mk.fairOver);
+      // checked chance: the books' own chance plus half our difference with it (props haven't
+      // been graded long enough to trust more; same rule as the parlay builder)
+      const ours = fair != null ? fair + 0.5 * (raw - fair) : raw;
+      const price = mk.best[side] ? mk.best[side].odds : null;
+      // value per dollar at the best price when there is one; otherwise our chance vs a coin flip
+      const value = price != null ? ours * pbDec(price) - 1 : null;
+      const edge = fair != null ? ours - fair : ours - 0.5;
+      const score = value != null ? value : edge;
+      if (!pick || score > pick.score) pick = { m, line: mk.line, chance: ours, raw, take, fair, price, book: mk.best[side] ? mk.best[side].book : null, value, edge, score, mk };
+    });
+  });
+  return pick;
+}
+function propTicketId(p, lean) {
+  return lean && ["pass_yds", "pass_td", "rush_yds", "rec_yds", "rec"].includes(lean.m.key) ? `${p.game_id}|pp|${p.id}|${lean.m.key}|${lean.take.toLowerCase()}` : null;
+}
+function propLinesHtml(p) {
+  const rows = marketsFor(p).filter((m) => m.key !== "pass_int").map((m) => {
+    const mk = propMarket(p, m.key);
+    const avg = m.key === "td" ? Math.round((1 - Math.exp(-m.mean)) * 100) + "%" : (m.mean >= 10 ? Math.round(m.mean) : m.mean.toFixed(1));
+    if (!mk) return `<tr><td>${PROP_LBL[m.key] || m.label}</td><td class="num">${avg}</td><td class="muted" colspan="2">—</td></tr>`;
+    const over = ourChance(m.mean, mk.line, m.key, false);
+    const pr = (side) => mk.best[side] ? `${pbAm(mk.best[side].odds)}` : "";
+    return `<tr><td>${PROP_LBL[m.key] || m.label}</td><td class="num">${avg}</td><td class="num"><b>${mk.line}</b>${mk.best.over || mk.best.under ? `<small>o ${pr("over") || "—"} · u ${pr("under") || "—"}</small>` : ""}</td><td class="num">${Math.round(over * 100)}%<small>${mk.fairOver != null ? "books " + Math.round(mk.fairOver * 100) + "%" : ""}</small></td></tr>`;
+  });
+  if (!rows.length) return "";
+  return `<table class="pp-lines"><thead><tr><th>Market</th><th>Our avg</th><th>Line</th><th>Over</th></tr></thead><tbody>${rows.join("")}</tbody></table>`;
+}
+function propFormHtml(p) {
+  // recent games for the player's main stat, when there's no line to grade against
+  const pack = window.GAMELOGS && window.GAMELOGS[String(p.id)];
+  const key = p.pos === "QB" ? "pass_yds" : p.pos === "RB" ? "rush_yds" : "rec_yds";
+  if (!pack || !(pack.rows || []).length) return "";
+  const rows = pack.rows.filter((r) => Number.isFinite(Number(r[key]))).slice(0, 8);
+  if (!rows.length) return "";
+  const vals = rows.map((r) => Number(r[key]));
+  const avg = vals.reduce((a, x) => a + x, 0) / vals.length;
+  const max = Math.max(...vals, 1);
+  return `<div class="pp-form"><span class="lbl">Last ${rows.length} games · ${PROP_LBL[key]} · avg ${Math.round(avg)}</span>
+    <div class="pp-bars">${rows.slice().reverse().map((r) => `<i style="--h:${Math.max(4, Math.round(Number(r[key]) / max * 100))}%" title="${pbEsc(r.d)} vs ${pbEsc(r.o)}: ${r[key]}"><em>${r[key]}</em></i>`).join("")}</div></div>`;
+}
+function nextPropRows() {
+  const now = Date.now();
+  const all = collectNflProps().filter((p) => {
+    if (p.completed || p.pos === "K") return false;
+    if (/OUT|IR|INACTIVE|SUSP/i.test(p.injury || "")) return false;
+    const kick = p.date ? Date.parse(p.date) : 0;
+    return !kick || kick > now;   // props are pregame: nothing that has kicked off
+  }).sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  // one card per player: his next game
+  const seen = new Set();
+  return all.filter((p) => { const k = String(p.id); if (seen.has(k)) return false; seen.add(k); return true; });
+}
 function renderProps() {
   if (!$("#propBoard")) return;
+  if (!renderProps.__pulled && typeof pullDkLines === "function") {
+    renderProps.__pulled = true;
+    Promise.resolve(pullDkLines()).catch(() => {}).then(() => { if (view === "props") renderProps(); });
+  }
+  // ask for the game logs once; when they land they redraw this page one time
+  if (!window.GAMELOGS && !renderProps.__logsAsked && typeof loadGamelogs === "function") { renderProps.__logsAsked = true; loadGamelogs(); }
   const day = ($("#propDay") && $("#propDay").value) || "best";
   const pos = ($("#propPos") && $("#propPos").value) || "ALL";
   const sort = ($("#propSort") && $("#propSort").value) || "best";
   const q = (($("#propQ") && $("#propQ").value) || "").trim().toLowerCase();
-  let rows = collectNflProps().filter((p) => {
-    if (p.completed || p.pos === "K") return false;
-    if (/OUT|IR|INACTIVE|SUSP/i.test(p.injury || "")) return false;
-    const kick = p.date ? new Date(p.date).getTime() : 0;
-    if (kick && Date.now() - kick > 4 * 60 * 60 * 1000) return false;
-    return true;
-  });
-  if (day === "best" || day === "week") {
-    /* upcoming week already filtered */
-  } else if (day === "thu") {
-    rows = rows.filter((p) => sameLocalDay(p.date, new Set([4, 5])));
-  } else if (day === "sun") {
-    rows = rows.filter((p) => sameLocalDay(p.date, new Set([0])));
-  } else if (day === "night") {
-    rows = rows.filter((p) => {
-      const d = new Date(p.date);
-      const hr = d.getHours();
-      return (d.getDay() === 0 && hr >= 19) || d.getDay() === 1;
-    });
-  }
+  let rows = nextPropRows();
+  if (day === "thu") rows = rows.filter((p) => sameLocalDay(p.date, new Set([4, 5])));
+  else if (day === "sun") rows = rows.filter((p) => sameLocalDay(p.date, new Set([0])));
+  else if (day === "night") rows = rows.filter((p) => { const d = new Date(p.date); const hr = d.getHours(); return (d.getDay() === 0 && hr >= 19) || d.getDay() === 1; });
   if (pos === "PASS") rows = rows.filter((p) => p.pos === "QB" && (p.pass_yds || 0) >= 180);
   else if (pos === "RUSH") rows = rows.filter((p) => (p.rush_yds || 0) >= 45);
   else if (pos === "REC") rows = rows.filter((p) => (p.rec_yds || 0) >= 40);
   else if (pos !== "ALL") rows = rows.filter((p) => p.pos === pos);
-  if (q) {
-    rows = rows.filter((p) => `${p.name} ${p.team} ${p.opp} ${p.game}`.toLowerCase().includes(q));
-  }
-  const hitCut = ($("#propHit") && $("#propHit").value) || "all";
+  if (q) rows = rows.filter((p) => `${p.name} ${p.team} ${p.opp} ${p.game}`.toLowerCase().includes(q));
+  const cut = ($("#propHit") && $("#propHit").value) || "all";
   rows.forEach((p) => {
     p._score = propScore(p);
     p._td = Number(p.pass_td || 0) + Number(p.rush_td || 0) + Number(p.rec_td || 0);
     p._lean = postedLean(p);
     p._hit = p._lean ? p._lean.chance : 0;
   });
-  if (hitCut === "60" || hitCut === "65" || hitCut === "70") {
-    const min = Number(hitCut) / 100;
-    rows = rows.filter((p) => p._hit >= min);
-  }
+  if (cut === "value") rows = rows.filter((p) => p._lean && p._lean.score > 0);
+  else if (cut === "v3") rows = rows.filter((p) => p._lean && p._lean.score >= 0.03);
+  else if (cut === "v5") rows = rows.filter((p) => p._lean && p._lean.score >= 0.05);
+  else if (cut === "lines") rows = rows.filter((p) => p._lean);
   rows.sort((a, b) => {
-    if (hitCut === "best" || hitCut === "60" || hitCut === "65" || hitCut === "70") return (b._hit || 0) - (a._hit || 0) || b._score - a._score;
     if (sort === "fp") return (b.fp || 0) - (a.fp || 0);
     if (sort === "pass") return (b.pass_yds || 0) - (a.pass_yds || 0);
     if (sort === "rush") return (b.rush_yds || 0) - (a.rush_yds || 0);
     if (sort === "rec") return (b.rec_yds || 0) - (a.rec_yds || 0);
     if (sort === "td") return b._td - a._td;
-    return ((b._lean ? 1 : 0) - (a._lean ? 1 : 0)) || (b._hit || 0) - (a._hit || 0) || b._score - a._score;
+    if (sort === "kick") return String(a.date).localeCompare(String(b.date));
+    return ((b._lean ? 1 : 0) - (a._lean ? 1 : 0)) || ((b._lean ? b._lean.score : -1) - (a._lean ? a._lean.score : -1)) || b._score - a._score;
   });
-  const best = (day === "best" && hitCut === "all") ? rows.slice(0, 18) : rows.slice(0, 72);
-  ensureNflDk(rows);
-  const qbs = best.filter((p) => p.pos === "QB").length;
-  $("#propStats").innerHTML = `
-    <div class="stat"><b>${best.length}</b><span>${day === "best" ? "featured picks" : "props on this filter"}</span></div>
-    <div class="stat"><b>${rows.length}</b><span>matching NFL players</span></div>
-    <div class="stat"><b>${qbs}</b><span>QBs in this list</span></div>
-    <div class="stat"><b>${best[0] && best[0]._hit ? Math.round(best[0]._hit * 100) + "%" : "—"}</b><span>best our hit rate</span></div>`;
-  if (!best.length) {
+  const shown = day === "best" && cut === "all" ? rows.slice(0, 24) : rows.slice(0, 80);
+  const withLines = rows.filter((p) => p._lean).length;
+  const plus = rows.filter((p) => p._lean && p._lean.score > 0).length;
+  const nextLines = (() => {
+    const g = (DATA.games || []).filter((x) => x.league === "nfl" && !x.completed && Date.parse(x.date) > Date.now() && !((window.PB_PROPS || {}).games || {})[String(x.id)])
+      .sort((a, b) => String(a.date).localeCompare(String(b.date)))[0];
+    return g ? `${g.short_name} lines post about a day before its ${fmt.when(g.date)} kickoff.` : "";
+  })();
+  $("#propStats").innerHTML = `<p class="board-sum"><b>${rows.length}</b> players with a game coming · <b>${withLines}</b> with sportsbook lines · <b>${plus}</b> where our side beats the price. ${nextLines}</p>`;
+  if (!shown.length) {
     const anyProps = (DATA.games || []).some((g) => g.league === "nfl" && !g.completed && (g.props || []).length);
     $("#propBoard").innerHTML = anyProps
-      ? `<div class="empty">No NFL props in this filter. Switch the first dropdown to “Whole NFL week”, or clear the search.</div>`
-      : `<div class="empty">Player projections for this week haven't loaded. Check your connection and refresh the page.</div>`;
+      ? `<div class="empty">No players in this filter. Switch to "Every player" and "All players", or clear the search.</div>`
+      : `<div class="empty">Player projections haven't loaded yet. They come from ESPN; refresh in a moment.</div>`;
     return;
   }
-  $("#propBoard").innerHTML = best.map((p) => {
-    const line = p.pos === "QB"
-      ? `${fmt.n(p.pass_yds,0)} pass · ${fmt.n(p.pass_td,1)} pass TD · ${fmt.n(p.rush_yds,0)} rush`
+  $("#propBoard").innerHTML = shown.map((p) => {
+    const proj = p.pos === "QB"
+      ? `${fmt.n(p.pass_yds, 0)} pass yds · ${fmt.n(p.pass_td, 1)} TD · ${fmt.n(p.rush_yds, 0)} rush`
       : p.pos === "RB"
-      ? `${fmt.n(p.rush_yds,0)} rush · ${fmt.n(p.rec,1)} rec · ${fmt.n(p.rec_yds,0)} rec yds`
-      : `${fmt.n(p.rec,1)} rec · ${fmt.n(p.rec_yds,0)} yds · ${fmt.n(p.rec_td,1)} TD`;
-    const inj = p.injury && p.injury !== "ACTIVE" ? `<span class="inj">${p.injury}</span>` : "";
-    const markets = marketsFor(p).map((m) => Object.assign(m, { player: p }));
-    const best = p._lean;
-    const main = markets[0];
-    const pick = best ? `${best.take} ${best.line} ${best.m.label.toLowerCase()}` : "DraftKings line not posted yet";
+      ? `${fmt.n(p.rush_yds, 0)} rush yds · ${fmt.n(p.rec, 1)} rec · ${fmt.n(p.rec_yds, 0)} rec yds`
+      : `${fmt.n(p.rec, 1)} rec · ${fmt.n(p.rec_yds, 0)} yds · ${fmt.n(p.rec_td, 1)} TD`;
+    const inj = p.injury && p.injury !== "ACTIVE" ? `<span class="inj">${pbEsc(String(p.injury).toLowerCase())}</span>` : "";
+    const L = p._lean;
+    const tid = propTicketId(p, L);
+    const inTicket = tid && typeof PB !== "undefined" && PB.legs && PB.legs.some((x) => x.id === tid);
+    const pick = L
+      ? `<div class="pp-pick ${L.score > 0 ? "plus" : ""}">
+          <div><span class="lbl">Our side</span><b>${L.take} ${L.line} ${PROP_LBL[L.m.key] || L.m.label}</b>
+          <small>${Math.round(L.chance * 100)}% checked${L.fair != null ? ` (our model ${Math.round(L.raw * 100)}%, books ${Math.round(L.fair * 100)}%)` : " (no prices yet)"}${L.price != null ? ` · best ${pbAm(L.price)} ${pbEsc(L.book || "")}` : ""}</small></div>
+          ${L.value != null ? `<span class="pp-val ${L.value > 0 ? "plus" : "minus"}">${L.value > 0 ? "+" : ""}${Math.round(L.value * 100)}%</span>` : ""}
+          ${tid ? `<button type="button" class="pp-add" data-addprop="${tid}" aria-pressed="${!!inTicket}">${inTicket ? "On ticket" : "Add to ticket"}</button>` : ""}
+        </div>`
+      : ((window.PB_PROPS || {}).games || {})[String(p.game_id)]
+      ? `<div class="pp-pick none"><span class="lbl">Our side</span><b>No lines for him</b><small>Books posted this game but no props for him, which usually means his role or health is in doubt.</small></div>`
+      : `<div class="pp-pick none"><span class="lbl">Our side</span><b>Waiting on lines</b><small>Sportsbook lines for this game post about a day before kickoff.</small></div>`;
     return `<article class="prop-card" data-id="${p.game_id}" data-player="${p.id}">
       <div class="who">
         <div class="who-row">
           ${faceHtml(p.id, p.name, 48, "nfl")}
           <div>
-          <h4>${p.name}${inj}</h4>
-          ${p.role ? `<div class="prop-meta">${p.role}</div>` : ""}
-          <div class="prop-meta">${p.pos} · ${p.team} vs ${p.opp} · ${p.game || ""} · ${fmt.when(p.date || p.kick)}</div>
+            <h4>${pbEsc(p.name)}${inj}</h4>
+            <div class="prop-meta">${p.pos} · ${p.team} vs ${p.opp} · ${fmt.when(p.date || p.kick)}</div>
           </div>
         </div>
-        <div class="pick-score">${p._hit ? Math.round(p._hit * 100) + "%" : "—"}</div>
+        <div class="pick-score">${L ? Math.round(L.chance * 100) + "%" : "—"}</div>
       </div>
-      <div class="side-top">
-        <div><span class="lbl">Double Gs</span><b>${line}</b></div>
-        <div class="dk-wrap"><span class="lbl">DraftKings</span><b class="dk-all">${dkTileText(p)}</b></div>
-      </div>
-      <div class="dg-box"><div class="lbl">Our hit rate</div><b>${p._hit ? Math.round(p._hit * 100) + "% · " : ""}${pick}</b></div>
-      ${propHistoryHtml(p)}
+      <div class="pp-proj"><span class="lbl">Our projection</span><b>${proj}</b></div>
+      ${pick}
+      ${propLinesHtml(p)}
+      ${L ? propHistoryHtml(p) : propFormHtml(p)}
     </article>`;
   }).join("");
-  $$("#propBoard .prop-card").forEach((el) => el.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); openPlayer(el.dataset.player, el.dataset.id); }));
+  $$("#propBoard .prop-card").forEach((el) => el.addEventListener("click", (e) => {
+    const add = e.target.closest("[data-addprop]");
+    if (add) {
+      e.preventDefault(); e.stopPropagation();
+      if (typeof pbLoad === "function" && !PB.__loaded) { pbLoad(); PB.__loaded = true; }
+      const id = add.dataset.addprop;
+      if (PB.legs.some((x) => x.id === id)) { PB.legs = PB.legs.filter((x) => x.id !== id); }
+      else {
+        PB.legs = PB.legs.filter((x) => x.id !== pbOpposite(id));
+        const l = pbLeg({ id });
+        PB.legs.push({ id, label: l ? l.label : id, game: l ? l.game : "" });
+      }
+      pbSave();
+      const on = PB.legs.some((x) => x.id === id);
+      add.textContent = on ? "On ticket" : "Add to ticket";
+      add.setAttribute("aria-pressed", on ? "true" : "false");
+      return;
+    }
+    e.preventDefault(); e.stopPropagation(); openPlayer(el.dataset.player, el.dataset.id);
+  }));
 }
 
 
@@ -15073,7 +15284,7 @@ function bestPropLean(g) {
       const mu = Number(pl[k] || 0);
       if (mu <= 0) return;
       const line = Number(dk[k]);
-      const over = pOver(mu, line, VAL_SIG[k]);
+      const over = propOverP(k, mu, line);
       const side = over >= 0.5 ? "OVER" : "UNDER";
       const hit = side === "OVER" ? over : 1 - over;
       if (hit < 0.56 || hit > 0.74) return;
@@ -15168,7 +15379,7 @@ function renderBoom() {
         const mu = Number(pl[k] || 0);
         const gap = mu - Number(dk[k]);
         if (gap < need) return;
-        const hit = pOver(mu, Number(dk[k]), VAL_SIG[k]);
+        const hit = propOverP(k, mu, Number(dk[k]));
         if (hit < 0.57) return;
         yards.push({ name: pl.name, team: pl.team, label, line: dk[k], mu, hit, game: g.short_name, id: g.id, gap });
       });
@@ -15691,7 +15902,7 @@ function pbPropRows(g) {
     Object.keys(VAL_SIG).forEach((k) => {
       const mu = Number(pl[k] || 0);
       if (!(mu > 0) || dk[k] == null) return;
-      out.push({ pl, stat: k, mu, line: Number(dk[k]), gap: Math.abs(mu - Number(dk[k])) / pbPropSig(k) });
+      out.push({ pl, stat: k, mu, line: Number(dk[k]), gap: Math.abs(propOverP(k, mu, Number(dk[k])) - 0.5) });
     });
   });
   return out.sort((a, b) => b.gap - a.gap);
@@ -15823,7 +16034,7 @@ function pbLeg(stored, opts) {
     } else if (st.book) {
       return null;
     }
-    const po = pOver(mu, line, pbPropSig(stat));
+    const po = propOverP(stat, mu, line);
     board = { win: over ? po : 1 - po, push: 0 };
     keepInfo = { k: PB_PRIOR_KEEP, checked: false, n: 0 };
     market = "Player prop";
