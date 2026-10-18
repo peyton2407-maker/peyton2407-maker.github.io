@@ -1694,7 +1694,12 @@
    "total_play": false,
    "spread": 5.5,
    "total": 53.5,
-   "lockedAt": "2026-10-18T18:56:23.222Z"
+   "lockedAt": "2026-10-18T18:56:23.222Z",
+   "close_spread": 5.5,
+   "close_total": 53.5,
+   "closeAt": "2026-10-18T19:47:52.925Z",
+   "clv_side": 0,
+   "clv_total": 0
   },
   "401873006": {
    "id": "401873006",
@@ -1714,7 +1719,12 @@
    "total_play": false,
    "spread": -7.5,
    "total": 41.5,
-   "lockedAt": "2026-10-18T18:56:23.222Z"
+   "lockedAt": "2026-10-18T18:56:23.222Z",
+   "close_spread": -7.5,
+   "close_total": 41.5,
+   "closeAt": "2026-10-18T19:47:52.925Z",
+   "clv_side": 0,
+   "clv_total": 0
   }
  },
  "potd": {
@@ -1738,6 +1748,26 @@
     "kick": "2026-10-18T20:25Z",
     "big": false,
     "savedAt": 1792349783227
+   },
+   {
+    "key": "game:401873005",
+    "week": 6,
+    "day": "2026-10-18",
+    "league": "nfl",
+    "id": "401873005",
+    "game": "BUF @ LV",
+    "kind": "Spread",
+    "line": "LV +5.5",
+    "hitPct": 57,
+    "why": "The play is LV +5.5. Our number is BUF -3.3, 2.2 points off DraftKings.",
+    "label": "Sunday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "locked": true,
+    "kick": "2026-10-18T20:25Z",
+    "big": false,
+    "savedAt": 1792352872931
    }
   ],
   "cfb": [
@@ -2001,5 +2031,5 @@
    }
   ]
  },
- "updated": "2026-10-18T19:17:07.398Z"
+ "updated": "2026-10-18T19:47:52.925Z"
 }
