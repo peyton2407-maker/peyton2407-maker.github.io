@@ -1554,6 +1554,26 @@
     "kick": "2026-10-17T17:00Z",
     "big": true,
     "savedAt": 1792253869278
+   },
+   {
+    "key": "game:401858492",
+    "week": 7,
+    "day": "2026-10-17",
+    "league": "cfb",
+    "id": "401858492",
+    "game": "NEB @ ORE",
+    "kind": "Over",
+    "line": "OVER 51.5",
+    "hitPct": 56,
+    "why": "Our total is 2.1 points over DraftKings 51.5. Over plays are 3-1 on the play of the day, so that record is in the pick.",
+    "label": "Saturday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "locked": true,
+    "kick": "2026-10-18T03:00Z",
+    "big": false,
+    "savedAt": 1792292220708
    }
   ]
  },
@@ -1695,5 +1715,5 @@
    }
   ]
  },
- "updated": "2026-10-18T02:24:59.539Z"
+ "updated": "2026-10-18T02:57:00.701Z"
 }
