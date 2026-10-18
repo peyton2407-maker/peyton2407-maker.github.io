@@ -1450,6 +1450,26 @@
    "closeAt": "2026-10-16T00:20:29.948Z",
    "clv_side": 0,
    "clv_total": 0
+  },
+  "401872996": {
+   "id": "401872996",
+   "league": "nfl",
+   "week": 6,
+   "short": "HOU VS JAX",
+   "home": "JAX",
+   "away": "HOU",
+   "date": "2026-10-18T13:30Z",
+   "pick": "JAX",
+   "pick_line": "JAX -2.5",
+   "total_pick": "NO PLAY",
+   "side_play": true,
+   "our_margin": 4.93,
+   "our_total": 42.5,
+   "confidence": 55,
+   "total_play": false,
+   "spread": -2.5,
+   "total": 42.5,
+   "lockedAt": "2026-10-18T12:02:33.436Z"
   }
  },
  "potd": {
@@ -1715,5 +1735,5 @@
    }
   ]
  },
- "updated": "2026-10-18T07:07:05.680Z"
+ "updated": "2026-10-18T12:02:33.436Z"
 }
