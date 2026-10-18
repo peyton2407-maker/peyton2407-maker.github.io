@@ -2188,6 +2188,11 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .mlogo { width: 20px; height: 20px; object-fit: contain; flex: none; }
 h4.mu .mlogo { width: 24px; height: 24px; }
 .share-legs li span .mu-t { gap: 4px; }
+
+/* taps: no double-tap zoom delay, and a press shows the moment a finger lands */
+a, button, select, input, label, [role="button"], .slate-row, .game-row, .pb-btn, .tab, [data-id], [data-leg] { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+button:active, a.tab:active, .mainnav a:active, .slate-row:active, .game-row:active, .pb-btn:active, .pb-top-leg:active, .home-filter button:active, .board-mode button:active { transform: translateY(1px); filter: brightness(1.12); }
+@media (prefers-reduced-motion: reduce) { button:active, a.tab:active, .slate-row:active, .game-row:active, .pb-btn:active { transform: none; } }
 </style>
 </head>
 <body>
@@ -8588,7 +8593,17 @@ const SQUAD_ALIAS = {
 function squadNorm(s) {
   return String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/\s+/g, " ").trim();
 }
+const SQUAD_MEMO = new Map();
 function sameSquad(team, tm) {
+  const key = String(team || "") + "|" + (tm && tm.name || "") + "|" + (tm && tm.short || "") + "|" + (tm && tm.abbr || "");
+  const hit = SQUAD_MEMO.get(key);
+  if (hit !== undefined) return hit;
+  const v = sameSquadRaw(team, tm);
+  if (SQUAD_MEMO.size > 60000) SQUAD_MEMO.clear();
+  SQUAD_MEMO.set(key, v);
+  return v;
+}
+function sameSquadRaw(team, tm) {
   let t = squadNorm(team);
   const full = squadNorm(tm && tm.name);
   const short = squadNorm(tm && tm.short);
@@ -8652,12 +8667,14 @@ function applyCfbQbPass() {
 function attachInjuriesToGames(){
   try { lockSeasonQbs(); } catch (e) {}
   const bag = (DATA && DATA.injuries) || window.__INJ || {};
+  // filter each league's list once, not once per game
+  const pools = {
+    nfl: (bag.nfl || []).filter((r) => statusWeight(r.tag) > 0),
+    cfb: (bag.cfb || []).filter((r) => statusWeight(r.tag) > 0 && !(typeof cfbRowIsNfl === "function" && cfbRowIsNfl(r)))
+  };
   (DATA.games||[]).forEach(g=>{
-    const pool=g.league==="nfl"?bag.nfl:bag.cfb;
-    const hits=(pool||[]).filter(r=>{
-      if (g.league === "cfb" && typeof cfbRowIsNfl === "function" && cfbRowIsNfl(r)) return false;
-      return sameSquad(r.team, g.home) || sameSquad(r.team, g.away);
-    }).filter(r=>statusWeight(r.tag)>0);
+    const pool=g.league==="nfl"?pools.nfl:pools.cfb;
+    const hits=(pool||[]).filter(r=>sameSquad(r.team, g.home) || sameSquad(r.team, g.away));
     hits.sort((a,b)=>b.score-a.score);
     g.injuries=hits.slice(0,8).map(r=>({
       name:r.name, id:r.id, status:r.tag||r.status, pos:r.pos, tag:r.tag, league:r.league||g.league,
@@ -8822,29 +8839,39 @@ async function fetchInjuries(force){
   } catch (e) { console.warn("injuries", e); }
   return ensureInjPack();
 }
+// NFL team and player names, built once and reused (rebuilt when the games or injury
+// lists change). Checking a college injury row used to rebuild these for every row of every
+// game, which kept the browser busy for many seconds after the page opened.
+function nflLookup() {
+  const games = (typeof DATA === "object" && DATA && DATA.games) || [];
+  const inj = (((typeof DATA === "object" && DATA && DATA.injuries) || {}).nfl) || [];
+  const c = window.__NFL_LOOKUP;
+  if (c && c.games === games && c.gn === games.length && c.inj === inj && c.n === inj.length) return c;
+  const names = new Set(), teams = [];
+  games.forEach((g) => {
+    if (g.league !== "nfl") return;
+    [g.home, g.away].forEach((tm) => teams.push([String(tm.name || "").toLowerCase(), String(tm.abbr || "").toLowerCase()]));
+    (g.props || []).forEach((p) => { if (p.name) names.add(String(p.name).toLowerCase()); });
+  });
+  inj.forEach((x) => { if (x && x.name && x.pos !== "NEWS") names.add(String(x.name).toLowerCase()); });
+  window.__NFL_LOOKUP = { games, gn: games.length, inj, n: inj.length, names, teams, hit: new Map() };
+  return window.__NFL_LOOKUP;
+}
 function nflTeamHit(team) {
   const t = String(team || "").toLowerCase().trim();
   if (!t || typeof DATA === "undefined" || !DATA) return false;
-  return (DATA.games || []).some((g) => g.league === "nfl" && [g.home, g.away].some((tm) => {
-    const full = String(tm.name || "").toLowerCase();
-    const abbr = String(tm.abbr || "").toLowerCase();
-    return (full && (t === full || t.includes(full))) || (abbr && t === abbr);
-  }));
+  const L = nflLookup();
+  if (L.hit.has(t)) return L.hit.get(t);
+  const v = L.teams.some(([full, abbr]) => (full && (t === full || t.includes(full))) || (abbr && t === abbr));
+  L.hit.set(t, v);
+  return v;
 }
 function cfbRowIsNfl(r) {
   if (!r || r.pos === "NEWS") return false;
   if (nflTeamHit(r.team)) return true;
   const name = String(r.name || "").toLowerCase().trim();
   if (name.length < 5) return false;
-  const nflNames = new Set();
-  (DATA.games || []).forEach((g) => {
-    if (g.league !== "nfl") return;
-    (g.props || []).forEach((p) => { if (p.name) nflNames.add(String(p.name).toLowerCase()); });
-  });
-  (((DATA.injuries || {}).nfl) || []).forEach((x) => {
-    if (x && x.name && x.pos !== "NEWS") nflNames.add(String(x.name).toLowerCase());
-  });
-  return nflNames.has(name);
+  return nflLookup().names.has(name);
 }
 function nflNamesMentioned(text) {
   const low = String(text || "").toLowerCase();
@@ -9716,7 +9743,8 @@ function renderBoard() {
       const b = e.target.closest("[data-bmode]");
       if (!b) return;
       try { localStorage.setItem("gg-board-mode", b.dataset.bmode); } catch (err) {}
-      renderBoard();
+      b.parentElement.querySelectorAll("[data-bmode]").forEach((x) => x.classList.toggle("on", x === b));
+      afterPaint(renderBoard);
     });
   }
   if (!games.length) {
@@ -13106,12 +13134,13 @@ function renderHome() {
         const b = e.target.closest("button[data-hf]");
         if (!b) return;
         try { sessionStorage.setItem("gg-home-filter", b.dataset.hf); } catch (err) {}
-        renderHome();
+        filt.querySelectorAll("button[data-hf]").forEach((x) => { x.classList.toggle("on", x === b); x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        afterPaint(renderHome);
       });
       filt.addEventListener("change", (e) => {
         if (e.target.id !== "homePlaysOnly") return;
         try { localStorage.setItem("gg-home-plays", e.target.checked ? "1" : "0"); } catch (err) {}
-        renderHome();
+        afterPaint(renderHome);
       });
     }
   }
@@ -15201,6 +15230,22 @@ function viewTitle(v) {
     t = t.replace("NFL Week {nw}", weekLabel("nfl", currentNflWeekNumber())).replace("College football Week {cw}", Number(currentCfbWeekNumber()) >= 16 ? "College bowls and Playoff" : "College football Week " + currentCfbWeekNumber());
   } catch (e) { t = t.replace(/ Week \{[nc]w\}/, ""); }
   return v === "home" ? "Double Gs — NFL & College Football Projections, Picks and Props" : t.replace(/\s+/g, " ").trim() + " | Double Gs";
+}
+const VIEW_SECTION = { home: "home", card: "home", nfl: "nfl", prime: "nfl", props: "nfl", charts: "nfl", live: "nfl", tds: "nfl", value: "nfl", nflwx: "nfl", nflinj: "nfl", nflpotd: "nfl", cfb: "cfb", potd: "cfb", cfbpicks: "cfb", cfbwx: "cfb", cfbinj: "cfb", recruit: "cfb", parlay: "boom", builder: "boom", bets: "boom", calc: "boom", score: "record", history: "record", ratings: "record", season: "record", all: "record", alerts: "record" };
+function quickMark(v) {
+  try {
+    document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.view === v));
+    const keepHome = document.body.dataset.section === "home" && (v === "nflpotd" || v === "potd");
+    if (VIEW_SECTION[v] && !keepHome) document.body.dataset.section = VIEW_SECTION[v];
+  } catch (e) {}
+}
+// A tap shows its result on the very next frame; the page itself is drawn right after.
+// draw after the next paint, so the tap's own feedback shows first
+function afterPaint(fn) { requestAnimationFrame(() => setTimeout(fn, 0)); }
+function goView(v, opts) {
+  quickMark(v);
+  const token = (goView.n = (goView.n || 0) + 1);
+  requestAnimationFrame(() => setTimeout(() => { if (token === goView.n) setView(v, opts); }, 0));
 }
 function setView(next, opts) {
   if (next === "heisman" || next === "recruit" || next === "awards" || next === "model") next = next === "awards" ? "nflpotd" : "home";
@@ -17439,7 +17484,20 @@ function pbStatus(msg) {
   const el = document.getElementById("pbStatus");
   if (el) { el.textContent = msg; clearTimeout(pbStatus.t); pbStatus.t = setTimeout(() => { el.textContent = ""; }, 4000); }
 }
-function pbChanged() { pbSave(); pbRefreshButtons(); pbRenderSlip(); const t = document.getElementById("pbTop"); if (t) t.innerHTML = pbTopHtml(); }
+// The board's buttons only change when a leg is picked or dropped, so flip those in place
+// (instant) instead of redrawing every game.
+function pbSyncPicked() {
+  const picked = new Set(PB.legs.map((l) => l.id));
+  document.querySelectorAll("#builderSection [data-leg]").forEach((b) => {
+    const on = picked.has(b.dataset.leg);
+    if (b.classList.contains("on") !== on) { b.classList.toggle("on", on); b.setAttribute("aria-pressed", on ? "true" : "false"); }
+  });
+}
+function pbChanged() {
+  pbSave();
+  pbSyncPicked();
+  pbRenderSlip();
+}
 function pbTicketIsLive() {
   return PB.legs.some((st) => { const g = pbGame(String(st.id).split("|")[0]); return g && pbStarted(g); });
 }
@@ -17605,7 +17663,11 @@ function installBuilder() {
     if (!t || !root.contains(t)) return;
     const d = t.dataset;
     if (d.leg) return pbToggle(d.leg);
-    if (d.pblg) { PB.league = d.pblg; PB.q = ""; const s = document.getElementById("pbSearch"); if (s) s.value = ""; pbSave(); return renderBuilder(); }
+    if (d.pblg) {
+      PB.league = d.pblg; PB.q = ""; const s = document.getElementById("pbSearch"); if (s) s.value = ""; pbSave();
+      root.querySelectorAll("[data-pblg]").forEach((x) => x.classList.toggle("active", x === t));
+      return afterPaint(renderBuilder);
+    }
     if (d.pbsort) { PB.sort = d.pbsort; return renderBuilder(); }
     if (d.pbmode) { PB.fillMode = d.pbmode; pbSave(); return renderBuilder(); }
     if (d.fill) return pbFill(Number(d.fill));
@@ -17770,9 +17832,11 @@ async function boot() {
     if (tab && tab.dataset.view) {
       e.preventDefault();
       if (tab.dataset.view === "parlay") window.__parlayLg = "nfl";
-      setView(tab.dataset.view, { push: true });
+      goView(tab.dataset.view, { push: true });
       return;
     }
+    const sec = e.target.closest(".mainnav a[data-section]");
+    if (sec) quickMark((sec.getAttribute("href") || "").replace("#", ""));
     const closeBtn = e.target.closest("#overlay .close:not(.share), #gameSheet .close:not(.share), #propSheet .close:not(.share)");
     if (closeBtn) { e.preventDefault(); closeModal(); return; }
     const share = e.target.closest("[data-share-game]");
@@ -17792,7 +17856,7 @@ async function boot() {
     const gm = h.match(/^game-(.+)$/);
     if (gm) { if (window.__openGameId !== gm[1]) openGame(decodeURIComponent(gm[1]), { fromHash: true }); return; }
     if (window.__openGameId) closeModal({ fromHash: true });
-    if (h && h !== view) setView(h);
+    if (h && h !== view) goView(h);
   };
   window.addEventListener("hashchange", routeHash);
   window.addEventListener("popstate", routeHash);
