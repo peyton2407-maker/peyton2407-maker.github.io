@@ -2219,6 +2219,7 @@ button:active, a.tab:active, .mainnav a:active, .slate-row:active, .game-row:act
 .pp-bars { display: flex; align-items: flex-end; gap: 4px; height: 54px; margin-top: 6px; }
 .pp-bars i { position: relative; flex: 1; height: var(--h); min-height: 3px; border-radius: 3px 3px 0 0; background: rgba(237,241,247,.18); }
 .pp-bars i em { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); font-style: normal; font-size: 10px; color: var(--muted); }
+.pp-pick small.pp-warn { color: #ffb48a; }
 .pp-ctx { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; }
 .pp-chip { font-size: 12px; line-height: 1.3; padding: 3px 8px; border-radius: 999px; background: rgba(237,241,247,.06); color: var(--ink-soft); border: 1px solid var(--line); }
 .pp-chip.soft { color: var(--win); border-color: rgba(60,196,126,.35); background: rgba(60,196,126,.08); }
@@ -11379,7 +11380,7 @@ function renderProps() {
     const pick = L
       ? `<div class="pp-pick ${L.score > 0 ? "plus" : ""}">
           <div><span class="lbl">Our side</span><b>${L.take} ${L.line} ${PROP_LBL[L.m.key] || L.m.label}</b>
-          <small>${Math.round(L.chance * 100)}% checked${L.fair != null ? ` (our model ${Math.round(L.raw * 100)}%, books ${Math.round(L.fair * 100)}%)` : " (no prices yet)"}${L.price != null ? ` · best ${pbAm(L.price)} ${pbEsc(L.book || "")}` : ""}</small></div>
+          <small>${Math.round(L.chance * 100)}% checked${L.fair != null ? ` (our model ${Math.round(L.raw * 100)}%, books ${Math.round(L.fair * 100)}%)` : " (no prices yet)"}${L.price != null ? ` · best ${pbAm(L.price)} ${pbEsc(L.book || "")}` : ""}</small>${p.injury && p.injury !== "ACTIVE" && L.take === "Over" ? `<small class="pp-warn">He's ${pbEsc(String(p.injury).toLowerCase())}. A line well under our number often means the books expect a smaller role.</small>` : ""}</div>
           ${L.value != null ? `<span class="pp-val ${L.value > 0 ? "plus" : "minus"}">${L.value > 0 ? "+" : ""}${Math.round(L.value * 100)}%</span>` : ""}
           ${tid ? `<button type="button" class="pp-add" data-addprop="${tid}" aria-pressed="${!!inTicket}">${inTicket ? "On ticket" : "Add to ticket"}</button>` : ""}
         </div>`
