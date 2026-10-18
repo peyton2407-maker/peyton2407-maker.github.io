@@ -569,7 +569,12 @@
    "total_play": true,
    "spread": 10,
    "total": 53.5,
-   "lockedAt": "2026-10-18T01:26:58.019Z"
+   "lockedAt": "2026-10-18T01:26:58.019Z",
+   "close_spread": 10,
+   "close_total": 53.5,
+   "closeAt": "2026-10-18T01:58:27.399Z",
+   "clv_side": -0.5,
+   "clv_total": 0
   },
   "401858488": {
    "id": "401858488",
@@ -671,6 +676,26 @@
    "clv_side": 0.5,
    "clv_total": 2
   },
+  "401858492": {
+   "id": "401858492",
+   "league": "cfb",
+   "week": 7,
+   "short": "NEB @ ORE",
+   "home": "ORE",
+   "away": "NEB",
+   "date": "2026-10-18T03:00Z",
+   "pick": "NEB",
+   "pick_line": "NEB +7.5",
+   "total_pick": "OVER 52.5",
+   "side_play": true,
+   "our_margin": 5.35,
+   "our_total": 54.6,
+   "confidence": 51,
+   "total_play": true,
+   "spread": -6.5,
+   "total": 51.5,
+   "lockedAt": "2026-10-18T01:58:27.399Z"
+  },
   "401858493": {
    "id": "401858493",
    "league": "cfb",
@@ -764,7 +789,12 @@
    "total_play": true,
    "spread": 7,
    "total": 46.5,
-   "lockedAt": "2026-10-18T01:26:58.019Z"
+   "lockedAt": "2026-10-18T01:26:58.019Z",
+   "close_spread": 7,
+   "close_total": 46.5,
+   "closeAt": "2026-10-18T01:58:27.399Z",
+   "clv_side": 0.5,
+   "clv_total": 1
   },
   "401860923": {
    "id": "401860923",
@@ -1009,7 +1039,12 @@
    "total_play": false,
    "spread": 14.5,
    "total": 46.5,
-   "lockedAt": "2026-10-18T01:26:58.019Z"
+   "lockedAt": "2026-10-18T01:26:58.019Z",
+   "close_spread": 14.5,
+   "close_total": 46.5,
+   "closeAt": "2026-10-18T01:58:27.399Z",
+   "clv_side": -0.5,
+   "clv_total": -1
   },
   "401864522": {
    "id": "401864522",
@@ -1655,5 +1690,5 @@
    }
   ]
  },
- "updated": "2026-10-18T01:26:58.019Z"
+ "updated": "2026-10-18T01:58:27.399Z"
 }
