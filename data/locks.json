@@ -351,6 +351,26 @@
    "clv_side": 0.5,
    "clv_total": -2
   },
+  "401856833": {
+   "id": "401856833",
+   "league": "cfb",
+   "week": 7,
+   "short": "UTAH @ COLO",
+   "home": "COLO",
+   "away": "UTAH",
+   "date": "2026-10-18T02:15Z",
+   "pick": "UTAH",
+   "pick_line": "UTAH -15.5",
+   "total_pick": "OVER 49.5",
+   "side_play": false,
+   "our_margin": -16.2,
+   "our_total": 52,
+   "confidence": 51,
+   "total_play": true,
+   "spread": 15.5,
+   "total": 49.5,
+   "lockedAt": "2026-10-18T00:54:20.104Z"
+  },
   "401858261": {
    "id": "401858261",
    "league": "cfb",
@@ -971,10 +991,10 @@
    "total": 45.5,
    "lockedAt": "2026-10-17T23:46:27.065Z",
    "close_spread": 6.5,
-   "close_total": 45.5,
-   "closeAt": "2026-10-18T00:02:46.580Z",
+   "close_total": 46.5,
+   "closeAt": "2026-10-18T00:54:20.104Z",
    "clv_side": -1,
-   "clv_total": -3
+   "clv_total": -2
   },
   "401864524": {
    "id": "401864524",
@@ -1100,6 +1120,26 @@
    "closeAt": "2026-10-17T19:17:20.394Z",
    "clv_side": 1,
    "clv_total": 0
+  },
+  "401866445": {
+   "id": "401866445",
+   "league": "cfb",
+   "week": 7,
+   "short": "OHIO @ SAC",
+   "home": "SAC",
+   "away": "OHIO",
+   "date": "2026-10-18T02:00Z",
+   "pick": "SAC",
+   "pick_line": "SAC +16.5",
+   "total_pick": "OVER 46.5",
+   "side_play": false,
+   "our_margin": -2.83,
+   "our_total": 54.7,
+   "confidence": null,
+   "total_play": false,
+   "spread": 16.5,
+   "total": 46.5,
+   "lockedAt": "2026-10-18T00:54:20.104Z"
   },
   "401866478": {
    "id": "401866478",
@@ -1545,5 +1585,5 @@
    }
   ]
  },
- "updated": "2026-10-18T00:02:46.580Z"
+ "updated": "2026-10-18T00:54:20.104Z"
 }
