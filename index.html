@@ -8672,9 +8672,16 @@ function attachInjuriesToGames(){
     nfl: (bag.nfl || []).filter((r) => statusWeight(r.tag) > 0),
     cfb: (bag.cfb || []).filter((r) => statusWeight(r.tag) > 0 && !(typeof cfbRowIsNfl === "function" && cfbRowIsNfl(r)))
   };
+  pools.nflNames = [...new Set(pools.nfl.map((r) => String(r.team || "")))];
+  pools.cfbNames = [...new Set(pools.cfb.map((r) => String(r.team || "")))];
   (DATA.games||[]).forEach(g=>{
     const pool=g.league==="nfl"?pools.nfl:pools.cfb;
-    const hits=(pool||[]).filter(r=>sameSquad(r.team, g.home) || sameSquad(r.team, g.away));
+    // check each team name once (a few hundred rows share about a hundred names), then keep
+    // the rows in their original order
+    const names = pools[g.league === "nfl" ? "nflNames" : "cfbNames"];
+    const mine = new Set();
+    names.forEach((t) => { if (sameSquad(t, g.home) || sameSquad(t, g.away)) mine.add(t); });
+    const hits=(pool||[]).filter(r=>mine.has(String(r.team || "")));
     hits.sort((a,b)=>b.score-a.score);
     g.injuries=hits.slice(0,8).map(r=>({
       name:r.name, id:r.id, status:r.tag||r.status, pos:r.pos, tag:r.tag, league:r.league||g.league,
