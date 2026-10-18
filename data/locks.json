@@ -1746,10 +1746,10 @@
    "total": 53.5,
    "lockedAt": "2026-10-18T23:01:58.672Z",
    "close_spread": 1.5,
-   "close_total": 53.5,
-   "closeAt": "2026-10-18T23:35:06.932Z",
+   "close_total": 54.5,
+   "closeAt": "2026-10-18T23:59:53.049Z",
    "clv_side": 0,
-   "clv_total": 0
+   "clv_total": 1
   }
  },
  "potd": {
@@ -2056,5 +2056,5 @@
    }
   ]
  },
- "updated": "2026-10-18T23:35:06.932Z"
+ "updated": "2026-10-18T23:59:53.049Z"
 }
