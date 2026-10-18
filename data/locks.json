@@ -369,7 +369,12 @@
    "total_play": true,
    "spread": 15.5,
    "total": 49.5,
-   "lockedAt": "2026-10-18T00:54:20.104Z"
+   "lockedAt": "2026-10-18T00:54:20.104Z",
+   "close_spread": 15.5,
+   "close_total": 49.5,
+   "closeAt": "2026-10-18T01:26:58.019Z",
+   "clv_side": 0,
+   "clv_total": 0
   },
   "401858261": {
    "id": "401858261",
@@ -546,6 +551,26 @@
    "clv_side": -0.5,
    "clv_total": 0
   },
+  "401858269": {
+   "id": "401858269",
+   "league": "cfb",
+   "week": 7,
+   "short": "WAKE @ CAL",
+   "home": "CAL",
+   "away": "WAKE",
+   "date": "2026-10-18T02:30Z",
+   "pick": "CAL",
+   "pick_line": "CAL +9.5",
+   "total_pick": "OVER 53.5",
+   "side_play": true,
+   "our_margin": -4.03,
+   "our_total": 59.8,
+   "confidence": 52,
+   "total_play": true,
+   "spread": 10,
+   "total": 53.5,
+   "lockedAt": "2026-10-18T01:26:58.019Z"
+  },
   "401858488": {
    "id": "401858488",
    "league": "cfb",
@@ -720,6 +745,26 @@
    "closeAt": "2026-10-17T21:05:59.564Z",
    "clv_side": -1,
    "clv_total": 1
+  },
+  "401860904": {
+   "id": "401860904",
+   "league": "cfb",
+   "week": 7,
+   "short": "FRES @ SDSU",
+   "home": "SDSU",
+   "away": "FRES",
+   "date": "2026-10-18T02:30Z",
+   "pick": "SDSU",
+   "pick_line": "SDSU +7.5",
+   "total_pick": "OVER 45.5",
+   "side_play": true,
+   "our_margin": -1.97,
+   "our_total": 47.3,
+   "confidence": 51,
+   "total_play": true,
+   "spread": 7,
+   "total": 46.5,
+   "lockedAt": "2026-10-18T01:26:58.019Z"
   },
   "401860923": {
    "id": "401860923",
@@ -946,6 +991,26 @@
    "clv_side": 0,
    "clv_total": 0
   },
+  "401864521": {
+   "id": "401864521",
+   "league": "cfb",
+   "week": 7,
+   "short": "UNM @ HAW",
+   "home": "HAW",
+   "away": "UNM",
+   "date": "2026-10-18T02:30Z",
+   "pick": "HAW",
+   "pick_line": "HAW +14.0",
+   "total_pick": "UNDER 45.5",
+   "side_play": false,
+   "our_margin": -13.63,
+   "our_total": 44.2,
+   "confidence": null,
+   "total_play": false,
+   "spread": 14.5,
+   "total": 46.5,
+   "lockedAt": "2026-10-18T01:26:58.019Z"
+  },
   "401864522": {
    "id": "401864522",
    "league": "cfb",
@@ -1139,7 +1204,12 @@
    "total_play": false,
    "spread": 16.5,
    "total": 46.5,
-   "lockedAt": "2026-10-18T00:54:20.104Z"
+   "lockedAt": "2026-10-18T00:54:20.104Z",
+   "close_spread": 17.5,
+   "close_total": 46.5,
+   "closeAt": "2026-10-18T01:26:58.019Z",
+   "clv_side": -1,
+   "clv_total": 0
   },
   "401866478": {
    "id": "401866478",
@@ -1585,5 +1655,5 @@
    }
   ]
  },
- "updated": "2026-10-18T00:54:20.104Z"
+ "updated": "2026-10-18T01:26:58.019Z"
 }
