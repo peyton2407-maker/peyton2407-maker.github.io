@@ -1567,9 +1567,9 @@
     "hitPct": 56,
     "why": "Our total is 2.1 points over DraftKings 51.5. Over plays are 3-1 on the play of the day, so that record is in the pick.",
     "label": "Saturday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "NEB 14 – ORE 17",
+    "resultWhy": "It missed. OVER 51.5 did not cash. Final was NEB 14 – ORE 17.",
     "locked": true,
     "kick": "2026-10-18T03:00Z",
     "big": false,
@@ -1715,5 +1715,5 @@
    }
   ]
  },
- "updated": "2026-10-18T02:57:00.701Z"
+ "updated": "2026-10-18T07:07:05.680Z"
 }
