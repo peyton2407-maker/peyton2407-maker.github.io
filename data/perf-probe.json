@@ -1,1080 +1,889 @@
 {
- "checked_at": "2026-10-18T02:12:29Z",
+ "checked_at": "2026-10-18T02:21:07Z",
  "runs": [
   {
    "view": "home",
    "cpu_slowdown": 4,
-   "reload": false,
-   "long_tasks_total_ms": 828,
-   "longest_ms": 159,
+   "reload": true,
+   "returning": true,
+   "memory": {
+    "heap_mb": 14,
+    "dom_nodes": 2210,
+    "saved_chars": 1404267
+   },
+   "long_tasks_total_ms": 772,
+   "longest_ms": 107,
    "over_1s": [],
    "over_200ms": 0,
    "errors": [],
    "inclusive_ms": [
     [
      "attachInjuriesToGames:8666",
-     1657
-    ],
-    [
-     "(anon):8674",
-     1459
-    ],
-    [
-     "(anon):8676",
-     1262
-    ],
-    [
-     "sameSquad:8596",
-     1213
-    ],
-    [
-     "next:5666",
-     1035
+     1436
     ],
     [
      "installElevenReport:13903",
-     929
+     1087
+    ],
+    [
+     "(anon):8674",
+     1082
     ],
     [
      "boot:17783",
-     823
+     1056
     ],
     [
-     "applySituationalBoard:4409",
-     818
+     "(anon):8676",
+     959
     ],
     [
-     "getJSON:3713",
-     699
-    ],
-    [
-     "(anon):4210",
-     679
-    ],
-    [
-     "applyLiveBoard:4769",
-     557
+     "sameSquad:8596",
+     859
     ],
     [
      "(anon):4770",
-     553
+     666
     ],
     [
-     "simulateGame:6140",
-     455
-    ],
-    [
-     "fetch:-1",
-     419
+     "applyLiveBoard:4769",
+     666
     ],
     [
      "applySplitDesk:5941",
-     318
+     561
     ],
     [
-     "renderHome:13054",
-     303
+     "simulateGame:6140",
+     554
     ],
     [
      "(anon):5952",
-     258
-    ],
-    [
-     "pullLiveScores:11943",
-     257
-    ],
-    [
-     "rememberCfbUsage:5578",
-     234
+     522
     ],
     [
      "cfbLineMove:5692",
-     231
+     489
     ],
     [
-     "(anon):5580",
-     224
+     "pullLiveScores:11943",
+     394
     ],
     [
-     "saveCfbMiss:5554",
-     198
+     "renderHome:13054",
+     374
     ],
     [
-     "sameSquadRaw:8605",
-     154
+     "cfbLearnNudge:5473",
+     343
     ],
     [
-     "enrichPowerRankings:6319",
-     148
+     "cfbCloseStats:5557",
+     340
+    ],
+    [
+     "applySituationalBoard:4409",
+     308
+    ],
+    [
+     "reapplyDeskLine:14044",
+     300
+    ],
+    [
+     "(anon):15463",
+     244
+    ],
+    [
+     "seedInjuriesFromSnap:8702",
+     242
     ],
     [
      "(anon):6321",
-     146
+     218
+    ],
+    [
+     "enrichPowerRankings:6319",
+     218
+    ],
+    [
+     "(anon):6332",
+     212
+    ],
+    [
+     "(anon):18025",
+     201
+    ],
+    [
+     "(anon):5559",
+     177
     ]
    ],
    "self_ms": [
     [
      "sameSquad:8596",
-     1060
-    ],
-    [
-     "fetch:-1",
-     419
-    ],
-    [
-     "getJSON:3713",
-     219
+     700
     ],
     [
      "simulateGame:6140",
-     215
-    ],
-    [
-     "saveCfbMiss:5554",
-     198
-    ],
-    [
-     "(anon):8674",
-     182
-    ],
-    [
-     "squadNorm:8592",
-     130
+     252
     ],
     [
      "renderHome:13054",
-     128
+     184
+    ],
+    [
+     "squadNorm:8592",
+     119
+    ],
+    [
+     "(anon):8674",
+     114
+    ],
+    [
+     "pctile:6219",
+     112
+    ],
+    [
+     "(anon):5559",
+     104
+    ],
+    [
+     "(anon):8676",
+     102
+    ],
+    [
+     "(anon):4770",
+     96
     ],
     [
      "(anon):6093",
+     91
+    ],
+    [
+     "(anon):4043",
+     89
+    ],
+    [
+     "(anon):5571",
+     80
+    ],
+    [
+     "(anon):5563",
+     73
+    ],
+    [
+     "cfbCloseStats:5557",
+     72
+    ],
+    [
+     "(anon):9133",
+     71
+    ],
+    [
+     "fetch:-1",
+     48
+    ],
+    [
+     "lastGameFor:4041",
+     45
+    ],
+    [
+     "mean:6216",
+     36
+    ],
+    [
+     "(anon):6313",
+     35
+    ],
+    [
+     "(anon):6260",
+     31
+    ],
+    [
+     "formRating:6295",
+     28
+    ],
+    [
+     "sameSquadRaw:8605",
+     27
+    ],
+    [
+     "(anon):5952",
+     26
+    ],
+    [
+     "marketImpliedRating:6276",
+     24
+    ],
+    [
+     "coordsForGame:3000",
+     24
+    ]
+   ],
+   "idle_ms": 16094
+  },
+  {
+   "view": "builder",
+   "cpu_slowdown": 4,
+   "reload": true,
+   "returning": true,
+   "memory": {
+    "heap_mb": 16,
+    "dom_nodes": 1785,
+    "saved_chars": 1404334
+   },
+   "long_tasks_total_ms": 770,
+   "longest_ms": 145,
+   "over_1s": [],
+   "over_200ms": 0,
+   "errors": [],
+   "inclusive_ms": [
+    [
+     "attachInjuriesToGames:8666",
+     1506
+    ],
+    [
+     "(anon):8674",
+     1163
+    ],
+    [
+     "installElevenReport:13903",
+     1142
+    ],
+    [
+     "(anon):8676",
+     1013
+    ],
+    [
+     "sameSquad:8596",
+     907
+    ],
+    [
+     "boot:17783",
+     902
+    ],
+    [
+     "applyLiveBoard:4769",
+     682
+    ],
+    [
+     "(anon):4770",
+     678
+    ],
+    [
+     "simulateGame:6140",
+     571
+    ],
+    [
+     "applySplitDesk:5941",
+     527
+    ],
+    [
+     "(anon):5952",
+     473
+    ],
+    [
+     "cfbLineMove:5692",
+     437
+    ],
+    [
+     "pullLiveScores:11943",
+     366
+    ],
+    [
+     "renderBuilderNow:17425",
+     351
+    ],
+    [
+     "(anon):17423",
+     351
+    ],
+    [
+     "cfbLearnNudge:5473",
+     333
+    ],
+    [
+     "cfbCloseStats:5557",
+     329
+    ],
+    [
+     "applySituationalBoard:4409",
+     321
+    ],
+    [
+     "reapplyDeskLine:14044",
+     291
+    ],
+    [
+     "seedInjuriesFromSnap:8702",
+     248
+    ],
+    [
+     "(anon):15463",
+     248
+    ],
+    [
+     "(anon):6332",
+     212
+    ],
+    [
+     "(anon):6321",
+     212
+    ],
+    [
+     "enrichPowerRankings:6319",
+     212
+    ],
+    [
+     "sameSquadRaw:8605",
+     208
+    ]
+   ],
+   "self_ms": [
+    [
+     "sameSquad:8596",
+     699
+    ],
+    [
+     "simulateGame:6140",
+     284
+    ],
+    [
+     "squadNorm:8592",
+     156
+    ],
+    [
+     "pbRefreshButtons:17472",
+     155
+    ],
+    [
+     "(anon):8674",
+     136
+    ],
+    [
+     "(anon):8676",
+     110
+    ],
+    [
+     "(anon):5559",
+     105
+    ],
+    [
+     "pctile:6219",
+     104
+    ],
+    [
+     "(anon):4770",
+     91
+    ],
+    [
+     "(anon):6093",
+     90
+    ],
+    [
+     "(anon):5571",
+     81
+    ],
+    [
+     "cfbCloseStats:5557",
+     78
+    ],
+    [
+     "lastGameFor:4041",
+     78
+    ],
+    [
+     "(anon):9133",
+     58
+    ],
+    [
+     "(anon):5563",
+     54
+    ],
+    [
+     "sameSquadRaw:8605",
+     41
+    ],
+    [
+     "(anon):6260",
+     39
+    ],
+    [
+     "(anon):4043",
+     37
+    ],
+    [
+     "powerRecord:6259",
+     33
+    ],
+    [
+     "(anon):6299",
+     33
+    ],
+    [
+     "fetch:-1",
+     32
+    ],
+    [
+     "mean:6216",
+     32
+    ],
+    [
+     "pbNflPmf:15576",
+     31
+    ],
+    [
+     "(anon):5952",
+     29
+    ],
+    [
+     "(anon):6279",
+     24
+    ]
+   ],
+   "idle_ms": 54481
+  },
+  {
+   "view": "home",
+   "cpu_slowdown": 4,
+   "reload": false,
+   "returning": false,
+   "memory": {
+    "heap_mb": 14,
+    "dom_nodes": 2186,
+    "saved_chars": 1403628
+   },
+   "long_tasks_total_ms": 955,
+   "longest_ms": 140,
+   "over_1s": [],
+   "over_200ms": 0,
+   "errors": [],
+   "inclusive_ms": [
+    [
+     "attachInjuriesToGames:8666",
+     1871
+    ],
+    [
+     "(anon):8674",
+     1683
+    ],
+    [
+     "(anon):8676",
+     1516
+    ],
+    [
+     "sameSquad:8596",
+     1409
+    ],
+    [
+     "installElevenReport:13903",
+     1055
+    ],
+    [
+     "next:5666",
+     1023
+    ],
+    [
+     "boot:17783",
+     1007
+    ],
+    [
+     "applySituationalBoard:4409",
+     948
+    ],
+    [
+     "(anon):4210",
+     785
+    ],
+    [
+     "applyLiveBoard:4769",
+     662
+    ],
+    [
+     "(anon):4770",
+     657
+    ],
+    [
+     "getJSON:3713",
+     612
+    ],
+    [
+     "simulateGame:6140",
+     563
+    ],
+    [
+     "fetch:-1",
+     401
+    ],
+    [
+     "renderHome:13054",
+     335
+    ],
+    [
+     "applySplitDesk:5941",
+     309
+    ],
+    [
+     "pullLiveScores:11943",
+     296
+    ],
+    [
+     "saveCfbMiss:5554",
+     276
+    ],
+    [
+     "rememberCfbUsage:5578",
+     265
+    ],
+    [
+     "(anon):5580",
+     255
+    ],
+    [
+     "(anon):5952",
+     248
+    ],
+    [
+     "cfbLineMove:5692",
+     213
+    ],
+    [
+     "(anon):6321",
+     168
+    ],
+    [
+     "enrichPowerRankings:6319",
+     168
+    ],
+    [
+     "(anon):6332",
+     164
+    ]
+   ],
+   "self_ms": [
+    [
+     "sameSquad:8596",
+     1257
+    ],
+    [
+     "fetch:-1",
+     401
+    ],
+    [
+     "saveCfbMiss:5554",
+     276
+    ],
+    [
+     "simulateGame:6140",
+     242
+    ],
+    [
+     "getJSON:3713",
+     187
+    ],
+    [
+     "(anon):8674",
+     143
+    ],
+    [
+     "renderHome:13054",
+     132
+    ],
+    [
+     "(anon):8676",
+     118
+    ],
+    [
+     "(anon):6093",
+     114
+    ],
+    [
+     "pctile:6219",
+     110
+    ],
+    [
+     "squadNorm:8592",
      101
     ],
     [
      "(anon):5602",
-     78
+     95
+    ],
+    [
+     "lastGameFor:4041",
+     79
+    ],
+    [
+     "(anon):5607",
+     73
     ],
     [
      "(anon):4770",
-     70
+     69
+    ],
+    [
+     "(anon):9133",
+     68
+    ],
+    [
+     "(anon):6548",
+     63
+    ],
+    [
+     "(anon):4043",
+     63
+    ],
+    [
+     "(anon):13946",
+     58
+    ],
+    [
+     "(anon):5580",
+     42
+    ],
+    [
+     "(anon):12050",
+     42
+    ],
+    [
+     "coordsForGame:3000",
+     37
+    ],
+    [
+     "next:5666",
+     34
+    ],
+    [
+     "mean:6216",
+     32
+    ],
+    [
+     "renderBoard:9731",
+     31
+    ]
+   ],
+   "idle_ms": 10527
+  },
+  {
+   "view": "nfl",
+   "cpu_slowdown": 4,
+   "reload": true,
+   "returning": false,
+   "memory": {
+    "heap_mb": 15,
+    "dom_nodes": 2068,
+    "saved_chars": 1404218
+   },
+   "long_tasks_total_ms": 673,
+   "longest_ms": 175,
+   "over_1s": [],
+   "over_200ms": 0,
+   "errors": [],
+   "inclusive_ms": [
+    [
+     "attachInjuriesToGames:8666",
+     1402
+    ],
+    [
+     "boot:17783",
+     1031
+    ],
+    [
+     "(anon):8674",
+     1009
+    ],
+    [
+     "installElevenReport:13903",
+     1007
+    ],
+    [
+     "(anon):8676",
+     910
+    ],
+    [
+     "sameSquad:8596",
+     832
+    ],
+    [
+     "applySplitDesk:5941",
+     675
+    ],
+    [
+     "applyLiveBoard:4769",
+     648
+    ],
+    [
+     "(anon):4770",
+     646
+    ],
+    [
+     "(anon):5952",
+     606
+    ],
+    [
+     "cfbLineMove:5692",
+     578
+    ],
+    [
+     "simulateGame:6140",
+     542
+    ],
+    [
+     "cfbLearnNudge:5473",
+     407
+    ],
+    [
+     "cfbCloseStats:5557",
+     405
+    ],
+    [
+     "applySituationalBoard:4409",
+     357
+    ],
+    [
+     "pullLiveScores:11943",
+     310
+    ],
+    [
+     "next:5666",
+     253
+    ],
+    [
+     "reapplyDeskLine:14044",
+     243
+    ],
+    [
+     "seedInjuriesFromSnap:8702",
+     234
+    ],
+    [
+     "(anon):15463",
+     234
+    ],
+    [
+     "(anon):5559",
+     225
+    ],
+    [
+     "renderBoard:9731",
+     200
+    ],
+    [
+     "getJSON:3713",
+     185
+    ],
+    [
+     "(anon):6321",
+     181
+    ],
+    [
+     "enrichPowerRankings:6319",
+     181
+    ]
+   ],
+   "self_ms": [
+    [
+     "sameSquad:8596",
+     675
+    ],
+    [
+     "simulateGame:6140",
+     246
+    ],
+    [
+     "fetch:-1",
+     124
+    ],
+    [
+     "(anon):5559",
+     123
+    ],
+    [
+     "squadNorm:8592",
+     111
+    ],
+    [
+     "(anon):9133",
+     103
+    ],
+    [
+     "(anon):5563",
+     101
+    ],
+    [
+     "pctile:6219",
+     97
+    ],
+    [
+     "(anon):6093",
+     97
+    ],
+    [
+     "renderBoard:9731",
+     89
+    ],
+    [
+     "(anon):5571",
+     89
+    ],
+    [
+     "(anon):4770",
+     85
+    ],
+    [
+     "(anon):8674",
+     85
+    ],
+    [
+     "(anon):8676",
+     84
+    ],
+    [
+     "(anon):4043",
+     83
+    ],
+    [
+     "cfbCloseStats:5557",
+     81
     ],
     [
      "lastGameFor:4041",
      65
     ],
     [
-     "pctile:6219",
-     63
-    ],
-    [
-     "(anon):6548",
-     62
-    ],
-    [
-     "(anon):9133",
-     58
-    ],
-    [
-     "(anon):8676",
-     56
-    ],
-    [
-     "(anon):5607",
-     56
-    ],
-    [
-     "next:5666",
-     48
-    ],
-    [
-     "(anon):4043",
-     48
-    ],
-    [
-     "(anon):5580",
-     47
-    ],
-    [
-     "(anon):13946",
-     41
-    ],
-    [
-     "usesLocalProxy:8043",
-     36
-    ],
-    [
-     "(anon):12050",
-     35
-    ],
-    [
-     "renderBoard:9731",
-     32
-    ],
-    [
-     "powerRecord:6259",
-     30
-    ]
-   ],
-   "idle_ms": 19531
-  },
-  {
-   "view": "home",
-   "cpu_slowdown": 4,
-   "reload": true,
-   "long_tasks_total_ms": 739,
-   "longest_ms": 213,
-   "over_1s": [],
-   "over_200ms": 1,
-   "errors": [],
-   "inclusive_ms": [
-    [
-     "attachInjuriesToGames:8666",
-     1184
-    ],
-    [
-     "installElevenReport:13903",
-     843
-    ],
-    [
-     "(anon):8674",
-     824
-    ],
-    [
-     "boot:17783",
-     798
-    ],
-    [
-     "(anon):8676",
-     726
-    ],
-    [
-     "sameSquad:8596",
-     685
-    ],
-    [
-     "applySplitDesk:5941",
-     584
-    ],
-    [
-     "(anon):5952",
-     544
-    ],
-    [
-     "applyLiveBoard:4769",
-     541
-    ],
-    [
-     "(anon):4770",
-     539
-    ],
-    [
-     "cfbLineMove:5692",
-     509
-    ],
-    [
-     "simulateGame:6140",
-     445
-    ],
-    [
-     "cfbLearnNudge:5473",
-     374
-    ],
-    [
-     "cfbCloseStats:5557",
-     371
-    ],
-    [
-     "applySituationalBoard:4409",
-     300
-    ],
-    [
-     "pullLiveScores:11943",
-     293
-    ],
-    [
-     "renderHome:13054",
-     274
-    ],
-    [
-     "next:5666",
-     258
-    ],
-    [
-     "getJSON:3713",
-     205
-    ],
-    [
-     "reapplyDeskLine:14044",
-     193
-    ],
-    [
-     "(anon):18014",
-     188
-    ],
-    [
-     "seedInjuriesFromSnap:8702",
-     188
-    ],
-    [
-     "(anon):15463",
-     188
-    ],
-    [
-     "(anon):5559",
-     163
-    ],
-    [
-     "fetch:-1",
-     144
-    ]
-   ],
-   "self_ms": [
-    [
-     "sameSquad:8596",
-     542
-    ],
-    [
-     "simulateGame:6140",
-     207
-    ],
-    [
-     "fetch:-1",
-     144
-    ],
-    [
-     "(anon):5571",
-     118
-    ],
-    [
-     "squadNorm:8592",
-     116
-    ],
-    [
-     "renderHome:13054",
-     99
-    ],
-    [
-     "(anon):8674",
-     93
-    ],
-    [
-     "(anon):6093",
-     86
-    ],
-    [
-     "(anon):5559",
-     84
-    ],
-    [
-     "cfbCloseStats:5557",
-     82
-    ],
-    [
-     "(anon):5563",
-     78
-    ],
-    [
-     "pctile:6219",
-     73
-    ],
-    [
-     "(anon):4770",
-     70
-    ],
-    [
-     "lastGameFor:4041",
-     66
-    ],
-    [
-     "(anon):9133",
-     60
-    ],
-    [
-     "(anon):4043",
-     52
-    ],
-    [
      "saveCfbMiss:5554",
-     46
-    ],
-    [
-     "getJSON:3713",
-     43
-    ],
-    [
-     "(anon):8676",
-     43
-    ],
-    [
-     "(anon):17763",
-     33
-    ],
-    [
-     "setItem:-1",
-     29
-    ],
-    [
-     "poissonDraw:6111",
-     28
-    ],
-    [
-     "projectInGame:4704",
-     24
-    ],
-    [
-     "formRating:6295",
-     24
-    ],
-    [
-     "(anon):5607",
-     21
-    ]
-   ],
-   "idle_ms": 27101
-  },
-  {
-   "view": "nfl",
-   "cpu_slowdown": 4,
-   "reload": true,
-   "long_tasks_total_ms": 168,
-   "longest_ms": 58,
-   "over_1s": [],
-   "over_200ms": 0,
-   "errors": [],
-   "inclusive_ms": [
-    [
-     "attachInjuriesToGames:8666",
-     1097
-    ],
-    [
-     "(anon):8674",
-     846
-    ],
-    [
-     "installElevenReport:13903",
-     844
-    ],
-    [
-     "(anon):8676",
-     744
-    ],
-    [
-     "boot:17783",
-     712
-    ],
-    [
-     "sameSquad:8596",
-     692
-    ],
-    [
-     "applyLiveBoard:4769",
-     518
-    ],
-    [
-     "(anon):4770",
-     516
-    ],
-    [
-     "applySplitDesk:5941",
-     491
-    ],
-    [
-     "(anon):5952",
-     450
-    ],
-    [
-     "cfbLineMove:5692",
-     431
-    ],
-    [
-     "simulateGame:6140",
-     418
-    ],
-    [
-     "cfbCloseStats:5557",
-     309
-    ],
-    [
-     "cfbLearnNudge:5473",
-     309
-    ],
-    [
-     "pullLiveScores:11943",
-     270
-    ],
-    [
-     "applySituationalBoard:4409",
-     219
-    ],
-    [
-     "reapplyDeskLine:14044",
-     212
-    ],
-    [
-     "seedInjuriesFromSnap:8702",
-     172
-    ],
-    [
-     "(anon):15463",
-     172
-    ],
-    [
-     "renderBoard:9731",
-     172
-    ],
-    [
-     "(anon):5559",
-     150
-    ],
-    [
-     "sameSquadRaw:8605",
-     130
-    ],
-    [
-     "(anon):18025",
-     118
-    ],
-    [
-     "(anon):6321",
-     116
-    ],
-    [
-     "enrichPowerRankings:6319",
-     116
-    ]
-   ],
-   "self_ms": [
-    [
-     "sameSquad:8596",
-     562
-    ],
-    [
-     "simulateGame:6140",
-     189
-    ],
-    [
-     "(anon):8674",
-     97
-    ],
-    [
-     "squadNorm:8592",
-     83
-    ],
-    [
-     "pctile:6219",
-     81
-    ],
-    [
-     "(anon):4770",
-     81
-    ],
-    [
-     "(anon):5559",
-     80
-    ],
-    [
-     "renderBoard:9731",
-     78
-    ],
-    [
-     "cfbCloseStats:5557",
-     76
-    ],
-    [
-     "(anon):5571",
-     72
-    ],
-    [
-     "(anon):5563",
-     71
-    ],
-    [
-     "(anon):6093",
-     68
-    ],
-    [
-     "(anon):8676",
-     52
-    ],
-    [
-     "lastGameFor:4041",
-     50
-    ],
-    [
-     "(anon):4043",
-     48
-    ],
-    [
-     "fetch:-1",
-     47
-    ],
-    [
-     "(anon):9133",
-     46
-    ],
-    [
-     "pbNflPmf:15576",
-     33
-    ],
-    [
-     "sameSquadRaw:8605",
-     29
-    ],
-    [
-     "poissonDraw:6111",
-     27
-    ],
-    [
-     "gauss:6100",
-     25
-    ],
-    [
-     "formRating:6295",
-     24
-    ],
-    [
-     "coordsForGame:3000",
-     23
-    ],
-    [
-     "(anon):6260",
-     20
-    ],
-    [
-     "cfbStarterOut:8637",
-     20
-    ]
-   ],
-   "idle_ms": 56495
-  },
-  {
-   "view": "builder",
-   "cpu_slowdown": 4,
-   "reload": true,
-   "long_tasks_total_ms": 881,
-   "longest_ms": 214,
-   "over_1s": [],
-   "over_200ms": 1,
-   "errors": [],
-   "inclusive_ms": [
-    [
-     "attachInjuriesToGames:8666",
-     1185
-    ],
-    [
-     "installElevenReport:13903",
-     833
-    ],
-    [
-     "(anon):8674",
-     827
-    ],
-    [
-     "(anon):8676",
-     763
-    ],
-    [
-     "boot:17783",
-     750
-    ],
-    [
-     "sameSquad:8596",
-     707
-    ],
-    [
-     "applySplitDesk:5941",
-     544
-    ],
-    [
-     "(anon):4770",
-     527
-    ],
-    [
-     "applyLiveBoard:4769",
-     527
-    ],
-    [
-     "(anon):5952",
-     508
-    ],
-    [
-     "cfbLineMove:5692",
-     482
-    ],
-    [
-     "simulateGame:6140",
-     455
-    ],
-    [
-     "cfbLearnNudge:5473",
-     367
-    ],
-    [
-     "cfbCloseStats:5557",
-     363
-    ],
-    [
-     "applySituationalBoard:4409",
-     327
-    ],
-    [
-     "renderBuilderNow:17425",
-     321
-    ],
-    [
-     "(anon):17423",
-     321
-    ],
-    [
-     "pullLiveScores:11943",
-     267
-    ],
-    [
-     "reapplyDeskLine:14044",
-     218
-    ],
-    [
-     "pbRefreshButtons:17472",
-     177
-    ],
-    [
-     "(anon):5559",
-     177
-    ],
-    [
-     "seedInjuriesFromSnap:8702",
-     167
-    ],
-    [
-     "(anon):15463",
-     167
-    ],
-    [
-     "(anon):18014",
-     153
-    ],
-    [
-     "sameSquadRaw:8605",
-     138
-    ]
-   ],
-   "self_ms": [
-    [
-     "sameSquad:8596",
-     569
-    ],
-    [
-     "simulateGame:6140",
-     209
-    ],
-    [
-     "pbRefreshButtons:17472",
-     135
-    ],
-    [
-     "(anon):5571",
-     102
-    ],
-    [
-     "squadNorm:8592",
-     100
-    ],
-    [
-     "(anon):5559",
-     93
-    ],
-    [
-     "(anon):6093",
-     85
-    ],
-    [
-     "(anon):5563",
-     84
-    ],
-    [
-     "pctile:6219",
-     83
-    ],
-    [
-     "cfbCloseStats:5557",
-     74
-    ],
-    [
-     "(anon):9133",
-     69
-    ],
-    [
-     "(anon):4770",
      58
     ],
     [
-     "lastGameFor:4041",
-     57
-    ],
-    [
-     "(anon):8676",
-     56
-    ],
-    [
-     "(anon):8674",
-     55
-    ],
-    [
-     "fetch:-1",
-     47
-    ],
-    [
-     "(anon):4043",
-     30
-    ],
-    [
-     "coordsForGame:3000",
-     27
-    ],
-    [
-     "poissonDraw:6111",
-     26
-    ],
-    [
-     "sameSquadRaw:8605",
-     24
-    ],
-    [
-     "pbNflPmf:15576",
-     24
-    ],
-    [
-     "mean:6216",
-     22
-    ],
-    [
-     "pbRenderSlip:17461",
-     21
-    ],
-    [
-     "formRating:6295",
-     19
-    ],
-    [
-     "injuryRatingHit:6312",
-     17
-    ]
-   ],
-   "idle_ms": 55254
-  },
-  {
-   "view": "home",
-   "cpu_slowdown": 1,
-   "reload": true,
-   "long_tasks_total_ms": 0,
-   "longest_ms": 0,
-   "over_1s": [],
-   "over_200ms": 0,
-   "errors": [],
-   "inclusive_ms": [
-    [
-     "attachInjuriesToGames:8666",
-     283
-    ],
-    [
-     "boot:17783",
-     216
-    ],
-    [
-     "installElevenReport:13903",
-     192
-    ],
-    [
-     "(anon):8674",
-     191
-    ],
-    [
-     "(anon):8676",
-     171
-    ],
-    [
-     "sameSquad:8596",
-     156
-    ],
-    [
-     "applyLiveBoard:4769",
-     151
-    ],
-    [
-     "(anon):4770",
-     149
-    ],
-    [
-     "applySplitDesk:5941",
-     129
-    ],
-    [
-     "simulateGame:6140",
-     125
-    ],
-    [
-     "(anon):5952",
-     120
-    ],
-    [
-     "cfbLineMove:5692",
-     116
-    ],
-    [
-     "cfbCloseStats:5557",
-     89
-    ],
-    [
-     "cfbLearnNudge:5473",
-     89
-    ],
-    [
-     "applySituationalBoard:4409",
-     79
-    ],
-    [
-     "pullLiveScores:11943",
-     79
-    ],
-    [
-     "renderHome:13054",
-     73
-    ],
-    [
-     "reapplyDeskLine:14044",
-     62
-    ],
-    [
-     "(anon):5559",
-     54
-    ],
-    [
-     "seedInjuriesFromSnap:8702",
-     44
-    ],
-    [
-     "(anon):15463",
-     44
-    ],
-    [
-     "(anon):18014",
+     "getJSON:3713",
      37
     ],
     [
-     "(anon):18025",
+     "setItem:-1",
+     37
+    ],
+    [
+     "mean:6216",
+     36
+    ],
+    [
+     "sameSquadRaw:8605",
      35
     ],
     [
-     "lastGameFor:4041",
-     34
-    ],
-    [
-     "sameSquadRaw:8605",
-     34
-    ]
-   ],
-   "self_ms": [
-    [
-     "sameSquad:8596",
-     122
-    ],
-    [
-     "simulateGame:6140",
-     67
-    ],
-    [
-     "renderHome:13054",
-     31
-    ],
-    [
-     "(anon):5563",
-     28
-    ],
-    [
-     "(anon):5559",
-     26
-    ],
-    [
-     "(anon):4043",
-     24
-    ],
-    [
-     "(anon):4770",
-     20
-    ],
-    [
-     "cfbCloseStats:5557",
-     19
-    ],
-    [
-     "(anon):8674",
-     19
-    ],
-    [
-     "(anon):6093",
-     19
-    ],
-    [
-     "pctile:6219",
-     18
-    ],
-    [
-     "squadNorm:8592",
-     17
-    ],
-    [
-     "(anon):8676",
-     16
-    ],
-    [
-     "(anon):5571",
-     15
-    ],
-    [
-     "(anon):9133",
-     10
-    ],
-    [
-     "lastGameFor:4041",
-     10
-    ],
-    [
-     "poissonDraw:6111",
-     8
-    ],
-    [
-     "(anon):17763",
-     7
-    ],
-    [
-     "gauss:6100",
-     7
-    ],
-    [
-     "playsForScorecard:12399",
-     6
-    ],
-    [
      "powerRecord:6259",
-     6
+     34
     ],
     [
-     "RegExp: [\\u0300-\\u036f]:-1",
-     6
+     "cfbStarterOut:8637",
+     34
     ],
     [
-     "lockUpcomingPlays:12153",
-     6
-    ],
-    [
-     "sameSquadRaw:8605",
-     6
-    ],
-    [
-     "coordsForGame:3000",
-     5
+     "pbNflPmf:15576",
+     30
     ]
    ],
-   "idle_ms": 51897
+   "idle_ms": 51013
   }
  ]
 }
