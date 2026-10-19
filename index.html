@@ -4360,7 +4360,8 @@ function nflLineMove(g, lockedSp, lockedTot) {
     total += t;
     notes.push("The total moved from " + lockedTot + " to " + g._dkTotal + ". We followed " + (t > 0 ? "+" : "") + t.toFixed(1) + ".");
   }
-  const nudge = cfbStarterNudge(g, { qb: 3.5, qbSeason: 4.5, snap: 0.85, backup: 0.4, total: 0, nfl: true });
+  const since = g.open && g.open.minute ? Number(g.open.minute) * 60000 : null;
+  const nudge = cfbStarterNudge(g, { qb: 3.5, qbSeason: 4.5, snap: 0.85, backup: 0.4, total: 0, nfl: true, since, oldWeight: 1 - LIVE.MARKET_WEIGHT_NFL });
   if (!spreadMoved) {
     margin += nudge.margin;
     if (!totalMoved) total += nudge.total;
@@ -5467,6 +5468,15 @@ function cfbStarterNudge(g, scale) {
   const bestSnap = {};
   (g.injuries || []).forEach((r) => {
     if (!cfbOutTag(r)) return;
+    // NFL: news older than the line we measure from is already inside the market's share of
+    // our number (70%), so it only corrects ESPN's rating share (30%). Counting it in full
+    // doubled it: the Giants were docked 4.5 points on top of a line that already knew their
+    // quarterback was gone.
+    let w = 1;
+    if (scale && scale.since) {
+      const t = Date.parse(r.date || "");
+      if (!Number.isFinite(t) || t < scale.since) w = scale.oldWeight != null ? scale.oldWeight : 0.3;
+    }
     const pos = cfbPosOf(r);
     const blob = String((r.short || "") + " " + (r.name || "")).toLowerCase();
     const side = r.side === "home" || r.side === "away" ? r.side : "";
@@ -5478,6 +5488,7 @@ function cfbStarterNudge(g, scale) {
       const backupCut = scale && scale.backup != null ? scale.backup : 0.55;
       if (/has started|veteran backup|experienced backup|won the job/.test(blob)) pts = +(pts * backupCut).toFixed(2);
       else if (/first (career )?start|freshman|never started/.test(blob)) pts = +(pts * 1.1).toFixed(2);
+      pts = +(pts * w).toFixed(2);
       if (!bestQb[side] || pts > bestQb[side].pts) bestQb[side] = { r, pts, blob };
       return;
     }
@@ -5491,7 +5502,7 @@ function cfbStarterNudge(g, scale) {
     if (!base && (spot === "wr1" || spot === "wr2" || spot === "te")) base = 1.6;
     const full = base * snapScale;
     if (!full) return;
-    const pts = +(full * share).toFixed(2);
+    const pts = +(full * share * w).toFixed(2);
     if (!bestSnap[side] || pts > bestSnap[side].pts) bestSnap[side] = { r, pts, share, spot: spot };
   });
   let home = 0;
