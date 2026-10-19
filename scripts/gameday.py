@@ -33,7 +33,6 @@ from zoneinfo import ZoneInfo
 from pathlib import Path
 from urllib.parse import urlparse
 
-from playwright.async_api import async_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = "https://peyton2407-maker.github.io"
@@ -82,6 +81,8 @@ async (mode) => {
 
 
 async def run(mode="reports"):
+    # imported here: --due and --watch run before the browser is installed
+    from playwright.async_api import async_playwright
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         ctx = await browser.new_context()
