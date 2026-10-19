@@ -8918,7 +8918,7 @@ function seedInjuriesFromSnap(){
   } catch (e) { console.warn("injury snap", e); }
   return pack;
 }
-async function fetchInjuries(force){
+async function fetchInjuries(force, want){
   const today = new Date().toISOString().slice(0, 10);
   const pack = seedInjuriesFromSnap();
   const slot = cfbReportSlot();
@@ -8932,8 +8932,8 @@ async function fetchInjuries(force){
   applySavedNflDay(pack);
   const onCfb = typeof view !== "undefined" && view === "cfbinj";
   const onNfl = typeof view !== "undefined" && view === "nflinj";
-  const wantCfb = (slot.due && !haveSlot) || (force && onCfb);
-  const wantNfl = (nflSlot.due && !haveNflDay) || kickNeed.length > 0 || (force && onNfl);
+  const wantCfb = (slot.due && !haveSlot) || (force && onCfb) || !!(want && want.cfb);
+  const wantNfl = (nflSlot.due && !haveNflDay) || kickNeed.length > 0 || (force && onNfl) || !!(want && want.nfl);
   if (!wantNfl && !wantCfb) {
     loadCfbFaces().catch(() => {});
     return pack;
@@ -14437,6 +14437,34 @@ async function installElevenReport() {
     saveReportStores();
   } catch (e) {}
   if ((isNew || wx) && typeof paintDesk === "function") { try { paintDesk(); } catch (e) {} }
+  // the server's report is late (GitHub's scheduler can run late or stall for an hour or more):
+  // this browser pulls the injuries and forecasts itself so nothing on screen goes stale
+  if (Date.now() - (file.saved || 0) > 75 * 60 * 1000) liveReportFallback().catch(() => {});
+}
+async function liveReportFallback() {
+  const f = liveReportFallback;
+  if (f.busy || Date.now() - (f.at || 0) < 30 * 60 * 1000) return;
+  f.busy = true;
+  f.at = Date.now();
+  try {
+    const now = Date.now();
+    const games = (DATA.games || []).filter((g) => g && (g.league === "nfl" || g.league === "cfb") && !g.completed && g.date
+      && Date.parse(g.date) > now - 4 * 3600e3 && Date.parse(g.date) < now + 3 * 86400e3);
+    try { if (typeof attachWeather === "function") await attachWeather(games); } catch (e) {}
+    const was = ensureInjPack();
+    was.nflLive = "11am"; was.cfbLive = "11am";   // a successful pull sets these to its source
+    try { await fetchInjuries(false, { nfl: true, cfb: true }); } catch (e) {}
+    const pack = ensureInjPack();
+    const et = etFields();
+    const label = "Live " + (et.hour % 12 || 12) + ":" + String(et.minute).padStart(2, "0") + " " + (et.hour >= 12 ? "PM" : "AM") + " ET";
+    // label only what this browser actually got (a failed pull leaves the server's report)
+    if ((pack.nfl || []).length && pack.nflLive === "x") pack.nflReport = label;
+    if ((pack.cfb || []).length && /covers|news/.test(pack.cfbLive || "")) pack.cfbReport = label;
+    if (typeof DATA === "object" && DATA) DATA.injuries = pack;
+    try { attachInjuriesToGames(); } catch (e) {}
+    try { if (typeof applySituationalBoard === "function") applySituationalBoard(); } catch (e) {}
+    if (typeof paintDesk === "function") { try { paintDesk(); } catch (e) {} }
+  } finally { f.busy = false; }
 }
 // the rest of the week: finished days and the kickoff reports, for visitors who weren't here
 async function loadReportArchive() {
