@@ -10,6 +10,11 @@ async () => {
     file: file ? { label: file.label, ymd: file.ymd, nfl: (file.nfl || []).length, wxNfl: (file.wxNfl || []).length, wxCfb: (file.wxCfb || []).length } : null,
     stamp: (document.getElementById("stamp") || {}).textContent,
     games: up.slice(0, 12).map((g) => ({ g: g.short_name, lg: g.league, date: g.date, wx: g.weather ? [g.weather.condition, g.weather.temp_f, g.weather.wind_mph, g.weather.fetched || g.weather.at || null] : null, inj: (g.injuries || g.inj || []).length })),
+    days: ((document.getElementById("cfbInjWeek") || {}).innerText || "").replace(/\n/g, " | "),
+    kicks: ((document.getElementById("nflInjKicks") || {}).innerText || "").replace(/\n/g, " | ").slice(0, 400),
+    stamp2: ((document.getElementById("injStamp") || {}).textContent || ""),
+    maye: ((pack.nfl || []).filter((r) => r.name === "Drake Maye").map((r) => r.tag)),
+    venues: Object.keys(window.VENUE_COORDS || {}).length,
     injView: ((document.getElementById("injBoard") || document.querySelector("#nflinjSection") || {}).innerText || "").slice(0, 1500),
   };
 }
