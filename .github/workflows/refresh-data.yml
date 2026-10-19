@@ -54,6 +54,10 @@ jobs:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           ODDS_API_PLAN: ${{ vars.ODDS_API_PLAN }}
         run: python3 scripts/props.py
+      - name: The NFL board as visitors see it (settled in the page itself)
+        continue-on-error: true
+        timeout-minutes: 6
+        run: python3 scripts/settle_board.py
       - name: Season odds (ESPN's season simulation and the futures market)
         continue-on-error: true
         env:
