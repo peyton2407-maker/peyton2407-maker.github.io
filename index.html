@@ -11702,7 +11702,8 @@ function potdBets(g, league, soft) {
     bets.push({
       g, kind: "Spread",
       line: abbr + " " + (num >= 0 ? "+" : "") + num.toFixed(1),
-      hit: normCdf(Math.abs(edge) / sigma),
+      // checked: only the part of the lean our graded record backs (same as "% to hit")
+      hit: normCdf(checkedEdge(league, "spread", edge) / sigma),
       value: Math.abs(edge),
       why: "The play is " + abbr + " " + (num >= 0 ? "+" : "") + num.toFixed(1) + ". Our number is " + (our || "off the posted line") + ", " + Math.abs(edge).toFixed(1) + " points off DraftKings."
     });
@@ -11712,7 +11713,7 @@ function potdBets(g, league, soft) {
     bets.push({
       g, kind: te > 0 ? "Over" : "Under",
       line: (te > 0 ? "OVER " : "UNDER ") + o.total,
-      hit: normCdf(Math.abs(te) / (league === "nfl" ? 12 : 13.5)),
+      hit: normCdf(checkedEdge(league, "total", te) / (league === "nfl" ? 13.2 : 13.5)),
       value: Math.abs(te),
       why: "Our total is " + Math.abs(te).toFixed(1) + " points " + (te > 0 ? "over" : "under") + " DraftKings " + o.total + "."
     });
