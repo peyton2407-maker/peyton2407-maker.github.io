@@ -2220,6 +2220,8 @@ button:active, a.tab:active, .mainnav a:active, .slate-row:active, .game-row:act
 .pp-bars i { position: relative; flex: 1; height: var(--h); min-height: 3px; border-radius: 3px 3px 0 0; background: rgba(237,241,247,.18); }
 .pp-bars i em { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); font-style: normal; font-size: 10px; color: var(--muted); }
 .pp-pick small.pp-warn { color: #ffb48a; }
+table.props b.up { color: var(--win); }
+table.props b.down { color: var(--muted); font-weight: 600; }
 .pp-ctx { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; }
 .pp-chip { font-size: 12px; line-height: 1.3; padding: 3px 8px; border-radius: 999px; background: rgba(237,241,247,.06); color: var(--ink-soft); border: 1px solid var(--line); }
 .pp-chip.soft { color: var(--win); border-color: rgba(60,196,126,.35); background: rgba(60,196,126,.08); }
@@ -4445,8 +4447,9 @@ function applySituationalToGame(g) {
   }
   // Confidence = estimated chance the best play hits (NFL edges are already 70% market).
   {
-    const sideP = p.pick && p.pick !== "NO PLAY" && p.edge_spread != null ? normCdf(Math.abs(Number(p.edge_spread)) / LIVE.NFL_SIGMA) : 0;
-    const totP = p.total_pick && p.total_pick !== "NO PLAY" && p.edge_total != null ? normCdf(Math.abs(Number(p.edge_total)) / 12) : 0;
+    // the checked edge (only the part of the lean our record backs), same as "% to hit"
+    const sideP = p.pick && p.pick !== "NO PLAY" && p.edge_spread != null ? normCdf(checkedEdge("nfl", "spread", p.edge_spread) / LIVE.NFL_SIGMA) : 0;
+    const totP = p.total_pick && p.total_pick !== "NO PLAY" && p.edge_total != null ? normCdf(checkedEdge("nfl", "total", p.edge_total) / 13.2) : 0;
     p.confidence = Math.max(sideP, totP) ? Math.round(100 * Math.max(sideP, totP)) : 0;
     p.conf_pct = true;
   }
@@ -5079,7 +5082,7 @@ function cfbSlateLean() {
 // Confidence keeps only as much of the lean as held up against this season's results
 // (data/calibration.json; half until a market has enough games).
 function checkedEdge(league, market, edge) {
-  let k = 0.5;
+  let k = 0.25;
   try { if (typeof pbKeep === "function") k = pbKeep(league, market).k; } catch (e) {}
   return Math.abs(Number(edge) || 0) * k;
 }
@@ -10163,10 +10166,30 @@ function renderModel() {
 
 function propsTable(g) {
   const rows = (g.props || []).filter((p) => p.pos !== "K");
+  const reopen = () => { if (String(window.__openGameId || "") === String(g.id) && typeof openGame === "function") { try { openGame(g.id); } catch (e) {} } };
   if (!rows.length) {
+    if (g.league === "nfl" && !g.completed) {
+      // projections load a moment after the page; redraw this game when they land
+      if (typeof ensureWeekProps === "function" && !propsTable.asked) {
+        propsTable.asked = true;
+        ensureWeekProps().then(() => { if ((g.props || []).length) reopen(); }).catch(() => {});
+      }
+      return `<p class="subn">Loading player projections…</p>`;
+    }
     if (g.league === "nfl") return `<p class="subn">Player props not available for this game.</p>`;
     return "";
   }
+  if (g.league === "nfl" && !window.PB_PROPS && typeof pullDkLines === "function" && !propsTable.lines) {
+    propsTable.lines = true;
+    Promise.resolve(pullDkLines()).then(reopen).catch(() => {});
+  }
+  const sideCell = (p) => {
+    if (g.completed || typeof postedLean !== "function") return "—";
+    const L = postedLean(Object.assign({ game_id: g.id }, p));
+    if (!L) return `<span class="subn">no line yet</span>`;
+    const val = L.value != null ? ` <b class="${L.value > 0 ? "up" : "down"}">${L.value > 0 ? "+" : ""}${Math.round(L.value * 100)}%</b>` : "";
+    return `${L.take} ${L.line} ${PROP_LBL[L.m.key] || L.m.label}<div class="subn">${Math.round(L.chance * 100)}%${L.price != null ? " at " + pbAm(L.price) + " " + pbEsc(L.book || "") : ""}${val}</div>`;
+  };
   const cell = (p) => {
     if (p.pos === "QB") return `${fmt.n(p.pass_yds,0)} pass yds · ${fmt.n(p.pass_td,1)} TD · ${fmt.n(p.rush_yds,0)} rush`;
     if (p.pos === "RB") return `${fmt.n(p.rush_yds,0)} rush yds · ${fmt.n(p.rec,1)} rec / ${fmt.n(p.rec_yds,0)} yds`;
@@ -10177,7 +10200,7 @@ function propsTable(g) {
     <div class="card" style="margin-top:14px">
       <h3 style="margin:0 0 8px">NFL player props</h3>
       <table class="props">
-        <thead><tr><th>Player</th><th>Pos</th><th>Team</th><th>Projection</th></tr></thead>
+        <thead><tr><th>Player</th><th>Pos</th><th>Team</th><th>Projection</th><th>Our side</th></tr></thead>
         <tbody>
           ${rows.map((p) => `
             <tr>
@@ -10185,6 +10208,7 @@ function propsTable(g) {
               <td>${p.pos}</td>
               <td>${p.team}</td>
               <td>${cell(p)}</td>
+              <td>${sideCell(p)}</td>
             </tr>`).join("")}
         </tbody>
       </table>
@@ -11156,9 +11180,11 @@ function postedLean(p) {
       const raw = take === "Over" ? over : 1 - over;
       const side = take.toLowerCase();
       const fair = mk.fairOver == null ? null : (take === "Over" ? mk.fairOver : 1 - mk.fairOver);
-      // checked chance: the books' own chance plus half our difference with it (props haven't
-      // been graded long enough to trust more; same rule as the parlay builder)
-      const ours = fair != null ? fair + 0.5 * (raw - fair) : raw;
+      // checked chance: the books' own chance plus a quarter of our difference with it (props
+      // haven't been graded long enough to trust more; same rule as the parlay builder)
+      let keep = 0.25;
+      try { keep = PB_PRIOR_KEEP; } catch (e) {}
+      const ours = fair != null ? fair + keep * (raw - fair) : raw;
       const price = mk.best[side] ? mk.best[side].odds : null;
       // value per dollar at the best price when there is one; otherwise our chance vs a coin flip
       const value = price != null ? ours * pbDec(price) - 1 : null;
@@ -15980,8 +16006,13 @@ const PB_CFB_KEY = [0.0004, 0.774, 0.8938, 2.674, 0.8834, 0.5773, 0.9259, 2.271,
 const PB_NFL_TOTAL_SD = 13.2;     // NFL final totals land a typical 13.2 points from the closing total (2015-2024)
 const PB_HOLD_MAIN = 1.0476;      // -110 on both sides
 const PB_HOLD_ALT = 1.07;         // alternate lines carry a bigger cut
-const PB_PRIOR_KEEP = 0.5;        // before a market has enough games, keep half the lean
-const PB_PRIOR_SD = 0.5;
+// Before a market's own record says otherwise, keep a quarter of the board's lean over the
+// market's price. Our graded record backs a small number: college sides and totals and NFL
+// totals kept none of their lean (0 of it, n = 45-124); NFL sides kept more but on 45 games
+// (1.2 +/- 1.0), which can't tell a real edge from luck. Half (the old prior) claimed edges of
+// 7-8% on plain NFL sides.
+const PB_PRIOR_KEEP = 0.25;
+const PB_PRIOR_SD = 0.3;
 // Typical US book teaser prices by number of teams (change them to your book's on the ticket).
 const PB_TEASER_PRICES = {
   "6": { 2: -120, 3: 150, 4: 250, 5: 400, 6: 600 },
@@ -17026,7 +17057,7 @@ function pbCalHtml() {
   const sp = pbKeep(lg, "spread"), tot = pbKeep(lg, "total");
   const c = cal.leagues[lg];
   const say = (info, what, row) => {
-    if (!info.checked) return `${what}: only ${row ? row.n : 0} games so far, too few to judge, so we keep half of our board's lean.`;
+    if (!info.checked) return `${what}: only ${row ? row.n : 0} games so far, too few to judge, so we keep a quarter of our board's lean.`;
     const pct = Math.round(info.k * 100);
     if (info.se > 0.3) return `${what}: ${row.n} games is still too few to judge, so we keep ${pct}% of our board's lean.`;
     if (info.raw < 0.3) return `${what}: over ${row.n} games our board's leans did no better than the book's line, so these chances stay close to the book's (${pct}% of our lean kept).`;
@@ -17038,7 +17069,7 @@ function pbCalHtml() {
     ["spread", "total"].map((m) => (c[m].buckets || []).map((b) => `<tr><td>${m === "spread" ? "Spread" : "Total"} ${Math.round(b.from * 100)}–${Math.round(b.to * 100)}%</td><td>${b.n}</td><td>${pbPct(b.board, 0)}</td><td>${pbPct(b.actual, 0)}</td></tr>`).join("")).join("")
   }</tbody></table>` : "";
   return `<p class="pb-cal-lead">Every chance here is checked against this season's finished games.</p><ul>${rows.map((r) => `<li>${r}</li>`).join("")}</ul>
-    <p class="pb-cal-foot">NFL margins are weighted by how often real games end on each number (3 decides 15% of games, 7 decides 9%), from every NFL game since 2015. Player props haven't been checked yet, so they keep half of our lean.
+    <p class="pb-cal-foot">NFL margins are weighted by how often real games end on each number (3 decides 15% of games, 7 decides 9%), from every NFL game since 2015. Player props haven't been checked yet, so they keep a quarter of our lean.
     <button type="button" class="pb-linkbtn" data-showcal="1">${PB.showCal ? "Hide the numbers" : "See the numbers"}</button></p>${table}`;
 }
 
