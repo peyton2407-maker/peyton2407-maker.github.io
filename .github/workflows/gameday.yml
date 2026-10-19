@@ -1,0 +1,57 @@
+name: Weather and injuries
+# Every 15 minutes: is a report due? (90 minutes before any NFL or college kickoff until 30
+# after, the 11:00 AM ET report, or the last report is about an hour old.) If so, run the
+# site's own weather and injury code on the server (scripts/gameday.py) and save
+# data/eleven.json, the day archive and the kickoff reports.
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: gameday
+  cancel-in-progress: false
+jobs:
+  reports:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Is a report due?
+        id: due
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then echo "run=yes" >> "$GITHUB_OUTPUT"; exit 0; fi
+          python3 scripts/gameday.py --due >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-python@v5
+        if: steps.due.outputs.run == 'yes'
+        with:
+          python-version: "3.12"
+      - name: Install the browser
+        if: steps.due.outputs.run == 'yes'
+        run: |
+          pip install --quiet playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Weather and injury reports
+        if: steps.due.outputs.run == 'yes'
+        timeout-minutes: 10
+        run: python3 scripts/gameday.py
+      - name: Commit any changes
+        if: steps.due.outputs.run == 'yes'
+        run: |
+          git config user.name "peyton2407-maker"
+          git config user.email "331867039+peyton2407-maker@users.noreply.github.com"
+          git add data/eleven.json
+          if [ -d data/reports ]; then git add -A data/reports; fi
+          if git diff --cached --quiet; then
+            echo "Nothing new."
+            exit 0
+          fi
+          git commit -m "Weather and injuries: $(date -u +'%a %H:%M UTC')"
+          for i in 1 2 3 4 5; do
+            if git pull --rebase --quiet origin main && git push; then
+              exit 0
+            fi
+            sleep 7
+          done
+          exit 1

@@ -1,24 +1,34 @@
 #!/usr/bin/env python3
-"""Live weather and injury reports for every visitor, run on the server.
+"""Live weather and injury reports for every visitor, run on the server, on a schedule.
 
-The site's weather (Open-Meteo at each stadium) and injury reports (ESPN, plus Covers for
-college) used to be pulled only inside a visitor's browser, so they went stale whenever
-nobody had the page open, and college injuries depended on free CORS relays that often
-fail. This opens this checkout's own index.html in headless Chromium with internet access,
-runs the site's own code (attachWeather, fetchInjuries) so the numbers match the page
-exactly, and saves:
-  data/eleven.json    the latest report the page loads on start (installElevenReport):
-                      NFL and college injuries, and weather for every upcoming game
-  data/snapshot.json  each upcoming game's forecast, so the board's weather adjustments
-                      use it for everyone on first paint
+The site's weather (Open-Meteo at each stadium) and injury reports (ESPN, Sleeper and
+reporters for the NFL, Covers for college) used to be pulled only inside a visitor's
+browser, so they went stale whenever nobody had the page open. This opens this checkout's
+own index.html in headless Chromium with internet access, runs the site's own code
+(attachWeather, fetchInjuries, runDueWeatherReports) so the numbers match the page exactly,
+and saves:
+  data/eleven.json          today's latest report the page installs on start and every few
+                            minutes after: NFL and college injuries, weather for every
+                            upcoming game
+  data/reports/day-<ymd>.json   each finished day's last report, so the week's day-by-day
+                            history (Wed, Thu, Fri...) is there for every visitor
+  data/reports/kick.json    the NFL reports taken 90 minutes before each kickoff (injuries for
+                            both teams and the forecast), updated until 30 minutes after kick
+  data/snapshot.json        (--snapshot-only) each upcoming game's forecast for first paint
 Requests leave from the server, so Covers is read directly (no relay).
-Usage: python3 scripts/gameday.py
+
+Usage:
+  python3 scripts/gameday.py                  # the reports (scheduled every 15 minutes)
+  python3 scripts/gameday.py --due            # prints run=yes/run=no: is a report due now?
+  python3 scripts/gameday.py --snapshot-only  # forecasts into data/snapshot.json (hourly refresh)
 """
 import asyncio
+import hashlib
 import json
 import mimetypes
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -28,10 +38,13 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE = "https://peyton2407-maker.github.io"
 SNAP = ROOT / "data" / "snapshot.json"
 OUT = ROOT / "data" / "eleven.json"
+REPORTS = ROOT / "data" / "reports"
+KICK = REPORTS / "kick.json"
+ET = ZoneInfo("America/New_York")
 BLOCK = {"corsproxy.io", "api.allorigins.win", "www.googletagmanager.com", "fonts.googleapis.com", "fonts.gstatic.com"}
 
 JS = """
-async () => {
+async (mode) => {
   const now = Date.now();
   const out = { wx: {}, wxNfl: [], wxCfb: [], nfl: [], cfb: [], notes: [] };
   const games = (DATA.games || []).filter((g) => (g.league === "nfl" || g.league === "cfb") && !g.completed && g.date
@@ -46,6 +59,7 @@ async () => {
   out.wxNfl = games.filter((g) => g.league === "nfl" && g.weather).map(slimWx);
   out.wxCfb = games.filter((g) => g.league === "cfb" && g.weather).map(slimWx);
   out.games = games.length;
+  if (mode === "snapshot") return out;
   const clean = (rows) => JSON.parse(JSON.stringify((rows || []).map((r) => {
     const o = {}; Object.keys(r).forEach((k) => { if (!k.startsWith("_")) o[k] = r[k]; }); return o;
   })));
@@ -53,13 +67,20 @@ async () => {
   catch (e) { out.notes.push("cfb injuries: " + e); }
   try { view = "nflinj"; await fetchInjuries(true); const p = ensureInjPack(); out.nfl = clean(p.nfl); }
   catch (e) { out.notes.push("nfl injuries: " + e); }
+  // reports due now (90 minutes before each NFL kickoff): injuries were saved by
+  // fetchInjuries above; the forecasts by the page's own weather report runner
+  try { if (typeof runDueWeatherReports === "function") await runDueWeatherReports(); }
+  catch (e) { out.notes.push("weather reports: " + e); }
+  const kicks = (all) => { const o = {}; Object.keys(all || {}).forEach((k) => { if (k.startsWith("ko-") && ((all[k] || {}).rows || []).length) o[k] = all[k]; }); return o; };
+  try { out.kickNfl = JSON.parse(JSON.stringify(kicks(loadNflInjReports()))); } catch (e) { out.kickNfl = {}; }
+  try { out.kickWx = JSON.parse(JSON.stringify(kicks(loadWxReports()))); } catch (e) { out.kickWx = {}; }
   out.et = etFields();
   return out;
 }
 """
 
 
-async def run():
+async def run(mode="reports"):
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         ctx = await browser.new_context()
@@ -94,31 +115,105 @@ async def run():
         await page.goto(SITE + "/#home", wait_until="load", timeout=120000)
         await page.wait_for_function("typeof DATA !== 'undefined' && DATA && (DATA.games || []).length > 0", timeout=120000)
         await page.wait_for_timeout(4000)
-        out = await page.evaluate(JS)
+        out = await page.evaluate(JS, mode)
         await browser.close()
         return out
 
 
+def parse(t):
+    try:
+        t = str(t).replace("Z", "+00:00")
+        if len(t) == 22:  # "2026-10-18T20:05+00:00"
+            t = t[:16] + ":00" + t[16:]
+        return datetime.fromisoformat(t)
+    except Exception:
+        return None
+
+
+def load(path, default):
+    try:
+        return json.loads(path.read_text()) if path.exists() else default
+    except Exception:
+        return default
+
+
+def due(now=None):
+    """Is a report due? Kickoff windows (90 minutes before an NFL or college kickoff to 30
+    after), the 11:00 AM ET report, or the last report is about an hour old."""
+    now = now or datetime.now(timezone.utc)
+    old = load(OUT, {})
+    saved = datetime.fromtimestamp((old.get("saved") or 0) / 1000, timezone.utc)
+    if now - saved > timedelta(minutes=50):
+        return "last report is %d minutes old" % ((now - saved).total_seconds() // 60)
+    et = now.astimezone(ET)
+    eleven = et.replace(hour=11, minute=0, second=0, microsecond=0)
+    if et >= eleven and saved.astimezone(ET) < eleven:
+        return "11:00 AM ET report"
+    for g in load(SNAP, {}).get("games") or []:
+        if g.get("league") not in ("nfl", "cfb") or g.get("completed"):
+            continue
+        k = parse(g.get("date"))
+        if k and k - timedelta(minutes=100) <= now <= k + timedelta(minutes=30):
+            return "kickoff window: " + str(g.get("short_name"))
+    return None
+
+
+def snapshot_weather(out):
+    if not out.get("wx"):
+        return
+    snap = json.loads(SNAP.read_text())
+    n = 0
+    for g in snap.get("games") or []:
+        w = out["wx"].get(str(g.get("id")))
+        if not w or g.get("completed"):
+            continue
+        if g.get("weather") != w["weather"]:
+            g["weather"] = w["weather"]
+            if w.get("weather_impact"):
+                g["weather_impact"] = w["weather_impact"]
+            n += 1
+    if n:
+        SNAP.write_text(json.dumps(snap, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    print(f"snapshot: updated the forecast for {n} games")
+
+
+def content_hash(r):
+    return hashlib.md5(json.dumps({k: r.get(k) for k in ("nfl", "cfb", "wxNfl", "wxCfb")}, sort_keys=True).encode()).hexdigest()
+
+
 def main():
-    out = asyncio.run(run())
-    et = out.get("et") or {}
+    args = sys.argv[1:]
+    if "--due" in args:
+        why = due()
+        print("run=yes" if why else "run=no")
+        print("why:", why or "nothing due", file=sys.stderr)
+        return 0
+    mode = "snapshot" if "--snapshot-only" in args else "reports"
+    out = asyncio.run(run(mode))
     now = datetime.now(timezone.utc)
-    print(f"{out.get('games')} upcoming games, weather for {len(out['wx'])}; "
-          f"injuries: {len(out['nfl'])} NFL, {len(out['cfb'])} college ({out.get('cfbSource') or 'no source'})")
+    print(f"{out.get('games')} upcoming games, weather for {len(out['wx'])}")
     for n in out.get("notes") or []:
         print("note:", n)
+    if mode == "snapshot":
+        snapshot_weather(out)
+        return 0
+    et = out.get("et") or {}
+    print(f"injuries: {len(out['nfl'])} NFL, {len(out['cfb'])} college ({out.get('cfbSource') or 'no source'})")
 
     # 1) the latest report the page installs on load
-    try:
-        old = json.loads(OUT.read_text()) if OUT.exists() else {}
-    except Exception:
-        old = {}
-    fresh_old = old.get("ymd") == et.get("ymd")
+    old = load(OUT, {})
+    today = et.get("ymd") or now.astimezone(ET).strftime("%Y-%m-%d")
+    fresh_old = old.get("ymd") == today
+    # a new day: the old report is that day's last word; keep it for the week's history
+    if old.get("ymd") and not fresh_old:
+        REPORTS.mkdir(parents=True, exist_ok=True)
+        (REPORTS / f"day-{old['ymd']}.json").write_text(json.dumps(old, ensure_ascii=False, separators=(",", ":")) + "\n")
+        print("archived", old["ymd"])
     hour = int(et.get("hour") or 0)
     label = f"Updated {hour % 12 or 12}:{int(et.get('minute') or 0):02d} {'PM' if hour >= 12 else 'AM'} ET"
     report = {
-        "ymd": et.get("ymd") or now.strftime("%Y-%m-%d"),
-        "weekday": et.get("weekday") or now.strftime("%a"),
+        "ymd": today,
+        "weekday": et.get("weekday") or now.astimezone(ET).strftime("%a"),
         "label": label,
         "saved": int(now.timestamp() * 1000),
         # an empty pull keeps today's earlier list rather than wiping it
@@ -129,25 +224,36 @@ def main():
     }
     if not (report["nfl"] or report["cfb"] or report["wxNfl"] or report["wxCfb"]):
         print("Nothing came back; leaving data/eleven.json as it was.")
-        return 0
-    OUT.write_text(json.dumps(report, ensure_ascii=False, separators=(",", ":")) + "\n")
+    elif fresh_old and content_hash(report) == content_hash(old) and now.timestamp() * 1000 - (old.get("saved") or 0) < 50 * 60 * 1000:
+        print("Report unchanged; not rewritten.")
+    else:
+        OUT.write_text(json.dumps(report, ensure_ascii=False, separators=(",", ":")) + "\n")
 
-    # 2) each upcoming game's forecast in the snapshot
-    if out["wx"]:
-        snap = json.loads(SNAP.read_text())
-        n = 0
-        for g in snap.get("games") or []:
-            w = out["wx"].get(str(g.get("id")))
-            if not w or g.get("completed"):
-                continue
-            if g.get("weather") != w["weather"]:
-                g["weather"] = w["weather"]
-                if w.get("weather_impact"):
-                    g["weather_impact"] = w["weather_impact"]
-                n += 1
-        if n:
-            SNAP.write_text(json.dumps(snap, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-        print(f"snapshot: updated the forecast for {n} games")
+    # 2) kickoff reports: replaced while their window is open, then left as they were
+    kick = load(KICK, {"nfl": {}, "wx": {}})
+    changed = False
+    for part, got in (("nfl", out.get("kickNfl") or {}), ("wx", out.get("kickWx") or {})):
+        bag = kick.setdefault(part, {})
+        for k, v in got.items():
+            if bag.get(k, {}).get("rows") != v.get("rows"):
+                bag[k] = v
+                changed = True
+        for k in list(bag):  # a week and a half is all the page shows
+            if now.timestamp() * 1000 - (bag[k].get("saved") or 0) > 10 * 86400 * 1000:
+                del bag[k]
+                changed = True
+    if changed:
+        REPORTS.mkdir(parents=True, exist_ok=True)
+        KICK.write_text(json.dumps(kick, ensure_ascii=False, separators=(",", ":")) + "\n")
+    print(f"kickoff reports: {len(kick.get('nfl') or {})} injury, {len(kick.get('wx') or {})} weather")
+    # old day files
+    if REPORTS.exists():
+        for f in REPORTS.glob("day-*.json"):
+            try:
+                if (now.date() - datetime.strptime(f.stem[4:], "%Y-%m-%d").date()).days > 10:
+                    f.unlink()
+            except Exception:
+                pass
     return 0
 
 

@@ -26,12 +26,15 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Refresh from ESPN
         run: python3 scripts/refresh_data.py
-      - name: Live weather and injury reports (NFL and college) for every visitor
-        # Runs the site's own weather and injury code in headless Chromium; college
-        # injuries come from Covers directly. Never blocks the refresh.
+      - name: Map coordinates for any new stadium town
         continue-on-error: true
-        timeout-minutes: 12
-        run: python3 scripts/gameday.py
+        run: python3 scripts/venues.py
+      - name: Forecasts for the board's first paint
+        # Runs the site's own weather code in headless Chromium. The injury reports and the
+        # weather reports have their own job every 15 minutes (gameday.yml). Never blocks.
+        continue-on-error: true
+        timeout-minutes: 10
+        run: python3 scripts/gameday.py --snapshot-only
       - name: Save this week's college polls
         continue-on-error: true
         run: python3 scripts/polls.py
@@ -64,7 +67,8 @@ jobs:
           if [ -f data/nfl-depth.json ]; then git add data/nfl-depth.json; fi
           if [ -f data/books.json ]; then git add data/books.json; fi
           if [ -f data/line-history.json ]; then git add data/line-history.json; fi
-          git add data/desk-cfb.json data/split-notes.json data/cfb-polls.json data/eleven.json
+          git add data/desk-cfb.json data/split-notes.json data/cfb-polls.json
+          if [ -f data/venues.json ]; then git add data/venues.json; fi
           if [ -f data/props.json ]; then git add data/props.json; fi
           if [ -f data/season.json ]; then git add data/season.json; fi
           if [ -f data/props-status.json ]; then git add data/props-status.json; fi
