@@ -4175,6 +4175,11 @@ function saveNflLock(id, spread, total) {
   try { localStorage.setItem("gg-nfl-lock-v1", JSON.stringify(book)); } catch (e) {}
 }
 function frozenNflLock(g) {
+  // the shared opening line (scripts/books.py saves it on the game), so every visitor and the
+  // published lock measure line moves from the same number
+  if (g && g.open && g.open.spread != null && Number.isFinite(Number(g.open.spread))) {
+    return { spread: Number(g.open.spread), total: g.open.total != null ? Number(g.open.total) : null };
+  }
   const row = g && nflLockBook()[String(g.id)];
   if (!row || row.spread == null) return null;
   return { spread: Number(row.spread), total: row.total != null ? Number(row.total) : null };

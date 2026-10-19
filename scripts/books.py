@@ -224,6 +224,31 @@ def record_history(out, upcoming, snap):
     HIST.write_text(json.dumps({"updated": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
                                 "fields": ["minute", "home_spread", "total", "home_ml", "away_ml"],
                                 "games": games}, separators=(",", ":")) + "\n")
+    save_openers(games, snap)
+
+
+def save_openers(games, snap):
+    """Each upcoming game's first line we saw, stored on the game ("open": {"spread",
+    "total"}). The board measures line moves from this one shared number, so every visitor
+    (and the published lock) sees the same board; it used to be the first line each visitor's
+    own browser happened to see. Set once, never changed."""
+    n = 0
+    for g in snap.get("games") or []:
+        if g.get("completed") or g.get("open"):
+            continue
+        pts = games.get(str(g.get("id"))) or []
+        first = next((p for p in pts if p[1] is not None), None)
+        if first:
+            g["open"] = {"spread": first[1], "total": first[2], "minute": first[0]}
+        elif (g.get("odds") or {}).get("home_spread") is not None:
+            o = g["odds"]
+            g["open"] = {"spread": o["home_spread"], "total": o.get("total"), "minute": int(datetime.now(timezone.utc).timestamp() // 60)}
+        else:
+            continue
+        n += 1
+    if n:
+        SNAP.write_text(json.dumps(snap, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        print(f"opening lines saved for {n} games")
 
 
 if __name__ == "__main__":
