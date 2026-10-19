@@ -309,6 +309,16 @@ def main():
                 data[lg]["ml"].append((bh, mh, margin > 0))
             else:
                 data[lg]["ml"].append((1 - bh, 1 - mh, margin < 0))
+    # player props: every side the props page posted (data/prop-record.json, frozen at
+    # kickoff, graded from box scores); board = our model's chance for that side, market =
+    # the books' own chance with the cut taken out
+    try:
+        prec = json.loads((repo / "data" / "prop-record.json").read_text()).get("picks") or []
+    except Exception:
+        prec = []
+    data["nfl"]["props"] = [(float(x["model"]), float(x["books"]), x["result"]["out"] == "win")
+                            for x in prec if (x.get("result") or {}).get("out") in ("win", "loss")
+                            and x.get("model") is not None and x.get("books") is not None]
     out = {"updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "method": (
         "Every game since Sept 21: the last board posted before kickoff, the chance it gave each side, "
         "and the final score. keep = how much of the board's lean over the market's price held up."), "leagues": {}}
@@ -320,7 +330,7 @@ def main():
             out["leagues"][lg][name] = {
                 "n": len(rows), "lean_hits": hits, "lean_rate": round(hits / len(rows), 3) if rows else None,
                 "keep": keep, "keep_se": round(se, 2) if se else None,
-                "buckets": buckets(rows) if name != "ml" else [],
+                "buckets": buckets(rows) if name not in ("ml", "props") else [],
             }
     Path(args.out).write_text(json.dumps(out, indent=1) + "\n")
     for lg, mk in out["leagues"].items():

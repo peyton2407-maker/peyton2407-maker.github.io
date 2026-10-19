@@ -11184,8 +11184,10 @@ function postedLean(p) {
       const fair = mk.fairOver == null ? null : (take === "Over" ? mk.fairOver : 1 - mk.fairOver);
       // checked chance: the books' own chance plus a quarter of our difference with it (props
       // haven't been graded long enough to trust more; same rule as the parlay builder)
+      // how much of our lean the graded prop record backs (data/calibration.json, refit every
+      // Tuesday from data/prop-record.json); a quarter until 40 picks are graded
       let keep = 0.25;
-      try { keep = PB_PRIOR_KEEP; } catch (e) {}
+      try { keep = pbKeep("nfl", "props").k; } catch (e) {}
       const ours = fair != null ? fair + keep * (raw - fair) : raw;
       const price = mk.best[side] ? mk.best[side].odds : null;
       // value per dollar at the best price when there is one; otherwise our chance vs a coin flip
@@ -16169,7 +16171,9 @@ function pbViews(g) {
 // How much of the board's lean to keep, per league and market. Small samples lean on the prior.
 function pbKeep(league, market) {
   const c = window.PB_CAL && window.PB_CAL.leagues && window.PB_CAL.leagues[league] && window.PB_CAL.leagues[league][market];
-  if (!c || c.keep == null || !(c.n >= 20)) return { k: PB_PRIOR_KEEP, checked: false, n: c ? c.n : 0 };
+  // player props wait for 40 graded picks (they come one per player, many per game)
+  const minN = market === "props" ? 40 : 20;
+  if (!c || c.keep == null || !(c.n >= minN)) return { k: PB_PRIOR_KEEP, checked: false, n: c ? c.n : 0 };
   const se = c.keep_se && c.keep_se > 0 ? c.keep_se : 0.5;
   const w1 = 1 / (se * se), w0 = 1 / (PB_PRIOR_SD * PB_PRIOR_SD);
   const k = Math.max(0, Math.min(1, (c.keep * w1 + PB_PRIOR_KEEP * w0) / (w1 + w0)));
@@ -16334,7 +16338,7 @@ function pbLeg(stored, opts) {
     }
     const po = propOverP(stat, mu, line);
     board = { win: over ? po : 1 - po, push: 0 };
-    keepInfo = { k: PB_PRIOR_KEEP, checked: false, n: 0 };
+    keepInfo = pbKeep("nfl", "props");
     market = "Player prop";
     label = `${pl.name} ${over ? "over" : "under"} ${line} ${VAL_LBL[stat]}`;
     return pbFinish({ st, g, kind, side, game, label, line, mainLine: line, market, bookPrice, priceSource, board, mkt, keepInfo, cond: null, pid, stat, player: pl.name });
@@ -17072,7 +17076,7 @@ function pbCalHtml() {
     ["spread", "total"].map((m) => (c[m].buckets || []).map((b) => `<tr><td>${m === "spread" ? "Spread" : "Total"} ${Math.round(b.from * 100)}–${Math.round(b.to * 100)}%</td><td>${b.n}</td><td>${pbPct(b.board, 0)}</td><td>${pbPct(b.actual, 0)}</td></tr>`).join("")).join("")
   }</tbody></table>` : "";
   return `<p class="pb-cal-lead">Every chance here is checked against this season's finished games.</p><ul>${rows.map((r) => `<li>${r}</li>`).join("")}</ul>
-    <p class="pb-cal-foot">NFL margins are weighted by how often real games end on each number (3 decides 15% of games, 7 decides 9%), from every NFL game since 2015. Player props haven't been checked yet, so they keep a quarter of our lean.
+    <p class="pb-cal-foot">NFL margins are weighted by how often real games end on each number (3 decides 15% of games, 7 decides 9%), from every NFL game since 2015. ${(() => { const pp = pbKeep("nfl", "props"); const row = (cal.leagues.nfl || {}).props; return pp.checked ? `Player props: checked against ${row.n} graded picks, so we keep ${Math.round(pp.k * 100)}% of our lean.` : `Player props: ${row ? row.n : 0} graded so far (40 needed to judge), so they keep a quarter of our lean.`; })()}
     <button type="button" class="pb-linkbtn" data-showcal="1">${PB.showCal ? "Hide the numbers" : "See the numbers"}</button></p>${table}`;
 }
 
