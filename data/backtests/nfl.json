@@ -1,0 +1,56 @@
+{
+ "checked_at": "2026-10-19T15:32:59Z",
+ "about": "2015-2025 NFL regular season. Totals: final total minus closing total at outdoor home stadiums, by the weather that actually happened in the first hours of the game. Sides: final margin minus closing spread, signed toward the side the board's adjustment favors.",
+ "totals_by_weather": {
+  "all outdoor": {
+   "n": 2031,
+   "mean": 0.08,
+   "t": 0.29
+  },
+  "dry": {
+   "n": 1880,
+   "mean": 0.41,
+   "t": 1.35
+  },
+  "wind under 15": {
+   "n": 1848,
+   "mean": 0.25,
+   "t": 0.82
+  },
+  "rain 0.08in+ over the game": {
+   "n": 151,
+   "mean": -3.92,
+   "t": -4.02
+  },
+  "wind 15-21 mph": {
+   "n": 170,
+   "mean": -1.13,
+   "t": -1.23
+  },
+  "wind 22+ mph": {
+   "n": 13,
+   "mean": -7.38,
+   "t": -2.03
+  }
+ },
+ "sides": {
+  "visitor under 1,200 miles": {
+   "n": 1988,
+   "mean": 0.05,
+   "t": 0.17
+  },
+  "visitor flew 1,200-2,000 miles": {
+   "n": 556,
+   "mean": 0.42,
+   "t": 0.78
+  },
+  "visitor flew 2,000+ miles": {
+   "n": 302,
+   "mean": -1.43,
+   "t": -1.86
+  },
+  "visitor on a short week (board: 1.2 to home)": {
+   "n": 1
+  }
+ }
+}
