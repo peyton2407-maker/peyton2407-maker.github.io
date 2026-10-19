@@ -1,0 +1,30 @@
+name: Backtest
+# On demand: test the NFL board's line adjustments against 2015-2025 results
+# (scripts/backtest_nfl.py) and save data/backtests/nfl.json.
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Backtest
+        run: python3 scripts/backtest_nfl.py
+      - name: Commit
+        run: |
+          git config user.name "peyton2407-maker"
+          git config user.email "331867039+peyton2407-maker@users.noreply.github.com"
+          git add data/backtests
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Backtest: $(date -u +'%a %H:%M UTC')"
+          for i in 1 2 3 4; do
+            if git pull --rebase --quiet origin main && git push; then exit 0; fi
+            sleep 8
+          done
+          exit 1
