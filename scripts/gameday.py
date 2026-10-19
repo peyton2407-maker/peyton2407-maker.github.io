@@ -229,6 +229,15 @@ def main():
     else:
         OUT.write_text(json.dumps(report, ensure_ascii=False, separators=(",", ":")) + "\n")
 
+    # old day files (the page shows a week)
+    if REPORTS.exists():
+        for f in REPORTS.glob("day-*.json"):
+            try:
+                if (now.date() - datetime.strptime(f.stem[4:], "%Y-%m-%d").date()).days > 10:
+                    f.unlink()
+            except Exception:
+                pass
+
     # 2) kickoff reports: replaced while their window is open, then left as they were
     kick = load(KICK, {"nfl": {}, "wx": {}})
     changed = False
@@ -242,18 +251,15 @@ def main():
             if now.timestamp() * 1000 - (bag[k].get("saved") or 0) > 10 * 86400 * 1000:
                 del bag[k]
                 changed = True
+    # which finished days have a saved report, so the page asks only for those
+    days = sorted(f.stem[4:] for f in REPORTS.glob("day-*.json")) if REPORTS.exists() else []
+    if kick.get("days") != days:
+        kick["days"] = days
+        changed = True
     if changed:
         REPORTS.mkdir(parents=True, exist_ok=True)
         KICK.write_text(json.dumps(kick, ensure_ascii=False, separators=(",", ":")) + "\n")
     print(f"kickoff reports: {len(kick.get('nfl') or {})} injury, {len(kick.get('wx') or {})} weather")
-    # old day files
-    if REPORTS.exists():
-        for f in REPORTS.glob("day-*.json"):
-            try:
-                if (now.date() - datetime.strptime(f.stem[4:], "%Y-%m-%d").date()).days > 10:
-                    f.unlink()
-            except Exception:
-                pass
     return 0
 
 

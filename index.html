@@ -14401,17 +14401,18 @@ async function loadReportArchive() {
   try { nflVisibleDays().forEach((d) => days.add(d.ymd)); } catch (e) {}
   try { cfbVisibleDays().forEach((d) => days.add(d.ymd)); } catch (e) {}
   loadReportArchive.got = loadReportArchive.got || {};
-  const jobs = [...days].filter((ymd) => ymd < today && !loadReportArchive.got[ymd]).map((ymd) =>
+  let k = null;
+  try { const r = await fetch("/data/reports/kick.json?t=" + Math.floor(Date.now() / 120000)); if (r.ok) k = await r.json(); } catch (e) {}
+  if (k) {
+    Object.keys(k.nfl || {}).forEach((id) => { const x = k.nfl[id]; putReport("gg-nfl-inj-11", id, x.rows, x, x.saved); });
+    Object.keys(k.wx || {}).forEach((id) => { const x = k.wx[id]; putReport("gg-wx-11", id, x.rows, x, x.saved); });
+  }
+  const onServer = new Set((k && k.days) || []);
+  await Promise.all([...days].filter((ymd) => ymd < today && onServer.has(ymd) && !loadReportArchive.got[ymd]).map((ymd) =>
     fetch("/data/reports/day-" + ymd + ".json").then((r) => (r.ok ? r.json() : null)).then((f) => {
       loadReportArchive.got[ymd] = true;
       if (f) applyDayReport(f);
-    }).catch(() => {}));
-  jobs.push(fetch("/data/reports/kick.json?t=" + Math.floor(Date.now() / 120000)).then((r) => (r.ok ? r.json() : null)).then((k) => {
-    if (!k) return;
-    Object.keys(k.nfl || {}).forEach((id) => { const x = k.nfl[id]; putReport("gg-nfl-inj-11", id, x.rows, x, x.saved); });
-    Object.keys(k.wx || {}).forEach((id) => { const x = k.wx[id]; putReport("gg-wx-11", id, x.rows, x, x.saved); });
-  }).catch(() => {}));
-  await Promise.all(jobs);
+    }).catch(() => {})));
   const changed = !!window.__ELEVEN_DIRTY;
   saveReportStores();
   if (changed) {
