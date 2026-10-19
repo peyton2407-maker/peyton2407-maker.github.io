@@ -55,3 +55,8 @@ jobs:
             sleep 7
           done
           exit 1
+      - name: Watchdog (fails the run, which emails the owner, if reports are stale)
+        if: always()
+        run: |
+          git pull --quiet origin main || true
+          python3 scripts/gameday.py --watch

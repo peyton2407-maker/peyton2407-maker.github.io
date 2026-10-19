@@ -21,6 +21,7 @@ Usage:
   python3 scripts/gameday.py                  # the reports (scheduled every 15 minutes)
   python3 scripts/gameday.py --due            # prints run=yes/run=no: is a report due now?
   python3 scripts/gameday.py --snapshot-only  # forecasts into data/snapshot.json (hourly refresh)
+  python3 scripts/gameday.py --watch          # exits 1 when a visitor would see stale reports
 """
 import asyncio
 import hashlib
@@ -181,8 +182,42 @@ def content_hash(r):
     return hashlib.md5(json.dumps({k: r.get(k) for k in ("nfl", "cfb", "wxNfl", "wxCfb")}, sort_keys=True).encode()).hexdigest()
 
 
+def watch(now=None):
+    """Problems a visitor would notice. A non-empty list fails the scheduled job, and GitHub
+    emails the repository owner about a failed scheduled run."""
+    now = now or datetime.now(timezone.utc)
+    bad = []
+    old = load(OUT, {})
+    age = now - datetime.fromtimestamp((old.get("saved") or 0) / 1000, timezone.utc)
+    if age > timedelta(hours=3):
+        bad.append(f"injury and weather report is {age.total_seconds() / 3600:.1f} hours old")
+    kick = load(KICK, {})
+    games = load(SNAP, {}).get("games") or []
+    started = datetime.fromtimestamp(min([x.get("saved") or 9e15 for x in (kick.get("nfl") or {}).values()] or [9e15]) / 1000, timezone.utc) if kick.get("nfl") else now
+    for g in games:
+        k = parse(g.get("date"))
+        if g.get("league") != "nfl" or not k or not (now - timedelta(hours=24) < k < now - timedelta(minutes=45)):
+            continue
+        if k < started:  # before the server took kickoff reports
+            continue
+        if not (kick.get("nfl") or {}).get("ko-" + str(g.get("id"))):
+            bad.append(f"no kickoff injury report for {g.get('short_name')}")
+    outdoor = [g for g in games if not g.get("completed") and not g.get("indoor") and g.get("league") in ("nfl", "cfb")
+               and parse(g.get("date")) and now < parse(g["date"]) < now + timedelta(days=3)]
+    nowx = [g.get("short_name") for g in outdoor if not g.get("weather")]
+    if outdoor and len(nowx) > max(2, len(outdoor) // 10):
+        bad.append(f"{len(nowx)} of {len(outdoor)} outdoor games in the next 3 days have no forecast: {', '.join(nowx[:6])}")
+    return bad
+
+
 def main():
     args = sys.argv[1:]
+    if "--watch" in args:
+        bad = watch()
+        for b in bad:
+            print("PROBLEM:", b)
+        print("all reports fresh" if not bad else f"{len(bad)} problem(s)")
+        return 1 if bad else 0
     if "--due" in args:
         why = due()
         print("run=yes" if why else "run=no")
