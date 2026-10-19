@@ -167,8 +167,9 @@ def odds_get(path, params, key):
 
 def due(kick, fetched, now, mode):
     """Should this game's props be fetched now?
-    free (500 credits a month): once per game, about a day before kickoff. A full NFL slate
-    is ~15 games x 5 markets = ~75 credits a week, ~325 a month.
+    free (500 credits a month): once per game, about a day before kickoff, and night games
+    again in their last three hours. A full NFL slate is ~15 games x 5 markets = ~75 credits a
+    week plus ~15 for the night games, ~390 a month.
     paid: every 6 hours, then hourly in the last day."""
     hours = (kick - now) / 3600
     age = (now - fetched) / 3600 if fetched else 1e9
@@ -176,7 +177,12 @@ def due(kick, fetched, now, mode):
         return False
     if mode == "paid":
         return age >= (1 if hours <= 24 else 6)
-    return hours <= 30 and age >= 30
+    if hours <= 30 and age >= 30:
+        return True
+    # night games (Thursday, Sunday and Monday night) get one more pull in the last three
+    # hours, after inactives news; about 15 credits a week
+    et_hour = (datetime.fromtimestamp(kick, timezone.utc).hour - 4) % 24
+    return (et_hour >= 19 or et_hour < 3) and hours <= 3 and age >= 6
 
 
 def parse_odds_api(payload):

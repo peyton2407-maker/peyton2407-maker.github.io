@@ -8939,8 +8939,10 @@ async function fetchInjuries(force){
       const parsedN = parseInjuryFeed(nfl, "nfl");
       const fromSleeper = sleeperInjuryRows(sleeper);
       const nflMerged = applyRapoport(fromSleeper.length ? fromSleeper : parsedN, rap);
+      // one row per player: "Deebo Samuel Sr." (ESPN) is "Deebo Samuel" (Sleeper)
+      const plain = (n) => String(n || "").toLowerCase().replace(/[.'’]/g, "").replace(/\s+(jr|sr|ii|iii|iv|v)$/, "").replace(/\s+/g, " ").trim();
       parsedN.forEach((r) => {
-        const cur = nflMerged.find((x) => (x.name || "").toLowerCase() === (r.name || "").toLowerCase());
+        const cur = nflMerged.find((x) => plain(x.name) === plain(r.name));
         if (!cur) { if (r.tag !== "ACTIVE" && r.tag !== "PLAYING") nflMerged.push(r); return; }
         cur.reports = cur.reports || [];
         const note = r.long || r.short || "";
@@ -14884,11 +14886,14 @@ function sleeperInjuryRows(players){
     if (g.home) abbr[g.home.abbr] = g.home.name;
     if (g.away) abbr[g.away.abbr] = g.away.name;
   });
+  // Sleeper's abbreviations that differ from ESPN's ("WAS" left every Washington player
+  // without a team, so none of them reached the Commanders' games)
+  const ALIAS = { WAS: "WSH", JAC: "JAX", LA: "LAR", OAK: "LV", SD: "LAC", STL: "LAR" };
   const rows = [];
   Object.values(players || {}).forEach((p) => {
     const tag = sleeperTag(p.injury_status);
     if (!tag || !p.full_name || !p.team) return;
-    const team = abbr[p.team] || p.team;
+    const team = abbr[p.team] || abbr[ALIAS[p.team]] || p.team;
     const when = p.news_updated ? new Date(Number(p.news_updated)).toISOString() : "";
     const bit = [p.injury_body_part, p.injury_notes].filter(Boolean).join(" · ");
     const game = matchInjuryGame(team, "nfl");
