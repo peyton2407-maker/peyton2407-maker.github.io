@@ -325,6 +325,26 @@
    "closeAt": "2026-10-18T23:59:53.049Z",
    "clv_side": 0,
    "clv_total": 1
+  },
+  "401873008": {
+   "id": "401873008",
+   "league": "nfl",
+   "week": 6,
+   "short": "WSH @ SF",
+   "home": "SF",
+   "away": "WSH",
+   "date": "2026-10-20T00:15Z",
+   "pick": "SF",
+   "pick_line": "SF -7.5",
+   "total_pick": "UNDER 52.5",
+   "side_play": false,
+   "our_margin": 8.78,
+   "our_total": 52.1,
+   "confidence": null,
+   "total_play": false,
+   "spread": -7.5,
+   "total": 52.5,
+   "lockedAt": "2026-10-19T22:56:14.492Z"
   }
  },
  "potd": {
@@ -631,5 +651,5 @@
    }
   ]
  },
- "updated": "2026-10-19T10:05:18.090Z"
+ "updated": "2026-10-19T22:56:14.492Z"
 }
