@@ -49,7 +49,7 @@ jobs:
           fi
           git commit -m "Weather and injuries: $(date -u +'%a %H:%M UTC')"
           for i in 1 2 3 4 5; do
-            if git pull --rebase --quiet origin main && git push; then
+            if { git pull --rebase -X theirs --quiet origin main || { git rebase --abort 2>/dev/null; false; }; } && git push; then
               exit 0
             fi
             sleep 7
@@ -58,5 +58,8 @@ jobs:
       - name: Watchdog (fails the run, which emails the owner, if reports are stale)
         if: always()
         run: |
-          git pull --quiet origin main || true
+          # read what's on main now, whatever state this run's own commit step left
+          git rebase --abort 2>/dev/null || true
+          git fetch --quiet origin main || true
+          for f in data/eleven.json data/snapshot.json data/reports; do git checkout origin/main -- "$f" 2>/dev/null || true; done
           python3 scripts/gameday.py --watch

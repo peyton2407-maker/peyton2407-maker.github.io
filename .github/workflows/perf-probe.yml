@@ -26,7 +26,7 @@ jobs:
           git add data/perf-probe.json
           git commit -m "Speed check: $(date -u +'%a %H:%M UTC')" || exit 0
           for i in 1 2 3 4; do
-            if git pull --rebase --quiet origin main && git push; then exit 0; fi
+            if { git pull --rebase -X theirs --quiet origin main || { git rebase --abort 2>/dev/null; false; }; } && git push; then exit 0; fi
             sleep 8
           done
           exit 1

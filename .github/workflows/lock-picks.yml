@@ -38,7 +38,7 @@ jobs:
           fi
           git commit -m "Lock picks: $(date -u +'%a %H:%M UTC')"
           for i in 1 2 3; do
-            if git pull --rebase --quiet origin main && git push; then
+            if { git pull --rebase -X theirs --quiet origin main || { git rebase --abort 2>/dev/null; false; }; } && git push; then
               exit 0
             fi
             sleep 5
