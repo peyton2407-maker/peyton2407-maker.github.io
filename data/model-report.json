@@ -1,0 +1,36 @@
+{
+ "updated": "2026-10-19T10:05:18.099Z",
+ "games": 57,
+ "leagues": {
+  "cfb": {
+   "games": 57,
+   "margin_miss_ours": 11.34,
+   "margin_miss_market": 10.85,
+   "total_miss_ours": 12.17,
+   "total_miss_market": 12.66,
+   "total_lean_ours": 2.54,
+   "avg_vs_close": 0.07,
+   "real_side_plays_by_confidence": {
+    "under 54%": {
+     "w": 13,
+     "l": 14
+    }
+   }
+  },
+  "all": {
+   "games": 57,
+   "margin_miss_ours": 11.34,
+   "margin_miss_market": 10.85,
+   "total_miss_ours": 12.17,
+   "total_miss_market": 12.66,
+   "total_lean_ours": 2.54,
+   "avg_vs_close": 0.07,
+   "real_side_plays_by_confidence": {
+    "under 54%": {
+     "w": 13,
+     "l": 14
+    }
+   }
+  }
+ }
+}
