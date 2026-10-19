@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-10-18T21:58:20Z",
+ "checked_at": "2026-10-19T22:04:50Z",
  "errors": [],
  "console": [],
  "failed_requests": {},
@@ -7,40 +7,38 @@
  "screens": {
   "home": {
    "visible": true,
-   "count": 23,
+   "count": 20,
    "summary": [],
    "empty": [],
-   "chars": 1394,
-   "images": 58,
+   "chars": 1221,
+   "images": 52,
    "broken_images": []
   },
   "nfl": {
    "visible": true,
-   "count": 5,
+   "count": 1,
    "summary": [],
    "empty": [],
-   "chars": 3292,
-   "images": 10,
+   "chars": 2543,
+   "images": 2,
    "broken_images": []
   },
   "cfb": {
    "visible": true,
-   "count": 0,
+   "count": 56,
    "summary": [],
-   "empty": [
-    "No games in this filter. Switch the dropdown to \u201cUpcoming only\u201d or \u201cAll games\u201d."
-   ],
-   "chars": 324,
-   "images": 0,
+   "empty": [],
+   "chars": 9397,
+   "images": 87,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 16,
+   "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 2519,
-   "images": 26,
+   "chars": 2592,
+   "images": 24,
    "broken_images": []
   },
   "season": {
@@ -48,16 +46,16 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3218,
+   "chars": 3226,
    "images": 42,
    "broken_images": []
   },
   "score": {
    "visible": true,
-   "count": 64,
+   "count": 58,
    "summary": [],
    "empty": [],
-   "chars": 4598,
+   "chars": 4341,
    "images": 0,
    "broken_images": []
   },
@@ -66,7 +64,7 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3512,
+   "chars": 3312,
    "images": 35,
    "broken_images": []
   },
@@ -75,58 +73,56 @@
    "count": 10,
    "summary": [],
    "empty": [],
-   "chars": 931,
+   "chars": 857,
    "images": 20,
    "broken_images": []
   },
   "props": {
    "visible": true,
-   "count": 72,
-   "summary": [
-    "229 matching NFL players 34 QBs in this list \u2014 best our hit rate J Josh "
-   ],
+   "count": 80,
+   "summary": [],
    "empty": [],
-   "chars": 3401,
-   "images": 18,
+   "chars": 5414,
+   "images": 15,
    "broken_images": []
   },
   "tds": {
    "visible": true,
-   "count": 24,
+   "count": 14,
    "summary": [
-    "24 TD tickets in this filter 68% top anytime (McCaffrey) 32 first-TD name"
+    "14 TD tickets in this filter 61% top anytime (McCaffrey) 15 first-TD name"
    ],
    "empty": [],
-   "chars": 3908,
-   "images": 19,
+   "chars": 3620,
+   "images": 17,
    "broken_images": []
   },
   "charts": {
    "visible": true,
-   "count": 19,
+   "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 3902,
-   "images": 4,
+   "chars": 3681,
+   "images": 6,
    "broken_images": []
   },
   "value": {
    "visible": true,
-   "count": 72,
+   "count": 43,
    "summary": [
-    "124 value tickets in this filter 18 TD plus-money 7 spread / dog sides 92% be"
+    "43 value tickets in this filter 11 TD plus-money 5 spread / dog sides 75% be"
    ],
    "empty": [],
-   "chars": 3564,
-   "images": 39,
+   "chars": 3512,
+   "images": 29,
    "broken_images": []
   },
   "parlay": {
    "visible": true,
-   "count": 8,
+   "count": 11,
    "summary": [],
    "empty": [],
-   "chars": 6363,
+   "chars": 5124,
    "images": 0,
    "broken_images": []
   },
@@ -135,19 +131,19 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2905,
-   "images": 13,
+   "chars": 2558,
+   "images": 6,
    "broken_images": []
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "690 listed SEA @ DEN Window passed HOU VS JAX Window passed BAL @ CLE ",
-    "690 listed 0 probable \u00b7 75% 104 questionable / GTD \u00b7 50% 2 doubtful \u00b7 "
+    "610 listed SUN \u00b7 11:34 PM ET 691 listed MON \u00b7 5:38 PM ET 581 listed SE",
+    "581 listed 0 probable \u00b7 75% 66 questionable / GTD \u00b7 50% 1 doubtful \u00b7 2"
    ],
    "empty": [],
-   "chars": 4666,
+   "chars": 4771,
    "images": 6,
    "broken_images": []
   },
@@ -156,7 +152,7 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 5231,
+   "chars": 5252,
    "images": 28,
    "broken_images": []
   },
@@ -164,22 +160,22 @@
    "visible": true,
    "count": 2,
    "summary": [],
-   "empty": [],
-   "chars": 545,
+   "empty": [
+    "No NFL game left this week clears our bar, so there is no play of the day."
+   ],
+   "chars": 342,
    "images": 0,
    "broken_images": []
   },
   "cfbpicks": {
    "visible": true,
-   "count": 0,
+   "count": 18,
    "summary": [
-    "0 featured CFB leans 0 spread tickets 0 O/U tickets \u2014 top card No coll"
+    "18 featured CFB leans 11 spread tickets 1 O/U tickets VAN @ UK top card"
    ],
-   "empty": [
-    "No college games in this filter."
-   ],
-   "chars": 345,
-   "images": 0,
+   "empty": [],
+   "chars": 6088,
+   "images": 32,
    "broken_images": []
   }
  },
@@ -187,7 +183,7 @@
   "open": true,
   "hero": true,
   "shown_twice": false,
-  "logos_ok": 16
+  "logos_ok": 17
  },
  "split": {
   "games": 0,
@@ -196,6 +192,6 @@
   "errors": []
  },
  "dk_lines_loaded": null,
- "games_with_props": 19,
- "nfl_games_upcoming": 19
+ "games_with_props": 15,
+ "nfl_games_upcoming": 15
 }
