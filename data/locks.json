@@ -1,6 +1,47 @@
 {
  "v": 1,
- "plays": {},
+ "plays": {
+  "401871055": {
+   "id": "401871055",
+   "league": "cfb",
+   "week": 8,
+   "short": "MTSU @ FIU",
+   "home": "FIU",
+   "away": "MTSU",
+   "date": "2026-10-20T23:00Z",
+   "pick": "NO PLAY",
+   "pick_line": null,
+   "total_pick": "UNDER 45.5",
+   "side_play": false,
+   "our_margin": 10.46,
+   "our_total": 44.3,
+   "confidence": null,
+   "total_play": false,
+   "spread": -10,
+   "total": 45.5,
+   "lockedAt": "2026-10-20T21:42:54.304Z"
+  },
+  "401871069": {
+   "id": "401871069",
+   "league": "cfb",
+   "week": 8,
+   "short": "MOST @ DEL",
+   "home": "DEL",
+   "away": "MOST",
+   "date": "2026-10-20T23:00Z",
+   "pick": "MOST",
+   "pick_line": "MOST +3.0",
+   "total_pick": "UNDER 53.5",
+   "side_play": false,
+   "our_margin": -0.73,
+   "our_total": 53.1,
+   "confidence": null,
+   "total_play": false,
+   "spread": -3,
+   "total": 53.5,
+   "lockedAt": "2026-10-20T21:42:54.304Z"
+  }
+ },
  "potd": {
   "nfl": [
    {
@@ -164,6 +205,26 @@
     "kick": "2026-10-18T03:00Z",
     "big": false,
     "savedAt": 1792292220708
+   },
+   {
+    "key": "game:401871069",
+    "week": 8,
+    "day": "2026-10-20",
+    "league": "cfb",
+    "id": "401871069",
+    "game": "MOST @ DEL",
+    "kind": "Spread",
+    "line": "MOST +3.0",
+    "hitPct": 51,
+    "why": "The play is MOST +3.0. Our number is MOST -0.7, 3.7 points off DraftKings.",
+    "label": "Tuesday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "locked": true,
+    "kick": "2026-10-20T23:00Z",
+    "big": false,
+    "savedAt": 1792532574310
    }
   ]
  },
@@ -305,5 +366,5 @@
    }
   ]
  },
- "updated": "2026-10-19T23:22:13.375Z"
+ "updated": "2026-10-20T21:42:54.304Z"
 }
