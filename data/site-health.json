@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-10-19T22:04:50Z",
+ "checked_at": "2026-10-20T22:05:23Z",
  "errors": [],
  "console": [],
  "failed_requests": {},
@@ -7,20 +7,20 @@
  "screens": {
   "home": {
    "visible": true,
-   "count": 20,
+   "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 1221,
-   "images": 52,
+   "chars": 1057,
+   "images": 42,
    "broken_images": []
   },
   "nfl": {
    "visible": true,
-   "count": 1,
+   "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 2543,
-   "images": 2,
+   "chars": 5204,
+   "images": 28,
    "broken_images": []
   },
   "cfb": {
@@ -28,17 +28,17 @@
    "count": 56,
    "summary": [],
    "empty": [],
-   "chars": 9397,
-   "images": 87,
+   "chars": 9417,
+   "images": 89,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 15,
+   "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 2592,
-   "images": 24,
+   "chars": 2511,
+   "images": 28,
    "broken_images": []
   },
   "season": {
@@ -46,7 +46,7 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3226,
+   "chars": 3223,
    "images": 42,
    "broken_images": []
   },
@@ -55,7 +55,7 @@
    "count": 58,
    "summary": [],
    "empty": [],
-   "chars": 4341,
+   "chars": 4300,
    "images": 0,
    "broken_images": []
   },
@@ -64,7 +64,7 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3312,
+   "chars": 3213,
    "images": 35,
    "broken_images": []
   },
@@ -73,7 +73,7 @@
    "count": 10,
    "summary": [],
    "empty": [],
-   "chars": 857,
+   "chars": 890,
    "images": 20,
    "broken_images": []
   },
@@ -82,47 +82,47 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 5414,
-   "images": 15,
+   "chars": 5737,
+   "images": 18,
    "broken_images": []
   },
   "tds": {
    "visible": true,
-   "count": 14,
+   "count": 48,
    "summary": [
-    "14 TD tickets in this filter 61% top anytime (McCaffrey) 15 first-TD name"
+    "171 TD tickets in this filter 68% top anytime (Henry) 207 first-TD names m"
    ],
    "empty": [],
-   "chars": 3620,
-   "images": 17,
+   "chars": 3943,
+   "images": 18,
    "broken_images": []
   },
   "charts": {
    "visible": true,
-   "count": 15,
+   "count": 28,
    "summary": [],
    "empty": [],
-   "chars": 3681,
-   "images": 6,
+   "chars": 3995,
+   "images": 4,
    "broken_images": []
   },
   "value": {
    "visible": true,
-   "count": 43,
+   "count": 72,
    "summary": [
-    "43 value tickets in this filter 11 TD plus-money 5 spread / dog sides 75% be"
+    "136 value tickets in this filter 127 TD plus-money 5 spread / dog sides 54% b"
    ],
    "empty": [],
-   "chars": 3512,
-   "images": 29,
+   "chars": 4011,
+   "images": 18,
    "broken_images": []
   },
   "parlay": {
    "visible": true,
-   "count": 11,
+   "count": 1,
    "summary": [],
    "empty": [],
-   "chars": 5124,
+   "chars": 744,
    "images": 0,
    "broken_images": []
   },
@@ -131,19 +131,20 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2558,
-   "images": 6,
+   "chars": 3078,
+   "images": 9,
    "broken_images": []
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "610 listed SUN \u00b7 11:34 PM ET 691 listed MON \u00b7 5:38 PM ET 581 listed SE",
-    "581 listed 0 probable \u00b7 75% 66 questionable / GTD \u00b7 50% 1 doubtful \u00b7 2"
+    "610 listed SUN \u00b7 11:34 PM ET 691 listed TUE \u00b7 5:39 PM ET 583 listed SE",
+    "37 listed Probable \u00b7 75% Questionable \u00b7 50% Game time decision \u00b7 50% ",
+    "583 listed 0 probable \u00b7 75% 61 questionable / GTD \u00b7 50% 0 doubtful \u00b7 2"
    ],
    "empty": [],
-   "chars": 4771,
+   "chars": 4303,
    "images": 6,
    "broken_images": []
   },
@@ -152,7 +153,7 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 5252,
+   "chars": 3980,
    "images": 28,
    "broken_images": []
   },
@@ -171,11 +172,11 @@
    "visible": true,
    "count": 18,
    "summary": [
-    "18 featured CFB leans 11 spread tickets 1 O/U tickets VAN @ UK top card"
+    "18 featured CFB leans 11 spread tickets 0 O/U tickets VAN @ UK top card"
    ],
    "empty": [],
-   "chars": 6088,
-   "images": 32,
+   "chars": 6111,
+   "images": 34,
    "broken_images": []
   }
  },
@@ -192,6 +193,6 @@
   "errors": []
  },
  "dk_lines_loaded": null,
- "games_with_props": 15,
- "nfl_games_upcoming": 15
+ "games_with_props": 28,
+ "nfl_games_upcoming": 28
 }
