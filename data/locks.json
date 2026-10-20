@@ -46,10 +46,10 @@
    "total": 53.5,
    "lockedAt": "2026-10-20T21:42:54.304Z",
    "close_spread": -3.5,
-   "close_total": 53.5,
-   "closeAt": "2026-10-20T22:12:37.000Z",
+   "close_total": 54.5,
+   "closeAt": "2026-10-20T22:43:20.882Z",
    "clv_side": -0.5,
-   "clv_total": 0
+   "clv_total": -1
   },
   "401871092": {
    "id": "401871092",
@@ -69,7 +69,12 @@
    "total_play": false,
    "spread": 2.5,
    "total": 65.5,
-   "lockedAt": "2026-10-20T22:12:37.000Z"
+   "lockedAt": "2026-10-20T22:12:37.000Z",
+   "close_spread": 2.5,
+   "close_total": 66.5,
+   "closeAt": "2026-10-20T22:43:20.882Z",
+   "clv_side": 0,
+   "clv_total": 1
   }
  },
  "potd": {
@@ -396,5 +401,5 @@
    }
   ]
  },
- "updated": "2026-10-20T22:12:37.000Z"
+ "updated": "2026-10-20T22:43:20.882Z"
 }
