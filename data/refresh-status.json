@@ -1,10 +1,6 @@
 {
  "sources": [
   {
-   "feed": "nfl scoreboard week 5",
-   "events": 15
-  },
-  {
    "feed": "nfl scoreboard week 6",
    "events": 14
   },
@@ -13,12 +9,12 @@
    "events": 14
   },
   {
-   "feed": "https://site.web.api.espn.com/apis/fitt/v3/sports/football/nfl/powerindex?limit=50",
-   "teams": 32
+   "feed": "nfl scoreboard week 8",
+   "events": 14
   },
   {
-   "feed": "cfb scoreboard week 6",
-   "events": 58
+   "feed": "https://site.web.api.espn.com/apis/fitt/v3/sports/football/nfl/powerindex?limit=50",
+   "teams": 32
   },
   {
    "feed": "cfb scoreboard week 7",
@@ -26,6 +22,10 @@
   },
   {
    "feed": "cfb scoreboard week 8",
+   "events": 56
+  },
+  {
+   "feed": "cfb scoreboard week 9",
    "events": 56
   },
   {
@@ -38,11 +38,11 @@
    "teams": 32
   }
  ],
- "ran_at": "2026-10-20T15:35:19Z",
- "nfl_week": 6,
- "cfb_week": 7,
+ "ran_at": "2026-10-20T16:19:40Z",
+ "nfl_week": 7,
+ "cfb_week": 8,
  "changes": [
-  "0 new games, 10 updated, 0 new finals"
+  "70 new games, 70 updated, 0 new finals"
  ],
  "parse": {
   "cfb_efficiency_names": [
