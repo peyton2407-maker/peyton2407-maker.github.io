@@ -70,10 +70,10 @@
    "spread": 2.5,
    "total": 65.5,
    "lockedAt": "2026-10-20T22:12:37.000Z",
-   "close_spread": 2.5,
+   "close_spread": 1.5,
    "close_total": 66.5,
-   "closeAt": "2026-10-20T22:43:20.882Z",
-   "clv_side": 0,
+   "closeAt": "2026-10-20T23:09:42.832Z",
+   "clv_side": -1,
    "clv_total": 1
   }
  },
@@ -260,6 +260,26 @@
     "kick": "2026-10-20T23:00Z",
     "big": false,
     "savedAt": 1792532574310
+   },
+   {
+    "key": "game:401871092",
+    "week": 8,
+    "day": "2026-10-20",
+    "league": "cfb",
+    "id": "401871092",
+    "game": "USA @ MRSH",
+    "kind": "Spread",
+    "line": "USA -1.5",
+    "hitPct": 51,
+    "why": "The play is USA -1.5. Our number is USA -4.8, 2.4 points off DraftKings.",
+    "label": "Tuesday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "locked": true,
+    "kick": "2026-10-20T23:30Z",
+    "big": false,
+    "savedAt": 1792537782838
    }
   ]
  },
@@ -401,5 +421,5 @@
    }
   ]
  },
- "updated": "2026-10-20T22:43:20.882Z"
+ "updated": "2026-10-20T23:09:42.832Z"
 }
