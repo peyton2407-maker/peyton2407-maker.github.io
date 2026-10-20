@@ -38,11 +38,11 @@
    "teams": 32
   }
  ],
- "ran_at": "2026-10-20T10:32:40Z",
+ "ran_at": "2026-10-20T11:33:47Z",
  "nfl_week": 6,
  "cfb_week": 7,
  "changes": [
-  "0 new games, 4 updated, 0 new finals"
+  "0 new games, 70 updated, 0 new finals"
  ],
  "parse": {
   "cfb_efficiency_names": [
@@ -59,15 +59,15 @@
   "sample": [
    {
     "abbr": "OSU",
-    "fpi": 28.237,
+    "fpi": 28.236,
     "off": 81.739,
-    "def": 87.718
+    "def": 87.716
    },
    {
     "abbr": "ND",
     "fpi": 27.858,
     "off": 85.065,
-    "def": 89.515
+    "def": 89.516
    }
   ],
   "nfl_depth_teams": 32
