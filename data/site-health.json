@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-10-20T22:05:23Z",
+ "checked_at": "2026-10-21T22:06:53Z",
  "errors": [],
  "console": [],
  "failed_requests": {},
@@ -10,7 +10,7 @@
    "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 1057,
+   "chars": 1056,
    "images": 42,
    "broken_images": []
   },
@@ -19,26 +19,26 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 5204,
+   "chars": 5129,
    "images": 28,
    "broken_images": []
   },
   "cfb": {
    "visible": true,
-   "count": 56,
+   "count": 53,
    "summary": [],
    "empty": [],
-   "chars": 9417,
-   "images": 89,
+   "chars": 9032,
+   "images": 90,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 14,
+   "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 2511,
-   "images": 28,
+   "chars": 2549,
+   "images": 30,
    "broken_images": []
   },
   "season": {
@@ -46,7 +46,7 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3223,
+   "chars": 3220,
    "images": 42,
    "broken_images": []
   },
@@ -55,7 +55,7 @@
    "count": 58,
    "summary": [],
    "empty": [],
-   "chars": 4300,
+   "chars": 4347,
    "images": 0,
    "broken_images": []
   },
@@ -64,7 +64,7 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3213,
+   "chars": 3138,
    "images": 35,
    "broken_images": []
   },
@@ -73,7 +73,7 @@
    "count": 10,
    "summary": [],
    "empty": [],
-   "chars": 890,
+   "chars": 858,
    "images": 20,
    "broken_images": []
   },
@@ -82,19 +82,19 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 5737,
-   "images": 18,
+   "chars": 5348,
+   "images": 15,
    "broken_images": []
   },
   "tds": {
    "visible": true,
    "count": 48,
    "summary": [
-    "171 TD tickets in this filter 68% top anytime (Henry) 207 first-TD names m"
+    "180 TD tickets in this filter 66% top anytime (Henry) 205 first-TD names m"
    ],
    "empty": [],
-   "chars": 3943,
-   "images": 18,
+   "chars": 3939,
+   "images": 20,
    "broken_images": []
   },
   "charts": {
@@ -102,19 +102,19 @@
    "count": 28,
    "summary": [],
    "empty": [],
-   "chars": 3995,
-   "images": 4,
+   "chars": 3975,
+   "images": 6,
    "broken_images": []
   },
   "value": {
    "visible": true,
    "count": 72,
    "summary": [
-    "136 value tickets in this filter 127 TD plus-money 5 spread / dog sides 54% b"
+    "153 value tickets in this filter 127 TD plus-money 5 spread / dog sides 71% b"
    ],
    "empty": [],
-   "chars": 4011,
-   "images": 18,
+   "chars": 3664,
+   "images": 30,
    "broken_images": []
   },
   "parlay": {
@@ -131,7 +131,7 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 3078,
+   "chars": 2535,
    "images": 9,
    "broken_images": []
   },
@@ -139,13 +139,12 @@
    "visible": true,
    "count": 61,
    "summary": [
-    "610 listed SUN \u00b7 11:34 PM ET 691 listed TUE \u00b7 5:39 PM ET 583 listed SE",
-    "37 listed Probable \u00b7 75% Questionable \u00b7 50% Game time decision \u00b7 50% ",
-    "583 listed 0 probable \u00b7 75% 61 questionable / GTD \u00b7 50% 0 doubtful \u00b7 2"
+    "481 listed THU Not posted FRI Not posted SAT Not posted SUN Not posted",
+    "481 listed 0 probable \u00b7 75% 127 questionable / GTD \u00b7 50% 9 doubtful \u00b7 "
    ],
    "empty": [],
-   "chars": 4303,
-   "images": 6,
+   "chars": 4321,
+   "images": 3,
    "broken_images": []
   },
   "nflwx": {
@@ -153,7 +152,7 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 3980,
+   "chars": 3894,
    "images": 28,
    "broken_images": []
   },
@@ -172,11 +171,11 @@
    "visible": true,
    "count": 18,
    "summary": [
-    "18 featured CFB leans 11 spread tickets 0 O/U tickets VAN @ UK top card"
+    "18 featured CFB leans 10 spread tickets 0 O/U tickets PITT @ MIA top ca"
    ],
    "empty": [],
-   "chars": 6111,
-   "images": 34,
+   "chars": 6084,
+   "images": 32,
    "broken_images": []
   }
  },
