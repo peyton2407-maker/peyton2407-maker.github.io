@@ -253,9 +253,9 @@
     "hitPct": 51,
     "why": "The play is MOST +3.0. Our number is MOST -0.7, 3.7 points off DraftKings.",
     "label": "Tuesday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "MOST 38 – DEL 61",
+    "resultWhy": "It missed. MOST +3.0 did not cash. Final was MOST 38 – DEL 61.",
     "locked": true,
     "kick": "2026-10-20T23:00Z",
     "big": false,
@@ -421,5 +421,5 @@
    }
   ]
  },
- "updated": "2026-10-20T23:09:42.832Z"
+ "updated": "2026-10-21T02:42:18.930Z"
 }
