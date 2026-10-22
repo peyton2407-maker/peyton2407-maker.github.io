@@ -313,9 +313,9 @@
     "hitPct": 50,
     "why": "The play is SHSU +3.0. Our number is NMSU -1.3, 1.7 points off DraftKings.",
     "label": "Wednesday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "NMSU 30 – SHSU 24",
+    "resultWhy": "It missed. SHSU +3.0 did not cash. Final was NMSU 30 – SHSU 24.",
     "locked": true,
     "kick": "2026-10-22T00:00Z",
     "big": false,
@@ -461,5 +461,5 @@
    }
   ]
  },
- "updated": "2026-10-21T22:46:29.557Z"
+ "updated": "2026-10-22T06:08:24.401Z"
 }
