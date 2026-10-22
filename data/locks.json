@@ -95,6 +95,31 @@
    "closeAt": "2026-10-20T23:09:42.832Z",
    "clv_side": -1,
    "clv_total": 1
+  },
+  "401873010": {
+   "id": "401873010",
+   "league": "nfl",
+   "week": 7,
+   "short": "NE @ CHI",
+   "home": "CHI",
+   "away": "NE",
+   "date": "2026-10-23T00:15Z",
+   "pick": "CHI",
+   "pick_line": "CHI -3.0",
+   "total_pick": "UNDER 50.5",
+   "side_play": false,
+   "our_margin": 3.14,
+   "our_total": 49.3,
+   "confidence": null,
+   "total_play": false,
+   "spread": -3,
+   "total": 50.5,
+   "lockedAt": "2026-10-22T23:30:19.254Z",
+   "close_spread": -3,
+   "close_total": 50.5,
+   "closeAt": "2026-10-22T23:30:19.254Z",
+   "clv_side": 0,
+   "clv_total": 0
   }
  },
  "potd": {
@@ -461,5 +486,5 @@
    }
   ]
  },
- "updated": "2026-10-22T06:08:24.401Z"
+ "updated": "2026-10-22T23:30:19.254Z"
 }
