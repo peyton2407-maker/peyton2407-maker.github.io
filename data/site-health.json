@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-10-21T22:06:53Z",
+ "checked_at": "2026-10-23T00:08:27Z",
  "errors": [],
  "console": [],
  "failed_requests": {},
@@ -7,11 +7,11 @@
  "screens": {
   "home": {
    "visible": true,
-   "count": 15,
+   "count": 19,
    "summary": [],
    "empty": [],
-   "chars": 1056,
-   "images": 42,
+   "chars": 1204,
+   "images": 50,
    "broken_images": []
   },
   "nfl": {
@@ -19,16 +19,16 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 5129,
+   "chars": 5034,
    "images": 28,
    "broken_images": []
   },
   "cfb": {
    "visible": true,
-   "count": 53,
+   "count": 52,
    "summary": [],
    "empty": [],
-   "chars": 9032,
+   "chars": 8800,
    "images": 90,
    "broken_images": []
   },
@@ -37,8 +37,8 @@
    "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 2549,
-   "images": 30,
+   "chars": 2510,
+   "images": 12,
    "broken_images": []
   },
   "season": {
@@ -46,7 +46,7 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3220,
+   "chars": 3222,
    "images": 42,
    "broken_images": []
   },
@@ -55,7 +55,7 @@
    "count": 58,
    "summary": [],
    "empty": [],
-   "chars": 4347,
+   "chars": 4311,
    "images": 0,
    "broken_images": []
   },
@@ -64,7 +64,7 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3138,
+   "chars": 3199,
    "images": 35,
    "broken_images": []
   },
@@ -82,7 +82,7 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 5348,
+   "chars": 5460,
    "images": 15,
    "broken_images": []
   },
@@ -90,11 +90,11 @@
    "visible": true,
    "count": 48,
    "summary": [
-    "180 TD tickets in this filter 66% top anytime (Henry) 205 first-TD names m"
+    "181 TD tickets in this filter 67% top anytime (Henry) 206 first-TD names m"
    ],
    "empty": [],
-   "chars": 3939,
-   "images": 20,
+   "chars": 3938,
+   "images": 21,
    "broken_images": []
   },
   "charts": {
@@ -110,19 +110,21 @@
    "visible": true,
    "count": 72,
    "summary": [
-    "153 value tickets in this filter 127 TD plus-money 5 spread / dog sides 71% b"
+    "145 value tickets in this filter 119 TD plus-money 4 spread / dog sides 75% b"
    ],
    "empty": [],
-   "chars": 3664,
-   "images": 30,
+   "chars": 3643,
+   "images": 31,
    "broken_images": []
   },
   "parlay": {
    "visible": true,
-   "count": 1,
+   "count": 0,
    "summary": [],
-   "empty": [],
-   "chars": 744,
+   "empty": [
+    "No NFL parlay this week. We do not have two plays far enough off the number."
+   ],
+   "chars": 397,
    "images": 0,
    "broken_images": []
   },
@@ -131,7 +133,7 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2535,
+   "chars": 2889,
    "images": 9,
    "broken_images": []
   },
@@ -139,12 +141,13 @@
    "visible": true,
    "count": 61,
    "summary": [
-    "481 listed THU Not posted FRI Not posted SAT Not posted SUN Not posted",
-    "481 listed 0 probable \u00b7 75% 127 questionable / GTD \u00b7 50% 9 doubtful \u00b7 "
+    "538 listed THU \u00b7 7:41 PM ET 530 listed FRI Not posted SAT Not posted S",
+    "37 listed PIT VS NO 90 min before kick SF @ ATL 90 min before kick CL",
+    "530 listed 0 probable \u00b7 75% 169 questionable / GTD \u00b7 50% 8 doubtful \u00b7 "
    ],
    "empty": [],
-   "chars": 4321,
-   "images": 3,
+   "chars": 4503,
+   "images": 4,
    "broken_images": []
   },
   "nflwx": {
@@ -152,7 +155,7 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 3894,
+   "chars": 3893,
    "images": 28,
    "broken_images": []
   },
@@ -160,10 +163,8 @@
    "visible": true,
    "count": 2,
    "summary": [],
-   "empty": [
-    "No NFL game left this week clears our bar, so there is no play of the day."
-   ],
-   "chars": 342,
+   "empty": [],
+   "chars": 490,
    "images": 0,
    "broken_images": []
   },
@@ -171,10 +172,10 @@
    "visible": true,
    "count": 18,
    "summary": [
-    "18 featured CFB leans 10 spread tickets 0 O/U tickets PITT @ MIA top ca"
+    "18 featured CFB leans 11 spread tickets 1 O/U tickets OU @ MSST top car"
    ],
    "empty": [],
-   "chars": 6084,
+   "chars": 6051,
    "images": 32,
    "broken_images": []
   }
