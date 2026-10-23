@@ -1,6 +1,51 @@
 {
  "v": 1,
  "plays": {
+  "401862808": {
+   "id": "401862808",
+   "league": "cfb",
+   "week": 8,
+   "short": "ARMY @ TLSA",
+   "home": "TLSA",
+   "away": "ARMY",
+   "date": "2026-10-24T00:30Z",
+   "pick": "ARMY",
+   "pick_line": "ARMY +1.5",
+   "total_pick": "OVER 53.5",
+   "side_play": false,
+   "our_margin": 0.43,
+   "our_total": 53.8,
+   "confidence": null,
+   "total_play": false,
+   "spread": -1.5,
+   "total": 53.5,
+   "lockedAt": "2026-10-23T23:31:46.469Z",
+   "close_spread": -1.5,
+   "close_total": 53.5,
+   "closeAt": "2026-10-23T23:31:46.469Z",
+   "clv_side": 0,
+   "clv_total": 0
+  },
+  "401864525": {
+   "id": "401864525",
+   "league": "cfb",
+   "week": 8,
+   "short": "AFA @ WYO",
+   "home": "WYO",
+   "away": "AFA",
+   "date": "2026-10-24T01:00Z",
+   "pick": "WYO",
+   "pick_line": "WYO +6.0",
+   "total_pick": "UNDER 46.5",
+   "side_play": false,
+   "our_margin": -3.73,
+   "our_total": 46.3,
+   "confidence": null,
+   "total_play": false,
+   "spread": 6,
+   "total": 46.5,
+   "lockedAt": "2026-10-23T23:31:46.469Z"
+  },
   "401871055": {
    "id": "401871055",
    "league": "cfb",
@@ -345,6 +390,26 @@
     "kick": "2026-10-22T00:00Z",
     "big": false,
     "savedAt": 1792622789562
+   },
+   {
+    "key": "game:401864525",
+    "week": 8,
+    "day": "2026-10-23",
+    "league": "cfb",
+    "id": "401864525",
+    "game": "AFA @ WYO",
+    "kind": "Spread",
+    "line": "WYO +6.0",
+    "hitPct": 50,
+    "why": "The play is WYO +6.0. Our number is AFA -3.7, 1.8 points off DraftKings.",
+    "label": "Friday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "locked": true,
+    "kick": "2026-10-24T01:00Z",
+    "big": false,
+    "savedAt": 1792798306477
    }
   ]
  },
@@ -486,5 +551,5 @@
    }
   ]
  },
- "updated": "2026-10-22T23:30:19.254Z"
+ "updated": "2026-10-23T23:31:46.469Z"
 }
