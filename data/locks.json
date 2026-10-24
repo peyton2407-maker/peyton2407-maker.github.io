@@ -441,6 +441,51 @@
    "clv_side": 0,
    "clv_total": 0
   },
+  "401860905": {
+   "id": "401860905",
+   "league": "cfb",
+   "week": 8,
+   "short": "SDSU @ CSU",
+   "home": "CSU",
+   "away": "SDSU",
+   "date": "2026-10-24T22:30Z",
+   "pick": "CSU",
+   "pick_line": "CSU +1.5",
+   "total_pick": "OVER 59.5",
+   "side_play": true,
+   "our_margin": 1.1,
+   "our_total": 60.7,
+   "confidence": 51,
+   "total_play": false,
+   "spread": 1.5,
+   "total": 59.5,
+   "lockedAt": "2026-10-24T21:14:15.195Z"
+  },
+  "401860907": {
+   "id": "401860907",
+   "league": "cfb",
+   "week": 8,
+   "short": "BOIS @ WSU",
+   "home": "WSU",
+   "away": "BOIS",
+   "date": "2026-10-24T22:00Z",
+   "pick": "BOIS",
+   "pick_line": "BOIS -14.5",
+   "total_pick": "OVER 52.5",
+   "side_play": false,
+   "our_margin": -15.5,
+   "our_total": 52.3,
+   "confidence": null,
+   "total_play": false,
+   "spread": 14.5,
+   "total": 52.5,
+   "lockedAt": "2026-10-24T21:14:15.195Z",
+   "close_spread": 14.5,
+   "close_total": 52.5,
+   "closeAt": "2026-10-24T21:14:15.195Z",
+   "clv_side": 0,
+   "clv_total": 0
+  },
   "401862808": {
    "id": "401862808",
    "league": "cfb",
@@ -1113,9 +1158,9 @@
     "hitPct": 51,
     "why": "The play is NU -15.5. Our number is NU -21.4, 5.9 points off DraftKings. Spread plays are 1-4 on the play of the day, so that record is in the pick.",
     "label": "Best of Saturday's 42 games",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "RUTG 14 – NU 42",
+    "resultWhy": "It hit. NU -15.5 cashed. Final was RUTG 14 – NU 42.",
     "locked": true,
     "kick": "2026-10-24T16:00Z",
     "big": true,
@@ -1261,5 +1306,5 @@
    }
   ]
  },
- "updated": "2026-10-24T18:35:18.374Z"
+ "updated": "2026-10-24T21:14:15.195Z"
 }
