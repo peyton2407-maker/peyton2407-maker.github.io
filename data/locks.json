@@ -1,6 +1,31 @@
 {
  "v": 1,
  "plays": {
+  "401858272": {
+   "id": "401858272",
+   "league": "cfb",
+   "week": 8,
+   "short": "NCSU @ STAN",
+   "home": "STAN",
+   "away": "NCSU",
+   "date": "2026-10-24T02:30Z",
+   "pick": "NCSU",
+   "pick_line": "NCSU -7.5",
+   "total_pick": "OVER 54.5",
+   "side_play": true,
+   "our_margin": -9.8,
+   "our_total": 55.5,
+   "confidence": 51,
+   "total_play": false,
+   "spread": 7.5,
+   "total": 54.5,
+   "lockedAt": "2026-10-24T02:00:17.530Z",
+   "close_spread": 7.5,
+   "close_total": 54.5,
+   "closeAt": "2026-10-24T02:00:17.530Z",
+   "clv_side": 0,
+   "clv_total": 0
+  },
   "401862808": {
    "id": "401862808",
    "league": "cfb",
@@ -410,6 +435,26 @@
     "kick": "2026-10-24T01:00Z",
     "big": false,
     "savedAt": 1792798306477
+   },
+   {
+    "key": "game:401858272",
+    "week": 8,
+    "day": "2026-10-23",
+    "league": "cfb",
+    "id": "401858272",
+    "game": "NCSU @ STAN",
+    "kind": "Spread",
+    "line": "NCSU -7.5",
+    "hitPct": 51,
+    "why": "The play is NCSU -7.5. Our number is NCSU -9.8, 2.3 points off DraftKings.",
+    "label": "Friday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "locked": true,
+    "kick": "2026-10-24T02:30Z",
+    "big": false,
+    "savedAt": 1792807217537
    }
   ]
  },
@@ -551,5 +596,5 @@
    }
   ]
  },
- "updated": "2026-10-23T23:31:46.469Z"
+ "updated": "2026-10-24T02:00:17.530Z"
 }
