@@ -428,9 +428,9 @@
     "hitPct": 50,
     "why": "The play is WYO +6.0. Our number is AFA -3.7, 1.8 points off DraftKings.",
     "label": "Friday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "AFA 14 – WYO 28",
+    "resultWhy": "It hit. WYO +6.0 cashed. Final was AFA 14 – WYO 28.",
     "locked": true,
     "kick": "2026-10-24T01:00Z",
     "big": false,
@@ -448,9 +448,9 @@
     "hitPct": 51,
     "why": "The play is NCSU -7.5. Our number is NCSU -9.8, 2.3 points off DraftKings.",
     "label": "Friday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "NCSU 28 – STAN 31",
+    "resultWhy": "It missed. NCSU -7.5 did not cash. Final was NCSU 28 – STAN 31.",
     "locked": true,
     "kick": "2026-10-24T02:30Z",
     "big": false,
@@ -596,5 +596,5 @@
    }
   ]
  },
- "updated": "2026-10-24T02:00:17.530Z"
+ "updated": "2026-10-24T07:10:31.936Z"
 }
