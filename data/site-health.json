@@ -1,44 +1,59 @@
 {
- "checked_at": "2026-10-23T00:08:27Z",
+ "checked_at": "2026-10-23T23:58:37Z",
  "errors": [],
- "console": [],
+ "console": [
+  "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+  "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+  "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+  "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+  "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+  "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+ ],
  "failed_requests": {},
- "bad_status": {},
+ "bad_status": {
+  "api.open-meteo.com": {
+   "count": 6,
+   "statuses": {
+    "503": 6
+   },
+   "example": "https://api.open-meteo.com/v1/forecast?latitude=36.154&longitude=-95.993&hourly=temperature_2m,precipitation_probability,precipitation,weathercode,windspeed_10m,windgusts_10m,relativehumidity_2m&daily"
+  }
+ },
  "screens": {
   "home": {
    "visible": true,
-   "count": 19,
+   "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 1204,
-   "images": 50,
+   "chars": 1018,
+   "images": 42,
    "broken_images": []
   },
   "nfl": {
    "visible": true,
-   "count": 14,
+   "count": 13,
    "summary": [],
    "empty": [],
-   "chars": 5034,
-   "images": 28,
+   "chars": 4843,
+   "images": 26,
    "broken_images": []
   },
   "cfb": {
    "visible": true,
-   "count": 52,
+   "count": 49,
    "summary": [],
    "empty": [],
-   "chars": 8800,
+   "chars": 8466,
    "images": 90,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 15,
+   "count": 25,
    "summary": [],
    "empty": [],
-   "chars": 2510,
-   "images": 12,
+   "chars": 2459,
+   "images": 23,
    "broken_images": []
   },
   "season": {
@@ -46,7 +61,7 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3222,
+   "chars": 3223,
    "images": 42,
    "broken_images": []
   },
@@ -55,7 +70,7 @@
    "count": 58,
    "summary": [],
    "empty": [],
-   "chars": 4311,
+   "chars": 4241,
    "images": 0,
    "broken_images": []
   },
@@ -64,7 +79,7 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3199,
+   "chars": 3234,
    "images": 35,
    "broken_images": []
   },
@@ -82,39 +97,39 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 5460,
-   "images": 15,
+   "chars": 5775,
+   "images": 18,
    "broken_images": []
   },
   "tds": {
    "visible": true,
    "count": 48,
    "summary": [
-    "181 TD tickets in this filter 67% top anytime (Henry) 206 first-TD names m"
+    "161 TD tickets in this filter 66% top anytime (Henry) 189 first-TD names m"
    ],
    "empty": [],
-   "chars": 3938,
-   "images": 21,
+   "chars": 4015,
+   "images": 18,
    "broken_images": []
   },
   "charts": {
    "visible": true,
-   "count": 28,
+   "count": 27,
    "summary": [],
    "empty": [],
-   "chars": 3975,
-   "images": 6,
+   "chars": 3889,
+   "images": 4,
    "broken_images": []
   },
   "value": {
    "visible": true,
    "count": 72,
    "summary": [
-    "145 value tickets in this filter 119 TD plus-money 4 spread / dog sides 75% b"
+    "115 value tickets in this filter 107 TD plus-money 5 spread / dog sides 53% b"
    ],
    "empty": [],
-   "chars": 3643,
-   "images": 31,
+   "chars": 3997,
+   "images": 18,
    "broken_images": []
   },
   "parlay": {
@@ -133,20 +148,20 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2889,
-   "images": 9,
+   "chars": 2725,
+   "images": 5,
    "broken_images": []
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "538 listed THU \u00b7 7:41 PM ET 530 listed FRI Not posted SAT Not posted S",
+    "538 listed THU \u00b7 9:57 PM ET 529 listed FRI \u00b7 7:30 PM ET 483 listed SAT",
     "37 listed PIT VS NO 90 min before kick SF @ ATL 90 min before kick CL",
-    "530 listed 0 probable \u00b7 75% 169 questionable / GTD \u00b7 50% 8 doubtful \u00b7 "
+    "483 listed 0 probable \u00b7 75% 80 questionable / GTD \u00b7 50% 5 doubtful \u00b7 2"
    ],
    "empty": [],
-   "chars": 4503,
+   "chars": 4546,
    "images": 4,
    "broken_images": []
   },
@@ -155,7 +170,7 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 3893,
+   "chars": 3907,
    "images": 28,
    "broken_images": []
   },
@@ -164,7 +179,7 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 490,
+   "chars": 497,
    "images": 0,
    "broken_images": []
   },
@@ -172,10 +187,10 @@
    "visible": true,
    "count": 18,
    "summary": [
-    "18 featured CFB leans 11 spread tickets 1 O/U tickets OU @ MSST top car"
+    "18 featured CFB leans 13 spread tickets 0 O/U tickets RUTG @ NU top car"
    ],
    "empty": [],
-   "chars": 6051,
+   "chars": 6105,
    "images": 32,
    "broken_images": []
   }
@@ -193,6 +208,6 @@
   "errors": []
  },
  "dk_lines_loaded": null,
- "games_with_props": 28,
- "nfl_games_upcoming": 28
+ "games_with_props": 27,
+ "nfl_games_upcoming": 27
 }
