@@ -1,32 +1,17 @@
 {
- "checked_at": "2026-10-23T23:58:37Z",
+ "checked_at": "2026-10-24T23:40:20Z",
  "errors": [],
- "console": [
-  "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
-  "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
-  "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
-  "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
-  "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
-  "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
- ],
+ "console": [],
  "failed_requests": {},
- "bad_status": {
-  "api.open-meteo.com": {
-   "count": 6,
-   "statuses": {
-    "503": 6
-   },
-   "example": "https://api.open-meteo.com/v1/forecast?latitude=36.154&longitude=-95.993&hourly=temperature_2m,precipitation_probability,precipitation,weathercode,windspeed_10m,windgusts_10m,relativehumidity_2m&daily"
-  }
- },
+ "bad_status": {},
  "screens": {
   "home": {
    "visible": true,
-   "count": 15,
+   "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 1018,
-   "images": 42,
+   "chars": 1842,
+   "images": 82,
    "broken_images": []
   },
   "nfl": {
@@ -34,26 +19,26 @@
    "count": 13,
    "summary": [],
    "empty": [],
-   "chars": 4843,
+   "chars": 5227,
    "images": 26,
    "broken_images": []
   },
   "cfb": {
    "visible": true,
-   "count": 49,
+   "count": 18,
    "summary": [],
    "empty": [],
-   "chars": 8466,
-   "images": 90,
+   "chars": 5548,
+   "images": 36,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 25,
+   "count": 26,
    "summary": [],
    "empty": [],
-   "chars": 2459,
-   "images": 23,
+   "chars": 2445,
+   "images": 32,
    "broken_images": []
   },
   "season": {
@@ -61,7 +46,7 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3223,
+   "chars": 3220,
    "images": 42,
    "broken_images": []
   },
@@ -70,7 +55,7 @@
    "count": 58,
    "summary": [],
    "empty": [],
-   "chars": 4241,
+   "chars": 4280,
    "images": 0,
    "broken_images": []
   },
@@ -79,7 +64,7 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3234,
+   "chars": 3242,
    "images": 35,
    "broken_images": []
   },
@@ -88,7 +73,7 @@
    "count": 10,
    "summary": [],
    "empty": [],
-   "chars": 858,
+   "chars": 837,
    "images": 20,
    "broken_images": []
   },
@@ -97,19 +82,19 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 5775,
-   "images": 18,
+   "chars": 5451,
+   "images": 15,
    "broken_images": []
   },
   "tds": {
    "visible": true,
    "count": 48,
    "summary": [
-    "161 TD tickets in this filter 66% top anytime (Henry) 189 first-TD names m"
+    "164 TD tickets in this filter 65% top anytime (Gibbs) 190 first-TD names m"
    ],
    "empty": [],
-   "chars": 4015,
-   "images": 18,
+   "chars": 3960,
+   "images": 20,
    "broken_images": []
   },
   "charts": {
@@ -125,21 +110,19 @@
    "visible": true,
    "count": 72,
    "summary": [
-    "115 value tickets in this filter 107 TD plus-money 5 spread / dog sides 53% b"
+    "300 value tickets in this filter 113 TD plus-money 3 spread / dog sides 98% b"
    ],
    "empty": [],
-   "chars": 3997,
-   "images": 18,
+   "chars": 3533,
+   "images": 34,
    "broken_images": []
   },
   "parlay": {
    "visible": true,
-   "count": 0,
+   "count": 1,
    "summary": [],
-   "empty": [
-    "No NFL parlay this week. We do not have two plays far enough off the number."
-   ],
-   "chars": 397,
+   "empty": [],
+   "chars": 1148,
    "images": 0,
    "broken_images": []
   },
@@ -148,21 +131,21 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2725,
-   "images": 5,
+   "chars": 4683,
+   "images": 29,
    "broken_images": []
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "538 listed THU \u00b7 9:57 PM ET 529 listed FRI \u00b7 7:30 PM ET 483 listed SAT",
-    "37 listed PIT VS NO 90 min before kick SF @ ATL 90 min before kick CL",
-    "483 listed 0 probable \u00b7 75% 80 questionable / GTD \u00b7 50% 5 doubtful \u00b7 2"
+    "538 listed THU \u00b7 9:57 PM ET 529 listed FRI \u00b7 9:53 PM ET 484 listed SAT",
+    "464 listed SUN Not posted NE @ CHI 37 listed PIT VS NO 90 min before k",
+    "464 listed 0 probable \u00b7 75% 66 questionable / GTD \u00b7 50% 3 doubtful \u00b7 2"
    ],
    "empty": [],
-   "chars": 4546,
-   "images": 4,
+   "chars": 4779,
+   "images": 5,
    "broken_images": []
   },
   "nflwx": {
@@ -170,7 +153,7 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 3907,
+   "chars": 3918,
    "images": 28,
    "broken_images": []
   },
@@ -185,13 +168,13 @@
   },
   "cfbpicks": {
    "visible": true,
-   "count": 18,
+   "count": 17,
    "summary": [
-    "18 featured CFB leans 13 spread tickets 0 O/U tickets RUTG @ NU top car"
+    "17 featured CFB leans 8 spread tickets 1 O/U tickets NDSU @ UNM top car"
    ],
    "empty": [],
-   "chars": 6105,
-   "images": 32,
+   "chars": 6063,
+   "images": 34,
    "broken_images": []
   }
  },
