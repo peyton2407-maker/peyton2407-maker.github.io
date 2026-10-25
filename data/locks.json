@@ -196,6 +196,31 @@
    "clv_side": 0,
    "clv_total": null
   },
+  "401856837": {
+   "id": "401856837",
+   "league": "cfb",
+   "week": 8,
+   "short": "HOU @ UTAH",
+   "home": "UTAH",
+   "away": "HOU",
+   "date": "2026-10-25T02:15Z",
+   "pick": "HOU",
+   "pick_line": "HOU +6.5",
+   "total_pick": "OVER 57.5",
+   "side_play": false,
+   "our_margin": 6.39,
+   "our_total": 57.9,
+   "confidence": null,
+   "total_play": false,
+   "spread": -6.5,
+   "total": 57.5,
+   "lockedAt": "2026-10-25T01:24:59.077Z",
+   "close_spread": -6.5,
+   "close_total": 57.5,
+   "closeAt": "2026-10-25T01:24:59.077Z",
+   "clv_side": 0,
+   "clv_total": 0
+  },
   "401856838": {
    "id": "401856838",
    "league": "cfb",
@@ -778,6 +803,31 @@
    "close_spread": 3,
    "close_total": 48.5,
    "closeAt": "2026-10-24T18:35:18.374Z",
+   "clv_side": 0,
+   "clv_total": 0
+  },
+  "401864527": {
+   "id": "401864527",
+   "league": "cfb",
+   "week": 8,
+   "short": "NDSU @ UNM",
+   "home": "UNM",
+   "away": "NDSU",
+   "date": "2026-10-25T02:00Z",
+   "pick": "UNM",
+   "pick_line": "UNM -4.5",
+   "total_pick": "UNDER 39.5",
+   "side_play": false,
+   "our_margin": 7.9,
+   "our_total": 38.3,
+   "confidence": null,
+   "total_play": false,
+   "spread": -4.5,
+   "total": 39.5,
+   "lockedAt": "2026-10-25T01:24:59.077Z",
+   "close_spread": -4.5,
+   "close_total": 39.5,
+   "closeAt": "2026-10-25T01:24:59.077Z",
    "clv_side": 0,
    "clv_total": 0
   },
@@ -1481,5 +1531,5 @@
    }
   ]
  },
- "updated": "2026-10-24T23:17:32.148Z"
+ "updated": "2026-10-25T01:24:59.077Z"
 }
