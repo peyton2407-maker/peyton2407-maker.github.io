@@ -30,6 +30,14 @@
   },
   {
    "feed": "https://site.web.api.espn.com/apis/fitt/v3/sports/football/college-football/powerindex?limit=150",
+   "error": "HTTP Error 502: Bad Gateway"
+  },
+  {
+   "feed": "https://site.api.espn.com/apis/fitt/v3/sports/football/college-football/powerindex?limit=150",
+   "error": "HTTP Error 502: Bad Gateway"
+  },
+  {
+   "feed": "https://site.web.api.espn.com/apis/fitt/v3/sports/football/college-football/powerindex?limit=200",
    "teams": 138,
    "with_offense_defense": 138
   },
@@ -38,11 +46,11 @@
    "teams": 32
   }
  ],
- "ran_at": "2026-10-25T06:00:52Z",
+ "ran_at": "2026-10-25T11:14:49Z",
  "nfl_week": 7,
  "cfb_week": 8,
  "changes": [
-  "0 new games, 79 updated, 14 new finals"
+  "0 new games, 83 updated, 0 new finals"
  ],
  "parse": {
   "cfb_efficiency_names": [
@@ -59,15 +67,15 @@
   "sample": [
    {
     "abbr": "OSU",
-    "fpi": 28.251,
-    "off": 81.912,
-    "def": 87.815
+    "fpi": 28.181,
+    "off": 82.902,
+    "def": 86.793
    },
    {
     "abbr": "ND",
-    "fpi": 28.017,
-    "off": 85.267,
-    "def": 89.789
+    "fpi": 27.73,
+    "off": 84.739,
+    "def": 89.797
    }
   ],
   "nfl_depth_teams": 32
