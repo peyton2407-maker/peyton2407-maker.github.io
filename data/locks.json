@@ -1320,6 +1320,31 @@
    "spread": 4.5,
    "total": 43.5,
    "lockedAt": "2026-10-25T18:54:20.439Z"
+  },
+  "401873022": {
+   "id": "401873022",
+   "league": "nfl",
+   "week": 7,
+   "short": "KC @ SEA",
+   "home": "SEA",
+   "away": "KC",
+   "date": "2026-10-26T00:20Z",
+   "pick": "KC",
+   "pick_line": "KC +3.0",
+   "total_pick": "OVER 43.5",
+   "side_play": false,
+   "our_margin": 2.5,
+   "our_total": 43.6,
+   "confidence": null,
+   "total_play": false,
+   "spread": -3,
+   "total": 43.5,
+   "lockedAt": "2026-10-25T23:30:58.685Z",
+   "close_spread": -3,
+   "close_total": 43.5,
+   "closeAt": "2026-10-25T23:30:58.685Z",
+   "clv_side": 0,
+   "clv_total": 0
   }
  },
  "potd": {
@@ -1746,5 +1771,5 @@
    }
   ]
  },
- "updated": "2026-10-25T18:54:20.439Z"
+ "updated": "2026-10-25T23:30:58.685Z"
 }
