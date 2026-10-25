@@ -1105,6 +1105,26 @@
    "closeAt": "2026-10-22T23:30:19.254Z",
    "clv_side": 0,
    "clv_total": 0
+  },
+  "401873011": {
+   "id": "401873011",
+   "league": "nfl",
+   "week": 7,
+   "short": "PIT VS NO",
+   "home": "NO",
+   "away": "PIT",
+   "date": "2026-10-25T13:30Z",
+   "pick": "NO",
+   "pick_line": "NO +3.0",
+   "total_pick": "UNDER 43.5",
+   "side_play": false,
+   "our_margin": -2.85,
+   "our_total": 42.6,
+   "confidence": null,
+   "total_play": false,
+   "spread": 3,
+   "total": 43.5,
+   "lockedAt": "2026-10-25T12:00:54.645Z"
   }
  },
  "potd": {
@@ -1531,5 +1551,5 @@
    }
   ]
  },
- "updated": "2026-10-25T01:24:59.077Z"
+ "updated": "2026-10-25T12:00:54.645Z"
 }
