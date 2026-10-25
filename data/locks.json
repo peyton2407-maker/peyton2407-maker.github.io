@@ -1300,6 +1300,26 @@
    "closeAt": "2026-10-25T16:00:37.792Z",
    "clv_side": 0,
    "clv_total": null
+  },
+  "401873019": {
+   "id": "401873019",
+   "league": "nfl",
+   "week": 7,
+   "short": "DEN @ ARI",
+   "home": "ARI",
+   "away": "DEN",
+   "date": "2026-10-25T20:05Z",
+   "pick": "DEN",
+   "pick_line": "DEN -4.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -4.71,
+   "our_total": 43.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 4.5,
+   "total": 43.5,
+   "lockedAt": "2026-10-25T18:54:20.439Z"
   }
  },
  "potd": {
@@ -1726,5 +1746,5 @@
    }
   ]
  },
- "updated": "2026-10-25T16:00:37.792Z"
+ "updated": "2026-10-25T18:54:20.439Z"
 }
