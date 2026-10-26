@@ -1,9 +1,9 @@
 {
  "source": "The Odds API",
  "plan": "free",
- "board_games": 19,
- "fetched_now": 1,
+ "board_games": 16,
+ "fetched_now": 0,
  "errors": [],
- "credits_left": "344",
- "games_with_prices": 5
+ "credits_left": null,
+ "games_with_prices": 2
 }
