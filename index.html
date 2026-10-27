@@ -11782,24 +11782,53 @@ function potdBets(g, league, soft) {
   }
   return bets;
 }
+// NFL: the play of the day can be any bet on the board: a side, a total, a moneyline or any
+// player prop with a real sportsbook price. Each candidate is priced like the parlay builder
+// (the checked chance at the best price we have) and the one that beats its price by the most
+// wins. A candidate has to beat its price; with none, there is no play.
+function potdNflCandidates(g) {
+  const out = [];
+  const add = (b, id) => {
+    const leg = id && typeof pbLeg === "function" ? pbLeg({ id }) : null;
+    if (!leg || leg.started || !(leg.value > 0.005)) return;
+    out.push(Object.assign(b, { hit: leg.win, ev: leg.value, price: leg.price, book: leg.priceSource, legId: id }));
+  };
+  potdBets(g, "nfl", false).forEach((b) => add(b, potdLegId(g, b.line)));
+  if (typeof nextPropRows === "function" && typeof postedLean === "function") {
+    nextPropRows().filter((p) => String(p.game_id) === String(g.id)).forEach((p) => {
+      const L = postedLean(p);
+      if (!L || L.price == null || L.value == null || !(L.value > 0.005) || L.fair == null) return;
+      const lbl = PROP_LBL[L.m.key] || L.m.label;
+      out.push({
+        g, kind: "Player prop", line: `${p.name} ${L.take.toLowerCase()} ${L.line} ${lbl}`,
+        hit: L.chance, ev: L.value, value: L.value * 10, price: L.price, book: L.book,
+        prop: { pid: String(p.id), name: p.name, stat: L.m.key, side: L.take.toLowerCase(), line: Number(L.line) },
+        why: `We project ${p.name} for ${L.m.key === "td" ? Math.round((1 - Math.exp(-L.m.mean)) * 100) + "%" : (L.m.mean >= 10 ? Math.round(L.m.mean) : Number(L.m.mean).toFixed(1)) + " " + lbl} against a line of ${L.line}. Our checked chance on the ${L.take.toLowerCase()} is ${Math.round(L.chance * 100)}%; the books' own chance is ${Math.round(L.fair * 100)}%. At ${pbAm(L.price)} (${L.book}) that is ${Math.round(L.value * 1000) / 10}% better than the price.`
+      });
+    });
+  }
+  return out;
+}
 function potdPick(league) {
   let window = potdWindow(league);
   if (!window.games.length) return null;
   const locked = potdLockedBet(league, window);
   if (locked) return locked;
+  const cands = (g) => league === "nfl" ? potdNflCandidates(g) : potdBets(g, league, false);
   let bets = [];
-  window.games.forEach((g) => { bets = bets.concat(potdBets(g, league, false)); });
+  window.games.forEach((g) => { bets = bets.concat(cands(g)); });
   if (!bets.length && !window.big) {
     // The next game has no real play. Don't force one the board itself would pass on;
     // move to the next game that clears the bar.
-    const next = potdUpcoming(league).find((g) => potdBets(g, league, false).length);
+    const next = potdUpcoming(league).find((g) => cands(g).length);
     if (!next) return null;
     window = { games: [next], big: false, day: potdDayKey(next.date), count: 1 };
     const held = potdLockedBet(league, window);
     if (held) return held;
-    bets = potdBets(next, league, false);
+    bets = cands(next);
   }
-  bets.forEach((b) => { b.score = b.value * potdKindWeight(league, b.kind); });
+  // NFL ranks on value at the price (any bet type); college on points off the number
+  bets.forEach((b) => { b.score = (league === "nfl" ? b.ev : b.value) * potdKindWeight(league, b.kind); });
   bets.sort((a, b) => b.score - a.score || b.hit - a.hit);
   const best = bets[0];
   if (!best) return null;
@@ -11869,9 +11898,14 @@ function potdLockDetail(bet) {
   const out = {};
   try {
     const g = bet.g, p = g.proj || {}, o = g.odds || {};
-    const id = potdLegId(g, bet.line);
-    const leg = id && typeof pbLeg === "function" ? pbLeg({ id }) : null;
-    if (leg) { out.price = leg.price; out.book = leg.priceSource === "standard" ? "standard -110" : leg.priceSource; out.bookPct = Math.round((leg.bookWin || 0) * 100); }
+    if (bet.prop) {
+      Object.assign(out, { prop: bet.prop, price: bet.price, book: bet.book });
+    } else {
+      const id = potdLegId(g, bet.line);
+      const leg = id && typeof pbLeg === "function" ? pbLeg({ id }) : null;
+      if (leg) { out.price = leg.price; out.book = leg.priceSource === "standard" ? "standard -110" : leg.priceSource; out.bookPct = Math.round((leg.bookWin || 0) * 100); }
+    }
+    if (bet.ev != null) out.ev = Math.round(bet.ev * 1000) / 1000;
     if (p.hashmark_home_spread != null) out.ours = cfbSideLabel(g, p.hashmark_home_spread) + (p.hashmark_total != null ? " · total " + Number(p.hashmark_total).toFixed(1) : "");
     if (p.home_points != null && p.away_points != null) out.score = `${g.away.abbr} ${Number(p.away_points).toFixed(1)} – ${g.home.abbr} ${Number(p.home_points).toFixed(1)}`;
     if (o.home_spread != null) out.market = cfbSideLabel(g, Number(o.home_spread)) + (o.total != null ? " · total " + o.total : "");
@@ -11908,6 +11942,19 @@ function gradeSavedPotd(league) {
     if (!row.locked && Number.isFinite(kick) && Date.now() >= kick - 90 * 60 * 1000) row.locked = true;
     if (!row.locked) return;
     const g = (DATA.games || []).find((x) => String(x.id) === String(row.id));
+    if (row.prop) {
+      // the box score number comes from data/prop-record.json ("potd": scripts/prop_record.py)
+      const got = window.PROP_RECORD && window.PROP_RECORD.potd && window.PROP_RECORD.potd[row.key];
+      if (!got || (got.actual == null && !got.void)) return;
+      if (got.void) { row.result = "VOID"; row.resultWhy = "He didn't play, so the bet is void."; return; }
+      const a = Number(got.actual), L = Number(row.prop.line);
+      const over = row.prop.side === "over";
+      row.result = a === L ? "PUSH" : (a > L) === over ? "HIT" : "MISS";
+      row.final = `${row.prop.name}: ${a} ${PROP_LBL[row.prop.stat] || row.prop.stat}`;
+      row.by = a === L ? "Landed on the number" : `${Math.abs(a - L).toFixed(1).replace(/\.0$/, "")} ${a > L ? "over" : "under"} ${L}`;
+      row.resultWhy = row.result === "HIT" ? `It hit. ${row.line} cashed.` : row.result === "PUSH" ? "It pushed." : `It missed. ${row.line} did not cash.`;
+      return;
+    }
     if (!g || !g.completed || !g.home || !g.away) return;
     const hs = Number(g.home.score);
     const as = Number(g.away.score);
@@ -11962,7 +12009,7 @@ function potdCard(bet, title) {
       <div class="pick-score">${pct}%</div>
     </div>
     <div class="prop-stats">
-      <div><span class="lbl">${escHtml(bet.kind)}</span><b>${escHtml(bet.line)}</b></div>
+      <div><span class="lbl">${escHtml(bet.kind)}</span><b>${escHtml(bet.line)}${bet.price != null ? " · " + escHtml(pbAm(bet.price)) + (bet.book ? " " + escHtml(bet.book) : "") : ""}</b></div>
       <div><span class="lbl">DraftKings</span><b>${escHtml((g.odds && g.odds.details) || "—")} · total ${escHtml(String((g.odds && g.odds.total) != null ? g.odds.total : "—"))}</b></div>
       <div><span class="lbl">Our score</span><b>${g.away.abbr} ${p.away_points ?? "—"} – ${g.home.abbr} ${p.home_points ?? "—"}</b></div>
       <div><span class="lbl">Why this one</span><b>${escHtml(bet.why)}</b></div>
@@ -12003,9 +12050,9 @@ function potdRecordCard(league) {
   const name = league === "nfl" ? "NFL" : "College";
   const rec = (t) => `${t.hit}-${t.miss}${t.push ? "-" + t.push : ""}`;
   const u = (x) => `${x >= 0 ? "+" : "−"}${Math.abs(x).toFixed(2)}u`;
-  const kinds = ["Spread", "Over", "Under", "Moneyline"].map((k) => {
+  const kinds = ["Spread", "Over", "Under", "Moneyline", "Player prop"].map((k) => {
     const t = potdTally(all.filter((r) => r.kind === k));
-    return t.n ? `<div><span class="lbl">${k === "Over" || k === "Under" ? k + "s" : k + "s"}</span><b>${rec(t)} · ${u(t.units)}</b></div>` : "";
+    return t.n ? `<div><span class="lbl">${k}s</span><b>${rec(t)} · ${u(t.units)}</b></div>` : "";
   }).join("");
   // current streak, newest first
   const done = all.filter((r) => r.result === "HIT" || r.result === "MISS");
@@ -12016,7 +12063,7 @@ function potdRecordCard(league) {
     <div class="who">
       <div>
         <h4>${name} play of the day record</h4>
-        <div class="prop-meta">One play per game, or one best play when 4 or more games kick off together. It locks 90 minutes before kickoff and is graded against the final. Every play is listed below with why we took it.</div>
+        <div class="prop-meta">${league === "nfl" ? "Any NFL bet can be the play: a side, a total, a moneyline or any player prop. We take the one that beats its sportsbook price by the most. " : ""}One play per game, or one best play when 4 or more games kick off together. It locks 90 minutes before kickoff and is graded against the final. Every play is listed below with why we took it.</div>
       </div>
       <div class="pick-score">${rec(T)}</div>
     </div>
@@ -12033,7 +12080,7 @@ function potdHistoryHtml(league) {
   const rows = potdPublished(league);
   if (!rows.length) return "";
   const when = (r) => { const t = Date.parse(r.kick || r.day || ""); return Number.isFinite(t) ? new Date(t).toLocaleDateString([], { weekday: "short", month: "short", day: "numeric", timeZone: "America/New_York" }) : "Week " + r.week; };
-  const res = (r) => r.result === "HIT" ? `<span class="potd-res hit">Hit</span>` : r.result === "MISS" ? `<span class="potd-res miss">Miss</span>` : r.result === "PUSH" ? `<span class="potd-res">Push</span>` : `<span class="potd-res">Locked</span>`;
+  const res = (r) => r.result === "HIT" ? `<span class="potd-res hit">Hit</span>` : r.result === "MISS" ? `<span class="potd-res miss">Miss</span>` : r.result === "PUSH" ? `<span class="potd-res">Push</span>` : r.result === "VOID" ? `<span class="potd-res">Void</span>` : `<span class="potd-res">Locked</span>`;
   const u = (r) => { if (!r.result) return ""; const x = potdUnits(r); return `<span class="${x > 0 ? "up" : x < 0 ? "down" : ""}">${x >= 0 ? "+" : "−"}${Math.abs(x).toFixed(2)}u</span>`; };
   return `<section class="potd-log">
     <h3>Every ${league === "nfl" ? "NFL" : "college"} play of the day</h3>
@@ -12085,7 +12132,7 @@ function renderNflPotd() {
   gradeSavedPotd("nfl");
   const bet = nflPotd();
   rememberPotd("nfl", bet);
-  const current = bet ? potdCard(bet, "NFL POTD") : `<div class="empty">No NFL game left this week clears our bar, so there is no play of the day.</div>`;
+  const current = bet ? potdCard(bet, "NFL POTD") : `<div class="empty">No NFL bet left this week beats its price: no side, total, moneyline or player prop. So there is no play of the day yet. Player prop prices come in about a day before each kickoff.</div>`;
   board.innerHTML = potdRecordCard("nfl") + current + potdHistoryHtml("nfl");
   board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }

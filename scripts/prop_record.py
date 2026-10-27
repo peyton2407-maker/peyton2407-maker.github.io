@@ -227,13 +227,45 @@ def main():
             x["result"] = {"actual": None, "out": "void", "units": 0.0, "why": "no stats found"}
             changed = True
 
+    # 3) the box score number for NFL plays of the day that are player props (data/locks.json
+    # potd rows with "prop"); the page grades them against their own line
+    potd = dict(old.get("potd") or {})
+    try:
+        locks = json.loads((ROOT / "data" / "locks.json").read_text())
+    except Exception:
+        locks = {}
+    for r in ((locks.get("potd") or {}).get("nfl") or []):
+        pr = r.get("prop")
+        kick = parse(r.get("kick"))
+        if not pr or not r.get("key") or r.get("result") or r["key"] in potd or not kick or kick > now - timedelta(hours=3):
+            continue
+        gid = str(r.get("id"))
+        if gid not in boxes:
+            try:
+                s = json.loads((fx / f"summary-{gid}.json").read_text()) if fx else get_json(SUMMARY.format(id=gid))
+                boxes[gid] = box_stats(s)
+            except Exception as e:
+                print("box score error", gid, str(e)[:120])
+                boxes[gid] = None
+        b = boxes[gid]
+        if not b or not b["final"]:
+            continue
+        row = b["players"].get(str(pr.get("pid")))
+        if row is None:
+            potd[r["key"]] = {"pid": pr.get("pid"), "stat": pr.get("stat"), "actual": None, "void": True}
+        else:
+            v = row.get(pr.get("stat"), 0.0)
+            potd[r["key"]] = {"pid": pr.get("pid"), "stat": pr.get("stat"), "actual": int(v) if float(v).is_integer() else v}
+        changed = True
+        print("play of the day prop", r.get("line"), "->", potd[r["key"]])
+
     graded = [x for x in book.values() if x.get("result") and x["result"]["out"] != "void"]
     print(f"{len(book)} picks in the record; {len(graded)} graded; {len(todo)} were waiting on a result")
     if not changed and OUT.exists():
         print("No change.")
         return 0
     picks = sorted(book.values(), key=lambda x: (str(x.get("kick")), x.get("name") or ""))
-    OUT.write_text(json.dumps({"updated": iso(now), "picks": picks}, separators=(",", ":")) + "\n")
+    OUT.write_text(json.dumps({"updated": iso(now), "picks": picks, "potd": potd}, separators=(",", ":")) + "\n")
     return 0
 
 

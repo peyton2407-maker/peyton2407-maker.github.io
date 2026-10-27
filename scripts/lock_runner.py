@@ -93,6 +93,8 @@ async def main():
         await page.wait_for_function("!!window.PAST_CARDS && Array.isArray(window.WEEK_RESULTS)", timeout=60000)
         # Make sure scores and finals for this week and last week are in.
         await page.evaluate("async () => { try { if (typeof pullLiveScores === 'function') await pullLiveScores(false); } catch (e) {} }")
+        # the box score numbers for player-prop plays of the day (scripts/prop_record.py)
+        await page.evaluate("async () => { try { await pbFetchOnce('proprecord', '/data/prop-record.json?t=' + Date.now(), (d) => { window.PROP_RECORD = d; }); } catch (e) {} }")
         if args.inject:
             await page.evaluate(args.inject)
         result = await page.evaluate(
