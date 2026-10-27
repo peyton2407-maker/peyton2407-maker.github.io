@@ -2189,8 +2189,11 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .gm-score small .live-dot { font: 800 13px var(--body); color: var(--flame); }
 
 /* flatten boxes-inside-boxes: stat groups become one panel split by hairlines */
-.prop-stats, .yardgrid, .simgrid, .wxbar { gap: 1px !important; background: var(--line) !important; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
-.prop-stats > div, .yardgrid > div, .simgrid > div, .wxbar > div { background: var(--card) !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; margin: 0 !important; }
+/* dividers drawn by each cell (right and bottom), so a short last row leaves card-colored space, not a grey block */
+.prop-stats, .yardgrid, .simgrid, .wxbar { gap: 0 !important; background: var(--card) !important; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.prop-stats > div, .yardgrid > div, .simgrid > div, .wxbar > div { background: var(--card) !important; border: 0 !important; border-radius: 0 !important; box-shadow: inset -1px -1px 0 var(--line) !important; margin: 0 !important; }
+.prop-stats, .yardgrid, .simgrid, .wxbar { border-right: 0 !important; border-bottom: 0 !important; }
+.prop-stats::after, .yardgrid::after, .simgrid::after, .wxbar::after { content: none; }
 .prop-stats .lbl, .yardgrid .lbl, .simgrid .lbl, .wxbar .lbl { letter-spacing: 0; text-transform: none; font-size: 12px; font-weight: 600; color: var(--muted); }
 .stat-row .stat { padding: 12px 14px; }
 .stat-row .stat b { font-size: 28px; }
@@ -12015,7 +12018,7 @@ function potdCard(bet, title) {
       <div><span class="lbl">${escHtml(bet.kind)}</span><b>${escHtml(bet.line)}${bet.price != null ? " · " + escHtml(pbAm(bet.price)) + (bet.book ? " " + escHtml(bet.book) : "") : ""}</b></div>
       <div><span class="lbl">DraftKings</span><b>${escHtml((g.odds && g.odds.details) || "—")} · total ${escHtml(String((g.odds && g.odds.total) != null ? g.odds.total : "—"))}</b></div>
       <div><span class="lbl">Our score</span><b>${g.away.abbr} ${p.away_points ?? "—"} – ${g.home.abbr} ${p.home_points ?? "—"}</b></div>
-      <div><span class="lbl">Why this one</span><b>${escHtml(bet.why)}</b></div>
+      <div style="grid-column:1/-1"><span class="lbl">Why this one</span><b>${escHtml(bet.why)}</b></div>
     </div>
   </article>`;
 }
