@@ -11,15 +11,15 @@
    "date": "2026-10-27T23:00Z",
    "pick": "DEL",
    "pick_line": "DEL +1.5",
-   "total_pick": "UNDER 57.5",
+   "total_pick": "UNDER 55.5",
    "side_play": false,
-   "our_margin": 1.43,
-   "our_total": 55.7,
-   "confidence": 51,
-   "total_play": true,
+   "our_margin": 0.7,
+   "our_total": 56.2,
+   "confidence": null,
+   "total_play": false,
    "spread": -1.5,
-   "total": 57.5,
-   "lockedAt": "2026-10-27T14:34:30.066Z",
+   "total": 55.5,
+   "lockedAt": "2026-10-27T19:39:54.035Z",
    "provisional": true
   },
   "401871072": {
@@ -31,16 +31,16 @@
    "away": "SHSU",
    "date": "2026-10-28T00:00Z",
    "pick": "SHSU",
-   "pick_line": "SHSU +5.5",
-   "total_pick": "UNDER 51.5",
+   "pick_line": "SHSU +6.0",
+   "total_pick": "OVER 52.5",
    "side_play": false,
-   "our_margin": 4.99,
-   "our_total": 50.3,
+   "our_margin": 4.43,
+   "our_total": 52.1,
    "confidence": null,
    "total_play": false,
-   "spread": -5.5,
-   "total": 51.5,
-   "lockedAt": "2026-10-27T14:34:30.066Z",
+   "spread": -6,
+   "total": 52.5,
+   "lockedAt": "2026-10-27T19:39:54.035Z",
    "provisional": true
   }
  },
@@ -482,5 +482,5 @@
    }
   ]
  },
- "updated": "2026-10-27T14:34:30.066Z"
+ "updated": "2026-10-27T19:39:54.035Z"
 }
