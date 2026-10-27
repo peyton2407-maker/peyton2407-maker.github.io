@@ -118,7 +118,7 @@ async def main():
         await sp.goto(SITE + "/split/", wait_until="load", timeout=120000)
         await sp.wait_for_timeout(5000)
         report["split"] = await sp.evaluate("""() => { const imgs = [...document.querySelectorAll('img')].filter((i) => i.complete && i.offsetParent);
-            return { games: document.querySelectorAll('[data-gid], .game, article').length, images: imgs.length, broken_images: imgs.filter((i) => i.naturalWidth === 0).map((i) => i.src.slice(-60)).slice(0, 5) }; }""")
+            return { games: document.querySelectorAll('[data-gid], .game, article, .card').length, images: imgs.length, broken_images: imgs.filter((i) => i.naturalWidth === 0).map((i) => i.src.slice(-60)).slice(0, 5) }; }""")
         report["split"]["errors"] = sp_err
         report["dk_lines_loaded"] = await page.evaluate("Object.keys(window.__DK_LINES || window.DK_LINES || {}).length || null")
         report["games_with_props"] = await page.evaluate("(DATA.games || []).filter((g) => g.league === 'nfl' && !g.completed && (g.props || []).length).length")

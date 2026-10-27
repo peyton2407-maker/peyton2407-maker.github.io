@@ -197,7 +197,8 @@ def watch(now=None):
     started = datetime.fromtimestamp(min([x.get("saved") or 9e15 for x in (kick.get("nfl") or {}).values()] or [9e15]) / 1000, timezone.utc) if kick.get("nfl") else now
     for g in games:
         k = parse(g.get("date"))
-        if g.get("league") != "nfl" or not k or not (now - timedelta(hours=24) < k < now - timedelta(minutes=45)):
+        # alert while it can still be noticed and fixed, not for a day of repeat emails
+        if g.get("league") != "nfl" or not k or not (now - timedelta(hours=6) < k < now - timedelta(minutes=45)):
             continue
         if k < started:  # before the server took kickoff reports
             continue
