@@ -2125,9 +2125,10 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 /* section tabs stay on one line and scroll: arrows at the edges and the mouse wheel move them
    (a hidden scrollbar left desktop mice no way to reach the tabs past the right edge) */
 #tabBar.subnav { position: relative; }
-.subnav-arrow { position: absolute; top: 0; z-index: 3; height: 44px; width: 44px; border: 0; padding: 0; cursor: pointer;
-  color: var(--ink); font: 700 20px/1 var(--body); display: flex; align-items: center; }
+.subnav-arrow { position: absolute; top: 0; z-index: 3; height: 44px; width: 52px; border: 0; padding: 0; cursor: pointer;
+  color: var(--sun); font: 700 26px/1 var(--body); display: flex; align-items: center; }
 .subnav-arrow[hidden] { display: none; }
+#tabBar .subnav-group a { -webkit-user-drag: none; user-select: none; }
 .subnav-arrow.left { left: 0; justify-content: flex-start; padding-left: 6px; background: linear-gradient(90deg, var(--paper) 55%, transparent); }
 .subnav-arrow.right { right: 0; justify-content: flex-end; padding-right: 6px; background: linear-gradient(270deg, var(--paper) 55%, transparent); }
 .subnav-arrow:hover { color: var(--sun); }
@@ -12172,6 +12173,32 @@ function subnavArrows() {
       g.scrollLeft += d;
       e.preventDefault();
     }, { passive: false });
+    // click and drag the strip with a mouse, like a phone swipe (a drag isn't a tab click)
+    let drag = null;
+    // links would start a browser link-drag and swallow the mouse moves
+    bar.addEventListener("dragstart", (e) => { if (e.target.closest && e.target.closest(".subnav-group")) e.preventDefault(); });
+    bar.addEventListener("pointerdown", (e) => {
+      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      const g = e.target.closest && e.target.closest(".subnav-group");
+      if (!g || g.scrollWidth <= g.clientWidth + 2) return;
+      drag = { g, x: e.clientX, left: g.scrollLeft, moved: false };
+    });
+    window.addEventListener("pointermove", (e) => {
+      if (!drag) return;
+      const dx = e.clientX - drag.x;
+      if (Math.abs(dx) > 4) drag.moved = true;
+      if (drag.moved) { drag.g.scrollLeft = drag.left - dx; drag.g.style.cursor = "grabbing"; }
+    });
+    window.addEventListener("pointerup", () => {
+      if (!drag) return;
+      drag.g.style.cursor = "";
+      if (drag.moved) { const g = drag.g; g.__noClick = true; setTimeout(() => { g.__noClick = false; }, 0); }
+      drag = null;
+    });
+    bar.addEventListener("click", (e) => {
+      const g = e.target.closest && e.target.closest(".subnav-group");
+      if (g && g.__noClick) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
     window.addEventListener("resize", () => subnavArrows());
   }
   const g = subnavGroupNow();
