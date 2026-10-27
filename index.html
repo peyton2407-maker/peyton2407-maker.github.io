@@ -12968,13 +12968,14 @@ function fillScoreWeeks(league) {
       const label = String(w) === String(current) ? "This week (" + scoreWeekLabel(league, w) + ")" : scoreWeekLabel(league, w);
       return `<option value="${w}">${label}</option>`;
     }).join("");
-    const want = prev && prev !== "current" && [...root.options].some((o) => o.value === prev) ? prev : String(current);
-    root.value = [...root.options].some((o) => o.value === want) ? want : String(current);
+    // the season record first: the current week reads 0-0 until its games finish
+    const want = prev && prev !== "current" && [...root.options].some((o) => o.value === prev) ? prev : "all";
+    root.value = [...root.options].some((o) => o.value === want) ? want : "all";
     return;
   }
   const latest = weeks.length ? String(weeks[0]) : "all";
   root.innerHTML = `<button type="button" data-week="all">${scoreWeekLabel(league, "all")}</button>` + weeks.map((w) => `<button type="button" data-week="${w}">${String(w) === String(current) ? "Current week" : scoreWeekLabel(league, w)}</button>`).join("");
-  const pick = (prev && root.querySelector(`button[data-week="${prev}"]`)) ? prev : String(current);
+  const pick = (prev && prev !== "current" && root.querySelector(`button[data-week="${prev}"]`)) ? prev : "all";
   root.querySelectorAll("button[data-week]").forEach((b) => {
     const on = b.dataset.week === pick;
     b.classList.toggle("active", on);
