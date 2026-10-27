@@ -64,7 +64,8 @@
     "locked": true,
     "kick": "2026-10-18T20:25Z",
     "big": false,
-    "savedAt": 1792349783227
+    "savedAt": 1792349783227,
+    "by": "Covered by 8.5"
    },
    {
     "key": "game:401873005",
@@ -84,7 +85,8 @@
     "locked": true,
     "kick": "2026-10-18T20:25Z",
     "big": false,
-    "savedAt": 1792352872931
+    "savedAt": 1792352872931,
+    "by": "Covered by 2.5"
    }
   ],
   "cfb": [
@@ -106,7 +108,8 @@
     "locked": true,
     "kick": "2026-10-15T23:30Z",
     "big": false,
-    "savedAt": 1792102857496
+    "savedAt": 1792102857496,
+    "by": "Final total 47, 2.5 under 49.5"
    },
    {
     "key": "game:401860923",
@@ -126,7 +129,8 @@
     "locked": true,
     "kick": "2026-10-16T00:00Z",
     "big": false,
-    "savedAt": 1792108215134
+    "savedAt": 1792108215134,
+    "by": "Final total 93, 23.5 over 69.5"
    },
    {
     "key": "game:401862801",
@@ -146,7 +150,8 @@
     "locked": true,
     "kick": "2026-10-16T23:30Z",
     "big": false,
-    "savedAt": 1792188562626
+    "savedAt": 1792188562626,
+    "by": "Final total 48, 7.5 under 55.5"
    },
    {
     "key": "game:401869844",
@@ -166,7 +171,8 @@
     "locked": true,
     "kick": "2026-10-17T00:00Z",
     "big": false,
-    "savedAt": 1792193788787
+    "savedAt": 1792193788787,
+    "by": "Final total 67, 18.5 over 48.5"
    },
    {
     "key": "slate:2026-10-17",
@@ -186,7 +192,8 @@
     "locked": true,
     "kick": "2026-10-17T17:00Z",
     "big": true,
-    "savedAt": 1792253869278
+    "savedAt": 1792253869278,
+    "by": "Final total 69, 22.5 over 46.5"
    },
    {
     "key": "game:401858492",
@@ -206,7 +213,8 @@
     "locked": true,
     "kick": "2026-10-18T03:00Z",
     "big": false,
-    "savedAt": 1792292220708
+    "savedAt": 1792292220708,
+    "by": "Final total 31, 20.5 under 51.5"
    },
    {
     "key": "game:401871069",
@@ -226,7 +234,8 @@
     "locked": true,
     "kick": "2026-10-20T23:00Z",
     "big": false,
-    "savedAt": 1792532574310
+    "savedAt": 1792532574310,
+    "by": "Missed by 20"
    },
    {
     "key": "game:401871092",
@@ -246,7 +255,8 @@
     "locked": true,
     "kick": "2026-10-20T23:30Z",
     "big": false,
-    "savedAt": 1792537782838
+    "savedAt": 1792537782838,
+    "by": "Missed by 8.5"
    },
    {
     "key": "game:401871070",
@@ -266,7 +276,8 @@
     "locked": true,
     "kick": "2026-10-22T00:00Z",
     "big": false,
-    "savedAt": 1792622789562
+    "savedAt": 1792622789562,
+    "by": "Missed by 3"
    },
    {
     "key": "game:401864525",
@@ -286,7 +297,8 @@
     "locked": true,
     "kick": "2026-10-24T01:00Z",
     "big": false,
-    "savedAt": 1792798306477
+    "savedAt": 1792798306477,
+    "by": "Covered by 20"
    },
    {
     "key": "game:401858272",
@@ -306,7 +318,8 @@
     "locked": true,
     "kick": "2026-10-24T02:30Z",
     "big": false,
-    "savedAt": 1792807217537
+    "savedAt": 1792807217537,
+    "by": "Missed by 10.5"
    },
    {
     "key": "slate:2026-10-24",
@@ -326,7 +339,8 @@
     "locked": true,
     "kick": "2026-10-24T16:00Z",
     "big": true,
-    "savedAt": 1792856994307
+    "savedAt": 1792856994307,
+    "by": "Covered by 12.5"
    }
   ]
  },
