@@ -1,7 +1,7 @@
 async () => {
-  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-  const bar = document.getElementById("tabBar");
-  const g = typeof subnavGroupNow === "function" ? subnavGroupNow() : null;
-  return { width: innerWidth, hasFix: typeof subnavArrows === "function", drag: String(typeof subnavArrows === "function" ? subnavArrows : "").includes("dragstart"),
-    overflow: g ? g.scrollWidth - g.clientWidth : null, rightArrow: bar && bar.__right ? !bar.__right.hidden : null };
+  const picks = (DATA.games || []).filter((g) => g && !g.completed && g.proj).map((g) => [g.short_name, (shownPick(g) || {}).side || "-", g.proj.hashmark_home_spread, g.proj.total_pick]);
+  const f = document.getElementById("homeFilter");
+  return { width: innerWidth, deployed: !String(cfbRestTravel).includes("cfbLearnNudge") && document.body.innerHTML.includes("Picks only"),
+    hero: (document.querySelector("#homeFeature") || {}).innerText ? document.querySelector("#homeFeature").innerText.slice(0, 160) : null,
+    filterH: f ? Math.round(f.getBoundingClientRect().height) : null, filterW: f ? f.scrollWidth - f.clientWidth : null, picks };
 }
