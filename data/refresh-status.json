@@ -1,10 +1,6 @@
 {
  "sources": [
   {
-   "feed": "nfl scoreboard week 6",
-   "events": 14
-  },
-  {
    "feed": "nfl scoreboard week 7",
    "events": 14
   },
@@ -13,12 +9,12 @@
    "events": 14
   },
   {
-   "feed": "https://site.web.api.espn.com/apis/fitt/v3/sports/football/nfl/powerindex?limit=50",
-   "teams": 32
+   "feed": "nfl scoreboard week 9",
+   "events": 15
   },
   {
-   "feed": "cfb scoreboard week 7",
-   "events": 62
+   "feed": "https://site.web.api.espn.com/apis/fitt/v3/sports/football/nfl/powerindex?limit=50",
+   "teams": 32
   },
   {
    "feed": "cfb scoreboard week 8",
@@ -27,6 +23,10 @@
   {
    "feed": "cfb scoreboard week 9",
    "events": 56
+  },
+  {
+   "feed": "cfb scoreboard week 10",
+   "events": 63
   },
   {
    "feed": "https://site.web.api.espn.com/apis/fitt/v3/sports/football/college-football/powerindex?limit=150",
@@ -38,11 +38,11 @@
    "teams": 32
   }
  ],
- "ran_at": "2026-10-27T14:30:51Z",
- "nfl_week": 7,
- "cfb_week": 8,
+ "ran_at": "2026-10-27T16:27:37Z",
+ "nfl_week": 8,
+ "cfb_week": 9,
  "changes": [
-  "0 new games, 71 updated, 1 new finals"
+  "78 new games, 15 updated, 0 new finals"
  ],
  "parse": {
   "cfb_efficiency_names": [
