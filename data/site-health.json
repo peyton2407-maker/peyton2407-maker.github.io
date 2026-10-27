@@ -1,16 +1,26 @@
 {
- "checked_at": "2026-10-27T14:33:16Z",
+ "checked_at": "2026-10-27T15:13:00Z",
  "errors": [],
- "console": [],
+ "console": [
+  "Failed to load resource: the server responded with a status of 503 ()"
+ ],
  "failed_requests": {},
- "bad_status": {},
+ "bad_status": {
+  "peyton2407-maker.github.io": {
+   "count": 1,
+   "statuses": {
+    "503": 1
+   },
+   "example": "https://peyton2407-maker.github.io/assets/logos/nfl/3.png?v=1"
+  }
+ },
  "screens": {
   "home": {
    "visible": true,
    "count": 13,
    "summary": [],
    "empty": [],
-   "chars": 974,
+   "chars": 963,
    "images": 38,
    "broken_images": []
   },
@@ -19,7 +29,7 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 4912,
+   "chars": 5163,
    "images": 28,
    "broken_images": []
   },
@@ -28,8 +38,8 @@
    "count": 56,
    "summary": [],
    "empty": [],
-   "chars": 8439,
-   "images": 85,
+   "chars": 9455,
+   "images": 88,
    "broken_images": []
   },
   "builder": {
@@ -38,7 +48,7 @@
    "summary": [],
    "empty": [],
    "chars": 2472,
-   "images": 28,
+   "images": 27,
    "broken_images": []
   },
   "season": {
@@ -52,10 +62,10 @@
   },
   "score": {
    "visible": true,
-   "count": 58,
+   "count": 289,
    "summary": [],
    "empty": [],
-   "chars": 4359,
+   "chars": 18735,
    "images": 0,
    "broken_images": []
   },
@@ -64,7 +74,7 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3310,
+   "chars": 3332,
    "images": 35,
    "broken_images": []
   },
@@ -73,7 +83,7 @@
    "count": 10,
    "summary": [],
    "empty": [],
-   "chars": 897,
+   "chars": 885,
    "images": 20,
    "broken_images": []
   },
@@ -82,7 +92,7 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 5781,
+   "chars": 5775,
    "images": 18,
    "broken_images": []
   },
@@ -90,10 +100,10 @@
    "visible": true,
    "count": 48,
    "summary": [
-    "181 TD tickets in this filter 66% top anytime (III) 207 first-TD names mod"
+    "168 TD tickets in this filter 68% top anytime (III) 207 first-TD names mod"
    ],
    "empty": [],
-   "chars": 4120,
+   "chars": 4124,
    "images": 18,
    "broken_images": []
   },
@@ -110,11 +120,11 @@
    "visible": true,
    "count": 72,
    "summary": [
-    "135 value tickets in this filter 129 TD plus-money 2 spread / dog sides 54% b"
+    "130 value tickets in this filter 124 TD plus-money 2 spread / dog sides 53% b"
    ],
    "empty": [],
-   "chars": 4007,
-   "images": 18,
+   "chars": 3963,
+   "images": 17,
    "broken_images": []
   },
   "parlay": {
@@ -122,9 +132,9 @@
    "count": 0,
    "summary": [],
    "empty": [
-    "No NFL parlay this week. We do not have two plays far enough off the number."
+    "No NFL parlay this week. No two plays are far enough off the number to make a ticket priced fair or better."
    ],
-   "chars": 397,
+   "chars": 428,
    "images": 0,
    "broken_images": []
   },
@@ -133,8 +143,8 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2545,
-   "images": 7,
+   "chars": 3192,
+   "images": 10,
    "broken_images": []
   },
   "nflinj": {
@@ -142,22 +152,22 @@
    "count": 61,
    "summary": [
     "538 listed THU \u00b7 9:57 PM ET 529 listed FRI \u00b7 9:53 PM ET 484 listed SAT",
-    "464 listed SUN \u00b7 8:31 PM ET 556 listed TUE Not posted NE @ CHI 37 list",
-    "35 listed GB @ DET 35 listed LAR @ LV 33 listed KC @ SEA 30 listed DA",
-    "556 listed 0 probable \u00b7 75% 47 questionable / GTD \u00b7 50% 1 doubtful \u00b7 2"
+    "464 listed SUN \u00b7 8:31 PM ET 556 listed TUE \u00b7 10:33 AM ET 570 listed NE",
+    "37 listed PIT VS NO Window passed SF @ ATL Window passed CLE @ TEN Wi",
+    "35 listed GB @ DET 35 listed LAR @ LV 33 listed KC @ SEA 30 listed DA"
    ],
    "empty": [],
-   "chars": 4897,
+   "chars": 4752,
    "images": 7,
    "broken_images": []
   },
   "nflwx": {
    "visible": true,
-   "count": 15,
+   "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 5168,
-   "images": 30,
+   "chars": 3969,
+   "images": 28,
    "broken_images": []
   },
   "nflpotd": {
@@ -173,11 +183,11 @@
    "visible": true,
    "count": 18,
    "summary": [
-    "18 featured CFB leans 1 spread tickets 17 O/U tickets USM @ ULM top car"
+    "18 featured CFB leans 13 spread tickets 0 O/U tickets CONN @ AFA top ca"
    ],
    "empty": [],
-   "chars": 3909,
-   "images": 36,
+   "chars": 6129,
+   "images": 32,
    "broken_images": []
   }
  },
@@ -188,7 +198,7 @@
   "logos_ok": 16
  },
  "split": {
-  "games": 0,
+  "games": 18,
   "images": 32,
   "broken_images": [],
   "errors": []
