@@ -1958,11 +1958,15 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .home-filter button.on { background: var(--card); border-color: var(--line-2); color: var(--ink); }
 .home-filter label { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 4px; color: var(--ink-soft); font-weight: 600; font-size: 14px; cursor: pointer; }
 .home-filter input { width: 18px; height: 18px; accent-color: var(--sun); }
+.home-filter label .sm { display: none; }
+@media (max-width: 560px) { .home-filter label .sm { display: inline; } }
 @media (max-width: 560px) {
-  .home-filter { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-left: -16px; margin-right: -16px; padding-left: 12px; padding-right: 12px; }
-  .home-filter::-webkit-scrollbar { display: none; }
-  .home-filter button, .home-filter label { flex: 0 0 auto; }
-  .home-filter label { margin-left: 4px; }
+  /* wraps instead of scrolling sideways, so the pick toggle is never cut off */
+  .home-filter { gap: 2px 2px; margin-left: -8px; margin-right: -8px; padding-left: 4px; padding-right: 4px; }
+  .home-filter button { padding: 8px 9px; font-size: 14px; }
+  .home-filter button b { font-size: 16px; }
+  .home-filter label { margin-left: auto; padding: 0 6px; font-size: 13px; white-space: nowrap; }
+  .home-filter label .lg { display: none; }
 }
 #homeBoard .sec-h { margin-top: 22px; }
 
@@ -5822,10 +5826,9 @@ function cfbLineMove(g, lockedSp, lockedTot) {
     total += weather;
     (wxn.notes || []).forEach((n) => notes.push(n));
   }
-  const learned = cfbLearnNudge(g);
-  margin += learned.margin;
-  total += learned.total;
-  if (learned.note) notes.push(learned.note);
+  // No "missed the closing number" move for college either: on 2015-2025 college games it
+  // went 1,915-1,978 (49.2%) on sides and 1,566-1,774 (46.9%) on totals. It also loaded at a
+  // different moment on phones and desktops, so the same game could show different picks.
   return {
     margin: Math.max(-6.5, Math.min(6.5, +margin.toFixed(2))),
     total: Math.max(-3.5, Math.min(3.5, +total.toFixed(2))),
@@ -13901,7 +13904,7 @@ function renderHome() {
       + (counts.today ? btn("today", "Today", counts.today) : "")
       + (counts.results ? btn("results", "Results", counts.results) : "")
       + (counts.next ? btn("next", "Up next", counts.next) : "")
-      + `<label><input type="checkbox" id="homePlaysOnly"${playsOnly ? " checked" : ""}> Only games with a pick</label>`;
+      + `<label><input type="checkbox" id="homePlaysOnly"${playsOnly ? " checked" : ""}> <span class="lg">Only games with a pick</span><span class="sm">Picks only</span></label>`;
     if (!filt.__bound) {
       filt.__bound = true;
       filt.addEventListener("click", (e) => {
@@ -13932,7 +13935,7 @@ function renderHome() {
     + (want("results") ? resultsHtml(results) : "")
     + (want("next") ? section(upcoming, "Up next", today.length ? "" : "Numbers are our projected score", "next") : "");
   if (!board.innerHTML.trim()) board.innerHTML = playsOnly
-    ? `<div class="empty">No games with a pick right now. Turn off "Only games with a pick" to see every game.</div>`
+    ? `<div class="empty">No games with a pick right now. Turn off the pick filter to see every game.</div>`
     : `<div class="empty">No games on the board right now. Check back when the next slate posts.</div>`;
   board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
   board.querySelectorAll("[data-hf-more]").forEach((el) => el.addEventListener("click", () => {
@@ -18704,6 +18707,10 @@ async function boot() {
   try { loadLocalFaces(); } catch (e) {}
   try { await loadLocalLogos(); } catch (e) {}
   try { if (typeof repairCfbKickoffs === "function") repairCfbKickoffs(DATA.games || []); } catch (e) {}
+  // Every game's weather effect from the saved forecast before the first paint, on every device.
+  // (Desktops used to get it from a live weather pull right after load and phones not until the
+  // next half hour, so the same college game could show a pick on a laptop and none on a phone.)
+  try { (DATA.games || []).forEach((g) => { if (g && (g.weather || g.indoor) && typeof applyWeatherToGame === "function") applyWeatherToGame(g); }); } catch (e) {}
   try {
     const currentCfb = typeof currentCfbWeekNumber === "function" ? currentCfbWeekNumber() : 6;
     if (typeof refreshWeekLabels === "function") refreshWeekLabels();
@@ -18929,8 +18936,8 @@ async function boot() {
         if (typeof pullNflDepth === "function") pullNflDepth();
         if (typeof pullNflCloseMiss === "function") pullNflCloseMiss();
       };
-      if (window.matchMedia("(max-width: 800px)").matches) setTimeout(pullFeeds, 4000);
-      else pullFeeds();
+      // Same moment on every screen size, so a phone and a computer show the same numbers.
+      pullFeeds();
       if (DATA.notes && n) DATA.notes.learning = `Same record for everyone. ${n} finished games are in the next line.`;
       if (view === "home" && typeof renderHome === "function") renderHome();
       if (view === "score" && typeof renderScorecard === "function") renderScorecard();
@@ -18973,7 +18980,9 @@ async function boot() {
   }
   const phone = window.matchMedia("(max-width: 800px)").matches;
   if (typeof armLiveWeatherClock === "function") armLiveWeatherClock();
-  if (!phone && typeof refreshLiveWeather === "function") refreshLiveWeather("cfb", true);
+  // Phones too: skipping this left phones on different college numbers than computers for the
+  // first half minute.
+  if (typeof refreshLiveWeather === "function") refreshLiveWeather("cfb", true);
   if (!window.__slateClock && typeof pullLiveScores === "function") {
     const startScores = () => pullLiveScores(phone);
     if (phone) setTimeout(startScores, 3000);
