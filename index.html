@@ -12884,7 +12884,7 @@ function playsForScorecard(league) {
       row.pick_line = lean.pick_line;
     }
     if (!row.total_pick || row.total_pick === "NO PLAY") row.total_pick = lean.total_pick;
-    const lock = window.GG_LOCKS && window.GG_LOCKS.plays && window.GG_LOCKS.plays[String(g.id)];
+    const lock = publishedLock(g.id);
     if (lock) {
       row.pick = lock.pick;
       row.pick_line = lock.pick_line;
@@ -13013,6 +13013,15 @@ function scoreTally(league, kind, week) {
 // this page, and 90 minutes before each kickoff saves the pick, the play of the day and
 // this week's card. Every visitor reads the same file, so locked picks and records match.
 const LOCK_WINDOW_MS = 90 * 60 * 1000;
+const LOCK_EARLY_MS = 12 * 60 * 60 * 1000;
+// A published lock as visitors should treat it: a provisional one (saved early in case no run
+// lands inside the 90-minute window) only counts once its game has kicked off.
+function publishedLock(id) {
+  const lock = window.GG_LOCKS && window.GG_LOCKS.plays && window.GG_LOCKS.plays[String(id)];
+  if (!lock) return null;
+  if (lock.provisional && !(Date.parse(lock.date) <= Date.now())) return null;
+  return lock;
+}
 function applyPublishedLocks(locks) {
   window.GG_LOCKS = locks && typeof locks === "object" ? locks : null;
   const L = window.GG_LOCKS;
@@ -13069,12 +13078,21 @@ function ggLockRun(prev) {
     const g = (DATA.games || []).find((x) => String(x.id) === String(id));
     return g ? { g, kick: Date.parse(g.date) } : null;
   };
+  // GitHub's 15-minute schedule often runs every 30-60 minutes, and a game whose 90-minute
+  // window got no run was never recorded (3 NFL and 11 college games in late October). So
+  // from 12 hours out every run saves a provisional copy of the board, replaced each run; the
+  // first run inside 90 minutes makes it final. A game that kicks off while still provisional
+  // keeps the last board posted before kickoff.
   const due = (kick) => Number.isFinite(kick) && kick > now && kick - now <= LOCK_WINDOW_MS;
+  const early = (kick) => Number.isFinite(kick) && kick > now && kick - now <= LOCK_EARLY_MS;
   ["nfl", "cfb"].forEach((lg) => {
     (playsForScorecard(lg) || []).forEach((r) => {
-      if (!r || r.id == null || out.plays[String(r.id)]) return;
+      if (!r || r.id == null) return;
+      const had = out.plays[String(r.id)];
+      if (had && !had.provisional) return;
       const k = kickOf(r.id);
-      if (!k || k.g.completed || !due(k.kick)) return;
+      if (!k || k.g.completed || !early(k.kick)) return;
+      const final = due(k.kick);
       const hasSide = r.pick_line && r.pick !== "NO PLAY";
       const hasTotal = r.total_pick && r.total_pick !== "NO PLAY";
       if (!hasSide && !hasTotal) return;
@@ -13096,7 +13114,11 @@ function ggLockRun(prev) {
         total: k.g.odds && k.g.odds.total != null ? Number(k.g.odds.total) : null,
         lockedAt: iso
       };
-      changes.push("locked pick " + (r.short || r.id));
+      const row = out.plays[String(r.id)];
+      if (final) delete row.provisional;
+      else row.provisional = true;
+      const sig = (x) => x ? [x.pick, x.pick_line, x.total_pick, x.side_play, x.total_play, !!x.provisional].join("|") : "";
+      if (!had || final || sig(had) !== sig(row)) changes.push((final ? "locked pick " : "provisional pick ") + (r.short || r.id));
     });
   });
   // Closing line: every run in the hour before kickoff saves the current line (the last
@@ -13335,7 +13357,7 @@ function realPlaysStat(rows, kind) {
 
 // What a visitor should see as a game's pick: the locked pick once it is locked.
 function shownPick(g) {
-  const lock = window.GG_LOCKS && window.GG_LOCKS.plays && window.GG_LOCKS.plays[String(g.id)];
+  const lock = publishedLock(g.id);
   const p = g.proj || {};
   if (lock) {
     return {
@@ -13456,7 +13478,7 @@ function recentResults() {
   const since = Date.now() - 36 * 3600 * 1000;
   const out = [];
   (DATA.games || []).forEach((g) => {
-    const lock = L[String(g.id)];
+    const lock = L[String(g.id)] ? publishedLock(g.id) : null;
     if (!lock || !g.completed || !(Date.parse(g.date) >= since)) return;
     const hs = Number(g.home.score), as = Number(g.away.score);
     if (!Number.isFinite(hs) || !Number.isFinite(as)) return;
