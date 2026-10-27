@@ -2122,7 +2122,16 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .foot-link { display: block; margin: 10px auto 0; border: 0; background: none; color: var(--muted); font: 600 13px var(--body); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
 .foot-link:hover { color: var(--ink); }
 
-/* section tabs stay on one line and scroll */
+/* section tabs stay on one line and scroll: arrows at the edges and the mouse wheel move them
+   (a hidden scrollbar left desktop mice no way to reach the tabs past the right edge) */
+#tabBar.subnav { position: relative; }
+.subnav-arrow { position: absolute; top: 0; z-index: 3; height: 44px; width: 44px; border: 0; padding: 0; cursor: pointer;
+  color: var(--ink); font: 700 20px/1 var(--body); display: flex; align-items: center; }
+.subnav-arrow[hidden] { display: none; }
+.subnav-arrow.left { left: 0; justify-content: flex-start; padding-left: 6px; background: linear-gradient(90deg, var(--paper) 55%, transparent); }
+.subnav-arrow.right { right: 0; justify-content: flex-end; padding-right: 6px; background: linear-gradient(270deg, var(--paper) 55%, transparent); }
+.subnav-arrow:hover { color: var(--sun); }
+.subnav-arrow:focus-visible { outline: 2px solid var(--sun); outline-offset: -2px; }
 @media (min-width: 980px) {
   .subnav-group { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-mask: linear-gradient(90deg, #000 calc(100% - 40px), transparent); mask: linear-gradient(90deg, #000 calc(100% - 40px), transparent); padding-right: 40px; }
   .subnav-group::-webkit-scrollbar { display: none; }
@@ -12132,6 +12141,57 @@ function wxNextLabel() {
   }
   return "Wednesday 11:00 AM ET";
 }
+// ---- section tab strip: arrows, mouse wheel, and keep the open tab in view --------------
+function subnavGroupNow() {
+  const bar = document.getElementById("tabBar");
+  if (!bar) return null;
+  return [...bar.querySelectorAll(".subnav-group")].find((g) => getComputedStyle(g).display !== "none") || null;
+}
+function subnavArrows() {
+  const bar = document.getElementById("tabBar");
+  if (!bar) return;
+  if (!bar.__arrows) {
+    bar.__arrows = true;
+    const mk = (cls, label, txt, dir) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "subnav-arrow " + cls; b.setAttribute("aria-label", label); b.textContent = txt; b.hidden = true;
+      b.addEventListener("click", () => { const g = subnavGroupNow(); if (g) g.scrollBy({ left: dir * Math.max(160, g.clientWidth * 0.7), behavior: "smooth" }); });
+      bar.appendChild(b);
+      return b;
+    };
+    bar.__left = mk("left", "Scroll tabs left", "‹", -1);
+    bar.__right = mk("right", "Scroll tabs right", "›", 1);
+    bar.addEventListener("scroll", () => subnavArrows(), true);
+    // a mouse wheel scrolls the strip sideways while the pointer is over it
+    bar.addEventListener("wheel", (e) => {
+      const g = e.target.closest && e.target.closest(".subnav-group");
+      if (!g || g.scrollWidth <= g.clientWidth + 2) return;
+      const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      const max = g.scrollWidth - g.clientWidth;
+      if ((d < 0 && g.scrollLeft <= 0) || (d > 0 && g.scrollLeft >= max - 1)) return;   // at the end: let the page scroll
+      g.scrollLeft += d;
+      e.preventDefault();
+    }, { passive: false });
+    window.addEventListener("resize", () => subnavArrows());
+  }
+  const g = subnavGroupNow();
+  if (!g) { bar.__left.hidden = bar.__right.hidden = true; return; }
+  const max = g.scrollWidth - g.clientWidth;
+  bar.__left.hidden = !(g.scrollLeft > 4);
+  bar.__right.hidden = !(max - g.scrollLeft > 4);
+}
+function subnavFollow() {
+  const g = subnavGroupNow();
+  if (g) {
+    const on = g.querySelector(".tab.active, a.active");
+    if (on && g.scrollWidth > g.clientWidth + 2) {
+      const l = on.offsetLeft - g.offsetLeft, r = l + on.offsetWidth;
+      if (l < g.scrollLeft + 44) g.scrollLeft = Math.max(0, l - 44);
+      else if (r > g.scrollLeft + g.clientWidth - 44) g.scrollLeft = r - g.clientWidth + 44;
+    }
+  }
+  subnavArrows();
+}
 function msUntilEtHalfHour() {
   const et = etFields();
   const mod = (et.minute % 30) * 60 * 1000 + new Date().getSeconds() * 1000 + new Date().getMilliseconds();
@@ -15845,6 +15905,7 @@ function setView(next, opts) {
     const keepHome = document.body.dataset.section === "home" && (next === "nflpotd" || next === "potd");
     document.body.dataset.section = keepHome ? "home" : (SECTION_OF[next] || "home");
   } catch (e) {}
+  try { if (typeof subnavFollow === "function") requestAnimationFrame(subnavFollow); } catch (e) {}
   try {
     if (location.hash.replace("#","") !== next) {
       if (opts && opts.push) history.pushState({ view: next }, "", "#" + next);
