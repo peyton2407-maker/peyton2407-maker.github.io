@@ -7399,6 +7399,10 @@ function readyCardHtml(title, thought, legs) {
   const x = readyPrice(legs);
   if (!x) return "";
   const { r, mapped } = x;
+  // Only tickets priced fair or better. With our checked chances (which keep only the lean our
+  // record backs), a ticket the book has the edge on is a losing bet over time, so it isn't
+  // shown as a pick. (70 of 71 college tickets on Oct 27 were 2-16% in the book's favor.)
+  if (r.ev < -0.01) return "";
   const ev = Math.round(r.ev * 100);
   const sgp = r.sameGame && r.sameGame.length;
   const val = sgp
@@ -7580,12 +7584,13 @@ function buildPropParlays() {
 }
 function propLadderHtml(rows) {
   if (!rows.length) return `<div class="empty">No player prop tickets cleared the bar.</div>`;
-  return [1, 2, 3, 4, 5, 6].map((n) => {
+  const html = [1, 2, 3, 4, 5, 6].map((n) => {
     const bag = rows.filter((r) => r.n === n);
     if (!bag.length) return "";
     const cards = bag.map(propParlayCardHtml).join("");
     return cards ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">${n}-leg player props</div>` + cards : "";
   }).join("");
+  return html || `<div class="empty">No player prop ticket is priced fair or better right now.</div>`;
 }
 function propParlayCardHtml(r) {
   return readyCardHtml(r.title, "", r.legs);
@@ -7971,14 +7976,15 @@ function renderCollegeParlayBoard() {
     const rows = board[g.id] || [];
     html += `<div class="home-label parlay-group">${g.title}</div>`;
     html += `<p class="subn" style="grid-column:1/-1;margin:0 0 4px">${g.blurb}</p>`;
-    html += rows.length
+    const body = rows.length
       ? [2, 3, 4, 5, 6].map((n) => {
         const bag = rows.filter((r) => Number(r.n) === n);
         if (!bag.length) return "";
         const cards = bag.map(collegeParlayCardHtml).join("");
         return cards ? `<div class="home-label" style="grid-column:1/-1">${n}-leg</div>` + cards : "";
       }).join("")
-      : `<div class="empty" style="grid-column:1/-1">Not enough ${g.title.toLowerCase()} legs this weekend.</div>`;
+      : "";
+    html += body || `<div class="empty" style="grid-column:1/-1">${rows.length ? `No ${g.title.toLowerCase()} ticket is priced fair or better this weekend. Every one would have the book on its side.` : `Not enough ${g.title.toLowerCase()} legs this weekend.`}</div>`;
   });
   return { html, count: board.count };
 }
@@ -8020,19 +8026,19 @@ function renderParlays() {
     return;
   }
   const themed = {
-    dogs: { rows: buildDogParlays("nfl"), stamp: "NFL underdogs. Eight tickets at each size when the board has enough dogs, from 2 legs through 6. Biggest gap first.", empty: "No NFL underdog parlay this week. We do not have two dogs that cleared." },
-    favs: { rows: buildFavParlays("nfl"), stamp: "NFL favorites. Eight tickets at each size when the board has enough favorites, from 2 legs through 6. Biggest gap first.", empty: "No NFL favorite parlay this week." },
-    totals: { rows: buildTotalParlays("nfl"), stamp: "NFL totals. Only overs and unders that already cleared, biggest gap first.", empty: "No NFL totals parlay this week. No total is far enough off our number." },
-    cdogs: { rows: buildDogParlays("cfb"), stamp: "College underdogs only. No NFL teams on this ticket.", empty: "No college underdog parlay this week." }
+    dogs: { rows: buildDogParlays("nfl"), stamp: "NFL underdogs. Eight tickets at each size when the board has enough dogs, from 2 legs through 6. Biggest gap first.", empty: "No NFL underdog parlay this week priced fair or better." },
+    favs: { rows: buildFavParlays("nfl"), stamp: "NFL favorites. Eight tickets at each size when the board has enough favorites, from 2 legs through 6. Biggest gap first.", empty: "No NFL favorite parlay this week priced fair or better." },
+    totals: { rows: buildTotalParlays("nfl"), stamp: "NFL totals. Only overs and unders that already cleared, biggest gap first.", empty: "No NFL totals parlay this week priced fair or better." },
+    cdogs: { rows: buildDogParlays("cfb"), stamp: "College underdogs only. No NFL teams on this ticket.", empty: "No college underdog parlay this week priced fair or better." }
   };
   if (themed[league]) {
-    if (stamp) stamp.textContent = "Our leans at DraftKings' prices, with chances checked against this season's results. Each ticket says whether the price is worth it.";
+    if (stamp) stamp.textContent = "Our leans at DraftKings' prices, with chances checked against this season's results. Only tickets priced fair or better are shown.";
     hero.innerHTML = parlayGroupHtml(themed[league].rows) || `<div class="empty">${themed[league].empty}</div>`;
     hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
     return;
   }
   if (league === "cfb") {
-    if (stamp) stamp.textContent = "College parlays at DraftKings' prices, with chances checked against this season's results. Moneyline, spread and totals are separate; All three mixes them.";
+    if (stamp) stamp.textContent = "College parlays at DraftKings' prices, with chances checked against this season's results. Only tickets priced fair or better are shown. Moneyline, spread and totals are separate; All three mixes them.";
     const board = renderCollegeParlayBoard();
     hero.innerHTML = board.html;
     hero.querySelectorAll("[data-cgroup]").forEach((btn) => btn.addEventListener("click", () => {
@@ -8046,7 +8052,7 @@ function renderParlays() {
   if (stamp) stamp.textContent = "Upcoming NFL games (Week " + week + " and anything else on the board). Our biggest leans at DraftKings' prices, 2 legs through 6, with chances checked against this season's results. Each ticket says whether the price is worth it.";
   let extra = "";
   try { extra = parlayHeroHtml(league) || ""; } catch (e) { extra = ""; }
-  hero.innerHTML = extra || `<div class="empty">No NFL parlay this week. We do not have two plays far enough off the number.</div>`;
+  hero.innerHTML = extra || `<div class="empty">No NFL parlay this week. No two plays are far enough off the number to make a ticket priced fair or better.</div>`;
   hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 function valueTileHtml(r) {
@@ -16342,6 +16348,18 @@ function pbLeg(stored, opts) {
       const dkLine = dk ? (kind === "sp" ? (dk.sp != null ? (side === "home" ? dk.sp : -dk.sp) : null) : dk.tot) : null;
       const pr = dk ? (kind === "sp" ? (side === "home" ? dk.sph : dk.spa) : (side === "over" ? dk.over : dk.under)) : null;
       if (dkLine != null && Math.abs(dkLine - line) < 1e-9 && pbParseAmerican(pr) != null) { bookPrice = pbParseAmerican(pr); priceSource = "DraftKings"; }
+    }
+    // At the main line the market's chance comes from both sides' prices with the cut taken
+    // out: -120 / +100 at 3.5 says 52 / 48, not 50 / 50 (the plus-money side was being shown
+    // as a fair or better price when the book was leaning the other way).
+    if (mkt && line === mainLine && bookPrice != null) {
+      const row = st.book && priceSource === st.book ? book : priceSource === "DraftKings" ? pbBookRow(g.id, "DraftKings") : null;
+      const oth = row ? (kind === "sp" ? (side === "home" ? row.spa : row.sph) : (side === "over" ? row.under : row.over)) : null;
+      const op = pbParseAmerican(oth);
+      if (op != null) {
+        const a = 1 / pbDec(bookPrice), b = 1 / pbDec(op);
+        mkt = { win: (a / (a + b)) * (1 - mkt.push), push: mkt.push };
+      }
     }
     if (bookPrice == null && line !== mainLine && mkt && mkt.win > 0) {
       // alternate line: price it off the market's own view of the game, with a bigger cut
