@@ -1,6 +1,48 @@
 {
  "v": 1,
  "plays": {
+  "401871057": {
+   "id": "401871057",
+   "league": "cfb",
+   "week": 9,
+   "short": "JXST @ NMSU",
+   "home": "NMSU",
+   "away": "JXST",
+   "date": "2026-10-29T00:00Z",
+   "pick": "NMSU",
+   "pick_line": "NMSU +3.0",
+   "total_pick": "NO PLAY",
+   "side_play": true,
+   "our_margin": -1.2,
+   "our_total": 49.5,
+   "confidence": 51,
+   "total_play": false,
+   "spread": 3,
+   "total": 49.5,
+   "lockedAt": "2026-10-28T15:43:49.480Z",
+   "provisional": true
+  },
+  "401871058": {
+   "id": "401871058",
+   "league": "cfb",
+   "week": 9,
+   "short": "KENN @ MTSU",
+   "home": "MTSU",
+   "away": "KENN",
+   "date": "2026-10-28T23:00Z",
+   "pick": "KENN",
+   "pick_line": "KENN +1.5",
+   "total_pick": "UNDER 49.5",
+   "side_play": false,
+   "our_margin": 1.65,
+   "our_total": 49.9,
+   "confidence": null,
+   "total_play": false,
+   "spread": -1.5,
+   "total": 49.5,
+   "lockedAt": "2026-10-28T15:43:49.480Z",
+   "provisional": true
+  },
   "401871071": {
    "id": "401871071",
    "league": "cfb",
@@ -378,6 +420,34 @@
     "big": false,
     "savedAt": 1793142880131,
     "by": "Missed by 15.5"
+   },
+   {
+    "key": "game:401871057",
+    "week": 9,
+    "day": "2026-10-28",
+    "league": "cfb",
+    "id": "401871057",
+    "game": "JXST @ NMSU",
+    "kind": "Spread",
+    "line": "NMSU +3.0",
+    "hitPct": 51,
+    "why": "The play is NMSU +3.0. Our number is JXST -1.2, 1.8 points off DraftKings. Spread plays are 2-5 on the play of the day, so that record is in the pick.",
+    "label": "Wednesday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "price": -102,
+    "book": "DraftKings",
+    "bookPct": 45,
+    "ours": "JXST -1.2 · total 49.5",
+    "score": "JXST 25.4 – NMSU 24.1",
+    "market": "JXST -3.0 · total 49.5",
+    "lockedAt": "2026-10-28T15:43:49.493Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-10-29T00:00Z",
+    "big": false,
+    "savedAt": 1793202229493
    }
   ]
  },
@@ -506,5 +576,5 @@
    }
   ]
  },
- "updated": "2026-10-28T08:51:18.886Z"
+ "updated": "2026-10-28T15:43:49.480Z"
 }
