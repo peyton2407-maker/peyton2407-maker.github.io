@@ -1,27 +1,17 @@
 {
- "checked_at": "2026-10-27T15:13:00Z",
+ "checked_at": "2026-10-28T00:43:05Z",
  "errors": [],
- "console": [
-  "Failed to load resource: the server responded with a status of 503 ()"
- ],
+ "console": [],
  "failed_requests": {},
- "bad_status": {
-  "peyton2407-maker.github.io": {
-   "count": 1,
-   "statuses": {
-    "503": 1
-   },
-   "example": "https://peyton2407-maker.github.io/assets/logos/nfl/3.png?v=1"
-  }
- },
+ "bad_status": {},
  "screens": {
   "home": {
    "visible": true,
-   "count": 13,
+   "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 963,
-   "images": 38,
+   "chars": 1018,
+   "images": 42,
    "broken_images": []
   },
   "nfl": {
@@ -29,7 +19,7 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 5163,
+   "chars": 5104,
    "images": 28,
    "broken_images": []
   },
@@ -38,8 +28,8 @@
    "count": 56,
    "summary": [],
    "empty": [],
-   "chars": 9455,
-   "images": 88,
+   "chars": 9367,
+   "images": 85,
    "broken_images": []
   },
   "builder": {
@@ -47,8 +37,8 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 2472,
-   "images": 27,
+   "chars": 2479,
+   "images": 12,
    "broken_images": []
   },
   "season": {
@@ -62,10 +52,10 @@
   },
   "score": {
    "visible": true,
-   "count": 289,
+   "count": 291,
    "summary": [],
    "empty": [],
-   "chars": 18735,
+   "chars": 18246,
    "images": 0,
    "broken_images": []
   },
@@ -74,17 +64,17 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3332,
+   "chars": 3252,
    "images": 35,
    "broken_images": []
   },
   "card": {
    "visible": true,
-   "count": 10,
+   "count": 9,
    "summary": [],
    "empty": [],
-   "chars": 885,
-   "images": 20,
+   "chars": 811,
+   "images": 18,
    "broken_images": []
   },
   "props": {
@@ -92,7 +82,7 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 5775,
+   "chars": 5806,
    "images": 18,
    "broken_images": []
   },
@@ -100,19 +90,19 @@
    "visible": true,
    "count": 48,
    "summary": [
-    "168 TD tickets in this filter 68% top anytime (III) 207 first-TD names mod"
+    "181 TD tickets in this filter 66% top anytime (III) 207 first-TD names mod"
    ],
    "empty": [],
-   "chars": 4124,
+   "chars": 4110,
    "images": 18,
    "broken_images": []
   },
   "charts": {
    "visible": true,
-   "count": 14,
+   "count": 29,
    "summary": [],
    "empty": [],
-   "chars": 3628,
+   "chars": 3771,
    "images": 4,
    "broken_images": []
   },
@@ -120,11 +110,11 @@
    "visible": true,
    "count": 72,
    "summary": [
-    "130 value tickets in this filter 124 TD plus-money 2 spread / dog sides 53% b"
+    "136 value tickets in this filter 129 TD plus-money 2 spread / dog sides 54% b"
    ],
    "empty": [],
-   "chars": 3963,
-   "images": 17,
+   "chars": 4011,
+   "images": 18,
    "broken_images": []
   },
   "parlay": {
@@ -143,8 +133,8 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 3192,
-   "images": 10,
+   "chars": 2912,
+   "images": 7,
    "broken_images": []
   },
   "nflinj": {
@@ -152,12 +142,12 @@
    "count": 61,
    "summary": [
     "538 listed THU \u00b7 9:57 PM ET 529 listed FRI \u00b7 9:53 PM ET 484 listed SAT",
-    "464 listed SUN \u00b7 8:31 PM ET 556 listed TUE \u00b7 10:33 AM ET 570 listed NE",
+    "464 listed SUN \u00b7 8:31 PM ET 556 listed TUE \u00b7 6:09 PM ET 574 listed NE ",
     "37 listed PIT VS NO Window passed SF @ ATL Window passed CLE @ TEN Wi",
     "35 listed GB @ DET 35 listed LAR @ LV 33 listed KC @ SEA 30 listed DA"
    ],
    "empty": [],
-   "chars": 4752,
+   "chars": 4763,
    "images": 7,
    "broken_images": []
   },
@@ -166,16 +156,18 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 3969,
+   "chars": 4230,
    "images": 28,
    "broken_images": []
   },
   "nflpotd": {
    "visible": true,
-   "count": 2,
+   "count": 3,
    "summary": [],
-   "empty": [],
-   "chars": 491,
+   "empty": [
+    "No NFL bet left this week beats its price: no side, total, moneyline or player prop. So there is no play of the day yet. Player prop prices "
+   ],
+   "chars": 1449,
    "images": 0,
    "broken_images": []
   },
@@ -183,10 +175,10 @@
    "visible": true,
    "count": 18,
    "summary": [
-    "18 featured CFB leans 13 spread tickets 0 O/U tickets CONN @ AFA top ca"
+    "18 featured CFB leans 6 spread tickets 0 O/U tickets NEV @ UCLA top car"
    ],
    "empty": [],
-   "chars": 6129,
+   "chars": 6180,
    "images": 32,
    "broken_images": []
   }
@@ -204,6 +196,6 @@
   "errors": []
  },
  "dk_lines_loaded": null,
- "games_with_props": 14,
- "nfl_games_upcoming": 14
+ "games_with_props": 29,
+ "nfl_games_upcoming": 29
 }
