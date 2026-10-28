@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 3,
    "total": 49.5,
-   "lockedAt": "2026-10-28T15:43:49.480Z",
+   "lockedAt": "2026-10-28T20:36:00.674Z",
    "provisional": true
   },
   "401871058": {
@@ -30,17 +30,17 @@
    "home": "MTSU",
    "away": "KENN",
    "date": "2026-10-28T23:00Z",
-   "pick": "KENN",
-   "pick_line": "KENN +1.5",
-   "total_pick": "UNDER 49.5",
-   "side_play": false,
-   "our_margin": 1.65,
-   "our_total": 49.9,
-   "confidence": null,
+   "pick": "MTSU",
+   "pick_line": "MTSU +1.5",
+   "total_pick": "OVER 50.5",
+   "side_play": true,
+   "our_margin": 1.2,
+   "our_total": 50.1,
+   "confidence": 51,
    "total_play": false,
-   "spread": -1.5,
-   "total": 49.5,
-   "lockedAt": "2026-10-28T15:43:49.480Z",
+   "spread": 1.5,
+   "total": 50.5,
+   "lockedAt": "2026-10-28T20:36:00.674Z",
    "provisional": true
   },
   "401871071": {
@@ -448,6 +448,34 @@
     "kick": "2026-10-29T00:00Z",
     "big": false,
     "savedAt": 1793202229493
+   },
+   {
+    "key": "game:401871058",
+    "week": 9,
+    "day": "2026-10-28",
+    "league": "cfb",
+    "id": "401871058",
+    "game": "KENN @ MTSU",
+    "kind": "Spread",
+    "line": "MTSU +1.5",
+    "hitPct": 51,
+    "why": "The play is MTSU +1.5. Our number is MTSU -1.2, 2.7 points off DraftKings. Spread plays are 2-5 on the play of the day, so that record is in the pick.",
+    "label": "Wednesday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "price": -110,
+    "book": "standard -110",
+    "bookPct": 50,
+    "ours": "MTSU -1.2 · total 50.1",
+    "score": "KENN 24.4 – MTSU 25.7",
+    "market": "KENN -1.5 · total 50.5",
+    "lockedAt": "2026-10-28T20:36:00.683Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-10-28T23:00Z",
+    "big": false,
+    "savedAt": 1793219760683
    }
   ]
  },
@@ -576,5 +604,5 @@
    }
   ]
  },
- "updated": "2026-10-28T15:43:49.480Z"
+ "updated": "2026-10-28T20:36:00.674Z"
 }
