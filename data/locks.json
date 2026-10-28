@@ -363,9 +363,9 @@
     "hitPct": 51,
     "why": "The play is SHSU +5.5. Our number is MOST -4.2, 1.8 points off DraftKings. Spread plays are 2-4 on the play of the day, so that record is in the pick.",
     "label": "Tuesday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "SHSU 3 – MOST 24",
+    "resultWhy": "It missed. SHSU +5.5 did not cash. Final was SHSU 3 – MOST 24.",
     "price": -110,
     "book": "standard -110",
     "bookPct": 50,
@@ -376,7 +376,8 @@
     "locked": true,
     "kick": "2026-10-28T00:00Z",
     "big": false,
-    "savedAt": 1793142880131
+    "savedAt": 1793142880131,
+    "by": "Missed by 15.5"
    }
   ]
  },
@@ -505,5 +506,5 @@
    }
   ]
  },
- "updated": "2026-10-27T23:14:40.119Z"
+ "updated": "2026-10-28T08:51:18.886Z"
 }
