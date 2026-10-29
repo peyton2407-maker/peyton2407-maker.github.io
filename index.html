@@ -11932,7 +11932,8 @@ function potdLockedBet(league, window) {
   // A locked play, or the server's provisional one (saved from 12 hours before kickoff and
   // re-picked every 15 minutes until the lock), so every visitor sees the same play.
   const mine = (r) => r && !r.result && (r.locked || (r.provisional && r.published)) && ((window.big && r.key === "slate:" + window.day) || (!window.big && r.key === "game:" + window.games[0].id));
-  const row = rows.find((r) => mine(r) && r.locked) || (window.__potdRepick ? null : rows.find(mine));
+  // (globalThis: "window" here is the play-of-the-day window argument, not the page)
+  const row = rows.find((r) => mine(r) && r.locked) || (globalThis.__potdRepick ? null : rows.find(mine));
   if (!row) return null;
   const g = (DATA.games || []).find((x) => String(x.id) === String(row.id));
   if (!g || g.completed) return null;
