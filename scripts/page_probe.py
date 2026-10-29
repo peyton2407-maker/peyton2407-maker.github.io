@@ -34,6 +34,20 @@ PROPS_DIAG = """() => {
 }"""
 
 
+TOUR = ["home", "card", "nflpotd", "potd", "nfl", "prime", "props", "tds", "value", "live", "charts", "nflwx", "nflinj",
+        "cfb", "cfbpicks", "cfbwx", "cfbinj", "all", "score", "history", "season", "ratings", "bets", "builder", "parlay", "calc"]
+TOUR_CHECK = """() => {
+  const sec = [...document.querySelectorAll('main section, main > div, .view')].filter(e => e.offsetParent && e.innerText.trim().length > 0);
+  const root = document.querySelector('main') || document.body;
+  const text = root.innerText;
+  const bad = [];
+  const re = /(NaN|undefined|\\[object|Infinity|\\bnull\\b)/g;
+  let m; while ((m = re.exec(text)) && bad.length < 8) bad.push(text.slice(Math.max(0, m.index - 60), m.index + 40).replace(/\\s+/g, ' '));
+  return { view: typeof view !== 'undefined' ? view : null, chars: text.length, bad, wide: document.documentElement.scrollWidth - innerWidth,
+           empty: [...root.querySelectorAll('.empty')].filter(e => e.offsetParent).map(e => e.innerText.slice(0, 140)), head: text.slice(0, 300) };
+}"""
+
+
 async def main(view, js=None):
     OUT.mkdir(exist_ok=True)
     async with async_playwright() as p:
@@ -44,6 +58,21 @@ async def main(view, js=None):
             errors = []
             page.on("pageerror", lambda e: errors.append(str(e)[:300]))
             page.on("console", lambda m: m.type in ("error", "warning") and len(errors) < 80 and errors.append(m.type + ": " + m.text[:200]))
+            if view == "tour":   # every page, one after another, on both screen sizes
+                await page.goto(SITE + "/#home", wait_until="load", timeout=120000)
+                await page.wait_for_timeout(45000)
+                tour = {}
+                for v in TOUR:
+                    n0 = len(errors)
+                    await page.evaluate("(v) => { location.hash = v; }", v)
+                    await page.wait_for_timeout(3500)
+                    await page.screenshot(path=str(OUT / f"tour-{v}-{name}.png"), full_page=False)
+                    info = await page.evaluate(TOUR_CHECK)
+                    info["errors"] = errors[n0:]
+                    tour[v] = info
+                (OUT / f"tour-{name}.json").write_text(json.dumps(tour, indent=1))
+                await ctx.close()
+                continue
             await page.goto(SITE + "/#" + view, wait_until="load", timeout=120000)
             await page.wait_for_timeout(60000)
             await page.screenshot(path=str(OUT / f"{view}-{name}.png"), full_page=False)
