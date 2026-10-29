@@ -11940,6 +11940,7 @@ function rememberPotd(league, bet) {
     ...potdLockDetail(bet),
     locked: freeze, kick: bet.g.date, big: !!bet.window.big, savedAt: Date.now()
   };
+  if (freeze) { next.lockedAt = new Date().toISOString(); next.provisional = false; }
   if (row) Object.assign(row, next);
   else bag[league].push(next);
   try { localStorage.setItem("gg-potd-log", JSON.stringify(bag)); } catch (e) {}
@@ -11949,7 +11950,9 @@ function gradeSavedPotd(league) {
   (bag[league] || []).forEach((row) => {
     if (!row || row.result || !row.line) return;
     const kick = new Date(row.kick || 0).getTime();
-    if (!row.locked && Number.isFinite(kick) && Date.now() >= kick - 90 * 60 * 1000) row.locked = true;
+    // A server provisional play is not locked here: the lock run re-picks it fresh at 90 minutes
+    // (or keeps it at kickoff if no run landed); locking it here froze a 15-minute-old pick.
+    if (!row.locked && !row.provisional && Number.isFinite(kick) && Date.now() >= kick - 90 * 60 * 1000) row.locked = true;
     if (!row.locked) return;
     const g = (DATA.games || []).find((x) => String(x.id) === String(row.id));
     if (row.prop) {
