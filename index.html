@@ -12009,7 +12009,7 @@ function potdCard(bet, title) {
   return `<article class="prop-card" data-id="${g.id}">
     <div class="who">
       <div>
-        <h4>${escHtml(title)} · ${escHtml(g.away.abbr)} @ ${escHtml(g.home.abbr)}</h4>
+        <h4>${escHtml(title)} · ${escHtml(g.away.abbr)} ${g.neutral ? "vs" : "@"} ${escHtml(g.home.abbr)}</h4>
         <div class="prop-meta">${escHtml(label)} · ${fmt.when(g.date)} · ${escHtml(g.venue || "")}${bet.locked ? " · locked" : ""}</div>
       </div>
       <div class="pick-score">${pct}%</div>
@@ -14043,7 +14043,7 @@ function renderWeeklyCard() {
     <h2>This week's card</h2>
     <p class="subn" style="font-size:18px;font-weight:800;color:${card.frozen ? "var(--turf)" : "var(--sun)"}">${card.frozen ? "LOCKED" : "NOT LOCKED YET"} · ${(card.legs || []).length} plays${record}</p>
     <ul class="share-legs">${graded.map(({ L, side, tot, f }, i) => `<li data-id="${L.id}"><span>${i + 1}. ${pbGame(L.id) ? matchupHtml(pbGame(L.id)) : L.away + " @ " + L.home}<div class="subn">${f ? `Final ${L.away} ${f.as}, ${L.home} ${f.hs}` : "Projected " + proj(L.proj)}</div></span><b>${L.pick && L.pick !== "NO PLAY" ? L.pick + " " + chip(side) : ""}${L.pick && L.pick !== "NO PLAY" && L.total && L.total !== "NO PLAY" ? "<br>" : ""}${L.total && L.total !== "NO PLAY" ? L.total + " " + chip(tot) : ""}${!(L.pick && L.pick !== "NO PLAY") && !(L.total && L.total !== "NO PLAY") ? L.text : ""}</b></li>`).join("")}</ul>
-    <p class="subn">The card locks Thursday at noon ET with the picks as they stood then. Picks on the scorecard lock later, closer to each kickoff, so a few can differ when the line or our number moved in between.</p>
+    <p class="subn">The card locks Thursday at noon ET, or 90 minutes before its first game if that comes sooner, with the picks as they stood then. Picks on the scorecard lock later, closer to each kickoff, so a few can differ when the line or our number moved in between.</p>
   </article>`;
   wrap.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
