@@ -12655,6 +12655,23 @@ function renderCfbWeather() {
 }
 
 
+// Player projections and sportsbook prop prices, loaded once, so the NFL play of the day can
+// weigh every player prop (the lock runner awaits this too). Redraws the pages that show it.
+function ensurePotdProps() {
+  if (window.__potdPropPull) return window.__potdPropPull;
+  window.__potdPropPull = Promise.resolve()
+    .then(() => (typeof ensureWeekProps === "function" ? ensureWeekProps() : null))
+    .then(() => (typeof pullDkLines === "function" ? pullDkLines() : null))
+    .catch(() => {})
+    .then(() => {
+      try {
+        if (view === "home" && typeof renderHome === "function") renderHome();
+        if (view === "nflpotd" && typeof renderNflPotd === "function") renderNflPotd();
+      } catch (e) {}
+    });
+  return window.__potdPropPull;
+}
+window.ensurePotdProps = ensurePotdProps;
 async function ensureWeekProps() {
   const upcoming = (DATA.games || []).filter((g) => g && g.league === "nfl" && !g.completed && g.date && new Date(g.date).getTime() > Date.now() - 3 * 60 * 60 * 1000 && !(g.props && g.props.length));
   if (!upcoming.length || typeof collectProps !== "function" || typeof attachProps !== "function") return;
@@ -18941,6 +18958,9 @@ async function boot() {
       };
       // Same moment on every screen size, so a phone and a computer show the same numbers.
       pullFeeds();
+      // Player props can be the NFL play of the day, so their lines load for every visitor,
+      // not only after the props page is opened.
+      if (typeof ensurePotdProps === "function") ensurePotdProps();
       if (DATA.notes && n) DATA.notes.learning = `Same record for everyone. ${n} finished games are in the next line.`;
       if (view === "home" && typeof renderHome === "function") renderHome();
       if (view === "score" && typeof renderScorecard === "function") renderScorecard();

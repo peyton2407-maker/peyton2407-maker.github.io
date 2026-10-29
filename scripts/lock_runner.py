@@ -95,6 +95,8 @@ async def main():
         await page.evaluate("async () => { try { if (typeof pullLiveScores === 'function') await pullLiveScores(false); } catch (e) {} }")
         # the box score numbers for player-prop plays of the day (scripts/prop_record.py)
         await page.evaluate("async () => { try { await pbFetchOnce('proprecord', '/data/prop-record.json?t=' + Date.now(), (d) => { window.PROP_RECORD = d; }); } catch (e) {} }")
+        # player props can be the NFL play of the day: load projections and prop prices first
+        await page.evaluate("async () => { try { if (typeof ensurePotdProps === 'function') await ensurePotdProps(); } catch (e) {} }")
         if args.inject:
             await page.evaluate(args.inject)
         result = await page.evaluate(
