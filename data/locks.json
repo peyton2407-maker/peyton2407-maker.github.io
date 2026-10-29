@@ -162,8 +162,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-10-29T22:31:26.397Z",
-   "provisional": true
+   "lockedAt": "2026-10-29T22:46:31.320Z"
   }
  },
  "potd": {
@@ -238,12 +237,11 @@
     "ours": "GB -4.0 · total 46.3",
     "score": "CAR 21.1 – GB 25.2",
     "market": "GB -3.5 · total 46.5",
-    "lockedAt": "2026-10-29T22:31:26.405Z",
-    "locked": false,
-    "provisional": true,
+    "lockedAt": "2026-10-29T22:46:31.329Z",
+    "locked": true,
     "kick": "2026-10-30T00:15Z",
     "big": false,
-    "savedAt": 1793313086405
+    "savedAt": 1793313991329
    }
   ],
   "cfb": [
@@ -712,5 +710,5 @@
    }
   ]
  },
- "updated": "2026-10-29T22:31:26.397Z"
+ "updated": "2026-10-29T22:46:31.320Z"
 }
