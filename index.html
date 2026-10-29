@@ -11824,7 +11824,18 @@ function potdPick(league) {
   if (!window.games.length) return null;
   const locked = potdLockedBet(league, window);
   if (locked) return locked;
-  const cands = (g) => league === "nfl" ? potdNflCandidates(g) : potdBets(g, league, false);
+  // College: weather unders only. Spread picks from a power rating against the line went
+  // 458-503 (47.7%) on 2020-2025 games at our 1.6-point bar and got worse as the gap grew
+  // (44% at 3+); stats-based totals off the line went 44% (2021-25), so college totals are
+  // pinned to the market and only the weather moves them. Rain is the angle that held up
+  // over ten years (games finished 3.9 under the closing total), so the play is an under
+  // whose gap comes from the forecast.
+  const cfbWeatherUnder = (g, b) => b.kind === "Under" && Number((g.proj || {}).weather_adj_total) <= -1.5;
+  const cands = (g) => league === "nfl" ? potdNflCandidates(g) : potdBets(g, league, false).filter((b) => cfbWeatherUnder(g, b)).map((b) => {
+    const wx = typeof cfbWeatherNudge === "function" ? cfbWeatherNudge(g) : null;
+    if (wx && wx.notes && wx.notes.length) b.why += " Why: " + wx.notes.map((t) => t.replace(/ The side did not\./, "")).join(" ");
+    return b;
+  });
   let bets = [];
   window.games.forEach((g) => { bets = bets.concat(cands(g)); });
   if (!bets.length && !window.big) {
@@ -12080,7 +12091,7 @@ function potdRecordCard(league) {
     <div class="who">
       <div>
         <h4>${name} play of the day record</h4>
-        <div class="prop-meta">${league === "nfl" ? "Any NFL bet can be the play: a side, a total, a moneyline or any player prop. We take the one that beats its sportsbook price by the most. " : ""}One play per game, or one best play when 4 or more games kick off together. It locks 90 minutes before kickoff and is graded against the final. Every play is listed below with why we took it.</div>
+        <div class="prop-meta">${league === "nfl" ? "Any NFL bet can be the play: a side, a total, a moneyline or any player prop. We take the one that beats its sportsbook price by the most. " : "From Oct 29 the college play is a weather under only: a game where the forecast (rain, strong wind) puts our total 1.5+ under the line. College spread picks off a power rating lost over five seasons of testing (47.7%), and stats-based totals did too (44%), so on days without bad weather there is no college play. "}One play per game, or one best play when 4 or more games kick off together. It locks 90 minutes before kickoff and is graded against the final. Every play is listed below with why we took it.</div>
       </div>
       <div class="pick-score">${rec(T)}</div>
     </div>
@@ -12159,7 +12170,7 @@ function renderPotd() {
   gradeSavedPotd("cfb");
   const bet = cfbPotd();
   rememberPotd("cfb", bet);
-  const current = bet ? potdCard(bet, "POTD") : `<div class="empty">No college game left this week clears our bar, so there is no play of the day.</div>`;
+  const current = bet ? potdCard(bet, "POTD") : `<div class="empty">No college play of the day right now. The play is a weather under, and no game on the board has rain or strong wind in its forecast that moves our total 1.5+ under the line. Forecasts update every hour.</div>`;
   board.innerHTML = potdRecordCard("cfb") + current + potdHistoryHtml("cfb");
   board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
