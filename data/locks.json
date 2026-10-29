@@ -152,7 +152,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-10-29T22:01:11.248Z",
+   "lockedAt": "2026-10-29T22:16:42.879Z",
    "provisional": true
   }
  },
@@ -208,32 +208,32 @@
     "id": "401873023",
     "game": "CAR @ GB",
     "kind": "Player prop",
-    "line": "Bryce Young under 10.5 rush yds",
-    "hitPct": 57,
-    "why": "We project Bryce Young for 10 rush yds against a line of 10.5. Our checked chance on the under is 57%; the books' own chance is 53%. At -112 (DraftKings) that is 8.8% better than the price.",
+    "line": "Savion Williams under 24.5 rec yds",
+    "hitPct": 55,
+    "why": "We project Savion Williams for 25 rec yds against a line of 24.5. Our checked chance on the under is 55%; the books' own chance is 51%. At -109 (DraftKings) that is 6.1% better than the price.",
     "label": "Thursday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
     "prop": {
-     "pid": "4685720",
-     "name": "Bryce Young",
-     "stat": "rush_yds",
+     "pid": "4431487",
+     "name": "Savion Williams",
+     "stat": "rec_yds",
      "side": "under",
-     "line": 10.5
+     "line": 24.5
     },
-    "price": -112,
+    "price": -109,
     "book": "DraftKings",
-    "ev": 0.088,
+    "ev": 0.061,
     "ours": "GB -4.0 · total 46.3",
     "score": "CAR 21.1 – GB 25.2",
     "market": "GB -3.5 · total 46.5",
-    "lockedAt": "2026-10-29T22:01:11.255Z",
+    "lockedAt": "2026-10-29T22:16:42.889Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-10-30T00:15Z",
     "big": false,
-    "savedAt": 1793311271255
+    "savedAt": 1793312202889
    }
   ],
   "cfb": [
@@ -702,5 +702,5 @@
    }
   ]
  },
- "updated": "2026-10-29T22:01:11.248Z"
+ "updated": "2026-10-29T22:16:42.879Z"
 }
