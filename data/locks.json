@@ -443,11 +443,12 @@
     "score": "JXST 25.4 – NMSU 24.1",
     "market": "JXST -3.0 · total 49.5",
     "lockedAt": "2026-10-28T15:43:49.493Z",
-    "locked": false,
-    "provisional": true,
+    "locked": true,
+    "provisional": false,
     "kick": "2026-10-29T00:00Z",
     "big": false,
-    "savedAt": 1793202229493
+    "savedAt": 1793202229493,
+    "note": "No lock run landed in the 90 minutes before kickoff; this is the last play saved before kickoff."
    },
    {
     "key": "game:401871058",
@@ -471,11 +472,12 @@
     "score": "KENN 24.4 – MTSU 25.7",
     "market": "KENN -1.5 · total 50.5",
     "lockedAt": "2026-10-28T20:36:00.683Z",
-    "locked": false,
-    "provisional": true,
+    "locked": true,
+    "provisional": false,
     "kick": "2026-10-28T23:00Z",
     "big": false,
-    "savedAt": 1793219760683
+    "savedAt": 1793219760683,
+    "note": "No lock run landed in the 90 minutes before kickoff; this is the last play saved before kickoff."
    }
   ]
  },
@@ -604,5 +606,5 @@
    }
   ]
  },
- "updated": "2026-10-28T20:36:00.674Z"
+ "updated": "2026-10-29T00:26:55.079Z"
 }
