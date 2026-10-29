@@ -12863,8 +12863,26 @@ function playScore(g) {
   if (p.total_pick && p.total_pick !== "NO PLAY") n += Math.abs(Number(p.edge_total) || 0) * 0.35;
   return n;
 }
+// Thursday of this NFL week at an ET wall-clock hour, as a UTC time (handles the switch
+// between daylight and standard time, so "noon" stays noon in November).
+function cardThursdayEt(hour) {
+  const wk = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : 1;
+  const day = new Date(Date.UTC(2026, 8, 10) + (wk - 1) * 7 * 86400000);   // Thu Sep 10 = Week 1
+  const y = day.getUTCFullYear(), m = day.getUTCMonth(), d = day.getUTCDate();
+  let off = 4;
+  try {
+    const etHour = Number(new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", hour: "numeric", hourCycle: "h23" }).format(new Date(Date.UTC(y, m, d, 16))));
+    if (Number.isFinite(etHour)) off = 16 - etHour;
+  } catch (e) {}
+  return Date.UTC(y, m, d, hour) + off * 3600000;
+}
 function buildWeeklyLegs(games) {
+  // The card is the weekend: Thursday through Monday. Tuesday and Wednesday college games
+  // stay on the board but not on the card, so the card always locks Thursday at noon with
+  // the week's news and line moves in.
+  const cardStart = cardThursdayEt(0);
   const upcoming = (games || []).filter((g) => !g.completed && isPlay(g.proj)
+    && !(Date.parse(g.date) < cardStart)
     && !(typeof isPastKickoff === "function" && isPastKickoff(g))
     && !(g.league === "nfl" && typeof isThisNflWeek === "function" && !isThisNflWeek(g))
     && !(g.league === "cfb" && typeof isThisCfbWeek === "function" && !isThisCfbWeek(g)));
@@ -13476,8 +13494,7 @@ function ggLockRun(prev) {
     const first = Math.min.apply(null, legs.map((l) => Date.parse(l.date)).filter(Number.isFinite));
     // Lock 90 minutes before the first game on the card, or Thursday noon ET of the NFL
     // week at the latest, so the card can't keep reshuffling past Thursday night.
-    const weekTue = Date.parse("2026-09-08T04:00:00Z") + (currentNflWeekNumber() - 1) * 7 * 86400000;
-    const thursdayNoon = weekTue + 2.5 * 86400000;
+    const thursdayNoon = cardThursdayEt(12);
     if (legs.length && Number.isFinite(first) && (first - now <= LOCK_WINDOW_MS || now >= thursdayNoon)) {
       out.card = { weekKey: key, frozen: true, lockedAt: iso, title: "Double Gs weekly card", legs };
       changes.push("locked card " + key);
@@ -14069,7 +14086,7 @@ function renderWeeklyCard() {
     <h2>This week's card</h2>
     <p class="subn" style="font-size:18px;font-weight:800;color:${card.frozen ? "var(--turf)" : "var(--sun)"}">${card.frozen ? "LOCKED" : "NOT LOCKED YET"} · ${(card.legs || []).length} plays${record}</p>
     <ul class="share-legs">${graded.map(({ L, side, tot, f }, i) => `<li data-id="${L.id}"><span>${i + 1}. ${pbGame(L.id) ? matchupHtml(pbGame(L.id)) : L.away + " @ " + L.home}<div class="subn">${f ? `Final ${L.away} ${f.as}, ${L.home} ${f.hs}` : "Projected " + proj(L.proj)}</div></span><b>${L.pick && L.pick !== "NO PLAY" ? L.pick + " " + chip(side) : ""}${L.pick && L.pick !== "NO PLAY" && L.total && L.total !== "NO PLAY" ? "<br>" : ""}${L.total && L.total !== "NO PLAY" ? L.total + " " + chip(tot) : ""}${!(L.pick && L.pick !== "NO PLAY") && !(L.total && L.total !== "NO PLAY") ? L.text : ""}</b></li>`).join("")}</ul>
-    <p class="subn">The card locks Thursday at noon ET, or 90 minutes before its first game if that comes sooner, with the picks as they stood then. Picks on the scorecard lock later, closer to each kickoff, so a few can differ when the line or our number moved in between.</p>
+    <p class="subn">The card is the weekend's games, Thursday through Monday, and locks Thursday at noon ET with the picks as they stood then. Picks on the scorecard lock later, closer to each kickoff, so a few can differ when the line or our number moved in between.</p>
   </article>`;
   wrap.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
