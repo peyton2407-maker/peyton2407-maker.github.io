@@ -11,15 +11,15 @@
    "date": "2026-10-29T23:30Z",
    "pick": "FAU",
    "pick_line": "FAU +14.0",
-   "total_pick": "OVER 77.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 13.17,
-   "our_total": 77.2,
+   "our_margin": 13.1,
+   "our_total": 77.5,
    "confidence": null,
    "total_play": false,
    "spread": -14,
    "total": 77.5,
-   "lockedAt": "2026-10-29T17:01:17.710Z",
+   "lockedAt": "2026-10-29T17:31:00.454Z",
    "provisional": true
   },
   "401869963": {
@@ -32,15 +32,15 @@
    "date": "2026-10-29T23:30Z",
    "pick": "JMU",
    "pick_line": "JMU -19.5",
-   "total_pick": "OVER 51.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
    "our_margin": 19.7,
-   "our_total": 50.8,
+   "our_total": 51.5,
    "confidence": null,
    "total_play": false,
    "spread": -19.5,
    "total": 51.5,
-   "lockedAt": "2026-10-29T17:01:17.710Z",
+   "lockedAt": "2026-10-29T17:31:00.454Z",
    "provisional": true
   },
   "401871057": {
@@ -154,7 +154,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-10-29T17:01:17.710Z",
+   "lockedAt": "2026-10-29T17:31:00.454Z",
    "provisional": true
   }
  },
@@ -229,12 +229,12 @@
     "ours": "GB -4.0 · total 46.3",
     "score": "CAR 21.1 – GB 25.2",
     "market": "GB -3.5 · total 46.5",
-    "lockedAt": "2026-10-29T17:01:17.714Z",
+    "lockedAt": "2026-10-29T17:31:00.459Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-10-30T00:15Z",
     "big": false,
-    "savedAt": 1793293277714
+    "savedAt": 1793295060459
    }
   ],
   "cfb": [
@@ -703,5 +703,5 @@
    }
   ]
  },
- "updated": "2026-10-29T17:01:17.710Z"
+ "updated": "2026-10-29T17:31:00.454Z"
 }
