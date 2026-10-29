@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -14,
    "total": 77.5,
-   "lockedAt": "2026-10-29T14:14:18.765Z",
+   "lockedAt": "2026-10-29T14:16:14.336Z",
    "provisional": true
   },
   "401869963": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -19.5,
    "total": 51.5,
-   "lockedAt": "2026-10-29T14:14:18.765Z",
+   "lockedAt": "2026-10-29T14:16:14.336Z",
    "provisional": true
   },
   "401871057": {
@@ -154,7 +154,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-10-29T14:14:18.765Z",
+   "lockedAt": "2026-10-29T14:16:14.336Z",
    "provisional": true
   }
  },
@@ -210,32 +210,32 @@
     "id": "401873023",
     "game": "CAR @ GB",
     "kind": "Player prop",
-    "line": "Darren Waller under 2.5 receptions",
-    "hitPct": 64,
-    "why": "We project Darren Waller for 2.0 receptions against a line of 2.5. Our checked chance on the under is 64%; the books' own chance is 59%. At -154 (FanDuel) that is 5.2% better than the price.",
+    "line": "Christian Watson under 70.5 rec yds",
+    "hitPct": 57,
+    "why": "We project Christian Watson for 59 rec yds against a line of 70.5. Our checked chance on the under is 57%; the books' own chance is 50%. At -112 (DraftKings) that is 8.4% better than the price.",
     "label": "Thursday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
     "prop": {
-     "pid": "2576925",
-     "name": "Darren Waller",
-     "stat": "rec",
+     "pid": "4248528",
+     "name": "Christian Watson",
+     "stat": "rec_yds",
      "side": "under",
-     "line": 2.5
+     "line": 70.5
     },
-    "price": -154,
-    "book": "FanDuel",
-    "ev": 0.052,
+    "price": -112,
+    "book": "DraftKings",
+    "ev": 0.084,
     "ours": "GB -4.0 · total 46.3",
     "score": "CAR 21.1 – GB 25.2",
     "market": "GB -3.5 · total 46.5",
-    "lockedAt": "2026-10-29T14:14:18.775Z",
+    "lockedAt": "2026-10-29T14:16:14.346Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-10-30T00:15Z",
     "big": false,
-    "savedAt": 1793283258775
+    "savedAt": 1793283374346
    }
   ],
   "cfb": [
@@ -704,5 +704,5 @@
    }
   ]
  },
- "updated": "2026-10-29T14:14:18.765Z"
+ "updated": "2026-10-29T14:16:14.336Z"
 }
