@@ -1,7 +1,14 @@
 async () => {
-  const picks = (DATA.games || []).filter((g) => g && !g.completed && g.proj).map((g) => [g.short_name, (shownPick(g) || {}).side || "-", g.proj.hashmark_home_spread, g.proj.total_pick]);
-  const f = document.getElementById("homeFilter");
-  return { width: innerWidth, deployed: document.documentElement.outerHTML.includes("different moment on phones"),
-    hero: (document.querySelector("#homeFeature") || {}).innerText ? document.querySelector("#homeFeature").innerText.slice(0, 160) : null,
-    filterH: f ? Math.round(f.getBoundingClientRect().height) : null, filterW: f ? f.scrollWidth - f.clientWidth : null, picks };
+  const out = { width: innerWidth, now: new Date().toISOString() };
+  const safe = (f) => { try { return f(); } catch (e) { return "ERR " + e.message; } };
+  out.nflPotd = safe(() => { const b = potdPick("nfl"); return b ? [b.g.short_name, b.kind, b.line, b.price, Math.round((b.ev || 0) * 1000) / 10, b.label] : null; });
+  out.cfbPotd = safe(() => { const b = potdPick("cfb"); return b ? [b.g.short_name, b.kind, b.line, b.label] : null; });
+  out.tnfCands = safe(() => { const g = DATA.games.find((x) => x.short_name === "CAR @ GB"); return g ? potdNflCandidates(g).map((b) => [b.kind, b.line, b.price, Math.round(b.ev * 1000) / 10]).slice(0, 12) : "no game"; });
+  out.tnf = safe(() => { const g = DATA.games.find((x) => x.short_name === "CAR @ GB"); return g ? { odds: g.odds && [g.odds.details, g.odds.total], proj: [g.proj.away_points, g.proj.home_points, g.proj.pick_line, g.proj.total_pick], shown: shownPick(g), wx: g.weather && [g.weather.temp_f, g.weather.wind_mph], inj: (g.injuries || []).length } : null; });
+  out.tallies = safe(() => ["nfl", "cfb"].map((l) => { const t = potdTally(potdPublished(l)); return [l, t.hit, t.n - t.hit, t.units]; }));
+  out.cardText = safe(() => { setView("card"); return document.querySelector("main").innerText.slice(0, 900); });
+  out.potdText = safe(() => { setView("potd"); return document.querySelector("main").innerText.slice(0, 1400); });
+  out.nflpotdText = safe(() => { setView("nflpotd"); return document.querySelector("main").innerText.slice(0, 1400); });
+  out.consoleErrors = window.__probeErrs || null;
+  return out;
 }
