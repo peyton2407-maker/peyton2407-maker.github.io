@@ -1,6 +1,48 @@
 {
  "v": 1,
  "plays": {
+  "401862812": {
+   "id": "401862812",
+   "league": "cfb",
+   "week": 9,
+   "short": "FAU @ UNT",
+   "home": "UNT",
+   "away": "FAU",
+   "date": "2026-10-29T23:30Z",
+   "pick": "FAU",
+   "pick_line": "FAU +14.0",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 13.17,
+   "our_total": 76.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -14,
+   "total": 76.5,
+   "lockedAt": "2026-10-29T13:10:45.783Z",
+   "provisional": true
+  },
+  "401869963": {
+   "id": "401869963",
+   "league": "cfb",
+   "week": 9,
+   "short": "TROY @ JMU",
+   "home": "JMU",
+   "away": "TROY",
+   "date": "2026-10-29T23:30Z",
+   "pick": "JMU",
+   "pick_line": "JMU -19.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 19.7,
+   "our_total": 49.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -19.5,
+   "total": 49.5,
+   "lockedAt": "2026-10-29T13:10:45.783Z",
+   "provisional": true
+  },
   "401871057": {
    "id": "401871057",
    "league": "cfb",
@@ -93,6 +135,27 @@
    "closeAt": "2026-10-27T23:14:40.119Z",
    "clv_side": 0.5,
    "clv_total": 0
+  },
+  "401873023": {
+   "id": "401873023",
+   "league": "nfl",
+   "week": 8,
+   "short": "CAR @ GB",
+   "home": "GB",
+   "away": "CAR",
+   "date": "2026-10-30T00:15Z",
+   "pick": "GB",
+   "pick_line": "GB -3.5",
+   "total_pick": "UNDER 47.5",
+   "side_play": false,
+   "our_margin": 4.04,
+   "our_total": 47,
+   "confidence": null,
+   "total_play": false,
+   "spread": -3.5,
+   "total": 47.5,
+   "lockedAt": "2026-10-29T13:10:45.783Z",
+   "provisional": true
   }
  },
  "potd": {
@@ -606,5 +669,5 @@
    }
   ]
  },
- "updated": "2026-10-29T06:14:53.578Z"
+ "updated": "2026-10-29T13:10:45.783Z"
 }
