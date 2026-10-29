@@ -16035,7 +16035,18 @@ function renderPrimetime() {
       const plays = primePlays(g);
       const best = plays[0];
       const rest = plays.slice(1);
-      const prop = bestPropLean(g);
+      // the NFL play of the day, when it's a prop in this game, so this card and that page agree
+      let prop = null;
+      try {
+        const pd = typeof potdPick === "function" ? potdPick("nfl") : null;
+        if (pd && pd.prop && pd.g && String(pd.g.id) === String(g.id)) {
+          const m = /(\d+(?:\.\d+)?)% better/.exec(pd.why || "");
+          const pj = /for ([\d.]+)/.exec(pd.why || "");
+          prop = { name: pd.prop.name, side: pd.prop.side, line: pd.prop.line, market: PROP_LBL[pd.prop.stat] || pd.prop.stat, key: pd.prop.stat,
+                   proj: pj ? Number(pj[1]) : NaN, hit: pd.hit, value: m ? Number(m[1]) / 100 : (pd.ev || 0), price: pd.price, book: pd.book, potd: true };
+        }
+      } catch (e) {}
+      if (!prop) prop = bestPropLean(g);
       const outs = (g.injuries || []).filter((r) => /OUT|IR/.test(String(r.tag || r.status || "").toUpperCase())).slice(0, 3);
       return `<button type="button" class="card prime-card" data-open-game="${g.id}">
         <div class="prime-kicker">${titles[slot]} · ${fmt.when(g.date)} · ${nets(g) || "National"}</div>
@@ -16044,7 +16055,7 @@ function renderPrimetime() {
         <div class="prime-best">${best ? best.kind + ": " + best.label : "No side. No total."}</div>
         <p class="prime-why">${best ? best.why : "We are too close to the market to take either number."}</p>
         ${rest.map((r) => `<p class="prime-why">Also ${r.kind.toLowerCase()}: <b>${r.label}</b>. ${r.why}</p>`).join("")}
-        <p class="prime-why">${prop ? "Best player prop at its price: " + escHtml(prop.name) + " " + prop.side + " " + prop.line + " " + escHtml(prop.market) + " at " + pbAm(prop.price) + " (" + escHtml(prop.book || "") + "). " + (prop.key === "td" ? "" : "We project " + (prop.proj >= 10 ? Math.round(prop.proj) : prop.proj.toFixed(1)) + ". ") + "Our chance " + Math.round(prop.hit * 100) + "%, " + (Math.round(prop.value * 1000) / 10) + "% better than the price." : "No player prop beats its price in this game yet."}</p>
+        <p class="prime-why">${prop ? (prop.potd ? "NFL play of the day: " : "Best player prop at its price: ") + escHtml(prop.name) + " " + prop.side + " " + prop.line + " " + escHtml(prop.market) + " at " + pbAm(prop.price) + " (" + escHtml(prop.book || "") + "). " + (prop.key === "td" || !Number.isFinite(prop.proj) ? "" : "We project " + (prop.proj >= 10 ? Math.round(prop.proj) : prop.proj.toFixed(1)) + ". ") + "Our chance " + Math.round(prop.hit * 100) + "%, " + (Math.round(prop.value * 1000) / 10) + "% better than the price." : "No player prop beats its price in this game yet."}</p>
         ${outs.length ? `<p class="prime-why">Out: ${outs.map((r) => r.name).join(", ")}.</p>` : ""}
       </button>`;
     }).join("");
