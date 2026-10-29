@@ -19,8 +19,7 @@
    "total_play": false,
    "spread": -14,
    "total": 78.5,
-   "lockedAt": "2026-10-29T21:01:28.333Z",
-   "provisional": true
+   "lockedAt": "2026-10-29T22:01:11.248Z"
   },
   "401869963": {
    "id": "401869963",
@@ -40,8 +39,7 @@
    "total_play": false,
    "spread": -19.5,
    "total": 51.5,
-   "lockedAt": "2026-10-29T21:01:28.333Z",
-   "provisional": true
+   "lockedAt": "2026-10-29T22:01:11.248Z"
   },
   "401871057": {
    "id": "401871057",
@@ -154,7 +152,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-10-29T21:01:28.333Z",
+   "lockedAt": "2026-10-29T22:01:11.248Z",
    "provisional": true
   }
  },
@@ -230,12 +228,12 @@
     "ours": "GB -4.0 · total 46.3",
     "score": "CAR 21.1 – GB 25.2",
     "market": "GB -3.5 · total 46.5",
-    "lockedAt": "2026-10-29T21:01:28.343Z",
+    "lockedAt": "2026-10-29T22:01:11.255Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-10-30T00:15Z",
     "big": false,
-    "savedAt": 1793307688343
+    "savedAt": 1793311271255
    }
   ],
   "cfb": [
@@ -704,5 +702,5 @@
    }
   ]
  },
- "updated": "2026-10-29T21:01:28.333Z"
+ "updated": "2026-10-29T22:01:11.248Z"
 }
