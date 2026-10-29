@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -14,
    "total": 77.5,
-   "lockedAt": "2026-10-29T14:07:56.048Z",
+   "lockedAt": "2026-10-29T14:14:18.765Z",
    "provisional": true
   },
   "401869963": {
@@ -32,15 +32,15 @@
    "date": "2026-10-29T23:30Z",
    "pick": "JMU",
    "pick_line": "JMU -19.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "OVER 51.5",
    "side_play": false,
    "our_margin": 19.7,
-   "our_total": 49.5,
+   "our_total": 50.8,
    "confidence": null,
    "total_play": false,
    "spread": -19.5,
-   "total": 49.5,
-   "lockedAt": "2026-10-29T14:07:56.048Z",
+   "total": 51.5,
+   "lockedAt": "2026-10-29T14:14:18.765Z",
    "provisional": true
   },
   "401871057": {
@@ -154,7 +154,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-10-29T14:07:56.048Z",
+   "lockedAt": "2026-10-29T14:14:18.765Z",
    "provisional": true
   }
  },
@@ -201,6 +201,41 @@
     "big": false,
     "savedAt": 1792352872931,
     "by": "Covered by 2.5"
+   },
+   {
+    "key": "game:401873023",
+    "week": 8,
+    "day": "2026-10-29",
+    "league": "nfl",
+    "id": "401873023",
+    "game": "CAR @ GB",
+    "kind": "Player prop",
+    "line": "Darren Waller under 2.5 receptions",
+    "hitPct": 64,
+    "why": "We project Darren Waller for 2.0 receptions against a line of 2.5. Our checked chance on the under is 64%; the books' own chance is 59%. At -154 (FanDuel) that is 5.2% better than the price.",
+    "label": "Thursday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "prop": {
+     "pid": "2576925",
+     "name": "Darren Waller",
+     "stat": "rec",
+     "side": "under",
+     "line": 2.5
+    },
+    "price": -154,
+    "book": "FanDuel",
+    "ev": 0.052,
+    "ours": "GB -4.0 · total 46.3",
+    "score": "CAR 21.1 – GB 25.2",
+    "market": "GB -3.5 · total 46.5",
+    "lockedAt": "2026-10-29T14:14:18.775Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-10-30T00:15Z",
+    "big": false,
+    "savedAt": 1793283258775
    }
   ],
   "cfb": [
@@ -669,5 +704,5 @@
    }
   ]
  },
- "updated": "2026-10-29T14:07:56.048Z"
+ "updated": "2026-10-29T14:14:18.765Z"
 }
