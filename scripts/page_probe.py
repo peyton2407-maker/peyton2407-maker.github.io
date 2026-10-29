@@ -58,6 +58,22 @@ async def main(view, js=None):
             errors = []
             page.on("pageerror", lambda e: errors.append(str(e)[:300]))
             page.on("console", lambda m: m.type in ("error", "warning") and len(errors) < 80 and errors.append(m.type + ": " + m.text[:200]))
+            if view == "timeline":   # the probe script at several moments after load (desktop only)
+                if name != "desktop":
+                    await ctx.close()
+                    continue
+                await page.goto(SITE + "/#home", wait_until="load", timeout=120000)
+                marks, t0 = [], 0
+                for t in (3, 8, 15, 30, 60, 90):
+                    await page.wait_for_timeout((t - t0) * 1000)
+                    t0 = t
+                    try:
+                        marks.append({"t": t, "v": await page.evaluate(js)})
+                    except Exception as e:
+                        marks.append({"t": t, "err": str(e)[:300]})
+                (OUT / "timeline.json").write_text(json.dumps({"marks": marks, "errors": errors}, indent=1))
+                await ctx.close()
+                continue
             if view == "tour":   # every page, one after another, on both screen sizes
                 await page.goto(SITE + "/#home", wait_until="load", timeout=120000)
                 await page.wait_for_timeout(45000)
