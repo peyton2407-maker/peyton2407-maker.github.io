@@ -11213,7 +11213,34 @@ function propMarket(p, key) {
     fair.push(a / (a + b));
   });
   fair.sort((a, b) => a - b);
-  return { line, fairOver: fair.length ? fair[Math.floor(fair.length / 2)] : null, best, dk, books: new Set(at.map((o) => o.book)).size };
+  // every book's own two-sided market, at whatever line it hangs, so postedLean can read the
+  // market's chance at our line from all of them (a book a yard or two off still counts)
+  const perBook = [];
+  [...new Set(offers.map((o) => o.book))].forEach((book) => {
+    const mine = offers.filter((o) => o.book === book);
+    const lines = [...new Set(mine.map((o) => o.line))];
+    lines.forEach((ln) => {
+      const ov = mine.find((o) => o.line === ln && o.side === "over"), un = mine.find((o) => o.line === ln && o.side === "under");
+      if (!ov || !un) return;
+      const a = 1 / pbDec(ov.odds), b = 1 / pbDec(un.odds);
+      perBook.push({ book, line: Number(ln), fairOver: a / (a + b) });
+    });
+  });
+  return { line, fairOver: fair.length ? fair[Math.floor(fair.length / 2)] : null, perBook, best, dk, books: new Set(at.map((o) => o.book)).size };
+}
+// The market's no-vig chance of the over at mk.line, read from every book (see postedLean).
+function propFairOver(m, mk, over) {
+  if (!mk) return null;
+  if (over == null) over = ourChance(m.mean, mk.line, m.key, false);
+  let fairOver = mk.fairOver;
+  if (mk.perBook && mk.perBook.length && Number.isFinite(over)) {
+    const est = mk.perBook.map((b) => {
+      const atB = Math.abs(b.line - mk.line) < 1e-9 ? over : ourChance(m.mean, b.line, m.key, false);
+      return Number.isFinite(atB) ? b.fairOver + (over - atB) : null;
+    }).filter((x) => x != null).sort((a, b) => a - b);
+    if (est.length) fairOver = Math.max(0.02, Math.min(0.98, est.length % 2 ? est[(est.length - 1) / 2] : (est[est.length / 2 - 1] + est[est.length / 2]) / 2));
+  }
+  return fairOver;
 }
 // the side, of every market with a line, that beats the books' own chance by the most
 function postedLean(p) {
@@ -11224,10 +11251,15 @@ function postedLean(p) {
     if (!mk) return;
     const over = ourChance(m.mean, mk.line, m.key, false);
     if (!Number.isFinite(over)) return;
+    // The market's chance at our line, from every book: each book's no-vig chance at its own
+    // line, moved to our line by how much our own curve changes between the two lines; the
+    // middle of those. Reading only the books at DraftKings' line made an under at the lowest
+    // line in the market look like value (those picks went 12-19).
+    const fairOver = propFairOver(m, mk, over);
     ["Over", "Under"].forEach((take) => {
       const raw = take === "Over" ? over : 1 - over;
       const side = take.toLowerCase();
-      const fair = mk.fairOver == null ? null : (take === "Over" ? mk.fairOver : 1 - mk.fairOver);
+      const fair = fairOver == null ? null : (take === "Over" ? fairOver : 1 - fairOver);
       // checked chance: the books' own chance plus a quarter of our difference with it (props
       // haven't been graded long enough to trust more; same rule as the parlay builder)
       // how much of our lean the graded prop record backs (data/calibration.json, refit every
@@ -11255,7 +11287,7 @@ function propLinesHtml(p) {
     if (!mk) return `<tr><td>${PROP_LBL[m.key] || m.label}</td><td class="num">${avg}</td><td class="muted" colspan="2">—</td></tr>`;
     const over = ourChance(m.mean, mk.line, m.key, false);
     const pr = (side) => mk.best[side] ? `${pbAm(mk.best[side].odds)}` : "";
-    return `<tr><td>${PROP_LBL[m.key] || m.label}</td><td class="num">${avg}</td><td class="num"><b>${mk.line}</b>${mk.best.over || mk.best.under ? `<small>o ${pr("over") || "—"} · u ${pr("under") || "—"}</small>` : ""}</td><td class="num">${Math.round(over * 100)}%<small>${mk.fairOver != null ? "books " + Math.round(mk.fairOver * 100) + "%" : ""}</small></td></tr>`;
+    return `<tr><td>${PROP_LBL[m.key] || m.label}</td><td class="num">${avg}</td><td class="num"><b>${mk.line}</b>${mk.best.over || mk.best.under ? `<small>o ${pr("over") || "—"} · u ${pr("under") || "—"}</small>` : ""}</td><td class="num">${Math.round(over * 100)}%<small>${(() => { const f = propFairOver(m, mk, over); return f != null ? "books " + Math.round(f * 100) + "%" : ""; })()}</small></td></tr>`;
   });
   if (!rows.length) return "";
   return `<table class="pp-lines"><thead><tr><th>Market</th><th>Our avg</th><th>Line</th><th>Over</th></tr></thead><tbody>${rows.join("")}</tbody></table>`;
@@ -11808,6 +11840,9 @@ function potdNflCandidates(g) {
     nextPropRows().filter((p) => String(p.game_id) === String(g.id)).forEach((p) => {
       const L = postedLean(p);
       if (!L || L.price == null || L.value == null || !(L.value > 0.005) || L.fair == null) return;
+      // unders only: graded prop unders are 42-20 where the market is priced both ways; overs
+      // are about break-even (15-13)
+      if (L.take !== "Under") return;
       const lbl = PROP_LBL[L.m.key] || L.m.label;
       out.push({
         g, kind: "Player prop", line: `${p.name} ${L.take.toLowerCase()} ${L.line} ${lbl}`,
@@ -16786,6 +16821,23 @@ function pbLeg(stored, opts) {
       return null;
     }
     const po = propOverP(stat, mu, line);
+    // the market's chance from every book at its own line, moved to this line along our curve
+    // (same reading as the props page and the play of the day)
+    const books = [];
+    [...new Set(offers.map((o) => o.book))].forEach((bk) => {
+      const mineB = offers.filter((o) => o.book === bk);
+      [...new Set(mineB.map((o) => o.line))].forEach((ln) => {
+        const ov = mineB.find((o) => o.line === ln && o.side === "over"), un = mineB.find((o) => o.line === ln && o.side === "under");
+        if (!ov || !un) return;
+        const a = 1 / pbDec(ov.odds), b = 1 / pbDec(un.odds);
+        books.push(a / (a + b) + (po - propOverP(stat, mu, Number(ln))));
+      });
+    });
+    if (books.length) {
+      books.sort((a, b) => a - b);
+      const f = Math.max(0.02, Math.min(0.98, books.length % 2 ? books[(books.length - 1) / 2] : (books[books.length / 2 - 1] + books[books.length / 2]) / 2));
+      mkt = { win: over ? f : 1 - f, push: 0 };
+    }
     board = { win: over ? po : 1 - po, push: 0 };
     keepInfo = pbKeep("nfl", "props");
     market = "Player prop";
