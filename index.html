@@ -3730,6 +3730,10 @@ function applyLearningToGame(g) {
   return g;
 }
 
+// Stadiums with a fixed roof that ESPN lists as outdoor. SoFi's roof covers the field (open
+// sides only), so wind and rain don't reach play; it was getting a wind cut on totals.
+const ROOFED_VENUES = /^(SoFi Stadium)$/i;
+function roofedVenue(name) { return ROOFED_VENUES.test(String(name || "").trim()); }
 async function attachWeather(games) {
   try { await Promise.race([loadVenues(), new Promise((r) => setTimeout(r, 4000))]); } catch (e) {}
   const jobs = [];
@@ -3936,7 +3940,7 @@ function parseGames(payload, league) {
       city: addr.city,
       state: addr.state,
       country: addr.country,
-      indoor: !!venue.indoor,
+      indoor: !!venue.indoor || roofedVenue(venue.fullName),
       broadcasts,
       notes: (comp.notes || []).map((n) => n.headline).filter(Boolean),
       officials: (comp.officials || []).map((o) => o.displayName || o.fullName || [o.firstName, o.lastName].filter(Boolean).join(" ")).filter(Boolean),
@@ -14754,6 +14758,7 @@ function applyReportWeather(file) {
   (file.wxNfl || []).concat(file.wxCfb || []).forEach((row) => {
     const g = byId[String(row.id)];
     if (!g || g.completed || !row.weather || row.weather.temp_f == null && !row.weather.indoor) return;
+    if (g.indoor && !row.weather.indoor) return;   // a roof: an outdoor forecast doesn't apply
     if (JSON.stringify(g.weather) === JSON.stringify(row.weather)) return;
     g.weather = Object.assign({}, g.weather || {}, row.weather);
     if (typeof applyWeatherToGame === "function") { try { applyWeatherToGame(g); } catch (e) {} }
@@ -18748,6 +18753,14 @@ async function boot() {
   // Every game's weather effect from the saved forecast before the first paint, on every device.
   // (Desktops used to get it from a live weather pull right after load and phones not until the
   // next half hour, so the same college game could show a pick on a laptop and none on a phone.)
+  try {
+    (DATA.games || []).forEach((g) => {
+      if (g && !g.indoor && roofedVenue(g.venue)) {
+        g.indoor = true;
+        g.weather = { indoor: true, condition: "Dome", temp_f: 72, wind_mph: 0, precip_prob: 0, precip_in: 0 };
+      }
+    });
+  } catch (e) {}
   try { (DATA.games || []).forEach((g) => { if (g && (g.weather || g.indoor) && typeof applyWeatherToGame === "function") applyWeatherToGame(g); }); } catch (e) {}
   try {
     const currentCfb = typeof currentCfbWeekNumber === "function" ? currentCfbWeekNumber() : 6;
