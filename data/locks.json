@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -14,
    "total": 77.5,
-   "lockedAt": "2026-10-29T19:01:28.370Z",
+   "lockedAt": "2026-10-29T19:13:42.036Z",
    "provisional": true
   },
   "401869963": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -19.5,
    "total": 51.5,
-   "lockedAt": "2026-10-29T19:01:28.370Z",
+   "lockedAt": "2026-10-29T19:13:42.036Z",
    "provisional": true
   },
   "401871057": {
@@ -154,7 +154,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-10-29T19:01:28.370Z",
+   "lockedAt": "2026-10-29T19:13:42.036Z",
    "provisional": true
   }
  },
@@ -210,31 +210,32 @@
     "id": "401873023",
     "game": "CAR @ GB",
     "kind": "Player prop",
-    "line": "Christian Watson under 70.5 rec yds",
+    "line": "Bryce Young under 10.5 rush yds",
     "hitPct": 57,
-    "why": "We project Christian Watson for 59 rec yds against a line of 70.5. Our checked chance on the under is 57%; the books' own chance is 50%. At -112 (DraftKings) that is 8.4% better than the price.",
+    "why": "We project Bryce Young for 10 rush yds against a line of 10.5. Our checked chance on the under is 57%; the books' own chance is 53%. At -112 (DraftKings) that is 8.8% better than the price.",
     "label": "Thursday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
     "prop": {
-     "pid": "4248528",
-     "name": "Christian Watson",
-     "stat": "rec_yds",
+     "pid": "4685720",
+     "name": "Bryce Young",
+     "stat": "rush_yds",
      "side": "under",
-     "line": 70.5
+     "line": 10.5
     },
     "price": -112,
     "book": "DraftKings",
+    "ev": 0.088,
     "ours": "GB -4.0 · total 46.3",
     "score": "CAR 21.1 – GB 25.2",
     "market": "GB -3.5 · total 46.5",
-    "lockedAt": "2026-10-29T19:01:28.376Z",
+    "lockedAt": "2026-10-29T19:13:42.046Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-10-30T00:15Z",
     "big": false,
-    "savedAt": 1793300488376
+    "savedAt": 1793301222046
    }
   ],
   "cfb": [
@@ -703,5 +704,5 @@
    }
   ]
  },
- "updated": "2026-10-29T19:01:28.370Z"
+ "updated": "2026-10-29T19:13:42.036Z"
 }
