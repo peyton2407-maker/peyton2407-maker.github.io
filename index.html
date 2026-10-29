@@ -1941,6 +1941,8 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 }
 @media (max-width: 979px) { .home-aside .home-banner { display: none; } }
 #homeFeature:not(.on) { display: none; }
+.bestpx { display: block; margin-top: 3px; font-size: 11.5px; font-weight: 600; color: var(--ink-soft); white-space: nowrap; }
+.bestpx s { color: var(--muted); font-weight: 500; margin-left: 4px; }
 
 .home-filter {
   position: sticky; top: var(--appbar-h, 58px); z-index: 30;
@@ -9773,13 +9775,13 @@ function card(g) {
   const realSide = !!(p.pick && p.pick !== "NO PLAY");
   const realTot = !!(p.total_pick && p.total_pick !== "NO PLAY");
   const pickBadge = sidePick && sidePick !== "NO PLAY"
-    ? (realSide ? `<span class="badge play">${sideLine}</span>` : `<span class="badge lean" title="Graded on the scorecard as a lean, not a play">Lean ${sideLine}</span>`)
+    ? (realSide ? `<span class="badge play">${sideLine}</span>${bestPriceTag(g, sideLine)}` : `<span class="badge lean" title="Graded on the scorecard as a lean, not a play">Lean ${sideLine}</span>`)
     : `<span class="badge pass">market aligned</span>`;
   const awayPts = (g.live && g.live.away_points != null) ? g.live.away_points : (p.away_points ?? b.away_points);
   const homePts = (g.live && g.live.home_points != null) ? g.live.home_points : (p.home_points ?? b.home_points);
   const tot = p.hashmark_total ?? b.total_points ?? o.total;
   const totPick = totLine && totLine !== "NO PLAY"
-    ? (realTot ? `<span class="badge ${String(totLine).startsWith("OVER") ? "over" : "under"}">${totLine}</span>` : `<span class="badge lean" title="Graded on the scorecard as a lean, not a play">Lean ${String(totLine).toLowerCase().replace(/^./, (c) => c.toUpperCase())}</span>`)
+    ? (realTot ? `<span class="badge ${String(totLine).startsWith("OVER") ? "over" : "under"}">${totLine}</span>${bestPriceTag(g, totLine)}` : `<span class="badge lean" title="Graded on the scorecard as a lean, not a play">Lean ${String(totLine).toLowerCase().replace(/^./, (c) => c.toUpperCase())}</span>`)
     : "";
   return `
     <article class="game ${g.completed ? "done" : ""}" data-id="${g.id}">
@@ -12075,6 +12077,7 @@ function potdCard(bet, title) {
     <div class="prop-stats">
       <div><span class="lbl">${escHtml(bet.kind)}</span><b>${escHtml(bet.line)}${bet.price != null ? " · " + escHtml(pbAm(bet.price)) + (bet.book ? " " + escHtml(bet.book) : "") : ""}</b></div>
       <div><span class="lbl">DraftKings</span><b>${escHtml((g.odds && g.odds.details) || "—")} · total ${escHtml(String((g.odds && g.odds.total) != null ? g.odds.total : "—"))}</b></div>
+      ${(() => { const i = !bet.prop && typeof bestPriceInfo === "function" ? bestPriceInfo(g, bet.line) : null; return i ? `<div><span class="lbl">Best price now</span><b>${escHtml(i.best)}${i.dk ? `<span class="subn"> DraftKings ${escHtml(i.dk)}</span>` : ""}</b></div>` : ""; })()}
       <div><span class="lbl">Our score</span><b>${g.away.abbr} ${p.away_points ?? "—"} – ${g.home.abbr} ${p.home_points ?? "—"}</b></div>
       <div style="grid-column:1/-1"><span class="lbl">Why this one</span><b>${escHtml(bet.why)}</b></div>
     </div>
@@ -14101,9 +14104,64 @@ function pickCover(g, text) {
   if (done) return { st, note: st === "up" ? "Hit" : st === "down" ? "Miss" : "Push" };
   return { st, note: st === "push" ? "On the number" : (st === "up" ? "Covering by " : "Short by ") + n1(Math.abs(d)) };
 }
+// Line shopping: for a side, total or moneyline (leg id gid|sp|home, gid|tot|under, gid|ml|away),
+// every book's line and price from data/books.json, valued with our checked chance at that
+// book's own line, best first. A half point and a few cents both count.
+function bestPriceFor(legId) {
+  const parts = String(legId || "").split("|");
+  const gid = parts[0], kind = parts[1], side = parts[parts.length - 1];
+  const books = window.PB_BOOKS && window.PB_BOOKS.games && window.PB_BOOKS.games[gid];
+  if (!books || !["sp", "tot", "ml"].includes(kind) || typeof pbLeg !== "function") return null;
+  // cached a minute per leg (the board draws it for every pick on every redraw)
+  const g0 = typeof pbGame === "function" ? pbGame(gid) : null;
+  const sig = legId + "|" + (window.PB_BOOKS.updated || "") + "|" + (g0 && g0.proj ? [g0.proj.hashmark_home_spread, g0.proj.hashmark_total].join(",") : "");
+  const memo = bestPriceFor.memo || (bestPriceFor.memo = new Map());
+  const hit = memo.get(legId);
+  if (hit && hit.sig === sig && Date.now() - hit.at < 60000) return hit.v;
+  const rows = [];
+  Object.keys(books).forEach((name) => {
+    const r = books[name] || {};
+    let line = null, raw = null;
+    if (kind === "sp") { if (r.sp == null) return; line = side === "home" ? Number(r.sp) : -Number(r.sp); raw = side === "home" ? r.sph : r.spa; }
+    else if (kind === "tot") { if (r.tot == null) return; line = Number(r.tot); raw = side === "over" ? r.over : r.under; }
+    else raw = side === "home" ? r.mlh : r.mla;
+    const price = pbParseAmerican(raw);
+    if (price == null || !Number.isFinite(price)) return;
+    const base = kind === "ml" ? pbLeg({ id: legId }) : pbLeg({ id: legId, line });
+    if (!base || base.started) return;
+    rows.push({ book: name, line, price, value: base.win * pbDec(price) + (base.push || 0) - 1 });
+  });
+  rows.sort((a, b) => b.value - a.value || pbDec(b.price) - pbDec(a.price));
+  const v = rows.length ? { best: rows[0], dk: rows.find((r) => r.book === "DraftKings") || null, rows } : null;
+  memo.set(legId, { sig, at: Date.now(), v });
+  return v;
+}
+function bestPriceText(r, kind) {
+  if (!r) return "";
+  const ln = kind === "sp" ? (r.line > 0 ? "+" : "") + Number(r.line).toFixed(1) + " " : kind === "tot" ? Number(r.line).toFixed(1) + " " : "";
+  return `${r.book} ${ln}${pbAm(r.price)}`;
+}
+// "Best: BetMGM -3.5 -108" under a pick (and DraftKings' when it's worse), before kickoff only
+function bestPriceInfo(g, text) {
+  try {
+    if (!g || g.completed || (typeof isLiveGame === "function" && isLiveGame(g)) || Date.parse(g.date) <= Date.now()) return null;
+    const id = typeof potdLegId === "function" ? potdLegId(g, text) : null;
+    const bp = id ? bestPriceFor(id) : null;
+    if (!bp) return null;
+    const kind = String(id).split("|")[1];
+    const same = bp.dk && bp.dk.book === bp.best.book;
+    const dk = bp.dk && !same && bp.best.value - bp.dk.value > 0.0005 ? bestPriceText(bp.dk, kind).replace(/^DraftKings /, "") : "";
+    return { best: bestPriceText(bp.best, kind), dk, n: bp.rows.length };
+  } catch (e) { return null; }
+}
+function bestPriceTag(g, text) {
+  const i = bestPriceInfo(g, text);
+  if (!i) return "";
+  return `<span class="bestpx" title="Best line and price across ${i.n} books">Best: ${pbEsc(i.best)}${i.dk ? ` <s title="DraftKings">DK ${pbEsc(i.dk)}</s>` : ""}</span>`;
+}
 function ticketHtml(g, t) {
   const c = pickCover(g, t);
-  return `<span class="gr-tk"><span class="ticket${c ? " " + c.st : ""}">${t}</span>${c ? `<span class="cover ${c.st}">${c.note}</span>` : ""}</span>`;
+  return `<span class="gr-tk"><span class="ticket${c ? " " + c.st : ""}">${t}</span>${c ? `<span class="cover ${c.st}">${c.note}</span>` : bestPriceTag(g, t)}</span>`;
 }
 function cardShareText() {
   const card = ensureWeeklyCard(false);
@@ -14144,7 +14202,7 @@ function renderWeeklyCard() {
   wrap.innerHTML = `<article class="share-card">
     <h2>This week's card</h2>
     <p class="subn" style="font-size:18px;font-weight:800;color:${card.frozen ? "var(--turf)" : "var(--sun)"}">${card.frozen ? "LOCKED" : "NOT LOCKED YET"} · ${(card.legs || []).length} plays${record}</p>
-    <ul class="share-legs">${graded.map(({ L, side, tot, f }, i) => `<li data-id="${L.id}"><span>${i + 1}. ${pbGame(L.id) ? matchupHtml(pbGame(L.id)) : L.away + " @ " + L.home}<div class="subn">${f ? `Final ${L.away} ${f.as}, ${L.home} ${f.hs}` : "Projected " + proj(L.proj)}</div></span><b>${L.pick && L.pick !== "NO PLAY" ? L.pick + " " + chip(side) : ""}${L.pick && L.pick !== "NO PLAY" && L.total && L.total !== "NO PLAY" ? "<br>" : ""}${L.total && L.total !== "NO PLAY" ? L.total + " " + chip(tot) : ""}${!(L.pick && L.pick !== "NO PLAY") && !(L.total && L.total !== "NO PLAY") ? L.text : ""}</b></li>`).join("")}</ul>
+    <ul class="share-legs">${graded.map(({ L, side, tot, f }, i) => `<li data-id="${L.id}"><span>${i + 1}. ${pbGame(L.id) ? matchupHtml(pbGame(L.id)) : L.away + " @ " + L.home}<div class="subn">${f ? `Final ${L.away} ${f.as}, ${L.home} ${f.hs}` : "Projected " + proj(L.proj)}</div></span><b>${L.pick && L.pick !== "NO PLAY" ? L.pick + " " + chip(side) + (f || !pbGame(L.id) ? "" : bestPriceTag(pbGame(L.id), L.pick)) : ""}${L.pick && L.pick !== "NO PLAY" && L.total && L.total !== "NO PLAY" ? "<br>" : ""}${L.total && L.total !== "NO PLAY" ? L.total + " " + chip(tot) + (f || !pbGame(L.id) ? "" : bestPriceTag(pbGame(L.id), L.total)) : ""}${!(L.pick && L.pick !== "NO PLAY") && !(L.total && L.total !== "NO PLAY") ? L.text : ""}</b></li>`).join("")}</ul>
     <p class="subn">The card is the weekend's games, Thursday through Monday, and locks Thursday at noon ET with the picks as they stood then. Picks on the scorecard lock later, closer to each kickoff, so a few can differ when the line or our number moved in between.</p>
   </article>`;
   wrap.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
