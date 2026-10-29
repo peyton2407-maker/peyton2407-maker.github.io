@@ -1,0 +1,56 @@
+name: Pulse
+# GitHub starts scheduled jobs late on busy days: the "every 15 minutes" jobs were starting
+# only every 4 to 7 hours. This job stays running for almost 6 hours and starts the others on
+# time itself (workflow_dispatch), then queues the next pulse before it ends, so there is
+# always one running. The schedule below only restarts the chain if it ever breaks.
+#   every 15 min: Lock picks, Weather and injuries (runs only when a report is due)
+#   every hour:   Refresh data, Prop record
+on:
+  schedule:
+    - cron: "11 */2 * * *"
+  workflow_dispatch:
+permissions:
+  actions: write
+  contents: read
+concurrency:
+  group: pulse
+  cancel-in-progress: false
+jobs:
+  pulse:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 355
+    steps:
+      - name: Start the jobs on time
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          start=$(date +%s)
+          kick() {  # workflow file, then optional input key=value
+            if [ -n "$2" ]; then
+              gh api -X POST "repos/$REPO/actions/workflows/$1/dispatches" -f ref=main -f "inputs[${2%%=*}]=${2#*=}" >/dev/null && echo "$(date -u +%H:%M) started $1" || echo "$(date -u +%H:%M) could not start $1"
+            else
+              gh api -X POST "repos/$REPO/actions/workflows/$1/dispatches" -f ref=main >/dev/null && echo "$(date -u +%H:%M) started $1" || echo "$(date -u +%H:%M) could not start $1"
+            fi
+          }
+          busy() {  # is a run of this workflow already queued or running?
+            n=$(gh api "repos/$REPO/actions/workflows/$1/runs?per_page=5" --jq '[.workflow_runs[] | select(.status != "completed")] | length' 2>/dev/null || echo 0)
+            [ "${n:-0}" -gt 0 ]
+          }
+          last_q=-1; last_h=-1
+          while [ $(( $(date +%s) - start )) -lt $(( 345 * 60 )) ]; do
+            now=$(date +%s); q=$(( now / 900 )); h=$(( now / 3600 ))
+            if [ "$q" != "$last_q" ]; then
+              last_q=$q
+              busy lock-picks.yml || kick lock-picks.yml
+              busy gameday.yml || kick gameday.yml due_check=yes
+            fi
+            if [ "$h" != "$last_h" ]; then
+              last_h=$h
+              busy refresh-data.yml || kick refresh-data.yml
+              busy prop-record.yml || kick prop-record.yml
+            fi
+            sleep 30
+          done
+          # queue the next pulse; it starts the moment this one ends (same concurrency group)
+          kick pulse.yml
