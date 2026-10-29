@@ -12713,6 +12713,23 @@ function renderCfbWeather() {
 }
 
 
+// Re-attach every upcoming NFL game's player projections from the saved ESPN list, scaled to
+// the game's current projected yards and tagged with the current injury report. Whoever calls
+// this after the feeds are in (a visitor's page, the lock run) gets the same numbers, whatever
+// order the feeds arrived in.
+function refreshWeekProps() {
+  const players = window.__WEEK_PLAYERS;
+  if (!players || !players.length || typeof attachProps !== "function") return 0;
+  let n = 0;
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.league !== "nfl" || g.completed || !(g.props && g.props.length)) return;
+    g.props = attachProps(g, players);
+    n++;
+  });
+  try { if (typeof attachInjuriesToGames === "function") attachInjuriesToGames(); } catch (e) {}
+  return n;
+}
+window.refreshWeekProps = refreshWeekProps;
 // Player projections and sportsbook prop prices, loaded once, so the NFL play of the day can
 // weigh every player prop (the lock runner awaits this too). Redraws the pages that show it.
 function ensurePotdProps() {
@@ -12720,12 +12737,16 @@ function ensurePotdProps() {
   window.__potdPropPull = Promise.resolve()
     .then(() => (typeof ensureWeekProps === "function" ? ensureWeekProps() : null))
     .then(() => (typeof pullDkLines === "function" ? pullDkLines() : null))
+    // the saved 11:00 / kickoff injury and weather reports, then projections re-attached to them
+    .then(() => (typeof installElevenReport === "function" ? installElevenReport() : null))
     .catch(() => {})
     .then(() => {
+      try { refreshWeekProps(); } catch (e) {}
       try {
         if (view === "home" && typeof renderHome === "function") renderHome();
         if (view === "nflpotd" && typeof renderNflPotd === "function") renderNflPotd();
         if (view === "prime" && typeof renderPrimetime === "function") renderPrimetime();
+        if (view === "props" && typeof renderProps === "function") renderProps();
       } catch (e) {}
     });
   return window.__potdPropPull;
@@ -12736,7 +12757,9 @@ async function ensureWeekProps() {
   if (!upcoming.length || typeof collectProps !== "function" || typeof attachProps !== "function") return;
   if (DATA.meta) DATA.meta.nfl_week = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : 4;
   const players = await collectProps();
+  if (players && players.length) window.__WEEK_PLAYERS = players;
   upcoming.forEach((g) => { g.props = attachProps(g, players); });
+  try { if (typeof attachInjuriesToGames === "function") attachInjuriesToGames(); } catch (e) {}
   if (typeof view !== "undefined" && view === "props" && typeof renderProps === "function") renderProps();
   if (typeof view !== "undefined" && view === "tds" && typeof renderTdDesk === "function") renderTdDesk();
   if (typeof view !== "undefined" && view === "parlay" && (window.__parlayLg === "props" || window.__parlayLg === "propp") && typeof renderParlays === "function") renderParlays();

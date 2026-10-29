@@ -46,7 +46,7 @@ async def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--local", help="serve this folder instead of the live site (testing)")
     ap.add_argument("--now", help="fake clock, ISO time (testing)")
-    ap.add_argument("--settle", type=float, default=25, help="seconds to let live feeds load")
+    ap.add_argument("--settle", type=float, default=40, help="seconds to let live feeds load")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--inject", help="JS run before locking (testing only)")
     args = ap.parse_args()
@@ -96,7 +96,9 @@ async def main():
         # the box score numbers for player-prop plays of the day (scripts/prop_record.py)
         await page.evaluate("async () => { try { await pbFetchOnce('proprecord', '/data/prop-record.json?t=' + Date.now(), (d) => { window.PROP_RECORD = d; }); } catch (e) {} }")
         # player props can be the NFL play of the day: load projections and prop prices first
-        await page.evaluate("async () => { try { if (typeof ensurePotdProps === 'function') await ensurePotdProps(); } catch (e) {} }")
+        # (ensurePotdProps waits for the 11:00 / kickoff reports; then the injury feed, then
+        # projections re-attached to all of it, so the lock uses everything a visitor's page has)
+        await page.evaluate("async () => { try { if (typeof ensurePotdProps === 'function') await ensurePotdProps(); } catch (e) {} try { if (typeof fetchInjuries === 'function') await fetchInjuries(false); } catch (e) {} try { if (typeof refreshWeekProps === 'function') refreshWeekProps(); } catch (e) {} }")
         if args.inject:
             await page.evaluate(args.inject)
         result = await page.evaluate(
