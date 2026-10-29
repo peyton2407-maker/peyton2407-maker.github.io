@@ -6648,8 +6648,8 @@ function attachProps(game, players) {
   away.sort((a, b) => score(b) - score(a));
   const trim = (g) => [...g.filter((p) => p.pos === "QB").slice(0, 1), ...g.filter((p) => p.pos === "RB").slice(0, 3), ...g.filter((p) => p.pos === "WR" || p.pos === "TE").slice(0, 4)];
   return [
-    ...trim(home).map((p) => ({ ...p, side: "home", team: game.home.abbr })),
-    ...trim(away).map((p) => ({ ...p, side: "away", team: game.away.abbr })),
+    ...trim(home).map((p) => ({ ...p, side: "home", team: game.home.abbr, opp: game.away.abbr })),
+    ...trim(away).map((p) => ({ ...p, side: "away", team: game.away.abbr, opp: game.home.abbr })),
   ];
 }
 
@@ -11879,13 +11879,17 @@ function mergePotdLog() {
 }
 function potdLockedBet(league, window) {
   const rows = potdStore()[league] || [];
-  const row = rows.find((r) => r && r.locked && !r.result && ((window.big && r.key === "slate:" + window.day) || (!window.big && r.key === "game:" + window.games[0].id)));
+  // A locked play, or the server's provisional one (saved from 12 hours before kickoff and
+  // re-picked every 15 minutes until the lock), so every visitor sees the same play.
+  const mine = (r) => r && !r.result && (r.locked || (r.provisional && r.published)) && ((window.big && r.key === "slate:" + window.day) || (!window.big && r.key === "game:" + window.games[0].id));
+  const row = rows.find((r) => mine(r) && r.locked) || (window.__potdRepick ? null : rows.find(mine));
   if (!row) return null;
   const g = (DATA.games || []).find((x) => String(x.id) === String(row.id));
   if (!g || g.completed) return null;
   const kick = new Date(g.date).getTime();
   if (!Number.isFinite(kick) || kick <= Date.now()) return null;
-  return { g: g, kind: row.kind, line: row.line, hit: Number(row.hitPct || 0) / 100, value: 0, why: row.why, label: row.label, window: window, locked: true };
+  return { g: g, kind: row.kind, line: row.line, hit: Number(row.hitPct || 0) / 100, value: 0, ev: row.value != null ? row.value : null, why: row.why, label: row.label, window: window,
+    locked: !!row.locked && !row.provisional, provisional: !!row.provisional, price: row.price, book: row.book, prop: row.prop || null };
 }
 function lastPotd(league) {
   const rows = (potdStore()[league] || []).filter((r) => r && r.result);
@@ -12064,7 +12068,7 @@ function potdRecordCard(league) {
   const done = all.filter((r) => r.result === "HIT" || r.result === "MISS");
   let streak = "";
   if (done.length) { const s = done[0].result; let n = 0; for (const r of done) { if (r.result !== s) break; n++; } streak = (s === "HIT" ? "Won " : "Lost ") + n + " straight"; }
-  const pending = all.filter((r) => !r.result).length;
+  const pending = all.filter((r) => !r.result && !r.provisional).length;
   return `<article class="prop-card potd-rec">
     <div class="who">
       <div>
@@ -12086,7 +12090,7 @@ function potdHistoryHtml(league) {
   const rows = potdPublished(league);
   if (!rows.length) return "";
   const when = (r) => { const t = Date.parse(r.kick || r.day || ""); return Number.isFinite(t) ? new Date(t).toLocaleDateString([], { weekday: "short", month: "short", day: "numeric", timeZone: "America/New_York" }) : "Week " + r.week; };
-  const res = (r) => r.result === "HIT" ? `<span class="potd-res hit">Hit</span>` : r.result === "MISS" ? `<span class="potd-res miss">Miss</span>` : r.result === "PUSH" ? `<span class="potd-res">Push</span>` : r.result === "VOID" ? `<span class="potd-res">Void</span>` : `<span class="potd-res">Locked</span>`;
+  const res = (r) => r.result === "HIT" ? `<span class="potd-res hit">Hit</span>` : r.result === "MISS" ? `<span class="potd-res miss">Miss</span>` : r.result === "PUSH" ? `<span class="potd-res">Push</span>` : r.result === "VOID" ? `<span class="potd-res">Void</span>` : r.provisional ? `<span class="potd-res">Not locked yet</span>` : `<span class="potd-res">Locked</span>`;
   const u = (r) => { if (!r.result) return ""; const x = potdUnits(r); return `<span class="${x > 0 ? "up" : x < 0 ? "down" : ""}">${x >= 0 ? "+" : "−"}${Math.abs(x).toFixed(2)}u</span>`; };
   return `<section class="potd-log">
     <h3>Every ${league === "nfl" ? "NFL" : "college"} play of the day</h3>
@@ -12667,6 +12671,7 @@ function ensurePotdProps() {
       try {
         if (view === "home" && typeof renderHome === "function") renderHome();
         if (view === "nflpotd" && typeof renderNflPotd === "function") renderNflPotd();
+        if (view === "prime" && typeof renderPrimetime === "function") renderPrimetime();
       } catch (e) {}
     });
   return window.__potdPropPull;
@@ -13462,7 +13467,10 @@ function ggLockRun(prev) {
   }
   ["nfl", "cfb"].forEach((lg) => {
     gradeSavedPotd(lg);
-    const bet = potdPick(lg);
+    // the lock run re-picks from the live board; it never just repeats its own provisional play
+    window.__potdRepick = true;
+    let bet = null;
+    try { bet = potdPick(lg); } finally { window.__potdRepick = false; }
     if (bet && !bet.locked && bet.g && due(Date.parse(bet.g.date))) rememberPotd(lg, bet);
     gradeSavedPotd(lg);
     const mine = new Map((out.potd[lg] || []).map((r) => [r.key, r]));
@@ -15960,22 +15968,18 @@ function primeSlot(g) {
   return "";
 }
 
+// The prop that beats its sportsbook price by the most in this game: the same side, chance
+// and price the props page and the NFL play of the day use (postedLean).
 function bestPropLean(g) {
+  if (typeof nextPropRows !== "function" || typeof postedLean !== "function") return null;
   let best = null;
-  (g.props || []).forEach((pl) => {
-    if (pl.injury && /OUT|IR|INACTIVE|SUSP|DOUBT/.test(String(pl.injury).toUpperCase())) return;
-    const dk = typeof dkFor === "function" ? dkFor(g.id, pl.id) : {};
-    Object.keys(VAL_SIG).forEach((k) => {
-      if (dk[k] == null) return;
-      const mu = Number(pl[k] || 0);
-      if (mu <= 0) return;
-      const line = Number(dk[k]);
-      const over = propOverP(k, mu, line);
-      const side = over >= 0.5 ? "OVER" : "UNDER";
-      const hit = side === "OVER" ? over : 1 - over;
-      if (hit < 0.56 || hit > 0.74) return;
-      if (!best || hit > best.hit) best = { name: pl.name, pos: pl.pos, side, market: VAL_LBL[k], line, proj: mu, hit };
-    });
+  nextPropRows().filter((p) => String(p.game_id) === String(g.id)).forEach((p) => {
+    const L = postedLean(p);
+    if (!L || L.price == null || L.value == null || !(L.value > 0.005) || L.chance == null) return;
+    if (!best || L.value > best.value) {
+      best = { name: p.name, side: L.take.toLowerCase(), line: L.line, market: PROP_LBL[L.m.key] || L.m.label, key: L.m.key,
+               proj: Number(L.m.mean), hit: L.chance, value: L.value, price: L.price, book: L.book };
+    }
   });
   return best;
 }
@@ -16040,7 +16044,7 @@ function renderPrimetime() {
         <div class="prime-best">${best ? best.kind + ": " + best.label : "No side. No total."}</div>
         <p class="prime-why">${best ? best.why : "We are too close to the market to take either number."}</p>
         ${rest.map((r) => `<p class="prime-why">Also ${r.kind.toLowerCase()}: <b>${r.label}</b>. ${r.why}</p>`).join("")}
-        <p class="prime-why">${prop ? "Best player number with a DraftKings price: " + prop.name + " " + prop.side + " " + prop.line + " " + prop.market + ". We have " + prop.proj.toFixed(1) + " (" + Math.round(prop.hit * 100) + "%)." : "No DraftKings player price is far enough off our number to add."}</p>
+        <p class="prime-why">${prop ? "Best player prop at its price: " + escHtml(prop.name) + " " + prop.side + " " + prop.line + " " + escHtml(prop.market) + " at " + pbAm(prop.price) + " (" + escHtml(prop.book || "") + "). " + (prop.key === "td" ? "" : "We project " + (prop.proj >= 10 ? Math.round(prop.proj) : prop.proj.toFixed(1)) + ". ") + "Our chance " + Math.round(prop.hit * 100) + "%, " + (Math.round(prop.value * 1000) / 10) + "% better than the price." : "No player prop beats its price in this game yet."}</p>
         ${outs.length ? `<p class="prime-why">Out: ${outs.map((r) => r.name).join(", ")}.</p>` : ""}
       </button>`;
     }).join("");
