@@ -226,9 +226,9 @@
     "hitPct": 55,
     "why": "We project Savion Williams for 25 rec yds against a line of 24.5. Our checked chance on the under is 55%; the books' own chance is 51%. At -109 (DraftKings) that is 6.1% better than the price.",
     "label": "Thursday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "Savion Williams: 5 rec yds",
+    "resultWhy": "It hit. Savion Williams under 24.5 rec yds cashed.",
     "prop": {
      "pid": "4431487",
      "name": "Savion Williams",
@@ -246,7 +246,8 @@
     "locked": true,
     "kick": "2026-10-30T00:15Z",
     "big": false,
-    "savedAt": 1793313991329
+    "savedAt": 1793313991329,
+    "by": "19.5 under 24.5"
    }
   ],
   "cfb": [
@@ -715,5 +716,5 @@
    }
   ]
  },
- "updated": "2026-10-29T23:31:13.048Z"
+ "updated": "2026-10-30T04:16:15.660Z"
 }
