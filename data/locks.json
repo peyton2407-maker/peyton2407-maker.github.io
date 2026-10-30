@@ -1,6 +1,27 @@
 {
  "v": 1,
  "plays": {
+  "401856844": {
+   "id": "401856844",
+   "league": "cfb",
+   "week": 9,
+   "short": "BAY @ UCF",
+   "home": "UCF",
+   "away": "BAY",
+   "date": "2026-10-30T23:30Z",
+   "pick": "UCF",
+   "pick_line": "UCF +1.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -0.9,
+   "our_total": 48.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 1.5,
+   "total": 48.5,
+   "lockedAt": "2026-10-30T11:31:34.396Z",
+   "provisional": true
+  },
   "401862812": {
    "id": "401862812",
    "league": "cfb",
@@ -44,7 +65,7 @@
    "total_play": false,
    "spread": 8.5,
    "total": 47.5,
-   "lockedAt": "2026-10-30T11:01:36.311Z",
+   "lockedAt": "2026-10-30T11:31:34.396Z",
    "provisional": true
   },
   "401869963": {
@@ -737,5 +758,5 @@
    }
   ]
  },
- "updated": "2026-10-30T11:01:36.311Z"
+ "updated": "2026-10-30T11:31:34.396Z"
 }
