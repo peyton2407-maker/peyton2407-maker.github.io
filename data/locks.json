@@ -9,17 +9,17 @@
    "home": "UCF",
    "away": "BAY",
    "date": "2026-10-30T23:30Z",
-   "pick": "UCF",
-   "pick_line": "UCF +1.5",
+   "pick": "BAY",
+   "pick_line": "BAY -2.5",
    "total_pick": "OVER 49.5",
    "side_play": false,
-   "our_margin": -0.9,
+   "our_margin": -1.55,
    "our_total": 49.1,
    "confidence": null,
    "total_play": false,
-   "spread": 1.5,
+   "spread": 2.5,
    "total": 49.5,
-   "lockedAt": "2026-10-30T19:46:43.214Z",
+   "lockedAt": "2026-10-30T21:31:08.720Z",
    "provisional": true
   },
   "401862812": {
@@ -65,8 +65,7 @@
    "total_play": false,
    "spread": 8.5,
    "total": 47.5,
-   "lockedAt": "2026-10-30T19:46:43.214Z",
-   "provisional": true
+   "lockedAt": "2026-10-30T21:31:08.720Z"
   },
   "401866451": {
    "id": "401866451",
@@ -86,7 +85,7 @@
    "total_play": false,
    "spread": 7,
    "total": 46.5,
-   "lockedAt": "2026-10-30T19:46:43.214Z",
+   "lockedAt": "2026-10-30T21:31:08.720Z",
    "provisional": true
   },
   "401869963": {
@@ -779,5 +778,5 @@
    }
   ]
  },
- "updated": "2026-10-30T19:46:43.214Z"
+ "updated": "2026-10-30T21:31:08.720Z"
 }
