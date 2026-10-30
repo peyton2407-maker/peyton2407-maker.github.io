@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 49.5,
-   "lockedAt": "2026-10-30T18:31:32.024Z",
+   "lockedAt": "2026-10-30T19:46:43.214Z",
    "provisional": true
   },
   "401862812": {
@@ -65,7 +65,7 @@
    "total_play": false,
    "spread": 8.5,
    "total": 47.5,
-   "lockedAt": "2026-10-30T18:31:32.024Z",
+   "lockedAt": "2026-10-30T19:46:43.214Z",
    "provisional": true
   },
   "401866451": {
@@ -77,16 +77,16 @@
    "away": "KENT",
    "date": "2026-10-31T02:30Z",
    "pick": "SAC",
-   "pick_line": "SAC +7.5",
-   "total_pick": "UNDER 46.5",
+   "pick_line": "SAC +7.0",
+   "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": -4.7,
-   "our_total": 46.1,
+   "our_margin": -5.97,
+   "our_total": 46.5,
    "confidence": null,
    "total_play": false,
-   "spread": 7.5,
+   "spread": 7,
    "total": 46.5,
-   "lockedAt": "2026-10-30T18:31:32.024Z",
+   "lockedAt": "2026-10-30T19:46:43.214Z",
    "provisional": true
   },
   "401869963": {
@@ -779,5 +779,5 @@
    }
   ]
  },
- "updated": "2026-10-30T18:31:32.024Z"
+ "updated": "2026-10-30T19:46:43.214Z"
 }
