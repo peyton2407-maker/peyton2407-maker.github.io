@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 48.5,
-   "lockedAt": "2026-10-30T16:46:35.305Z",
+   "lockedAt": "2026-10-30T17:16:50.165Z",
    "provisional": true
   },
   "401862812": {
@@ -57,15 +57,15 @@
    "date": "2026-10-30T23:00Z",
    "pick": "CLT",
    "pick_line": "CLT +8.5",
-   "total_pick": "UNDER 46.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
    "our_margin": -7.8,
-   "our_total": 46.9,
+   "our_total": 46.5,
    "confidence": null,
    "total_play": false,
    "spread": 8.5,
    "total": 46.5,
-   "lockedAt": "2026-10-30T16:46:35.305Z",
+   "lockedAt": "2026-10-30T17:16:50.165Z",
    "provisional": true
   },
   "401866451": {
@@ -78,15 +78,15 @@
    "date": "2026-10-31T02:30Z",
    "pick": "SAC",
    "pick_line": "SAC +7.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "UNDER 46.5",
    "side_play": false,
-   "our_margin": -6.23,
-   "our_total": 46.5,
+   "our_margin": -4.7,
+   "our_total": 46.1,
    "confidence": null,
    "total_play": false,
    "spread": 7.5,
    "total": 46.5,
-   "lockedAt": "2026-10-30T16:46:35.305Z",
+   "lockedAt": "2026-10-30T17:16:50.165Z",
    "provisional": true
   },
   "401869963": {
@@ -779,5 +779,5 @@
    }
   ]
  },
- "updated": "2026-10-30T16:46:35.305Z"
+ "updated": "2026-10-30T17:16:50.165Z"
 }
