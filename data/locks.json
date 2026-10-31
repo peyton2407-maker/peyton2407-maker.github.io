@@ -446,8 +446,8 @@
    "total": 53.5,
    "lockedAt": "2026-10-31T22:01:23.649Z",
    "close_spread": 13.5,
-   "close_total": 53.5,
-   "closeAt": "2026-10-31T22:46:34.326Z",
+   "close_total": 52.5,
+   "closeAt": "2026-10-31T23:16:37.273Z",
    "clv_side": -0.5,
    "clv_total": null
   },
@@ -769,7 +769,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 63.5,
-   "lockedAt": "2026-10-31T23:01:17.421Z",
+   "lockedAt": "2026-10-31T23:16:37.273Z",
    "provisional": true
   },
   "401860909": {
@@ -840,7 +840,7 @@
    "total_play": false,
    "spread": 6,
    "total": 57.5,
-   "lockedAt": "2026-10-31T23:01:17.421Z",
+   "lockedAt": "2026-10-31T23:16:37.273Z",
    "provisional": true
   },
   "401861966": {
@@ -1036,7 +1036,7 @@
    "total_play": false,
    "spread": -21.5,
    "total": 55.5,
-   "lockedAt": "2026-10-31T23:01:17.421Z",
+   "lockedAt": "2026-10-31T23:16:37.273Z",
    "provisional": true
   },
   "401864531": {
@@ -1954,5 +1954,5 @@
    }
   ]
  },
- "updated": "2026-10-31T23:01:17.421Z"
+ "updated": "2026-10-31T23:16:37.273Z"
 }
