@@ -1,6 +1,27 @@
 {
  "v": 1,
  "plays": {
+  "401856734": {
+   "id": "401856734",
+   "league": "cfb",
+   "week": 9,
+   "short": "FLA VS UGA",
+   "home": "UGA",
+   "away": "FLA",
+   "date": "2026-10-31T19:30Z",
+   "pick": "FLA",
+   "pick_line": "FLA +12.5",
+   "total_pick": "NO PLAY",
+   "side_play": true,
+   "our_margin": 10.85,
+   "our_total": 56.5,
+   "confidence": 51,
+   "total_play": false,
+   "spread": -11.5,
+   "total": 56.5,
+   "lockedAt": "2026-10-31T07:31:44.808Z",
+   "provisional": true
+  },
   "401856735": {
    "id": "401856735",
    "league": "cfb",
@@ -19,7 +40,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 57.5,
-   "lockedAt": "2026-10-31T07:16:34.240Z",
+   "lockedAt": "2026-10-31T07:31:44.808Z",
    "provisional": true
   },
   "401856842": {
@@ -40,7 +61,28 @@
    "total_play": false,
    "spread": -3.5,
    "total": 54.5,
-   "lockedAt": "2026-10-31T07:16:34.240Z",
+   "lockedAt": "2026-10-31T07:31:44.808Z",
+   "provisional": true
+  },
+  "401856843": {
+   "id": "401856843",
+   "league": "cfb",
+   "week": 9,
+   "short": "ASU @ BYU",
+   "home": "BYU",
+   "away": "ASU",
+   "date": "2026-10-31T19:30Z",
+   "pick": "ASU",
+   "pick_line": "ASU +16.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 15.5,
+   "our_total": 48.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -16.5,
+   "total": 48.5,
+   "lockedAt": "2026-10-31T07:31:44.808Z",
    "provisional": true
   },
   "401856844": {
@@ -68,6 +110,27 @@
    "clv_side": 0,
    "clv_total": 0
   },
+  "401856845": {
+   "id": "401856845",
+   "league": "cfb",
+   "week": 9,
+   "short": "KU @ TCU",
+   "home": "TCU",
+   "away": "KU",
+   "date": "2026-10-31T19:30Z",
+   "pick": "KU",
+   "pick_line": "KU +6.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 5.9,
+   "our_total": 45.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -6.5,
+   "total": 45.5,
+   "lockedAt": "2026-10-31T07:31:44.808Z",
+   "provisional": true
+  },
   "401856846": {
    "id": "401856846",
    "league": "cfb",
@@ -86,7 +149,7 @@
    "total_play": false,
    "spread": -3,
    "total": 46.5,
-   "lockedAt": "2026-10-31T07:16:34.240Z",
+   "lockedAt": "2026-10-31T07:31:44.808Z",
    "provisional": true
   },
   "401858277": {
@@ -107,7 +170,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 56.5,
-   "lockedAt": "2026-10-31T07:16:34.240Z",
+   "lockedAt": "2026-10-31T07:31:44.808Z",
    "provisional": true
   },
   "401858278": {
@@ -128,7 +191,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 58.5,
-   "lockedAt": "2026-10-31T07:16:34.240Z",
+   "lockedAt": "2026-10-31T07:31:44.808Z",
    "provisional": true
   },
   "401858279": {
@@ -149,7 +212,7 @@
    "total_play": false,
    "spread": -7,
    "total": 48.5,
-   "lockedAt": "2026-10-31T07:16:34.240Z",
+   "lockedAt": "2026-10-31T07:31:44.808Z",
    "provisional": true
   },
   "401858283": {
@@ -170,7 +233,28 @@
    "total_play": false,
    "spread": -22.5,
    "total": 60.5,
-   "lockedAt": "2026-10-31T07:16:34.240Z",
+   "lockedAt": "2026-10-31T07:31:44.808Z",
+   "provisional": true
+  },
+  "401858501": {
+   "id": "401858501",
+   "league": "cfb",
+   "week": 9,
+   "short": "MINN @ IU",
+   "home": "IU",
+   "away": "MINN",
+   "date": "2026-10-31T19:30Z",
+   "pick": "MINN",
+   "pick_line": "MINN +20.5",
+   "total_pick": "OVER 41.5",
+   "side_play": false,
+   "our_margin": 19.5,
+   "our_total": 41.1,
+   "confidence": null,
+   "total_play": false,
+   "spread": -20.5,
+   "total": 41.5,
+   "lockedAt": "2026-10-31T07:31:44.808Z",
    "provisional": true
   },
   "401858502": {
@@ -191,7 +275,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 36.5,
-   "lockedAt": "2026-10-31T07:16:34.240Z",
+   "lockedAt": "2026-10-31T07:31:44.808Z",
    "provisional": true
   },
   "401858503": {
@@ -212,7 +296,28 @@
    "total_play": false,
    "spread": 2.5,
    "total": 54.5,
-   "lockedAt": "2026-10-31T07:16:34.240Z",
+   "lockedAt": "2026-10-31T07:31:44.808Z",
+   "provisional": true
+  },
+  "401858505": {
+   "id": "401858505",
+   "league": "cfb",
+   "week": 9,
+   "short": "NU @ ORE",
+   "home": "ORE",
+   "away": "NU",
+   "date": "2026-10-31T19:30Z",
+   "pick": "ORE",
+   "pick_line": "ORE -3.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 4.4,
+   "our_total": 47.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -3.5,
+   "total": 47.5,
+   "lockedAt": "2026-10-31T07:31:44.808Z",
    "provisional": true
   },
   "401858507": {
@@ -233,7 +338,7 @@
    "total_play": false,
    "spread": 15.5,
    "total": 46.5,
-   "lockedAt": "2026-10-31T07:16:34.240Z",
+   "lockedAt": "2026-10-31T07:31:44.808Z",
    "provisional": true
   },
   "401859185": {
@@ -254,7 +359,28 @@
    "total_play": false,
    "spread": 30.5,
    "total": 56.5,
-   "lockedAt": "2026-10-31T07:16:34.240Z",
+   "lockedAt": "2026-10-31T07:31:44.808Z",
+   "provisional": true
+  },
+  "401860910": {
+   "id": "401860910",
+   "league": "cfb",
+   "week": 9,
+   "short": "CSU @ USU",
+   "home": "USU",
+   "away": "CSU",
+   "date": "2026-10-31T19:30Z",
+   "pick": "CSU",
+   "pick_line": "CSU +7.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 6.3,
+   "our_total": 61.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -7.5,
+   "total": 61.5,
+   "lockedAt": "2026-10-31T07:31:44.808Z",
    "provisional": true
   },
   "401861966": {
@@ -275,7 +401,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 51.5,
-   "lockedAt": "2026-10-31T07:16:34.240Z",
+   "lockedAt": "2026-10-31T07:31:44.808Z",
    "provisional": true
   },
   "401862812": {
@@ -346,7 +472,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 50.5,
-   "lockedAt": "2026-10-31T07:16:34.240Z",
+   "lockedAt": "2026-10-31T07:31:44.808Z",
    "provisional": true
   },
   "401862816": {
@@ -367,7 +493,28 @@
    "total_play": false,
    "spread": -7.5,
    "total": 41.5,
-   "lockedAt": "2026-10-31T07:16:34.240Z",
+   "lockedAt": "2026-10-31T07:31:44.808Z",
+   "provisional": true
+  },
+  "401864531": {
+   "id": "401864531",
+   "league": "cfb",
+   "week": 9,
+   "short": "UTEP @ NDSU",
+   "home": "NDSU",
+   "away": "UTEP",
+   "date": "2026-10-31T19:30Z",
+   "pick": "UTEP",
+   "pick_line": "UTEP +24.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 24.3,
+   "our_total": 42.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -24.5,
+   "total": 42.5,
+   "lockedAt": "2026-10-31T07:31:44.808Z",
    "provisional": true
   },
   "401866451": {
@@ -413,7 +560,7 @@
    "total_play": false,
    "spread": -13.5,
    "total": 44.5,
-   "lockedAt": "2026-10-31T07:16:34.240Z",
+   "lockedAt": "2026-10-31T07:31:44.808Z",
    "provisional": true
   },
   "401869944": {
@@ -434,7 +581,7 @@
    "total_play": false,
    "spread": -4,
    "total": 55.5,
-   "lockedAt": "2026-10-31T07:16:34.240Z",
+   "lockedAt": "2026-10-31T07:31:44.808Z",
    "provisional": true
   },
   "401869963": {
@@ -504,6 +651,27 @@
    "lockedAt": "2026-10-28T20:36:00.674Z",
    "provisional": true
   },
+  "401871059": {
+   "id": "401871059",
+   "league": "cfb",
+   "week": 9,
+   "short": "FIU @ LIB",
+   "home": "LIB",
+   "away": "FIU",
+   "date": "2026-10-31T19:30Z",
+   "pick": "FIU",
+   "pick_line": "FIU +14.0",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 13.5,
+   "our_total": 45.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -14,
+   "total": 45.5,
+   "lockedAt": "2026-10-31T07:31:44.808Z",
+   "provisional": true
+  },
   "401871071": {
    "id": "401871071",
    "league": "cfb",
@@ -555,6 +723,27 @@
    "clv_side": 0.5,
    "clv_total": 0
   },
+  "401871095": {
+   "id": "401871095",
+   "league": "cfb",
+   "week": 9,
+   "short": "USM @ ULM",
+   "home": "ULM",
+   "away": "USM",
+   "date": "2026-10-31T19:30Z",
+   "pick": "USM",
+   "pick_line": "USM -3.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -4.3,
+   "our_total": 55.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 3.5,
+   "total": 55.5,
+   "lockedAt": "2026-10-31T07:31:44.808Z",
+   "provisional": true
+  },
   "401871096": {
    "id": "401871096",
    "league": "cfb",
@@ -573,7 +762,7 @@
    "total_play": false,
    "spread": 3,
    "total": 46.5,
-   "lockedAt": "2026-10-31T07:16:34.240Z",
+   "lockedAt": "2026-10-31T07:31:44.808Z",
    "provisional": true
   },
   "401871097": {
@@ -594,7 +783,7 @@
    "total_play": false,
    "spread": 6,
    "total": 58.5,
-   "lockedAt": "2026-10-31T07:16:34.240Z",
+   "lockedAt": "2026-10-31T07:31:44.808Z",
    "provisional": true
   },
   "401873023": {
@@ -1169,5 +1358,5 @@
    }
   ]
  },
- "updated": "2026-10-31T07:16:34.240Z"
+ "updated": "2026-10-31T07:31:44.808Z"
 }
