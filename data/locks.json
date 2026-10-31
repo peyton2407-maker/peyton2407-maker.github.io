@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 57.5,
-   "lockedAt": "2026-10-31T05:16:24.557Z",
+   "lockedAt": "2026-10-31T05:31:18.800Z",
    "provisional": true
   },
   "401856842": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 54.5,
-   "lockedAt": "2026-10-31T05:16:24.557Z",
+   "lockedAt": "2026-10-31T05:31:18.800Z",
    "provisional": true
   },
   "401856844": {
@@ -86,7 +86,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 56.5,
-   "lockedAt": "2026-10-31T05:16:24.557Z",
+   "lockedAt": "2026-10-31T05:31:18.800Z",
    "provisional": true
   },
   "401858278": {
@@ -107,7 +107,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 58.5,
-   "lockedAt": "2026-10-31T05:16:24.557Z",
+   "lockedAt": "2026-10-31T05:31:18.800Z",
    "provisional": true
   },
   "401858279": {
@@ -128,7 +128,7 @@
    "total_play": false,
    "spread": -7,
    "total": 48.5,
-   "lockedAt": "2026-10-31T05:16:24.557Z",
+   "lockedAt": "2026-10-31T05:31:18.800Z",
    "provisional": true
   },
   "401858502": {
@@ -149,7 +149,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 36.5,
-   "lockedAt": "2026-10-31T05:16:24.557Z",
+   "lockedAt": "2026-10-31T05:31:18.800Z",
    "provisional": true
   },
   "401858503": {
@@ -170,7 +170,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 54.5,
-   "lockedAt": "2026-10-31T05:16:24.557Z",
+   "lockedAt": "2026-10-31T05:31:18.800Z",
    "provisional": true
   },
   "401858507": {
@@ -191,7 +191,7 @@
    "total_play": false,
    "spread": 15.5,
    "total": 46.5,
-   "lockedAt": "2026-10-31T05:16:24.557Z",
+   "lockedAt": "2026-10-31T05:31:18.800Z",
    "provisional": true
   },
   "401859185": {
@@ -212,7 +212,7 @@
    "total_play": false,
    "spread": 30.5,
    "total": 56.5,
-   "lockedAt": "2026-10-31T05:16:24.557Z",
+   "lockedAt": "2026-10-31T05:31:18.800Z",
    "provisional": true
   },
   "401862812": {
@@ -283,7 +283,7 @@
    "total_play": false,
    "spread": -7.5,
    "total": 41.5,
-   "lockedAt": "2026-10-31T05:16:24.557Z",
+   "lockedAt": "2026-10-31T05:31:18.800Z",
    "provisional": true
   },
   "401866451": {
@@ -319,17 +319,17 @@
    "home": "WMU",
    "away": "BGSU",
    "date": "2026-10-31T16:00Z",
-   "pick": "WMU",
-   "pick_line": "WMU -14.0",
+   "pick": "BGSU",
+   "pick_line": "BGSU +13.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 14.1,
+   "our_margin": 13.77,
    "our_total": 44.5,
    "confidence": null,
    "total_play": false,
-   "spread": -14,
+   "spread": -13.5,
    "total": 44.5,
-   "lockedAt": "2026-10-31T05:16:24.557Z",
+   "lockedAt": "2026-10-31T05:31:18.800Z",
    "provisional": true
   },
   "401869963": {
@@ -468,7 +468,7 @@
    "total_play": false,
    "spread": 3,
    "total": 46.5,
-   "lockedAt": "2026-10-31T05:16:24.557Z",
+   "lockedAt": "2026-10-31T05:31:18.800Z",
    "provisional": true
   },
   "401873023": {
@@ -1043,5 +1043,5 @@
    }
   ]
  },
- "updated": "2026-10-31T05:16:24.557Z"
+ "updated": "2026-10-31T05:31:18.800Z"
 }
