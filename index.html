@@ -7567,7 +7567,7 @@ function readyCardHtml(title, thought, legs, force) {
       const posted = String(m.l.label || "").trim();
       // compare as numbers, so "HOU -7.0" and "HOU -7" count as the same line
       const norm = (t) => String(t).toUpperCase().replace(/([+-]?\d+(?:\.\d+)?)/g, (n) => String(Number(n))).replace(/\s+/g, " ").replace(/\bPK\b/, "0");
-      const moved = posted && norm(posted) !== norm(m.pb.label) && m.pb.kind !== "pp" && m.pb.kind !== "ml" ? `<div class="prop-why">Posted as ${pbEsc(posted)}; ${x.book ? "at " + pbEsc(x.book) + " it's" : "the line is now"} ${pbEsc(m.pb.label)}.</div>` : "";
+      const moved = posted && norm(posted) !== norm(m.pb.label) && m.pb.kind !== "ml" ? `<div class="prop-why">Posted as ${pbEsc(posted)}; ${x.book ? "at " + pbEsc(x.book) + " it's" : "the line is now"} ${pbEsc(m.pb.label)}.</div>` : "";
       // each leg's reason is written out once per page; later tickets point back to it
       const seen = window.__readyWhySeen || (window.__readyWhySeen = new Set());
       const whyKey = m.id + "|" + (m.l.why || "");
