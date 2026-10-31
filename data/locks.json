@@ -95,11 +95,11 @@
    "spread": 7,
    "total": 46.5,
    "lockedAt": "2026-10-31T01:01:26.618Z",
-   "close_spread": 7,
-   "close_total": 46.5,
-   "closeAt": "2026-10-31T01:31:35.298Z",
-   "clv_side": 0,
-   "clv_total": 0
+   "close_spread": 7.5,
+   "close_total": 47.5,
+   "closeAt": "2026-10-31T02:01:12.577Z",
+   "clv_side": -0.5,
+   "clv_total": -1
   },
   "401869963": {
    "id": "401869963",
@@ -791,5 +791,5 @@
    }
   ]
  },
- "updated": "2026-10-31T01:31:35.298Z"
+ "updated": "2026-10-31T02:01:12.577Z"
 }
