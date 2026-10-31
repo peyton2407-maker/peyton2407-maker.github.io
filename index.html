@@ -2536,6 +2536,7 @@ table.props b.down { color: var(--muted); font-weight: 600; }
       <div class="controls">
         <div class="tabs" id="parlayTabs" style="flex:1">
           <button class="ptab active" type="button" data-parlay="nfl">NFL parlays</button>
+          <button class="ptab" type="button" data-parlay="ml">NFL moneylines</button>
           <button class="ptab" type="button" data-parlay="dogs">Underdog parlays</button>
           <button class="ptab" type="button" data-parlay="favs">Favorite parlays</button>
           <button class="ptab" type="button" data-parlay="totals">Totals</button>
@@ -7416,6 +7417,38 @@ function readyLeanRows(group, league) {
     : sides(true).concat(sides(false), leanTotalLegs(lg, 0.3)).sort((a, b) => b.score - a.score);
   return packParlays(legs, () => "Built from our leans as well as our plays, since there aren't enough plays this week for a ticket.", 4).filter((r) => r.n <= 3);
 }
+// Moneyline legs worth a look: each game's better moneyline side at the best book, valued with
+// our checked chance (pbLeg), priced -350 to +300 so a ticket pays something (stacking -6500
+// favorites paid 50 cents on $10 with the book 6-20% ahead), best value first.
+function moneylineLegs(league) {
+  const legs = [];
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.league !== league || g.completed || !readyThisWeek({ game_id: g.id })) return;
+    let best = null;
+    ["home", "away"].forEach((side) => {
+      const id = g.id + "|ml|" + side;
+      const bp = typeof bestPriceFor === "function" ? bestPriceFor(id) : null;
+      const pb = (bp && bp.best ? pbLeg({ id, book: bp.best.book }) : null) || pbLeg({ id });
+      if (!pb || pb.started || !Number.isFinite(pb.price)) return;
+      if (!(pb.price >= -350 && pb.price <= 300)) return;
+      if (!best || pb.value > best.pb.value) best = { side, pb };
+    });
+    if (!best || best.pb.value < -0.04) return;
+    const team = best.side === "home" ? g.home.abbr : g.away.abbr;
+    legs.push({
+      label: team + " ML", detail: `${g.away.abbr} ${g.neutral ? "vs" : "@"} ${g.home.abbr}`,
+      game_id: g.id, game: g.short_name, date: g.date, league, kind: "ml",
+      hit: best.pb.win, odds: best.pb.price, key: "ml:" + g.id, score: best.pb.value * 1000 + best.pb.win, dog: best.pb.price > 0,
+      why: `${team} to win: our checked chance is ${Math.round(best.pb.win * 100)}%, the books' ${Math.round(best.pb.bookWin * 100)}%.`
+    });
+  });
+  return legs.sort((a, b) => b.score - a.score);
+}
+function buildMoneylineParlays(league) {
+  return packParlays(moneylineLegs(league), (title) => title === "2-leg"
+    ? "Two moneylines where our chance beats the price by the most, in different games."
+    : "More moneylines from the same list, best value first. Every leg has to win.", 6).filter((r) => r.n <= 4);
+}
 function dogFavLegs(league, wantDog) {
   const primary = collectParlayLegs().filter((l) => l.league === league && l.kind === "spread" && !!l.dog === !!wantDog);
   const have = new Set(primary.map((l) => l.game_id));
@@ -7569,31 +7602,31 @@ function parlayHeroHtml(league) {
   if (!rows.length) return "";
   return parlayGroupHtml(rows);
 }
+// Prop ticket legs: the props page's own posted side for each player (postedLean: the market's
+// chance from every book, our checked chance, the best price), unders only and only where that
+// side beats its price. Graded prop unders are 42-20 where both sides are priced; overs are
+// about break-even. (These were built from an older list that skipped the market check and
+// filled tickets with overs on 0.5-yard lines.)
 function collectPropParlayLegs() {
-  const rows = (typeof collectValueDogs === "function" ? collectValueDogs() : []).filter((r) => {
-    if ((r.league || "nfl") !== "nfl") return false;
-    if (r.pos === "TEAM") return false;
-    const g = (DATA.games || []).find((x) => String(x.id) === String(r.game_id));
-    if (g && (g.completed || (g.date && new Date(g.date).getTime() < Date.now()))) return false;
-    if (r.kind === "td") return false; // no real book price for anytime TDs, so no ticket
-
-    if (r.kind === "over" || r.kind === "under") return r.hit >= 0.54 && r.odds != null;  // a real book price
-    return false;
+  if (typeof nextPropRows !== "function" || typeof postedLean !== "function") return [];
+  const out = [];
+  nextPropRows().forEach((p) => {
+    if (!readyThisWeek({ game_id: p.game_id })) return;
+    const L = postedLean(p);
+    if (!L || L.take !== "Under" || L.price == null || L.fair == null || !(L.value > 0.005)) return;
+    const stat = L.m.key;
+    if (!VAL_LBL[stat] || !["pass_yds", "pass_td", "rush_yds", "rec_yds", "rec"].includes(stat)) return;
+    const mean = L.m.mean >= 10 ? Math.round(L.m.mean) : Number(L.m.mean).toFixed(1);
+    out.push({
+      label: `${p.name} under ${L.line} ${VAL_LBL[stat]}`,
+      detail: `${p.pos} · ${p.game}`,
+      game_id: p.game_id, player: p.name, id: p.id, game: p.game, date: p.date,
+      hit: L.chance, odds: L.price, source: L.book,
+      key: p.name + "|" + stat + "|under", score: L.value * 1000 + L.chance,
+      why: `We project ${mean} ${VAL_LBL[stat]} against ${L.line}; our checked chance on the under is ${Math.round(L.chance * 100)}%, the books' ${Math.round(L.fair * 100)}%.`
+    });
   });
-  rows.sort((a, b) => (b.hit || 0) - (a.hit || 0));
-  const seen = new Set();
-  return rows.filter((r) => {
-    const k = (r.name || "") + "|" + r.market + "|" + r.side;
-    if (seen.has(k)) return false;
-    seen.add(k);
-    return true;
-  }).slice(0, 80).map((r) => ({
-    label: r.kind === "td" ? `${r.name} ${r.market}` : `${r.name} ${r.side} ${r.line} ${r.market}`,
-    detail: `${r.pos} · ${r.game}`,
-    game_id: r.game_id, player: r.name, id: r.id, game: r.game, date: r.date,
-    hit: r.hit, odds: r.odds, source: r.source,
-    key: r.name + r.market + r.side, score: r.score, why: r.why
-  }));
+  return out.sort((a, b) => b.score - a.score).slice(0, 80);
 }
 function pickPropBag(legs, n, sameGame) {
   if (sameGame) {
@@ -8050,7 +8083,7 @@ function collegeMixLadder(lengths) {
 }
 function buildCollegeParlayBoard() {
   const lengths = [2, 3, 4, 5, 6];
-  const ml = collegeLadder("ml", lengths, 0.64);
+  const ml = buildMoneylineParlays("cfb").map((r) => Object.assign(r, { groupLabel: "Moneyline · " + r.n + "-leg" }));
   const spread = collegeLadder("spread", lengths, 0.545);
   const total = collegeLadder("total", lengths, 0.56);
   const mix = collegeMixLadder(lengths);
@@ -8068,7 +8101,7 @@ function renderCollegeParlayBoard() {
   const board = buildCollegeParlayBoard();
   const filter = window.__cfbParlayGroup || "all";
   const groups = [
-    { id: "ml", title: "Moneyline", blurb: "Who wins, straight up. Shortest ticket has the highest chance." },
+    { id: "ml", title: "Moneyline", blurb: "Who wins, straight up: moneylines from -350 to +300 where our chance beats the price by the most." },
     { id: "spread", title: "Spread", blurb: "Against the number. Each leg is the side that covers more often in our sims." },
     { id: "total", title: "Total points", blurb: "Over or under. Higher-chance totals are stacked first." },
     { id: "mix", title: "All three", blurb: "Moneyline, spread, and total together. Every leg is a different game." }
@@ -8117,7 +8150,7 @@ function renderParlays() {
     if (typeof pbFetchOnce === "function") {
       pbFetchOnce("props", "/data/props.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_PROPS = d; if (view === "parlay") renderParlays(); });
     }
-    if (stamp) stamp.textContent = "This week's player props. Each ticket is priced at the book that pays the most for all of its legs (a typical -115 where no price is posted). Anyone who already played is off.";
+    if (stamp) stamp.textContent = "This week's player prop unders, the side the props page posts where it beats its price (graded prop unders are 42-20 where both sides are priced). Each ticket is priced at the book that pays the most for all of its legs. Anyone who already played is off.";
     const needLines = (DATA.games || []).some((g) => g.league === "nfl" && !g.completed && !Object.keys((window.VALUE_LINES || {})[String(g.id)] || {}).length);
     if ((needLines || (DATA.games || []).some((g) => g.league === "nfl" && !g.completed && !(g.props && g.props.length))) && !window.__propLinePull && !window.__propLineTried) {
       window.__propLinePull = Promise.resolve()
@@ -8134,6 +8167,7 @@ function renderParlays() {
     return;
   }
   const themed = {
+    ml: { rows: buildMoneylineParlays("nfl"), stamp: "", empty: "No NFL moneyline is close enough to a fair price for a ticket this week." },
     dogs: { rows: buildDogParlays("nfl"), stamp: "NFL underdogs. Eight tickets at each size when the board has enough dogs, from 2 legs through 6. Biggest gap first.", empty: "No NFL underdog parlay this week priced fair or better." },
     favs: { rows: buildFavParlays("nfl"), stamp: "NFL favorites. Eight tickets at each size when the board has enough favorites, from 2 legs through 6. Biggest gap first.", empty: "No NFL favorite parlay this week priced fair or better." },
     totals: { rows: buildTotalParlays("nfl"), stamp: "NFL totals. Only overs and unders that already cleared, biggest gap first.", empty: "No NFL totals parlay this week priced fair or better." },
@@ -8141,7 +8175,7 @@ function renderParlays() {
   };
   if (themed[league]) {
     if (stamp) stamp.textContent = "This week's games only. Each ticket is priced at the book that pays the most for all of its legs, with chances checked against this season's results. Tickets priced fair or better are the picks.";
-    hero.innerHTML = parlayGroupHtml(themed[league].rows) || readyClosestHtml(readyLeanRows(league, league === "cdogs" ? "cfb" : "nfl"), (r) => `${r.title} parlay`) || `<div class="empty">${themed[league].empty}</div>`;
+    hero.innerHTML = parlayGroupHtml(themed[league].rows) || (league === "ml" ? "" : readyClosestHtml(readyLeanRows(league, league === "cdogs" ? "cfb" : "nfl"), (r) => `${r.title} parlay`)) || `<div class="empty">${themed[league].empty}</div>`;
     hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
     return;
   }

@@ -2,7 +2,7 @@ async () => {
   try { await ensurePotdProps(); } catch (e) {}
   setView("parlay");
   const out = {};
-  for (const k of ["nfl", "dogs", "favs", "totals", "cfb", "cdogs", "props"]) {
+  for (const k of ["nfl", "ml", "dogs", "favs", "totals", "cfb", "cdogs", "props"]) {
     window.__parlayLg = k; renderParlays();
     await new Promise((r) => setTimeout(r, 2500));
     window.__parlayLg = k; renderParlays();
