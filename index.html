@@ -1941,6 +1941,7 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 }
 @media (max-width: 979px) { .home-aside .home-banner { display: none; } }
 #homeFeature:not(.on) { display: none; }
+.ready-note { margin: 4px 0 2px; padding: 10px 12px; border: 1px dashed var(--line-2); border-radius: 10px; font-size: 13.5px; color: var(--ink-soft); }
 .bestpx { display: block; margin-top: 3px; font-size: 11.5px; font-weight: 600; color: var(--ink-soft); white-space: nowrap; }
 .bestpx s { color: var(--muted); font-weight: 500; margin-left: 4px; }
 
@@ -7320,8 +7321,18 @@ function takeParlayBags(pool, n, limit) {
   walk(0, []);
   return bags;
 }
+// A ticket leg's game is this week's (NFL Tuesday-Monday, college week) and hasn't kicked off.
+// Next week's games have early lines and no book prices yet, so they stay off the tickets.
+function readyThisWeek(l) {
+  const g = typeof pbGame === "function" ? pbGame(l && l.game_id) : null;
+  if (!g || g.completed || !(Date.parse(g.date) > Date.now())) return false;
+  if (g.league === "nfl") return typeof isThisNflWeek === "function" ? isThisNflWeek(g) : true;
+  if (g.league === "cfb") return typeof isThisCfbWeek === "function" ? isThisCfbWeek(g) : true;
+  return true;
+}
 function packParlays(legs, thoughtFor, perLength) {
   const limit = perLength || 6;
+  legs = (legs || []).filter(readyThisWeek);
   const out = [];
   for (let n = 2; n <= 6; n++) {
     const title = n + "-leg";
@@ -7375,6 +7386,36 @@ function leanSideLegs(league, wantDog, minEdge) {
   legs.sort((a, b) => b.score - a.score);
   return legs;
 }
+// Totals our number leans on (any gap of minEdge or more), for tickets when a group has no
+// plays to build from. Same shape as the ticket legs.
+function leanTotalLegs(league, minEdge) {
+  const floor = minEdge == null ? 0.5 : minEdge;
+  const legs = [];
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.completed || g.league !== league) return;
+    const p = g.proj || {}, o = g.odds || {};
+    if (o.total == null || p.hashmark_total == null) return;
+    const gap = Number(p.hashmark_total) - Number(o.total);
+    if (!(Math.abs(gap) >= floor)) return;
+    const over = gap > 0;
+    legs.push({
+      label: `${over ? "OVER" : "UNDER"} ${o.total}`, detail: `${g.away.abbr} @ ${g.home.abbr}`,
+      game_id: g.id, game: g.short_name, date: g.date, league: g.league,
+      hit: 0.5, odds: -110, key: "total:" + g.id, score: Math.abs(gap) * 100, kind: "total", dog: false,
+      why: `Our total is ${Number(p.hashmark_total).toFixed(1)}, ${Math.abs(gap).toFixed(1)} ${over ? "over" : "under"} the posted ${o.total}.`
+    });
+  });
+  return legs.sort((a, b) => b.score - a.score);
+}
+// When a group has nothing to build from (no plays this week), tickets from our smaller leans,
+// shown only as the closest tickets with the book's edge on them.
+function readyLeanRows(group, league) {
+  const lg = league || "nfl";
+  const sides = (dog) => leanSideLegs(lg, dog, 0.3);
+  const legs = group === "dogs" ? sides(true) : group === "favs" ? sides(false) : group === "totals" ? leanTotalLegs(lg, 0.3)
+    : sides(true).concat(sides(false), leanTotalLegs(lg, 0.3)).sort((a, b) => b.score - a.score);
+  return packParlays(legs, () => "Built from our smaller leans: none of these legs cleared a play this week.", 4).filter((r) => r.n <= 3);
+}
 function dogFavLegs(league, wantDog) {
   const primary = collectParlayLegs().filter((l) => l.league === league && l.kind === "spread" && !!l.dog === !!wantDog);
   const have = new Set(primary.map((l) => l.game_id));
@@ -7424,20 +7465,39 @@ function readyLegId(l) {
   const s = side(lab.split(/\s+/)[0].toUpperCase());
   return s ? `${g.id}|sp|${s}` : null;
 }
+// The ticket priced at DraftKings (or the standard price) and at every other book that has
+// all of its legs; the book that pays the most wins (a parlay is placed at one book).
 function readyPrice(legs) {
   if (typeof pbLeg !== "function") return null;
   const mapped = (legs || []).map((l) => { const id = readyLegId(l); return { l, id, pb: id ? pbLeg({ id }) : null }; });
   if (!mapped.length || mapped.some((m) => !m.pb || m.pb.started)) return null;
-  return { mapped, r: pbParlay(mapped.map((m) => m.pb), 0) };
+  const key = mapped.map((m) => m.id).join("~");
+  const cache = window.__readyPriceCache || (window.__readyPriceCache = new Map());
+  if (cache.has(key)) return cache.get(key);
+  let best = { mapped, r: pbParlay(mapped.map((m) => m.pb), 0), book: null };
+  const names = new Set();
+  mapped.forEach((m) => Object.keys((((window.PB_BOOKS || {}).games || {})[m.pb.gid]) || {}).forEach((b) => names.add(b)));
+  names.forEach((book) => {
+    const legsB = mapped.map((m) => { const pb = pbLeg({ id: m.id, book }); return pb && !pb.started && pb.priceSource === book ? pb : null; });
+    if (legsB.some((x) => !x)) return;
+    const r = pbParlay(legsB, 0);
+    if (r.ev > best.r.ev + 1e-9) best = { mapped: mapped.map((m, i) => Object.assign({}, m, { pb: legsB[i] })), r, book };
+  });
+  if (!best.book) {
+    const srcs = [...new Set(best.mapped.map((m) => m.pb.priceSource))];
+    best.book = srcs.length === 1 && !/standard|typical|estimated/.test(srcs[0]) ? srcs[0] : null;
+  }
+  cache.set(key, best);
+  return best;
 }
-function readyCardHtml(title, thought, legs) {
+function readyCardHtml(title, thought, legs, force) {
   const x = readyPrice(legs);
   if (!x) return "";
   const { r, mapped } = x;
-  // Only tickets priced fair or better. With our checked chances (which keep only the lean our
-  // record backs), a ticket the book has the edge on is a losing bet over time, so it isn't
-  // shown as a pick. (70 of 71 college tickets on Oct 27 were 2-16% in the book's favor.)
-  if (r.ev < -0.01) return "";
+  // Tickets priced fair or better are the picks. With our checked chances (which keep only the
+  // lean our record backs), a ticket the book has the edge on loses over time; one is shown only
+  // as "closest to fair" when a group has nothing fair, labeled with the book's edge.
+  if (r.ev < -0.01 && !force) return "";
   const ev = Math.round(r.ev * 100);
   const sgp = r.sameGame && r.sameGame.length;
   const val = sgp
@@ -7449,14 +7509,14 @@ function readyCardHtml(title, thought, legs) {
   return `<article class="parlay-card ready">
     <div class="td-mkt">${title}</div>
     <div class="parlay-odds">${pbAm(r.american)}</div>
-    <div class="subn">$10 pays ${pbMoney(10 * r.decEff)} · checked chance ${pbPct(r.pAll)}, needs ${pbPct(r.breakEven)}</div>
+    <div class="subn">$10 pays ${pbMoney(10 * r.decEff)}${x.book ? " at " + pbEsc(x.book) : ""} · checked chance ${pbPct(r.pAll)}, needs ${pbPct(r.breakEven)}</div>
     <div class="ready-val ${val.cls}">${val.text}</div>
     ${thought ? `<p class="subn" style="color:var(--ink);margin:8px 0 10px">${thought}</p>` : ""}
     <ul class="parlay-legs">${mapped.map((m) => {
       const posted = String(m.l.label || "").trim();
       // compare as numbers, so "HOU -7.0" and "HOU -7" count as the same line
       const norm = (t) => String(t).toUpperCase().replace(/([+-]?\d+(?:\.\d+)?)/g, (n) => String(Number(n))).replace(/\s+/g, " ").replace(/\bPK\b/, "0");
-      const moved = posted && norm(posted) !== norm(m.pb.label) && m.pb.kind !== "pp" && m.pb.kind !== "ml" ? `<div class="prop-why">Posted as ${pbEsc(posted)}; the line is now ${pbEsc(m.pb.label)}.</div>` : "";
+      const moved = posted && norm(posted) !== norm(m.pb.label) && m.pb.kind !== "pp" && m.pb.kind !== "ml" ? `<div class="prop-why">Posted as ${pbEsc(posted)}; ${x.book ? "at " + pbEsc(x.book) + " it's" : "the line is now"} ${pbEsc(m.pb.label)}.</div>` : "";
       // each leg's reason is written out once per page; later tickets point back to it
       const seen = window.__readyWhySeen || (window.__readyWhySeen = new Set());
       const whyKey = m.id + "|" + (m.l.why || "");
@@ -7483,14 +7543,26 @@ function openInBuilder(ids) {
 function parlayCardHtml(r) {
   return readyCardHtml(`${r.title} parlay`, r.thought, r.legs);
 }
+// When a group has no ticket priced fair or better, its two closest tickets (the book's edge
+// 12% or less), shown under a note saying so. title(r) gives each card's title.
+function readyClosestHtml(rows, title) {
+  // (pays at least even money on the ticket: a -1900 moneyline pair isn't worth showing)
+  const priced = (rows || []).map((r) => ({ r, x: readyPrice(r.legs) })).filter((o) => o.x && o.x.r.ev >= -0.12 && o.x.r.decEff >= 2);
+  priced.sort((a, b) => b.x.r.ev - a.x.r.ev);
+  const top = priced.slice(0, 2);
+  if (!top.length) return "";
+  return `<div class="ready-note" style="grid-column:1/-1">Nothing in this group is priced fair right now. These are the closest; the book has a small edge on each, so they are leans, not picks.</div>`
+    + top.map((o) => readyCardHtml(title(o.r), o.r.thought || "", o.r.legs, true)).join("");
+}
 function parlayGroupHtml(rows) {
   if (!rows || !rows.length) return "";
-  return [2, 3, 4, 5, 6].map((n) => {
+  const html = [2, 3, 4, 5, 6].map((n) => {
     const bag = rows.filter((r) => Number(r.n || (r.legs && r.legs.length)) === n);
     if (!bag.length) return "";
     const cards = bag.map(parlayCardHtml).join("");
     return cards ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">${n}-leg tickets</div>` + cards : "";
   }).join("");
+  return html || readyClosestHtml(rows, (r) => `${r.title} parlay`);
 }
 function parlayHeroHtml(league) {
   const rows = buildParlays(league);
@@ -7625,7 +7697,7 @@ function propLadderHtml(rows) {
     const cards = bag.map(propParlayCardHtml).join("");
     return cards ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">${n}-leg player props</div>` + cards : "";
   }).join("");
-  return html || `<div class="empty">No player prop ticket is priced fair or better right now.</div>`;
+  return html || readyClosestHtml(rows, (r) => r.title) || `<div class="empty">No player prop ticket is priced fair or better right now.</div>`;
 }
 function propParlayCardHtml(r) {
   return readyCardHtml(r.title, "", r.legs);
@@ -8019,13 +8091,14 @@ function renderCollegeParlayBoard() {
         return cards ? `<div class="home-label" style="grid-column:1/-1">${n}-leg</div>` + cards : "";
       }).join("")
       : "";
-    html += body || `<div class="empty" style="grid-column:1/-1">${rows.length ? `No ${g.title.toLowerCase()} ticket is priced fair or better this weekend. Every one would have the book on its side.` : `Not enough ${g.title.toLowerCase()} legs this weekend.`}</div>`;
+    html += body || readyClosestHtml(rows, (r) => r.groupLabel) || `<div class="empty" style="grid-column:1/-1">${rows.length ? `No ${g.title.toLowerCase()} ticket is priced fair or better this weekend. Every one would have the book on its side.` : `Not enough ${g.title.toLowerCase()} legs this weekend.`}</div>`;
   });
   return { html, count: board.count };
 }
 
 function renderParlays() {
   window.__readyWhySeen = new Set();
+  window.__readyPriceCache = new Map();
   const heroEl = document.getElementById("parlayHero");
   if (heroEl && !heroEl.__readyWired) {
     heroEl.__readyWired = true;
@@ -8067,13 +8140,13 @@ function renderParlays() {
     cdogs: { rows: buildDogParlays("cfb"), stamp: "College underdogs only. No NFL teams on this ticket.", empty: "No college underdog parlay this week priced fair or better." }
   };
   if (themed[league]) {
-    if (stamp) stamp.textContent = "Our leans at DraftKings' prices, with chances checked against this season's results. Only tickets priced fair or better are shown.";
-    hero.innerHTML = parlayGroupHtml(themed[league].rows) || `<div class="empty">${themed[league].empty}</div>`;
+    if (stamp) stamp.textContent = "This week's games only. Each ticket is priced at the book that pays the most for all of its legs, with chances checked against this season's results. Tickets priced fair or better are the picks.";
+    hero.innerHTML = parlayGroupHtml(themed[league].rows) || readyClosestHtml(readyLeanRows(league, league === "cdogs" ? "cfb" : "nfl"), (r) => `${r.title} parlay`) || `<div class="empty">${themed[league].empty}</div>`;
     hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
     return;
   }
   if (league === "cfb") {
-    if (stamp) stamp.textContent = "College parlays at DraftKings' prices, with chances checked against this season's results. Only tickets priced fair or better are shown. Moneyline, spread and totals are separate; All three mixes them.";
+    if (stamp) stamp.textContent = "This week's college games. Each ticket is priced at the book that pays the most for all of its legs, with chances checked against this season's results. Tickets priced fair or better are the picks. Moneyline, spread and totals are separate; All three mixes them.";
     const board = renderCollegeParlayBoard();
     hero.innerHTML = board.html;
     hero.querySelectorAll("[data-cgroup]").forEach((btn) => btn.addEventListener("click", () => {
@@ -8084,10 +8157,10 @@ function renderParlays() {
     return;
   }
   const week = typeof currentNflWeekNumber === "function" ? currentNflWeekNumber() : "";
-  if (stamp) stamp.textContent = "Upcoming NFL games (Week " + week + " and anything else on the board). Our biggest leans at DraftKings' prices, 2 legs through 6, with chances checked against this season's results. Each ticket says whether the price is worth it.";
+  if (stamp) stamp.textContent = "Upcoming NFL games (Week " + week + " and anything else on the board). Our biggest leans, 2 legs through 6, each ticket priced at the book that pays the most for all of its legs, with chances checked against this season's results. Each ticket says whether the price is worth it.";
   let extra = "";
   try { extra = parlayHeroHtml(league) || ""; } catch (e) { extra = ""; }
-  hero.innerHTML = extra || `<div class="empty">No NFL parlay this week. No two plays are far enough off the number to make a ticket priced fair or better.</div>`;
+  hero.innerHTML = extra || readyClosestHtml(readyLeanRows("nfl", "nfl"), (r) => `${r.title} parlay`) || `<div class="empty">No NFL parlay this week. No two plays are far enough off the number to make a ticket priced fair or better.</div>`;
   hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 function valueTileHtml(r) {
