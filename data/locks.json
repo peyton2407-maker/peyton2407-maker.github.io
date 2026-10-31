@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 57.5,
-   "lockedAt": "2026-10-31T04:46:40.003Z",
+   "lockedAt": "2026-10-31T05:01:47.779Z",
    "provisional": true
   },
   "401856842": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 54.5,
-   "lockedAt": "2026-10-31T04:46:40.003Z",
+   "lockedAt": "2026-10-31T05:01:47.779Z",
    "provisional": true
   },
   "401856844": {
@@ -86,7 +86,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 56.5,
-   "lockedAt": "2026-10-31T04:46:40.003Z",
+   "lockedAt": "2026-10-31T05:01:47.779Z",
    "provisional": true
   },
   "401858278": {
@@ -107,7 +107,7 @@
    "total_play": false,
    "spread": 10,
    "total": 58.5,
-   "lockedAt": "2026-10-31T04:46:40.003Z",
+   "lockedAt": "2026-10-31T05:01:47.779Z",
    "provisional": true
   },
   "401858279": {
@@ -128,7 +128,7 @@
    "total_play": false,
    "spread": -7,
    "total": 48.5,
-   "lockedAt": "2026-10-31T04:46:40.003Z",
+   "lockedAt": "2026-10-31T05:01:47.779Z",
    "provisional": true
   },
   "401858502": {
@@ -149,7 +149,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 36.5,
-   "lockedAt": "2026-10-31T04:46:40.003Z",
+   "lockedAt": "2026-10-31T05:01:47.779Z",
    "provisional": true
   },
   "401858503": {
@@ -170,7 +170,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 54.5,
-   "lockedAt": "2026-10-31T04:46:40.003Z",
+   "lockedAt": "2026-10-31T05:01:47.779Z",
    "provisional": true
   },
   "401858507": {
@@ -191,7 +191,7 @@
    "total_play": false,
    "spread": 15.5,
    "total": 46.5,
-   "lockedAt": "2026-10-31T04:46:40.003Z",
+   "lockedAt": "2026-10-31T05:01:47.779Z",
    "provisional": true
   },
   "401859185": {
@@ -212,7 +212,7 @@
    "total_play": false,
    "spread": 30.5,
    "total": 56.5,
-   "lockedAt": "2026-10-31T04:46:40.003Z",
+   "lockedAt": "2026-10-31T05:01:47.779Z",
    "provisional": true
   },
   "401862812": {
@@ -283,7 +283,7 @@
    "total_play": false,
    "spread": -7.5,
    "total": 41.5,
-   "lockedAt": "2026-10-31T04:46:40.003Z",
+   "lockedAt": "2026-10-31T05:01:47.779Z",
    "provisional": true
   },
   "401866451": {
@@ -329,7 +329,7 @@
    "total_play": false,
    "spread": -14,
    "total": 44.5,
-   "lockedAt": "2026-10-31T04:46:40.003Z",
+   "lockedAt": "2026-10-31T05:01:47.779Z",
    "provisional": true
   },
   "401869963": {
@@ -449,6 +449,27 @@
    "closeAt": "2026-10-27T23:14:40.119Z",
    "clv_side": 0.5,
    "clv_total": 0
+  },
+  "401871096": {
+   "id": "401871096",
+   "league": "cfb",
+   "week": 9,
+   "short": "MRSH @ ODU",
+   "home": "ODU",
+   "away": "MRSH",
+   "date": "2026-10-31T17:00Z",
+   "pick": "ODU",
+   "pick_line": "ODU +3.0",
+   "total_pick": "OVER 46.5",
+   "side_play": true,
+   "our_margin": -1.3,
+   "our_total": 46.1,
+   "confidence": 51,
+   "total_play": false,
+   "spread": 3,
+   "total": 46.5,
+   "lockedAt": "2026-10-31T05:01:47.779Z",
+   "provisional": true
   },
   "401873023": {
    "id": "401873023",
@@ -1022,5 +1043,5 @@
    }
   ]
  },
- "updated": "2026-10-31T04:46:40.003Z"
+ "updated": "2026-10-31T05:01:47.779Z"
 }
