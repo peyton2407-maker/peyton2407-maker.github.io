@@ -11,16 +11,15 @@
    "date": "2026-10-31T23:45Z",
    "pick": "ARK",
    "pick_line": "ARK +10.0",
-   "total_pick": "NO PLAY",
+   "total_pick": "UNDER 48.5",
    "side_play": false,
    "our_margin": -8.9,
-   "our_total": 48.5,
+   "our_total": 47.4,
    "confidence": null,
    "total_play": false,
    "spread": 10,
    "total": 48.5,
-   "lockedAt": "2026-10-31T22:01:23.649Z",
-   "provisional": true
+   "lockedAt": "2026-10-31T22:16:34.305Z"
   },
   "401856734": {
    "id": "401856734",
@@ -575,7 +574,7 @@
    "total_play": false,
    "spread": -7.5,
    "total": 49.5,
-   "lockedAt": "2026-10-31T22:01:23.649Z",
+   "lockedAt": "2026-10-31T22:16:34.305Z",
    "provisional": true
   },
   "401858505": {
@@ -741,7 +740,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 63.5,
-   "lockedAt": "2026-10-31T22:01:23.649Z",
+   "lockedAt": "2026-10-31T22:16:34.305Z",
    "provisional": true
   },
   "401860909": {
@@ -812,7 +811,7 @@
    "total_play": false,
    "spread": 6,
    "total": 57.5,
-   "lockedAt": "2026-10-31T22:01:23.649Z",
+   "lockedAt": "2026-10-31T22:16:34.305Z",
    "provisional": true
   },
   "401861966": {
@@ -900,15 +899,15 @@
    "date": "2026-11-01T00:00Z",
    "pick": "ARMY",
    "pick_line": "ARMY +6.0",
-   "total_pick": "UNDER 58.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
    "our_margin": 5.1,
-   "our_total": 57.4,
+   "our_total": 58.5,
    "confidence": null,
    "total_play": false,
    "spread": -6,
    "total": 58.5,
-   "lockedAt": "2026-10-31T22:01:23.649Z",
+   "lockedAt": "2026-10-31T22:16:34.305Z",
    "provisional": true
   },
   "401862815": {
@@ -1004,7 +1003,7 @@
    "total_play": false,
    "spread": -22.5,
    "total": 55.5,
-   "lockedAt": "2026-10-31T22:01:23.649Z",
+   "lockedAt": "2026-10-31T22:16:34.305Z",
    "provisional": true
   },
   "401864531": {
@@ -1922,5 +1921,5 @@
    }
   ]
  },
- "updated": "2026-10-31T22:01:23.649Z"
+ "updated": "2026-10-31T22:16:34.305Z"
 }
