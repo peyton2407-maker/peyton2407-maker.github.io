@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 10,
    "total": 48.5,
-   "lockedAt": "2026-10-31T18:31:20.841Z",
+   "lockedAt": "2026-10-31T18:46:32.174Z",
    "provisional": true
   },
   "401856734": {
@@ -90,8 +90,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 44.5,
-   "lockedAt": "2026-10-31T18:31:20.841Z",
-   "provisional": true
+   "lockedAt": "2026-10-31T18:46:32.174Z"
   },
   "401856737": {
    "id": "401856737",
@@ -111,7 +110,7 @@
    "total_play": false,
    "spread": -20.5,
    "total": 50.5,
-   "lockedAt": "2026-10-31T18:31:20.841Z",
+   "lockedAt": "2026-10-31T18:46:32.174Z",
    "provisional": true
   },
   "401856842": {
@@ -208,10 +207,10 @@
    "spread": -6,
    "total": 45.5,
    "lockedAt": "2026-10-31T18:01:47.037Z",
-   "close_spread": -6.5,
+   "close_spread": -6,
    "close_total": 45.5,
-   "closeAt": "2026-10-31T18:31:20.841Z",
-   "clv_side": -0.5,
+   "closeAt": "2026-10-31T18:46:32.174Z",
+   "clv_side": 0,
    "clv_total": null
   },
   "401856846": {
@@ -257,7 +256,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 58.5,
-   "lockedAt": "2026-10-31T18:31:20.841Z",
+   "lockedAt": "2026-10-31T18:46:32.174Z",
    "provisional": true
   },
   "401856848": {
@@ -278,7 +277,12 @@
    "total_play": false,
    "spread": 7,
    "total": 56.5,
-   "lockedAt": "2026-10-31T18:16:18.799Z"
+   "lockedAt": "2026-10-31T18:16:18.799Z",
+   "close_spread": 7,
+   "close_total": 56.5,
+   "closeAt": "2026-10-31T18:46:32.174Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401858277": {
    "id": "401858277",
@@ -373,7 +377,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 50.5,
-   "lockedAt": "2026-10-31T18:31:20.841Z",
+   "lockedAt": "2026-10-31T18:46:32.174Z",
    "provisional": true
   },
   "401858281": {
@@ -394,7 +398,7 @@
    "total_play": false,
    "spread": -7.5,
    "total": 54.5,
-   "lockedAt": "2026-10-31T18:31:20.841Z",
+   "lockedAt": "2026-10-31T18:46:32.174Z",
    "provisional": true
   },
   "401858282": {
@@ -415,7 +419,7 @@
    "total_play": false,
    "spread": 14,
    "total": 53.5,
-   "lockedAt": "2026-10-31T18:31:20.841Z",
+   "lockedAt": "2026-10-31T18:46:32.174Z",
    "provisional": true
   },
   "401858283": {
@@ -461,7 +465,12 @@
    "total_play": false,
    "spread": -13.5,
    "total": 47.5,
-   "lockedAt": "2026-10-31T18:16:18.799Z"
+   "lockedAt": "2026-10-31T18:16:18.799Z",
+   "close_spread": -13.5,
+   "close_total": 47.5,
+   "closeAt": "2026-10-31T18:46:32.174Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401858501": {
    "id": "401858501",
@@ -556,7 +565,7 @@
    "total_play": false,
    "spread": -7.5,
    "total": 49.5,
-   "lockedAt": "2026-10-31T18:31:20.841Z",
+   "lockedAt": "2026-10-31T18:46:32.174Z",
    "provisional": true
   },
   "401858505": {
@@ -602,8 +611,7 @@
    "total_play": false,
    "spread": -10,
    "total": 55.5,
-   "lockedAt": "2026-10-31T18:31:20.841Z",
-   "provisional": true
+   "lockedAt": "2026-10-31T18:46:32.174Z"
   },
   "401858507": {
    "id": "401858507",
@@ -648,8 +656,7 @@
    "total_play": false,
    "spread": -22.5,
    "total": 42.5,
-   "lockedAt": "2026-10-31T18:31:20.841Z",
-   "provisional": true
+   "lockedAt": "2026-10-31T18:46:32.174Z"
   },
   "401858509": {
    "id": "401858509",
@@ -669,7 +676,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 51.5,
-   "lockedAt": "2026-10-31T18:31:20.841Z",
+   "lockedAt": "2026-10-31T18:46:32.174Z",
    "provisional": true
   },
   "401859185": {
@@ -715,7 +722,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 63.5,
-   "lockedAt": "2026-10-31T18:31:20.841Z",
+   "lockedAt": "2026-10-31T18:46:32.174Z",
    "provisional": true
   },
   "401860909": {
@@ -736,7 +743,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 47.5,
-   "lockedAt": "2026-10-31T18:31:20.841Z",
+   "lockedAt": "2026-10-31T18:46:32.174Z",
    "provisional": true
   },
   "401860910": {
@@ -782,7 +789,7 @@
    "total_play": false,
    "spread": 6,
    "total": 57.5,
-   "lockedAt": "2026-10-31T18:31:20.841Z",
+   "lockedAt": "2026-10-31T18:46:32.174Z",
    "provisional": true
   },
   "401861966": {
@@ -804,10 +811,10 @@
    "spread": -1.5,
    "total": 52.5,
    "lockedAt": "2026-10-31T17:31:12.033Z",
-   "close_spread": -1.5,
-   "close_total": 52.5,
-   "closeAt": "2026-10-31T18:01:47.037Z",
-   "clv_side": 0,
+   "close_spread": -2.5,
+   "close_total": 53.5,
+   "closeAt": "2026-10-31T18:46:32.174Z",
+   "clv_side": 1,
    "clv_total": null
   },
   "401862812": {
@@ -878,7 +885,7 @@
    "total_play": false,
    "spread": -6,
    "total": 58.5,
-   "lockedAt": "2026-10-31T18:31:20.841Z",
+   "lockedAt": "2026-10-31T18:46:32.174Z",
    "provisional": true
   },
   "401862815": {
@@ -969,7 +976,7 @@
    "total_play": false,
    "spread": -22.5,
    "total": 55.5,
-   "lockedAt": "2026-10-31T18:31:20.841Z",
+   "lockedAt": "2026-10-31T18:46:32.174Z",
    "provisional": true
   },
   "401864531": {
@@ -1065,7 +1072,7 @@
    "total_play": false,
    "spread": -6,
    "total": 55.5,
-   "lockedAt": "2026-10-31T18:31:20.841Z",
+   "lockedAt": "2026-10-31T18:46:32.174Z",
    "provisional": true
   },
   "401869944": {
@@ -1883,5 +1890,5 @@
    }
   ]
  },
- "updated": "2026-10-31T18:31:20.841Z"
+ "updated": "2026-10-31T18:46:32.174Z"
 }
