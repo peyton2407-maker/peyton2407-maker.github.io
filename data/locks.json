@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 57.5,
-   "lockedAt": "2026-10-31T05:31:18.800Z",
+   "lockedAt": "2026-10-31T06:01:37.946Z",
    "provisional": true
   },
   "401856842": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 54.5,
-   "lockedAt": "2026-10-31T05:31:18.800Z",
+   "lockedAt": "2026-10-31T06:01:37.946Z",
    "provisional": true
   },
   "401856844": {
@@ -68,6 +68,27 @@
    "clv_side": 0,
    "clv_total": 0
   },
+  "401856846": {
+   "id": "401856846",
+   "league": "cfb",
+   "week": 9,
+   "short": "KSU @ COLO",
+   "home": "COLO",
+   "away": "KSU",
+   "date": "2026-10-31T18:00Z",
+   "pick": "KSU",
+   "pick_line": "KSU +3.0",
+   "total_pick": "NO PLAY",
+   "side_play": true,
+   "our_margin": -0.5,
+   "our_total": 46.5,
+   "confidence": 51,
+   "total_play": false,
+   "spread": -3,
+   "total": 46.5,
+   "lockedAt": "2026-10-31T06:01:37.946Z",
+   "provisional": true
+  },
   "401858277": {
    "id": "401858277",
    "league": "cfb",
@@ -86,7 +107,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 56.5,
-   "lockedAt": "2026-10-31T05:31:18.800Z",
+   "lockedAt": "2026-10-31T06:01:37.946Z",
    "provisional": true
   },
   "401858278": {
@@ -107,7 +128,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 58.5,
-   "lockedAt": "2026-10-31T05:31:18.800Z",
+   "lockedAt": "2026-10-31T06:01:37.946Z",
    "provisional": true
   },
   "401858279": {
@@ -128,7 +149,7 @@
    "total_play": false,
    "spread": -7,
    "total": 48.5,
-   "lockedAt": "2026-10-31T05:31:18.800Z",
+   "lockedAt": "2026-10-31T06:01:37.946Z",
    "provisional": true
   },
   "401858502": {
@@ -149,7 +170,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 36.5,
-   "lockedAt": "2026-10-31T05:31:18.800Z",
+   "lockedAt": "2026-10-31T06:01:37.946Z",
    "provisional": true
   },
   "401858503": {
@@ -170,7 +191,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 54.5,
-   "lockedAt": "2026-10-31T05:31:18.800Z",
+   "lockedAt": "2026-10-31T06:01:37.946Z",
    "provisional": true
   },
   "401858507": {
@@ -191,7 +212,7 @@
    "total_play": false,
    "spread": 15.5,
    "total": 46.5,
-   "lockedAt": "2026-10-31T05:31:18.800Z",
+   "lockedAt": "2026-10-31T06:01:37.946Z",
    "provisional": true
   },
   "401859185": {
@@ -212,7 +233,7 @@
    "total_play": false,
    "spread": 30.5,
    "total": 56.5,
-   "lockedAt": "2026-10-31T05:31:18.800Z",
+   "lockedAt": "2026-10-31T06:01:37.946Z",
    "provisional": true
   },
   "401862812": {
@@ -283,7 +304,7 @@
    "total_play": false,
    "spread": -7.5,
    "total": 41.5,
-   "lockedAt": "2026-10-31T05:31:18.800Z",
+   "lockedAt": "2026-10-31T06:01:37.946Z",
    "provisional": true
   },
   "401866451": {
@@ -329,7 +350,28 @@
    "total_play": false,
    "spread": -13.5,
    "total": 44.5,
-   "lockedAt": "2026-10-31T05:31:18.800Z",
+   "lockedAt": "2026-10-31T06:01:37.946Z",
+   "provisional": true
+  },
+  "401869944": {
+   "id": "401869944",
+   "league": "cfb",
+   "week": 9,
+   "short": "CCU @ GAST",
+   "home": "GAST",
+   "away": "CCU",
+   "date": "2026-10-31T18:00Z",
+   "pick": "GAST",
+   "pick_line": "GAST -4.0",
+   "total_pick": "NO PLAY",
+   "side_play": true,
+   "our_margin": 5.1,
+   "our_total": 55.5,
+   "confidence": 50,
+   "total_play": false,
+   "spread": -4,
+   "total": 55.5,
+   "lockedAt": "2026-10-31T06:01:37.946Z",
    "provisional": true
   },
   "401869963": {
@@ -468,7 +510,7 @@
    "total_play": false,
    "spread": 3,
    "total": 46.5,
-   "lockedAt": "2026-10-31T05:31:18.800Z",
+   "lockedAt": "2026-10-31T06:01:37.946Z",
    "provisional": true
   },
   "401873023": {
@@ -1043,5 +1085,5 @@
    }
   ]
  },
- "updated": "2026-10-31T05:31:18.800Z"
+ "updated": "2026-10-31T06:01:37.946Z"
 }
