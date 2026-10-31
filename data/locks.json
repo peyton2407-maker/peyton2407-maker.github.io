@@ -114,7 +114,12 @@
    "total_play": false,
    "spread": -20.5,
    "total": 50.5,
-   "lockedAt": "2026-10-31T22:01:23.649Z"
+   "lockedAt": "2026-10-31T22:01:23.649Z",
+   "close_spread": -20.5,
+   "close_total": 50.5,
+   "closeAt": "2026-10-31T22:31:44.900Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401856842": {
    "id": "401856842",
@@ -409,7 +414,12 @@
    "total_play": false,
    "spread": -7.5,
    "total": 54.5,
-   "lockedAt": "2026-10-31T22:01:23.649Z"
+   "lockedAt": "2026-10-31T22:01:23.649Z",
+   "close_spread": -7.5,
+   "close_total": 54.5,
+   "closeAt": "2026-10-31T22:31:44.900Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401858282": {
    "id": "401858282",
@@ -429,7 +439,12 @@
    "total_play": false,
    "spread": 14,
    "total": 53.5,
-   "lockedAt": "2026-10-31T22:01:23.649Z"
+   "lockedAt": "2026-10-31T22:01:23.649Z",
+   "close_spread": 14,
+   "close_total": 53.5,
+   "closeAt": "2026-10-31T22:31:44.900Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401858283": {
    "id": "401858283",
@@ -574,8 +589,7 @@
    "total_play": false,
    "spread": -7.5,
    "total": 49.5,
-   "lockedAt": "2026-10-31T22:16:34.305Z",
-   "provisional": true
+   "lockedAt": "2026-10-31T22:31:44.900Z"
   },
   "401858505": {
    "id": "401858505",
@@ -695,7 +709,12 @@
    "total_play": false,
    "spread": 6.5,
    "total": 50.5,
-   "lockedAt": "2026-10-31T22:01:23.649Z"
+   "lockedAt": "2026-10-31T22:01:23.649Z",
+   "close_spread": 6.5,
+   "close_total": 50.5,
+   "closeAt": "2026-10-31T22:31:44.900Z",
+   "clv_side": 0,
+   "clv_total": 0
   },
   "401859185": {
    "id": "401859185",
@@ -740,7 +759,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 63.5,
-   "lockedAt": "2026-10-31T22:16:34.305Z",
+   "lockedAt": "2026-10-31T22:31:44.900Z",
    "provisional": true
   },
   "401860909": {
@@ -811,7 +830,7 @@
    "total_play": false,
    "spread": 6,
    "total": 57.5,
-   "lockedAt": "2026-10-31T22:16:34.305Z",
+   "lockedAt": "2026-10-31T22:31:44.900Z",
    "provisional": true
   },
   "401861966": {
@@ -907,8 +926,7 @@
    "total_play": false,
    "spread": -6,
    "total": 58.5,
-   "lockedAt": "2026-10-31T22:16:34.305Z",
-   "provisional": true
+   "lockedAt": "2026-10-31T22:31:44.900Z"
   },
   "401862815": {
    "id": "401862815",
@@ -1003,7 +1021,7 @@
    "total_play": false,
    "spread": -22.5,
    "total": 55.5,
-   "lockedAt": "2026-10-31T22:16:34.305Z",
+   "lockedAt": "2026-10-31T22:31:44.900Z",
    "provisional": true
   },
   "401864531": {
@@ -1921,5 +1939,5 @@
    }
   ]
  },
- "updated": "2026-10-31T22:16:34.305Z"
+ "updated": "2026-10-31T22:31:44.900Z"
 }
