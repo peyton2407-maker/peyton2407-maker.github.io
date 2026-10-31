@@ -2546,6 +2546,7 @@ table.props b.down { color: var(--muted); font-weight: 600; }
         </div>
       </div>
       <p class="subn" id="parlayStamp" style="margin:0 0 10px">Built off the board. Tap a leg for the why. NFL and college stay in their own tabs so a ticket never mixes the two.</p>
+      <div class="parlay-hero" id="parlayBest"></div>
       <div class="parlay-hero" id="parlayHero"></div>
     </section>
 
@@ -7331,9 +7332,26 @@ function readyThisWeek(l) {
   if (g.league === "cfb") return typeof isThisCfbWeek === "function" ? isThisCfbWeek(g) : true;
   return true;
 }
+// What one leg is worth at the best price we can get (value per dollar), for ordering legs.
+function readyLegValue(l) {
+  const id = readyLegId(l);
+  if (!id) return -1;
+  if (id.split("|")[1] !== "pp" && typeof bestPriceFor === "function") {
+    const bp = bestPriceFor(id);
+    if (bp && bp.best) return bp.best.value;
+  }
+  const pb = pbLeg({ id });
+  return pb && !pb.started ? pb.value : -1;
+}
 function packParlays(legs, thoughtFor, perLength) {
   const limit = perLength || 6;
-  legs = (legs || []).filter(readyThisWeek);
+  // Value first: legs ordered by what they're worth at the best price, and only legs that are
+  // about fair or better when there are enough of them. A parlay of legs that each beat their
+  // price multiplies the edge; one bad leg drags the whole ticket.
+  legs = (legs || []).filter(readyThisWeek).map((l) => Object.assign({}, l, { _v: readyLegValue(l) }));
+  const good = legs.filter((l) => l._v >= -0.02);
+  if (good.length >= 2) legs = good;
+  legs.sort((a, b) => b._v - a._v);
   const out = [];
   for (let n = 2; n <= 6; n++) {
     const title = n + "-leg";
@@ -7457,19 +7475,19 @@ function dogFavLegs(league, wantDog) {
 }
 function buildDogParlays(league) {
   return packParlays(dogFavLegs(league, true), (title) => title === "2-leg"
-    ? "The two underdogs our number likes by the most, in different games."
-    : "More underdogs from the same list, biggest gap first. The long ticket adds dogs that did not clear a bet by themselves.", 8);
+    ? "The two underdogs worth the most at their best price, in different games."
+    : "More underdogs from the same list, best value first. Every leg has to cover.", 8);
 }
 function buildFavParlays(league) {
   return packParlays(dogFavLegs(league, false), (title) => title === "2-leg"
-    ? "The two favorites our number likes by the most, in different games."
-    : "More favorites from the same list, biggest gap first. The long ticket adds favorites that did not clear a bet by themselves.", 8);
+    ? "The two favorites worth the most at their best price, in different games."
+    : "More favorites from the same list, best value first. Every leg has to cover.", 8);
 }
 function buildParlays(league) {
   const legs = collectParlayLegs().filter((l) => !league || l.league === league);
   return packParlays(legs, (title) => title === "2-leg"
-    ? "These are the two biggest gaps between our number and the current line, in two different games. This is the ticket."
-    : "The next best legs, added on. The price gets longer and one miss sinks it. The 2-leg is the play.");
+    ? "The two plays worth the most at their best price, in two different games. This is the ticket."
+    : "The next best legs by value, added on. The price gets longer and one miss sinks it. The 2-leg is the play.");
 }
 function buildTotalParlays(league) {
   const legs = collectParlayLegs().filter((l) => l.league === league && l.kind === "total");
@@ -7587,10 +7605,64 @@ function readyClosestHtml(rows, title) {
   return `<div class="ready-note" style="grid-column:1/-1">Nothing in this group is priced fair right now. These are the closest; the book has a small edge on each, so they are leans, not picks.</div>`
     + top.map((o) => readyCardHtml(String(title(o.r)).replace(/\s#\d+/, ""), o.r.thought || "", o.r.legs, true)).join("");
 }
+// tickets best value first (priced at their best book)
+function readyByValue(rows) {
+  return (rows || []).map((r) => ({ r, x: readyPrice(r.legs) })).sort((a, b) => (b.x ? b.x.r.ev : -9) - (a.x ? a.x.r.ev : -9)).map((o) => o.r);
+}
+// The best 2- and 3-leg tickets from every group: the most value at the best book, each leg
+// beating its price. Shown above the groups on every tab.
+function bestTicketsHtml() {
+  const propsIn = typeof nextPropRows === "function" ? nextPropRows().length : 0;
+  const c = window.__bestTix;
+  if (c && c.props === propsIn && Date.now() - c.at < 60000) return c.html;
+  const groups = [
+    ["NFL moneylines", () => buildMoneylineParlays("nfl")], ["NFL parlays", () => buildParlays("nfl")],
+    ["NFL favorites", () => buildFavParlays("nfl")], ["NFL underdogs", () => buildDogParlays("nfl")],
+    ["NFL totals", () => buildTotalParlays("nfl")], ["College moneylines", () => buildMoneylineParlays("cfb")],
+    ["College dogs", () => buildDogParlays("cfb")],
+    ["College", () => { const B = buildCollegeParlayBoard(); return [].concat(B.spread || [], B.total || [], B.mix || []); }],
+    ["Player props", () => (typeof buildPropParlays === "function" ? buildPropParlays() : [])]
+  ];
+  const all = [];
+  groups.forEach(([name, fn]) => {
+    let rows = [];
+    try { rows = fn() || []; } catch (e) { rows = []; }
+    rows.forEach((r) => {
+      const n = Number(r.n || (r.legs && r.legs.length));
+      if (n < 2 || n > 3) return;
+      const x = readyPrice(r.legs);
+      if (!x || !(x.r.ev > 0.005) || (x.r.sameGame && x.r.sameGame.length)) return;
+      if (x.mapped.some((m) => !(m.pb.value > -0.005))) return;   // every leg beats (or meets) its price
+      all.push({ name, r, x, n });
+    });
+  });
+  all.sort((a, b) => b.x.r.ev - a.x.r.ev);
+  // three different tickets: first ones that share no leg with a ticket already picked, then
+  // the next best if there aren't three like that
+  const top = [], used = new Set(), keys = new Set();
+  const keyOf = (o) => o.x.mapped.map((m) => m.id).sort().join("~");
+  for (const o of all) {
+    if (top.length >= 3) break;
+    if (o.x.mapped.some((m) => used.has(m.id))) continue;
+    top.push(o); keys.add(keyOf(o)); o.x.mapped.forEach((m) => used.add(m.id));
+  }
+  for (const o of all) {
+    if (top.length >= 3) break;
+    if (keys.has(keyOf(o))) continue;
+    top.push(o); keys.add(keyOf(o));
+  }
+  const html = top.length
+    ? `<div class="home-label" style="grid-column:1/-1">Best tickets right now</div><p class="subn" style="grid-column:1/-1;margin:0 0 6px">The 2- and 3-leg tickets worth the most at the best book, from every group. Every leg beats its own price, so the edge multiplies; so does the chance of a miss, so stake less on a parlay than on a single bet.</p>`
+      + top.map((o) => readyCardHtml(`${o.name} · ${o.n}-leg`, "", o.r.legs)).join("")
+      + `<div class="home-label" style="grid-column:1/-1;margin-top:14px">This group</div>`
+    : "";
+  window.__bestTix = { at: Date.now(), props: propsIn, html };
+  return html;
+}
 function parlayGroupHtml(rows) {
   if (!rows || !rows.length) return "";
   const html = [2, 3, 4, 5, 6].map((n) => {
-    const bag = rows.filter((r) => Number(r.n || (r.legs && r.legs.length)) === n);
+    const bag = readyByValue(rows.filter((r) => Number(r.n || (r.legs && r.legs.length)) === n)).slice(0, 4);
     if (!bag.length) return "";
     const cards = bag.map(parlayCardHtml).join("");
     return cards ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">${n}-leg tickets</div>` + cards : "";
@@ -7725,7 +7797,7 @@ function buildPropParlays() {
 function propLadderHtml(rows) {
   if (!rows.length) return `<div class="empty">No player prop tickets cleared the bar.</div>`;
   const html = [1, 2, 3, 4, 5, 6].map((n) => {
-    const bag = rows.filter((r) => r.n === n);
+    const bag = readyByValue(rows.filter((r) => r.n === n)).slice(0, 6);
     if (!bag.length) return "";
     const cards = bag.map(propParlayCardHtml).join("");
     return cards ? `<div class="home-label" style="grid-column:1/-1;margin-top:8px">${n}-leg player props</div>` + cards : "";
@@ -8118,7 +8190,7 @@ function renderCollegeParlayBoard() {
     html += `<p class="subn" style="grid-column:1/-1;margin:0 0 4px">${g.blurb}</p>`;
     const body = rows.length
       ? [2, 3, 4, 5, 6].map((n) => {
-        const bag = rows.filter((r) => Number(r.n) === n);
+        const bag = readyByValue(rows.filter((r) => Number(r.n) === n)).slice(0, 4);
         if (!bag.length) return "";
         const cards = bag.map(collegeParlayCardHtml).join("");
         return cards ? `<div class="home-label" style="grid-column:1/-1">${n}-leg</div>` + cards : "";
@@ -8132,6 +8204,19 @@ function renderCollegeParlayBoard() {
 function renderParlays() {
   window.__readyWhySeen = new Set();
   window.__readyPriceCache = new Map();
+  const bestEl = document.getElementById("parlayBest");
+  if (bestEl) {
+    try { window.__bestTix = null; bestEl.innerHTML = bestTicketsHtml(); } catch (e) { bestEl.innerHTML = ""; }
+    if (!bestEl.__wired) {
+      bestEl.__wired = true;
+      bestEl.addEventListener("click", (e) => {
+        const b = e.target.closest("[data-openpb]");
+        if (b) { e.stopPropagation(); openInBuilder(b.dataset.openpb); return; }
+        const li = e.target.closest("[data-id]");
+        if (li) openGame(li.dataset.id);
+      });
+    }
+  }
   const heroEl = document.getElementById("parlayHero");
   if (heroEl && !heroEl.__readyWired) {
     heroEl.__readyWired = true;
@@ -8168,9 +8253,9 @@ function renderParlays() {
   }
   const themed = {
     ml: { rows: buildMoneylineParlays("nfl"), stamp: "", empty: "No NFL moneyline is close enough to a fair price for a ticket this week." },
-    dogs: { rows: buildDogParlays("nfl"), stamp: "NFL underdogs. Eight tickets at each size when the board has enough dogs, from 2 legs through 6. Biggest gap first.", empty: "No NFL underdog parlay this week priced fair or better." },
-    favs: { rows: buildFavParlays("nfl"), stamp: "NFL favorites. Eight tickets at each size when the board has enough favorites, from 2 legs through 6. Biggest gap first.", empty: "No NFL favorite parlay this week priced fair or better." },
-    totals: { rows: buildTotalParlays("nfl"), stamp: "NFL totals. Only overs and unders that already cleared, biggest gap first.", empty: "No NFL totals parlay this week priced fair or better." },
+    dogs: { rows: buildDogParlays("nfl"), stamp: "NFL underdogs, best value at the best book first.", empty: "No NFL underdog parlay this week priced fair or better." },
+    favs: { rows: buildFavParlays("nfl"), stamp: "NFL favorites, best value at the best book first.", empty: "No NFL favorite parlay this week priced fair or better." },
+    totals: { rows: buildTotalParlays("nfl"), stamp: "NFL totals, best value at the best book first.", empty: "No NFL totals parlay this week priced fair or better." },
     cdogs: { rows: buildDogParlays("cfb"), stamp: "College underdogs only. No NFL teams on this ticket.", empty: "No college underdog parlay this week priced fair or better." }
   };
   if (themed[league]) {
