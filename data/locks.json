@@ -769,8 +769,7 @@
    "total_play": false,
    "spread": -10,
    "total": 62.5,
-   "lockedAt": "2026-11-01T00:17:15.991Z",
-   "provisional": true
+   "lockedAt": "2026-11-01T00:32:52.750Z"
   },
   "401860909": {
    "id": "401860909",
@@ -840,7 +839,7 @@
    "total_play": false,
    "spread": 6,
    "total": 57.5,
-   "lockedAt": "2026-11-01T00:17:15.991Z",
+   "lockedAt": "2026-11-01T00:32:52.750Z",
    "provisional": true
   },
   "401861966": {
@@ -1036,7 +1035,7 @@
    "total_play": false,
    "spread": -21.5,
    "total": 54.5,
-   "lockedAt": "2026-11-01T00:17:15.991Z",
+   "lockedAt": "2026-11-01T00:32:52.750Z",
    "provisional": true
   },
   "401864531": {
@@ -1954,5 +1953,5 @@
    }
   ]
  },
- "updated": "2026-11-01T00:17:15.991Z"
+ "updated": "2026-11-01T00:32:52.750Z"
 }
