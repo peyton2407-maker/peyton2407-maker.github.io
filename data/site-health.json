@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-10-31T01:00:32Z",
+ "checked_at": "2026-11-01T00:24:59Z",
  "errors": [],
  "console": [],
  "failed_requests": {},
@@ -7,11 +7,11 @@
  "screens": {
   "home": {
    "visible": true,
-   "count": 29,
+   "count": 45,
    "summary": [],
    "empty": [],
-   "chars": 1695,
-   "images": 70,
+   "chars": 2249,
+   "images": 102,
    "broken_images": []
   },
   "nfl": {
@@ -19,26 +19,26 @@
    "count": 13,
    "summary": [],
    "empty": [],
-   "chars": 5202,
-   "images": 29,
+   "chars": 4896,
+   "images": 35,
    "broken_images": []
   },
   "cfb": {
    "visible": true,
-   "count": 50,
+   "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 8891,
-   "images": 102,
+   "chars": 4780,
+   "images": 37,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 26,
+   "count": 27,
    "summary": [],
    "empty": [],
-   "chars": 2450,
-   "images": 25,
+   "chars": 2407,
+   "images": 48,
    "broken_images": []
   },
   "season": {
@@ -46,16 +46,16 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3183,
+   "chars": 3197,
    "images": 42,
    "broken_images": []
   },
   "score": {
    "visible": true,
-   "count": 295,
+   "count": 297,
    "summary": [],
    "empty": [],
-   "chars": 18477,
+   "chars": 18750,
    "images": 0,
    "broken_images": []
   },
@@ -73,7 +73,7 @@
    "count": 9,
    "summary": [],
    "empty": [],
-   "chars": 1040,
+   "chars": 922,
    "images": 18,
    "broken_images": []
   },
@@ -82,19 +82,19 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 4576,
-   "images": 19,
+   "chars": 5526,
+   "images": 15,
    "broken_images": []
   },
   "tds": {
    "visible": true,
    "count": 48,
    "summary": [
-    "170 TD tickets in this filter 66% top anytime (Williams) 191 first-TD name"
+    "168 TD tickets in this filter 66% top anytime (Williams) 190 first-TD name"
    ],
    "empty": [],
-   "chars": 4095,
-   "images": 18,
+   "chars": 4012,
+   "images": 20,
    "broken_images": []
   },
   "charts": {
@@ -110,21 +110,19 @@
    "visible": true,
    "count": 72,
    "summary": [
-    "139 value tickets in this filter 127 TD plus-money 7 spread / dog sides 55% b"
+    "315 value tickets in this filter 126 TD plus-money 6 spread / dog sides 93% b"
    ],
    "empty": [],
-   "chars": 4017,
-   "images": 17,
+   "chars": 3395,
+   "images": 34,
    "broken_images": []
   },
   "parlay": {
    "visible": true,
-   "count": 0,
+   "count": 5,
    "summary": [],
-   "empty": [
-    "No NFL parlay this week. No two plays are far enough off the number to make a ticket priced fair or better."
-   ],
-   "chars": 428,
+   "empty": [],
+   "chars": 2973,
    "images": 0,
    "broken_images": []
   },
@@ -133,20 +131,20 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2730,
-   "images": 5,
+   "chars": 4482,
+   "images": 26,
    "broken_images": []
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "530 listed THU \u00b7 11:31 PM ET 529 listed FRI \u00b7 8:40 PM ET 473 listed SA",
-    "39 listed BAL @ BUF 90 min before kick TEN @ CIN 90 min before kick A",
-    "473 listed 0 probable \u00b7 75% 87 questionable / GTD \u00b7 50% 3 doubtful \u00b7 2"
+    "530 listed THU \u00b7 11:31 PM ET 529 listed FRI \u00b7 11:45 PM ET 473 listed S",
+    "464 listed SUN Not posted CAR @ GB 39 listed BAL @ BUF 90 min before k",
+    "464 listed 0 probable \u00b7 75% 71 questionable / GTD \u00b7 50% 3 doubtful \u00b7 2"
    ],
    "empty": [],
-   "chars": 4430,
+   "chars": 4492,
    "images": 2,
    "broken_images": []
   },
@@ -155,7 +153,7 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 4021,
+   "chars": 3986,
    "images": 28,
    "broken_images": []
   },
@@ -163,22 +161,20 @@
    "visible": true,
    "count": 3,
    "summary": [],
-   "empty": [
-    "No NFL bet left this week beats its price: no side, total, moneyline or player prop. So there is no play of the day yet. Player prop prices "
-   ],
-   "chars": 1963,
+   "empty": [],
+   "chars": 2193,
    "images": 0,
    "broken_images": []
   },
   "cfbpicks": {
    "visible": true,
-   "count": 18,
+   "count": 14,
    "summary": [
-    "18 featured CFB leans 5 spread tickets 0 O/U tickets NEV @ UCLA top car"
+    "14 featured CFB leans 3 spread tickets 0 O/U tickets OSU @ USC top card"
    ],
    "empty": [],
-   "chars": 5938,
-   "images": 34,
+   "chars": 6186,
+   "images": 28,
    "broken_images": []
   }
  },
