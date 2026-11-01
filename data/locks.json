@@ -1712,7 +1712,7 @@
    "total_play": false,
    "spread": -6,
    "total": 40.5,
-   "lockedAt": "2026-11-01T22:16:33.115Z",
+   "lockedAt": "2026-11-01T22:46:19.164Z",
    "provisional": true
   }
  },
@@ -1906,32 +1906,32 @@
     "id": "401873035",
     "game": "PHI @ WSH",
     "kind": "Player prop",
-    "line": "Antonio Williams under 3.5 receptions",
-    "hitPct": 63,
-    "why": "We project Antonio Williams for 2.8 receptions against a line of 3.5. Our checked chance on the under is 63%; the books' own chance is 58%. At -149 (DraftKings) that is 4.9% better than the price.",
+    "line": "Elijah Mitchell under 29.5 rush yds",
+    "hitPct": 60,
+    "why": "We project Elijah Mitchell for 21 rush yds against a line of 29.5. Our checked chance on the under is 60%; the books' own chance is 51%. At -115 (DraftKings) that is 12.8% better than the price.",
     "label": "Sunday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
     "prop": {
-     "pid": "5081432",
-     "name": "Antonio Williams",
-     "stat": "rec",
+     "pid": "4241555",
+     "name": "Elijah Mitchell",
+     "stat": "rush_yds",
      "side": "under",
-     "line": 3.5
+     "line": 29.5
     },
-    "price": -149,
+    "price": -115,
     "book": "DraftKings",
-    "ev": 0.049,
+    "ev": 0.128,
     "ours": "WSH -6.9 · total 40.6",
     "score": "PHI 16.8 – WSH 23.8",
     "market": "WSH -6.0 · total 40.5",
-    "lockedAt": "2026-11-01T22:16:33.128Z",
+    "lockedAt": "2026-11-01T22:46:19.177Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-02T01:20Z",
     "big": false,
-    "savedAt": 1793571393128
+    "savedAt": 1793573179177
    }
   ],
   "cfb": [
@@ -2400,5 +2400,5 @@
    }
   ]
  },
- "updated": "2026-11-01T22:16:33.115Z"
+ "updated": "2026-11-01T22:46:19.164Z"
 }
