@@ -1437,7 +1437,7 @@
    "total_play": false,
    "spread": -7,
    "total": 54.5,
-   "lockedAt": "2026-11-01T10:16:30.649Z",
+   "lockedAt": "2026-11-01T10:31:30.515Z",
    "provisional": true
   },
   "401873025": {
@@ -1458,7 +1458,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 43.5,
-   "lockedAt": "2026-11-01T10:16:30.649Z",
+   "lockedAt": "2026-11-01T10:31:30.515Z",
    "provisional": true
   },
   "401873026": {
@@ -1470,16 +1470,16 @@
    "away": "BAL",
    "date": "2026-11-01T18:00Z",
    "pick": "BUF",
-   "pick_line": "BUF -3.5",
+   "pick_line": "BUF -3.0",
    "total_pick": "OVER 54.5",
    "side_play": false,
-   "our_margin": 3.71,
+   "our_margin": 3.36,
    "our_total": 55.1,
    "confidence": null,
    "total_play": false,
-   "spread": -3.5,
+   "spread": -3,
    "total": 54.5,
-   "lockedAt": "2026-11-01T10:16:30.649Z",
+   "lockedAt": "2026-11-01T10:31:30.515Z",
    "provisional": true
   },
   "401873027": {
@@ -1492,15 +1492,15 @@
    "date": "2026-11-01T18:00Z",
    "pick": "PIT",
    "pick_line": "PIT -3.5",
-   "total_pick": "UNDER 39.5",
+   "total_pick": "OVER 38.5",
    "side_play": false,
    "our_margin": 4.12,
-   "our_total": 39.4,
+   "our_total": 38.7,
    "confidence": null,
    "total_play": false,
    "spread": -3.5,
-   "total": 39.5,
-   "lockedAt": "2026-11-01T10:16:30.649Z",
+   "total": 38.5,
+   "lockedAt": "2026-11-01T10:31:30.515Z",
    "provisional": true
   },
   "401873028": {
@@ -1516,12 +1516,12 @@
    "total_pick": "UNDER 46.5",
    "side_play": false,
    "our_margin": 9.16,
-   "our_total": 46.4,
+   "our_total": 45.5,
    "confidence": null,
    "total_play": false,
    "spread": -10,
    "total": 46.5,
-   "lockedAt": "2026-11-01T10:16:30.649Z",
+   "lockedAt": "2026-11-01T10:31:30.515Z",
    "provisional": true
   },
   "401873029": {
@@ -1542,7 +1542,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 46.5,
-   "lockedAt": "2026-11-01T10:16:30.649Z",
+   "lockedAt": "2026-11-01T10:31:30.515Z",
    "provisional": true
   },
   "401873030": {
@@ -1563,7 +1563,7 @@
    "total_play": false,
    "spread": -3,
    "total": 46.5,
-   "lockedAt": "2026-11-01T10:16:30.649Z",
+   "lockedAt": "2026-11-01T10:31:30.515Z",
    "provisional": true
   },
   "401873031": {
@@ -1574,17 +1574,17 @@
    "home": "CIN",
    "away": "TEN",
    "date": "2026-11-01T18:00Z",
-   "pick": "CIN",
-   "pick_line": "CIN -12.5",
+   "pick": "NO PLAY",
+   "pick_line": null,
    "total_pick": "OVER 46.5",
    "side_play": false,
-   "our_margin": 12.77,
+   "our_margin": 13.47,
    "our_total": 46.6,
    "confidence": null,
    "total_play": false,
-   "spread": -12.5,
+   "spread": -13.5,
    "total": 46.5,
-   "lockedAt": "2026-11-01T10:16:30.649Z",
+   "lockedAt": "2026-11-01T10:31:30.515Z",
    "provisional": true
   },
   "401873032": {
@@ -1605,7 +1605,7 @@
    "total_play": true,
    "spread": -6,
    "total": 45.5,
-   "lockedAt": "2026-11-01T10:16:30.649Z",
+   "lockedAt": "2026-11-01T10:31:30.515Z",
    "provisional": true
   },
   "401873033": {
@@ -1626,7 +1626,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 40.5,
-   "lockedAt": "2026-11-01T10:16:30.649Z",
+   "lockedAt": "2026-11-01T10:31:30.515Z",
    "provisional": true
   },
   "401873034": {
@@ -1647,7 +1647,7 @@
    "total_play": false,
    "spread": 7,
    "total": 43.5,
-   "lockedAt": "2026-11-01T10:16:30.649Z",
+   "lockedAt": "2026-11-01T10:31:30.515Z",
    "provisional": true
   }
  },
@@ -1755,15 +1755,15 @@
     "price": 180,
     "book": "BetRivers",
     "ev": 0.264,
-    "ours": "CIN -12.8 · total 46.6",
-    "score": "TEN 16.9 – CIN 29.7",
-    "market": "CIN -12.5 · total 46.5",
-    "lockedAt": "2026-11-01T10:16:30.682Z",
+    "ours": "CIN -13.5 · total 46.6",
+    "score": "TEN 16.6 – CIN 30.0",
+    "market": "CIN -13.5 · total 46.5",
+    "lockedAt": "2026-11-01T10:31:30.536Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-01T18:00Z",
     "big": true,
-    "savedAt": 1793528190682
+    "savedAt": 1793529090536
    }
   ],
   "cfb": [
@@ -2232,5 +2232,5 @@
    }
   ]
  },
- "updated": "2026-11-01T10:16:30.649Z"
+ "updated": "2026-11-01T10:31:30.515Z"
 }
