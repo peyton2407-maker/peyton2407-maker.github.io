@@ -1637,8 +1637,7 @@
    "total_play": true,
    "spread": -6.5,
    "total": 45.5,
-   "lockedAt": "2026-11-01T18:02:01.617Z",
-   "provisional": true
+   "lockedAt": "2026-11-01T19:46:45.233Z"
   },
   "401873033": {
    "id": "401873033",
@@ -1658,7 +1657,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 41.5,
-   "lockedAt": "2026-11-01T18:02:01.617Z",
+   "lockedAt": "2026-11-01T19:46:45.233Z",
    "provisional": true
   },
   "401873034": {
@@ -1679,7 +1678,7 @@
    "total_play": false,
    "spread": 7,
    "total": 41.5,
-   "lockedAt": "2026-11-01T18:02:01.617Z",
+   "lockedAt": "2026-11-01T19:46:45.233Z",
    "provisional": true
   },
   "401873035": {
@@ -1690,17 +1689,17 @@
    "home": "WSH",
    "away": "PHI",
    "date": "2026-11-02T01:20Z",
-   "pick": "WSH",
-   "pick_line": "WSH -6.0",
+   "pick": "PHI",
+   "pick_line": "PHI +6.0",
    "total_pick": "OVER 40.5",
    "side_play": false,
-   "our_margin": 6.93,
+   "our_margin": 5.88,
    "our_total": 40.6,
    "confidence": null,
    "total_play": false,
    "spread": -6,
    "total": 40.5,
-   "lockedAt": "2026-11-01T18:02:01.617Z",
+   "lockedAt": "2026-11-01T19:46:45.233Z",
    "provisional": true
   }
  },
@@ -1845,12 +1844,11 @@
     "ours": "LAR -6.9 · total 43.9",
     "score": "LAC 18.5 – LAR 25.4",
     "market": "LAR -6.5 · total 45.5",
-    "lockedAt": "2026-11-01T18:02:01.628Z",
-    "locked": false,
-    "provisional": true,
+    "lockedAt": "2026-11-01T19:46:45.245Z",
+    "locked": true,
     "kick": "2026-11-01T21:05Z",
     "big": false,
-    "savedAt": 1793556121628
+    "savedAt": 1793562405245
    }
   ],
   "cfb": [
@@ -2319,5 +2317,5 @@
    }
   ]
  },
- "updated": "2026-11-01T18:02:01.617Z"
+ "updated": "2026-11-01T19:46:45.233Z"
 }
