@@ -759,17 +759,17 @@
    "home": "BOIS",
    "away": "TXST",
    "date": "2026-11-01T02:00Z",
-   "pick": "BOIS",
-   "pick_line": "BOIS -10.5",
+   "pick": "TXST",
+   "pick_line": "TXST +10.0",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 11.4,
+   "our_margin": 9.97,
    "our_total": 63.5,
    "confidence": null,
    "total_play": false,
-   "spread": -10.5,
+   "spread": -10,
    "total": 63.5,
-   "lockedAt": "2026-10-31T23:43:05.804Z",
+   "lockedAt": "2026-11-01T00:01:29.290Z",
    "provisional": true
   },
   "401860909": {
@@ -840,7 +840,7 @@
    "total_play": false,
    "spread": 6,
    "total": 57.5,
-   "lockedAt": "2026-10-31T23:43:05.804Z",
+   "lockedAt": "2026-11-01T00:01:29.290Z",
    "provisional": true
   },
   "401861966": {
@@ -1028,15 +1028,15 @@
    "date": "2026-11-01T02:30Z",
    "pick": "NIU",
    "pick_line": "NIU +22.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "UNDER 54.5",
    "side_play": false,
    "our_margin": 22.2,
-   "our_total": 55.5,
+   "our_total": 54.9,
    "confidence": null,
    "total_play": false,
    "spread": -22.5,
-   "total": 55.5,
-   "lockedAt": "2026-10-31T23:43:05.804Z",
+   "total": 54.5,
+   "lockedAt": "2026-11-01T00:01:29.290Z",
    "provisional": true
   },
   "401864531": {
@@ -1954,5 +1954,5 @@
    }
   ]
  },
- "updated": "2026-10-31T23:43:05.804Z"
+ "updated": "2026-11-01T00:01:29.290Z"
 }
