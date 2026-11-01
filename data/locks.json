@@ -1712,7 +1712,7 @@
    "total_play": false,
    "spread": -6,
    "total": 40.5,
-   "lockedAt": "2026-11-01T20:46:32.605Z",
+   "lockedAt": "2026-11-01T21:16:40.315Z",
    "provisional": true
   }
  },
@@ -1862,6 +1862,40 @@
     "kick": "2026-11-01T21:05Z",
     "big": false,
     "savedAt": 1793562405245
+   },
+   {
+    "key": "game:401873033",
+    "week": 8,
+    "day": "2026-11-01",
+    "league": "nfl",
+    "id": "401873033",
+    "game": "KC @ DEN",
+    "kind": "Player prop",
+    "line": "Jonah Coleman under 2.5 receptions",
+    "hitPct": 52,
+    "why": "We project Jonah Coleman for 2.1 receptions against a line of 2.5. Our checked chance on the under is 52%; the books' own chance is 42%. At +128 (FanDuel) that is 18.1% better than the price.",
+    "label": "Sunday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "prop": {
+     "pid": "4702555",
+     "name": "Jonah Coleman",
+     "stat": "rec",
+     "side": "under",
+     "line": 2.5
+    },
+    "price": 128,
+    "book": "FanDuel",
+    "ev": 0.181,
+    "ours": "DEN -1.0 · total 42.0",
+    "score": "KC 20.5 – DEN 21.5",
+    "market": "DEN -1.5 · total 41.5",
+    "lockedAt": "2026-11-01T21:16:40.327Z",
+    "locked": true,
+    "kick": "2026-11-01T21:25Z",
+    "big": false,
+    "savedAt": 1793567800327
    }
   ],
   "cfb": [
@@ -2330,5 +2364,5 @@
    }
   ]
  },
- "updated": "2026-11-01T20:46:32.605Z"
+ "updated": "2026-11-01T21:16:40.315Z"
 }
