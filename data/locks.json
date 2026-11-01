@@ -1663,10 +1663,10 @@
    "spread": 1.5,
    "total": 41.5,
    "lockedAt": "2026-11-01T20:01:33.747Z",
-   "close_spread": 1.5,
+   "close_spread": -1.5,
    "close_total": 41.5,
-   "closeAt": "2026-11-01T20:31:19.734Z",
-   "clv_side": 0,
+   "closeAt": "2026-11-01T20:46:32.605Z",
+   "clv_side": 3,
    "clv_total": 0
   },
   "401873034": {
@@ -1712,7 +1712,7 @@
    "total_play": false,
    "spread": -6,
    "total": 40.5,
-   "lockedAt": "2026-11-01T20:31:19.734Z",
+   "lockedAt": "2026-11-01T20:46:32.605Z",
    "provisional": true
   }
  },
@@ -2330,5 +2330,5 @@
    }
   ]
  },
- "updated": "2026-11-01T20:31:19.734Z"
+ "updated": "2026-11-01T20:46:32.605Z"
 }
