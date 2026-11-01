@@ -1712,7 +1712,7 @@
    "total_play": false,
    "spread": -6,
    "total": 40.5,
-   "lockedAt": "2026-11-01T21:16:40.315Z",
+   "lockedAt": "2026-11-01T21:31:12.179Z",
    "provisional": true
   }
  },
@@ -1896,6 +1896,41 @@
     "kick": "2026-11-01T21:25Z",
     "big": false,
     "savedAt": 1793567800327
+   },
+   {
+    "key": "game:401873035",
+    "week": 8,
+    "day": "2026-11-01",
+    "league": "nfl",
+    "id": "401873035",
+    "game": "PHI @ WSH",
+    "kind": "Player prop",
+    "line": "Antonio Williams under 3.5 receptions",
+    "hitPct": 63,
+    "why": "We project Antonio Williams for 2.8 receptions against a line of 3.5. Our checked chance on the under is 63%; the books' own chance is 58%. At -149 (DraftKings) that is 4.9% better than the price.",
+    "label": "Sunday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "prop": {
+     "pid": "5081432",
+     "name": "Antonio Williams",
+     "stat": "rec",
+     "side": "under",
+     "line": 3.5
+    },
+    "price": -149,
+    "book": "DraftKings",
+    "ev": 0.049,
+    "ours": "WSH -6.9 · total 40.6",
+    "score": "PHI 16.8 – WSH 23.8",
+    "market": "WSH -6.0 · total 40.5",
+    "lockedAt": "2026-11-01T21:31:12.190Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-02T01:20Z",
+    "big": false,
+    "savedAt": 1793568672190
    }
   ],
   "cfb": [
@@ -2364,5 +2399,5 @@
    }
   ]
  },
- "updated": "2026-11-01T21:16:40.315Z"
+ "updated": "2026-11-01T21:31:12.179Z"
 }
