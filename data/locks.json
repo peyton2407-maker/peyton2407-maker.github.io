@@ -1637,7 +1637,7 @@
    "total_play": true,
    "spread": -6.5,
    "total": 45.5,
-   "lockedAt": "2026-11-01T17:46:54.342Z",
+   "lockedAt": "2026-11-01T18:02:01.617Z",
    "provisional": true
   },
   "401873033": {
@@ -1658,7 +1658,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 41.5,
-   "lockedAt": "2026-11-01T17:46:54.342Z",
+   "lockedAt": "2026-11-01T18:02:01.617Z",
    "provisional": true
   },
   "401873034": {
@@ -1679,7 +1679,7 @@
    "total_play": false,
    "spread": 7,
    "total": 41.5,
-   "lockedAt": "2026-11-01T17:46:54.342Z",
+   "lockedAt": "2026-11-01T18:02:01.617Z",
    "provisional": true
   },
   "401873035": {
@@ -1700,7 +1700,7 @@
    "total_play": false,
    "spread": -6,
    "total": 40.5,
-   "lockedAt": "2026-11-01T17:46:54.342Z",
+   "lockedAt": "2026-11-01T18:02:01.617Z",
    "provisional": true
   }
  },
@@ -1816,6 +1816,41 @@
     "kick": "2026-11-01T18:00Z",
     "big": true,
     "savedAt": 1793550694828
+   },
+   {
+    "key": "game:401873032",
+    "week": 8,
+    "day": "2026-11-01",
+    "league": "nfl",
+    "id": "401873032",
+    "game": "LAC @ LAR",
+    "kind": "Player prop",
+    "line": "Justin Herbert under 24.5 rush yds",
+    "hitPct": 59,
+    "why": "We project Justin Herbert for 19 rush yds against a line of 24.5. Our checked chance on the under is 59%; the books' own chance is 51%. At -110 (DraftKings) that is 13.3% better than the price.",
+    "label": "Sunday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "prop": {
+     "pid": "4038941",
+     "name": "Justin Herbert",
+     "stat": "rush_yds",
+     "side": "under",
+     "line": 24.5
+    },
+    "price": -110,
+    "book": "DraftKings",
+    "ev": 0.133,
+    "ours": "LAR -6.9 · total 43.9",
+    "score": "LAC 18.5 – LAR 25.4",
+    "market": "LAR -6.5 · total 45.5",
+    "lockedAt": "2026-11-01T18:02:01.628Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-01T21:05Z",
+    "big": false,
+    "savedAt": 1793556121628
    }
   ],
   "cfb": [
@@ -2284,5 +2319,5 @@
    }
   ]
  },
- "updated": "2026-11-01T17:46:54.342Z"
+ "updated": "2026-11-01T18:02:01.617Z"
 }
