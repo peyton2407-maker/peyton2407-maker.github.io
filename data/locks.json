@@ -1437,7 +1437,7 @@
    "total_play": false,
    "spread": -7,
    "total": 54.5,
-   "lockedAt": "2026-11-01T09:16:15.346Z",
+   "lockedAt": "2026-11-01T09:31:20.418Z",
    "provisional": true
   },
   "401873025": {
@@ -1458,7 +1458,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 43.5,
-   "lockedAt": "2026-11-01T09:16:15.346Z",
+   "lockedAt": "2026-11-01T09:31:20.418Z",
    "provisional": true
   },
   "401873026": {
@@ -1479,7 +1479,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 54.5,
-   "lockedAt": "2026-11-01T09:16:15.346Z",
+   "lockedAt": "2026-11-01T09:31:20.418Z",
    "provisional": true
   },
   "401873027": {
@@ -1500,7 +1500,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 39.5,
-   "lockedAt": "2026-11-01T09:16:15.346Z",
+   "lockedAt": "2026-11-01T09:31:20.418Z",
    "provisional": true
   },
   "401873028": {
@@ -1521,7 +1521,7 @@
    "total_play": false,
    "spread": -10,
    "total": 46.5,
-   "lockedAt": "2026-11-01T09:16:15.346Z",
+   "lockedAt": "2026-11-01T09:31:20.418Z",
    "provisional": true
   },
   "401873029": {
@@ -1542,7 +1542,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 46.5,
-   "lockedAt": "2026-11-01T09:16:15.346Z",
+   "lockedAt": "2026-11-01T09:31:20.418Z",
    "provisional": true
   },
   "401873030": {
@@ -1563,7 +1563,7 @@
    "total_play": false,
    "spread": -3,
    "total": 46.5,
-   "lockedAt": "2026-11-01T09:16:15.346Z",
+   "lockedAt": "2026-11-01T09:31:20.418Z",
    "provisional": true
   },
   "401873031": {
@@ -1584,7 +1584,7 @@
    "total_play": false,
    "spread": -12.5,
    "total": 46.5,
-   "lockedAt": "2026-11-01T09:16:15.346Z",
+   "lockedAt": "2026-11-01T09:31:20.418Z",
    "provisional": true
   },
   "401873032": {
@@ -1605,7 +1605,49 @@
    "total_play": true,
    "spread": -6.5,
    "total": 45.5,
-   "lockedAt": "2026-11-01T09:16:15.346Z",
+   "lockedAt": "2026-11-01T09:31:20.418Z",
+   "provisional": true
+  },
+  "401873033": {
+   "id": "401873033",
+   "league": "nfl",
+   "week": 8,
+   "short": "KC @ DEN",
+   "home": "DEN",
+   "away": "KC",
+   "date": "2026-11-01T21:25Z",
+   "pick": "DEN",
+   "pick_line": "DEN +1.5",
+   "total_pick": "OVER 40.5",
+   "side_play": false,
+   "our_margin": -1.13,
+   "our_total": 41.3,
+   "confidence": null,
+   "total_play": false,
+   "spread": 1.5,
+   "total": 40.5,
+   "lockedAt": "2026-11-01T09:31:20.418Z",
+   "provisional": true
+  },
+  "401873034": {
+   "id": "401873034",
+   "league": "nfl",
+   "week": 8,
+   "short": "NE @ MIA",
+   "home": "MIA",
+   "away": "NE",
+   "date": "2026-11-01T21:25Z",
+   "pick": "MIA",
+   "pick_line": "MIA +7.0",
+   "total_pick": "UNDER 43.5",
+   "side_play": false,
+   "our_margin": -6.84,
+   "our_total": 43.1,
+   "confidence": null,
+   "total_play": false,
+   "spread": 7,
+   "total": 43.5,
+   "lockedAt": "2026-11-01T09:31:20.418Z",
    "provisional": true
   }
  },
@@ -1716,12 +1758,12 @@
     "ours": "CIN -12.8 · total 46.6",
     "score": "TEN 16.9 – CIN 29.7",
     "market": "CIN -12.5 · total 46.5",
-    "lockedAt": "2026-11-01T09:16:15.371Z",
+    "lockedAt": "2026-11-01T09:31:20.450Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-01T18:00Z",
     "big": true,
-    "savedAt": 1793524575371
+    "savedAt": 1793525480450
    }
   ],
   "cfb": [
@@ -2190,5 +2232,5 @@
    }
   ]
  },
- "updated": "2026-11-01T09:16:15.346Z"
+ "updated": "2026-11-01T09:31:20.418Z"
 }
