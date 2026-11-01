@@ -4507,6 +4507,7 @@ function applySituationalBoard() {
   try { if (typeof seedInjuriesFromSnap === "function") seedInjuriesFromSnap(); } catch (e) {}
   try { if (typeof attachInjuriesToGames === "function") attachInjuriesToGames(); } catch (e) {}
   (DATA.games || []).forEach(applySituationalToGame);
+  try { window.__sitInjSig = nflInjurySig(); } catch (e) {}
   window.applySituationalBoard = applySituationalBoard;
 }
 
@@ -15586,6 +15587,27 @@ function promoteStartingQbs() {
       if (p && p.role && /thursday|penix is back|daniels is out/i.test(p.role)) p.role = "";
     });
   });
+  // The injury report usually lands a few seconds after the board was first priced, so the
+  // NFL injury adjustments (a starter out moves our number) were never applied. When any NFL
+  // game's injury list differs from the one last priced, price the board again and redraw.
+  try {
+    if (window.__sitInjSig !== undefined && typeof nflInjurySig === "function" && nflInjurySig() !== window.__sitInjSig && !attachInjuriesToGames.__sitQ) {
+      attachInjuriesToGames.__sitQ = setTimeout(() => {
+        attachInjuriesToGames.__sitQ = 0;
+        try {
+          applySituationalBoard();
+          if ((view === "nfl" || view === "all" || view === "live") && typeof renderBoard === "function") renderBoard();
+          if (view === "home" && typeof renderHome === "function") renderHome();
+          if (view === "prime" && typeof renderPrimetime === "function") renderPrimetime();
+        } catch (e) {}
+      }, 150);
+    }
+  } catch (e) {}
+}
+// what the NFL board was last priced with: each upcoming game's injury list
+function nflInjurySig() {
+  return (DATA.games || []).filter((g) => g && g.league === "nfl" && !g.completed)
+    .map((g) => g.id + ":" + (g.injuries || []).map((r) => r.name + "/" + (r.tag || r.status || "")).join(",")).join("|");
 }
 
 function reshapeSeasonQbProps() {
