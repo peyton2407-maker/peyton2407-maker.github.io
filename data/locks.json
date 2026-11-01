@@ -1712,7 +1712,7 @@
    "total_play": false,
    "spread": -6,
    "total": 40.5,
-   "lockedAt": "2026-11-01T21:31:12.179Z",
+   "lockedAt": "2026-11-01T22:16:33.115Z",
    "provisional": true
   }
  },
@@ -1807,9 +1807,9 @@
     "hitPct": 45,
     "why": "We project Cam Ward for 0.5 pass TDs against a line of 0.5. Our checked chance on the under is 45%; the books' own chance is 36%. At +180 (BetRivers) that is 26.4% better than the price.",
     "label": "Best of Sunday's 11 games",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "Cam Ward: 2 pass TDs",
+    "resultWhy": "It missed. Cam Ward under 0.5 pass TDs did not cash.",
     "prop": {
      "pid": "4688380",
      "name": "Cam Ward",
@@ -1827,7 +1827,8 @@
     "locked": true,
     "kick": "2026-11-01T18:00Z",
     "big": true,
-    "savedAt": 1793550694828
+    "savedAt": 1793550694828,
+    "by": "1.5 over 0.5"
    },
    {
     "key": "game:401873032",
@@ -1925,12 +1926,12 @@
     "ours": "WSH -6.9 · total 40.6",
     "score": "PHI 16.8 – WSH 23.8",
     "market": "WSH -6.0 · total 40.5",
-    "lockedAt": "2026-11-01T21:31:12.190Z",
+    "lockedAt": "2026-11-01T22:16:33.128Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-02T01:20Z",
     "big": false,
-    "savedAt": 1793568672190
+    "savedAt": 1793571393128
    }
   ],
   "cfb": [
@@ -2399,5 +2400,5 @@
    }
   ]
  },
- "updated": "2026-11-01T21:31:12.179Z"
+ "updated": "2026-11-01T22:16:33.115Z"
 }
