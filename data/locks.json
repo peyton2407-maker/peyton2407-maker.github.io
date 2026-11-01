@@ -1657,7 +1657,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 41.5,
-   "lockedAt": "2026-11-01T19:46:45.233Z",
+   "lockedAt": "2026-11-01T19:53:10.035Z",
    "provisional": true
   },
   "401873034": {
@@ -1678,7 +1678,7 @@
    "total_play": false,
    "spread": 7,
    "total": 41.5,
-   "lockedAt": "2026-11-01T19:46:45.233Z",
+   "lockedAt": "2026-11-01T19:53:10.035Z",
    "provisional": true
   },
   "401873035": {
@@ -1689,17 +1689,17 @@
    "home": "WSH",
    "away": "PHI",
    "date": "2026-11-02T01:20Z",
-   "pick": "PHI",
-   "pick_line": "PHI +6.0",
+   "pick": "WSH",
+   "pick_line": "WSH -6.0",
    "total_pick": "OVER 40.5",
    "side_play": false,
-   "our_margin": 5.88,
+   "our_margin": 6.93,
    "our_total": 40.6,
    "confidence": null,
    "total_play": false,
    "spread": -6,
    "total": 40.5,
-   "lockedAt": "2026-11-01T19:46:45.233Z",
+   "lockedAt": "2026-11-01T19:53:10.035Z",
    "provisional": true
   }
  },
@@ -2317,5 +2317,5 @@
    }
   ]
  },
- "updated": "2026-11-01T19:46:45.233Z"
+ "updated": "2026-11-01T19:53:10.035Z"
 }
