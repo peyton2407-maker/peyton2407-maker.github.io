@@ -1712,8 +1712,7 @@
    "total_play": false,
    "spread": -6,
    "total": 40.5,
-   "lockedAt": "2026-11-01T22:46:19.164Z",
-   "provisional": true
+   "lockedAt": "2026-11-02T00:01:37.707Z"
   }
  },
  "potd": {
@@ -1926,12 +1925,11 @@
     "ours": "WSH -6.9 · total 40.6",
     "score": "PHI 16.8 – WSH 23.8",
     "market": "WSH -6.0 · total 40.5",
-    "lockedAt": "2026-11-01T22:46:19.177Z",
-    "locked": false,
-    "provisional": true,
+    "lockedAt": "2026-11-02T00:01:37.715Z",
+    "locked": true,
     "kick": "2026-11-02T01:20Z",
     "big": false,
-    "savedAt": 1793573179177
+    "savedAt": 1793577697715
    }
   ],
   "cfb": [
@@ -2400,5 +2398,5 @@
    }
   ]
  },
- "updated": "2026-11-01T22:46:19.164Z"
+ "updated": "2026-11-02T00:01:37.707Z"
 }
