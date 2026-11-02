@@ -325,6 +325,27 @@
    "closeAt": "2026-11-02T01:16:50.299Z",
    "clv_side": -0.5,
    "clv_total": 0
+  },
+  "401873036": {
+   "id": "401873036",
+   "league": "nfl",
+   "week": 8,
+   "short": "CHI @ SEA",
+   "home": "SEA",
+   "away": "CHI",
+   "date": "2026-11-03T01:15Z",
+   "pick": "CHI",
+   "pick_line": "CHI +3.0",
+   "total_pick": "UNDER 46.5",
+   "side_play": false,
+   "our_margin": 2.73,
+   "our_total": 45.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -3,
+   "total": 46.5,
+   "lockedAt": "2026-11-02T13:17:08.191Z",
+   "provisional": true
   }
  },
  "potd": {
@@ -545,6 +566,41 @@
     "big": false,
     "savedAt": 1793577697715,
     "by": "4.5 over 29.5"
+   },
+   {
+    "key": "game:401873036",
+    "week": 8,
+    "day": "2026-11-02",
+    "league": "nfl",
+    "id": "401873036",
+    "game": "CHI @ SEA",
+    "kind": "Player prop",
+    "line": "Caleb Williams under 1.5 pass TDs",
+    "hitPct": 66,
+    "why": "We project Caleb Williams for 1.0 pass TDs against a line of 1.5. Our checked chance on the under is 66%; the books' own chance is 59%. At -157 (DraftKings) that is 8.3% better than the price. Player prop plays are 2-3 on the play of the day, so that record is in the pick.",
+    "label": "Monday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "prop": {
+     "pid": "4431611",
+     "name": "Caleb Williams",
+     "stat": "pass_td",
+     "side": "under",
+     "line": 1.5
+    },
+    "price": -157,
+    "book": "DraftKings",
+    "ev": 0.083,
+    "ours": "SEA -2.7 · total 45.5",
+    "score": "CHI 21.4 – SEA 24.1",
+    "market": "SEA -3.0 · total 46.5",
+    "lockedAt": "2026-11-02T13:17:08.205Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-03T01:15Z",
+    "big": false,
+    "savedAt": 1793625428205
    }
   ],
   "cfb": [
@@ -1026,5 +1082,5 @@
    }
   ]
  },
- "updated": "2026-11-02T11:01:32.673Z"
+ "updated": "2026-11-02T13:17:08.191Z"
 }
