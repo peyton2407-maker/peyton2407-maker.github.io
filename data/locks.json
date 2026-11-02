@@ -1713,10 +1713,10 @@
    "spread": -6,
    "total": 40.5,
    "lockedAt": "2026-11-02T00:01:37.707Z",
-   "close_spread": -6,
+   "close_spread": -5.5,
    "close_total": 40.5,
-   "closeAt": "2026-11-02T00:31:38.356Z",
-   "clv_side": 0,
+   "closeAt": "2026-11-02T01:16:50.299Z",
+   "clv_side": -0.5,
    "clv_total": 0
   }
  },
@@ -2405,5 +2405,5 @@
    }
   ]
  },
- "updated": "2026-11-02T01:01:30.163Z"
+ "updated": "2026-11-02T01:16:50.299Z"
 }
