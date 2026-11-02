@@ -1846,9 +1846,9 @@
     "hitPct": 59,
     "why": "We project Justin Herbert for 19 rush yds against a line of 24.5. Our checked chance on the under is 59%; the books' own chance is 51%. At -110 (DraftKings) that is 13.3% better than the price.",
     "label": "Sunday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "Justin Herbert: 15 rush yds",
+    "resultWhy": "It hit. Justin Herbert under 24.5 rush yds cashed.",
     "prop": {
      "pid": "4038941",
      "name": "Justin Herbert",
@@ -1866,7 +1866,8 @@
     "locked": true,
     "kick": "2026-11-01T21:05Z",
     "big": false,
-    "savedAt": 1793562405245
+    "savedAt": 1793562405245,
+    "by": "9.5 under 24.5"
    },
    {
     "key": "game:401873033",
@@ -1880,9 +1881,9 @@
     "hitPct": 52,
     "why": "We project Jonah Coleman for 2.1 receptions against a line of 2.5. Our checked chance on the under is 52%; the books' own chance is 42%. At +128 (FanDuel) that is 18.1% better than the price.",
     "label": "Sunday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "Jonah Coleman: 4 receptions",
+    "resultWhy": "It missed. Jonah Coleman under 2.5 receptions did not cash.",
     "prop": {
      "pid": "4702555",
      "name": "Jonah Coleman",
@@ -1900,7 +1901,8 @@
     "locked": true,
     "kick": "2026-11-01T21:25Z",
     "big": false,
-    "savedAt": 1793567800327
+    "savedAt": 1793567800327,
+    "by": "1.5 over 2.5"
    },
    {
     "key": "game:401873035",
@@ -2403,5 +2405,5 @@
    }
   ]
  },
- "updated": "2026-11-02T00:31:38.356Z"
+ "updated": "2026-11-02T01:01:30.163Z"
 }
