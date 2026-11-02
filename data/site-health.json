@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-11-01T00:24:59Z",
+ "checked_at": "2026-11-02T01:00:30Z",
  "errors": [],
  "console": [],
  "failed_requests": {},
@@ -7,38 +7,40 @@
  "screens": {
   "home": {
    "visible": true,
-   "count": 45,
+   "count": 21,
    "summary": [],
    "empty": [],
-   "chars": 2249,
-   "images": 102,
+   "chars": 1397,
+   "images": 54,
    "broken_images": []
   },
   "nfl": {
    "visible": true,
-   "count": 13,
+   "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 4896,
-   "images": 35,
+   "chars": 2806,
+   "images": 13,
    "broken_images": []
   },
   "cfb": {
    "visible": true,
-   "count": 14,
+   "count": 0,
    "summary": [],
-   "empty": [],
-   "chars": 4780,
-   "images": 37,
+   "empty": [
+    "No games in this filter. Switch the dropdown to \u201cUpcoming only\u201d or \u201cAll games\u201d."
+   ],
+   "chars": 324,
+   "images": 0,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 27,
+   "count": 17,
    "summary": [],
    "empty": [],
-   "chars": 2407,
-   "images": 48,
+   "chars": 2455,
+   "images": 28,
    "broken_images": []
   },
   "season": {
@@ -46,16 +48,16 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3197,
+   "chars": 3212,
    "images": 42,
    "broken_images": []
   },
   "score": {
    "visible": true,
-   "count": 297,
+   "count": 305,
    "summary": [],
    "empty": [],
-   "chars": 18750,
+   "chars": 19134,
    "images": 0,
    "broken_images": []
   },
@@ -64,7 +66,7 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3257,
+   "chars": 3532,
    "images": 35,
    "broken_images": []
   },
@@ -73,7 +75,7 @@
    "count": 9,
    "summary": [],
    "empty": [],
-   "chars": 922,
+   "chars": 836,
    "images": 18,
    "broken_images": []
   },
@@ -82,47 +84,47 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 5526,
+   "chars": 5242,
    "images": 15,
    "broken_images": []
   },
   "tds": {
    "visible": true,
-   "count": 48,
+   "count": 26,
    "summary": [
-    "168 TD tickets in this filter 66% top anytime (Williams) 190 first-TD name"
+    "26 TD tickets in this filter 48% top anytime (Smith-Njigba) 30 first-TD n"
    ],
    "empty": [],
-   "chars": 4012,
-   "images": 20,
+   "chars": 3742,
+   "images": 22,
    "broken_images": []
   },
   "charts": {
    "visible": true,
-   "count": 28,
+   "count": 17,
    "summary": [],
    "empty": [],
-   "chars": 3862,
-   "images": 4,
+   "chars": 3810,
+   "images": 5,
    "broken_images": []
   },
   "value": {
    "visible": true,
-   "count": 72,
+   "count": 58,
    "summary": [
-    "315 value tickets in this filter 126 TD plus-money 6 spread / dog sides 93% b"
+    "58 value tickets in this filter 20 TD plus-money 5 spread / dog sides 90% be"
    ],
    "empty": [],
-   "chars": 3395,
-   "images": 34,
+   "chars": 3459,
+   "images": 44,
    "broken_images": []
   },
   "parlay": {
    "visible": true,
-   "count": 5,
+   "count": 4,
    "summary": [],
    "empty": [],
-   "chars": 2973,
+   "chars": 2489,
    "images": 0,
    "broken_images": []
   },
@@ -131,8 +133,8 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 4482,
-   "images": 26,
+   "chars": 2475,
+   "images": 11,
    "broken_images": []
   },
   "nflinj": {
@@ -140,12 +142,13 @@
    "count": 61,
    "summary": [
     "530 listed THU \u00b7 11:31 PM ET 529 listed FRI \u00b7 11:45 PM ET 473 listed S",
-    "464 listed SUN Not posted CAR @ GB 39 listed BAL @ BUF 90 min before k",
-    "464 listed 0 probable \u00b7 75% 71 questionable / GTD \u00b7 50% 3 doubtful \u00b7 2"
+    "464 listed SUN \u00b7 7:45 PM ET 581 listed CAR @ GB 39 listed BAL @ BUF 29",
+    "29 listed ARI @ DAL 33 listed MIN @ DET 28 listed LV @ NYJ 32 listed ",
+    "30 listed ATL @ TB 29 listed IND @ JAX 29 listed LAC @ LAR 36 listed "
    ],
    "empty": [],
-   "chars": 4492,
-   "images": 2,
+   "chars": 4402,
+   "images": 5,
    "broken_images": []
   },
   "nflwx": {
@@ -153,7 +156,7 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 3986,
+   "chars": 3936,
    "images": 28,
    "broken_images": []
   },
@@ -162,19 +165,21 @@
    "count": 3,
    "summary": [],
    "empty": [],
-   "chars": 2193,
+   "chars": 4110,
    "images": 0,
    "broken_images": []
   },
   "cfbpicks": {
    "visible": true,
-   "count": 14,
+   "count": 0,
    "summary": [
-    "14 featured CFB leans 3 spread tickets 0 O/U tickets OSU @ USC top card"
+    "0 featured CFB leans 0 spread tickets 0 O/U tickets \u2014 top card No coll"
    ],
-   "empty": [],
-   "chars": 6186,
-   "images": 28,
+   "empty": [
+    "No college games in this filter."
+   ],
+   "chars": 345,
+   "images": 0,
    "broken_images": []
   }
  },
@@ -182,7 +187,7 @@
   "open": true,
   "hero": true,
   "shown_twice": false,
-  "logos_ok": 18
+  "logos_ok": 17
  },
  "split": {
   "games": 18,
@@ -191,6 +196,6 @@
   "errors": []
  },
  "dk_lines_loaded": null,
- "games_with_props": 28,
- "nfl_games_upcoming": 28
+ "games_with_props": 17,
+ "nfl_games_upcoming": 17
 }
