@@ -1916,9 +1916,9 @@
     "hitPct": 60,
     "why": "We project Elijah Mitchell for 21 rush yds against a line of 29.5. Our checked chance on the under is 60%; the books' own chance is 51%. At -115 (DraftKings) that is 12.8% better than the price.",
     "label": "Sunday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "Elijah Mitchell: 34 rush yds",
+    "resultWhy": "It missed. Elijah Mitchell under 29.5 rush yds did not cash.",
     "prop": {
      "pid": "4241555",
      "name": "Elijah Mitchell",
@@ -1936,7 +1936,8 @@
     "locked": true,
     "kick": "2026-11-02T01:20Z",
     "big": false,
-    "savedAt": 1793577697715
+    "savedAt": 1793577697715,
+    "by": "4.5 over 29.5"
    }
   ],
   "cfb": [
@@ -2405,5 +2406,5 @@
    }
   ]
  },
- "updated": "2026-11-02T01:16:50.299Z"
+ "updated": "2026-11-02T04:31:12.682Z"
 }
