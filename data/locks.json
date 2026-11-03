@@ -12,14 +12,14 @@
    "pick": "AKR",
    "pick_line": "AKR +14.0",
    "total_pick": "NO PLAY",
-   "side_play": false,
-   "our_margin": -12.7,
+   "side_play": true,
+   "our_margin": -12.37,
    "our_total": 51.5,
-   "confidence": null,
+   "confidence": 51,
    "total_play": false,
-   "spread": 14,
+   "spread": 13.5,
    "total": 51.5,
-   "lockedAt": "2026-11-03T17:16:34.567Z",
+   "lockedAt": "2026-11-03T17:31:38.260Z",
    "provisional": true
   },
   "401866454": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -6,
    "total": 44.5,
-   "lockedAt": "2026-11-03T17:16:34.567Z",
+   "lockedAt": "2026-11-03T17:31:38.260Z",
    "provisional": true
   }
  },
@@ -778,7 +778,7 @@
    }
   ]
  },
- "updated": "2026-11-03T17:16:34.567Z",
+ "updated": "2026-11-03T17:31:38.260Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -796,6 +796,24 @@
    "firstKick": "2026-11-04T00:00:00.000Z",
    "legs": [
     {
+     "id": "401866453|sp|home",
+     "label": "AKR +14",
+     "kind": "sp",
+     "game_id": "401866453",
+     "game": "OHIO @ AKR",
+     "league": "cfb",
+     "kick": "2026-11-04T00:00Z",
+     "price": -108,
+     "line": 14,
+     "win": 0.4839,
+     "bookWin": 0.4776,
+     "value": -0.0274,
+     "cat": "play",
+     "why": "AKR is getting 13.5. That is the underdog. Our number is 1.1 points off the current line. AKR is at home. Our line moved from OHIO -12.7 to OHIO -12.4. The line moved from OHIO -14.0 to OHIO -13.5. We followed +0.3 of that move. Benign conditions — little weather tax.",
+     "prop": null,
+     "result": null
+    },
+    {
      "id": "401866454|sp|away",
      "label": "BUFF +6",
      "kind": "sp",
@@ -812,31 +830,13 @@
      "why": "BUFF is getting 6.0. Our number has them covering by 4.8 points.",
      "prop": null,
      "result": null
-    },
-    {
-     "id": "401866453|sp|home",
-     "label": "AKR +14",
-     "kind": "sp",
-     "game_id": "401866453",
-     "game": "OHIO @ AKR",
-     "league": "cfb",
-     "kick": "2026-11-04T00:00Z",
-     "price": -108,
-     "line": 14,
-     "win": 0.4839,
-     "bookWin": 0.4776,
-     "value": -0.0274,
-     "cat": "dog",
-     "why": "AKR is getting 14.0. Our number has them covering by 1.3 points.",
-     "prop": null,
-     "result": null
     }
    ],
    "result": null,
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-03T17:16:34.567Z"
+   "lockedAt": "2026-11-03T17:31:38.260Z"
   }
  ]
 }
