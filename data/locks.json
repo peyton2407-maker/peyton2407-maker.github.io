@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 14,
    "total": 51.5,
-   "lockedAt": "2026-11-03T13:16:26.725Z",
+   "lockedAt": "2026-11-03T14:16:20.441Z",
    "provisional": true
   },
   "401866454": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -6,
    "total": 44.5,
-   "lockedAt": "2026-11-03T13:16:26.725Z",
+   "lockedAt": "2026-11-03T14:16:20.441Z",
    "provisional": true
   }
  },
@@ -778,7 +778,7 @@
    }
   ]
  },
- "updated": "2026-11-03T13:16:26.725Z",
+ "updated": "2026-11-03T14:16:20.441Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -788,26 +788,26 @@
    "tier": "light",
    "stake": 0.5,
    "size": 0,
-   "american": 268,
-   "dec": 3.6768,
-   "chance": 0.2551,
-   "breakEven": 0.272,
-   "ev": -0.0214,
+   "american": 271,
+   "dec": 3.7092,
+   "chance": 0.2464,
+   "breakEven": 0.2696,
+   "ev": -0.0222,
    "firstKick": "2026-11-04T00:00:00.000Z",
    "legs": [
     {
      "id": "401866454|sp|away",
-     "label": "BUFF +6.5",
+     "label": "BUFF +6",
      "kind": "sp",
      "game_id": "401866454",
      "game": "BUFF @ M-OH",
      "league": "cfb",
      "kick": "2026-11-04T01:00Z",
-     "price": -110,
-     "line": 6.5,
-     "win": 0.5271,
-     "bookWin": 0.5022,
-     "value": 0.0062,
+     "price": -108,
+     "line": 6,
+     "win": 0.5091,
+     "bookWin": 0.4853,
+     "value": 0.0054,
      "cat": "dog",
      "why": "BUFF is getting 6.0. Our number has them covering by 4.8 points.",
      "prop": null,
@@ -836,7 +836,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-03T13:16:26.725Z"
+   "lockedAt": "2026-11-03T14:16:20.441Z"
   }
  ]
 }
