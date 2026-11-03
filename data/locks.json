@@ -20,10 +20,10 @@
    "spread": 12.5,
    "total": 51.5,
    "lockedAt": "2026-11-03T22:34:19.270Z",
-   "close_spread": 12.5,
+   "close_spread": 13.5,
    "close_total": 51.5,
-   "closeAt": "2026-11-03T23:01:45.905Z",
-   "clv_side": 1,
+   "closeAt": "2026-11-03T23:31:22.099Z",
+   "clv_side": 0,
    "clv_total": null
   },
   "401866454": {
@@ -36,16 +36,15 @@
    "date": "2026-11-04T01:00Z",
    "pick": "BUFF",
    "pick_line": "BUFF +6.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "UNDER 44.5",
    "side_play": false,
    "our_margin": 1.6,
-   "our_total": 45.5,
+   "our_total": 44.9,
    "confidence": null,
    "total_play": false,
    "spread": -6.5,
-   "total": 45.5,
-   "lockedAt": "2026-11-03T23:01:45.905Z",
-   "provisional": true
+   "total": 44.5,
+   "lockedAt": "2026-11-03T23:31:22.099Z"
   }
  },
  "potd": {
@@ -782,7 +781,7 @@
    }
   ]
  },
- "updated": "2026-11-03T23:01:45.905Z",
+ "updated": "2026-11-03T23:31:22.099Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
