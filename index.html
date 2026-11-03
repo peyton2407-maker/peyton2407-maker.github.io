@@ -12414,7 +12414,7 @@ function ladderLegHtml(l, showResult) {
   const when = l.kick ? fmt.when(l.kick) : "";
   return `<li data-id="${pbEsc(String(l.game_id))}"><b>${pbEsc(l.label)}</b> ${showResult ? res : ""}
     <div class="subn">${pbEsc(l.game || "")} · ${when} · ${pbAm(l.price)} · ${LADDER_CAT[l.cat] || ""}${l.league ? " · " + (l.league === "nfl" ? "NFL" : "College") : ""}</div>
-    <div class="prop-why">Our checked chance ${Math.round(Number(l.win) * 100)}%, the books' ${Math.round(Number(l.bookWin) * 100)}%: ${(Number(l.value) * 100 >= 0 ? "+" : "") + (Number(l.value) * 100).toFixed(1)}% at this price.${l.why && !/checked chance/.test(l.why) ? " " + l.why : ""}</div>
+    <div class="prop-why">Our checked chance ${Math.round(Number(l.win) * 100)}%, the books' ${Math.round(Number(l.bookWin) * 100)}%: ${(Number(l.value) * 100 >= 0 ? "+" : "") + (Number(l.value) * 100).toFixed(1)}% at this price.${l.why && !/checked chance/.test(l.why) && l.cat !== "dog" && l.cat !== "fav" ? " " + l.why : ""}</div>
     ${l.final ? `<div class="prop-why"><b>${pbEsc(l.final)}</b></div>` : ""}</li>`;
 }
 function ladderTicketHtml(row, opts) {
@@ -12429,7 +12429,11 @@ function ladderTicketHtml(row, opts) {
   return `<article class="prop-card ladder-ticket">
     <div class="potd-head">${status}<div><b>${row.n}-leg · ${pbAm(row.american)}${row.book ? " at " + pbEsc(row.book) : ""}</b>${row.tier === "light" ? ` <span class="pick-tag lean" title="No ticket cleared the value bar today; this is the closest to a fair price, half a unit">light day · ½u</span>` : ""}
       <div class="subn">${pbEsc(potdDayName(row.firstKick || row.day))} · $10 pays ${pbMoney(10 * Number(row.dec))} · checked chance ${pbPct(row.chance)}, needs ${pbPct(row.breakEven)} · ${row.ev >= 0 ? "+" : ""}${(Number(row.ev) * 100).toFixed(1)}% value</div></div>${units}</div>
-    ${row.result ? "" : sizeHtml(row.tier === "light" ? Math.min(0.5, kellyUnits(Number(row.chance), null, { dec: Number(row.dec), cap: 1 })) : kellyUnits(Number(row.chance), null, { dec: Number(row.dec), cap: 1 }), row.tier === "light" ? "light days are tracked at ½u" : "")}
+    ${row.result ? "" : (() => {
+      const k = kellyUnits(Number(row.chance), null, { dec: Number(row.dec), cap: 1 });
+      if (row.tier !== "light") return sizeHtml(k);
+      return k > 0 ? sizeHtml(Math.min(0.5, k), "light day") : `<span class="bet-size none">Bet size: <b>pass</b> <em>A light day: no ticket beat its price, so this one is tracked at ½u for the record, not a bet we'd make.</em></span>`;
+    })()}
     <ul class="parlay-legs">${(row.legs || []).map((l) => ladderLegHtml(l, !!row.locked)).join("")}</ul>
     <div class="subn">${lockLine}${row.note ? " " + pbEsc(row.note) : ""}</div>
     ${o.builder && !row.result ? `<button type="button" class="ready-open" data-openpb="${row.legs.map((l) => l.id).join("~")}">Open in parlay builder</button>` : ""}
