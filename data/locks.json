@@ -19,7 +19,28 @@
    "total_play": false,
    "spread": 14,
    "total": 51.5,
-   "lockedAt": "2026-11-03T12:16:29.545Z",
+   "lockedAt": "2026-11-03T13:01:24.562Z",
+   "provisional": true
+  },
+  "401866454": {
+   "id": "401866454",
+   "league": "cfb",
+   "week": 10,
+   "short": "BUFF @ M-OH",
+   "home": "M-OH",
+   "away": "BUFF",
+   "date": "2026-11-04T01:00Z",
+   "pick": "BUFF",
+   "pick_line": "BUFF +6.0",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 1.2,
+   "our_total": 44.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -6,
+   "total": 44.5,
+   "lockedAt": "2026-11-03T13:01:24.562Z",
    "provisional": true
   }
  },
@@ -757,7 +778,7 @@
    }
   ]
  },
- "updated": "2026-11-03T12:16:29.545Z",
+ "updated": "2026-11-03T13:01:24.562Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -815,7 +836,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-03T12:16:29.545Z"
+   "lockedAt": "2026-11-03T13:01:24.562Z"
   }
  ]
 }
