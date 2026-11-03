@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 13.5,
    "total": 51.5,
-   "lockedAt": "2026-11-03T17:33:22.860Z",
+   "lockedAt": "2026-11-03T18:16:21.722Z",
    "provisional": true
   },
   "401866454": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -6,
    "total": 44.5,
-   "lockedAt": "2026-11-03T17:33:22.860Z",
+   "lockedAt": "2026-11-03T18:16:21.722Z",
    "provisional": true
   }
  },
@@ -778,7 +778,7 @@
    }
   ]
  },
- "updated": "2026-11-03T17:33:22.860Z",
+ "updated": "2026-11-03T18:16:21.722Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -788,31 +788,13 @@
    "tier": "light",
    "stake": 0.5,
    "size": 0,
-   "american": 271,
-   "dec": 3.7092,
-   "chance": 0.2464,
-   "breakEven": 0.2696,
-   "ev": -0.0222,
+   "american": 276,
+   "dec": 3.7601,
+   "chance": 0.2516,
+   "breakEven": 0.2659,
+   "ev": -0.0299,
    "firstKick": "2026-11-04T00:00:00.000Z",
    "legs": [
-    {
-     "id": "401866453|sp|home",
-     "label": "AKR +14",
-     "kind": "sp",
-     "game_id": "401866453",
-     "game": "OHIO @ AKR",
-     "league": "cfb",
-     "kick": "2026-11-04T00:00Z",
-     "price": -108,
-     "line": 14,
-     "win": 0.4839,
-     "bookWin": 0.4776,
-     "value": -0.0274,
-     "cat": "play",
-     "why": "AKR is getting 13.5. That is the underdog. Our number is 1.1 points off the current line. AKR is at home. Our line moved from OHIO -12.7 to OHIO -12.4. The line moved from OHIO -14.0 to OHIO -13.5. We followed +0.3 of that move. Benign conditions — little weather tax.",
-     "prop": null,
-     "result": null
-    },
     {
      "id": "401866454|sp|away",
      "label": "BUFF +6",
@@ -830,13 +812,31 @@
      "why": "BUFF is getting 6.0. Our number has them covering by 4.8 points.",
      "prop": null,
      "result": null
+    },
+    {
+     "id": "401866453|tot|over",
+     "label": "Over 51.5",
+     "kind": "tot",
+     "game_id": "401866453",
+     "game": "OHIO @ AKR",
+     "league": "cfb",
+     "kick": "2026-11-04T00:00Z",
+     "price": -105,
+     "line": 51.5,
+     "win": 0.4943,
+     "bookWin": 0.4923,
+     "value": -0.035,
+     "cat": "total",
+     "why": "Our total is 51.5; this side is the better price.",
+     "prop": null,
+     "result": null
     }
    ],
    "result": null,
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-03T17:33:22.860Z"
+   "lockedAt": "2026-11-03T18:16:21.722Z"
   }
  ]
 }
