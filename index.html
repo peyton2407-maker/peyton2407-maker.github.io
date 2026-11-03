@@ -1960,6 +1960,15 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .cr-chip { padding: 4px 10px; border-radius: 999px; background: rgba(242,184,64,.12); color: var(--sun); font-size: 13px; font-weight: 700; }
 #createOut { display: grid; gap: 14px; }
 .cr-foot { margin-top: 4px; }
+.cr-cmp-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line-2); border-radius: 12px; }
+.cr-cmp { width: 100%; border-collapse: collapse; font-size: 14px; }
+.cr-cmp th, .cr-cmp td { padding: 9px 10px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+.cr-cmp thead th { font-size: 14px; font-weight: 800; color: var(--ink); }
+.cr-cmp thead th em { display: block; font-style: normal; font-size: 11.5px; font-weight: 800; letter-spacing: .02em; color: var(--sun); }
+.cr-cmp tbody th { font-weight: 700; color: var(--ink-soft); white-space: nowrap; width: 1%; }
+.cr-cmp td.win, .cr-cmp th.win { background: rgba(242,184,64,.08); }
+.cr-cmp td small { display: block; color: var(--ink-soft); font-size: 12px; }
+.cr-cmp tr:last-child th, .cr-cmp tr:last-child td { border-bottom: 0; }
 .cr-actions { display: flex; gap: 8px; margin-top: 12px; }
 .cr-act { flex: 1; min-height: 40px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--line-2); background: transparent; color: var(--ink); font: 700 14px var(--body); cursor: pointer; }
 .cr-act:hover { border-color: var(--sun); }
@@ -12224,7 +12233,7 @@ const CREATE_WORDS = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, singl
 const CREATE_DAYS = { sunday: 0, sun: 0, monday: 1, mon: 1, tuesday: 2, tue: 2, tues: 2, wednesday: 3, wed: 3, thursday: 4, thu: 4, thurs: 4, friday: 5, fri: 5, saturday: 6, sat: 6 };
 function createParse(text) {
   const raw = String(text || "");
-  const q = " " + raw.toLowerCase().replace(/[’']/g, "").replace(/[^a-z0-9+\-.$ ]/g, " ").replace(/\s+/g, " ") + " ";
+  let q = " " + raw.toLowerCase().replace(/[’']/g, "").replace(/[^a-z0-9+\-.$ ]/g, " ").replace(/\s+/g, " ") + " ";
   const has = (re) => re.test(q);
   const want = { raw, legs: null, target: null, mode: "value", league: null, days: null, kinds: null, side: null, teams: [], players: [], notes: [] };
   // legs
@@ -12235,8 +12244,13 @@ function createParse(text) {
   if (m) want.target = 1 + Number(m[1]) / 100;
   if (!want.target) { m = q.match(/ (\d{1,3})\s*(?:to|-|:)\s*1\b/); if (m) want.target = 1 + Number(m[1]); }
   if (!want.target) { m = q.match(/(?:pay|pays|win|turn|make)\s*\$?(\d+)\s*(?:on|with|from|off|for)\s*(?:a\s*)?\$?(\d+)/); if (m && Number(m[2]) > 0) want.target = Number(m[1]) / Number(m[2]) + (/win|make/.test(m[0]) ? 1 : 0); }
+  // "$20 to win $200", "turn $20 into $200", "20 into 500", "bet 10 get 100"
+  if (!want.target) { m = q.match(/\$?(\d+(?:\.\d+)?)\s*(?:to win|to make|to get|to profit|into|wins|returns|for a shot at|to collect)\s*\$?(\d+(?:\.\d+)?)/); if (m && Number(m[1]) > 0 && Number(m[2]) > Number(m[1])) { want.target = /into|returns|collect/.test(m[0]) ? Number(m[2]) / Number(m[1]) : 1 + Number(m[2]) / Number(m[1]); q = q.replace(m[0], " "); } }
+  if (!want.target) { m = q.match(/ (?:around|about|near|roughly|close to|at|like) (-\d{3,4})\b/); if (m) want.target = pbDec(Number(m[1])); }
+  if (!want.target && has(/ (even money|even odds|evens|pick ?em|coin flip|near even|around even|about even|close to even|one to one|1 to 1|1-1|\+100) /)) want.target = 2;
+  want.explicitTarget = !!want.target;
   if (has(/ (safe|safest|likely|lock|locks|sure|high chance|best chance|low risk|conservative) /)) want.mode = "safe";
-  if (has(/ (longshot|long shot|lotto|big payout|big money|huge|moonshot|dart) /)) { want.mode = "long"; if (!want.target) want.target = 11; }
+  if (has(/ (longshot|long shot|lotto|big payout|big money|huge|moonshot|dart|hail mary) /)) { want.mode = "long"; if (!want.target) want.target = 11; }
   if (want.target && want.mode === "value") want.mode = "target";
   // league
   if (has(/ (nfl|pro|sunday|monday night|thursday night|snf|mnf|tnf) /)) want.league = "nfl";
@@ -12249,6 +12263,15 @@ function createParse(text) {
   if (has(/ (tomorrow) /)) days.add((new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" })).getDay() + 1) % 7);
   if (has(/ (weekend) /)) [5, 6, 0, 1].forEach((d) => days.add(d));
   if (days.size) want.days = days;
+  // time of day (kickoff, Eastern): night games, the early window, the late window
+  const ET = (h) => new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
+  if (has(/ (night|nights|nite|primetime|prime time|under the lights|snf|mnf|tnf) /)) want.hours = [19, 24];
+  else if (has(/ (early|early window|early games|early slate|1 ?pm|1 oclock|noon|morning|first window) /)) want.hours = [0, 15];
+  else if (has(/ (late window|late games|late slate|afternoon|4 ?pm|4 oclock|425|405|second window|late afternoon) /)) want.hours = [15, 19];
+  if (has(/ (tonight) /)) want.hours = [ET().getHours() >= 17 ? ET().getHours() : 17, 24];
+  if (has(/ (snf) /)) { want.days = new Set([0]); want.league = "nfl"; }
+  if (has(/ (mnf) /)) { want.days = new Set([1]); want.league = "nfl"; }
+  if (has(/ (tnf) /)) { want.days = new Set([4]); want.league = "nfl"; }
   // bet types
   const kinds = new Set();
   if (has(/ (moneyline|moneylines|money line|ml|to win|winners|straight up) /)) kinds.add("ml");
@@ -12287,6 +12310,24 @@ function createParse(text) {
   phrases.sort((a, b) => b.ph.length - a.ph.length);
   let rest = q;
   const got = new Map();
+  // "without the Chiefs", "no Chiefs game", "except Ohio State": those games stay out;
+  // "fade the Chiefs", "against the Chiefs": only legs that need the Chiefs to lose
+  want.exclude = []; want.fade = [];
+  const exRe = / (without|except|excluding|minus|skip|skipping|avoid|avoiding|leave out|leaving out|not the|no|not|other than|besides) (the )?([a-z0-9 ]+?)(?= (and|or|but|parlay|parlays|ticket|tickets|please|game|games|legs?|this|that|tonight|today|tomorrow|on|for|at|in|with)\b| ?$)/g;
+  const fdRe = / (fade|fading|against|bet against|betting against|sweat against|opposite of|opposite|oppose) (the )?([a-z0-9 ]+?)(?= (and|or|but|parlay|parlays|ticket|tickets|please|game|games|legs?|this|that|tonight|today|tomorrow|on|for|at|in|with)\b| ?$)/g;
+  [[exRe, want.exclude], [fdRe, want.fade]].forEach(([re, list]) => {
+    let mm;
+    while ((mm = re.exec(rest))) {
+      const seg = " " + mm[3] + " ";
+      if (/ (prop|props|player|players|favorite|favorites|favs|chalk|underdog|underdogs|dogs|total|totals|spread|spreads|moneyline|moneylines) /.test(seg)) continue;
+      let hit = false;
+      phrases.forEach(({ ph, team }) => {
+        if (ph.startsWith("#abbr#")) return;
+        if (seg.includes(" " + ph + " ") && !list.some((t) => t.league === team.league && t.abbr === team.abbr) && (!want.league || team.league === want.league)) { list.push(team); hit = true; }
+      });
+      if (hit) rest = rest.replace(mm[0], " ~ ");
+    }
+  });
   phrases.forEach(({ ph, team }) => {
     const k = team.league + ":" + team.abbr;
     if (ph.startsWith("#abbr#")) { if (!got.has(k)) got.set(k, team); return; }
@@ -12341,7 +12382,14 @@ function createParse(text) {
   } catch (e) {}
   want.unknown = left.filter((w) => !pWords.has(w) && !CREATE_KNOWN.has(w) && !/^[+\-$]?\d/.test(w) && w.length > 1 && !CREATE_DAYS[w] && !CREATE_WORDS[w]);
   if (want.players.length) { want.kinds = want.kinds || new Set(); want.kinds.add("pp"); }
-  if (!want.legs) want.legs = Math.max(2, Math.min(6, (want.teams.length + want.players.length) || (want.mode === "long" ? 4 : 2)));
+  want.unknown = (want.unknown || []).filter((w) => !["without", "except", "excluding", "minus", "skip", "skipping", "avoid", "avoiding", "leave", "leaving", "other", "than", "besides", "fade", "fading", "against", "sweat", "opposite", "oppose", "into", "returns", "collect", "profit", "roughly", "close", "like", "even", "money", "odds", "evens", "pickem", "coin", "flip", "night", "nights", "nite", "primetime", "prime", "lights", "early", "window", "slate", "oclock", "noon", "morning", "first", "late", "afternoon", "second", "snf", "mnf", "tnf", "hail", "mary", "only"].includes(w));
+  if (!want.legs) {
+    const named = want.teams.length + want.players.length;
+    if (named) want.legs = Math.max(1, Math.min(6, named));
+    else if (want.explicitTarget && want.target) want.legs = want.target <= 2.2 ? 1 : want.target <= 5 ? 2 : want.target <= 12 ? 3 : want.target <= 30 ? 4 : 5;
+    else want.legs = want.mode === "long" ? 4 : 2;
+    if (want.legs === 1 && named === 1 && want.mode !== "safe" && !want.explicitTarget) want.legs = 2;
+  }
   return want;
 }
 function createLegReason(g, id, pb) {
@@ -12370,8 +12418,11 @@ function createPool(want) {
     if (!(kick > now) || kick - now > 8 * 864e5) return;
     if (want.league && g.league !== want.league) return;
     if (want.days && !want.days.has(etDay(g.date))) return;
+    if (want.hours) { const h = new Date(new Date(g.date).toLocaleString("en-US", { timeZone: "America/New_York" })).getHours(); if (h < want.hours[0] || h >= want.hours[1]) return; }
+    if ((want.exclude || []).some((t) => t.league === g.league && (t.abbr === g.home.abbr || t.abbr === g.away.abbr))) return;
+    const faded = (want.fade || []).find((t) => t.league === g.league && (t.abbr === g.home.abbr || t.abbr === g.away.abbr));
     const named = teamHit(g);
-    if ((want.teams.length || want.players.length) && !named && !want.players.some((pl) => pl.game_id === String(g.id))) return;
+    if ((want.teams.length || want.players.length) && !named && !faded && !want.players.some((pl) => pl.game_id === String(g.id))) return;
     const kinds = want.kinds || new Set(["sp", "tot", "ml", "pp"]);
     const push = (id, extra) => {
       const kind = id.split("|")[1];
@@ -12384,6 +12435,7 @@ function createPool(want) {
       if (!pb || pb.started) return;
       const side = id.split("|").pop();
       if (named && kind !== "pp" && kind !== "tot") { const ab = side === "home" ? g.home.abbr : g.away.abbr; if (ab !== named.abbr) return; }
+      if (faded && kind !== "tot") { const ab = side === "home" ? g.home.abbr : g.away.abbr; if (kind === "pp" || ab === faded.abbr) return; }
       if (kind === "sp" && want.dog && !(pb.line > 0)) return;
       if (kind === "sp" && want.fav && !(pb.line < 0)) return;
       if (kind === "ml" && want.dog && !(pb.price > 0)) return;
@@ -12434,10 +12486,13 @@ function createPrice(ids) {
 }
 function createTickets(want) {
   const pool = createPool(want);
-  const n = Math.min(want.legs, 6);
+  const gamesIn = new Set(pool.map((l) => l.gid)).size;
+  let n = Math.min(want.legs, 6);
+  let shrunk = null;
+  if (gamesIn && gamesIn < n) { shrunk = { from: n, to: gamesIn }; n = gamesIn; }
   const needGames = new Set([...want.teams.map((t) => (DATA.games || []).filter((g) => !g.completed && g.league === t.league && (g.home.abbr === t.abbr || g.away.abbr === t.abbr) && Date.parse(g.date) > Date.now()).map((g) => String(g.id)).sort()[0]), ...want.players.map((p) => p.game_id)].filter(Boolean));
   const playerLegs = new Set(want.players.map((p) => p.id));
-  if (pool.length < n) return { pool, tickets: [] };
+  if (pool.length < n) return { pool, tickets: [], shrunk };
   const score = (dec, chance, ev) => {
     if (want.mode === "safe") return chance * 2 + Math.min(ev, 0.05);
     if (want.mode === "target" || want.mode === "long") return -Math.abs(Math.log(dec) - Math.log(want.target || 4)) * 2 + ev;
@@ -12482,7 +12537,7 @@ function createTickets(want) {
   // three different tickets where possible
   const out = [], used = new Set();
   tickets.forEach((t) => { if (out.length < 3 && !t.bag.every((l) => used.has(l.id))) { out.push(t); t.bag.forEach((l) => used.add(l.id)); } });
-  return { pool, tickets: out };
+  return { pool, tickets: out, shrunk };
 }
 function createUnderstood(want) {
   const chips = [];
@@ -12490,6 +12545,9 @@ function createUnderstood(want) {
   if (want.league) chips.push(want.league === "nfl" ? "NFL" : "College");
   if (want.days) chips.push([...want.days].map((d) => ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][d]).join(", "));
   if (want.kinds) chips.push([...want.kinds].map((k) => ({ sp: "spreads", tot: "totals", ml: "moneylines", pp: "player props" })[k]).join(" + "));
+  if (want.hours) chips.push(want.hours[0] >= 19 ? "night games" : want.hours[1] <= 15 ? "early games" : want.hours[0] >= 17 ? "tonight" : "late-afternoon games");
+  (want.exclude || []).forEach((t) => chips.push("not the " + (t.name.split(" ").pop())));
+  (want.fade || []).forEach((t) => chips.push("against the " + (t.name.split(" ").pop())));
   if (want.side) chips.push(want.side === "under" ? "unders" : "overs");
   if (want.dog) chips.push("underdogs");
   if (want.fav) chips.push("favorites");
@@ -12704,7 +12762,7 @@ function createTicketHtml(t, i) {
   const sw = t.check ? { alts: [] } : crSwapOptions(t);
   const swap = sw.weak && sw.alts.length ? `<div class="cr-swap"><span class="lbl">Swap the weakest leg (${pbEsc((legs[sw.wi] || sw.weak.pb).label)}) for</span>${sw.alts.map((a) => `<button type="button" data-crswap="${i}|${sw.wi}|${pbEsc(a.l.id)}">${pbEsc(a.l.label)} ${pbAm(a.l.pb.price)} <em>ticket ${pbAm(a.x.r.american)}, ${(a.x.r.ev >= 0 ? "+" : "") + Math.round(a.x.r.ev * 100)}% value</em></button>`).join("")}</div>` : "";
   return `<article class="parlay-card ready cr-ticket" data-cri="${i}">
-    <div class="td-mkt">${t.check ? (t.bag.length === 1 ? "Your bet" : "Your ticket · " + t.bag.length + "-leg") : (i === 0 ? "Best match" : "Another option") + " · " + t.bag.length + "-leg"}${t.swapped ? " · edited" : ""}</div>
+    <div class="td-mkt">${t.cmpTitle ? t.cmpTitle + " · " + t.bag.map((l, k) => (legs[k] || l.pb).label).join(" + ") : t.check ? (t.bag.length === 1 ? "Your bet" : "Your ticket · " + t.bag.length + "-leg") : (i === 0 ? "Best match" : "Another option") + " · " + t.bag.length + "-leg"}${t.swapped ? " · edited" : ""}</div>
     <div class="parlay-odds">${pbAm(r.american)}</div>
     <div class="subn">$10 pays ${pbMoney(10 * r.decEff)}${t.x.book ? " at " + pbEsc(t.x.book) : ""} · hits about ${pbPct(r.pAll)} of the time${oneIn ? ` (1 in ${oneIn < 10 ? oneIn.toFixed(1) : Math.round(oneIn)})` : ""}, the price needs ${pbPct(r.breakEven)}</div>
     ${crMeter(r.pAll, r.breakEven)}
@@ -12961,6 +13019,16 @@ function createCheckRender() {
   out.innerHTML = crSearchBar() + fixedHtml + `<div class="cr-take">${take}</div>` + notesHtml + fixHtml + createTicketHtml(t, 0) +
     `<p class="subn cr-foot">Priced at the best current line across the books. To build new tickets instead, ask for something like "3 leg NFL parlay at +600".</p>`;
 }
+function crCompareExample() {
+  try {
+    const now = Date.now();
+    const g = (DATA.games || []).filter((x) => x && !x.completed && x.league === "nfl" && x.odds && x.odds.home_spread != null && Date.parse(x.date) > now).sort((a, b) => Date.parse(a.date) - Date.parse(b.date))[1];
+    if (!g) return "";
+    const fav = Number(g.odds.home_spread) <= 0 ? g.home : g.away;
+    const ln = Number(g.odds.home_spread) <= 0 ? Number(g.odds.home_spread) : -Number(g.odds.home_spread);
+    return `${fav.short} ${pbLine(ln)} or ${fav.short} to win?`;
+  } catch (e) { return ""; }
+}
 function crCheckExample() {
   try {
     const now = Date.now();
@@ -12971,6 +13039,86 @@ function crCheckExample() {
     const ln = Number(a.odds.home_spread) <= 0 ? Number(a.odds.home_spread) : -Number(a.odds.home_spread);
     return `${fav.short} ${pbLine(ln)}, ${b.home.short} game over ${pbTot(b.odds.total)}`;
   } catch (e) { return ""; }
+}
+// ---- compare: "Bills -3 or Bills to win?", "Henry over 85.5 or under", "Chiefs ML vs Chiefs -9.5" --
+function crParseCompare(text) {
+  let raw = String(text || "").replace(/\?/g, " ");
+  raw = raw.replace(/^\s*(which|what|whats|what's|which one|which bet)\s+(is|would be|one is|s)?\s*(the )?(better|best|smarter|safer|stronger)\s*(bet|play|pick|option|choice)?\s*[:,-]?\s*/i, "")
+    .replace(/^\s*(should i (take|bet|play|do)|compare|do i (take|want|like)|is it|better)\s+/i, "")
+    .replace(/\s+(which (is|one is) (better|best)|whats better|what's better|which should i take|which one|or not)\s*$/i, "");
+  const parts = raw.split(/\s+(?:or|vs\.?|versus|v\.)\s+/i).map((x) => x.trim()).filter(Boolean);
+  if (parts.length !== 2 && parts.length !== 3) return null;
+  const sides = parts.map((seg) => ({ seg, slip: crParseSlip(seg) }));
+  // a bare "under" / "over 44" on one side is the other side's total or prop flipped
+  sides.forEach((sd, i) => {
+    if (sd.slip.legs.length) return;
+    const m = crNorm(sd.seg).match(/^ (over|under|o|u|the over|the under) ?(\d{1,3}(?:\.\d+)?)? $/);
+    if (!m) return;
+    const other = sides.find((o, j) => j !== i && o.slip.legs.length === 1 && /\|(tot|pp)\|/.test(o.slip.legs[0].id));
+    if (!other) return;
+    const id = other.slip.legs[0].id.replace(/\|(over|under)$/, "|" + (/^(over|o|the over)$/.test(m[1]) ? "over" : "under"));
+    sd.slip = { check: true, legs: [{ id, seg: sd.seg, userLine: m[2] != null ? Number(m[2]) : null, player: other.slip.legs[0].player }], bare: [], miss: [], fixed: [] };
+  });
+  // a bare team ("Bills") stands for its spread and its moneyline
+  sides.forEach((sd) => {
+    if (sd.slip.legs.length || sd.slip.bare.length !== 1) return;
+    const t = crFindTeam(crNorm(sd.seg), sd.seg);
+    if (!t || !t.t) return;
+    sd.slip = { check: true, legs: [{ id: `${t.t.g.id}|sp|${t.t.side}`, seg: sd.seg }], bare: [], miss: [], fixed: t.fixed ? [t.fixed] : [], also: `${t.t.g.id}|ml|${t.t.side}` };
+  });
+  if (!sides.every((sd) => sd.slip.legs.length)) return null;
+  const out = [];
+  sides.forEach((sd) => { out.push({ seg: sd.seg, ids: sd.slip.legs.map((l) => l.id), typed: sd.slip.legs.filter((l) => l.userLine != null), fixed: sd.slip.fixed }); if (sd.slip.also) out.push({ seg: sd.seg + " to win", ids: [sd.slip.also], typed: [], fixed: [] }); });
+  const seen = new Set();
+  const uniq = out.filter((o) => { const k = o.ids.slice().sort().join("~"); if (seen.has(k)) return false; seen.add(k); return true; });
+  return uniq.length >= 2 ? uniq.slice(0, 4) : null;
+}
+function createCompare(sides) {
+  const out = document.getElementById("createOut");
+  if (!out) return;
+  window.__readyPriceCache = new Map();
+  const cols = [], notes = [];
+  sides.forEach((sd) => {
+    const legs = sd.ids.map(crMakeLeg).filter(Boolean);
+    if (legs.length !== sd.ids.length) { notes.push(`I couldn't price "${pbEsc(sd.seg)}" right now: no line is posted for it yet, or the game has started.`); return; }
+    const x = createPrice(legs.map((l) => l.id));
+    if (!x) { notes.push(`No book has a price for "${pbEsc(sd.seg)}" right now.`); return; }
+    (sd.fixed || []).forEach(([a, b]) => notes.push(`I read "${pbEsc(a)}" as ${pbEsc(b)}.`));
+    sd.typed.forEach((ty) => { const k = sd.ids.indexOf(ty.id); const pl = x.legs[k]; if (pl && pl.line != null && Math.abs(Number(pl.line) - ty.userLine) >= 0.25) notes.push(`You typed "${pbEsc(ty.seg)}". The line${x.book ? " at " + pbEsc(x.book) : ""} is <b>${pbEsc(pl.label)}</b> now, so that's what this is priced at.`); });
+    cols.push({ seg: sd.seg, t: { bag: legs, x, check: true } });
+  });
+  window.__crState = { compare: true, ids: [], notes, res: { pool: [], tickets: [] } };
+  if (cols.length < 2) { out.innerHTML = crSearchBar() + (notes.length ? `<div class="cr-notes">${notes.map((n) => `<p>${n}</p>`).join("")}</div>` : "") + `<div class="empty">I need two bets I can price to compare them. Try "Bills -3 or Bills to win".</div>`; return; }
+  cols.sort((a, b) => b.t.x.r.ev - a.t.x.r.ev);
+  window.__crState.res.tickets = cols.map((c) => c.t);
+  const best = cols[0], next = cols[1];
+  const r = (c) => c.t.x.r;
+  const lbl = (c) => c.t.x.legs.map((l) => l.label).join(" + ");
+  const gap = r(best).ev - r(next).ev;
+  const sameSide = cols.every((c) => c.t.bag.length === 1 && c.t.bag[0].gid === best.t.bag[0].gid);
+  const safest = cols.slice().sort((a, b) => r(b).pAll - r(a).pAll)[0];
+  let verdict = `<b class="cr-up">Take ${pbEsc(lbl(best))}</b> at ${pbAm(r(best).american)}${best.t.x.book ? " (" + pbEsc(best.t.x.book) + ")" : ""}: ${(r(best).ev >= 0 ? "+" : "") + (r(best).ev * 100).toFixed(1)}% value against ${(r(next).ev >= 0 ? "+" : "") + (r(next).ev * 100).toFixed(1)}% for ${pbEsc(lbl(next))}.`;
+  if (gap < 0.01) verdict = `<b>It's close.</b> ${pbEsc(lbl(best))} edges it, ${(r(best).ev >= 0 ? "+" : "") + (r(best).ev * 100).toFixed(1)}% value to ${(r(next).ev >= 0 ? "+" : "") + (r(next).ev * 100).toFixed(1)}% for ${pbEsc(lbl(next))}. ${safest !== best ? `${pbEsc(lbl(safest))} hits more often (${pbPct(r(safest).pAll)} vs ${pbPct(r(best).pAll)}), so take it if you'd rather cash more and win less.` : "It also hits more often, so it's the better bet both ways."}`;
+  else if (safest !== best) verdict += ` ${pbEsc(lbl(safest))} hits more often (${pbPct(r(safest).pAll)} vs ${pbPct(r(best).pAll)}) but pays too little for it.`;
+  else verdict += ` It also hits more often (${pbPct(r(best).pAll)} vs ${pbPct(r(next).pAll)}).`;
+  if (r(best).ev < -0.01) verdict += ` Neither beats its price, so the honest answer is to pass on both; if you're betting one anyway, this is the one.`;
+  const row = (name, f) => `<tr><th scope="row">${name}</th>${cols.map((c, i) => `<td class="${i === 0 ? "win" : ""}">${f(c, i)}</td>`).join("")}</tr>`;
+  const table = `<div class="cr-cmp-wrap"><table class="cr-cmp">
+    <thead><tr><th></th>${cols.map((c, i) => `<th class="${i === 0 ? "win" : ""}">${i === 0 ? "<em>Better bet</em>" : ""}${pbEsc(lbl(c))}</th>`).join("")}</tr></thead>
+    <tbody>
+      ${row("Price", (c) => `<b>${pbAm(r(c).american)}</b>${c.t.x.book ? `<small>${pbEsc(c.t.x.book)}</small>` : ""}`)}
+      ${row("$10 pays", (c) => pbMoney(10 * r(c).decEff))}
+      ${row("Our chance", (c) => `<b>${pbPct(r(c).pAll)}</b><small>books' ${pbPct(c.t.x.legs.reduce((a, l) => a * (l.bookWin || 0), 1))}</small>`)}
+      ${row("Price needs", (c) => pbPct(r(c).breakEven))}
+      ${row("Value", (c) => `<b class="${r(c).ev >= 0.005 ? "cr-up" : r(c).ev <= -0.01 ? "cr-down" : ""}">${(r(c).ev >= 0 ? "+" : "") + (r(c).ev * 100).toFixed(1)}%</b>`)}
+      ${row("Bet size", (c) => unitsText(kellyUnits(r(c).pAll, null, { dec: r(c).decEff, cap: c.t.bag.length > 1 ? 1 : 2 })))}
+      ${row("To cash", (c) => c.t.bag.map((l, k) => pbEsc(crNeeds(l, c.t.x.legs[k] || l.pb))).join("<br>"))}
+    </tbody></table></div>`;
+  const notesHtml = notes.length ? `<div class="cr-notes">${notes.map((n) => `<p>${n}</p>`).join("")}</div>` : "";
+  const corr = sameSide ? `<p class="subn">Both ride the same game, so they win and lose together most of the time. The one with more value is the better single bet; don't play both.</p>` : "";
+  out.innerHTML = crSearchBar() + `<div class="cr-understood"><span class="subn">Comparing:</span> ${cols.map((c) => `<span class="cr-chip">${pbEsc(lbl(c))}</span>`).join("")}</div>` + notesHtml + `<div class="cr-take">${verdict}</div>` + table + corr +
+    cols.map((c, i) => createTicketHtml(Object.assign(c.t, { cmpTitle: i === 0 ? "Better bet" : "The other one" }), i)).join("") +
+    `<p class="subn cr-foot">Priced at the best current line across the books. Value is our checked chance against the price; it's the number that decides, because a bet that hits more often can still pay too little.</p>`;
 }
 // ---- suggestions while typing: teams, players and the words we understand ----------------
 const CR_WORD_SUG = [["moneyline", "moneyline parlay"], ["safest", "safest 2 leg parlay"], ["longshot", "longshot 4 leg"], ["player", "player prop unders"], ["props", "player prop unders"], ["unders", "unders"], ["overs", "overs"], ["underdogs", "underdogs"], ["weekend", "this weekend"], ["college", "college"], ["nfl", "NFL"], ["sunday", "Sunday"], ["saturday", "Saturday"], ["thursday", "Thursday"], ["monday", "Monday"], ["spread", "spread"], ["parlay", "parlay"]];
@@ -13038,6 +13186,9 @@ function crSuggest(text) {
 // what the box will do with the words so far, updated as you type
 function crLiveHtml(text) {
   if (!String(text || "").trim()) return "";
+  let cmp = null;
+  try { cmp = crParseCompare(text); } catch (e) {}
+  if (cmp) return `<span class="subn">Comparing:</span> ${cmp.map((sd) => `<span class="cr-chip">${pbEsc(sd.ids.map((id) => { const pb = pbLeg({ id }); return pb ? pb.label : sd.seg; }).join(" + "))}</span>`).join("")}`;
   const slip = crParseSlip(text);
   const flag = (arr) => arr.map(([a, b]) => `<span class="cr-chip fix">"${pbEsc(a)}" → ${pbEsc(b)}</span>`).join("");
   if (slip.check) {
@@ -13109,7 +13260,7 @@ function renderCreate() {
         <button type="submit">Build it</button>
       </form>
       <div id="createLive" class="cr-live" aria-live="polite"></div>
-      <div class="cr-ex" id="createEx">${["3 leg NFL parlay at +600", "Safest 2 leg parlay this weekend", "Sunday player prop unders", "College moneyline parlay Saturday", "Longshot 4 leg with underdogs", "Bills and Ravens"].map((t) => `<button type="button" data-crex="${pbEsc(t)}">${pbEsc(t)}</button>`).join("")}${(() => { const ex = crCheckExample(); return ex ? `<button type="button" class="cr-ex-check" data-crex="${pbEsc(ex)}">Check: ${pbEsc(ex)}</button>` : ""; })()}</div>
+      <div class="cr-ex" id="createEx">${["3 leg NFL parlay at +600", "Safest 2 leg parlay this weekend", "Sunday player prop unders", "College moneyline parlay Saturday", "Longshot 4 leg with underdogs", "$20 to win $200", "Sunday night only", "Parlay without the Chiefs"].map((t) => `<button type="button" data-crex="${pbEsc(t)}">${pbEsc(t)}</button>`).join("")}${(() => { const ex = crCheckExample(); return ex ? `<button type="button" class="cr-ex-check" data-crex="${pbEsc(ex)}">Check: ${pbEsc(ex)}</button>` : ""; })()}${(() => { const ex = crCompareExample(); return ex ? `<button type="button" class="cr-ex-check" data-crex="${pbEsc(ex)}">Compare: ${pbEsc(ex)}</button>` : ""; })()}</div>
       <div class="cr-recent" id="createRecent"></div>
       <div id="createOut"></div>
     </div>`;
@@ -13148,6 +13299,9 @@ function createRun(text) {
   if (!String(text || "").trim()) { out.innerHTML = `<div class="empty">Type what you want, like "3 leg NFL parlay at +600".</div>`; return; }
   crRemember(text);
   crSetLink("q=" + encodeURIComponent(String(text).trim()));
+  let cmp = null;
+  try { cmp = crParseCompare(text); } catch (e) { cmp = null; }
+  if (cmp) { createCompare(cmp); return; }
   let slip = null;
   try { slip = crParseSlip(text); } catch (e) { slip = null; }
   if (slip && slip.check) { createCheck(slip); return; }
@@ -13167,6 +13321,7 @@ function createShow(want) {
   (want.missing || []).forEach((m) => notes.push(`${pbEsc(m.name)} isn't on this week's prop board${m.injury && m.injury !== "ACTIVE" ? " (listed " + pbEsc(String(m.injury).toLowerCase()) + ")" : ""}, so these tickets are built without him.`));
   if (want.players.length && res.pool && !res.pool.some((l) => l.kind === "pp")) notes.push(`${pbEsc(want.players.map((p) => p.name).join(" and "))}: no prop prices are posted yet (they go up about a day before kickoff), so these tickets use ${want.players.length === 1 ? "his" : "their"} game instead.`);
   if ((want.unknown || []).length) notes.push(`I skipped words I didn't understand: "${pbEsc(want.unknown.join(" "))}".`);
+  if (res.shrunk) notes.push(res.shrunk.to === 1 ? `Only one game fits that, so these are single bets from it rather than a ${res.shrunk.from}-leg parlay (legs from one game would ride together).` : `Only ${res.shrunk.to} games fit that, so these are ${res.shrunk.to}-leg tickets instead of ${res.shrunk.from}.`);
   const head = `<div class="cr-understood"><span class="subn">What I looked for:</span> ${createUnderstood(want)}</div>` + (notes.length ? `<div class="cr-notes">${notes.map((n) => `<p>${n}</p>`).join("")}</div>` : "");
   const refine = `<div class="cr-refine"><span class="subn">Change it:</span>${[
     want.mode !== "safe" && ["safer", "Safer"],
