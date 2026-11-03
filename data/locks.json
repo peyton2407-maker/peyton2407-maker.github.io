@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 14,
    "total": 51.5,
-   "lockedAt": "2026-11-03T12:01:28.034Z",
+   "lockedAt": "2026-11-03T12:16:29.545Z",
    "provisional": true
   }
  },
@@ -757,7 +757,7 @@
    }
   ]
  },
- "updated": "2026-11-03T12:01:28.034Z",
+ "updated": "2026-11-03T12:16:29.545Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -766,12 +766,12 @@
    "book": "BetRivers",
    "tier": "light",
    "stake": 0.5,
-   "size": 0,
+   "size": 0.25,
    "american": 487,
    "dec": 5.8679,
-   "chance": 0.1697,
+   "chance": 0.171,
    "breakEven": 0.1704,
-   "ev": -0.0039,
+   "ev": 0.0035,
    "firstKick": "2026-11-04T00:00:00.000Z",
    "legs": [
     {
@@ -793,20 +793,20 @@
      "result": null
     },
     {
-     "id": "401866453|sp|home",
-     "label": "AKR +13.5",
-     "kind": "sp",
+     "id": "401866453|tot|over",
+     "label": "Over 50.5",
+     "kind": "tot",
      "game_id": "401866453",
      "game": "OHIO @ AKR",
      "league": "cfb",
      "kick": "2026-11-04T00:00Z",
      "price": -112,
-     "line": 13.5,
-     "win": 0.5027,
+     "line": 50.5,
+     "win": 0.5065,
      "bookWin": 0.5,
-     "value": -0.0484,
-     "cat": "dog",
-     "why": "AKR is getting 14.0. Our number has them covering by 1.3 points.",
+     "value": -0.0413,
+     "cat": "total",
+     "why": "Our total is 51.5; this side is the better price.",
      "prop": null,
      "result": null
     }
@@ -815,7 +815,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-03T12:01:28.034Z"
+   "lockedAt": "2026-11-03T12:16:29.545Z"
   }
  ]
 }
