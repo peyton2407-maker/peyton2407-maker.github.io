@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 13.5,
    "total": 51.5,
-   "lockedAt": "2026-11-03T21:01:38.851Z",
+   "lockedAt": "2026-11-03T21:31:27.929Z",
    "provisional": true
   },
   "401866454": {
@@ -31,16 +31,16 @@
    "away": "BUFF",
    "date": "2026-11-04T01:00Z",
    "pick": "BUFF",
-   "pick_line": "BUFF +6.0",
+   "pick_line": "BUFF +6.5",
    "total_pick": "OVER 45.5",
    "side_play": false,
-   "our_margin": 1.2,
+   "our_margin": 1.53,
    "our_total": 45.1,
    "confidence": null,
    "total_play": false,
-   "spread": -6,
+   "spread": -6.5,
    "total": 45.5,
-   "lockedAt": "2026-11-03T21:01:38.851Z",
+   "lockedAt": "2026-11-03T21:31:27.929Z",
    "provisional": true
   }
  },
@@ -778,7 +778,7 @@
    }
   ]
  },
- "updated": "2026-11-03T21:01:38.851Z",
+ "updated": "2026-11-03T21:31:27.929Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -792,7 +792,7 @@
    "dec": 3.6768,
    "chance": 0.2632,
    "breakEven": 0.272,
-   "ev": -0.0323,
+   "ev": -0.0324,
    "firstKick": "2026-11-04T00:00:00.000Z",
    "legs": [
     {
@@ -807,9 +807,9 @@
      "line": 6.5,
      "win": 0.5256,
      "bookWin": 0.5022,
-     "value": 0.0035,
+     "value": 0.0034,
      "cat": "dog",
-     "why": "BUFF is getting 6.0. Our number has them covering by 4.8 points.",
+     "why": "BUFF is getting 6.5. Our number has them covering by 4.5 points.",
      "prop": null,
      "result": null
     },
@@ -836,7 +836,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-03T21:01:38.851Z"
+   "lockedAt": "2026-11-03T21:31:27.929Z"
   }
  ]
 }
