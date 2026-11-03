@@ -34,7 +34,7 @@ PROPS_DIAG = """() => {
 }"""
 
 
-TOUR = ["home", "card", "nflpotd", "potd", "nfl", "prime", "props", "tds", "value", "live", "charts", "nflwx", "nflinj",
+TOUR = ["home", "card", "nflpotd", "potd", "ladder", "nfl", "prime", "props", "tds", "value", "live", "charts", "nflwx", "nflinj",
         "cfb", "cfbpicks", "cfbwx", "cfbinj", "all", "score", "history", "season", "ratings", "bets", "builder", "parlay", "calc"]
 TOUR_CHECK = """() => {
   const sec = [...document.querySelectorAll('main section, main > div, .view')].filter(e => e.offsetParent && e.innerText.trim().length > 0);
