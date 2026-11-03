@@ -7442,6 +7442,19 @@ function leanTotalLegs(league, minEdge) {
   });
   return legs.sort((a, b) => b.score - a.score);
 }
+// Both sides of every game's total, for light Ladder days (the best price decides which side).
+function bothTotalLegs(league) {
+  const legs = [];
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.completed || g.league !== league || !g.odds || g.odds.total == null) return;
+    ["OVER", "UNDER"].forEach((side) => legs.push({
+      label: `${side} ${g.odds.total}`, detail: `${g.away.abbr} @ ${g.home.abbr}`, game_id: g.id, game: g.short_name, date: g.date, league,
+      hit: 0.5, odds: -110, key: "total:" + g.id + ":" + side, score: 0, kind: "total", dog: false,
+      why: `Our total is ${g.proj && g.proj.hashmark_total != null ? Number(g.proj.hashmark_total).toFixed(1) : "—"}; this side is the better price.`
+    }));
+  });
+  return legs;
+}
 // When a group has nothing to build from (no plays this week), tickets from our smaller leans,
 // shown only as the closest tickets with the book's edge on them.
 function readyLeanRows(group, league) {
@@ -7454,7 +7467,7 @@ function readyLeanRows(group, league) {
 // Moneyline legs worth a look: each game's better moneyline side at the best book, valued with
 // our checked chance (pbLeg), priced -350 to +300 so a ticket pays something (stacking -6500
 // favorites paid 50 cents on $10 with the book 6-20% ahead), best value first.
-function moneylineLegs(league) {
+function moneylineLegs(league, wide) {
   const legs = [];
   (DATA.games || []).forEach((g) => {
     if (!g || g.league !== league || g.completed || !readyThisWeek({ game_id: g.id })) return;
@@ -7464,7 +7477,7 @@ function moneylineLegs(league) {
       const bp = typeof bestPriceFor === "function" ? bestPriceFor(id) : null;
       const pb = (bp && bp.best ? pbLeg({ id, book: bp.best.book }) : null) || pbLeg({ id });
       if (!pb || pb.started || !Number.isFinite(pb.price)) return;
-      if (!(pb.price >= -350 && pb.price <= 300)) return;
+      if (!(wide ? pb.price >= -800 && pb.price <= 500 : pb.price >= -350 && pb.price <= 300)) return;
       if (!best || pb.value > best.pb.value) best = { side, pb };
     });
     if (!best || best.pb.value < -0.04) return;
@@ -12118,7 +12131,8 @@ function potdPick(league) {
 const LADDER_MIN_LEG = 0.01;      // each leg at least 1% better than its price
 const LADDER_MIN_CHANCE = 0.15;   // the ticket hits at least 15% of the time (about +550 or shorter)
 const LADDER_CAT = { play: "Board play", ml: "Moneyline", dog: "Underdog", fav: "Favorite", total: "Total", prop: "Player prop" };
-function ladderLegPool(day) {
+function ladderLegPool(day, minLeg, light) {
+  const floor = minLeg == null ? LADDER_MIN_LEG : minLeg;
   const pool = [];
   const add = (arr, cat) => (arr || []).forEach((l) => {
     const g = typeof pbGame === "function" ? pbGame(l && l.game_id) : null;
@@ -12127,47 +12141,67 @@ function ladderLegPool(day) {
     const id = readyLegId(l);
     if (!id) return;
     const v = readyLegValue(l);
-    if (!(v >= LADDER_MIN_LEG)) return;
+    if (!(v >= floor)) return;
     pool.push(Object.assign({}, l, { _id: id, _v: v, cat }));
   });
   const safe = (fn) => { try { return fn() || []; } catch (e) { return []; } };
   // College spreads stay off: picks off a power rating against the line went 458-503 (47.7%)
   // on 2020-2025 college games, worse as the gap grew. College totals and moneylines stay on.
   ["nfl", "cfb"].forEach((lg) => {
-    add(safe(() => collectParlayLegs().filter((l) => l.league === lg && !(lg === "cfb" && l.kind === "spread"))), "play");
-    add(safe(() => moneylineLegs(lg)), "ml");
-    if (lg === "nfl") {
+    add(safe(() => collectParlayLegs().filter((l) => l.league === lg && (light || !(lg === "cfb" && l.kind === "spread")))), "play");
+    add(safe(() => moneylineLegs(lg, !!light)), "ml");
+    if (lg === "nfl" || light) {
       add(safe(() => leanSideLegs(lg, true, 0.3)), "dog");
       add(safe(() => leanSideLegs(lg, false, 0.3)), "fav");
     }
     add(safe(() => leanTotalLegs(lg, 0.3)), "total");
+    // light days: both sides of every total, the price decides
+    if (light) add(safe(() => bothTotalLegs(lg)), "total");
   });
   add(safe(() => collectPropParlayLegs()), "prop");
-  // one leg per game (legs in one game move together, and books price that against you)
-  const best = new Map();
-  pool.forEach((l) => { const k = String(l.game_id); if (!best.has(k) || l._v > best.get(k)._v) best.set(k, l); });
-  return [...best.values()].sort((a, b) => b._v - a._v).slice(0, 14);
+  // up to three choices a game (the ticket itself never takes two legs from one game: legs in
+  // one game move together, and books price that against you)
+  const byGame = new Map(), seen = new Set();
+  pool.sort((a, b) => b._v - a._v).forEach((l) => {
+    if (seen.has(l._id)) return;
+    seen.add(l._id);
+    const k = String(l.game_id);
+    const arr = byGame.get(k) || [];
+    if (arr.length < 3) { arr.push(l); byGame.set(k, arr); }
+  });
+  return [...byGame.values()].flat().sort((a, b) => b._v - a._v).slice(0, 20);
 }
-// the best ticket for the next game day that has one (skipping days already locked)
+// The best ticket for the next game day that has one (skipping days already locked). Every
+// game day gets a ticket: the value ticket when one clears the bar (1 unit); otherwise a light
+// ticket, the closest to a fair price with no leg more than 5% under its price and college
+// spreads allowed (half a unit),
+// so quiet days still post one without lowering the bar for the main record.
 function ladderBuild(skip) {
   const days = [...new Set((DATA.games || []).filter((g) => g && !g.completed && Date.parse(g.date) > Date.now())
     .sort((a, b) => String(a.date).localeCompare(String(b.date))).map((g) => potdDayKey(g.date)))].filter((d) => !(skip && skip.has(d)));
-  for (const day of days.slice(0, 8)) {
-    const legs = ladderLegPool(day);
-    if (legs.length < 2) continue;
+  const search = (legs, legFloor, evFloor) => {
     let best = null;
     const tryBag = (bag) => {
+      if (new Set(bag.map((l) => String(l.game_id))).size !== bag.length) return;
       const x = readyPrice(bag);
       if (!x || (x.r.sameGame && x.r.sameGame.length)) return;
-      if (x.mapped.some((m) => !(m.pb.value >= LADDER_MIN_LEG - 0.005))) return;   // still good at the ticket's book
-      if (!(x.r.pAll >= LADDER_MIN_CHANCE) || !(x.r.ev > 0.01)) return;
+      if (x.mapped.some((m) => !(m.pb.value >= legFloor - 0.005))) return;   // still good at the ticket's book
+      if (!(x.r.pAll >= LADDER_MIN_CHANCE) || !(x.r.ev > evFloor)) return;
       if (!best || x.r.ev > best.x.r.ev) best = { bag, x };
     };
     for (let i = 0; i < legs.length; i++) for (let j = i + 1; j < legs.length; j++) {
       tryBag([legs[i], legs[j]]);
       for (let k = j + 1; k < legs.length; k++) tryBag([legs[i], legs[j], legs[k]]);
     }
-    if (best) return { day, legs: best.bag, x: best.x };
+    return best;
+  };
+  for (const day of days.slice(0, 8)) {
+    const strict = ladderLegPool(day);
+    const best = strict.length >= 2 ? search(strict, LADDER_MIN_LEG, 0.01) : null;
+    if (best) return { day, legs: best.bag, x: best.x, light: false };
+    const loose = ladderLegPool(day, -0.05, true);
+    const lite = loose.length >= 2 ? search(loose, -0.05, -0.08) : null;
+    if (lite) return { day, legs: lite.bag, x: lite.x, light: true };
   }
   return null;
 }
@@ -12187,6 +12221,7 @@ function ladderRow(pick) {
   const first = legs.map((l) => Date.parse(l.kick)).filter(Number.isFinite).sort((a, b) => a - b)[0];
   return {
     key: "ladder:" + pick.day, day: pick.day, n: legs.length, book: x.book || null,
+    tier: pick.light ? "light" : "value", stake: pick.light ? 0.5 : 1,
     american: Math.round(x.r.american), dec: +Number(x.r.decEff).toFixed(4), chance: +Number(x.r.pAll).toFixed(4),
     breakEven: +Number(x.r.breakEven).toFixed(4), ev: +Number(x.r.ev).toFixed(4),
     firstKick: Number.isFinite(first) ? new Date(first).toISOString() : null, legs, result: null, units: null
@@ -12233,12 +12268,13 @@ function gradeLadderRow(row) {
   let changed = false;
   (row.legs || []).forEach((l) => { if (gradeLadderLeg(row, l)) changed = true; });
   if (row.result) return changed;
-  if (row.legs.some((l) => l.result === "MISS")) { row.result = "MISS"; row.units = -1; return true; }
+  const stake = Number(row.stake || 1);
+  if (row.legs.some((l) => l.result === "MISS")) { row.result = "MISS"; row.units = -stake; return true; }
   if (row.legs.every((l) => l.result)) {
     const live = row.legs.filter((l) => l.result === "HIT");
     if (!live.length) { row.result = "PUSH"; row.units = 0; return true; }
     const dec = live.reduce((a, l) => a * pbDec(l.price), 1);
-    row.result = "HIT"; row.units = +(dec - 1).toFixed(3); row.paidDec = +dec.toFixed(4);
+    row.result = "HIT"; row.units = +((dec - 1) * stake).toFixed(3); row.paidDec = +dec.toFixed(4);
     return true;
   }
   return changed;
@@ -12306,7 +12342,8 @@ function ladderTally(rows) {
   const seq = done.slice().sort((a, b) => String(b.day).localeCompare(String(a.day))).map((r) => r.result).filter((x) => x !== "PUSH");
   if (seq.length) { let k = 0; while (k < seq.length && seq[k] === seq[0]) k++; streak = (seq[0] === "HIT" ? "Won " : "Lost ") + k + " straight"; }
   const avgDec = done.length ? done.reduce((a, r) => a + Number(r.dec || 1), 0) / done.length : null;
-  return { n: hit + miss, hit, miss, push, units, roi: done.length ? units / done.length : 0, legsW: lw, legsL: legs.length - lw, streak, avgDec };
+  const staked = done.reduce((a, r) => a + Number(r.stake || 1), 0);
+  return { n: hit + miss, hit, miss, push, units, roi: staked ? units / staked : 0, legsW: lw, legsL: legs.length - lw, streak, avgDec };
 }
 function ladderLegHtml(l, showResult) {
   const res = l.result ? `<span class="potd-res ${l.result === "HIT" ? "hit" : l.result === "MISS" ? "miss" : ""}">${l.result === "HIT" ? "Hit" : l.result === "MISS" ? "Miss" : l.result === "PUSH" ? "Push" : "Void"}</span>` : "";
@@ -12326,7 +12363,7 @@ function ladderTicketHtml(row, opts) {
     : o.live ? "Our pick right now. The server saves it from 12 hours before the first leg and locks it 90 minutes before."
     : `Locks 90 minutes before the first leg${row.firstKick ? " (" + new Date(Date.parse(row.firstKick) - LOCK_WINDOW_MS).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" }) + ")" : ""}; it can still change until then.`;
   return `<article class="prop-card ladder-ticket">
-    <div class="potd-head">${status}<div><b>${row.n}-leg · ${pbAm(row.american)}${row.book ? " at " + pbEsc(row.book) : ""}</b>
+    <div class="potd-head">${status}<div><b>${row.n}-leg · ${pbAm(row.american)}${row.book ? " at " + pbEsc(row.book) : ""}</b>${row.tier === "light" ? ` <span class="pick-tag lean" title="No ticket cleared the value bar today; this is the closest to a fair price, half a unit">light day · ½u</span>` : ""}
       <div class="subn">${pbEsc(potdDayName(row.firstKick || row.day))} · $10 pays ${pbMoney(10 * Number(row.dec))} · checked chance ${pbPct(row.chance)}, needs ${pbPct(row.breakEven)} · ${row.ev >= 0 ? "+" : ""}${(Number(row.ev) * 100).toFixed(1)}% value</div></div>${units}</div>
     <ul class="parlay-legs">${(row.legs || []).map((l) => ladderLegHtml(l, !!row.locked)).join("")}</ul>
     <div class="subn">${lockLine}${row.note ? " " + pbEsc(row.note) : ""}</div>
@@ -12347,9 +12384,10 @@ function ladderRecordHtml(rows) {
   };
   const bySize = [2, 3].map((n) => { const t = ladderTally(rows.filter((r) => r.n === n)); return t.n || t.push ? `<div><span class="lbl">${n}-leg tickets</span><b>${t.hit}-${t.miss} · ${u(t.units)}</b></div>` : ""; }).join("");
   const pending = rows.filter((r) => r.locked && !r.result).length;
+  const byTier = ["value", "light"].map((t) => { const x = ladderTally(rows.filter((r) => (r.tier || "value") === t)); return x.n || x.push ? `<div><span class="lbl">${t === "value" ? "Value tickets (1u)" : "Light days (½u)"}</span><b>${x.hit}-${x.miss} · ${u(x.units)}</b></div>` : ""; }).join("");
   return `<article class="prop-card potd-rec ladder-rec">
     <div class="who"><div><h4>The Ladder</h4>
-      <div class="prop-meta">One parlay a game day, 2 or 3 legs from every bet type: NFL sides, totals, moneylines and player prop unders, college totals and moneylines (college spreads lost in testing, so they stay off). Every leg has to beat its own price at the one book that pays the most for the whole ticket, and the ticket has to hit at least 15% of the time. It locks 90 minutes before the first leg and is graded leg by leg from the final scores and box scores. One unit a ticket.</div></div>
+      <div class="prop-meta">One parlay a game day, 2 or 3 legs from every bet type: NFL sides, totals, moneylines and player prop unders, college totals and moneylines (college spreads lost in testing, so they stay off). Every leg has to beat its own price at the one book that pays the most for the whole ticket, and the ticket has to hit at least 15% of the time. It posts every game day: a value ticket (1 unit) when one clears that bar, otherwise a light ticket, the closest to a fair price with no leg more than 5% under its price, college spreads allowed (half a unit). Light tickets are tracked apart from value tickets. It locks 90 minutes before the first leg and is graded leg by leg from the final scores and box scores.</div></div>
       <div class="pick-score">${T.hit}-${T.miss}</div></div>
     <div class="prop-stats">
       <div><span class="lbl">Tickets</span><b>${T.n ? Math.round((T.hit / T.n) * 100) + "% hit" : "No finished tickets yet"}</b></div>
@@ -12358,6 +12396,7 @@ function ladderRecordHtml(rows) {
       ${T.streak ? `<div><span class="lbl">Streak</span><b>${T.streak}</b></div>` : ""}
       ${T.avgDec ? `<div><span class="lbl">Average price</span><b>${pbAm(pbAmerican(T.avgDec))}</b></div>` : ""}
       ${pending ? `<div><span class="lbl">Locked, not finished</span><b>${pending}</b></div>` : ""}
+      ${byTier}
       ${bySize}
       ${groups((r, l) => l.cat, LADDER_CAT)}
       ${groups((r, l) => l.league === "nfl" ? "NFL" : l.league === "cfb" ? "College" : "")}
@@ -12372,7 +12411,7 @@ function renderLadder() {
   const done = rows.filter((r) => r.result || (r.locked && cur && cur.row.key !== r.key)).sort((a, b) => String(b.day).localeCompare(String(a.day)));
   box.innerHTML = ladderRecordHtml(rows)
     + (cur ? `<h3 class="ladder-h">${cur.row.locked ? "Today's ladder" : "Next ladder"}</h3>` + ladderTicketHtml(cur.row, { live: cur.live, builder: true })
-      : `<div class="empty">No ladder right now: no game day ahead has two legs that each beat their price with a ticket that hits 15% of the time or more. It shows here as soon as one does.</div>`)
+      : `<div class="empty">No ladder right now: no game day in the next week has two games with legs close enough to their price. It shows here as soon as one does.</div>`)
     + (done.length ? `<h3 class="ladder-h">Every ladder</h3>` + done.map((r) => ladderTicketHtml(r)).join("") : "");
   if (!box.__wired) {
     box.__wired = true;
@@ -12392,7 +12431,7 @@ function ladderTileHtml() {
   if (!cur) return `<div class="lbl">The Ladder · ${rec}</div><p class="subn">No ladder right now. It posts when a game day has two legs that each beat their price.</p><a href="#ladder" data-view="ladder" class="ladder-link">See the record</a>`;
   const r = cur.row;
   return `<div class="lbl">The Ladder · ${rec}</div>
-    <div class="ladder-tile-price"><b>${pbAm(r.american)}</b> ${r.book ? "at " + pbEsc(r.book) : ""} · ${r.n} legs · ${r.ev >= 0 ? "+" : ""}${(r.ev * 100).toFixed(0)}% value</div>
+    <div class="ladder-tile-price"><b>${pbAm(r.american)}</b> ${r.book ? "at " + pbEsc(r.book) : ""} · ${r.n} legs · ${r.tier === "light" ? "light day, ½u" : (r.ev >= 0 ? "+" : "") + (r.ev * 100).toFixed(0) + "% value"}</div>
     <ul class="ladder-tile-legs">${r.legs.map((l) => `<li>${pbEsc(l.label)} <span class="subn">${pbAm(l.price)}</span></li>`).join("")}</ul>
     <div class="subn">${r.locked ? "Locked" : "Locks 90 minutes before the first leg"} · ${pbEsc(potdDayName(r.firstKick || r.day))}</div>
     <a href="#ladder" data-view="ladder" class="ladder-link">The Ladder and its record</a>`;
