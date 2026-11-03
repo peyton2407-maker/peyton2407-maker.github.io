@@ -1,6 +1,6 @@
 name: Test phone alert
-# Sends one test alert to the topic in scripts/alerts.json (or the NTFY_TOPIC secret), so you
-# can check the ntfy app is subscribed.
+# Sends one test alert to the topic in scripts/alerts.json (or the NTFY_TOPIC secret), then
+# reads it back from ntfy and fails if it isn't there, so a green run means it was delivered.
 on:
   workflow_dispatch:
 permissions:
@@ -11,7 +11,11 @@ jobs:
     timeout-minutes: 3
     steps:
       - uses: actions/checkout@v4
-      - name: Send a test alert
+      - name: Send a test alert and check it arrived
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
-        run: python3 scripts/alerts.py "Double Gs alerts are on" "You'll get every play of the day, Ladder and weekly card here when it locks, with the price, the book and the bet size."
+        run: |
+          python3 scripts/alerts.py "Double Gs alerts are on" "You'll get every play of the day, Ladder and weekly card here when it locks, with the price, the book and the bet size."
+          TOPIC="${NTFY_TOPIC:-$(python3 -c "import json;print(json.load(open('scripts/alerts.json'))['topic'])")}"
+          sleep 3
+          curl -fsS "https://ntfy.sh/$TOPIC/json?poll=1&since=5m" | tee /tmp/ntfy.txt | grep -q "Double Gs alerts are on" && echo "Delivered to ntfy." || { echo "Not found on ntfy"; cat /tmp/ntfy.txt; exit 1; }
