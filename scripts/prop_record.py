@@ -259,6 +259,39 @@ def main():
         changed = True
         print("play of the day prop", r.get("line"), "->", potd[r["key"]])
 
+    # 4) the same for player-prop legs of THE LADDER (data/locks.json "ladder" rows); keyed
+    # "<ladder key>|<player id>|<stat>"
+    for r in (locks.get("ladder") or []):
+        if not r.get("locked") or r.get("result") or not r.get("key"):
+            continue
+        for leg in r.get("legs") or []:
+            pr = leg.get("prop")
+            kick = parse(leg.get("kick"))
+            if not pr or leg.get("result") or not kick or kick > now - timedelta(hours=3):
+                continue
+            key = f"{r['key']}|{pr.get('pid')}|{pr.get('stat')}"
+            if key in potd:
+                continue
+            gid = str(leg.get("game_id"))
+            if gid not in boxes:
+                try:
+                    s = json.loads((fx / f"summary-{gid}.json").read_text()) if fx else get_json(SUMMARY.format(id=gid))
+                    boxes[gid] = box_stats(s)
+                except Exception as e:
+                    print("box score error", gid, str(e)[:120])
+                    boxes[gid] = None
+            b = boxes[gid]
+            if not b or not b["final"]:
+                continue
+            row = b["players"].get(str(pr.get("pid")))
+            if row is None:
+                potd[key] = {"pid": pr.get("pid"), "stat": pr.get("stat"), "actual": None, "void": True}
+            else:
+                v = row.get(pr.get("stat"), 0.0)
+                potd[key] = {"pid": pr.get("pid"), "stat": pr.get("stat"), "actual": int(v) if float(v).is_integer() else v}
+            changed = True
+            print("ladder prop", leg.get("label"), "->", potd[key])
+
     graded = [x for x in book.values() if x.get("result") and x["result"]["out"] != "void"]
     print(f"{len(book)} picks in the record; {len(graded)} graded; {len(todo)} were waiting on a result")
     if not changed and OUT.exists():

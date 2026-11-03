@@ -1941,6 +1941,16 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 }
 @media (max-width: 979px) { .home-aside .home-banner { display: none; } }
 #homeFeature:not(.on) { display: none; }
+.ladder-board { display: grid; gap: 14px; }
+.ladder-h { margin: 10px 0 0; font: 700 20px var(--display); }
+.ladder-ticket .potd-head { margin-bottom: 8px; }
+.ladder-tile { padding: 14px 16px; }
+.ladder-tile .lbl { font-weight: 700; color: var(--sun); }
+.ladder-tile-price { margin: 6px 0 4px; font-size: 14px; color: var(--ink-soft); }
+.ladder-tile-price b { font: 800 24px var(--display); color: var(--ink); margin-right: 4px; }
+.ladder-tile-legs { margin: 0 0 6px; padding-left: 18px; font-size: 14px; }
+.ladder-tile-legs li { margin: 2px 0; }
+.ladder-link { display: inline-block; margin-top: 6px; font-weight: 700; color: var(--sun); }
 .ready-note { margin: 4px 0 2px; padding: 10px 12px; border: 1px dashed var(--line-2); border-radius: 10px; font-size: 13.5px; color: var(--ink-soft); }
 .bestpx { display: block; margin-top: 3px; font-size: 11.5px; font-weight: 600; color: var(--ink-soft); white-space: nowrap; }
 .bestpx s { color: var(--muted); font-weight: 500; margin-left: 4px; }
@@ -2301,7 +2311,7 @@ table.props b.down { color: var(--muted); font-weight: 600; }
 
     <nav class="subnav tabs" id="tabBar" aria-label="Pages in this section">
       <div class="subnav-group" data-section="home">
-        <a class="tab" href="#home" data-view="home">Today</a><a class="tab star" href="#card" data-view="card">This week's card</a><a class="tab" href="#nflpotd" data-view="nflpotd">NFL play of the day</a><a class="tab" href="#potd" data-view="potd">College play of the day</a>
+        <a class="tab" href="#home" data-view="home">Today</a><a class="tab star" href="#card" data-view="card">This week's card</a><a class="tab" href="#nflpotd" data-view="nflpotd">NFL play of the day</a><a class="tab" href="#potd" data-view="potd">College play of the day</a><a class="tab star" href="#ladder" data-view="ladder">The Ladder</a>
       </div>
       <div class="subnav-group" data-section="nfl">
         <a class="tab star" href="#nfl" data-view="nfl">NFL Week</a><a class="tab" href="#prime" data-view="prime">TNF · SNF · MNF</a><a class="tab star" href="#props" data-view="props">Player props</a><a class="tab" href="#tds" data-view="tds">Who scores TDs</a><a class="tab" href="#value" data-view="value">Underdogs</a><a class="tab star" href="#nflpotd" data-view="nflpotd">Play of the day</a><a class="tab" href="#live" data-view="live">Live scores</a><a class="tab" href="#charts" data-view="charts">Game charts</a><a class="tab" href="#nflwx" data-view="nflwx">Weather</a><a class="tab" href="#nflinj" data-view="nflinj">Injuries</a>
@@ -2310,7 +2320,7 @@ table.props b.down { color: var(--muted); font-weight: 600; }
         <a class="tab star" href="#cfb" data-view="cfb">CFB Week</a><a class="tab star" href="#cfbpicks" data-view="cfbpicks">College picks</a><a class="tab star" href="#potd" data-view="potd">Play of the day</a><a class="tab" href="#cfbwx" data-view="cfbwx">Weather</a><a class="tab" href="#cfbinj" data-view="cfbinj">Injuries</a><a class="chip-link" href="/split/">The Split</a>
       </div>
       <div class="subnav-group" data-section="boom">
-        <a class="tab star" href="#builder" data-view="builder">Parlay builder</a><a class="tab" href="#parlay" data-view="parlay">Ready-made tickets</a><a class="tab" href="#bets" data-view="bets">My bets</a><a class="tab" href="#calc" data-view="calc">Calculators</a><a class="tab" href="#card" data-view="card">This week's card</a>
+        <a class="tab star" href="#builder" data-view="builder">Parlay builder</a><a class="tab" href="#parlay" data-view="parlay">Ready-made tickets</a><a class="tab star" href="#ladder" data-view="ladder">The Ladder</a><a class="tab" href="#bets" data-view="bets">My bets</a><a class="tab" href="#calc" data-view="calc">Calculators</a><a class="tab" href="#card" data-view="card">This week's card</a>
       </div>
       <div class="subnav-group" data-section="record">
         <a class="tab star" href="#score" data-view="score">Scorecard</a><a class="tab" href="#history" data-view="history">Past weeks</a><a class="tab" href="#ratings" data-view="ratings">Team rankings</a><a class="tab" href="#season" data-view="season">Playoff odds</a><a class="tab" href="#all" data-view="all">All games</a>
@@ -2323,6 +2333,7 @@ table.props b.down { color: var(--muted); font-weight: 600; }
       <div class="home-top">
         <article class="home-feature" id="homeFeature"></article>
         <aside class="home-aside">
+          <article class="share-card ladder-tile" id="homeLadderTile"></article>
           <h2 class="sec-h">This week's card</h2>
           <article class="share-card" id="homeCardTeaser"></article>
         </aside>
@@ -2689,6 +2700,10 @@ table.props b.down { color: var(--muted); font-weight: 600; }
 
     <section id="nflPotdSection" style="display:none">
       <div id="nflPotdBoard"></div>
+    </section>
+
+    <section id="ladderSection" style="display:none">
+      <div id="ladderBoard" class="ladder-board"></div>
     </section>
 
     <section id="nflWxSection" style="display:none">
@@ -12094,6 +12109,294 @@ function potdPick(league) {
     : (potdDayName(best.g.date) + " · next game");
   return best;
 }
+// ==== THE LADDER ==========================================================================
+// One parlay a game day, 2 or 3 legs, run like the play of the day: picked from every bet type
+// (sides, totals, moneylines, player prop unders), every leg beating its own price at the one
+// book that pays the most for the whole ticket, saved from 12 hours before the first leg, locked
+// 90 minutes before it, and graded leg by leg (final scores; box scores for props). The record
+// tracks tickets, legs, units, ticket size, league and bet type.
+const LADDER_MIN_LEG = 0.01;      // each leg at least 1% better than its price
+const LADDER_MIN_CHANCE = 0.15;   // the ticket hits at least 15% of the time (about +550 or shorter)
+const LADDER_CAT = { play: "Board play", ml: "Moneyline", dog: "Underdog", fav: "Favorite", total: "Total", prop: "Player prop" };
+function ladderLegPool(day) {
+  const pool = [];
+  const add = (arr, cat) => (arr || []).forEach((l) => {
+    const g = typeof pbGame === "function" ? pbGame(l && l.game_id) : null;
+    if (!g || g.completed || !(Date.parse(g.date) > Date.now())) return;
+    if (day && potdDayKey(g.date) !== day) return;
+    const id = readyLegId(l);
+    if (!id) return;
+    const v = readyLegValue(l);
+    if (!(v >= LADDER_MIN_LEG)) return;
+    pool.push(Object.assign({}, l, { _id: id, _v: v, cat }));
+  });
+  const safe = (fn) => { try { return fn() || []; } catch (e) { return []; } };
+  // College spreads stay off: picks off a power rating against the line went 458-503 (47.7%)
+  // on 2020-2025 college games, worse as the gap grew. College totals and moneylines stay on.
+  ["nfl", "cfb"].forEach((lg) => {
+    add(safe(() => collectParlayLegs().filter((l) => l.league === lg && !(lg === "cfb" && l.kind === "spread"))), "play");
+    add(safe(() => moneylineLegs(lg)), "ml");
+    if (lg === "nfl") {
+      add(safe(() => leanSideLegs(lg, true, 0.3)), "dog");
+      add(safe(() => leanSideLegs(lg, false, 0.3)), "fav");
+    }
+    add(safe(() => leanTotalLegs(lg, 0.3)), "total");
+  });
+  add(safe(() => collectPropParlayLegs()), "prop");
+  // one leg per game (legs in one game move together, and books price that against you)
+  const best = new Map();
+  pool.forEach((l) => { const k = String(l.game_id); if (!best.has(k) || l._v > best.get(k)._v) best.set(k, l); });
+  return [...best.values()].sort((a, b) => b._v - a._v).slice(0, 14);
+}
+// the best ticket for the next game day that has one (skipping days already locked)
+function ladderBuild(skip) {
+  const days = [...new Set((DATA.games || []).filter((g) => g && !g.completed && Date.parse(g.date) > Date.now())
+    .sort((a, b) => String(a.date).localeCompare(String(b.date))).map((g) => potdDayKey(g.date)))].filter((d) => !(skip && skip.has(d)));
+  for (const day of days.slice(0, 8)) {
+    const legs = ladderLegPool(day);
+    if (legs.length < 2) continue;
+    let best = null;
+    const tryBag = (bag) => {
+      const x = readyPrice(bag);
+      if (!x || (x.r.sameGame && x.r.sameGame.length)) return;
+      if (x.mapped.some((m) => !(m.pb.value >= LADDER_MIN_LEG - 0.005))) return;   // still good at the ticket's book
+      if (!(x.r.pAll >= LADDER_MIN_CHANCE) || !(x.r.ev > 0.01)) return;
+      if (!best || x.r.ev > best.x.r.ev) best = { bag, x };
+    };
+    for (let i = 0; i < legs.length; i++) for (let j = i + 1; j < legs.length; j++) {
+      tryBag([legs[i], legs[j]]);
+      for (let k = j + 1; k < legs.length; k++) tryBag([legs[i], legs[j], legs[k]]);
+    }
+    if (best) return { day, legs: best.bag, x: best.x };
+  }
+  return null;
+}
+function ladderRow(pick) {
+  const x = pick.x;
+  const legs = x.mapped.map((m) => {
+    const g = pbGame(m.pb.gid);
+    const kind = String(m.id).split("|")[1];
+    return {
+      id: m.id, label: m.pb.label, kind, game_id: String(m.pb.gid), game: g ? g.short_name : m.pb.game, league: g ? g.league : null,
+      kick: g ? g.date : null, price: m.pb.price, line: m.pb.line, win: +Number(m.pb.win).toFixed(4), bookWin: +Number(m.pb.bookWin).toFixed(4),
+      value: +Number(m.pb.value).toFixed(4), cat: m.l.cat || null, why: m.l.why || "",
+      prop: kind === "pp" ? { pid: String(m.pb.pid), stat: m.pb.stat, side: m.pb.side, line: Number(m.pb.line), name: m.pb.player } : null,
+      result: null
+    };
+  });
+  const first = legs.map((l) => Date.parse(l.kick)).filter(Number.isFinite).sort((a, b) => a - b)[0];
+  return {
+    key: "ladder:" + pick.day, day: pick.day, n: legs.length, book: x.book || null,
+    american: Math.round(x.r.american), dec: +Number(x.r.decEff).toFixed(4), chance: +Number(x.r.pAll).toFixed(4),
+    breakEven: +Number(x.r.breakEven).toFixed(4), ev: +Number(x.r.ev).toFixed(4),
+    firstKick: Number.isFinite(first) ? new Date(first).toISOString() : null, legs, result: null, units: null
+  };
+}
+function ladderFinal(gid) {
+  const g = typeof pbGame === "function" ? pbGame(gid) : null;
+  if (g && g.completed && g.home && g.home.score != null && g.home.score !== "") return { hs: Number(g.home.score), as: Number(g.away.score), home: g.home.abbr, away: g.away.abbr };
+  const w = (window.WEEK_RESULTS || []).find((r) => String(r.id) === String(gid));
+  if (w && w.hs != null && w.as != null) return { hs: Number(w.hs), as: Number(w.as), home: w.homeAbbr, away: w.awayAbbr };
+  return null;
+}
+function gradeLadderLeg(row, l) {
+  if (l.result) return false;
+  if (l.kind === "pp" && l.prop) {
+    const got = window.PROP_RECORD && window.PROP_RECORD.potd && window.PROP_RECORD.potd[row.key + "|" + l.prop.pid + "|" + l.prop.stat];
+    if (!got) return false;
+    if (got.void || got.actual == null) { l.result = "VOID"; l.final = "Didn't play"; return true; }
+    const a = Number(got.actual), L = Number(l.prop.line);
+    l.actual = a;
+    l.result = a === L ? "PUSH" : ((a > L) === (l.prop.side === "over") ? "HIT" : "MISS");
+    l.final = `${l.prop.name}: ${a} ${PROP_LBL[l.prop.stat] || l.prop.stat}`;
+    return true;
+  }
+  const f = ladderFinal(l.game_id);
+  if (!f || !Number.isFinite(f.hs) || !Number.isFinite(f.as)) return false;
+  const side = String(l.id).split("|").pop();
+  const L = Number(l.line);
+  if (l.kind === "sp") {
+    const c = (side === "home" ? f.hs - f.as : f.as - f.hs) + L;
+    l.result = c > 0 ? "HIT" : c < 0 ? "MISS" : "PUSH";
+  } else if (l.kind === "tot") {
+    const t = f.hs + f.as;
+    l.result = t === L ? "PUSH" : ((t > L) === (side === "over") ? "HIT" : "MISS");
+  } else if (l.kind === "ml") {
+    const m = side === "home" ? f.hs - f.as : f.as - f.hs;
+    l.result = m > 0 ? "HIT" : m < 0 ? "MISS" : "PUSH";
+  } else return false;
+  l.final = `${f.away} ${f.as} – ${f.home} ${f.hs}`;
+  return true;
+}
+// a miss loses the ticket; pushes and voids drop out and the rest pays at their prices
+function gradeLadderRow(row) {
+  let changed = false;
+  (row.legs || []).forEach((l) => { if (gradeLadderLeg(row, l)) changed = true; });
+  if (row.result) return changed;
+  if (row.legs.some((l) => l.result === "MISS")) { row.result = "MISS"; row.units = -1; return true; }
+  if (row.legs.every((l) => l.result)) {
+    const live = row.legs.filter((l) => l.result === "HIT");
+    if (!live.length) { row.result = "PUSH"; row.units = 0; return true; }
+    const dec = live.reduce((a, l) => a * pbDec(l.price), 1);
+    row.result = "HIT"; row.units = +(dec - 1).toFixed(3); row.paidDec = +dec.toFixed(4);
+    return true;
+  }
+  return changed;
+}
+// the lock run's part (ggLockRun): keep a ticket whose first leg kicked off while provisional,
+// save or lock the next one, grade what's finished
+function ladderLockRun(out, changes, now, iso, due, early) {
+  out.ladder = out.ladder || [];
+  const mine = new Map(out.ladder.filter((r) => r && r.key).map((r) => [r.key, r]));
+  mine.forEach((r) => {
+    if (r.provisional && !r.locked && Date.parse(r.firstKick) <= now) {
+      r.provisional = false; r.locked = true;
+      r.note = "No lock run landed in the 90 minutes before the first leg; this is the last ticket saved before kickoff.";
+      changes.push("kept provisional ladder " + r.day);
+    }
+  });
+  const lockedDays = new Set([...mine.values()].filter((r) => r.locked).map((r) => r.day));
+  window.__ladderFresh = true;
+  let pick = null;
+  try { pick = ladderBuild(lockedDays); } finally { window.__ladderFresh = false; }
+  if (pick) {
+    const row = ladderRow(pick);
+    const was = mine.get(row.key);
+    const first = Date.parse(row.firstKick);
+    if (!(was && (was.locked || was.result)) && early(first)) {
+      const sig = (r) => r ? r.legs.map((l) => l.id + "@" + l.line + "@" + l.price).join("~") + "|" + r.book : "";
+      if (due(first)) {
+        Object.assign(row, { locked: true, provisional: false, lockedAt: iso });
+        changes.push("locked ladder " + row.day + ": " + row.legs.map((l) => l.label).join(" + "));
+      } else {
+        Object.assign(row, { locked: false, provisional: true, lockedAt: iso });
+        if (sig(was) !== sig(row)) changes.push("provisional ladder " + row.day + ": " + row.legs.map((l) => l.label).join(" + "));
+      }
+      mine.set(row.key, row);
+    }
+  }
+  mine.forEach((r) => {
+    if (!r.locked || r.result) return;
+    if (gradeLadderRow(r)) changes.push("ladder " + r.day + (r.result ? " " + r.result : " leg graded"));
+  });
+  out.ladder = [...mine.values()].sort((a, b) => String(a.day).localeCompare(String(b.day)));
+}
+// what visitors see: the server's ticket for the next day (provisional or locked), else the
+// page's own pick until the server saves one
+function ladderRows() { return ((window.GG_LOCKS && window.GG_LOCKS.ladder) || []).filter(Boolean); }
+function ladderCurrent() {
+  const open = ladderRows().filter((r) => !r.result && (r.legs || []).some((l) => !(Date.parse(l.kick) <= Date.now()) || !l.result))
+    .sort((a, b) => String(a.day).localeCompare(String(b.day)));
+  const pending = open.find((r) => !(Date.parse(r.firstKick) <= Date.now()) || r.locked);
+  if (pending) return { row: pending, live: false };
+  const c = window.__ladderLive;
+  if (c && Date.now() - c.at < 60000) return c.v;
+  let v = null;
+  try { const pick = ladderBuild(new Set(ladderRows().filter((r) => r.locked).map((r) => r.day))); v = pick ? { row: ladderRow(pick), live: true } : null; } catch (e) { v = null; }
+  window.__ladderLive = { at: Date.now(), v };
+  return v;
+}
+function ladderTally(rows) {
+  const done = rows.filter((r) => r.result === "HIT" || r.result === "MISS" || r.result === "PUSH");
+  const hit = done.filter((r) => r.result === "HIT").length, miss = done.filter((r) => r.result === "MISS").length, push = done.filter((r) => r.result === "PUSH").length;
+  const units = done.reduce((a, r) => a + Number(r.units || 0), 0);
+  const legs = rows.flatMap((r) => r.legs || []).filter((l) => l.result === "HIT" || l.result === "MISS");
+  const lw = legs.filter((l) => l.result === "HIT").length;
+  let streak = "";
+  const seq = done.slice().sort((a, b) => String(b.day).localeCompare(String(a.day))).map((r) => r.result).filter((x) => x !== "PUSH");
+  if (seq.length) { let k = 0; while (k < seq.length && seq[k] === seq[0]) k++; streak = (seq[0] === "HIT" ? "Won " : "Lost ") + k + " straight"; }
+  const avgDec = done.length ? done.reduce((a, r) => a + Number(r.dec || 1), 0) / done.length : null;
+  return { n: hit + miss, hit, miss, push, units, roi: done.length ? units / done.length : 0, legsW: lw, legsL: legs.length - lw, streak, avgDec };
+}
+function ladderLegHtml(l, showResult) {
+  const res = l.result ? `<span class="potd-res ${l.result === "HIT" ? "hit" : l.result === "MISS" ? "miss" : ""}">${l.result === "HIT" ? "Hit" : l.result === "MISS" ? "Miss" : l.result === "PUSH" ? "Push" : "Void"}</span>` : "";
+  const when = l.kick ? fmt.when(l.kick) : "";
+  return `<li data-id="${pbEsc(String(l.game_id))}"><b>${pbEsc(l.label)}</b> ${showResult ? res : ""}
+    <div class="subn">${pbEsc(l.game || "")} · ${when} · ${pbAm(l.price)} · ${LADDER_CAT[l.cat] || ""}${l.league ? " · " + (l.league === "nfl" ? "NFL" : "College") : ""}</div>
+    <div class="prop-why">Our checked chance ${Math.round(Number(l.win) * 100)}%, the books' ${Math.round(Number(l.bookWin) * 100)}%: ${(Number(l.value) * 100 >= 0 ? "+" : "") + (Number(l.value) * 100).toFixed(1)}% at this price.${l.why && !/checked chance/.test(l.why) ? " " + l.why : ""}</div>
+    ${l.final ? `<div class="prop-why"><b>${pbEsc(l.final)}</b></div>` : ""}</li>`;
+}
+function ladderTicketHtml(row, opts) {
+  const o = opts || {};
+  const status = row.result ? `<span class="potd-res ${row.result === "HIT" ? "hit" : row.result === "MISS" ? "miss" : ""}">${row.result === "HIT" ? "Hit" : row.result === "MISS" ? "Miss" : "Push"}</span>`
+    : row.locked ? `<span class="potd-res">Locked</span>` : `<span class="potd-res">Not locked yet</span>`;
+  const units = row.result ? `<span class="potd-u"><span class="${row.units >= 0 ? "up" : "down"}">${row.units >= 0 ? "+" : "−"}${Math.abs(row.units).toFixed(2)}u</span></span>` : "";
+  const lockLine = row.result ? "" : row.locked
+    ? `Locked ${row.lockedAt ? new Date(row.lockedAt).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" }) : ""}.`
+    : o.live ? "Our pick right now. The server saves it from 12 hours before the first leg and locks it 90 minutes before."
+    : `Locks 90 minutes before the first leg${row.firstKick ? " (" + new Date(Date.parse(row.firstKick) - LOCK_WINDOW_MS).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" }) + ")" : ""}; it can still change until then.`;
+  return `<article class="prop-card ladder-ticket">
+    <div class="potd-head">${status}<div><b>${row.n}-leg · ${pbAm(row.american)}${row.book ? " at " + pbEsc(row.book) : ""}</b>
+      <div class="subn">${pbEsc(potdDayName(row.firstKick || row.day))} · $10 pays ${pbMoney(10 * Number(row.dec))} · checked chance ${pbPct(row.chance)}, needs ${pbPct(row.breakEven)} · ${row.ev >= 0 ? "+" : ""}${(Number(row.ev) * 100).toFixed(1)}% value</div></div>${units}</div>
+    <ul class="parlay-legs">${(row.legs || []).map((l) => ladderLegHtml(l, !!row.locked)).join("")}</ul>
+    <div class="subn">${lockLine}${row.note ? " " + pbEsc(row.note) : ""}</div>
+    ${o.builder && !row.result ? `<button type="button" class="ready-open" data-openpb="${row.legs.map((l) => l.id).join("~")}">Open in parlay builder</button>` : ""}
+  </article>`;
+}
+function ladderRecordHtml(rows) {
+  const T = ladderTally(rows);
+  const u = (x) => `${x >= 0 ? "+" : "−"}${Math.abs(x).toFixed(2)}u`;
+  const groups = (keyOf, names) => {
+    const m = {};
+    rows.forEach((r) => (r.legs || []).forEach((l) => {
+      if (l.result !== "HIT" && l.result !== "MISS") return;
+      const k = keyOf(r, l); if (!k) return;
+      m[k] = m[k] || { w: 0, l: 0 }; m[k][l.result === "HIT" ? "w" : "l"]++;
+    }));
+    return Object.keys(m).map((k) => `<div><span class="lbl">${pbEsc(names ? (names[k] || k) : k)} legs</span><b>${m[k].w}-${m[k].l}</b></div>`).join("");
+  };
+  const bySize = [2, 3].map((n) => { const t = ladderTally(rows.filter((r) => r.n === n)); return t.n || t.push ? `<div><span class="lbl">${n}-leg tickets</span><b>${t.hit}-${t.miss} · ${u(t.units)}</b></div>` : ""; }).join("");
+  const pending = rows.filter((r) => r.locked && !r.result).length;
+  return `<article class="prop-card potd-rec ladder-rec">
+    <div class="who"><div><h4>The Ladder</h4>
+      <div class="prop-meta">One parlay a game day, 2 or 3 legs from every bet type: NFL sides, totals, moneylines and player prop unders, college totals and moneylines (college spreads lost in testing, so they stay off). Every leg has to beat its own price at the one book that pays the most for the whole ticket, and the ticket has to hit at least 15% of the time. It locks 90 minutes before the first leg and is graded leg by leg from the final scores and box scores. One unit a ticket.</div></div>
+      <div class="pick-score">${T.hit}-${T.miss}</div></div>
+    <div class="prop-stats">
+      <div><span class="lbl">Tickets</span><b>${T.n ? Math.round((T.hit / T.n) * 100) + "% hit" : "No finished tickets yet"}</b></div>
+      <div><span class="lbl">Units</span><b class="${T.units >= 0 ? "up" : "down"}">${T.n ? u(T.units) + " · " + (T.roi >= 0 ? "+" : "−") + Math.abs(T.roi * 100).toFixed(1) + "% a ticket" : "—"}</b></div>
+      <div><span class="lbl">Legs</span><b>${T.legsW + T.legsL ? T.legsW + "-" + T.legsL + " · " + Math.round((T.legsW / (T.legsW + T.legsL)) * 100) + "%" : "—"}</b></div>
+      ${T.streak ? `<div><span class="lbl">Streak</span><b>${T.streak}</b></div>` : ""}
+      ${T.avgDec ? `<div><span class="lbl">Average price</span><b>${pbAm(pbAmerican(T.avgDec))}</b></div>` : ""}
+      ${pending ? `<div><span class="lbl">Locked, not finished</span><b>${pending}</b></div>` : ""}
+      ${bySize}
+      ${groups((r, l) => l.cat, LADDER_CAT)}
+      ${groups((r, l) => l.league === "nfl" ? "NFL" : l.league === "cfb" ? "College" : "")}
+    </div>
+  </article>`;
+}
+function renderLadder() {
+  const box = document.getElementById("ladderBoard");
+  if (!box) return;
+  const rows = ladderRows();
+  const cur = ladderCurrent();
+  const done = rows.filter((r) => r.result || (r.locked && cur && cur.row.key !== r.key)).sort((a, b) => String(b.day).localeCompare(String(a.day)));
+  box.innerHTML = ladderRecordHtml(rows)
+    + (cur ? `<h3 class="ladder-h">${cur.row.locked ? "Today's ladder" : "Next ladder"}</h3>` + ladderTicketHtml(cur.row, { live: cur.live, builder: true })
+      : `<div class="empty">No ladder right now: no game day ahead has two legs that each beat their price with a ticket that hits 15% of the time or more. It shows here as soon as one does.</div>`)
+    + (done.length ? `<h3 class="ladder-h">Every ladder</h3>` + done.map((r) => ladderTicketHtml(r)).join("") : "");
+  if (!box.__wired) {
+    box.__wired = true;
+    box.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-openpb]");
+      if (b) { e.stopPropagation(); openInBuilder(b.dataset.openpb); return; }
+      const li = e.target.closest("li[data-id]");
+      if (li) openGame(li.dataset.id);
+    });
+  }
+}
+// the small tile on Today
+function ladderTileHtml() {
+  const cur = ladderCurrent();
+  const T = ladderTally(ladderRows());
+  const rec = T.n ? `${T.hit}-${T.miss} · ${T.units >= 0 ? "+" : "−"}${Math.abs(T.units).toFixed(2)}u` : "New";
+  if (!cur) return `<div class="lbl">The Ladder · ${rec}</div><p class="subn">No ladder right now. It posts when a game day has two legs that each beat their price.</p><a href="#ladder" data-view="ladder" class="ladder-link">See the record</a>`;
+  const r = cur.row;
+  return `<div class="lbl">The Ladder · ${rec}</div>
+    <div class="ladder-tile-price"><b>${pbAm(r.american)}</b> ${r.book ? "at " + pbEsc(r.book) : ""} · ${r.n} legs · ${r.ev >= 0 ? "+" : ""}${(r.ev * 100).toFixed(0)}% value</div>
+    <ul class="ladder-tile-legs">${r.legs.map((l) => `<li>${pbEsc(l.label)} <span class="subn">${pbAm(l.price)}</span></li>`).join("")}</ul>
+    <div class="subn">${r.locked ? "Locked" : "Locks 90 minutes before the first leg"} · ${pbEsc(potdDayName(r.firstKick || r.day))}</div>
+    <a href="#ladder" data-view="ladder" class="ladder-link">The Ladder and its record</a>`;
+}
 function potdWindowKey(window, bet) {
   if (!window || !bet || !bet.g) return "";
   return window.big ? ("slate:" + window.day) : ("game:" + bet.g.id);
@@ -12943,6 +13246,9 @@ function ensurePotdProps() {
         if (view === "nflpotd" && typeof renderNflPotd === "function") renderNflPotd();
         if (view === "prime" && typeof renderPrimetime === "function") renderPrimetime();
         if (view === "props" && typeof renderProps === "function") renderProps();
+        window.__ladderLive = null;
+        if (view === "ladder" && typeof renderLadder === "function") renderLadder();
+        if (view === "home") { const lt = document.getElementById("homeLadderTile"); if (lt && typeof ladderTileHtml === "function") lt.innerHTML = ladderTileHtml(); }
       } catch (e) {}
     });
   return window.__potdPropPull;
@@ -13801,6 +14107,7 @@ function ggLockRun(prev) {
     });
     out.potd[lg] = Array.from(mine.values());
   });
+  try { ladderLockRun(out, changes, now, iso, due, early); } catch (e) { console.warn("ladder", e); }
   if (changes.length) out.updated = iso;
   return { locks: out, changes };
 }
@@ -14186,6 +14493,7 @@ function renderHome() {
     feat.innerHTML = scoreboardHtml(g);
     feat.onclick = () => openGame(g.id);
   } else if (feat) feat.className = "home-feature";
+  try { const lt = document.getElementById("homeLadderTile"); if (lt && typeof ladderTileHtml === "function") lt.innerHTML = ladderTileHtml(); } catch (e) {}
   const teaser = document.getElementById("homeCardTeaser");
   if (teaser) {
     teaser.innerHTML = `
@@ -16506,7 +16814,7 @@ function renderBoom() {
 const VIEW_TITLE = {
   home: "Today", card: "This week's card", nfl: "NFL Week {nw} projections", prime: "Prime-time NFL games", props: "NFL player props",
   charts: "NFL game charts", live: "Live scores", tds: "Anytime TD odds", value: "Underdog value", nflwx: "NFL weather", nflinj: "NFL injuries",
-  nflpotd: "NFL play of the day", cfb: "College football Week {cw} projections", potd: "College play of the day", cfbpicks: "College picks",
+  nflpotd: "NFL play of the day", ladder: "The Ladder", cfb: "College football Week {cw} projections", potd: "College play of the day", cfbpicks: "College picks",
   cfbwx: "College weather", cfbinj: "College injuries", parlay: "Ready-made tickets", builder: "Parlay builder", score: "Scorecard",
   history: "Past weeks", season: "Playoff odds", bets: "My bets", calc: "Betting calculators", ratings: "Team rankings", all: "All games", alerts: "Alerts", model: "How the model works", boom: "Boom Room"
 };
@@ -16517,12 +16825,13 @@ function viewTitle(v) {
   } catch (e) { t = t.replace(/ Week \{[nc]w\}/, ""); }
   return v === "home" ? "Double Gs — NFL & College Football Projections, Picks and Props" : t.replace(/\s+/g, " ").trim() + " | Double Gs";
 }
-const VIEW_SECTION = { home: "home", card: "home", nfl: "nfl", prime: "nfl", props: "nfl", charts: "nfl", live: "nfl", tds: "nfl", value: "nfl", nflwx: "nfl", nflinj: "nfl", nflpotd: "nfl", cfb: "cfb", potd: "cfb", cfbpicks: "cfb", cfbwx: "cfb", cfbinj: "cfb", recruit: "cfb", parlay: "boom", builder: "boom", bets: "boom", calc: "boom", score: "record", history: "record", ratings: "record", season: "record", all: "record", alerts: "record" };
+const VIEW_SECTION = { home: "home", card: "home", ladder: "home", nfl: "nfl", prime: "nfl", props: "nfl", charts: "nfl", live: "nfl", tds: "nfl", value: "nfl", nflwx: "nfl", nflinj: "nfl", nflpotd: "nfl", cfb: "cfb", potd: "cfb", cfbpicks: "cfb", cfbwx: "cfb", cfbinj: "cfb", recruit: "cfb", parlay: "boom", builder: "boom", bets: "boom", calc: "boom", score: "record", history: "record", ratings: "record", season: "record", all: "record", alerts: "record" };
 function quickMark(v) {
   try {
     document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.view === v));
     const keepHome = document.body.dataset.section === "home" && (v === "nflpotd" || v === "potd");
-    if (VIEW_SECTION[v] && !keepHome) document.body.dataset.section = VIEW_SECTION[v];
+    const keepBoom = document.body.dataset.section === "boom" && (v === "ladder" || v === "card");
+    if (VIEW_SECTION[v] && !keepHome && !keepBoom) document.body.dataset.section = VIEW_SECTION[v];
   } catch (e) {}
 }
 // A tap shows its result on the very next frame; the page itself is drawn right after.
@@ -16535,17 +16844,19 @@ function goView(v, opts) {
 }
 function setView(next, opts) {
   if (next === "heisman" || next === "recruit" || next === "awards" || next === "model") next = next === "awards" ? "nflpotd" : "home";
-  const allowed = {home:1,builder:1,bets:1,calc:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,potd:1,nflpotd:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,season:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
+  const allowed = {home:1,builder:1,bets:1,calc:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,potd:1,nflpotd:1,ladder:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,season:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
   if (!allowed[next]) next = "home";
   const wantProps = next === "propp";
   if (wantProps) { window.__parlayLg = "props"; next = "parlay"; }
   view = next;
   try {
     document.body.dataset.view = next;
-    const SECTION_OF = { home: "home", card: "home", nfl: "nfl", prime: "nfl", props: "nfl", charts: "nfl", live: "nfl", tds: "nfl", value: "nfl", nflwx: "nfl", nflinj: "nfl", nflpotd: "nfl", cfb: "cfb", potd: "cfb", cfbpicks: "cfb", cfbwx: "cfb", cfbinj: "cfb", recruit: "cfb", parlay: "boom", builder: "boom", bets: "boom", calc: "boom", score: "record", history: "record", ratings: "record", season: "record", all: "record", alerts: "record" };
+    const SECTION_OF = { home: "home", card: "home", ladder: "home", nfl: "nfl", prime: "nfl", props: "nfl", charts: "nfl", live: "nfl", tds: "nfl", value: "nfl", nflwx: "nfl", nflinj: "nfl", nflpotd: "nfl", cfb: "cfb", potd: "cfb", cfbpicks: "cfb", cfbwx: "cfb", cfbinj: "cfb", recruit: "cfb", parlay: "boom", builder: "boom", bets: "boom", calc: "boom", score: "record", history: "record", ratings: "record", season: "record", all: "record", alerts: "record" };
     // Play of the day is reachable from Home too; stay in Home when coming from there.
     const keepHome = document.body.dataset.section === "home" && (next === "nflpotd" || next === "potd");
-    document.body.dataset.section = keepHome ? "home" : (SECTION_OF[next] || "home");
+    // The Ladder and the weekly card are in the Boom Room too; stay there when coming from it.
+    const keepBoom = document.body.dataset.section === "boom" && (next === "ladder" || next === "card");
+    document.body.dataset.section = keepHome ? "home" : keepBoom ? "boom" : (SECTION_OF[next] || "home");
   } catch (e) {}
   try { if (typeof subnavFollow === "function") requestAnimationFrame(subnavFollow); } catch (e) {}
   try {
@@ -16584,6 +16895,8 @@ function setView(next, opts) {
   if (potdS) potdS.style.display = next === "potd" ? "" : "none";
   const nflPotdS = document.getElementById("nflPotdSection");
   if (nflPotdS) nflPotdS.style.display = next === "nflpotd" ? "" : "none";
+  const ladderS = document.getElementById("ladderSection");
+  if (ladderS) ladderS.style.display = next === "ladder" ? "" : "none";
   $("#nflWxSection").style.display = next === "nflwx" ? "" : "none";
   $("#cfbWxSection").style.display = next === "cfbwx" ? "" : "none";
   $("#ratingsSection").style.display = next === "ratings" ? "" : "none";
@@ -16670,6 +16983,7 @@ function setView(next, opts) {
   if (next === "cfbpicks") renderCfbPicks();
   if (next === "potd" && typeof renderPotd === "function") renderPotd();
   if (next === "nflpotd" && typeof renderNflPotd === "function") renderNflPotd();
+  if (next === "ladder" && typeof renderLadder === "function") renderLadder();
   if (next === "nflwx") renderNflWeather();
   if (next === "cfbwx") renderCfbWeather();
   if (next === "ratings") renderRatings();
