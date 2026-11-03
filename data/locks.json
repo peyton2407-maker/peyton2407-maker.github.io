@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 13.5,
    "total": 51.5,
-   "lockedAt": "2026-11-03T19:46:38.941Z",
+   "lockedAt": "2026-11-03T21:01:38.851Z",
    "provisional": true
   },
   "401866454": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -6,
    "total": 45.5,
-   "lockedAt": "2026-11-03T19:46:38.941Z",
+   "lockedAt": "2026-11-03T21:01:38.851Z",
    "provisional": true
   }
  },
@@ -778,7 +778,7 @@
    }
   ]
  },
- "updated": "2026-11-03T19:46:38.941Z",
+ "updated": "2026-11-03T21:01:38.851Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -788,46 +788,46 @@
    "tier": "light",
    "stake": 0.5,
    "size": 0,
-   "american": 276,
-   "dec": 3.7601,
-   "chance": 0.2505,
-   "breakEven": 0.2659,
-   "ev": -0.0344,
+   "american": 268,
+   "dec": 3.6768,
+   "chance": 0.2632,
+   "breakEven": 0.272,
+   "ev": -0.0323,
    "firstKick": "2026-11-04T00:00:00.000Z",
    "legs": [
     {
      "id": "401866454|sp|away",
-     "label": "BUFF +6",
+     "label": "BUFF +6.5",
      "kind": "sp",
      "game_id": "401866454",
      "game": "BUFF @ M-OH",
      "league": "cfb",
      "kick": "2026-11-04T01:00Z",
-     "price": -108,
-     "line": 6,
-     "win": 0.5091,
-     "bookWin": 0.4853,
-     "value": 0.0054,
+     "price": -110,
+     "line": 6.5,
+     "win": 0.5256,
+     "bookWin": 0.5022,
+     "value": 0.0035,
      "cat": "dog",
      "why": "BUFF is getting 6.0. Our number has them covering by 4.8 points.",
      "prop": null,
      "result": null
     },
     {
-     "id": "401866453|tot|over",
-     "label": "Over 51.5",
-     "kind": "tot",
+     "id": "401866453|sp|home",
+     "label": "AKR +13.5",
+     "kind": "sp",
      "game_id": "401866453",
      "game": "OHIO @ AKR",
      "league": "cfb",
      "kick": "2026-11-04T00:00Z",
-     "price": -105,
-     "line": 51.5,
-     "win": 0.492,
-     "bookWin": 0.4892,
-     "value": -0.0395,
-     "cat": "total",
-     "why": "Our total is 51.5; this side is the better price.",
+     "price": -108,
+     "line": 13.5,
+     "win": 0.5007,
+     "bookWin": 0.4978,
+     "value": -0.0357,
+     "cat": "dog",
+     "why": "AKR is getting 13.5. Our number has them covering by 1.0 points.",
      "prop": null,
      "result": null
     }
@@ -836,7 +836,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-03T19:46:38.941Z"
+   "lockedAt": "2026-11-03T21:01:38.851Z"
   }
  ]
 }
