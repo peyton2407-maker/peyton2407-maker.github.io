@@ -10,16 +10,16 @@
    "away": "OHIO",
    "date": "2026-11-04T00:00Z",
    "pick": "AKR",
-   "pick_line": "AKR +14.0",
+   "pick_line": "AKR +13.5",
    "total_pick": "NO PLAY",
-   "side_play": true,
-   "our_margin": -12.37,
+   "side_play": false,
+   "our_margin": -12.5,
    "our_total": 51.5,
-   "confidence": 51,
+   "confidence": null,
    "total_play": false,
    "spread": 13.5,
    "total": 51.5,
-   "lockedAt": "2026-11-03T18:16:21.722Z",
+   "lockedAt": "2026-11-03T18:31:35.148Z",
    "provisional": true
   },
   "401866454": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -6,
    "total": 44.5,
-   "lockedAt": "2026-11-03T18:16:21.722Z",
+   "lockedAt": "2026-11-03T18:31:35.148Z",
    "provisional": true
   }
  },
@@ -778,7 +778,7 @@
    }
   ]
  },
- "updated": "2026-11-03T18:16:21.722Z",
+ "updated": "2026-11-03T18:31:35.148Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -836,7 +836,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-03T18:16:21.722Z"
+   "lockedAt": "2026-11-03T18:31:35.148Z"
   }
  ]
 }
