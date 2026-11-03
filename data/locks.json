@@ -19,8 +19,7 @@
    "total_play": false,
    "spread": 12.5,
    "total": 51.5,
-   "lockedAt": "2026-11-03T22:17:13.776Z",
-   "provisional": true
+   "lockedAt": "2026-11-03T22:33:04.497Z"
   },
   "401866454": {
    "id": "401866454",
@@ -32,15 +31,15 @@
    "date": "2026-11-04T01:00Z",
    "pick": "BUFF",
    "pick_line": "BUFF +6.5",
-   "total_pick": "OVER 45.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 1.53,
-   "our_total": 45.1,
+   "our_margin": 1.6,
+   "our_total": 45.5,
    "confidence": null,
    "total_play": false,
    "spread": -6.5,
    "total": 45.5,
-   "lockedAt": "2026-11-03T22:17:13.776Z",
+   "lockedAt": "2026-11-03T22:33:04.497Z",
    "provisional": true
   }
  },
@@ -778,7 +777,7 @@
    }
   ]
  },
- "updated": "2026-11-03T22:17:13.776Z",
+ "updated": "2026-11-03T22:33:04.497Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -807,9 +806,9 @@
      "line": 6.5,
      "win": 0.5219,
      "bookWin": 0.4978,
-     "value": 0.0051,
+     "value": 0.0052,
      "cat": "dog",
-     "why": "BUFF is getting 6.5. Our number has them covering by 4.5 points.",
+     "why": "BUFF is getting 6.5. Our number has them covering by 4.9 points.",
      "prop": null,
      "result": null
     },
@@ -834,9 +833,9 @@
    ],
    "result": null,
    "units": null,
-   "locked": false,
-   "provisional": true,
-   "lockedAt": "2026-11-03T22:17:13.776Z"
+   "locked": true,
+   "provisional": false,
+   "lockedAt": "2026-11-03T22:33:04.497Z"
   }
  ]
 }
