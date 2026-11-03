@@ -1960,6 +1960,28 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .cr-chip { padding: 4px 10px; border-radius: 999px; background: rgba(242,184,64,.12); color: var(--sun); font-size: 13px; font-weight: 700; }
 #createOut { display: grid; gap: 14px; }
 .cr-foot { margin-top: 4px; }
+.cr-refine, .cr-swap { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.cr-refine button, .cr-swap button { padding: 6px 11px; border-radius: 999px; border: 1px solid var(--line-2); background: transparent; color: var(--ink); font: 700 13px var(--body); cursor: pointer; }
+.cr-refine button:hover, .cr-swap button:hover { border-color: var(--sun); }
+.cr-swap { margin: 10px 0 4px; }
+.cr-swap .lbl, .cr-books .lbl { flex-basis: 100%; font-size: 12.5px; font-weight: 700; color: var(--ink-soft); }
+.cr-swap em { font-style: normal; color: var(--ink-soft); font-weight: 600; }
+.cr-meter { position: relative; height: 6px; margin: 8px 0 5px; border-radius: 3px; background: var(--line-2); }
+.cr-meter i { position: absolute; inset: 0 auto 0 0; border-radius: 3px; background: var(--sun); }
+.cr-meter s { position: absolute; top: -3px; width: 2px; height: 12px; margin-left: -1px; background: var(--ink); }
+.cr-facts { display: grid; grid-template-columns: 92px 1fr; gap: 5px 10px; margin: 8px 0 2px; font-size: 13.5px; line-height: 1.45; }
+.cr-facts dt { color: var(--ink-soft); font-weight: 700; }
+.cr-facts dd { margin: 0; color: var(--ink); }
+.cr-case { padding: 10px 12px; border-radius: 12px; background: rgba(242,184,64,.07); }
+.cr-books { display: flex; flex-wrap: wrap; gap: 6px 12px; margin: 10px 0 2px; font-size: 13.5px; color: var(--ink-soft); }
+.cr-books .best { color: var(--sun); }
+.cr-books .subn { flex-basis: 100%; }
+.cr-leg-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.cr-px { font-weight: 800; color: var(--ink); }
+.cr-up { color: var(--good, #6fd08c); font-weight: 700; }
+.cr-down { color: var(--bad, #f07a6a); font-weight: 700; }
+.cr-legs > li { cursor: pointer; }
+@media (max-width: 420px) { .cr-facts { grid-template-columns: 1fr; gap: 1px; } .cr-facts dd { margin-bottom: 6px; } }
 .alerts-box { padding: 12px 14px; border: 1px solid var(--line-2); border-radius: 12px; background: var(--card); margin: 0 0 12px; }
 .alerts-box ol { margin: 6px 0 0; padding-left: 20px; }
 .alerts-box a { color: var(--sun); font-weight: 700; word-break: break-all; }
@@ -12311,7 +12333,7 @@ function createPool(want) {
         const tid = typeof propTicketId === "function" ? propTicketId(p, L) : null;
         if (!tid) return;
         const mean = L.m.mean >= 10 ? Math.round(L.m.mean) : Number(L.m.mean).toFixed(1);
-        push(tid, { reason: `We project ${p.name} for ${mean} ${PROP_LBL[L.m.key] || L.m.label} against ${L.line}; our checked chance on the ${L.take.toLowerCase()} is ${Math.round(L.chance * 100)}%, the books' ${Math.round(L.fair * 100)}%.${p.injury && p.injury !== "ACTIVE" ? " He's listed " + String(p.injury).toLowerCase() + "." : ""}`, player: p.name });
+        push(tid, { prop: p, lean: L, reason: `We project ${p.name} for ${mean} ${PROP_LBL[L.m.key] || L.m.label} against ${L.line}; our checked chance on the ${L.take.toLowerCase()} is ${Math.round(L.chance * 100)}%, the books' ${Math.round(L.fair * 100)}%.${p.injury && p.injury !== "ACTIVE" ? " He's listed " + String(p.injury).toLowerCase() + "." : ""}`, player: p.name });
       });
     }
   });
@@ -12328,13 +12350,16 @@ function createPrice(ids) {
     const legs = ids.map((id) => pbLeg(book ? { id, book } : { id }));
     if (legs.some((l) => !l || l.started || (book && l.priceSource !== book))) return;
     const r = pbParlay(legs, 0);
+    if (book) all.push({ book, american: r.american, dec: r.decEff, ev: r.ev });
     if (!best || r.ev > best.r.ev) best = { r, legs, book: book || null };
   };
+  const all = [];
   tryBook(null);
   const names = new Set();
   ids.forEach((id) => Object.keys((((window.PB_BOOKS || {}).games || {})[id.split("|")[0]]) || {}).forEach((b) => names.add(b)));
   names.forEach(tryBook);
   if (best && !best.book) { const src = [...new Set(best.legs.map((l) => l.priceSource))]; best.book = src.length === 1 && !/standard|typical|estimated/.test(src[0]) ? src[0] : null; }
+  if (best) best.all = all.sort((a, b) => b.dec - a.dec);
   return best;
 }
 function createTickets(want) {
@@ -12403,26 +12428,222 @@ function createUnderstood(want) {
   chips.push(want.mode === "safe" ? "highest chance" : want.mode === "long" || want.mode === "target" ? "aim for " + pbAm(pbAmerican(want.target)) : "best value");
   return chips.map((c) => `<span class="cr-chip">${pbEsc(c)}</span>`).join("");
 }
+// ---- Create your own: the full case behind every leg and ticket ----------------------------
+function crOrd(n) { const v = Math.round(Number(n)); const t = v % 100; return v + (t >= 11 && t <= 13 ? "th" : ({ 1: "st", 2: "nd", 3: "rd" })[v % 10] || "th"); }
+function crLegParts(l) {
+  const parts = String(l.id).split("|");
+  const kind = parts[1], side = parts[parts.length - 1];
+  const g = l.g;
+  const team = side === "home" ? g.home : side === "away" ? g.away : null;
+  const opp = side === "home" ? g.away : side === "away" ? g.home : null;
+  return { kind, side, g, team, opp };
+}
+function crLineOf(pb) {
+  if (pb && Number.isFinite(Number(pb.line))) return Number(pb.line);
+  const m = String((pb && pb.label) || "").match(/([+-]?\d+(?:\.\d+)?)\s*$/);
+  return m ? Number(m[1]) : null;
+}
+// one plain sentence: what has to happen for the leg to cash
+function crNeeds(l, pb) {
+  const { kind, side, g, team, opp } = crLegParts(l);
+  const nm = (t) => (t && (t.short || t.abbr)) || "";
+  const where = g.neutral ? "against" : side === "home" ? "at home against" : "on the road at";
+  if (kind === "ml") return `${nm(team)} have to win ${where} ${nm(opp)}. Any margin counts.`;
+  const ln = crLineOf(pb);
+  if (ln == null) return "";
+  if (kind === "sp") {
+    if (Math.abs(ln) < 0.01) return `${nm(team)} have to win; a tie is a push.`;
+    if (ln < 0) { const by = Number.isInteger(ln) ? -ln + 1 : Math.ceil(-ln); return `${nm(team)} have to win by ${by} or more${Number.isInteger(ln) ? ` (by exactly ${-ln} is a push)` : ""}.`; }
+    const lose = Number.isInteger(ln) ? ln - 1 : Math.floor(ln);
+    return `${nm(team)} have to win, or lose by ${lose} or fewer${Number.isInteger(ln) ? ` (by exactly ${ln} is a push)` : ""}.`;
+  }
+  if (kind === "tot") {
+    if (side === "over") { const need = Number.isInteger(ln) ? ln + 1 : Math.ceil(ln); return `The two teams have to score ${need} or more points combined${Number.isInteger(ln) ? ` (exactly ${ln} is a push)` : ""}.`; }
+    const need = Number.isInteger(ln) ? ln - 1 : Math.floor(ln);
+    return `The two teams have to score ${need} or fewer points combined${Number.isInteger(ln) ? ` (exactly ${ln} is a push)` : ""}.`;
+  }
+  if (kind === "pp" && l.lean) {
+    const L = l.lean, lbl = String(PROP_LBL[L.m.key] || L.m.label || "").toLowerCase();
+    return `${l.player} has to finish ${L.take === "Under" ? "under" : "over"} ${L.line} ${lbl}.`;
+  }
+  return "";
+}
+function crTeamForm(g, t) {
+  if (!t) return "";
+  const rows = (window.WEEK_RESULTS || []).filter((r) => r && r.league === g.league && (String(r.homeId) === String(t.id) || String(r.awayId) === String(t.id)) && r.hs != null && r.as != null && Date.parse(r.date) < Date.parse(g.date));
+  rows.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+  const last = rows.slice(0, 3).map((r) => {
+    const home = String(r.homeId) === String(t.id);
+    const us = Number(home ? r.hs : r.as), them = Number(home ? r.as : r.hs);
+    return `${us > them ? "W" : us < them ? "L" : "T"} ${us}-${them} ${home ? "vs" : "at"} ${home ? r.awayAbbr : r.homeAbbr}`;
+  });
+  if (!t.record && !last.length) return "";
+  return `<b>${pbEsc(t.abbr)}${t.record ? " " + pbEsc(t.record) : ""}</b>${last.length ? ": " + pbEsc(last.join(", ")) : ""}`;
+}
+function crMoveText(l) {
+  const { kind, side, g, team } = crLegParts(l);
+  const m = typeof lineMove === "function" ? lineMove(g) : null;
+  if (!m) return "";
+  if (kind === "sp" || kind === "ml") {
+    if (m.sp0 == null || m.sp1 == null) return "";
+    if (Math.abs(m.sp1 - m.sp0) < 0.25) return `The spread hasn't moved since it opened at ${spLabelOf(g, m.sp0)}.`;
+    const toUs = (side === "home") === (m.sp1 < m.sp0);
+    return `Opened ${spLabelOf(g, m.sp0)}, now ${spLabelOf(g, m.sp1)}. The market has moved ${toUs ? "toward" : "away from"} ${team.abbr}${toUs ? ", the same way as this pick" : "; our number still likes it at the current price"}.`;
+  }
+  if (kind === "tot") {
+    if (m.t0 == null || m.t1 == null) return "";
+    if (Math.abs(m.t1 - m.t0) < 0.25) return `The total hasn't moved since it opened at ${pbTot(m.t0)}.`;
+    const toUs = (side === "over") === (m.t1 > m.t0);
+    return `Opened ${pbTot(m.t0)}, now ${pbTot(m.t1)}. The market has moved ${toUs ? "the same way as this pick" : "against this pick; our number still likes it at the current total"}.`;
+  }
+  return "";
+}
+function crWeather(g) {
+  if (g.indoor || (typeof roofedVenue === "function" && roofedVenue(g.venue && (g.venue.name || g.venue)))) return "Indoors, so weather isn't a factor.";
+  const w = g.weather;
+  if (!w || w.temp_f == null) return "";
+  const bits = [`${w.condition || "Forecast"}, ${Math.round(w.temp_f)}°F, wind ${Math.round(w.wind_mph || 0)} mph`];
+  if (w.precip_prob >= 30) bits.push(`${Math.round(w.precip_prob)}% chance of rain`);
+  const wi = g.weather_impact;
+  let s = bits.join(", ") + ".";
+  if (wi && wi.note && Math.abs(Number(wi.adj) || 0) >= 1) s += ` ${wi.note} We take ${Math.abs(wi.adj).toFixed(1)} points ${wi.adj < 0 ? "off" : "onto"} the total for it.`;
+  return s;
+}
+function crPropFacts(l, rows) {
+  const p = l.prop, L = l.lean;
+  if (!p || !L) return;
+  const key = L.m.key, line = Number(L.line), under = L.take === "Under";
+  const lbl = String(PROP_LBL[key] || L.m.label || "").toLowerCase();
+  const mean = L.m.mean >= 10 ? Math.round(L.m.mean) : Number(L.m.mean).toFixed(1);
+  rows.push(["Projection", `We project <b>${mean}</b> ${pbEsc(lbl)} against a line of ${line}.`]);
+  const pack = window.GAMELOGS && window.GAMELOGS[String(p.id)];
+  const logs = pack && (pack.rows || []).filter((r) => Number.isFinite(Number(r[key])));
+  if (logs && logs.length) {
+    const hit = (r) => under ? Number(r[key]) < line : Number(r[key]) > line;
+    const yr = new Date().getFullYear();
+    const part = (list, name) => list.length ? `${list.filter(hit).length} of ${name} ${list.length}` : "";
+    const season = logs.filter((r) => Number(r.s) === yr);
+    const five = logs.slice(0, 5).map((r) => Number(r[key]));
+    rows.push(["Track record", `${under ? "Under" : "Over"} ${line} in ${[part(logs.slice(0, 5), "his last"), part(logs.slice(0, 10), "his last"), season.length ? `${season.filter(hit).length} of ${season.length} this season` : ""].filter(Boolean).join(", ")}. Last 5 games: ${five.join(", ")} (avg ${Math.round(five.reduce((a, x) => a + x, 0) / five.length * 10) / 10}).`]);
+  }
+  try {
+    const t = typeof propDefTable === "function" ? propDefTable() : null;
+    const d = t && p.opp && t[`${p.opp}|${p.pos}|${key}`];
+    if (d) {
+      const most = d.rank <= d.of / 2;
+      rows.push(["Matchup", `${pbEsc(p.opp)} gives up the ${crOrd(most ? d.rank : d.of - d.rank + 1)} ${most ? "most" : "fewest"} ${PROP_DEF_STAT[key]} to ${pbEsc(p.pos)}s (${Math.round(d.avg * 10) / 10} a game)${(most && !under) || (!most && under) ? ", which helps this pick" : most && under ? ", the one thing working against this under" : ""}.`]);
+    }
+  } catch (e) {}
+  if (p.injury && p.injury !== "ACTIVE") rows.push(["Status", `He's listed ${pbEsc(String(p.injury).toLowerCase())}. If he doesn't play, most books void the leg.`]);
+}
+function crLegFacts(l, pb) {
+  const rows = [];
+  const { kind, side, g } = crLegParts(l);
+  const p = g.proj || {}, o = g.odds || {};
+  const needs = crNeeds(l, pb);
+  if (needs) rows.push(["To cash", pbEsc(needs)]);
+  if (kind === "pp") crPropFacts(l, rows);
+  else {
+    if (p.home_points != null && p.away_points != null) rows.push(["Our score", `${pbEsc(g.away.abbr)} ${Math.round(p.away_points)}, ${pbEsc(g.home.abbr)} ${Math.round(p.home_points)}`]);
+    if ((kind === "sp" || kind === "ml") && p.hashmark_home_spread != null) {
+      const ours = spLabelOf(g, p.hashmark_home_spread), posted = o.home_spread != null ? spLabelOf(g, o.home_spread) : (o.details || "—");
+      const gap = o.home_spread != null ? Math.abs(Number(p.hashmark_home_spread) - Number(o.home_spread)) : null;
+      rows.push(["Our number", `${pbEsc(ours)} vs the line ${pbEsc(posted)}${gap != null && gap >= 0.5 ? `, ${gap.toFixed(1)} points ${((side === "home") === (Number(p.hashmark_home_spread) < Number(o.home_spread))) ? "in this pick's favor" : "the other way, so the value is in the price"}` : ""}.`]);
+    }
+    if (kind === "tot" && p.hashmark_total != null && o.total != null) {
+      const gap = Number(p.hashmark_total) - Number(o.total);
+      rows.push(["Our number", `Our total is ${Number(p.hashmark_total).toFixed(1)} vs ${pbTot(o.total)} posted${Math.abs(gap) >= 0.5 ? `, ${Math.abs(gap).toFixed(1)} points ${gap < 0 ? "lower" : "higher"}` : ""}.`]);
+    }
+    if (kind === "ml" && p.win_prob_home != null) rows.push(["Win chance", `Our ratings alone have ${pbEsc(side === "home" ? g.home.abbr : g.away.abbr)} winning ${Math.round((side === "home" ? p.win_prob_home : p.win_prob_away) * 100)}% of the time.`]);
+    if (p.home_fpi_rank != null && p.away_fpi_rank != null) rows.push(["Power rank", `${pbEsc(g.away.abbr)} ${crOrd(p.away_fpi_rank)}, ${pbEsc(g.home.abbr)} ${crOrd(p.home_fpi_rank)} in ESPN's FPI${g.league === "nfl" ? " (of 32)" : ""}.`]);
+    const form = [crTeamForm(g, g.away), crTeamForm(g, g.home)].filter(Boolean);
+    if (form.length) rows.push(["Form", form.join("<br>")]);
+    const mv = crMoveText(l);
+    if (mv) rows.push(["Line move", pbEsc(mv)]);
+  }
+  if (kind === "tot" || kind === "pp") { const w = crWeather(g); if (w) rows.push(["Weather", pbEsc(w)]); }
+  const s = g.situational || {};
+  const notes = (s.notes || []).filter((n) => /out|injur|doubtful|questionable|weather|wind|rain|rest|travel|short week|bye/i.test(n) && !/line has moved|total has moved/i.test(n)).slice(0, 3);
+  if (notes.length) rows.push(["News", notes.map(pbEsc).join(" ")]);
+  // price shopping for this one leg
+  const bp = kind !== "pp" && typeof bestPriceFor === "function" ? bestPriceFor(l.id) : null;
+  if (bp && bp.rows && bp.rows.length > 1) {
+    const worst = bp.rows[bp.rows.length - 1];
+    rows.push(["Shop it", `Best is ${pbEsc(bp.best.book)} ${kind === "ml" ? "" : (bp.best.line != null ? pbLine(bp.best.line) + " " : "")}${pbAm(bp.best.price)} across ${bp.rows.length} books; the worst is ${pbEsc(worst.book)} ${kind === "ml" ? "" : (worst.line != null ? pbLine(worst.line) + " " : "")}${pbAm(worst.price)}.`]);
+  }
+  return rows;
+}
+function crMeter(ours, books) {
+  const o = Math.max(0, Math.min(1, Number(ours) || 0)), b = Math.max(0, Math.min(1, Number(books) || 0));
+  return `<div class="cr-meter" role="img" aria-label="Our chance ${Math.round(o * 100)}%, the books' ${Math.round(b * 100)}%"><i style="width:${(o * 100).toFixed(1)}%"></i><s style="left:${(b * 100).toFixed(1)}%"></s></div>`;
+}
+function crLegHtml(l, pb) {
+  const facts = crLegFacts(l, pb);
+  const val = pb.value;
+  return `<li class="cr-leg" data-id="${pbEsc(l.gid)}">
+    <div class="cr-leg-top"><b>${pbEsc(pb.label)}</b><span class="cr-px">${pbAm(pb.price)}</span></div>
+    <div class="subn">${pbEsc(l.g.short_name)} · ${fmt.when(l.g.date)}</div>
+    ${crMeter(pb.win, pb.bookWin)}
+    <div class="subn">Our checked chance <b>${Math.round(pb.win * 100)}%</b> · the books' ${Math.round(pb.bookWin * 100)}% · <span class="${val >= 0.005 ? "cr-up" : val <= -0.01 ? "cr-down" : ""}">${(val >= 0 ? "+" : "") + (val * 100).toFixed(1)}% value</span></div>
+    ${facts.length ? `<dl class="cr-facts">${facts.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>` : ""}
+  </li>`;
+}
+function crSwapOptions(t) {
+  const st = window.__crState;
+  if (!st || !st.res) return { weak: null, alts: [] };
+  const legs = t.x.legs;
+  let wi = 0;
+  t.bag.forEach((l, k) => { if ((legs[k] || l.pb).value < (legs[wi] || t.bag[wi].pb).value) wi = k; });
+  const weak = t.bag[wi];
+  const games = new Set(t.bag.filter((_, k) => k !== wi).map((l) => l.gid));
+  const ids = new Set(t.bag.map((l) => l.id));
+  // each candidate priced as the whole new ticket; keep the ones that make it a better bet
+  // without turning it into a different kind of ticket (no more than 1.6x the payout)
+  const alts = [];
+  st.res.pool.filter((l) => !ids.has(l.id) && !games.has(l.gid) && l.value > (legs[wi] || weak.pb).value).slice(0, 12).forEach((l) => {
+    const bag = t.bag.slice(); bag[wi] = l;
+    const x = createPrice(bag.map((b) => b.id));
+    if (!x || !(x.r.ev > t.x.r.ev) || x.r.decEff > t.x.r.decEff * 1.6 || x.r.decEff < t.x.r.decEff / 1.6) return;
+    alts.push({ l, x });
+  });
+  alts.sort((a, b) => b.x.r.ev - a.x.r.ev);
+  return { weak, wi, alts: alts.slice(0, 3) };
+}
 function createTicketHtml(t, i) {
   const r = t.x.r, legs = t.x.legs;
   const ev = r.ev;
   const verdict = ev >= 0.03 ? { cls: "good", text: `Good price: +${Math.round(ev * 100)}% value` } : ev >= -0.01 ? { cls: "", text: "About a fair price" } : { cls: "bad", text: `The book has the edge: ${Math.round(ev * 100)}% value` };
-  const beat = t.bag.filter((l, k) => legs[k] && legs[k].value > 0).length;
-  const why = [];
-  why.push(`${beat} of ${t.bag.length} legs beat their own price${t.x.book ? " at " + t.x.book : ""}.`);
-  why.push(`It hits about ${pbPct(r.pAll)} of the time; the price needs ${pbPct(r.breakEven)}.`);
-  if (ev < -0.01) why.push("The book has the edge on this one, so treat it as a lean, not a pick.");
-  return `<article class="parlay-card ready cr-ticket">
-    <div class="td-mkt">${i === 0 ? "Best match" : "Another option"} · ${t.bag.length}-leg</div>
+  const pbs = t.bag.map((l, k) => legs[k] || l.pb);
+  const beat = pbs.filter((pb) => pb.value > 0).length;
+  const oneIn = r.pAll > 0 ? 1 / r.pAll : null;
+  const idx = (f) => pbs.reduce((b, pb, k) => (f(pb) > f(pbs[b]) ? k : b), 0);
+  const strong = idx((pb) => pb.value), safe = idx((pb) => pb.win), risky = idx((pb) => -pb.win);
+  const caseRows = [
+    ["Strongest edge", `<b>${pbEsc(pbs[strong].label)}</b>: ${(pbs[strong].value >= 0 ? "+" : "") + (pbs[strong].value * 100).toFixed(1)}% value; our chance ${Math.round(pbs[strong].win * 100)}% vs the books' ${Math.round(pbs[strong].bookWin * 100)}%.`],
+    ["Safest leg", `<b>${pbEsc(pbs[safe].label)}</b> hits ${Math.round(pbs[safe].win * 100)}% of the time.`],
+    ["Biggest risk", `<b>${pbEsc(pbs[risky].label)}</b> is the leg most likely to miss (${Math.round((1 - pbs[risky].win) * 100)}% of the time).`]
+  ];
+  if (t.bag.length < 2) caseRows.splice(1);
+  const why = [`${beat} of ${t.bag.length} leg${t.bag.length === 1 ? "" : "s"} beat their own price${t.x.book ? " at " + t.x.book : ""}.`, `Every leg is from a different game, so one result doesn't drag the others down with it.`];
+  if (ev >= 0.03) why.push(`At ${pbAm(r.american)} the book pays more than a ticket that hits ${pbPct(r.pAll)} of the time is worth (it needs ${pbPct(r.breakEven)}).`);
+  else if (ev >= -0.01) why.push(`The price is about right for how often it hits, so this is a fun ticket rather than an edge.`);
+  else why.push("The book has the edge on this one, so treat it as a lean, not a pick.");
+  const all = (t.x.all || []).filter((b) => Number.isFinite(b.dec));
+  const shop = all.length > 1 ? `<div class="cr-books"><span class="lbl">This ticket at each book</span>${all.slice(0, 6).map((b, k) => `<span class="${k === 0 ? "best" : ""}">${pbEsc(b.book)} <b>${pbAm(b.american)}</b></span>`).join("")}${all.length > 1 ? `<span class="subn">Betting $10 at ${pbEsc(all[0].book)} instead of ${pbEsc(all[all.length - 1].book)} pays ${pbMoney(10 * (all[0].dec - all[all.length - 1].dec))} more.</span>` : ""}</div>` : "";
+  const sw = crSwapOptions(t);
+  const swap = sw.weak && sw.alts.length ? `<div class="cr-swap"><span class="lbl">Swap the weakest leg (${pbEsc((legs[sw.wi] || sw.weak.pb).label)}) for</span>${sw.alts.map((a) => `<button type="button" data-crswap="${i}|${sw.wi}|${pbEsc(a.l.id)}">${pbEsc(a.l.label)} ${pbAm(a.l.pb.price)} <em>ticket ${pbAm(a.x.r.american)}, ${(a.x.r.ev >= 0 ? "+" : "") + Math.round(a.x.r.ev * 100)}% value</em></button>`).join("")}</div>` : "";
+  return `<article class="parlay-card ready cr-ticket" data-cri="${i}">
+    <div class="td-mkt">${i === 0 ? "Best match" : "Another option"} · ${t.bag.length}-leg${t.swapped ? " · edited" : ""}</div>
     <div class="parlay-odds">${pbAm(r.american)}</div>
-    <div class="subn">$10 pays ${pbMoney(10 * r.decEff)}${t.x.book ? " at " + pbEsc(t.x.book) : ""} · checked chance ${pbPct(r.pAll)}, needs ${pbPct(r.breakEven)}</div>
+    <div class="subn">$10 pays ${pbMoney(10 * r.decEff)}${t.x.book ? " at " + pbEsc(t.x.book) : ""} · hits about ${pbPct(r.pAll)} of the time${oneIn ? ` (1 in ${oneIn < 10 ? oneIn.toFixed(1) : Math.round(oneIn)})` : ""}, the price needs ${pbPct(r.breakEven)}</div>
+    ${crMeter(r.pAll, r.breakEven)}
     <div class="ready-val ${verdict.cls}">${verdict.text}</div>
     ${sizeHtml(kellyUnits(r.pAll, null, { dec: r.decEff, cap: t.bag.length > 1 ? 1 : 2 }))}
-    <p class="subn" style="color:var(--ink);margin:8px 0 10px"><b>Why take it:</b> ${why.join(" ")}</p>
-    <ul class="parlay-legs">${t.bag.map((l, k) => {
-      const pb = legs[k] || l.pb;
-      return `<li data-id="${pbEsc(l.gid)}"><b>${pbEsc(pb.label)}</b><div class="subn">${pbEsc(l.g.short_name)} · ${fmt.when(l.g.date)} · ${pbAm(pb.price)} · our chance ${Math.round(pb.win * 100)}%, books ${Math.round(pb.bookWin * 100)}% · ${(pb.value >= 0 ? "+" : "") + (pb.value * 100).toFixed(1)}%</div>${l.reason ? `<div class="prop-why">${pbEsc(l.reason)}</div>` : ""}</li>`;
-    }).join("")}</ul>
+    <p class="subn" style="color:var(--ink);margin:8px 0 6px"><b>Why take it:</b> ${pbEsc(why.join(" "))}</p>
+    <dl class="cr-facts cr-case">${caseRows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
+    ${shop}
+    <ul class="parlay-legs cr-legs">${t.bag.map((l, k) => crLegHtml(l, pbs[k])).join("")}</ul>
+    ${swap}
     <button type="button" class="ready-open" data-openpb="${t.bag.map((l) => l.id).join("~")}">Open in parlay builder</button>
   </article>`;
 }
@@ -12448,6 +12669,10 @@ function renderCreate() {
       if (ex) { input.value = ex.dataset.crex; createRun(ex.dataset.crex); return; }
       const b = e.target.closest("[data-openpb]");
       if (b) { e.stopPropagation(); openInBuilder(b.dataset.openpb); return; }
+      const sw = e.target.closest("[data-crswap]");
+      if (sw) { e.stopPropagation(); createSwap(sw.dataset.crswap); return; }
+      const rf = e.target.closest("[data-crref]");
+      if (rf) { e.stopPropagation(); createRefine(rf.dataset.crref); return; }
       const li = e.target.closest("li[data-id]");
       if (li) openGame(li.dataset.id);
     });
@@ -12459,16 +12684,64 @@ function createRun(text) {
   const out = document.getElementById("createOut");
   if (!out) return;
   if (!String(text || "").trim()) { out.innerHTML = `<div class="empty">Type what you want, like "3 leg NFL parlay at +600".</div>`; return; }
+  let want;
+  try { want = createParse(text); } catch (e) { out.innerHTML = `<div class="empty">Something went wrong reading that. Try rewording it.</div>`; return; }
+  createShow(want);
+}
+function createShow(want) {
+  const out = document.getElementById("createOut");
+  if (!out) return;
   window.__readyPriceCache = new Map();
-  let want, res;
-  try { want = createParse(text); res = createTickets(want); } catch (e) { out.innerHTML = `<div class="empty">Something went wrong building that. Try rewording it.</div>`; return; }
+  let res;
+  try { res = createTickets(want); } catch (e) { out.innerHTML = `<div class="empty">Something went wrong building that. Try rewording it.</div>`; return; }
+  window.__crState = { want, res };
   const head = `<div class="cr-understood"><span class="subn">What I looked for:</span> ${createUnderstood(want)}</div>`;
+  const refine = `<div class="cr-refine"><span class="subn">Change it:</span>${[
+    want.mode !== "safe" && ["safer", "Safer"],
+    ["bigger", "Bigger payout"],
+    want.legs < 6 && ["more", "Add a leg"],
+    want.legs > 2 && ["fewer", "One fewer leg"],
+    want.mode !== "value" && ["value", "Best value"],
+    !want.league && ["nfl", "NFL only"],
+    !want.league && ["cfb", "College only"],
+    (!want.kinds || want.kinds.has("pp")) && ["noprops", "No player props"]
+  ].filter(Boolean).map(([k, t]) => `<button type="button" data-crref="${k}">${t}</button>`).join("")}</div>`;
   if (!res.tickets.length) {
     const why = !res.pool.length ? "Nothing on the board matches that right now (no games left that day, or no lines for those teams or players yet; player prop prices post about a day before each NFL game)." : `Only ${res.pool.length} leg${res.pool.length === 1 ? "" : "s"} matched, from fewer different games than the ticket needs.`;
-    out.innerHTML = head + `<div class="empty">${why} Try fewer legs, another day, or a wider ask like "NFL parlay this weekend".</div>`;
+    out.innerHTML = head + `<div class="empty">${why} Try fewer legs, another day, or a wider ask like "NFL parlay this weekend".</div>` + refine;
     return;
   }
-  out.innerHTML = head + res.tickets.map(createTicketHtml).join("") + `<p class="subn cr-foot">Prices are the best we have across the books right now and move until kickoff. A parlay misses more often than a single bet, so stake less on it.</p>`;
+  out.innerHTML = head + refine + res.tickets.map(createTicketHtml).join("") + `<p class="subn cr-foot">Prices are the best we have across the books right now and move until kickoff. Our checked chance is the books' chance moved part of the way toward our number, as far as our graded record backs. A parlay misses more often than a single bet, so stake less on it.</p>`;
+}
+function createRefine(k) {
+  const st = window.__crState;
+  if (!st) return;
+  const w = Object.assign({}, st.want, { teams: st.want.teams.slice(), players: st.want.players.slice(), kinds: st.want.kinds ? new Set(st.want.kinds) : null });
+  const best = st.res && st.res.tickets && st.res.tickets[0];
+  if (k === "safer") { w.mode = "safe"; w.target = null; }
+  else if (k === "bigger") { w.mode = "target"; w.target = Math.max(3, (best ? best.x.r.decEff : (w.target || 4)) * 2); }
+  else if (k === "more") { w.legs = Math.min(6, w.legs + 1); if (w.target) w.target = w.target * 1.9; }
+  else if (k === "fewer") { w.legs = Math.max(2, w.legs - 1); if (w.target) w.target = Math.max(1.5, w.target / 1.9); }
+  else if (k === "value") { w.mode = "value"; w.target = null; }
+  else if (k === "nfl" || k === "cfb") { w.league = k; w.teams = w.teams.filter((t) => t.league === k); }
+  else if (k === "noprops") { w.kinds = w.kinds || new Set(["sp", "tot", "ml", "pp"]); w.kinds.delete("pp"); w.players = []; }
+  createShow(w);
+  const o = document.getElementById("createOut");
+  if (o) o.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+function createSwap(spec) {
+  const st = window.__crState;
+  const [ti, wi, nid] = String(spec).split("|").length > 3 ? (() => { const p = String(spec).split("|"); return [p[0], p[1], p.slice(2).join("|")]; })() : String(spec).split("|");
+  const t = st && st.res && st.res.tickets[Number(ti)];
+  const alt = st && st.res.pool.find((l) => l.id === nid);
+  if (!t || !alt) return;
+  const bag = t.bag.slice();
+  bag[Number(wi)] = alt;
+  const x = createPrice(bag.map((l) => l.id));
+  if (!x) return;
+  st.res.tickets[Number(ti)] = { bag, x, s: t.s, swapped: true };
+  const card = document.querySelector(`.cr-ticket[data-cri="${Number(ti)}"]`);
+  if (card) card.outerHTML = createTicketHtml(st.res.tickets[Number(ti)], Number(ti));
 }
 // ==== Bet sizing =========================================================================
 // A suggested stake in units (1 unit = 1% of your bankroll): a quarter of the Kelly stake for

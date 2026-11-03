@@ -6,11 +6,12 @@ async () => {
   const out = [];
   for (const q of qs) {
     const want = createParse(q);
-    const t = createTickets(want) || [];
-    out.push({ q, understood: (document.createElement("div").innerHTML = createUnderstood(want), want.players && want.players.map((p) => p.name || p)), tickets: t.slice(0, 3).map((k) => [k.american, (k.legs || []).map((l) => l.label).join(" + "), k.ev]) });
+    const res = createTickets(want);
+    out.push({ q, players: want.players.map((p) => p.name), teams: want.teams.map((t) => t.abbr), pool: res.pool.length, tickets: res.tickets.map((k) => [k.x.r.american, k.x.book, Math.round(k.x.r.ev * 100), k.bag.map((l) => l.label).join(" + ")]) });
   }
-  const inp = document.querySelector(".cr-form input");
-  inp.value = qs[0]; inp.form.requestSubmit();
+  const inp = document.getElementById("createInput");
+  inp.value = qs[0]; createRun(qs[0]);
   await new Promise((r) => setTimeout(r, 1500));
-  return { props: (window.__WEEK_PLAYERS || []).length, out, text: (document.getElementById("createOut").textContent || "").replace(/\s+/g, " ").slice(0, 700) };
+  const facts = [...document.querySelectorAll(".cr-ticket")].slice(0, 1).map((c) => c.textContent.replace(/\s+/g, " ").slice(0, 1500));
+  return { props: (window.__WEEK_PLAYERS || []).length, out, facts };
 }
