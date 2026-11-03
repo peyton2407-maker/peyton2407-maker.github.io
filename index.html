@@ -12806,7 +12806,7 @@ function createTicketHtml(t, i) {
   </article>`;
 }
 // ---- Create your own: words we understand, typo matching, and the search box helpers -------
-const CREATE_KNOWN = new Set(("why explain case thoughts think break breakdown sell talk reasoning reason wrong model like a an the and or with for on at of to in into me my i im want need give get show find make build create bet bets betting wager parlay parlays parley parleys ticket tickets slip leg legs team teams pick picks piece way game games best good great top value ev plus positive edge smart sharp safe safest likely lock locks sure high chance low risk conservative longshot long shot lotto big payout money huge moonshot dart nfl pro sunday monday thursday saturday friday tuesday wednesday night snf mnf tnf college cfb ncaa ncaaf football today tonight tomorrow weekend this next week weeks moneyline moneylines line lines ml win winner winners straight up spread spreads ats cover covers points point pts total totals over under overs unders ou o u prop props player players yards yds yard receptions reception catches passing rushing receiving pass rush rec tds td touchdown touchdowns no without underdog underdogs dogs dog favorite favorites favs fav chalk around about odds pays pay return turn from off dollars dollar bucks is it should take bad any some that what who which can you please one two three four five six single double triple only just also check grade rate how would do does will be are am so up down vs versus against something even pk pickem than more less most least").split(" "));
+const CREATE_KNOWN = new Set(("hedge hedging lock cash cashout guarantee insure hit hits won cashed covered left remaining still pending open last live later already then collect collects pays payout risked why explain case thoughts think break breakdown sell talk reasoning reason wrong model like a an the and or with for on at of to in into me my i im want need give get show find make build create bet bets betting wager parlay parlays parley parleys ticket tickets slip leg legs team teams pick picks piece way game games best good great top value ev plus positive edge smart sharp safe safest likely lock locks sure high chance low risk conservative longshot long shot lotto big payout money huge moonshot dart nfl pro sunday monday thursday saturday friday tuesday wednesday night snf mnf tnf college cfb ncaa ncaaf football today tonight tomorrow weekend this next week weeks moneyline moneylines line lines ml win winner winners straight up spread spreads ats cover covers points point pts total totals over under overs unders ou o u prop props player players yards yds yard receptions reception catches passing rushing receiving pass rush rec tds td touchdown touchdowns no without underdog underdogs dogs dog favorite favorites favs fav chalk around about odds pays pay return turn from off dollars dollar bucks is it should take bad any some that what who which can you please one two three four five six single double triple only just also check grade rate how would do does will be are am so up down vs versus against something even pk pickem than more less most least").split(" "));
 function crLev(a, b, max) {
   a = String(a); b = String(b);
   if (Math.abs(a.length - b.length) > max) return max + 1;
@@ -13044,6 +13044,16 @@ function createCheckRender() {
   out.innerHTML = crSearchBar() + fixedHtml + `<div class="cr-take">${take}</div>` + notesHtml + fixHtml + createTicketHtml(t, 0) +
     `<p class="subn cr-foot">Priced at the best current line across the books. To build new tickets instead, ask for something like "3 leg NFL parlay at +600".</p>`;
 }
+function crHedgeExample() {
+  try {
+    const now = Date.now();
+    const gs = (DATA.games || []).filter((x) => x && !x.completed && x.league === "nfl" && x.odds && x.odds.home_spread != null && Date.parse(x.date) > now).sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+    if (gs.length < 3) return "";
+    const nm = (g) => (Number(g.odds.home_spread) <= 0 ? g.home : g.away).short;
+    const last = gs[gs.length - 1], fav = Number(last.odds.home_spread) <= 0 ? last.home : last.away, ln = Number(last.odds.home_spread) <= 0 ? Number(last.odds.home_spread) : -Number(last.odds.home_spread);
+    return `Hedge: ${nm(gs[0])} hit, ${nm(gs[1])} hit, ${fav.short} ${pbLine(ln)} left, $50 at +600`;
+  } catch (e) { return ""; }
+}
 function crCompareExample() {
   try {
     const now = Date.now();
@@ -13144,6 +13154,133 @@ function createCompare(sides) {
   out.innerHTML = crSearchBar() + `<div class="cr-understood"><span class="subn">Comparing:</span> ${cols.map((c) => `<span class="cr-chip">${pbEsc(lbl(c))}</span>`).join("")}</div>` + notesHtml + `<div class="cr-take">${verdict}</div>` + table + corr +
     cols.map((c, i) => createTicketHtml(Object.assign(c.t, { cmpTitle: i === 0 ? "Better bet" : "The other one" }), i)).join("") +
     `<p class="subn cr-foot">Priced at the best current line across the books. Value is our checked chance against the price; it's the number that decides, because a bet that hits more often can still pay too little.</p>`;
+}
+// ---- hedge: "hedge Bills, Lions hit, Chiefs -9.5 tonight, $50 at +600" ------------------------
+function crFlipId(id) {
+  return String(id).replace(/\|(home|away|over|under)$/, (m0, sd) => "|" + ({ home: "away", away: "home", over: "under", under: "over" })[sd]);
+}
+function crParseHedge(text) {
+  let raw = String(text || "").replace(/\?/g, " ").replace(/\s+/g, " ").trim();
+  const low = " " + raw.toLowerCase() + " ";
+  const kw = / (hedge|hedging|hedge it|lock in|lock up|lock it in|cash out|cashout|guarantee|insure) /.test(low);
+  const hitSeg = /(hit|hits|won|cashed|came in|covered|good|in the books|✓)/i, leftSeg = /(left|tonight|remaining|still|pending|open|to go|last leg|last|live|not yet|tbd|later|tomorrow|sunday|monday|thursday|saturday)/i;
+  if (!kw && !(hitSeg.test(raw) && leftSeg.test(raw))) return null;
+  const out = { stake: null, payout: null, odds: null, hit: [], left: [], miss: [], notes: [] };
+  let m;
+  if ((m = raw.match(/\$\s?(\d+(?:\.\d+)?)\s*(?:to win|wins|to make|for a shot at)\s*\$?\s?(\d+(?:\.\d+)?)/i))) { out.stake = Number(m[1]); out.payout = Number(m[1]) + Number(m[2]); raw = raw.replace(m[0], " "); }
+  else if ((m = raw.match(/(?:pays|paying|payout of|payout|returns|would pay|collect)\s*\$?\s?(\d+(?:\.\d+)?)/i))) { out.payout = Number(m[1]); raw = raw.replace(m[0], " "); }
+  if ((m = raw.match(/\$\s?(\d+(?:\.\d+)?)/))) { if (out.stake == null) out.stake = Number(m[1]); raw = raw.replace(m[0], " "); }
+  if ((m = raw.match(/(?:^|\s)(?:at\s+)?([+-]\d{3,5})(?=\s|$|,)/))) { out.odds = Number(m[1]); raw = raw.replace(m[0], " "); }
+  if (out.stake != null && out.payout == null && out.odds != null) out.payout = out.stake * pbDec(out.odds);
+  if (out.stake == null && out.payout != null && out.odds != null) out.stake = out.payout / pbDec(out.odds);
+  raw = raw.replace(/^\s*(hedge|hedging|lock in|lock up|lock it in|cash out|cashout|guarantee|insure)\s*(my|this|the|a)?\s*(parlay|ticket|bet|slip)?\s*[:,-]?\s*/i, "").replace(/\s+(hedge|hedge it|lock in|lock it in|cash out)\s*$/i, "");
+  const segs = raw.split(/\s*(?:,|;|\n|\s\+\s|\s&\s|\sand\s|\splus\s|\swith\s|\salso\s|\sthen\s)\s*/i).map((x) => x.trim()).filter(Boolean);
+  const parsed = segs.map((seg) => {
+    const isHit = hitSeg.test(seg) && !/not hit|hasnt hit|hasn't hit/i.test(seg);
+    const isLeft = leftSeg.test(seg) && !isHit;
+    const clean = seg.replace(/\b(hit|hits|won|cashed|came in|covered|good|in the books|left|tonight|remaining|still|pending|open|to go|last leg|last|live|not yet|tbd|later|already|is|are|has|have|the|my|parlay|ticket|leg|legs|needs|need|just|only)\b/gi, " ").replace(/\s+/g, " ").trim();
+    return { seg, clean, isHit, isLeft };
+  });
+  const anyMarked = parsed.some((x) => x.isHit || x.isLeft);
+  parsed.forEach((x, i) => {
+    if (!x.clean) return;
+    const slip = crParseSlip(x.clean);
+    let leg = slip.legs[0] || null;
+    if (!leg && slip.bare.length === 1) { const t = crFindTeam(crNorm(x.clean), x.clean); if (t && t.t) leg = { id: `${t.t.g.id}|sp|${t.t.side}`, seg: x.clean, bare: true }; }
+    // an unmarked leg: "Bills, Lions hit" means both hit; one after the last marker is the open one
+    let left;
+    if (x.isLeft) left = true;
+    else if (x.isHit) left = false;
+    else if (!anyMarked) left = i === parsed.length - 1;
+    else { const next = parsed.slice(i + 1).find((y) => y.isHit || y.isLeft); left = !next; }
+    if (!leg) { if (left) out.miss.push(x.seg); return; }
+    (left ? out.left : out.hit).push(Object.assign(leg, { seg: x.seg }));
+  });
+  return out;
+}
+function crHedgeFromSaved(h) {
+  // a saved ticket with these open legs fills in the stake and the payout
+  try {
+    const leftIds = new Set(h.left.map((l) => l.id.replace(/\|[^|]+$/, "")));
+    const hit = mbLoad().filter((t) => t.src && (t.legs || []).some((lg) => leftIds.has(String(lg.id || "").replace(/\|[^|]+$/, "")) && !lg.result));
+    const t = hit.sort((a, b) => String(b.at).localeCompare(String(a.at)))[0];
+    if (!t || t.price == null) return null;
+    return { stake: t.stake, payout: t.stake * pbDec(t.price), legs: t.legs };
+  } catch (e) { return null; }
+}
+function createHedge(h) {
+  const out = document.getElementById("createOut");
+  if (!out) return;
+  window.__readyPriceCache = new Map();
+  const notes = [];
+  h.miss.forEach((m) => notes.push(`I couldn't tell which bet "${pbEsc(m)}" is.`));
+  const saved = (h.stake == null || h.payout == null) && h.left.length ? crHedgeFromSaved(h) : null;
+  if (saved) { if (h.stake == null) h.stake = saved.stake; if (h.payout == null) h.payout = saved.payout; notes.push(`Stake and payout taken from your saved ticket in My bets (${pbMoney(saved.stake)} to collect ${pbMoney(saved.payout)}).`); }
+  window.__crState = { hedge: true, ids: [], notes, res: { pool: [], tickets: [] } };
+  const notesHtml = () => notes.length ? `<div class="cr-notes">${notes.map((n) => `<p>${n}</p>`).join("")}</div>` : "";
+  const head = `<div class="cr-understood"><span class="subn">Hedging:</span> ${h.hit.map((l) => { const pb = pbLeg({ id: l.id }); return `<span class="cr-chip">${pbEsc(pb ? pb.label : l.seg)} ✓</span>`; }).join("")}${h.left.map((l) => { const pb = pbLeg({ id: l.id }); return `<span class="cr-chip warn">${pbEsc(pb ? pb.label : l.seg)} left</span>`; }).join("")}${h.stake != null ? `<span class="cr-chip">${pbMoney(h.stake)} risked</span>` : ""}${h.payout != null ? `<span class="cr-chip">collects ${pbMoney(h.payout)}</span>` : ""}</div>`;
+  if (!h.left.length) { out.innerHTML = crSearchBar() + head + notesHtml() + `<div class="empty">Which leg is still open? Mark it with "left" or "tonight", like "Bills hit, Lions hit, Chiefs -9.5 tonight".</div>`; return; }
+  if (h.left.length > 1) {
+    out.innerHTML = crSearchBar() + head + notesHtml() + `<div class="cr-take"><b>Wait for one leg.</b> A clean hedge needs exactly one leg left; you have ${h.left.length} open (${h.left.map((l) => { const pb = pbLeg({ id: l.id }); return pbEsc(pb ? pb.label : l.seg); }).join(", ")}). Betting against one of them now doesn't lock anything, because the others can still lose. Come back when one is left and ask again with the stake and the odds, like "hedge Chiefs -9.5 left, $50 at +600".</div>`;
+    return;
+  }
+  if (h.stake == null || h.payout == null) {
+    out.innerHTML = crSearchBar() + head + notesHtml() + `<div class="cr-take"><b>I need two numbers:</b> what you risked and what the ticket collects if the last leg hits. Add them like <b>"$50 at +600"</b> or <b>"$50 to win $300"</b>. If you saved the ticket in My bets I'll read them from there.</div>`;
+    return;
+  }
+  const leg = crMakeLeg(h.left[0].id);
+  const opp = crMakeLeg(crFlipId(h.left[0].id));
+  if (leg && h.left[0].userLine != null && leg.kind !== "ml" && leg.kind !== "pp") { const at = pbLeg({ id: leg.id, line: h.left[0].userLine }); if (at && !at.started) leg.pb = at; }
+  if (!leg || !opp) { out.innerHTML = crSearchBar() + head + notesHtml() + `<div class="empty">That game has started or has no line posted, so I can't price the other side. Hedges have to go in before kickoff (or on a live line, which I don't carry).</div>`; return; }
+  // the other side at the same number as the leg (so the two can't both lose), best price
+  let op = opp.pb, book = opp.book && !/standard|typical|estimated/.test(opp.book) ? opp.book : null;
+  const bp0 = typeof bestPriceFor === "function" ? bestPriceFor(opp.id) : null;
+  if (bp0 && bp0.rows && leg.kind !== "ml") {
+    const want = leg.kind === "sp" ? -Number(leg.pb.line) : Number(leg.pb.line);
+    const same = bp0.rows.filter((r) => r.line != null && Math.abs(Number(r.line) - want) < 0.01).sort((a, b) => pbDec(b.price) - pbDec(a.price));
+    if (same.length) { const at = pbLeg({ id: opp.id, book: same[0].book }); if (at && !at.started) { op = at; book = same[0].book; } }
+  }
+  const S = h.stake, P = h.payout, d = pbDec(op.price);
+  const p = leg.pb.win;                            // our checked chance the last leg hits
+  const push = leg.pb.push || 0;
+  const full = P / d;                              // same profit either way
+  const lock = P - S - full;
+  const evRide = p * (P - S) - (1 - p - push) * S;
+  const rows = [0, 0.25, 0.5, 0.75, 1].map((f) => { const H = full * f; return { f, H, win: P - S - H, lose: H * (d - 1) - S, ev: p * (P - S - H) + (1 - p - push) * (H * (d - 1) - S) + push * (H * (d - 1) - S + (leg.kind === "sp" || leg.kind === "tot" ? S : 0)) }; });
+  let take;
+  if (lock > 0) {
+    take = `<b class="cr-up">Bet ${pbMoney(full)} on ${pbEsc(op.label)}</b> at ${pbAm(op.price)}${book ? " (" + pbEsc(book) + ")" : ""} and you're up <b>${pbMoney(lock)}</b> no matter what. If ${pbEsc(leg.pb.label)} hits, the parlay pays ${pbMoney(P)} and the hedge loses ${pbMoney(full)}; if it misses, the hedge pays ${pbMoney(full * d)} and the parlay is dead. Either way you've risked ${pbMoney(S + full)} in all and get ${pbMoney(S + full + lock)} back.`;
+    if (evRide > lock * 1.5 && p >= 0.5) take += ` <br><br>By the numbers, <b>letting it ride is worth more on average</b> (${pbMoney(evRide)} vs ${pbMoney(lock)} locked), because we give ${pbEsc(leg.pb.label)} a ${Math.round(p * 100)}% chance and the hedge pays the book's cut. Ride it if ${pbMoney(S)} isn't money you'd miss; hedge, or half-hedge, if you'd rather bank the sure thing.`;
+    else if (evRide > lock) take += ` <br><br>Letting it ride averages ${pbMoney(evRide)}, only a little more than the ${pbMoney(lock)} you can lock, so the hedge is the sensible play unless you like the sweat.`;
+    else take += ` <br><br>We give ${pbEsc(leg.pb.label)} only a ${Math.round(p * 100)}% chance, so locking ${pbMoney(lock)} beats riding it (${pbMoney(evRide)} on average). <b>Hedge it.</b>`;
+  } else {
+    take = `<b class="cr-down">There's no profit to lock.</b> The other side (${pbEsc(op.label)} ${pbAm(op.price)}) pays too little against a ${pbMoney(P)} payout: a full hedge of ${pbMoney(full)} guarantees a <b>loss of ${pbMoney(-lock)}</b>. That happens when the last leg is a favorite or the parlay odds were short. Your real choices are to let it ride (${Math.round(p * 100)}% to collect ${pbMoney(P)}, worth ${pbMoney(evRide)} on average) or hedge part of it to shrink the worst case.`;
+  }
+  if ((leg.kind === "sp" || leg.kind === "tot") && Number.isInteger(Number(op.line))) take += ` <br><br><small>If the game lands exactly on ${leg.kind === "sp" ? "a " + Math.abs(Number(op.line)) + "-point margin" : Math.abs(Number(op.line)) + " points"}, both bets push and you get your stakes back; a half-point line avoids that.</small>`;
+  if ((leg.kind === "sp" || leg.kind === "tot") && Math.abs(Math.abs(Number(op.line)) - Math.abs(Number(leg.pb.line))) >= 0.5) take += ` <br><br><small>Your leg is at ${pbEsc(leg.pb.label)} and the hedge is at ${pbEsc(op.label)}, so there's a gap: a result between the two numbers wins or loses both. Take the hedge at the same number if a book has it.</small>`;
+  const table = `<div class="cr-cmp-wrap"><table class="cr-cmp cr-hedge">
+    <thead><tr><th>Hedge</th><th>Bet on ${pbEsc(op.label)}</th><th>If ${pbEsc(leg.pb.label)} hits</th><th>If it misses</th><th>Average</th></tr></thead>
+    <tbody>${rows.map((r) => `<tr class="${r.f === 1 && lock > 0 ? "" : ""}"><th scope="row">${r.f === 0 ? "None" : r.f === 1 ? "Full" : Math.round(r.f * 100) + "%"}</th><td>${r.H ? pbMoney(r.H) : "—"}</td><td class="${r.win >= 0 ? "cr-up" : "cr-down"}">${r.win >= 0 ? "+" : ""}${pbMoney(r.win)}</td><td class="${r.lose >= 0 ? "cr-up" : "cr-down"}">${r.lose >= 0 ? "+" : ""}${pbMoney(r.lose)}</td><td>${r.ev >= 0 ? "+" : ""}${pbMoney(r.ev)}</td></tr>`).join("")}</tbody></table></div>
+    <p class="subn">Profit after everything settles, counting the ${pbMoney(S)} already risked. Average uses our checked chance of ${Math.round(p * 100)}% for ${pbEsc(leg.pb.label)}.</p>`;
+  const facts = crLegFacts(leg, leg.pb);
+  const legCard = `<article class="parlay-card ready cr-ticket cr-explain">
+    <div class="td-mkt">The leg you need · ${pbEsc(leg.g.short_name)}</div>
+    <div class="cr-leg-top"><b class="cr-ex-label">${pbEsc(leg.pb.label)}</b><span class="cr-px">${Math.round(p * 100)}% to hit</span></div>
+    <div class="subn">${pbEsc(fmt.when(leg.g.date))}</div>
+    ${crMeter(leg.pb.win, leg.pb.bookWin)}
+    <div class="subn">Our checked chance <b>${Math.round(p * 100)}%</b> · the books' ${Math.round(leg.pb.bookWin * 100)}%</div>
+    ${facts.length ? `<dl class="cr-facts">${facts.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>` : ""}
+  </article>`;
+  const hedgeCard = `<article class="parlay-card ready cr-ticket">
+    <div class="td-mkt">The hedge</div>
+    <div class="cr-leg-top"><b class="cr-ex-label">${pbEsc(op.label)}</b><span class="cr-px">${pbAm(op.price)}${book ? " <small>" + pbEsc(book) + "</small>" : ""}</span></div>
+    <div class="subn">${lock > 0 ? `Bet <b>${pbMoney(full)}</b> to lock ${pbMoney(lock)}, or <b>${pbMoney(full / 2)}</b> for a half hedge (${pbMoney(rows[2].win)} if the leg hits, ${pbMoney(rows[2].lose)} if it misses).` : `A full hedge is ${pbMoney(full)} and locks a loss of ${pbMoney(-lock)}.`}</div>
+    ${(() => { const bp = typeof bestPriceFor === "function" ? bestPriceFor(opp.id) : null; return bp && bp.rows && bp.rows.length > 1 ? `<div class="cr-books"><span class="lbl">The other side at each book</span>${bp.rows.slice(0, 6).map((r, k) => `<span class="${k === 0 ? "best" : ""}">${pbEsc(r.book)} <b>${r.line != null && leg.kind !== "ml" ? pbLine(r.line) + " " : ""}${pbAm(r.price)}</b></span>`).join("")}<span class="subn">A better price here shrinks the hedge and grows the lock.</span></div>` : ""; })()}
+    <div class="cr-actions"><button type="button" class="cr-act" data-crshare="${pbEsc("q=" + encodeURIComponent(String((document.getElementById("createInput") || {}).value || "").trim()))}">Share</button></div>
+    <button type="button" class="ready-open" data-openpb="${pbEsc(opp.id)}">Open in parlay builder</button>
+  </article>`;
+  out.innerHTML = crSearchBar() + head + notesHtml() + `<div class="cr-take">${take}</div>` + table + hedgeCard + legCard +
+    `<p class="subn cr-foot">Prices are the best we have across the books right now and move until kickoff; the hedge has to be placed before the game starts.</p>`;
 }
 // ---- explain: "Why Bills -3?", "why not the Ravens?", "case for the under in the Lions game" -----
 function crParseExplain(text) {
@@ -13319,6 +13456,9 @@ function crSuggest(text) {
 // what the box will do with the words so far, updated as you type
 function crLiveHtml(text) {
   if (!String(text || "").trim()) return "";
+  let hg = null;
+  try { hg = crParseHedge(text); } catch (e) {}
+  if (hg) return `<span class="subn">Hedging:</span> ${hg.hit.map((l) => { const pb = pbLeg({ id: l.id }); return `<span class="cr-chip">${pbEsc(pb ? pb.label : l.seg)} ✓</span>`; }).join("")}${hg.left.map((l) => { const pb = pbLeg({ id: l.id }); return `<span class="cr-chip warn">${pbEsc(pb ? pb.label : l.seg)} left</span>`; }).join("")}${hg.stake != null ? `<span class="cr-chip">${pbMoney(hg.stake)} risked</span>` : `<span class="cr-chip warn">add the stake, like $50</span>`}${hg.payout != null ? `<span class="cr-chip">collects ${pbMoney(hg.payout)}</span>` : hg.odds == null ? `<span class="cr-chip warn">and the odds, like +600</span>` : ""}${hg.miss.map((m) => `<span class="cr-chip warn">Can't read "${pbEsc(m)}"</span>`).join("")}`;
   let ex = null;
   try { ex = crParseExplain(text); } catch (e) {}
   if (ex) return `<span class="subn">${ex.neg ? "Why not:" : "The case for:"}</span> ${ex.legs.length ? ex.legs.map((s) => { const pb = pbLeg({ id: s.id }); return `<span class="cr-chip">${pbEsc(pb ? pb.label : s.seg)}</span>`; }).join("") : `<span class="cr-chip warn">Name a team or a bet</span>`}`;
@@ -13396,7 +13536,7 @@ function renderCreate() {
         <button type="submit">Build it</button>
       </form>
       <div id="createLive" class="cr-live" aria-live="polite"></div>
-      <div class="cr-ex" id="createEx">${["3 leg NFL parlay at +600", "Safest 2 leg parlay this weekend", "Sunday player prop unders", "College moneyline parlay Saturday", "Longshot 4 leg with underdogs", "$20 to win $200", "Sunday night only", "Parlay without the Chiefs"].map((t) => `<button type="button" data-crex="${pbEsc(t)}">${pbEsc(t)}</button>`).join("")}${(() => { const ex = crCheckExample(); return ex ? `<button type="button" class="cr-ex-check" data-crex="${pbEsc(ex)}">Check: ${pbEsc(ex)}</button>` : ""; })()}${(() => { const ex = crCompareExample(); return ex ? `<button type="button" class="cr-ex-check" data-crex="${pbEsc("Why " + ex.split(" or ")[0])}">Explain: Why ${pbEsc(ex.split(" or ")[0])}?</button>` : ""; })()}${(() => { const ex = crCompareExample(); return ex ? `<button type="button" class="cr-ex-check" data-crex="${pbEsc(ex)}">Compare: ${pbEsc(ex)}</button>` : ""; })()}</div>
+      <div class="cr-ex" id="createEx">${["3 leg NFL parlay at +600", "Safest 2 leg parlay this weekend", "Sunday player prop unders", "College moneyline parlay Saturday", "Longshot 4 leg with underdogs", "$20 to win $200", "Sunday night only", "Parlay without the Chiefs"].map((t) => `<button type="button" data-crex="${pbEsc(t)}">${pbEsc(t)}</button>`).join("")}${(() => { const ex = crCheckExample(); return ex ? `<button type="button" class="cr-ex-check" data-crex="${pbEsc(ex)}">Check: ${pbEsc(ex)}</button>` : ""; })()}${(() => { const ex = crHedgeExample(); return ex ? `<button type="button" class="cr-ex-check" data-crex="${pbEsc(ex)}">${pbEsc(ex)}</button>` : ""; })()}${(() => { const ex = crCompareExample(); return ex ? `<button type="button" class="cr-ex-check" data-crex="${pbEsc("Why " + ex.split(" or ")[0])}">Explain: Why ${pbEsc(ex.split(" or ")[0])}?</button>` : ""; })()}${(() => { const ex = crCompareExample(); return ex ? `<button type="button" class="cr-ex-check" data-crex="${pbEsc(ex)}">Compare: ${pbEsc(ex)}</button>` : ""; })()}</div>
       <div class="cr-recent" id="createRecent"></div>
       <div id="createRecord"></div>
       <div id="createOut"></div>
@@ -13437,6 +13577,9 @@ function createRun(text) {
   if (!String(text || "").trim()) { out.innerHTML = `<div class="empty">Type what you want, like "3 leg NFL parlay at +600".</div>`; return; }
   crRemember(text);
   crSetLink("q=" + encodeURIComponent(String(text).trim()));
+  let hg = null;
+  try { hg = crParseHedge(text); } catch (e) { hg = null; }
+  if (hg) { createHedge(hg); return; }
   let ex = null;
   try { ex = crParseExplain(text); } catch (e) { ex = null; }
   if (ex) { createExplain(ex); return; }
