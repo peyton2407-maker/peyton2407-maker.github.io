@@ -1960,6 +1960,27 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .cr-chip { padding: 4px 10px; border-radius: 999px; background: rgba(242,184,64,.12); color: var(--sun); font-size: 13px; font-weight: 700; }
 #createOut { display: grid; gap: 14px; }
 .cr-foot { margin-top: 4px; }
+.cr-box { position: relative; flex: 1; min-width: 0; }
+.cr-box input { width: 100%; box-sizing: border-box; }
+.cr-sug { position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 40; margin: 0; padding: 6px; list-style: none; background: var(--card); border: 1px solid var(--line-2); border-radius: 14px; box-shadow: 0 14px 40px rgba(0,0,0,.45); max-height: 60vh; overflow: auto; }
+.cr-sug li { padding: 9px 11px; border-radius: 9px; cursor: pointer; }
+.cr-sug li b { display: block; font-weight: 700; color: var(--ink); }
+.cr-sug li span { display: block; margin-top: 1px; font-size: 12.5px; color: var(--ink-soft); }
+.cr-sug li:hover, .cr-sug li[aria-selected="true"] { background: rgba(242,184,64,.14); }
+.cr-live { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-height: 26px; }
+.cr-live:empty { min-height: 0; }
+.cr-chip.fix { background: rgba(120,190,255,.12); color: var(--sky, #8cc8ff); }
+.cr-chip.warn { background: rgba(240,122,106,.12); color: var(--bad, #f07a6a); }
+.cr-ex .cr-ex-check { border-style: dashed; color: var(--ink); }
+.cr-take { padding: 12px 14px; border-radius: 12px; background: var(--card); border: 1px solid var(--line-2); font-size: 15px; line-height: 1.5; }
+.cr-notes { display: grid; gap: 4px; font-size: 13.5px; color: var(--ink-soft); }
+.cr-notes p { margin: 0; }
+.cr-fix { padding: 12px 14px; border-radius: 12px; background: rgba(242,184,64,.07); }
+.cr-fix .lbl { font-weight: 800; margin-bottom: 6px; }
+.cr-fix ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.cr-fix li { display: flex; gap: 10px; align-items: center; justify-content: space-between; font-size: 14px; line-height: 1.45; }
+.cr-fix button { flex: none; padding: 7px 12px; border-radius: 999px; border: 0; background: var(--sun); color: #1a1405; font: 800 13px var(--body); cursor: pointer; }
+@media (max-width: 420px) { .cr-fix li { flex-direction: column; align-items: flex-start; } }
 .cr-refine, .cr-swap { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .cr-refine button, .cr-swap button { padding: 6px 11px; border-radius: 999px; border: 1px solid var(--line-2); background: transparent; color: var(--ink); font: 700 13px var(--body); cursor: pointer; }
 .cr-refine button:hover, .cr-swap button:hover { border-color: var(--sun); }
@@ -12270,6 +12291,41 @@ function createParse(text) {
       if ((name.length > 5 && q.includes(" " + name + " ")) || (last.length >= 5 && words.has(last) && !STOP.has(last))) { seenP.add(p.id); want.players.push({ id: String(p.id), name: p.name, game_id: String(p.game_id) }); }
     });
   } catch (e) {}
+  // typos: a leftover word one or two letters off a team or player name ("ravns", "jakson")
+  want.fixed = []; want.unknown = []; want.missing = [];
+  const pWords = new Set();
+  want.players.forEach((pl) => String(pl.name || "").toLowerCase().replace(/[’'.]/g, "").split(" ").forEach((w) => pWords.add(w)));
+  const left = rest.trim().split(" ").filter((w) => w && w !== "~" && !pWords.has(w));
+  const singles = phrases.filter((x) => !x.ph.startsWith("#abbr#") && !x.ph.includes(" "));
+  let propRows = [];
+  try { propRows = typeof nextPropRows === "function" ? nextPropRows() : []; } catch (e) {}
+  left.forEach((w) => {
+    if (w.length < 4 || CREATE_KNOWN.has(w) || /\d/.test(w)) return;
+    const max = w.length >= 8 ? 2 : 1;
+    let best = null;
+    singles.forEach((x) => { if (x.ph.length < 5) return; const d = crLev(w, x.ph, max); if (d <= max && d > 0 && (!best || d < best.d || (d === best.d && x.team.league === "nfl" && best.team && best.team.league !== "nfl"))) best = { d, team: x.team }; });
+    propRows.forEach((pr) => {
+      const last = String(pr.name || "").toLowerCase().replace(/[’'.]/g, "").split(" ").filter((x) => !/^(jr|sr|ii|iii|iv)$/.test(x)).pop() || "";
+      if (last.length < 5) return;
+      const d = crLev(w, last, max);
+      if (d <= max && d > 0 && (!best || d < best.d)) best = { d, player: pr };
+    });
+    if (best && best.team && (!want.league || best.team.league === want.league) && !want.teams.some((t) => t.league === best.team.league && t.abbr === best.team.abbr)) { want.teams.push(best.team); want.fixed.push([w, best.team.name]); pWords.add(w); }
+    else if (best && best.player && !want.players.some((x) => x.id === String(best.player.id))) { want.players.push({ id: String(best.player.id), name: best.player.name, game_id: String(best.player.game_id) }); want.fixed.push([w, best.player.name]); pWords.add(w); }
+  });
+  // a player named but not on this week's prop board (out, or no game)
+  try {
+    if (typeof collectNflProps === "function") {
+      const onBoard = new Set(propRows.map((x) => String(x.id)));
+      const seenM = new Set();
+      collectNflProps().forEach((pr) => {
+        if (onBoard.has(String(pr.id)) || seenM.has(String(pr.id))) return;
+        const name = String(pr.name || "").toLowerCase().replace(/[’'.]/g, "");
+        if (name.length > 5 && q.includes(" " + name + " ")) { seenM.add(String(pr.id)); want.missing.push({ name: pr.name, injury: pr.injury || "" }); name.split(" ").forEach((x) => pWords.add(x)); }
+      });
+    }
+  } catch (e) {}
+  want.unknown = left.filter((w) => !pWords.has(w) && !CREATE_KNOWN.has(w) && !/^[+\-$]?\d/.test(w) && w.length > 1 && !CREATE_DAYS[w] && !CREATE_WORDS[w]);
   if (want.players.length) { want.kinds = want.kinds || new Set(); want.kinds.add("pp"); }
   if (!want.legs) want.legs = Math.max(2, Math.min(6, (want.teams.length + want.players.length) || (want.mode === "long" ? 4 : 2)));
   return want;
@@ -12301,7 +12357,7 @@ function createPool(want) {
     if (want.league && g.league !== want.league) return;
     if (want.days && !want.days.has(etDay(g.date))) return;
     const named = teamHit(g);
-    if (want.teams.length && !named && !want.players.some((pl) => pl.game_id === String(g.id))) return;
+    if ((want.teams.length || want.players.length) && !named && !want.players.some((pl) => pl.game_id === String(g.id))) return;
     const kinds = want.kinds || new Set(["sp", "tot", "ml", "pp"]);
     const push = (id, extra) => {
       const kind = id.split("|")[1];
@@ -12624,16 +12680,17 @@ function createTicketHtml(t, i) {
     ["Biggest risk", `<b>${pbEsc(pbs[risky].label)}</b> is the leg most likely to miss (${Math.round((1 - pbs[risky].win) * 100)}% of the time).`]
   ];
   if (t.bag.length < 2) caseRows.splice(1);
-  const why = [`${beat} of ${t.bag.length} leg${t.bag.length === 1 ? "" : "s"} beat their own price${t.x.book ? " at " + t.x.book : ""}.`, `Every leg is from a different game, so one result doesn't drag the others down with it.`];
+  const why = [t.bag.length === 1 ? (beat ? `It beats its own price${t.x.book ? " at " + t.x.book : ""}.` : `It doesn't beat its own price${t.x.book ? " at " + t.x.book : ""}.`) : `${beat} of ${t.bag.length} legs beat their own price${t.x.book ? " at " + t.x.book : ""}.`];
+  if (t.bag.length > 1 && new Set(t.bag.map((l) => l.gid)).size === t.bag.length) why.push(`Every leg is from a different game, so one result doesn't drag the others down with it.`);
   if (ev >= 0.03) why.push(`At ${pbAm(r.american)} the book pays more than a ticket that hits ${pbPct(r.pAll)} of the time is worth (it needs ${pbPct(r.breakEven)}).`);
   else if (ev >= -0.01) why.push(`The price is about right for how often it hits, so this is a fun ticket rather than an edge.`);
   else why.push("The book has the edge on this one, so treat it as a lean, not a pick.");
   const all = (t.x.all || []).filter((b) => Number.isFinite(b.dec));
   const shop = all.length > 1 ? `<div class="cr-books"><span class="lbl">This ticket at each book</span>${all.slice(0, 6).map((b, k) => `<span class="${k === 0 ? "best" : ""}">${pbEsc(b.book)} <b>${pbAm(b.american)}</b></span>`).join("")}${all.length > 1 ? `<span class="subn">Betting $10 at ${pbEsc(all[0].book)} instead of ${pbEsc(all[all.length - 1].book)} pays ${pbMoney(10 * (all[0].dec - all[all.length - 1].dec))} more.</span>` : ""}</div>` : "";
-  const sw = crSwapOptions(t);
+  const sw = t.check ? { alts: [] } : crSwapOptions(t);
   const swap = sw.weak && sw.alts.length ? `<div class="cr-swap"><span class="lbl">Swap the weakest leg (${pbEsc((legs[sw.wi] || sw.weak.pb).label)}) for</span>${sw.alts.map((a) => `<button type="button" data-crswap="${i}|${sw.wi}|${pbEsc(a.l.id)}">${pbEsc(a.l.label)} ${pbAm(a.l.pb.price)} <em>ticket ${pbAm(a.x.r.american)}, ${(a.x.r.ev >= 0 ? "+" : "") + Math.round(a.x.r.ev * 100)}% value</em></button>`).join("")}</div>` : "";
   return `<article class="parlay-card ready cr-ticket" data-cri="${i}">
-    <div class="td-mkt">${i === 0 ? "Best match" : "Another option"} · ${t.bag.length}-leg${t.swapped ? " · edited" : ""}</div>
+    <div class="td-mkt">${t.check ? (t.bag.length === 1 ? "Your bet" : "Your ticket · " + t.bag.length + "-leg") : (i === 0 ? "Best match" : "Another option") + " · " + t.bag.length + "-leg"}${t.swapped ? " · edited" : ""}</div>
     <div class="parlay-odds">${pbAm(r.american)}</div>
     <div class="subn">$10 pays ${pbMoney(10 * r.decEff)}${t.x.book ? " at " + pbEsc(t.x.book) : ""} · hits about ${pbPct(r.pAll)} of the time${oneIn ? ` (1 in ${oneIn < 10 ? oneIn.toFixed(1) : Math.round(oneIn)})` : ""}, the price needs ${pbPct(r.breakEven)}</div>
     ${crMeter(r.pAll, r.breakEven)}
@@ -12642,10 +12699,380 @@ function createTicketHtml(t, i) {
     <p class="subn" style="color:var(--ink);margin:8px 0 6px"><b>Why take it:</b> ${pbEsc(why.join(" "))}</p>
     <dl class="cr-facts cr-case">${caseRows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
     ${shop}
-    <ul class="parlay-legs cr-legs">${t.bag.map((l, k) => crLegHtml(l, pbs[k])).join("")}</ul>
+    <ul class="parlay-legs cr-legs${t.bag.length === 1 ? " one" : ""}">${t.bag.map((l, k) => crLegHtml(l, pbs[k])).join("")}</ul>
     ${swap}
     <button type="button" class="ready-open" data-openpb="${t.bag.map((l) => l.id).join("~")}">Open in parlay builder</button>
   </article>`;
+}
+// ---- Create your own: words we understand, typo matching, and the search box helpers -------
+const CREATE_KNOWN = new Set(("a an the and or with for on at of to in into me my i im want need give get show find make build create bet bets betting wager parlay parlays parley parleys ticket tickets slip leg legs team teams pick picks piece way game games best good great top value ev plus positive edge smart sharp safe safest likely lock locks sure high chance low risk conservative longshot long shot lotto big payout money huge moonshot dart nfl pro sunday monday thursday saturday friday tuesday wednesday night snf mnf tnf college cfb ncaa ncaaf football today tonight tomorrow weekend this next week weeks moneyline moneylines line lines ml win winner winners straight up spread spreads ats cover covers points point pts total totals over under overs unders ou o u prop props player players yards yds yard receptions reception catches passing rushing receiving pass rush rec tds td touchdown touchdowns no without underdog underdogs dogs dog favorite favorites favs fav chalk around about odds pays pay return turn from off dollars dollar bucks is it should take bad any some that what who which can you please one two three four five six single double triple only just also check grade rate how would do does will be are am so up down vs versus against something even pk pickem than more less most least").split(" "));
+function crLev(a, b, max) {
+  a = String(a); b = String(b);
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i];
+    let lo = i;
+    for (let j = 1; j <= b.length; j++) {
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      if (cur[j] < lo) lo = cur[j];
+    }
+    if (lo > max) return max + 1;
+    prev = cur;
+  }
+  return prev[b.length];
+}
+function crNorm(x) { return " " + String(x || "").toLowerCase().replace(/[’']/g, "").replace(/[^a-z0-9+\-. ]/g, " ").replace(/\s+/g, " ").trim() + " "; }
+// every team with a game coming up (its next one), and every player on the prop board
+function crIndex() {
+  const sig = (DATA.games || []).length + "|" + Math.floor(Date.now() / 60000) + "|" + ((window.__WEEK_PLAYERS || []).length);
+  if (crIndex.c && crIndex.c.sig === sig) return crIndex.c.v;
+  const now = Date.now(), teams = new Map();
+  (DATA.games || []).filter((g) => g && !g.completed && g.home && g.away && Date.parse(g.date) > now && Date.parse(g.date) - now < 9 * 864e5)
+    .sort((a, b) => Date.parse(a.date) - Date.parse(b.date))
+    .forEach((g) => [g.home, g.away].forEach((t) => {
+      const k = g.league + ":" + t.abbr;
+      if (teams.has(k)) return;
+      const full = String(t.name || "").toLowerCase().replace(/[’'.&]/g, "").replace(/\s+/g, " ").trim();
+      const short = String(t.short || "").toLowerCase().replace(/[’'.&]/g, "").trim();
+      const keys = [full, short];
+      if (short && full.endsWith(" " + short)) keys.push(full.slice(0, -short.length - 1));
+      const nick = full.split(" ").pop();
+      if (nick && nick.length >= 5) keys.push(nick);
+      teams.set(k, { league: g.league, abbr: t.abbr, name: t.name, short: t.short || t.abbr, g, side: g.home === t ? "home" : "away", keys: [...new Set(keys.filter((x) => x && x.length >= 3))] });
+    }));
+  let players = [];
+  try { players = (typeof nextPropRows === "function" ? nextPropRows() : []).map((p) => { const name = String(p.name || "").toLowerCase().replace(/[’'.]/g, ""); const parts = name.split(" ").filter((x) => !/^(jr|sr|ii|iii|iv)$/.test(x)); return { p, name, first: parts[0] || "", last: parts[parts.length - 1] || "" }; }); } catch (e) {}
+  const v = { teams: [...teams.values()], players };
+  crIndex.c = { sig, v };
+  return v;
+}
+function crFindTeam(q, raw) {
+  const idx = crIndex();
+  let best = null;
+  idx.teams.forEach((t) => t.keys.forEach((k) => { if (q.includes(" " + k + " ") && (!best || k.length > best.len || (k.length === best.len && t.league === "nfl" && best.t.league !== "nfl"))) best = { t, len: k.length }; }));
+  if (!best) idx.teams.forEach((t) => { if (t.abbr && t.abbr.length >= 2 && new RegExp("(^|[^A-Za-z])" + t.abbr + "([^A-Za-z]|$)").test(raw)) best = best || { t, len: 0 }; });
+  if (!best) {
+    q.trim().split(" ").filter((w) => w.length >= 4 && !CREATE_KNOWN.has(w)).forEach((w) => {
+      const max = w.length >= 8 ? 2 : 1;
+      idx.teams.forEach((t) => t.keys.filter((k) => !k.includes(" ") && k.length >= 5).forEach((k) => { const d = crLev(w, k, max); if (d <= max && (!best || d < best.d || (d === best.d && t.league === "nfl" && best.t.league !== "nfl"))) best = { t, d, fixed: [w, t.name] }; }));
+    });
+  }
+  return best;
+}
+function crFindPlayer(q) {
+  const idx = crIndex();
+  let hit = idx.players.find((x) => x.name.length > 5 && q.includes(" " + x.name + " "));
+  if (hit) return { p: hit.p };
+  const words = q.trim().split(" ");
+  const byLast = idx.players.filter((x) => x.last.length >= 4 && words.includes(x.last));
+  if (byLast.length === 1) return { p: byLast[0].p };
+  if (byLast.length > 1) { const both = byLast.find((x) => words.includes(x.first)); if (both) return { p: both.p }; }
+  let best = null;
+  words.filter((w) => w.length >= 5 && !CREATE_KNOWN.has(w)).forEach((w) => {
+    const max = w.length >= 8 ? 2 : 1;
+    idx.players.forEach((x) => { if (x.last.length < 5) return; const d = crLev(w, x.last, max); if (d <= max && (!best || d < best.d)) best = { p: x.p, d, fixed: [w, x.p.name] }; });
+  });
+  return best;
+}
+const CR_STATS = [["pass_td", /pass(ing)? ?(td|tds|touchdown)|td pass|touchdown pass/], ["pass_yds", /pass/], ["rush_yds", /rush/], ["rec_yds", /(receiving|rec yds|rec yards|rec yard)/], ["rec", /(recept|catches| rec )/]];
+// A bet someone already has in mind: "Bills -3, Lamar under 224.5, over 47.5". Each piece
+// becomes one leg; a piece with only a total ("over 47.5") belongs to the game before it.
+function crParseSlip(text) {
+  const raw = String(text || "");
+  const segs = raw.split(/\s*(?:,|;|\n|\s\+\s|\s&\s|\sand\s|\splus\s|\swith\s|\salso\s)\s*/i).map((x) => x.trim()).filter(Boolean);
+  const all = crNorm(raw);
+  const globalMl = / (moneyline|moneylines|money line|ml|to win|straight up) /.test(all);
+  const globalSp = / (spread|spreads|ats) /.test(all);
+  const legs = [], bare = [], miss = [], fixed = [];
+  let lastG = null, explicit = 0;
+  segs.forEach((segRaw) => {
+    const q = crNorm(segRaw);
+    const ou = q.match(/ (over|under|o|u) ?(\d{1,3}(?:\.\d+)?)? /);
+    const hasOu = ou && (ou[2] != null || / (over|under) /.test(q));
+    const take = ou && /^(over|o)$/.test(ou[1]) ? "over" : "under";
+    const num = ou && ou[2] != null ? Number(ou[2]) : null;
+    const pl = crFindPlayer(q);
+    if (pl && pl.p && hasOu) {
+      const p = pl.p;
+      const dk = typeof dkFor === "function" ? dkFor(p.game_id, p.id) : {};
+      let stat = (CR_STATS.find(([, re]) => re.test(q)) || [])[0] || null;
+      if (!stat) {
+        const avail = ["pass_yds", "rush_yds", "rec_yds", "rec", "pass_td"].filter((k) => dk[k] != null);
+        if (num != null && avail.length) stat = avail.sort((a, b) => Math.abs(dk[a] - num) - Math.abs(dk[b] - num))[0];
+        else { try { const L = postedLean(p); stat = L && L.m.key; } catch (e) {} }
+        stat = stat || (p.pos === "QB" ? "pass_yds" : p.pos === "RB" ? "rush_yds" : "rec_yds");
+      }
+      if (pl.fixed) fixed.push(pl.fixed);
+      legs.push({ id: `${p.game_id}|pp|${p.id}|${stat}|${take}`, seg: segRaw, userLine: num, player: p });
+      explicit++; lastG = pbGame(p.game_id); return;
+    }
+    const tm = crFindTeam(q, segRaw);
+    if (tm && tm.t) {
+      const t = tm.t, g = t.g, side = t.side;
+      if (tm.fixed) fixed.push(tm.fixed);
+      lastG = g;
+      const spm = q.match(/ ([+-]\d{1,2}(?:\.5)?|pk|pick ?em|even) /);
+      if (hasOu) { legs.push({ id: `${g.id}|tot|${take}`, seg: segRaw, userLine: num }); explicit++; return; }
+      if (/ (ml|moneyline|money line|to win|win|wins|straight up|su) /.test(q)) { legs.push({ id: `${g.id}|ml|${side}`, seg: segRaw }); explicit++; return; }
+      if (spm || / (spread|cover|covers|ats) /.test(q)) {
+        const ln = spm ? (/pk|pick|even/.test(spm[1]) ? 0 : Number(spm[1])) : null;
+        legs.push({ id: `${g.id}|sp|${side}`, seg: segRaw, userLine: ln }); explicit++; return;
+      }
+      const un = q.match(/ (\d{1,2}(?:\.5)?) /);
+      if (un && Number(un[1]) <= 40 && !/ (leg|legs|team|teams|pick|picks|to 1|way) /.test(q)) {
+        const cur = pbLeg({ id: `${g.id}|sp|${side}` });
+        const sign = cur && cur.line < 0 ? -1 : 1;
+        legs.push({ id: `${g.id}|sp|${side}`, seg: segRaw, userLine: sign * Number(un[1]) }); explicit++; return;
+      }
+      if (globalMl) { legs.push({ id: `${g.id}|ml|${side}`, seg: segRaw }); return; }
+      if (globalSp) { legs.push({ id: `${g.id}|sp|${side}`, seg: segRaw }); return; }
+      bare.push(segRaw); return;
+    }
+    if (hasOu && num != null && lastG && !pl) { legs.push({ id: `${lastG.id}|tot|${take}`, seg: segRaw, userLine: num }); explicit++; return; }
+    if (/\d/.test(q) && / (over|under|o|u|[+-]\d)/.test(q)) {
+      const off = (DATA.games || []).flatMap((g) => g && g.home && g.away ? [g.home, g.away] : []).find((t) => { const sh = String(t.short || "").toLowerCase(); const full = String(t.name || "").toLowerCase().replace(/[’'.&]/g, ""); return (sh.length >= 4 && q.includes(" " + sh + " ")) || (full && q.includes(" " + full + " ")); });
+      if (off) miss.push({ seg: segRaw, why: `The ${off.short || off.name} don't have a game on the board in the next week.` });
+      else miss.push({ seg: segRaw, why: `I couldn't tell which team or player "${segRaw}" is.` });
+    }
+  });
+  const seen = new Set();
+  const uniq = legs.filter((l) => !seen.has(l.id) && seen.add(l.id));
+  const check = uniq.length >= 1 && explicit >= 1 && !bare.length;
+  return { check, legs: uniq, bare, miss, fixed };
+}
+function crMakeLeg(id) {
+  const parts = String(id).split("|");
+  const gid = parts[0], kind = parts[1];
+  const g = pbGame(gid);
+  if (!g) return null;
+  let pb = null, book = null;
+  if (kind !== "pp") {
+    const bp = typeof bestPriceFor === "function" ? bestPriceFor(id) : null;
+    if (bp && bp.best) { book = bp.best.book; pb = pbLeg({ id, book }); }
+  }
+  pb = pb || pbLeg({ id });
+  if (!pb || pb.started) return null;
+  const leg = { id, gid: String(gid), g, kind, pb, value: pb.value, win: pb.win, label: pb.label, book: book || pb.priceSource, reason: "" };
+  if (kind === "pp") {
+    let p = null;
+    try { p = nextPropRows().find((x) => String(x.id) === String(parts[2])); } catch (e) {}
+    if (p) {
+      const m = (marketsFor(p) || []).find((x) => x.key === parts[3]);
+      leg.prop = p; leg.player = p.name;
+      if (m) leg.lean = { m, line: pb.line, take: parts[4] === "over" ? "Over" : "Under" };
+    }
+  }
+  return leg;
+}
+function createCheck(slip) {
+  const notes = [];
+  const ids = [];
+  slip.legs.forEach((s) => {
+    const l = crMakeLeg(s.id);
+    if (!l) { notes.push(`I couldn't price "${s.seg}" right now: there's no line posted for it yet${s.player ? " (player prop prices post about a day before kickoff)" : ""}, or the game has started.`); return; }
+    ids.push(s.id);
+  });
+  slip.miss.forEach((m) => notes.push(pbEsc(m.why)));
+  const typed = {};
+  slip.legs.forEach((s) => { if (s.userLine != null) typed[s.id] = s; });
+  window.__crState = { check: true, ids, notes, typed, fixed: slip.fixed, res: { pool: [], tickets: [] } };
+  createCheckRender();
+}
+function crBetter(t) {
+  const out = { drops: [], swaps: [], pool: [] };
+  const ev0 = t.x.r.ev, ids = t.bag.map((l) => l.id);
+  if (ids.length >= 2) ids.forEach((id, k) => {
+    const rest = ids.filter((_, j) => j !== k);
+    const x = createPrice(rest);
+    if (x && x.r.ev >= ev0 + 0.01) out.drops.push({ k, label: t.x.legs[k] ? t.x.legs[k].label : t.bag[k].label, x });
+  });
+  out.drops.sort((a, b) => b.x.r.ev - a.x.r.ev);
+  t.bag.forEach((l, k) => {
+    if (l.kind === "pp") return;
+    if (t.bag.some((o, j) => j !== k && o.gid === l.gid)) return;   // never suggest a leg that fights another leg in the same game
+    const mine = t.x.legs[k] || l.pb;
+    let best = null;
+    ["sp|home", "sp|away", "tot|over", "tot|under", "ml|home", "ml|away"].forEach((suffix) => {
+      const id = l.gid + "|" + suffix;
+      if (ids.includes(id)) return;
+      const c = crMakeLeg(id);
+      if (!c || c.value < mine.value + 0.015) return;
+      if (c.kind === "ml" && !(c.pb.price >= -600 && c.pb.price <= 500)) return;
+      const bag = ids.slice(); bag[k] = id;
+      const x = createPrice(bag);
+      if (!x || x.r.ev < ev0 + 0.01) return;
+      if (!best || x.r.ev > best.x.r.ev) best = { k, c, x, mine };
+    });
+    if (best) { out.swaps.push(best); out.pool.push(best.c); }
+  });
+  out.swaps.sort((a, b) => b.x.r.ev - a.x.r.ev);
+  return out;
+}
+function createCheckRender() {
+  const out = document.getElementById("createOut");
+  const st = window.__crState;
+  if (!out || !st) return;
+  window.__readyPriceCache = new Map();
+  const legs = st.ids.map(crMakeLeg).filter(Boolean);
+  const allNotes = (st.notes || []).slice();
+  const fixedHtml = (st.fixed || []).length ? `<div class="cr-understood">${st.fixed.map(([a, b]) => `<span class="cr-chip fix">"${pbEsc(a)}" read as ${pbEsc(b)}</span>`).join("")}</div>` : "";
+  const notesHtml0 = allNotes.length ? `<div class="cr-notes">${allNotes.map((n) => `<p>${n}</p>`).join("")}</div>` : "";
+  if (!legs.length) { out.innerHTML = fixedHtml + notesHtml0 + `<div class="empty">Nothing left to check. Try a bet like "Bills -3, over 47.5".</div>`; return; }
+  const x = createPrice(legs.map((l) => l.id));
+  if (!x) { out.innerHTML = fixedHtml + notesHtml0 + `<div class="empty">No book has prices for all of those legs together right now.</div>`; return; }
+  const t = { bag: legs, x, check: true };
+  legs.forEach((l, k) => {
+    const ty = st.typed && st.typed[l.id], pl = x.legs[k];
+    if (ty && pl && pl.line != null && Math.abs(Number(pl.line) - ty.userLine) >= 0.25) allNotes.push(`You typed "${pbEsc(ty.seg)}". The line${x.book ? " at " + pbEsc(x.book) : ""} is <b>${pbEsc(pl.label)}</b> now, so that's what this is priced at.`);
+  });
+  const notesHtml = allNotes.length ? `<div class="cr-notes">${allNotes.map((n) => `<p>${n}</p>`).join("")}</div>` : "";
+  const b = crBetter(t);
+  st.res = { pool: b.pool, tickets: [t] };
+  const r = x.r, n = legs.length, what = n === 1 ? "bet" : "ticket";
+  const games = new Set(legs.map((l) => l.gid)).size;
+  let take;
+  if (r.ev >= 0.03) take = `<b class="cr-up">Bet it.</b> This ${what} is a good price${x.book ? " at " + pbEsc(x.book) : ""}: +${Math.round(r.ev * 100)}% value. It hits about ${pbPct(r.pAll)} of the time and the price only needs ${pbPct(r.breakEven)}.`;
+  else if (r.ev >= -0.01) take = `<b>About fair.</b> The price is about right for how often this ${what} hits (${pbPct(r.pAll)}), so there's no real edge either way${b.drops.length || b.swaps.length ? "; the changes below make it better" : ""}.`;
+  else take = `<b class="cr-down">Pass, or fix it.</b> The book has the edge on this ${what}: ${Math.round(r.ev * 100)}% value. It hits about ${pbPct(r.pAll)} of the time but the price needs ${pbPct(r.breakEven)}.`;
+  if (games < n) take += ` Two or more legs are from the same game. Books price same-game parlays lower than this, so expect a smaller payout there.`;
+  const fixes = [];
+  b.drops.slice(0, 2).forEach((d) => fixes.push(`<li><span>Drop <b>${pbEsc(d.label)}</b>: the ticket becomes ${pbAm(d.x.r.american)}${d.x.book ? " at " + pbEsc(d.x.book) : ""} with ${(d.x.r.ev >= 0 ? "+" : "") + Math.round(d.x.r.ev * 100)}% value.</span><button type="button" data-crdrop="${d.k}">Drop it</button></li>`));
+  b.swaps.slice(0, 3).forEach((w) => fixes.push(`<li><span>In ${pbEsc(w.c.g.short_name)}, <b>${pbEsc(w.c.label)}</b> ${pbAm(w.c.pb.price)} (${(w.c.value >= 0 ? "+" : "") + (w.c.value * 100).toFixed(1)}% value) is a better bet than your ${pbEsc(w.mine.label)} (${(w.mine.value >= 0 ? "+" : "") + (w.mine.value * 100).toFixed(1)}%). The ticket becomes ${pbAm(w.x.r.american)} with ${(w.x.r.ev >= 0 ? "+" : "") + Math.round(w.x.r.ev * 100)}% value.</span><button type="button" data-crswap="0|${w.k}|${pbEsc(w.c.id)}">Swap it in</button></li>`));
+  const fixHtml = fixes.length ? `<div class="cr-fix"><div class="lbl">Make it better</div><ul>${fixes.join("")}</ul></div>` : (r.ev < 0.03 ? "" : "");
+  out.innerHTML = fixedHtml + `<div class="cr-take">${take}</div>` + notesHtml + fixHtml + createTicketHtml(t, 0) +
+    `<p class="subn cr-foot">Priced at the best current line across the books. To build new tickets instead, ask for something like "3 leg NFL parlay at +600".</p>`;
+}
+function crCheckExample() {
+  try {
+    const now = Date.now();
+    const gs = (DATA.games || []).filter((g) => g && !g.completed && g.league === "nfl" && g.odds && g.odds.home_spread != null && g.odds.total != null && Date.parse(g.date) > now).sort((a, b) => Date.parse(a.date) - Date.parse(b.date)).slice(0, 2);
+    if (gs.length < 2) return "";
+    const a = gs[0], b = gs[1];
+    const fav = Number(a.odds.home_spread) <= 0 ? a.home : a.away;
+    const ln = Number(a.odds.home_spread) <= 0 ? Number(a.odds.home_spread) : -Number(a.odds.home_spread);
+    return `${fav.short} ${pbLine(ln)}, ${b.home.short} game over ${pbTot(b.odds.total)}`;
+  } catch (e) { return ""; }
+}
+// ---- suggestions while typing: teams, players and the words we understand ----------------
+const CR_WORD_SUG = [["moneyline", "moneyline parlay"], ["safest", "safest 2 leg parlay"], ["longshot", "longshot 4 leg"], ["player", "player prop unders"], ["props", "player prop unders"], ["unders", "unders"], ["overs", "overs"], ["underdogs", "underdogs"], ["weekend", "this weekend"], ["college", "college"], ["nfl", "NFL"], ["sunday", "Sunday"], ["saturday", "Saturday"], ["thursday", "Thursday"], ["monday", "Monday"], ["spread", "spread"], ["parlay", "parlay"]];
+function crSuggest(text) {
+  const raw = String(text || "");
+  if (/\s$/.test(raw)) return [];
+  const tailRaw = raw.split(/,|;|\s\+\s|\sand\s|\swith\s/i).pop();
+  const words = crNorm(tailRaw).trim().split(" ").filter(Boolean);
+  const last = words[words.length - 1] || "";
+  if (last.length < 2 || /\d/.test(last)) return [];
+  const idx = crIndex();
+  const rawTail = (n) => { const m = raw.match(new RegExp("(\\S+(?:\\s+\\S+){" + (n - 1) + "})\\s*$")); return m ? m[1].length : last.length; };
+  const out = [];
+  const tryN = (n) => {
+    if (words.length < n) return null;
+    const s = words.slice(-n).join(" ");
+    if (s.length < 2) return null;
+    const teams = [], players = [];
+    idx.teams.forEach((t) => {
+      let score = 0;
+      t.keys.forEach((k) => { if (k.startsWith(s)) score = Math.max(score, 3); else if (k.split(" ").some((w) => w.startsWith(s))) score = Math.max(score, 2); });
+      if (!score && s.toUpperCase() === t.abbr) score = 3;
+      if (!score && s.length >= 4) t.keys.forEach((k) => k.split(" ").forEach((w) => { if (w.length >= s.length && crLev(s, w.slice(0, s.length), 1) <= 1) score = Math.max(score, 1); }));
+      if (score) teams.push({ t, score });
+    });
+    idx.players.forEach((x) => {
+      let score = 0;
+      if (x.name.startsWith(s)) score = 3; else if (x.last.startsWith(s) && s.length >= 3) score = 2;
+      else if (s.length >= 4 && x.last.length >= s.length && crLev(s, x.last.slice(0, s.length), 1) <= 1) score = 1;
+      if (score) players.push({ x, score });
+    });
+    return { n, teams: teams.sort((a, b) => b.score - a.score || (a.t.league === "nfl" ? -1 : 1)), players: players.sort((a, b) => b.score - a.score) };
+  };
+  const hit = (words.length >= 2 && (() => { const h = tryN(2); return h && (h.teams.some((x) => x.score >= 2) || h.players.some((x) => x.score >= 2)) ? h : null; })()) || tryN(1);
+  if (!hit) return [];
+  const cut = rawTail(hit.n);
+  const when = (g) => fmt.when(g.date);
+  const add = (label, sub, insert) => { if (out.length < 7 && !out.some((o) => o.insert === insert)) out.push({ label, sub, insert, cut }); };
+  const tops = hit.teams.slice(0, 6), pls = hit.players.slice(0, 4);
+  if (tops.length && (tops.length <= 2 || tops[0].score > (tops[1] ? tops[1].score : 0)) && (!pls.length || tops[0].score >= pls[0].score)) {
+    const t = tops[0].t, g = t.g;
+    add(t.name, `${g.short_name} · ${when(g)}`, t.name);
+    const ml = crMakeLeg(`${g.id}|ml|${t.side}`), sp = crMakeLeg(`${g.id}|sp|${t.side}`), ov = crMakeLeg(`${g.id}|tot|over`), un = crMakeLeg(`${g.id}|tot|under`);
+    const v = (l) => `${pbAm(l.pb.price)}${l.book && !/standard|typical|estimated/.test(l.book) ? " at " + l.book : ""} · ${(l.value >= 0 ? "+" : "") + (l.value * 100).toFixed(1)}% value`;
+    if (sp) add(`${t.short} ${pbLine(sp.pb.line)}`, v(sp), `${t.short} ${pbLine(sp.pb.line)}`);
+    if (ml) add(`${t.short} to win`, v(ml), `${t.short} to win`);
+    if (ov && un) { const pick = ov.value >= un.value ? ov : un; add(`${t.short} game ${pick.label.toLowerCase()}`, `${g.short_name} · ${v(pick)}`, `${t.short} game ${pick.label.toLowerCase()}`); }
+    tops.slice(1, 3).forEach(({ t: t2 }) => add(t2.name, `${t2.g.short_name} · ${when(t2.g)}`, t2.name));
+  } else {
+    pls.forEach(({ x }) => {
+      const p = x.p;
+      let L = null;
+      try { L = postedLean(p); } catch (e) {}
+      if (L && L.price != null) {
+        const lbl = String(PROP_LBL[L.m.key] || L.m.label || "").toLowerCase();
+        add(`${p.name} ${L.take.toLowerCase()} ${L.line} ${lbl}`, `${p.pos || ""} · ${pbAm(L.price)}${L.book ? " at " + L.book : ""} · our lean`, `${p.name} ${L.take.toLowerCase()} ${L.line} ${lbl}`);
+      } else add(p.name, `${p.pos || ""} · ${p.opp ? "vs " + p.opp + " · " : ""}props post about a day before kickoff`, p.name);
+    });
+    tops.slice(0, 7 - out.length).forEach(({ t }) => add(t.name, `${t.g.short_name} · ${when(t.g)}`, t.name));
+  }
+  if (out.length < 3) CR_WORD_SUG.forEach(([w, ins]) => { if (w.startsWith(last) && w !== last && out.length < 5) out.push({ label: ins, sub: "", insert: ins, cut: last.length }); });
+  return out;
+}
+// what the box will do with the words so far, updated as you type
+function crLiveHtml(text) {
+  if (!String(text || "").trim()) return "";
+  const slip = crParseSlip(text);
+  const flag = (arr) => arr.map(([a, b]) => `<span class="cr-chip fix">"${pbEsc(a)}" → ${pbEsc(b)}</span>`).join("");
+  if (slip.check) {
+    const lbl = slip.legs.map((l) => { const pb = pbLeg({ id: l.id }); const nm = l.player ? l.player.name.split(" ").pop() + " " : ""; return pb ? (l.player ? nm + pb.label.replace(/^.*?(Over|Under)/i, "$1") : pb.label) : l.seg; });
+    return `<span class="subn">Checking your ${slip.legs.length === 1 ? "bet" : slip.legs.length + "-leg ticket"}:</span> ${lbl.map((x) => `<span class="cr-chip">${pbEsc(x)}</span>`).join("")}${flag(slip.fixed)}${slip.miss.map((m) => `<span class="cr-chip warn">${pbEsc(/don't have a game/.test(m.why) ? m.why.replace(/\.$/, "") : `Can't read "${m.seg}"`)}</span>`).join("")}`;
+  }
+  const want = createParse(text);
+  const miss = (want.missing || []).map((m) => `<span class="cr-chip warn">${pbEsc(m.name)} isn't on this week's prop board${m.injury && m.injury !== "ACTIVE" ? " (" + pbEsc(String(m.injury).toLowerCase()) + ")" : ""}</span>`).join("");
+  if (!/\s$/.test(text)) { const lastW = crNorm(text).trim().split(" ").pop(); want.unknown = (want.unknown || []).filter((w) => w !== lastW); }
+  const unk = (want.unknown || []).length ? `<span class="cr-chip warn">Not sure what "${pbEsc(want.unknown.slice(0, 3).join(" "))}" means</span>` : "";
+  return `<span class="subn">I'll look for:</span> ${createUnderstood(want)}${flag(want.fixed || [])}${miss}${unk}`;
+}
+function crWireBox(root) {
+  const input = root.querySelector("#createInput"), list = root.querySelector("#createSug"), live = root.querySelector("#createLive");
+  let items = [], sel = -1, timer = null;
+  const close = () => { list.hidden = true; list.innerHTML = ""; items = []; sel = -1; input.setAttribute("aria-expanded", "false"); input.removeAttribute("aria-activedescendant"); };
+  const draw = () => {
+    if (!items.length) return close();
+    list.innerHTML = items.map((it, k) => `<li role="option" id="crsug${k}" data-k="${k}" aria-selected="${k === sel}"><b>${pbEsc(it.label)}</b>${it.sub ? `<span>${pbEsc(it.sub)}</span>` : ""}</li>`).join("");
+    list.hidden = false;
+    input.setAttribute("aria-expanded", "true");
+    if (sel >= 0) input.setAttribute("aria-activedescendant", "crsug" + sel); else input.removeAttribute("aria-activedescendant");
+  };
+  const pick = (k) => {
+    const it = items[k];
+    if (!it) return;
+    const v = input.value;
+    input.value = v.slice(0, v.length - it.cut) + it.insert + " ";
+    close();
+    input.focus();
+    update();
+  };
+  const update = () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      try { live.innerHTML = crLiveHtml(input.value); } catch (e) { live.innerHTML = ""; }
+      try { items = crSuggest(input.value); } catch (e) { items = []; }
+      sel = -1;
+      draw();
+    }, 110);
+  };
+  input.addEventListener("input", update);
+  input.addEventListener("keydown", (e) => {
+    if (list.hidden || !items.length) return;
+    if (e.key === "ArrowDown") { e.preventDefault(); sel = (sel + 1) % items.length; draw(); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); sel = sel <= 0 ? items.length - 1 : sel - 1; draw(); }
+    else if (e.key === "Enter" && sel >= 0) { e.preventDefault(); pick(sel); }
+    else if (e.key === "Escape") { e.preventDefault(); close(); }
+    else if (e.key === "Tab" && items.length) { e.preventDefault(); pick(sel >= 0 ? sel : 0); }
+  });
+  list.addEventListener("mousedown", (e) => { const li = e.target.closest("li[data-k]"); if (li) { e.preventDefault(); pick(Number(li.dataset.k)); } });
+  input.addEventListener("blur", () => setTimeout(close, 150));
+  root.__crUpdate = update;
+  root.__crClose = close;
 }
 function renderCreate() {
   const root = document.getElementById("createSection");
@@ -12654,23 +13081,30 @@ function renderCreate() {
     root.__built = true;
     root.innerHTML = `<div class="cr-wrap">
       <h2 class="cr-h">Create your own</h2>
-      <p class="subn">Ask for a parlay in your own words. It's built from this week's board: our number on every side, total and moneyline, every player prop we price, each leg checked against its best price, and the reason for every leg.</p>
+      <p class="subn">Ask for a parlay in your own words, or type a bet you already have to check it. It's built from this week's board: our number on every side, total and moneyline, every player prop we price, each leg checked against its best price, and the reason for every leg.</p>
       <form class="cr-form" id="createForm" role="search">
-        <input id="createInput" type="search" autocomplete="off" enterkeyhint="search" placeholder="e.g. 3 leg NFL parlay at +600" aria-label="Ask for a parlay">
+        <div class="cr-box">
+          <input id="createInput" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" placeholder="e.g. 3 leg NFL parlay at +600" aria-label="Ask for a parlay or check a bet" role="combobox" aria-expanded="false" aria-controls="createSug" aria-autocomplete="list">
+          <ul id="createSug" class="cr-sug" role="listbox" aria-label="Suggestions" hidden></ul>
+        </div>
         <button type="submit">Build it</button>
       </form>
-      <div class="cr-ex" id="createEx">${["3 leg NFL parlay at +600", "Safest 2 leg parlay this weekend", "Sunday player prop unders", "College moneyline parlay Saturday", "Longshot 4 leg with underdogs", "Bills and Ravens"].map((t) => `<button type="button" data-crex="${pbEsc(t)}">${pbEsc(t)}</button>`).join("")}</div>
+      <div id="createLive" class="cr-live" aria-live="polite"></div>
+      <div class="cr-ex" id="createEx">${["3 leg NFL parlay at +600", "Safest 2 leg parlay this weekend", "Sunday player prop unders", "College moneyline parlay Saturday", "Longshot 4 leg with underdogs", "Bills and Ravens"].map((t) => `<button type="button" data-crex="${pbEsc(t)}">${pbEsc(t)}</button>`).join("")}${(() => { const ex = crCheckExample(); return ex ? `<button type="button" class="cr-ex-check" data-crex="${pbEsc(ex)}">Check: ${pbEsc(ex)}</button>` : ""; })()}</div>
       <div id="createOut"></div>
     </div>`;
     const form = root.querySelector("#createForm"), input = root.querySelector("#createInput");
-    form.addEventListener("submit", (e) => { e.preventDefault(); createRun(input.value); });
+    form.addEventListener("submit", (e) => { e.preventDefault(); if (root.__crClose) root.__crClose(); createRun(input.value); });
+    crWireBox(root);
     root.addEventListener("click", (e) => {
       const ex = e.target.closest("[data-crex]");
-      if (ex) { input.value = ex.dataset.crex; createRun(ex.dataset.crex); return; }
+      if (ex) { input.value = ex.dataset.crex; if (root.__crUpdate) root.__crUpdate(); createRun(ex.dataset.crex); return; }
       const b = e.target.closest("[data-openpb]");
       if (b) { e.stopPropagation(); openInBuilder(b.dataset.openpb); return; }
       const sw = e.target.closest("[data-crswap]");
       if (sw) { e.stopPropagation(); createSwap(sw.dataset.crswap); return; }
+      const dr = e.target.closest("[data-crdrop]");
+      if (dr) { e.stopPropagation(); const st = window.__crState; if (st && st.check) { st.ids.splice(Number(dr.dataset.crdrop), 1); createCheckRender(); } return; }
       const rf = e.target.closest("[data-crref]");
       if (rf) { e.stopPropagation(); createRefine(rf.dataset.crref); return; }
       const li = e.target.closest("li[data-id]");
@@ -12684,6 +13118,9 @@ function createRun(text) {
   const out = document.getElementById("createOut");
   if (!out) return;
   if (!String(text || "").trim()) { out.innerHTML = `<div class="empty">Type what you want, like "3 leg NFL parlay at +600".</div>`; return; }
+  let slip = null;
+  try { slip = crParseSlip(text); } catch (e) { slip = null; }
+  if (slip && slip.check) { createCheck(slip); return; }
   let want;
   try { want = createParse(text); } catch (e) { out.innerHTML = `<div class="empty">Something went wrong reading that. Try rewording it.</div>`; return; }
   createShow(want);
@@ -12695,7 +13132,12 @@ function createShow(want) {
   let res;
   try { res = createTickets(want); } catch (e) { out.innerHTML = `<div class="empty">Something went wrong building that. Try rewording it.</div>`; return; }
   window.__crState = { want, res };
-  const head = `<div class="cr-understood"><span class="subn">What I looked for:</span> ${createUnderstood(want)}</div>`;
+  const notes = [];
+  (want.fixed || []).forEach(([a, b]) => notes.push(`I read "${pbEsc(a)}" as ${pbEsc(b)}.`));
+  (want.missing || []).forEach((m) => notes.push(`${pbEsc(m.name)} isn't on this week's prop board${m.injury && m.injury !== "ACTIVE" ? " (listed " + pbEsc(String(m.injury).toLowerCase()) + ")" : ""}, so these tickets are built without him.`));
+  if (want.players.length && res.pool && !res.pool.some((l) => l.kind === "pp")) notes.push(`${pbEsc(want.players.map((p) => p.name).join(" and "))}: no prop prices are posted yet (they go up about a day before kickoff), so these tickets use ${want.players.length === 1 ? "his" : "their"} game instead.`);
+  if ((want.unknown || []).length) notes.push(`I skipped words I didn't understand: "${pbEsc(want.unknown.join(" "))}".`);
+  const head = `<div class="cr-understood"><span class="subn">What I looked for:</span> ${createUnderstood(want)}</div>` + (notes.length ? `<div class="cr-notes">${notes.map((n) => `<p>${n}</p>`).join("")}</div>` : "");
   const refine = `<div class="cr-refine"><span class="subn">Change it:</span>${[
     want.mode !== "safe" && ["safer", "Safer"],
     ["bigger", "Bigger payout"],
@@ -12735,6 +13177,7 @@ function createSwap(spec) {
   const t = st && st.res && st.res.tickets[Number(ti)];
   const alt = st && st.res.pool.find((l) => l.id === nid);
   if (!t || !alt) return;
+  if (st.check) { st.ids[Number(wi)] = alt.id; createCheckRender(); return; }
   const bag = t.bag.slice();
   bag[Number(wi)] = alt;
   const x = createPrice(bag.map((l) => l.id));
