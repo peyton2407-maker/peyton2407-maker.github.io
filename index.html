@@ -1960,6 +1960,20 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .cr-chip { padding: 4px 10px; border-radius: 999px; background: rgba(242,184,64,.12); color: var(--sun); font-size: 13px; font-weight: 700; }
 #createOut { display: grid; gap: 14px; }
 .cr-foot { margin-top: 4px; }
+.cr-actions { display: flex; gap: 8px; margin-top: 12px; }
+.cr-act { flex: 1; min-height: 40px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--line-2); background: transparent; color: var(--ink); font: 700 14px var(--body); cursor: pointer; }
+.cr-act:hover { border-color: var(--sun); }
+.cr-act.save { color: var(--sun); border-color: rgba(242,184,64,.5); }
+.cr-act.done { background: rgba(242,184,64,.14); color: var(--sun); border-color: var(--sun); cursor: default; }
+.cr-saved-note { margin: 8px 0 0; }
+.cr-saved-note a { color: var(--sun); font-weight: 700; }
+.cr-sharebar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.cr-sharebar .cr-act { flex: none; }
+.cr-recent { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.cr-recent:empty { display: none; }
+.cr-recent button { padding: 6px 11px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink-soft); font: 600 13px var(--body); cursor: pointer; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cr-recent button:hover { border-color: var(--sun); color: var(--ink); }
+.cr-recent .cr-clear { border: 0; text-decoration: underline; padding: 6px 4px; }
 .cr-box { position: relative; flex: 1; min-width: 0; }
 .cr-box input { width: 100%; box-sizing: border-box; }
 .cr-sug { position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 40; margin: 0; padding: 6px; list-style: none; background: var(--card); border: 1px solid var(--line-2); border-radius: 14px; box-shadow: 0 14px 40px rgba(0,0,0,.45); max-height: 60vh; overflow: auto; }
@@ -12701,6 +12715,10 @@ function createTicketHtml(t, i) {
     ${shop}
     <ul class="parlay-legs cr-legs${t.bag.length === 1 ? " one" : ""}">${t.bag.map((l, k) => crLegHtml(l, pbs[k])).join("")}</ul>
     ${swap}
+    <div class="cr-actions">
+      <button type="button" class="cr-act save${crIsSaved(t) ? " done" : ""}" data-crsave="${i}"${crIsSaved(t) ? " disabled" : ""}>${crIsSaved(t) ? "★ Saved to My bets" : "☆ Save to My bets"}</button>
+      <button type="button" class="cr-act" data-crshare="${pbEsc("t=" + t.bag.map((l) => encodeURIComponent(l.id)).join("~"))}">Share ticket</button>
+    </div>
     <button type="button" class="ready-open" data-openpb="${t.bag.map((l) => l.id).join("~")}">Open in parlay builder</button>
   </article>`;
 }
@@ -12940,7 +12958,7 @@ function createCheckRender() {
   b.drops.slice(0, 2).forEach((d) => fixes.push(`<li><span>Drop <b>${pbEsc(d.label)}</b>: the ticket becomes ${pbAm(d.x.r.american)}${d.x.book ? " at " + pbEsc(d.x.book) : ""} with ${(d.x.r.ev >= 0 ? "+" : "") + Math.round(d.x.r.ev * 100)}% value.</span><button type="button" data-crdrop="${d.k}">Drop it</button></li>`));
   b.swaps.slice(0, 3).forEach((w) => fixes.push(`<li><span>In ${pbEsc(w.c.g.short_name)}, <b>${pbEsc(w.c.label)}</b> ${pbAm(w.c.pb.price)} (${(w.c.value >= 0 ? "+" : "") + (w.c.value * 100).toFixed(1)}% value) is a better bet than your ${pbEsc(w.mine.label)} (${(w.mine.value >= 0 ? "+" : "") + (w.mine.value * 100).toFixed(1)}%). The ticket becomes ${pbAm(w.x.r.american)} with ${(w.x.r.ev >= 0 ? "+" : "") + Math.round(w.x.r.ev * 100)}% value.</span><button type="button" data-crswap="0|${w.k}|${pbEsc(w.c.id)}">Swap it in</button></li>`));
   const fixHtml = fixes.length ? `<div class="cr-fix"><div class="lbl">Make it better</div><ul>${fixes.join("")}</ul></div>` : (r.ev < 0.03 ? "" : "");
-  out.innerHTML = fixedHtml + `<div class="cr-take">${take}</div>` + notesHtml + fixHtml + createTicketHtml(t, 0) +
+  out.innerHTML = crSearchBar() + fixedHtml + `<div class="cr-take">${take}</div>` + notesHtml + fixHtml + createTicketHtml(t, 0) +
     `<p class="subn cr-foot">Priced at the best current line across the books. To build new tickets instead, ask for something like "3 leg NFL parlay at +600".</p>`;
 }
 function crCheckExample() {
@@ -12984,7 +13002,8 @@ function crSuggest(text) {
       else if (s.length >= 4 && x.last.length >= s.length && crLev(s, x.last.slice(0, s.length), 1) <= 1) score = 1;
       if (score) players.push({ x, score });
     });
-    return { n, teams: teams.sort((a, b) => b.score - a.score || (a.t.league === "nfl" ? -1 : 1)), players: players.sort((a, b) => b.score - a.score) };
+    const strongT = teams.some((x) => x.score >= 2), strongP = players.some((x) => x.score >= 2);
+    return { n, teams: teams.filter((x) => !strongT && !strongP || x.score >= 2).sort((a, b) => b.score - a.score || (a.t.league === "nfl" ? -1 : 1)), players: players.filter((x) => !strongT && !strongP || x.score >= 2).sort((a, b) => b.score - a.score) };
   };
   const hit = (words.length >= 2 && (() => { const h = tryN(2); return h && (h.teams.some((x) => x.score >= 2) || h.players.some((x) => x.score >= 2)) ? h : null; })()) || tryN(1);
   if (!hit) return [];
@@ -13091,6 +13110,7 @@ function renderCreate() {
       </form>
       <div id="createLive" class="cr-live" aria-live="polite"></div>
       <div class="cr-ex" id="createEx">${["3 leg NFL parlay at +600", "Safest 2 leg parlay this weekend", "Sunday player prop unders", "College moneyline parlay Saturday", "Longshot 4 leg with underdogs", "Bills and Ravens"].map((t) => `<button type="button" data-crex="${pbEsc(t)}">${pbEsc(t)}</button>`).join("")}${(() => { const ex = crCheckExample(); return ex ? `<button type="button" class="cr-ex-check" data-crex="${pbEsc(ex)}">Check: ${pbEsc(ex)}</button>` : ""; })()}</div>
+      <div class="cr-recent" id="createRecent"></div>
       <div id="createOut"></div>
     </div>`;
     const form = root.querySelector("#createForm"), input = root.querySelector("#createInput");
@@ -13103,6 +13123,12 @@ function renderCreate() {
       if (b) { e.stopPropagation(); openInBuilder(b.dataset.openpb); return; }
       const sw = e.target.closest("[data-crswap]");
       if (sw) { e.stopPropagation(); createSwap(sw.dataset.crswap); return; }
+      const sh = e.target.closest("[data-crshare]");
+      if (sh) { e.stopPropagation(); crShare(sh.dataset.crshare, sh); return; }
+      const sv = e.target.closest("[data-crsave]");
+      if (sv) { e.stopPropagation(); crSaveTicket(Number(sv.dataset.crsave), sv); return; }
+      const rc = e.target.closest("[data-crclear]");
+      if (rc) { e.stopPropagation(); try { localStorage.removeItem(CR_RECENT_KEY); } catch (err) {} crRecentDraw(); return; }
       const dr = e.target.closest("[data-crdrop]");
       if (dr) { e.stopPropagation(); const st = window.__crState; if (st && st.check) { st.ids.splice(Number(dr.dataset.crdrop), 1); createCheckRender(); } return; }
       const rf = e.target.closest("[data-crref]");
@@ -13112,12 +13138,16 @@ function renderCreate() {
     });
     try { if (typeof ensurePotdProps === "function") ensurePotdProps(); } catch (e) {}
   }
+  crRecentDraw();
+  if (window.__crPending) { const pend = window.__crPending; window.__crPending = null; crOpenLink(pend); return; }
   setTimeout(() => { try { const i = document.getElementById("createInput"); if (i && !i.value) i.focus({ preventScroll: true }); } catch (e) {} }, 60);
 }
 function createRun(text) {
   const out = document.getElementById("createOut");
   if (!out) return;
   if (!String(text || "").trim()) { out.innerHTML = `<div class="empty">Type what you want, like "3 leg NFL parlay at +600".</div>`; return; }
+  crRemember(text);
+  crSetLink("q=" + encodeURIComponent(String(text).trim()));
   let slip = null;
   try { slip = crParseSlip(text); } catch (e) { slip = null; }
   if (slip && slip.check) { createCheck(slip); return; }
@@ -13153,7 +13183,110 @@ function createShow(want) {
     out.innerHTML = head + `<div class="empty">${why} Try fewer legs, another day, or a wider ask like "NFL parlay this weekend".</div>` + refine;
     return;
   }
-  out.innerHTML = head + refine + res.tickets.map(createTicketHtml).join("") + `<p class="subn cr-foot">Prices are the best we have across the books right now and move until kickoff. Our checked chance is the books' chance moved part of the way toward our number, as far as our graded record backs. A parlay misses more often than a single bet, so stake less on it.</p>`;
+  out.innerHTML = crSearchBar() + head + refine + res.tickets.map(createTicketHtml).join("") + `<p class="subn cr-foot">Prices are the best we have across the books right now and move until kickoff. Our checked chance is the books' chance moved part of the way toward our number, as far as our graded record backs. A parlay misses more often than a single bet, so stake less on it.</p>`;
+}
+// ---- links, recent searches and saving -----------------------------------------------------
+const CR_RECENT_KEY = "gg-create-recent";
+function crLinkUrl(param) { return location.origin + location.pathname + "#create?" + param; }
+function crSetLink(param) { try { history.replaceState({ view: "create" }, "", "#create?" + param); } catch (e) {} }
+function crTakeLink(h) {
+  const qs = String(h).replace(/^#?create\?/, "");
+  const out = {};
+  qs.split("&").forEach((kv) => { const i = kv.indexOf("="); if (i > 0) { try { out[kv.slice(0, i)] = decodeURIComponent(kv.slice(i + 1)); } catch (e) {} } });
+  if (out.q || out.t) {
+    window.__crPending = out;
+    if (document.getElementById("createSection") && document.getElementById("createSection").__built) setTimeout(() => { if (window.__crPending) { const p = window.__crPending; window.__crPending = null; crOpenLink(p); } }, 0);
+  }
+}
+// a shared link: run the search (or rebuild the exact ticket), and once more when the
+// books' prices land if they weren't in yet
+function crOpenLink(p) {
+  const input = document.getElementById("createInput");
+  const go = () => {
+    if (p.t) {
+      const ids = p.t.split("~").map((x) => { try { return decodeURIComponent(x); } catch (e) { return x; } }).filter(Boolean).slice(0, 8);
+      const labels = ids.map((id) => { const pb = pbLeg({ id }); return pb ? pb.label : null; });
+      if (input) input.value = labels.filter(Boolean).join(", ");
+      createCheck({ legs: ids.map((id, k) => ({ id, seg: labels[k] || "this leg" })), miss: [], fixed: [] });
+      crSetLink("t=" + ids.map(encodeURIComponent).join("~"));
+    } else if (p.q) {
+      if (input) input.value = p.q;
+      createRun(p.q);
+    }
+    const root = document.getElementById("createSection");
+    if (root && root.__crUpdate) root.__crUpdate();
+  };
+  go();
+  if (!window.PB_BOOKS) {
+    let n = 0;
+    const iv = setInterval(() => { n++; if (window.PB_BOOKS || n > 30) { clearInterval(iv); if (window.PB_BOOKS && view === "create") go(); } }, 500);
+  }
+}
+function crSearchBar() {
+  const h = (location.hash || "").replace(/^#/, "");
+  const param = /^create\?/.test(h) ? h.replace(/^create\?/, "") : "";
+  return param ? `<div class="cr-sharebar"><button type="button" class="cr-act" data-crshare="${pbEsc(param)}">Share this search</button><span class="subn">The link opens these tickets, re-priced at that moment.</span></div>` : "";
+}
+function crShare(param, btn) {
+  const url = crLinkUrl(param);
+  const done = (msg) => { if (!btn) return; const old = btn.textContent; btn.textContent = msg; btn.classList.add("done"); setTimeout(() => { btn.textContent = old; btn.classList.remove("done"); }, 2200); };
+  const copy = () => {
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(() => done("Link copied"), () => fallback());
+    else fallback();
+  };
+  const fallback = () => {
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = url; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      const ok = document.execCommand && document.execCommand("copy");
+      ta.remove();
+      done(ok ? "Link copied" : "Copy the address bar");
+    } catch (e) { done("Copy the address bar"); }
+  };
+  if (navigator.share && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent || "")) {
+    navigator.share({ title: "Double Gs ticket", text: "Check out this ticket on Double Gs", url }).catch((e) => { if (!e || e.name !== "AbortError") copy(); });
+  } else copy();
+}
+function crRecent() { try { const v = JSON.parse(localStorage.getItem(CR_RECENT_KEY) || "[]"); return Array.isArray(v) ? v.filter((x) => typeof x === "string") : []; } catch (e) { return []; } }
+function crRemember(text) {
+  const q = String(text || "").trim().replace(/\s+/g, " ");
+  if (!q) return;
+  const list = [q].concat(crRecent().filter((x) => x.toLowerCase() !== q.toLowerCase())).slice(0, 6);
+  try { localStorage.setItem(CR_RECENT_KEY, JSON.stringify(list)); } catch (e) {}
+  crRecentDraw();
+}
+function crRecentDraw() {
+  const box = document.getElementById("createRecent");
+  if (!box) return;
+  const list = crRecent();
+  box.innerHTML = list.length ? `<span class="subn">Recent:</span>${list.map((q) => `<button type="button" data-crex="${pbEsc(q)}">${pbEsc(q)}</button>`).join("")}<button type="button" class="cr-clear" data-crclear="1" aria-label="Clear recent searches">Clear</button>` : "";
+}
+function crTicketKey(ids) { return ids.slice().sort().join("~"); }
+function crIsSaved(t) {
+  const key = crTicketKey(t.bag.map((l) => l.id));
+  try { return mbLoad().some((b) => b.src === "create" && crTicketKey((b.legs || []).map((l) => l.id)) === key && (b.legs || []).every((l) => !l.result)); } catch (e) { return false; }
+}
+// save to My bets (graded there from the final scores, like a ticket from the builder)
+function crSaveTicket(i, btn) {
+  const st = window.__crState;
+  const t = st && st.res && st.res.tickets[i];
+  if (!t || !t.x) return;
+  const legs = t.x.legs;
+  if (legs.some((l) => !l || l.started)) { if (btn) btn.textContent = "A leg has started"; return; }
+  const stake = (typeof PB !== "undefined" && PB.stake) || 10;
+  const entry = {
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), at: new Date().toISOString(), mode: "parlay", src: "create", book: t.x.book || null,
+    teaserPts: null, stake, cost: stake, boost: 0, price: t.x.r.american, combos: null,
+    legs: legs.map((l, k) => ({ id: l.id, gid: l.gid || t.bag[k].gid, kind: l.kind || t.bag[k].kind, side: l.side, line: l.line, price: l.price, label: l.label, game: l.game || t.bag[k].g.short_name, date: (l.g && l.g.date) || t.bag[k].g.date, league: (l.g && l.g.league) || t.bag[k].g.league, win: l.win }))
+  };
+  const list = mbLoad(); list.push(entry); mbSave(list);
+  if (btn) { btn.textContent = "★ Saved to My bets"; btn.classList.add("done"); btn.disabled = true; }
+  const note = document.createElement("p");
+  note.className = "subn cr-saved-note";
+  note.innerHTML = `Saved: ${pbAm(entry.price)}${entry.book ? " at " + pbEsc(entry.book) : ""}, $${stake} risk. It's graded in <a href="#bets" data-jump="bets">My bets</a> when the games go final.`;
+  const card = btn && btn.closest(".cr-ticket");
+  if (card && !card.querySelector(".cr-saved-note")) card.querySelector(".cr-actions").after(note);
 }
 function createRefine(k) {
   const st = window.__crState;
@@ -18001,11 +18134,13 @@ function quickMark(v) {
 // draw after the next paint, so the tap's own feedback shows first
 function afterPaint(fn) { requestAnimationFrame(() => setTimeout(fn, 0)); }
 function goView(v, opts) {
+  if (/^create\?/.test(String(v || ""))) { crTakeLink(v); v = "create"; }
   quickMark(v);
   const token = (goView.n = (goView.n || 0) + 1);
   requestAnimationFrame(() => setTimeout(() => { if (token === goView.n) setView(v, opts); }, 0));
 }
 function setView(next, opts) {
+  if (/^create\?/.test(String(next || ""))) { crTakeLink(next); next = "create"; }
   if (next === "heisman" || next === "recruit" || next === "awards" || next === "model") next = next === "awards" ? "nflpotd" : "home";
   const allowed = {home:1,builder:1,bets:1,calc:1,parlay:1,propp:1,card:1,score:1,history:1,alerts:1,nfl:1,live:1,cfb:1,all:1,props:1,tds:1,value:1,cfbpicks:1,potd:1,nflpotd:1,ladder:1,create:1,nflwx:1,cfbwx:1,nflinj:1,cfbinj:1,ratings:1,season:1,model:1,recruit:1,awards:1,charts:1,prime:1,boom:1};
   if (!allowed[next]) next = "home";
@@ -18023,7 +18158,7 @@ function setView(next, opts) {
   } catch (e) {}
   try { if (typeof subnavFollow === "function") requestAnimationFrame(subnavFollow); } catch (e) {}
   try {
-    if (location.hash.replace("#","") !== next) {
+    if (location.hash.replace("#","") !== next && !(next === "create" && /^#create\?/.test(location.hash))) {
       if (opts && opts.push) history.pushState({ view: next }, "", "#" + next);
       else history.replaceState({ view: next }, "", "#" + next);
     }
@@ -19773,10 +19908,10 @@ function renderMyBets() {
     </div>
     <ul class="mb-legs">${t.legs.map((lg, i) => `<li><span class="mb-r mb-r-${g.legs[i]}">${chip(g.legs[i])}</span> ${pbEsc(lg.label)} <em>${pbEsc(lg.game)}${lg.price != null ? " · " + pbAm(lg.price) : ""}${lg.final ? " · final " + pbEsc(lg.final) : ""}</em>
       ${g.legs[i] === "check" || (lg.kind === "pp" && g.legs[i] !== "open" && !lg.manual) ? `<span class="mb-mark">${["won", "lost", "push"].map((r) => `<button type="button" data-mbset="${t.id}|${i}|${r}">${r[0].toUpperCase() + r.slice(1)}</button>`).join("")}</span>` : ""}</li>`).join("")}</ul>
-    <div class="mb-foot"><span>Saved ${pbEsc(fmt.when(t.at))}</span><button type="button" data-mbdel="${t.id}">Delete</button></div>
+    <div class="mb-foot"><span>Saved ${pbEsc(fmt.when(t.at))}${t.src === "create" ? " from Create your own" : ""}${t.book ? " · " + pbEsc(t.book) : ""}</span><button type="button" data-mbdel="${t.id}">Delete</button></div>
   </li>`;
   root.innerHTML = `<div class="mb">
-    <div class="mb-head"><h2>My bets</h2><p>Save a ticket from the parlay builder and it's graded here from the final scores. Your record stays in this browser.</p></div>
+    <div class="mb-head"><h2>My bets</h2><p>Save a ticket from the parlay builder or Create your own and it's graded here from the final scores. Your record stays in this browser.</p></div>
     ${bankrollHtml()}
     ${alertsHtml()}
     <div class="mb-stats">
