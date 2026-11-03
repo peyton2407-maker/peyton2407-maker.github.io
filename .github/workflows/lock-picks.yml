@@ -25,7 +25,9 @@ jobs:
           pip install --quiet playwright==1.56.0
           python -m playwright install --with-deps chromium
       - name: Lock, grade and archive
-        run: python3 scripts/lock_runner.py
+        run: |
+          cp data/locks.json "$RUNNER_TEMP/locks-before.json"
+          python3 scripts/lock_runner.py
       - name: Commit any new locks
         run: |
           git config user.name "peyton2407-maker"
@@ -44,3 +46,8 @@ jobs:
             sleep 5
           done
           exit 1
+      - name: Phone alerts (only after the push landed, so a retried push never alerts twice)
+        if: success()
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: python3 scripts/alerts.py --diff "$RUNNER_TEMP/locks-before.json" data/locks.json

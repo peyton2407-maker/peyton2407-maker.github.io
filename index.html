@@ -1942,6 +1942,18 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 @media (max-width: 979px) { .home-aside .home-banner { display: none; } }
 #homeFeature:not(.on) { display: none; }
 .ladder-board { display: grid; gap: 14px; }
+.alerts-box { padding: 12px 14px; border: 1px solid var(--line-2); border-radius: 12px; background: var(--card); margin: 0 0 12px; }
+.alerts-box ol { margin: 6px 0 0; padding-left: 20px; }
+.alerts-box a { color: var(--sun); font-weight: 700; word-break: break-all; }
+.bet-size { display: block; margin: 6px 0 2px; font-size: 13.5px; color: var(--ink-soft); }
+.bet-size b { color: var(--sun); font-weight: 800; }
+.bet-size.none b { color: var(--muted); font-weight: 600; }
+.bet-size em { font-style: normal; color: var(--muted); margin-left: 4px; }
+.bet-size-s { display: block; margin-top: 3px; }
+.bet-size-s b { color: var(--sun); }
+.bankroll-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin: 0 0 12px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+.bankroll-row label { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-weight: 600; }
+.bankroll-row input { width: 130px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line-2); background: var(--paper); color: var(--ink); font: inherit; }
 .ladder-h { margin: 10px 0 0; font: 700 20px var(--display); }
 .ladder-ticket .potd-head { margin-bottom: 8px; }
 .ladder-tile { padding: 14px 16px; }
@@ -7591,6 +7603,7 @@ function readyCardHtml(title, thought, legs, force) {
     <div class="parlay-odds">${pbAm(r.american)}</div>
     <div class="subn">$10 pays ${pbMoney(10 * r.decEff)}${x.book ? " at " + pbEsc(x.book) : ""} · checked chance ${pbPct(r.pAll)}, needs ${pbPct(r.breakEven)}</div>
     <div class="ready-val ${val.cls}">${val.text}</div>
+    ${sizeHtml(sgp ? 0 : kellyUnits(r.pAll, null, { dec: r.decEff, cap: 1 }))}
     ${thought ? `<p class="subn" style="color:var(--ink);margin:8px 0 10px">${thought}</p>` : ""}
     <ul class="parlay-legs">${mapped.map((m) => {
       const posted = String(m.l.label || "").trim();
@@ -11748,7 +11761,7 @@ function renderProps() {
     const pick = L
       ? `<div class="pp-pick ${L.score > 0 ? "plus" : ""}">
           <div><span class="lbl">Our side</span><b>${L.take} ${L.line} ${PROP_LBL[L.m.key] || L.m.label}</b>
-          <small>${Math.round(L.chance * 100)}% checked${L.fair != null ? ` (our model ${Math.round(L.raw * 100)}%, books ${Math.round(L.fair * 100)}%)` : " (no prices yet)"}${L.price != null ? ` · best ${pbAm(L.price)} ${pbEsc(L.book || "")}` : ""}</small>${p.injury && p.injury !== "ACTIVE" && L.take === "Over" ? `<small class="pp-warn">He's ${pbEsc(String(p.injury).toLowerCase())}. A line well under our number often means the books expect a smaller role.</small>` : ""}</div>
+          <small>${Math.round(L.chance * 100)}% checked${L.fair != null ? ` (our model ${Math.round(L.raw * 100)}%, books ${Math.round(L.fair * 100)}%)` : " (no prices yet)"}${L.price != null ? ` · best ${pbAm(L.price)} ${pbEsc(L.book || "")}` : ""}</small>${L.price != null && L.fair != null ? `<small class="bet-size-s">Bet size: <b>${unitsText(kellyUnits(L.chance, L.price))}</b></small>` : ""}${p.injury && p.injury !== "ACTIVE" && L.take === "Over" ? `<small class="pp-warn">He's ${pbEsc(String(p.injury).toLowerCase())}. A line well under our number often means the books expect a smaller role.</small>` : ""}</div>
           ${L.value != null ? `<span class="pp-val ${L.value > 0 ? "plus" : "minus"}">${L.value > 0 ? "+" : ""}${Math.round(L.value * 100)}%</span>` : ""}
           ${tid ? `<button type="button" class="pp-add" data-addprop="${tid}" aria-pressed="${!!inTicket}">${inTicket ? "On ticket" : "Add to ticket"}</button>` : ""}
         </div>`
@@ -12122,6 +12135,56 @@ function potdPick(league) {
     : (potdDayName(best.g.date) + " · next game");
   return best;
 }
+// ==== Bet sizing =========================================================================
+// A suggested stake in units (1 unit = 1% of your bankroll): a quarter of the Kelly stake for
+// our checked chance at this price, in quarter units, capped at 2 units for a single bet and
+// 1 for a parlay (the biggest disagreements with the books are where a model is most often wrong). Full Kelly swings too hard for chances this uncertain; a quarter keeps most of
+// the growth with far smaller drawdowns. No edge at the price means no bet.
+function kellyUnits(p, price, opts) {
+  const o = opts || {};
+  const dec = o.dec ? Number(o.dec) : pbDec(price);
+  if (!(p > 0 && p < 1) || !(dec > 1)) return 0;
+  const f = (p * dec - 1) / (dec - 1);
+  if (!(f > 0)) return 0;
+  const u = Math.min(o.cap != null ? o.cap : 2, 0.25 * f * 100);
+  return Math.max(0.25, Math.round(u * 4) / 4);
+}
+// Phone alerts (scripts/alerts.py, sent by the lock job through ntfy): every play of the day,
+// Ladder and weekly card the moment it locks, and its result.
+const ALERT_TOPIC = "doublegs-e4n1ldevih1l";
+function alertsHtml() {
+  return `<div class="alerts-box"><b>Get every lock on your phone</b>
+    <p class="subn">The play of the day, the Ladder and the weekly card are sent the moment they lock, with the price, the book and the bet size, and again when they're graded.</p>
+    <ol class="subn"><li>Install the free <b>ntfy</b> app (App Store or Google Play).</li><li>Tap <b>+</b> and subscribe to <b>${ALERT_TOPIC}</b>, or open <a href="https://ntfy.sh/${ALERT_TOPIC}" target="_blank" rel="noopener">ntfy.sh/${ALERT_TOPIC}</a> on your phone.</li></ol></div>`;
+}
+function bankrollDollars() {
+  try { const v = Number(localStorage.getItem("gg-bankroll") || 0); return v > 0 ? v : 0; } catch (e) { return 0; }
+}
+// "1.5u ($45)" or "No bet" when the price isn't worth it
+function unitsText(u) {
+  if (!(u > 0)) return "pass (the price isn't worth it)";
+  const br = bankrollDollars();
+  const n = u % 1 === 0 ? String(u) : u.toFixed(2).replace(/0$/, "");
+  return n + "u" + (br ? " ($" + Math.round(br * u / 100).toLocaleString() + ")" : "");
+}
+function sizeHtml(u, note) {
+  return `<span class="bet-size ${u > 0 ? "" : "none"}" title="1 unit = 1% of your bankroll. A quarter of the Kelly stake for our checked chance at this price.">Bet size: <b>${unitsText(u)}</b>${note ? ` <em>${note}</em>` : ""}</span>`;
+}
+function bankrollHtml() {
+  const br = bankrollDollars();
+  return `<div class="bankroll-row"><label>Your bankroll <span class="subn">(1 unit = 1% of it; saved in this browser)</span>
+    <input type="number" inputmode="decimal" min="0" step="50" id="bankrollInput" placeholder="e.g. 1000" value="${br || ""}"></label>
+    <span class="subn">${br ? "1 unit = $" + Math.round(br / 100).toLocaleString() : "Add it to see every bet size in dollars."}</span></div>`;
+}
+function wireBankroll(root, redraw) {
+  const el = root && root.querySelector("#bankrollInput");
+  if (!el || el.__wired) return;
+  el.__wired = true;
+  el.addEventListener("change", () => {
+    try { const v = Number(el.value); if (v > 0) localStorage.setItem("gg-bankroll", String(v)); else localStorage.removeItem("gg-bankroll"); } catch (e) {}
+    if (typeof redraw === "function") redraw();
+  });
+}
 // ==== THE LADDER ==========================================================================
 // One parlay a game day, 2 or 3 legs, run like the play of the day: picked from every bet type
 // (sides, totals, moneylines, player prop unders), every leg beating its own price at the one
@@ -12222,6 +12285,7 @@ function ladderRow(pick) {
   return {
     key: "ladder:" + pick.day, day: pick.day, n: legs.length, book: x.book || null,
     tier: pick.light ? "light" : "value", stake: pick.light ? 0.5 : 1,
+    size: Math.min(pick.light ? 0.5 : 1, kellyUnits(Number(x.r.pAll), null, { dec: Number(x.r.decEff), cap: 1 })),
     american: Math.round(x.r.american), dec: +Number(x.r.decEff).toFixed(4), chance: +Number(x.r.pAll).toFixed(4),
     breakEven: +Number(x.r.breakEven).toFixed(4), ev: +Number(x.r.ev).toFixed(4),
     firstKick: Number.isFinite(first) ? new Date(first).toISOString() : null, legs, result: null, units: null
@@ -12365,6 +12429,7 @@ function ladderTicketHtml(row, opts) {
   return `<article class="prop-card ladder-ticket">
     <div class="potd-head">${status}<div><b>${row.n}-leg · ${pbAm(row.american)}${row.book ? " at " + pbEsc(row.book) : ""}</b>${row.tier === "light" ? ` <span class="pick-tag lean" title="No ticket cleared the value bar today; this is the closest to a fair price, half a unit">light day · ½u</span>` : ""}
       <div class="subn">${pbEsc(potdDayName(row.firstKick || row.day))} · $10 pays ${pbMoney(10 * Number(row.dec))} · checked chance ${pbPct(row.chance)}, needs ${pbPct(row.breakEven)} · ${row.ev >= 0 ? "+" : ""}${(Number(row.ev) * 100).toFixed(1)}% value</div></div>${units}</div>
+    ${row.result ? "" : sizeHtml(row.tier === "light" ? Math.min(0.5, kellyUnits(Number(row.chance), null, { dec: Number(row.dec), cap: 1 })) : kellyUnits(Number(row.chance), null, { dec: Number(row.dec), cap: 1 }), row.tier === "light" ? "light days are tracked at ½u" : "")}
     <ul class="parlay-legs">${(row.legs || []).map((l) => ladderLegHtml(l, !!row.locked)).join("")}</ul>
     <div class="subn">${lockLine}${row.note ? " " + pbEsc(row.note) : ""}</div>
     ${o.builder && !row.result ? `<button type="button" class="ready-open" data-openpb="${row.legs.map((l) => l.id).join("~")}">Open in parlay builder</button>` : ""}
@@ -12387,7 +12452,7 @@ function ladderRecordHtml(rows) {
   const byTier = ["value", "light"].map((t) => { const x = ladderTally(rows.filter((r) => (r.tier || "value") === t)); return x.n || x.push ? `<div><span class="lbl">${t === "value" ? "Value tickets (1u)" : "Light days (½u)"}</span><b>${x.hit}-${x.miss} · ${u(x.units)}</b></div>` : ""; }).join("");
   return `<article class="prop-card potd-rec ladder-rec">
     <div class="who"><div><h4>The Ladder</h4>
-      <div class="prop-meta">One parlay a game day, 2 or 3 legs from every bet type: NFL sides, totals, moneylines and player prop unders, college totals and moneylines (college spreads lost in testing, so they stay off). Every leg has to beat its own price at the one book that pays the most for the whole ticket, and the ticket has to hit at least 15% of the time. It posts every game day: a value ticket (1 unit) when one clears that bar, otherwise a light ticket, the closest to a fair price with no leg more than 5% under its price, college spreads allowed (half a unit). Light tickets are tracked apart from value tickets. It locks 90 minutes before the first leg and is graded leg by leg from the final scores and box scores.</div></div>
+      <div class="prop-meta">One parlay every game day, 2 or 3 legs from different games: NFL sides, totals, moneylines and prop unders, college totals and moneylines. A value ticket (1u) has every leg beating its own price at the book that pays the most, and hits 15%+ of the time. On a day without one, a light ticket (½u), the closest to fair, tracked apart. It locks 90 minutes before the first leg and is graded leg by leg.</div></div>
       <div class="pick-score">${T.hit}-${T.miss}</div></div>
     <div class="prop-stats">
       <div><span class="lbl">Tickets</span><b>${T.n ? Math.round((T.hit / T.n) * 100) + "% hit" : "No finished tickets yet"}</b></div>
@@ -12409,10 +12474,12 @@ function renderLadder() {
   const rows = ladderRows();
   const cur = ladderCurrent();
   const done = rows.filter((r) => r.result || (r.locked && cur && cur.row.key !== r.key)).sort((a, b) => String(b.day).localeCompare(String(a.day)));
-  box.innerHTML = ladderRecordHtml(rows)
+  box.innerHTML = bankrollHtml() + ladderRecordHtml(rows)
     + (cur ? `<h3 class="ladder-h">${cur.row.locked ? "Today's ladder" : "Next ladder"}</h3>` + ladderTicketHtml(cur.row, { live: cur.live, builder: true })
       : `<div class="empty">No ladder right now: no game day in the next week has two games with legs close enough to their price. It shows here as soon as one does.</div>`)
+    + alertsHtml()
     + (done.length ? `<h3 class="ladder-h">Every ladder</h3>` + done.map((r) => ladderTicketHtml(r)).join("") : "");
+  wireBankroll(box, renderLadder);
   if (!box.__wired) {
     box.__wired = true;
     box.addEventListener("click", (e) => {
@@ -12496,6 +12563,7 @@ function potdLockDetail(bet) {
   const out = {};
   try {
     const g = bet.g, p = g.proj || {}, o = g.odds || {};
+    try { out.units = kellyUnits(Number(bet.hit), bet.price != null ? Number(bet.price) : -110); } catch (e) {}
     if (bet.prop) {
       Object.assign(out, { prop: bet.prop, price: bet.price, book: bet.book });
     } else {
@@ -12614,6 +12682,7 @@ function potdCard(bet, title) {
       <div><span class="lbl">DraftKings</span><b>${escHtml((g.odds && g.odds.details) || "—")} · total ${escHtml(String((g.odds && g.odds.total) != null ? g.odds.total : "—"))}</b></div>
       ${(() => { const i = !bet.prop && typeof bestPriceInfo === "function" ? bestPriceInfo(g, bet.line) : null; return i ? `<div><span class="lbl">Best price now</span><b>${escHtml(i.best)}${i.dk ? `<span class="subn"> DraftKings ${escHtml(i.dk)}</span>` : ""}</b></div>` : ""; })()}
       <div><span class="lbl">Our score</span><b>${g.away.abbr} ${p.away_points ?? "—"} – ${g.home.abbr} ${p.home_points ?? "—"}</b></div>
+      <div><span class="lbl">Bet size</span><b>${unitsText(kellyUnits(Number(bet.hit), bet.price != null ? Number(bet.price) : -110))}</b></div>
       <div style="grid-column:1/-1"><span class="lbl">Why this one</span><b>${escHtml(bet.why)}</b></div>
     </div>
   </article>`;
@@ -12735,7 +12804,7 @@ function renderNflPotd() {
   const bet = nflPotd();
   rememberPotd("nfl", bet);
   const current = bet ? potdCard(bet, "NFL POTD") : `<div class="empty">No NFL bet left this week beats its price: no side, total, moneyline or player prop. So there is no play of the day yet. Player prop prices come in about a day before each kickoff.</div>`;
-  board.innerHTML = potdRecordCard("nfl") + current + potdHistoryHtml("nfl");
+  board.innerHTML = potdRecordCard("nfl") + current + (typeof alertsHtml === "function" ? alertsHtml() : "") + potdHistoryHtml("nfl");
   board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 function renderPotd() {
@@ -12745,7 +12814,7 @@ function renderPotd() {
   const bet = cfbPotd();
   rememberPotd("cfb", bet);
   const current = bet ? potdCard(bet, "POTD") : `<div class="empty">No college play of the day right now. The play is a weather under, and no game on the board has rain or strong wind in its forecast that moves our total 1.5+ under the line. Forecasts update every hour.</div>`;
-  board.innerHTML = potdRecordCard("cfb") + current + potdHistoryHtml("cfb");
+  board.innerHTML = potdRecordCard("cfb") + current + (typeof alertsHtml === "function" ? alertsHtml() : "") + potdHistoryHtml("cfb");
   board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
 }
 
@@ -18650,6 +18719,8 @@ function renderMyBets() {
   </li>`;
   root.innerHTML = `<div class="mb">
     <div class="mb-head"><h2>My bets</h2><p>Save a ticket from the parlay builder and it's graded here from the final scores. Your record stays in this browser.</p></div>
+    ${bankrollHtml()}
+    ${alertsHtml()}
     <div class="mb-stats">
       <div><b>${w}-${l}${pu ? "-" + pu : ""}</b><span>Record</span></div>
       <div><b class="${profit >= 0 ? "up" : "down"}">${profit >= 0 ? "+" : ""}${pbMoney(profit)}</b><span>Profit</span></div>
@@ -18662,6 +18733,7 @@ function renderMyBets() {
     ${done.length ? `<h3>Settled</h3><ol class="mb-list">${done.slice().reverse().map(ticketHtml).join("")}</ol>` : ""}
     ${list.length ? `<div class="mb-tools"><button type="button" data-mbcsv="1">Download as a spreadsheet (CSV)</button></div>` : ""}
   </div>`;
+  wireBankroll(root, renderMyBets);
   if (!root.__wired) {
     root.__wired = true;
     root.addEventListener("click", (e) => {

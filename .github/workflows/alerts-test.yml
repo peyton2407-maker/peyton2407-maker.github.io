@@ -1,0 +1,17 @@
+name: Test phone alert
+# Sends one test alert to the topic in scripts/alerts.json (or the NTFY_TOPIC secret), so you
+# can check the ntfy app is subscribed.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Send a test alert
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: python3 scripts/alerts.py "Double Gs alerts are on" "You'll get every play of the day, Ladder and weekly card here when it locks, with the price, the book and the bet size."
