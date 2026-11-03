@@ -232,9 +232,9 @@
     "hitPct": 66,
     "why": "We project Caleb Williams for 1.0 pass TDs against a line of 1.5. Our checked chance on the under is 66%; the books' own chance is 59%. At -168 (DraftKings) that is 5.4% better than the price. Player prop plays are 2-3 on the play of the day, so that record is in the pick.",
     "label": "Monday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "Caleb Williams: 1 pass TDs",
+    "resultWhy": "It hit. Caleb Williams under 1.5 pass TDs cashed.",
     "prop": {
      "pid": "4431611",
      "name": "Caleb Williams",
@@ -252,7 +252,8 @@
     "locked": true,
     "kick": "2026-11-03T01:15Z",
     "big": false,
-    "savedAt": 1793663185871
+    "savedAt": 1793663185871,
+    "by": "0.5 under 1.5"
    }
   ],
   "cfb": [
@@ -734,5 +735,5 @@
    }
   ]
  },
- "updated": "2026-11-03T00:16:37.700Z"
+ "updated": "2026-11-03T05:16:48.311Z"
 }
