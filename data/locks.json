@@ -12,14 +12,14 @@
    "pick": "AKR",
    "pick_line": "AKR +13.5",
    "total_pick": "NO PLAY",
-   "side_play": false,
-   "our_margin": -12.5,
+   "side_play": true,
+   "our_margin": -11.85,
    "our_total": 51.5,
-   "confidence": null,
+   "confidence": 51,
    "total_play": false,
-   "spread": 13.5,
+   "spread": 12.5,
    "total": 51.5,
-   "lockedAt": "2026-11-03T21:31:27.929Z",
+   "lockedAt": "2026-11-03T21:46:30.448Z",
    "provisional": true
   },
   "401866454": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -6.5,
    "total": 45.5,
-   "lockedAt": "2026-11-03T21:31:27.929Z",
+   "lockedAt": "2026-11-03T21:46:30.448Z",
    "provisional": true
   }
  },
@@ -778,7 +778,7 @@
    }
   ]
  },
- "updated": "2026-11-03T21:31:27.929Z",
+ "updated": "2026-11-03T21:46:30.448Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -790,11 +790,29 @@
    "size": 0,
    "american": 268,
    "dec": 3.6768,
-   "chance": 0.2632,
+   "chance": 0.2641,
    "breakEven": 0.272,
-   "ev": -0.0324,
+   "ev": -0.0288,
    "firstKick": "2026-11-04T00:00:00.000Z",
    "legs": [
+    {
+     "id": "401866453|sp|home",
+     "label": "AKR +13.5",
+     "kind": "sp",
+     "game_id": "401866453",
+     "game": "OHIO @ AKR",
+     "league": "cfb",
+     "kick": "2026-11-04T00:00Z",
+     "price": -108,
+     "line": 13.5,
+     "win": 0.5025,
+     "bookWin": 0.4978,
+     "value": -0.0321,
+     "cat": "play",
+     "why": "AKR is getting 12.5. That is the underdog. Our number is 0.7 points off the current line. AKR is at home. Our line moved from OHIO -12.5 to OHIO -11.8. The line moved from OHIO -13.5 to OHIO -12.5. We followed +0.7 of that move. Benign conditions — little weather tax.",
+     "prop": null,
+     "result": null
+    },
     {
      "id": "401866454|sp|away",
      "label": "BUFF +6.5",
@@ -812,31 +830,13 @@
      "why": "BUFF is getting 6.5. Our number has them covering by 4.5 points.",
      "prop": null,
      "result": null
-    },
-    {
-     "id": "401866453|sp|home",
-     "label": "AKR +13.5",
-     "kind": "sp",
-     "game_id": "401866453",
-     "game": "OHIO @ AKR",
-     "league": "cfb",
-     "kick": "2026-11-04T00:00Z",
-     "price": -108,
-     "line": 13.5,
-     "win": 0.5007,
-     "bookWin": 0.4978,
-     "value": -0.0357,
-     "cat": "dog",
-     "why": "AKR is getting 13.5. Our number has them covering by 1.0 points.",
-     "prop": null,
-     "result": null
     }
    ],
    "result": null,
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-03T21:31:27.929Z"
+   "lockedAt": "2026-11-03T21:46:30.448Z"
   }
  ]
 }
