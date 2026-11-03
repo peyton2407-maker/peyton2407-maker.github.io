@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 12.5,
    "total": 51.5,
-   "lockedAt": "2026-11-03T22:33:04.497Z"
+   "lockedAt": "2026-11-03T22:34:19.270Z"
   },
   "401866454": {
    "id": "401866454",
@@ -39,7 +39,7 @@
    "total_play": false,
    "spread": -6.5,
    "total": 45.5,
-   "lockedAt": "2026-11-03T22:33:04.497Z",
+   "lockedAt": "2026-11-03T22:34:19.270Z",
    "provisional": true
   }
  },
@@ -777,7 +777,7 @@
    }
   ]
  },
- "updated": "2026-11-03T22:33:04.497Z",
+ "updated": "2026-11-03T22:34:19.270Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -835,7 +835,7 @@
    "units": null,
    "locked": true,
    "provisional": false,
-   "lockedAt": "2026-11-03T22:33:04.497Z"
+   "lockedAt": "2026-11-03T22:34:19.270Z"
   }
  ]
 }
