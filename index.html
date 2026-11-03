@@ -1991,6 +1991,9 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .rec-lost .cr-rec-st { background: rgba(240,122,106,.16); color: var(--bad, #f07a6a); }
 .rec-open .cr-rec-st { background: rgba(242,184,64,.14); color: var(--sun); }
 @media (max-width: 420px) { .cr-rec-stats { grid-template-columns: repeat(2, 1fr); } }
+.cr-ex-label { font: 800 22px var(--display); }
+.cr-change { margin: 4px 0 0; color: var(--ink); }
+.cr-link { border: 0; background: none; color: var(--sun); font: 700 13px var(--body); cursor: pointer; padding: 0; text-decoration: underline; }
 .cr-actions { display: flex; gap: 8px; margin-top: 12px; }
 .cr-act { flex: 1; min-height: 40px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--line-2); background: transparent; color: var(--ink); font: 700 14px var(--body); cursor: pointer; }
 .cr-act:hover { border-color: var(--sun); }
@@ -12803,7 +12806,7 @@ function createTicketHtml(t, i) {
   </article>`;
 }
 // ---- Create your own: words we understand, typo matching, and the search box helpers -------
-const CREATE_KNOWN = new Set(("a an the and or with for on at of to in into me my i im want need give get show find make build create bet bets betting wager parlay parlays parley parleys ticket tickets slip leg legs team teams pick picks piece way game games best good great top value ev plus positive edge smart sharp safe safest likely lock locks sure high chance low risk conservative longshot long shot lotto big payout money huge moonshot dart nfl pro sunday monday thursday saturday friday tuesday wednesday night snf mnf tnf college cfb ncaa ncaaf football today tonight tomorrow weekend this next week weeks moneyline moneylines line lines ml win winner winners straight up spread spreads ats cover covers points point pts total totals over under overs unders ou o u prop props player players yards yds yard receptions reception catches passing rushing receiving pass rush rec tds td touchdown touchdowns no without underdog underdogs dogs dog favorite favorites favs fav chalk around about odds pays pay return turn from off dollars dollar bucks is it should take bad any some that what who which can you please one two three four five six single double triple only just also check grade rate how would do does will be are am so up down vs versus against something even pk pickem than more less most least").split(" "));
+const CREATE_KNOWN = new Set(("why explain case thoughts think break breakdown sell talk reasoning reason wrong model like a an the and or with for on at of to in into me my i im want need give get show find make build create bet bets betting wager parlay parlays parley parleys ticket tickets slip leg legs team teams pick picks piece way game games best good great top value ev plus positive edge smart sharp safe safest likely lock locks sure high chance low risk conservative longshot long shot lotto big payout money huge moonshot dart nfl pro sunday monday thursday saturday friday tuesday wednesday night snf mnf tnf college cfb ncaa ncaaf football today tonight tomorrow weekend this next week weeks moneyline moneylines line lines ml win winner winners straight up spread spreads ats cover covers points point pts total totals over under overs unders ou o u prop props player players yards yds yard receptions reception catches passing rushing receiving pass rush rec tds td touchdown touchdowns no without underdog underdogs dogs dog favorite favorites favs fav chalk around about odds pays pay return turn from off dollars dollar bucks is it should take bad any some that what who which can you please one two three four five six single double triple only just also check grade rate how would do does will be are am so up down vs versus against something even pk pickem than more less most least").split(" "));
 function crLev(a, b, max) {
   a = String(a); b = String(b);
   if (Math.abs(a.length - b.length) > max) return max + 1;
@@ -13065,7 +13068,7 @@ function crCheckExample() {
 // ---- compare: "Bills -3 or Bills to win?", "Henry over 85.5 or under", "Chiefs ML vs Chiefs -9.5" --
 function crParseCompare(text) {
   let raw = String(text || "").replace(/\?/g, " ");
-  raw = raw.replace(/^\s*(which|what|whats|what's|which one|which bet)\s+(is|would be|one is|s)?\s*(the )?(better|best|smarter|safer|stronger)\s*(bet|play|pick|option|choice)?\s*[:,-]?\s*/i, "")
+  raw = raw.replace(/^\s*(why|explain|compare|case for|the case for)\s+/i, "").replace(/^\s*(which|what|whats|what's|which one|which bet)\s+(is|would be|one is|s)?\s*(the )?(better|best|smarter|safer|stronger)\s*(bet|play|pick|option|choice)?\s*[:,-]?\s*/i, "")
     .replace(/^\s*(should i (take|bet|play|do)|compare|do i (take|want|like)|is it|better)\s+/i, "")
     .replace(/\s+(which (is|one is) (better|best)|whats better|what's better|which should i take|which one|or not)\s*$/i, "");
   const parts = raw.split(/\s+(?:or|vs\.?|versus|v\.)\s+/i).map((x) => x.trim()).filter(Boolean);
@@ -13142,6 +13145,114 @@ function createCompare(sides) {
     cols.map((c, i) => createTicketHtml(Object.assign(c.t, { cmpTitle: i === 0 ? "Better bet" : "The other one" }), i)).join("") +
     `<p class="subn cr-foot">Priced at the best current line across the books. Value is our checked chance against the price; it's the number that decides, because a bet that hits more often can still pay too little.</p>`;
 }
+// ---- explain: "Why Bills -3?", "why not the Ravens?", "case for the under in the Lions game" -----
+function crParseExplain(text) {
+  let raw = String(text || "").replace(/\?/g, " ").replace(/\s+/g, " ").trim();
+  let neg = false, m;
+  if ((m = raw.match(/^(why not|why no|why skip|why pass on|why pass|why fade|why against|whats wrong with|what's wrong with|talk me out of|why dont you like|why don't you like|why doesnt the model like|why doesn't the model like)\s+(.+)$/i))) { neg = true; raw = m[2]; }
+  else if ((m = raw.match(/^(why|explain|the case for|case for|whats the case for|what's the case for|make the case for|tell me about|thoughts on|your thoughts on|what do you think of|what do you think about|break down|breakdown of|break me down|sell me on|sell me|talk me into|reasoning for|reasoning on|reason for|why take|why bet|why play|do you like|you like)\s+(.+)$/i))) raw = m[2];
+  else return null;
+  if (/\s(or|vs\.?|versus)\s/i.test(raw)) return null;   // "why Bills -3 or Bills ML" is a comparison
+  raw = raw.replace(/^(the |a |on |about |of )+/i, "").replace(/\s+(a good bet|a good play|good|worth it|worth a bet|smart|a play|as a bet|as a play|tonight|today|this week|here)$/i, "").trim();
+  if (!raw) return null;
+  const slip = crParseSlip(raw);
+  const legs = [];
+  if (slip.legs.length) slip.legs.slice(0, 3).forEach((l) => legs.push({ id: l.id, seg: l.seg, userLine: l.userLine }));
+  else {
+    const t = crFindTeam(crNorm(raw), raw);
+    if (!t || !t.t) return { neg, raw, legs: [], miss: slip.miss };
+    const g = t.t.g, side = t.t.side;
+    const cands = [`${g.id}|sp|${side}`, `${g.id}|ml|${side}`].map(crMakeLeg).filter(Boolean).sort((a, b) => b.value - a.value);
+    if (!cands.length) return { neg, raw, legs: [], miss: [] };
+    legs.push({ id: cands[0].id, seg: raw, team: t.t, other: cands[1] ? cands[1].id : null, fixed: t.fixed });
+  }
+  return { neg, raw, legs, miss: slip.miss, fixed: slip.fixed };
+}
+// the line or price at which the leg would become a play for us
+function crChangeMind(l, pb) {
+  const kind = l.kind;
+  if (pb.value >= 0.02) return "";
+  if (kind === "sp" || kind === "tot") {
+    for (let sh = 0.5; sh <= 10; sh += 0.5) {
+      const alt = pbLeg({ id: l.id }, { shift: sh });
+      if (alt && alt.win - alt.bookWin >= 0.02) return `We'd play it at <b>${pbEsc(alt.label)}</b> or better at a fair price, ${sh} point${sh === 1 ? "" : "s"} from where it is now.`;
+    }
+    const flip = kind === "sp" ? l.id.replace(/\|(home|away)$/, (m0, sd) => "|" + (sd === "home" ? "away" : "home")) : l.id.replace(/\|(over|under)$/, (m0, sd) => "|" + (sd === "over" ? "under" : "over"));
+    const opp = crMakeLeg(flip);
+    return `No line fixes this one: moving the line moves the books' chance with ours, and our number sits on the other side of the market's. ${opp ? `The side our number does like is <b>${pbEsc(opp.label)}</b> ${pbAm(opp.pb.price)}, ${(opp.value >= 0 ? "+" : "") + (opp.value * 100).toFixed(1)}% value${opp.value >= 0.02 ? "" : ", though not by enough to be a play either"}.` : ""}`;
+  }
+  if (kind === "ml") {
+    if (!(pb.win > 0.02)) return "";
+    const need = pbAmerican(1.02 / pb.win);
+    return `We'd want <b>${pbAm(need)}</b> or better on this moneyline; it's ${pbAm(pb.price)} now.`;
+  }
+  if (kind === "pp") return `We'd want a line ${pb.side === "over" ? "lower" : "higher"} than ${pb.line}, or a better price than ${pbAm(pb.price)}.`;
+  return "";
+}
+function crExplainCard(l, pb, neg, i) {
+  const facts = crLegFacts(l, pb);
+  const g = l.g, p = g.proj || {};
+  const edgePts = l.kind === "sp" && p.hashmark_home_spread != null && g.odds && g.odds.home_spread != null ? (l.pb.side === "home" ? 1 : -1) * (Number(g.odds.home_spread) - Number(p.hashmark_home_spread)) : l.kind === "tot" && p.hashmark_total != null && g.odds && g.odds.total != null ? (pb.side === "over" ? 1 : -1) * (Number(p.hashmark_total) - Number(g.odds.total)) : null;
+  const thresh = l.kind === "sp" ? (g.league === "nfl" ? 1.8 : 1.6) : l.kind === "tot" ? (g.league === "nfl" ? 1.6 : 1.5) : null;
+  const likes = pb.value >= 0.02, fair = pb.value > -0.01 && !likes;
+  const modelPick = l.kind === "sp" || l.kind === "ml" ? (p.pick && p.pick !== "NO PLAY" ? p.pick : null) : l.kind === "tot" ? (p.total_pick && p.total_pick !== "NO PLAY" ? p.total_pick : null) : null;
+  const bits = [];
+  if (likes) bits.push(`<b class="cr-up">We like ${pbEsc(pb.label)}.</b> Our checked chance is ${Math.round(pb.win * 100)}% and the price (${pbAm(pb.price)}${l.book && !/standard|typical|estimated/.test(l.book) ? " at " + pbEsc(l.book) : ""}) only needs ${Math.round(100 / pbDec(pb.price))}%, so it's +${(pb.value * 100).toFixed(1)}% value.`);
+  else if (fair) bits.push(`<b>It's about a fair bet, not a play.</b> Our checked chance is ${Math.round(pb.win * 100)}% and the price needs ${Math.round(100 / pbDec(pb.price))}%; that's ${(pb.value >= 0 ? "+" : "") + (pb.value * 100).toFixed(1)}% value, too thin to call an edge.`);
+  else bits.push(`<b class="cr-down">We pass on ${pbEsc(pb.label)}.</b> Our checked chance is ${Math.round(pb.win * 100)}% but the price (${pbAm(pb.price)}) needs ${Math.round(100 / pbDec(pb.price))}%, so the book has the edge: ${(pb.value * 100).toFixed(1)}% value.`);
+  if (edgePts != null && thresh != null) {
+    const ahead = edgePts >= thresh, toward = edgePts > 0;
+    bits.push(`Our number is ${Math.abs(edgePts).toFixed(1)} point${Math.abs(edgePts) === 1 ? "" : "s"} ${toward ? "on this side of" : "on the other side of"} the line; a ${g.league === "nfl" ? "NFL" : "college"} ${l.kind === "sp" ? "side" : "total"} needs ${thresh} to be a play${ahead ? ", and this clears it" : toward ? ", so this falls short" : ""}.`);
+  }
+  if (l.kind === "ml" && p.win_prob_home != null) bits.push(`Our ratings alone give ${pbEsc(pb.side === "home" ? g.home.abbr : g.away.abbr)} a ${Math.round((pb.side === "home" ? p.win_prob_home : p.win_prob_away) * 100)}% chance to win; the checked chance keeps only as much of that lean as our graded record has backed.`);
+  if (modelPick) bits.push(`The model's play in this game is <b>${pbEsc(modelPick)}</b>${pb.label.startsWith(String(modelPick).split(" ")[0]) ? "" : ", not this side"}.`);
+  else if (l.kind !== "pp") bits.push(`The model has no play on this ${l.kind === "tot" ? "total" : "side"}.`);
+  if (neg && likes) bits.push(`So "why not" has an answer you may not expect: we do like it.`);
+  const change = crChangeMind(l, pb);
+  const other = l.other ? crMakeLeg(l.other) : null;
+  return `<article class="parlay-card ready cr-ticket cr-explain">
+    <div class="td-mkt">${neg && !likes ? "Why we pass on" : "The case for"} · ${pbEsc(g.short_name)}</div>
+    <div class="cr-leg-top"><b class="cr-ex-label">${pbEsc(pb.label)}</b><span class="cr-px">${pbAm(pb.price)}${l.book && !/standard|typical|estimated/.test(l.book) ? " <small>" + pbEsc(l.book) + "</small>" : ""}</span></div>
+    <div class="subn">${pbEsc(fmt.when(g.date))}</div>
+    ${crMeter(pb.win, pb.bookWin)}
+    <div class="subn">Our checked chance <b>${Math.round(pb.win * 100)}%</b> · the books' ${Math.round(pb.bookWin * 100)}% · <span class="${pb.value >= 0.005 ? "cr-up" : pb.value <= -0.01 ? "cr-down" : ""}">${(pb.value >= 0 ? "+" : "") + (pb.value * 100).toFixed(1)}% value</span> · ${sizeHtml(kellyUnits(pb.win, pb.price, { cap: 2 }))}</div>
+    <div class="cr-take">${bits.join(" ")}</div>
+    ${change ? `<p class="subn cr-change"><b>What would change our mind:</b> ${change}</p>` : ""}
+    ${facts.length ? `<dl class="cr-facts">${facts.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>` : ""}
+    ${other ? `<p class="subn">The other way to bet ${pbEsc(l.team ? l.team.short : "it")}: <b>${pbEsc(other.label)}</b> ${pbAm(other.pb.price)}, ${(other.value >= 0 ? "+" : "") + (other.value * 100).toFixed(1)}% value${other.value > pb.value ? " — better than the one above" : ""}. <button type="button" class="cr-link" data-crex="${pbEsc(pb.label + " or " + other.label)}">Compare them</button></p>` : ""}
+    <div class="cr-actions">
+      <button type="button" class="cr-act save${crIsSaved({ bag: [l] }) ? " done" : ""}" data-crsave="${i}"${crIsSaved({ bag: [l] }) ? " disabled" : ""}>${crIsSaved({ bag: [l] }) ? "★ Saved to My bets" : "☆ Save to My bets"}</button>
+      <button type="button" class="cr-act" data-crshare="${pbEsc("t=" + encodeURIComponent(l.id))}">Share</button>
+    </div>
+    <button type="button" class="ready-open" data-openpb="${pbEsc(l.id)}">Open in parlay builder</button>
+  </article>`;
+}
+function createExplain(ex) {
+  const out = document.getElementById("createOut");
+  if (!out) return;
+  window.__readyPriceCache = new Map();
+  const notes = [];
+  (ex.fixed || []).forEach(([a, b]) => notes.push(`I read "${pbEsc(a)}" as ${pbEsc(b)}.`));
+  (ex.miss || []).forEach((m) => notes.push(pbEsc(m.why)));
+  const cards = [], tickets = [];
+  ex.legs.forEach((s) => {
+    const l = crMakeLeg(s.id);
+    if (!l) { notes.push(`I couldn't price "${pbEsc(s.seg)}" right now: no line is posted for it yet, or the game has started.`); return; }
+    if (s.other) l.other = s.other;
+    if (s.team) l.team = s.team;
+    const x = createPrice([l.id]);
+    const pb = x ? x.legs[0] : l.pb;
+    if (x) l.book = x.book || l.book;
+    if (s.userLine != null && pb.line != null && Math.abs(Number(pb.line) - s.userLine) >= 0.25) notes.push(`You typed "${pbEsc(s.seg)}". The line now is <b>${pbEsc(pb.label)}</b>, so that's what this is about.`);
+    tickets.push({ bag: [l], x: x || { r: pbParlay([pb], 0), legs: [pb], book: null }, check: true });
+    cards.push(crExplainCard(l, pb, ex.neg, cards.length));
+  });
+  window.__crState = { explain: true, ids: [], notes, res: { pool: [], tickets } };
+  const notesHtml = notes.length ? `<div class="cr-notes">${notes.map((n) => `<p>${n}</p>`).join("")}</div>` : "";
+  if (!cards.length) { out.innerHTML = crSearchBar() + notesHtml + `<div class="empty">I couldn't tell which bet "${pbEsc(ex.raw)}" is. Try a team and a line, like "why Bills -3", or just a team, like "why not the Ravens".</div>`; return; }
+  out.innerHTML = crSearchBar() + `<div class="cr-understood"><span class="subn">${ex.neg ? "Why not:" : "The case for:"}</span> ${tickets.map((t) => `<span class="cr-chip">${pbEsc(t.x.legs[0].label)}</span>`).join("")}</div>` + notesHtml + cards.join("") +
+    `<p class="subn cr-foot">Our checked chance is the books' chance moved part of the way toward our number, as far as our graded record backs. Value is that chance against the best current price.</p>`;
+}
 // ---- suggestions while typing: teams, players and the words we understand ----------------
 const CR_WORD_SUG = [["moneyline", "moneyline parlay"], ["safest", "safest 2 leg parlay"], ["longshot", "longshot 4 leg"], ["player", "player prop unders"], ["props", "player prop unders"], ["unders", "unders"], ["overs", "overs"], ["underdogs", "underdogs"], ["weekend", "this weekend"], ["college", "college"], ["nfl", "NFL"], ["sunday", "Sunday"], ["saturday", "Saturday"], ["thursday", "Thursday"], ["monday", "Monday"], ["spread", "spread"], ["parlay", "parlay"]];
 function crSuggest(text) {
@@ -13208,6 +13319,9 @@ function crSuggest(text) {
 // what the box will do with the words so far, updated as you type
 function crLiveHtml(text) {
   if (!String(text || "").trim()) return "";
+  let ex = null;
+  try { ex = crParseExplain(text); } catch (e) {}
+  if (ex) return `<span class="subn">${ex.neg ? "Why not:" : "The case for:"}</span> ${ex.legs.length ? ex.legs.map((s) => { const pb = pbLeg({ id: s.id }); return `<span class="cr-chip">${pbEsc(pb ? pb.label : s.seg)}</span>`; }).join("") : `<span class="cr-chip warn">Name a team or a bet</span>`}`;
   let cmp = null;
   try { cmp = crParseCompare(text); } catch (e) {}
   if (cmp) return `<span class="subn">Comparing:</span> ${cmp.map((sd) => `<span class="cr-chip">${pbEsc(sd.ids.map((id) => { const pb = pbLeg({ id }); return pb ? pb.label : sd.seg; }).join(" + "))}</span>`).join("")}`;
@@ -13226,7 +13340,7 @@ function crLiveHtml(text) {
 function crWireBox(root) {
   const input = root.querySelector("#createInput"), list = root.querySelector("#createSug"), live = root.querySelector("#createLive");
   let items = [], sel = -1, timer = null;
-  const close = () => { list.hidden = true; list.innerHTML = ""; items = []; sel = -1; input.setAttribute("aria-expanded", "false"); input.removeAttribute("aria-activedescendant"); };
+  const close = () => { clearTimeout(timer); list.hidden = true; list.innerHTML = ""; items = []; sel = -1; input.setAttribute("aria-expanded", "false"); input.removeAttribute("aria-activedescendant"); };
   const draw = () => {
     if (!items.length) return close();
     list.innerHTML = items.map((it, k) => `<li role="option" id="crsug${k}" data-k="${k}" aria-selected="${k === sel}"><b>${pbEsc(it.label)}</b>${it.sub ? `<span>${pbEsc(it.sub)}</span>` : ""}</li>`).join("");
@@ -13282,7 +13396,7 @@ function renderCreate() {
         <button type="submit">Build it</button>
       </form>
       <div id="createLive" class="cr-live" aria-live="polite"></div>
-      <div class="cr-ex" id="createEx">${["3 leg NFL parlay at +600", "Safest 2 leg parlay this weekend", "Sunday player prop unders", "College moneyline parlay Saturday", "Longshot 4 leg with underdogs", "$20 to win $200", "Sunday night only", "Parlay without the Chiefs"].map((t) => `<button type="button" data-crex="${pbEsc(t)}">${pbEsc(t)}</button>`).join("")}${(() => { const ex = crCheckExample(); return ex ? `<button type="button" class="cr-ex-check" data-crex="${pbEsc(ex)}">Check: ${pbEsc(ex)}</button>` : ""; })()}${(() => { const ex = crCompareExample(); return ex ? `<button type="button" class="cr-ex-check" data-crex="${pbEsc(ex)}">Compare: ${pbEsc(ex)}</button>` : ""; })()}</div>
+      <div class="cr-ex" id="createEx">${["3 leg NFL parlay at +600", "Safest 2 leg parlay this weekend", "Sunday player prop unders", "College moneyline parlay Saturday", "Longshot 4 leg with underdogs", "$20 to win $200", "Sunday night only", "Parlay without the Chiefs"].map((t) => `<button type="button" data-crex="${pbEsc(t)}">${pbEsc(t)}</button>`).join("")}${(() => { const ex = crCheckExample(); return ex ? `<button type="button" class="cr-ex-check" data-crex="${pbEsc(ex)}">Check: ${pbEsc(ex)}</button>` : ""; })()}${(() => { const ex = crCompareExample(); return ex ? `<button type="button" class="cr-ex-check" data-crex="${pbEsc("Why " + ex.split(" or ")[0])}">Explain: Why ${pbEsc(ex.split(" or ")[0])}?</button>` : ""; })()}${(() => { const ex = crCompareExample(); return ex ? `<button type="button" class="cr-ex-check" data-crex="${pbEsc(ex)}">Compare: ${pbEsc(ex)}</button>` : ""; })()}</div>
       <div class="cr-recent" id="createRecent"></div>
       <div id="createRecord"></div>
       <div id="createOut"></div>
@@ -13323,6 +13437,9 @@ function createRun(text) {
   if (!String(text || "").trim()) { out.innerHTML = `<div class="empty">Type what you want, like "3 leg NFL parlay at +600".</div>`; return; }
   crRemember(text);
   crSetLink("q=" + encodeURIComponent(String(text).trim()));
+  let ex = null;
+  try { ex = crParseExplain(text); } catch (e) { ex = null; }
+  if (ex) { createExplain(ex); return; }
   let cmp = null;
   try { cmp = crParseCompare(text); } catch (e) { cmp = null; }
   if (cmp) { createCompare(cmp); return; }
@@ -13456,7 +13573,7 @@ function crSaveTicket(i, btn) {
   const stake = (typeof PB !== "undefined" && PB.stake) || 10;
   const entry = {
     id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), at: new Date().toISOString(), mode: "parlay", src: "create", book: t.x.book || null,
-    q: String((document.getElementById("createInput") || {}).value || "").trim().slice(0, 120), ckind: st.compare ? "compare" : st.check ? "check" : "built",
+    q: String((document.getElementById("createInput") || {}).value || "").trim().slice(0, 120), ckind: st.explain ? "explain" : st.compare ? "compare" : st.check ? "check" : "built",
     chance: +Number(t.x.r.pAll).toFixed(4), ev: +Number(t.x.r.ev).toFixed(4),
     teaserPts: null, stake, cost: stake, boost: 0, price: t.x.r.american, combos: null,
     legs: legs.map((l, k) => ({ id: l.id, gid: l.gid || t.bag[k].gid, kind: l.kind || t.bag[k].kind, side: l.side, line: l.line, price: l.price, label: l.label, game: l.game || t.bag[k].g.short_name, date: (l.g && l.g.date) || t.bag[k].g.date, league: (l.g && l.g.league) || t.bag[k].g.league, win: l.win }))
@@ -13487,7 +13604,7 @@ function crRecordDraw() {
   const risk = done.reduce((a, x) => a + (x.t.cost || x.t.stake), 0), profit = done.reduce((a, x) => a + x.g.profit, 0);
   const roi = risk ? profit / risk : 0;
   const expected = done.reduce((a, x) => a + (x.t.ev != null ? x.t.ev * (x.t.cost || x.t.stake) : 0), 0);
-  const kinds = { built: "Built here", check: "Checked", compare: "Compared" };
+  const kinds = { built: "Built here", check: "Checked", compare: "Compared", explain: "Explained" };
   const byKind = Object.keys(kinds).map((k) => { const d = done.filter((x) => x.t.ckind === k && x.g.state !== "push"); if (!d.length) return ""; const kw = d.filter((x) => x.g.state === "won").length, kl = d.filter((x) => x.g.state === "lost").length, kp = d.reduce((a, x) => a + x.g.profit, 0), kr = d.reduce((a, x) => a + (x.t.cost || x.t.stake), 0); return `<span>${kinds[k]} <b>${kw}-${kl}</b> <em class="${kp >= 0 ? "cr-up" : "cr-down"}">${kp >= 0 ? "+" : ""}${pbMoney(kp)}${kr ? " (" + (kp / kr * 100 >= 0 ? "+" : "") + (kp / kr * 100).toFixed(0) + "%)" : ""}</em></span>`; }).filter(Boolean);
   const chip = (st) => ({ won: "Won", lost: "Lost", push: "Push", open: "Open", check: "Mark result" }[st] || st);
   const row = (x) => `<li class="cr-rec-t rec-${x.g.state}"><span class="cr-rec-st">${chip(x.g.state)}${x.g.profit != null ? " " + (x.g.profit >= 0 ? "+" : "") + pbMoney(x.g.profit) : ""}</span><b>${pbEsc(x.t.legs.map((lg) => lg.label).join(" + "))}</b><em>${x.t.price != null ? pbAm(x.t.price) : ""}${x.t.book ? " at " + pbEsc(x.t.book) : ""} · ${pbEsc(fmt.when(x.t.legs[0] && x.t.legs[0].date ? x.t.legs[0].date : x.t.at))}${x.t.q ? ` · "${pbEsc(x.t.q)}"` : ""}</em></li>`;
