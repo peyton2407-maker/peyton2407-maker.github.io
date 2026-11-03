@@ -10,16 +10,16 @@
    "away": "OHIO",
    "date": "2026-11-04T00:00Z",
    "pick": "AKR",
-   "pick_line": "AKR +14.5",
+   "pick_line": "AKR +14.0",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": -13.03,
+   "our_margin": -12.7,
    "our_total": 51.5,
    "confidence": null,
    "total_play": false,
-   "spread": 14.5,
+   "spread": 14,
    "total": 51.5,
-   "lockedAt": "2026-11-03T15:16:25.575Z",
+   "lockedAt": "2026-11-03T16:46:22.168Z",
    "provisional": true
   },
   "401866454": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -6,
    "total": 44.5,
-   "lockedAt": "2026-11-03T15:16:25.575Z",
+   "lockedAt": "2026-11-03T16:46:22.168Z",
    "provisional": true
   }
  },
@@ -778,7 +778,7 @@
    }
   ]
  },
- "updated": "2026-11-03T15:16:25.575Z",
+ "updated": "2026-11-03T16:46:22.168Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -790,9 +790,9 @@
    "size": 0,
    "american": 268,
    "dec": 3.6768,
-   "chance": 0.2595,
+   "chance": 0.2602,
    "breakEven": 0.272,
-   "ev": -0.0217,
+   "ev": -0.0191,
    "firstKick": "2026-11-04T00:00:00.000Z",
    "legs": [
     {
@@ -823,11 +823,11 @@
      "kick": "2026-11-04T00:00Z",
      "price": -110,
      "line": 14.5,
-     "win": 0.5097,
+     "win": 0.5111,
      "bookWin": 0.5022,
-     "value": -0.0269,
+     "value": -0.0243,
      "cat": "dog",
-     "why": "AKR is getting 14.5. Our number has them covering by 1.0 points.",
+     "why": "AKR is getting 14.0. Our number has them covering by 1.3 points.",
      "prop": null,
      "result": null
     }
@@ -836,7 +836,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-03T15:16:25.575Z"
+   "lockedAt": "2026-11-03T16:46:22.168Z"
   }
  ]
 }
