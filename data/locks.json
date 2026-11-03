@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 13.5,
    "total": 51.5,
-   "lockedAt": "2026-11-03T18:31:35.148Z",
+   "lockedAt": "2026-11-03T19:46:38.941Z",
    "provisional": true
   },
   "401866454": {
@@ -32,15 +32,15 @@
    "date": "2026-11-04T01:00Z",
    "pick": "BUFF",
    "pick_line": "BUFF +6.0",
-   "total_pick": "NO PLAY",
+   "total_pick": "OVER 45.5",
    "side_play": false,
    "our_margin": 1.2,
-   "our_total": 44.5,
+   "our_total": 45.1,
    "confidence": null,
    "total_play": false,
    "spread": -6,
-   "total": 44.5,
-   "lockedAt": "2026-11-03T18:31:35.148Z",
+   "total": 45.5,
+   "lockedAt": "2026-11-03T19:46:38.941Z",
    "provisional": true
   }
  },
@@ -778,7 +778,7 @@
    }
   ]
  },
- "updated": "2026-11-03T18:31:35.148Z",
+ "updated": "2026-11-03T19:46:38.941Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -790,9 +790,9 @@
    "size": 0,
    "american": 276,
    "dec": 3.7601,
-   "chance": 0.2516,
+   "chance": 0.2505,
    "breakEven": 0.2659,
-   "ev": -0.0299,
+   "ev": -0.0344,
    "firstKick": "2026-11-04T00:00:00.000Z",
    "legs": [
     {
@@ -823,9 +823,9 @@
      "kick": "2026-11-04T00:00Z",
      "price": -105,
      "line": 51.5,
-     "win": 0.4943,
-     "bookWin": 0.4923,
-     "value": -0.035,
+     "win": 0.492,
+     "bookWin": 0.4892,
+     "value": -0.0395,
      "cat": "total",
      "why": "Our total is 51.5; this side is the better price.",
      "prop": null,
@@ -836,7 +836,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-03T18:31:35.148Z"
+   "lockedAt": "2026-11-03T19:46:38.941Z"
   }
  ]
 }
