@@ -16,7 +16,11 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
+      # main as it is now, not the commit this run was queued on: a run that waited behind
+      # another lock run must start from that run's locks, or it re-picks on stale data
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -26,6 +30,7 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Lock, grade and archive
         run: |
+          git pull --quiet --ff-only origin main || true
           cp data/locks.json "$RUNNER_TEMP/locks-before.json"
           python3 scripts/lock_runner.py
       - name: Commit any new locks
