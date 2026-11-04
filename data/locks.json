@@ -69,8 +69,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 48.5,
-   "lockedAt": "2026-11-04T22:20:59.937Z",
-   "provisional": true
+   "lockedAt": "2026-11-04T22:31:26.439Z"
   },
   "401866456": {
    "id": "401866456",
@@ -90,7 +89,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 44.5,
-   "lockedAt": "2026-11-04T22:20:59.937Z",
+   "lockedAt": "2026-11-04T22:31:26.439Z",
    "provisional": true
   },
   "401866457": {
@@ -111,8 +110,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 52.5,
-   "lockedAt": "2026-11-04T22:20:59.937Z",
-   "provisional": true
+   "lockedAt": "2026-11-04T22:31:26.439Z"
   }
  },
  "potd": {
@@ -905,7 +903,7 @@
    }
   ]
  },
- "updated": "2026-11-04T22:20:59.937Z",
+ "updated": "2026-11-04T22:31:26.439Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
