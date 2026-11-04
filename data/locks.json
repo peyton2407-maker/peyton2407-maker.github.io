@@ -786,7 +786,7 @@
    }
   ]
  },
- "updated": "2026-11-04T05:01:15.026Z",
+ "updated": "2026-11-04T05:46:37.926Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -820,7 +820,16 @@
      "why": "BUFF is getting 6.5. Our number has them covering by 4.9 points.",
      "prop": null,
      "result": "HIT",
-     "final": "BUFF 34 – M-OH 31"
+     "final": "BUFF 34 – M-OH 31",
+     "close": {
+      "at": "2026-11-03T23:01:00.000Z",
+      "line": 7,
+      "price": null,
+      "book": null,
+      "fair": null,
+      "push": 0,
+      "src": "history"
+     }
     },
     {
      "id": "401866453|sp|home",
@@ -839,7 +848,16 @@
      "why": "AKR is getting 12.5. That is the underdog. Our number is 0.7 points off the current line. AKR is at home. Our line moved from OHIO -12.5 to OHIO -11.8. The line moved from OHIO -13.5 to OHIO -12.5. We followed +0.7 of that move. Benign conditions — little weather tax.",
      "prop": null,
      "result": "HIT",
-     "final": "OHIO 28 – AKR 20"
+     "final": "OHIO 28 – AKR 20",
+     "close": {
+      "at": "2026-11-03T22:01:00.000Z",
+      "line": 12.5,
+      "price": null,
+      "book": null,
+      "fair": null,
+      "push": 0,
+      "src": "history"
+     }
     }
    ],
    "result": "HIT",
