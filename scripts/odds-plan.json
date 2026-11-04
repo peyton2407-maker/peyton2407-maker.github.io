@@ -1,5 +1,6 @@
 {
  "monthly_target": 13000,
  "keep_free": 7000,
- "note": "monthly_target: credits this site's jobs aim to use each month, counted from their own spending only. keep_free: credits always left on the key for other projects; optional work (fresher prop pulls, extra markets, alternate lines, past seasons) stops before going below it. The first prop pull for each NFL game is the only thing that can dip into it, and only down to a 25-credit floor."
+ "reset_day": 4,
+ "note": "monthly_target: credits this site's jobs aim to use each month, counted from their own spending only. keep_free: credits always left on the key for other projects; optional work (fresher prop pulls, extra markets, alternate lines, past seasons) stops before going below it. The first prop pull for each NFL game is the only thing that can dip into it, and only down to a 25-credit floor. reset_day: the day of the month the plan's credits renew (bought on Nov 4, 2026)."
 }

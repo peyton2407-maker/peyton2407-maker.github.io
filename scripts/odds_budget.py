@@ -3,7 +3,7 @@
 
 Every response carries x-requests-remaining and x-requests-used; their sum is the plan's
 monthly allowance, so the jobs see an upgrade on their own with nothing to configure. The
-allowance resets on the 1st (UTC). data/odds-budget.json keeps the last reading and what was
+allowance renews on the plan's reset_day each month (scripts/odds-plan.json; the 4th). data/odds-budget.json keeps the last reading and what was
 spent each day, so each job can pace itself: what's left this month, minus a reserve, spread
 over the days left. Order of priority when credits are short: the first prop pull for each
 game, then extra prop markets and fresher prop pulls, then alternate lines; past-season
@@ -23,13 +23,32 @@ def _now():
     return datetime.now(timezone.utc)
 
 
+def reset_day():
+    try:
+        return max(1, min(28, int(json.loads(PLAN.read_text()).get("reset_day") or 1)))
+    except Exception:
+        return 1
+
+
+def cycle_start(now=None):
+    """The day the current billing month began (the plan renews on reset_day each month)."""
+    n = now or _now()
+    d = reset_day()
+    if n.day >= d:
+        return datetime(n.year, n.month, d, tzinfo=timezone.utc)
+    y, m = (n.year - 1, 12) if n.month == 1 else (n.year, n.month - 1)
+    return datetime(y, m, d, tzinfo=timezone.utc)
+
+
 def load():
     try:
         b = json.loads(FILE.read_text())
     except Exception:
         b = {}
-    month = _now().strftime("%Y-%m")
-    if b.get("month") != month:   # a new month: the allowance resets
+    month = cycle_start().strftime("%Y-%m-%d")
+    if b.get("month") == month[:7]:   # the file from before cycles started on reset_day
+        b["month"] = month
+    if b.get("month") != month:   # a new billing month: the allowance resets
         b = {"month": month, "monthly": b.get("monthly"), "remaining": b.get("monthly"), "used": 0, "by_day": {}, "by_job": {}, "at": None}
     b.setdefault("by_day", {})
     b.setdefault("by_job", {})
@@ -95,7 +114,8 @@ def tier(b):
 
 def days_left():
     n = _now()
-    nxt = datetime(n.year + (n.month == 12), (n.month % 12) + 1, 1, tzinfo=timezone.utc)
+    s = cycle_start(n)
+    nxt = datetime(s.year + (s.month == 12), (s.month % 12) + 1, s.day, tzinfo=timezone.utc)
     return max(1.0, (nxt - n).total_seconds() / 86400)
 
 
