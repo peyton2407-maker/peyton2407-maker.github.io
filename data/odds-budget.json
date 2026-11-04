@@ -1,9 +1,18 @@
 {
- "at": null,
- "by_day": {},
- "by_job": {},
+ "at": "2026-11-04T16:32:26Z",
+ "by_day": {
+  "2026-11-04": 16
+ },
+ "by_job": {
+  "alt_lines": 8,
+  "events": 0,
+  "props": 8
+ },
+ "extra_by_day": {
+  "2026-11-04": 16
+ },
  "month": "2026-11",
- "monthly": null,
- "remaining": null,
- "used": 0
+ "monthly": 20000,
+ "remaining": 19984,
+ "used": 16
 }
