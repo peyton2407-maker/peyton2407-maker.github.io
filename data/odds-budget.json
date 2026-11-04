@@ -1,12 +1,12 @@
 {
- "at": "2026-11-04T18:01:07Z",
+ "at": "2026-11-04T18:15:06Z",
  "by_day": {
-  "2026-11-04": 534
+  "2026-11-04": 894
  },
  "by_job": {
   "alt_lines": 12,
   "events": 0,
-  "history": 410,
+  "history": 770,
   "props": 112
  },
  "extra_by_day": {
@@ -14,6 +14,6 @@
  },
  "month": "2026-11-04",
  "monthly": 20000,
- "remaining": 19479,
- "used": 521
+ "remaining": 19119,
+ "used": 881
 }
