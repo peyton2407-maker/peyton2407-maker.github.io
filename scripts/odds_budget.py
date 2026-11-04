@@ -66,6 +66,18 @@ def monthly(b):
     return int(b.get("monthly") or 500)
 
 
+def keep_free():
+    try:
+        return int(json.loads(PLAN.read_text()).get("keep_free") or 0)
+    except Exception:
+        return 0
+
+
+def own_spent(b):
+    """What this site's jobs spent this month (another project on the same key isn't counted)."""
+    return sum(int(v or 0) for v in (b.get("by_job") or {}).values())
+
+
 def target(b):
     """What the jobs aim to spend this month: scripts/odds-plan.json, never more than the plan."""
     try:
@@ -101,9 +113,10 @@ def can_spend(b, cost, priority="core"):
     if priority == "core":
         return cost <= spare
     core_rest = CORE_WEEK * (days_left() / 7)
-    # the pool for everything optional: up to the monthly target, never into the reserve or
-    # the rest of the month's core pulls
-    pool = min(spare - core_rest, target(b) - int(b.get("used") or 0) - core_rest)
+    # the pool for everything optional: up to the monthly target (this site's own spending),
+    # never into the credits kept free for other projects, the reserve, or the rest of the
+    # month's core pulls
+    pool = min(spare - keep_free() - core_rest, target(b) - own_spent(b) - core_rest)
     if pool <= 0:
         return False
     day = _now().strftime("%Y-%m-%d")
