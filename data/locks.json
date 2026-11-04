@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 48.5,
-   "lockedAt": "2026-11-04T21:37:30.725Z",
+   "lockedAt": "2026-11-04T22:20:59.937Z",
    "provisional": true
   },
   "401866456": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 44.5,
-   "lockedAt": "2026-11-04T21:37:30.725Z",
+   "lockedAt": "2026-11-04T22:20:59.937Z",
    "provisional": true
   },
   "401866457": {
@@ -103,15 +103,15 @@
    "date": "2026-11-05T00:00Z",
    "pick": "SAC",
    "pick_line": "SAC +25.5",
-   "total_pick": "OVER 53.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": -22.6,
-   "our_total": 53.1,
+   "our_margin": -22.7,
+   "our_total": 52.5,
    "confidence": null,
    "total_play": false,
    "spread": 25.5,
-   "total": 53.5,
-   "lockedAt": "2026-11-04T21:37:30.725Z",
+   "total": 52.5,
+   "lockedAt": "2026-11-04T22:20:59.937Z",
    "provisional": true
   }
  },
@@ -905,7 +905,7 @@
    }
   ]
  },
- "updated": "2026-11-04T21:37:30.725Z",
+ "updated": "2026-11-04T22:20:59.937Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1006,22 +1006,6 @@
    "final": null
   },
   {
-   "id": "401873039|sp|away",
-   "gid": "401873039",
-   "team": "CLE",
-   "side": "away",
-   "game": "CLE @ NO",
-   "kick": "2026-11-08T18:00Z",
-   "from": 2.5,
-   "to": 8.5,
-   "book": "bet365",
-   "win": 0.7024,
-   "bookWin": 0.7161,
-   "total": 42.5,
-   "result": null,
-   "final": null
-  },
-  {
    "id": "401873048|sp|home",
    "gid": "401873048",
    "team": "SEA",
@@ -1031,7 +1015,7 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.743,
+   "win": 0.7185,
    "bookWin": 0.743,
    "total": 39.5,
    "result": null,
@@ -1140,9 +1124,9 @@
    "mainLine": 3.5,
    "price": 280,
    "book": "Fanatics",
-   "win": 0.2916,
+   "win": 0.2956,
    "mwin": 0.2674,
-   "ev": 0.1082,
+   "ev": 0.1232,
    "mev": 0.016,
    "src": "mkt",
    "result": null,
@@ -1430,6 +1414,28 @@
    "mwin": 0.322,
    "ev": 0.0328,
    "mev": 0.0143,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873048|sp|away",
+   "gid": "401873048",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "away",
+   "label": "ARI +5",
+   "game": "ARI @ SEA",
+   "kick": "2026-11-08T21:25Z",
+   "line": 5,
+   "mainLine": 8.5,
+   "price": 255,
+   "book": "BetRivers",
+   "win": 0.3046,
+   "mwin": 0.2769,
+   "ev": 0.1063,
+   "mev": 0.0073,
    "src": "mkt",
    "result": null,
    "final": null,
