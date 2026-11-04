@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 49.5,
-   "lockedAt": "2026-11-04T19:31:18.438Z",
+   "lockedAt": "2026-11-04T20:02:06.150Z",
    "provisional": true
   },
   "401866456": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 44.5,
-   "lockedAt": "2026-11-04T19:31:18.438Z",
+   "lockedAt": "2026-11-04T20:02:06.150Z",
    "provisional": true
   },
   "401866457": {
@@ -111,7 +111,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 52.5,
-   "lockedAt": "2026-11-04T19:31:18.438Z",
+   "lockedAt": "2026-11-04T20:02:06.150Z",
    "provisional": true
   }
  },
@@ -905,7 +905,7 @@
    }
   ]
  },
- "updated": "2026-11-04T19:31:18.438Z",
+ "updated": "2026-11-04T20:02:06.150Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1044,7 +1044,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-04T19:31:18.438Z"
+   "lockedAt": "2026-11-04T20:02:06.150Z"
   }
  ],
  "teasers": [],
@@ -1250,9 +1250,9 @@
    "mainLine": 38.5,
    "price": 230,
    "book": "ESPN BET",
-   "win": 0.3281,
+   "win": 0.3274,
    "mwin": 0.3254,
-   "ev": 0.0827,
+   "ev": 0.0805,
    "mev": 0.0739,
    "src": "mkt",
    "result": null,
@@ -1474,6 +1474,28 @@
    "mwin": 0.2701,
    "ev": 0.0742,
    "mev": 0.0264,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873048|tot|under",
+   "gid": "401873048",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 35.5",
+   "game": "ARI @ SEA",
+   "kick": "2026-11-08T21:25Z",
+   "line": 35.5,
+   "mainLine": 40.5,
+   "price": 230,
+   "book": "ESPN BET",
+   "win": 0.3137,
+   "mwin": 0.3077,
+   "ev": 0.0351,
+   "mev": 0.0153,
    "src": "mkt",
    "result": null,
    "final": null,
