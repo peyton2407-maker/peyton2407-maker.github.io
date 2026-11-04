@@ -50,6 +50,48 @@
    "closeAt": "2026-11-04T00:46:19.512Z",
    "clv_side": 0,
    "clv_total": 0
+  },
+  "401866455": {
+   "id": "401866455",
+   "league": "cfb",
+   "week": 10,
+   "short": "BALL @ MASS",
+   "home": "MASS",
+   "away": "BALL",
+   "date": "2026-11-05T00:00Z",
+   "pick": "MASS",
+   "pick_line": "MASS -3.0",
+   "total_pick": "NO PLAY",
+   "side_play": true,
+   "our_margin": 5.63,
+   "our_total": 49.5,
+   "confidence": 51,
+   "total_play": false,
+   "spread": -3.5,
+   "total": 49.5,
+   "lockedAt": "2026-11-04T12:01:32.846Z",
+   "provisional": true
+  },
+  "401866457": {
+   "id": "401866457",
+   "league": "cfb",
+   "week": 10,
+   "short": "TOL @ SAC",
+   "home": "SAC",
+   "away": "TOL",
+   "date": "2026-11-05T00:00Z",
+   "pick": "SAC",
+   "pick_line": "SAC +25.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -22.7,
+   "our_total": 52.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 25.5,
+   "total": 52.5,
+   "lockedAt": "2026-11-04T12:01:32.846Z",
+   "provisional": true
   }
  },
  "potd": {
@@ -842,7 +884,7 @@
    }
   ]
  },
- "updated": "2026-11-04T08:31:27.936Z",
+ "updated": "2026-11-04T12:01:32.846Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -922,6 +964,64 @@
    "provisional": false,
    "lockedAt": "2026-11-03T22:34:19.270Z",
    "paidDec": 3.7092
+  },
+  {
+   "key": "ladder:2026-11-04",
+   "day": "2026-11-04",
+   "n": 2,
+   "book": "FanDuel",
+   "tier": "light",
+   "stake": 0.5,
+   "size": 0,
+   "american": 260,
+   "dec": 3.5986,
+   "chance": 0.2653,
+   "breakEven": 0.2779,
+   "ev": -0.0451,
+   "firstKick": "2026-11-05T00:00:00.000Z",
+   "legs": [
+    {
+     "id": "401866457|sp|home",
+     "label": "SAC +25.5",
+     "kind": "sp",
+     "game_id": "401866457",
+     "game": "TOL @ SAC",
+     "league": "cfb",
+     "kick": "2026-11-05T00:00Z",
+     "price": -110,
+     "line": 25.5,
+     "win": 0.5127,
+     "bookWin": 0.5,
+     "value": -0.0213,
+     "cat": "dog",
+     "why": "SAC is getting 25.5. Our number has them covering by 2.8 points.",
+     "prop": null,
+     "result": null
+    },
+    {
+     "id": "401866456|ml|home",
+     "label": "EMU to win",
+     "kind": "ml",
+     "game_id": "401866456",
+     "game": "CMU VS EMU",
+     "league": "cfb",
+     "kick": "2026-11-05T00:30Z",
+     "price": -113,
+     "line": null,
+     "win": 0.5176,
+     "bookWin": 0.5174,
+     "value": -0.0244,
+     "cat": "ml",
+     "why": "EMU to win: our checked chance is 52%, the books' 52%.",
+     "prop": null,
+     "result": null
+    }
+   ],
+   "result": null,
+   "units": null,
+   "locked": false,
+   "provisional": true,
+   "lockedAt": "2026-11-04T12:01:32.846Z"
   }
  ],
  "teasers": [],
