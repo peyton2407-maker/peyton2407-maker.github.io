@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-11-03T03:03:05Z",
+ "checked_at": "2026-11-04T01:38:17Z",
  "errors": [],
  "console": [],
  "failed_requests": {},
@@ -7,20 +7,20 @@
  "screens": {
   "home": {
    "visible": true,
-   "count": 21,
+   "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 1307,
-   "images": 54,
+   "chars": 1149,
+   "images": 40,
    "broken_images": []
   },
   "nfl": {
    "visible": true,
-   "count": 1,
+   "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 2560,
-   "images": 7,
+   "chars": 5542,
+   "images": 35,
    "broken_images": []
   },
   "cfb": {
@@ -28,17 +28,17 @@
    "count": 63,
    "summary": [],
    "empty": [],
-   "chars": 9985,
+   "chars": 10264,
    "images": 93,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 15,
+   "count": 16,
    "summary": [],
    "empty": [],
-   "chars": 2499,
-   "images": 24,
+   "chars": 2517,
+   "images": 15,
    "broken_images": []
   },
   "season": {
@@ -46,7 +46,7 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3220,
+   "chars": 3208,
    "images": 42,
    "broken_images": []
   },
@@ -55,7 +55,7 @@
    "count": 352,
    "summary": [],
    "empty": [],
-   "chars": 21565,
+   "chars": 21586,
    "images": 0,
    "broken_images": []
   },
@@ -64,17 +64,17 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3240,
+   "chars": 3263,
    "images": 35,
    "broken_images": []
   },
   "card": {
    "visible": true,
-   "count": 10,
+   "count": 6,
    "summary": [],
    "empty": [],
-   "chars": 1159,
-   "images": 20,
+   "chars": 938,
+   "images": 12,
    "broken_images": []
   },
   "props": {
@@ -82,51 +82,47 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 5772,
-   "images": 20,
+   "chars": 5787,
+   "images": 22,
    "broken_images": []
   },
   "tds": {
    "visible": true,
-   "count": 1,
+   "count": 48,
    "summary": [
-    "0 TD tickets in this filter \u2014 top anytime (\u2014) 0 first-TD names modeled 0"
+    "180 TD tickets in this filter 68% top anytime (III) 219 first-TD names mod"
    ],
-   "empty": [
-    "No TD tickets in this filter. Flip the market dropdown."
-   ],
-   "chars": 416,
-   "images": 0,
+   "empty": [],
+   "chars": 3981,
+   "images": 19,
    "broken_images": []
   },
   "charts": {
    "visible": true,
-   "count": 16,
+   "count": 29,
    "summary": [],
    "empty": [],
-   "chars": 3880,
-   "images": 4,
+   "chars": 3896,
+   "images": 5,
    "broken_images": []
   },
   "value": {
    "visible": true,
-   "count": 26,
+   "count": 72,
    "summary": [
-    "26 value tickets in this filter 0 TD plus-money 6 spread / dog sides 68% bes"
+    "147 value tickets in this filter 139 TD plus-money 6 spread / dog sides 54% b"
    ],
    "empty": [],
-   "chars": 3913,
-   "images": 15,
+   "chars": 4039,
+   "images": 18,
    "broken_images": []
   },
   "parlay": {
    "visible": true,
-   "count": 3,
+   "count": 5,
    "summary": [],
-   "empty": [
-    "No NFL parlay this week. No two plays are far enough off the number to make a ticket priced fair or better."
-   ],
-   "chars": 1709,
+   "empty": [],
+   "chars": 2813,
    "images": 0,
    "broken_images": []
   },
@@ -135,8 +131,8 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2560,
-   "images": 7,
+   "chars": 2870,
+   "images": 8,
    "broken_images": []
   },
   "nflinj": {
@@ -144,32 +140,32 @@
    "count": 61,
    "summary": [
     "530 listed THU \u00b7 11:31 PM ET 529 listed FRI \u00b7 11:45 PM ET 473 listed S",
-    "464 listed SUN \u00b7 11:45 PM ET 583 listed MON \u00b7 9:31 PM ET 596 listed CA",
+    "464 listed SUN \u00b7 11:45 PM ET 583 listed TUE \u00b7 8:16 PM ET 596 listed CA",
     "39 listed BAL @ BUF 29 listed TEN @ CIN 29 listed ARI @ DAL 33 listed",
     "28 listed LV @ NYJ 32 listed CLE @ PIT 30 listed ATL @ TB 29 listed I"
    ],
    "empty": [],
-   "chars": 5691,
+   "chars": 5546,
    "images": 7,
    "broken_images": []
   },
   "nflwx": {
    "visible": true,
-   "count": 14,
+   "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 3951,
-   "images": 28,
+   "chars": 5222,
+   "images": 30,
    "broken_images": []
   },
   "nflpotd": {
    "visible": true,
-   "count": 3,
+   "count": 4,
    "summary": [],
    "empty": [
     "No NFL bet left this week beats its price: no side, total, moneyline or player prop. So there is no play of the day yet. Player prop prices "
    ],
-   "chars": 4429,
+   "chars": 4809,
    "images": 0,
    "broken_images": []
   },
@@ -177,10 +173,10 @@
    "visible": true,
    "count": 18,
    "summary": [
-    "18 featured CFB leans 6 spread tickets 0 O/U tickets GAST @ APP top car"
+    "18 featured CFB leans 6 spread tickets 0 O/U tickets AFA @ ARMY top car"
    ],
    "empty": [],
-   "chars": 6143,
+   "chars": 6156,
    "images": 32,
    "broken_images": []
   }
@@ -192,12 +188,12 @@
   "logos_ok": 17
  },
  "split": {
-  "games": 17,
+  "games": 16,
   "images": 32,
   "broken_images": [],
   "errors": []
  },
  "dk_lines_loaded": null,
- "games_with_props": 16,
- "nfl_games_upcoming": 16
+ "games_with_props": 29,
+ "nfl_games_upcoming": 29
 }
