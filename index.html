@@ -12681,23 +12681,57 @@ function potdNflCandidates(g) {
   }
   return out;
 }
+// College: two angles that have held up over years, each priced at the best book and kept
+// only when it beats that price.
+//  - Weather unders: a forecast that takes 1.5+ points off the total (rain has been the angle
+//    that held up over ten years).
+//  - Unders on totals of 58 or more: 561-458 (55.1%) at the closing total on 2021-2026 FBS
+//    games, holding in both halves (2021-23 54.9%, 2024-25 56.1%, 1,000+ games); this season
+//    alone 7-10, too few to say much. Counted at a 54.5% chance (a little under the record),
+//    so it needs about -118 or better to be a play.
+// Power-rating spreads (47.7% over 2020-25) and home underdogs (strong 2021-23, gone at
+// true home games in 2024-25) are left out.
+const CFB_HIGH_TOTAL = 58, CFB_HIGH_RATE = 0.545;
+function potdCfbCandidates(g, wxTest) {
+  const out = [];
+  const o = g.odds || {};
+  const id = g.id + "|tot|under";
+  const bp = typeof bestPriceFor === "function" ? bestPriceFor(id) : null;
+  const best = bp && bp.best ? bp.best : null;
+  const line = best && best.line != null ? Number(best.line) : (o.total != null ? Number(o.total) : null);
+  const price = best ? Number(best.price) : -110;
+  const book = best ? best.book : null;
+  const leg = typeof pbLeg === "function" ? pbLeg(book ? { id, book } : { id }) : null;
+  if (leg && leg.started) return out;
+  const wx = typeof cfbWeatherNudge === "function" ? cfbWeatherNudge(g) : null;
+  const wxBet = potdBets(g, "cfb", false).find((b) => wxTest(g, b));
+  const high = line != null && line >= CFB_HIGH_TOTAL;
+  if (!wxBet && !high) return out;
+  let hit = high ? CFB_HIGH_RATE : 0;
+  if (wxBet) hit = Math.max(hit, Number(wxBet.hit) || 0);
+  if (wxBet && high) hit = Math.min(0.62, hit + 0.02);   // both angles on the same game
+  const ev = hit * pbDec(price) - 1;
+  if (!(ev > 0.01)) return out;
+  const why = [];
+  if (high) why.push(`College games with a total of ${CFB_HIGH_TOTAL} or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at ${pbTot(line)}.`);
+  if (wxBet) why.push(wxBet.why + (wx && wx.notes && wx.notes.length ? " Why: " + wx.notes.map((t) => t.replace(/ The side did not\./, "")).join(" ") : ""));
+  why.push(`At ${pbAm(price)}${book ? " (" + book + ")" : ""} the price needs ${Math.round(100 / pbDec(price))}%; we count it at ${Math.round(hit * 100)}%, so it's ${(ev * 100).toFixed(1)}% better than the price.`);
+  out.push({ g, kind: "Under", line: "UNDER " + pbTot(line), hit, ev, value: ev * 10, price, book, legId: id, angle: high && wxBet ? "weather + high total" : high ? "high total" : "weather", why: why.join(" ") });
+  return out;
+}
 function potdPick(league) {
   let window = potdWindow(league);
   if (!window.games.length) return null;
   const locked = potdLockedBet(league, window);
   if (locked) return locked;
-  // College: weather unders only. Spread picks from a power rating against the line went
+  // College (until Nov 4; now potdCfbCandidates adds unders on totals of 58+): weather unders only. Spread picks from a power rating against the line went
   // 458-503 (47.7%) on 2020-2025 games at our 1.6-point bar and got worse as the gap grew
   // (44% at 3+); stats-based totals off the line went 44% (2021-25), so college totals are
   // pinned to the market and only the weather moves them. Rain is the angle that held up
   // over ten years (games finished 3.9 under the closing total), so the play is an under
   // whose gap comes from the forecast.
   const cfbWeatherUnder = (g, b) => b.kind === "Under" && Number((g.proj || {}).weather_adj_total) <= -1.5;
-  const cands = (g) => league === "nfl" ? potdNflCandidates(g) : potdBets(g, league, false).filter((b) => cfbWeatherUnder(g, b)).map((b) => {
-    const wx = typeof cfbWeatherNudge === "function" ? cfbWeatherNudge(g) : null;
-    if (wx && wx.notes && wx.notes.length) b.why += " Why: " + wx.notes.map((t) => t.replace(/ The side did not\./, "")).join(" ");
-    return b;
-  });
+  const cands = (g) => league === "nfl" ? potdNflCandidates(g) : potdCfbCandidates(g, cfbWeatherUnder);
   let bets = [];
   window.games.forEach((g) => { bets = bets.concat(cands(g)); });
   if (!bets.length && !window.big) {
@@ -12710,8 +12744,9 @@ function potdPick(league) {
     if (held) return held;
     bets = cands(next);
   }
-  // NFL ranks on value at the price (any bet type); college on points off the number
-  bets.forEach((b) => { b.score = (league === "nfl" ? b.ev : b.value) * potdKindWeight(league, b.kind); });
+  // both rank on value at the best price (college candidates are all unders, so the kind's
+  // record doesn't reorder them)
+  bets.forEach((b) => { b.score = (league === "nfl" ? b.ev * potdKindWeight(league, b.kind) : b.ev); });
   bets.sort((a, b) => b.score - a.score || b.hit - a.hit);
   const best = bets[0];
   if (!best) return null;
@@ -15330,7 +15365,7 @@ function potdRecordCard(league) {
     <div class="who">
       <div>
         <h4>${name} play of the day record</h4>
-        <div class="prop-meta">${league === "nfl" ? "Any NFL bet can be the play: a side, a total, a moneyline or any player prop. We take the one that beats its sportsbook price by the most. " : "From Oct 29 the college play is a weather under only: a game where the forecast (rain, strong wind) puts our total 1.5+ under the line. College spread picks off a power rating lost over five seasons of testing (47.7%), and stats-based totals did too (44%), so on days without bad weather there is no college play. "}One play per game, or one best play when 4 or more games kick off together. It locks 90 minutes before kickoff and is graded against the final. Every play is listed below with why we took it.</div>
+        <div class="prop-meta">${league === "nfl" ? "Any NFL bet can be the play: a side, a total, a moneyline or any player prop. We take the one that beats its sportsbook price by the most. " : "From Nov 4 the college play is an under, from one of two angles that have held up over years: a total of 58 or more (561-458, 55.1%, at the closing total on 2021-2026 FBS games, holding in both halves of that stretch), or a forecast (rain, strong wind) that takes 1.5+ points off the total. Each is priced at the best book and only played when it beats that price; we take the best one. College spread picks off a power rating lost over five seasons of testing (47.7%), so they're out. "}One play per game, or one best play when 4 or more games kick off together. It locks 90 minutes before kickoff and is graded against the final. Every play is listed below with why we took it.</div>
       </div>
       <div class="pick-score">${rec(T)}</div>
     </div>
