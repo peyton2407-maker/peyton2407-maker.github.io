@@ -46,10 +46,10 @@
    "total": 44.5,
    "lockedAt": "2026-11-03T23:31:22.099Z",
    "close_spread": -7,
-   "close_total": 44.5,
-   "closeAt": "2026-11-04T00:16:38.130Z",
+   "close_total": 45.5,
+   "closeAt": "2026-11-04T00:31:44.360Z",
    "clv_side": -0.5,
-   "clv_total": 0
+   "clv_total": -1
   }
  },
  "potd": {
@@ -786,7 +786,7 @@
    }
   ]
  },
- "updated": "2026-11-04T00:16:38.130Z",
+ "updated": "2026-11-04T00:31:44.360Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
