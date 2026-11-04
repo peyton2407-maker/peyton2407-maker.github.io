@@ -786,7 +786,7 @@
    }
   ]
  },
- "updated": "2026-11-04T00:46:19.512Z",
+ "updated": "2026-11-04T03:31:27.370Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -837,7 +837,8 @@
      "cat": "play",
      "why": "AKR is getting 12.5. That is the underdog. Our number is 0.7 points off the current line. AKR is at home. Our line moved from OHIO -12.5 to OHIO -11.8. The line moved from OHIO -13.5 to OHIO -12.5. We followed +0.7 of that move. Benign conditions — little weather tax.",
      "prop": null,
-     "result": null
+     "result": "HIT",
+     "final": "OHIO 28 – AKR 20"
     }
    ],
    "result": null,
