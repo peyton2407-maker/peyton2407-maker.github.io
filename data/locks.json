@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": -3,
    "total": 48.5,
-   "lockedAt": "2026-11-04T16:05:12.813Z",
+   "lockedAt": "2026-11-04T16:31:16.905Z",
    "provisional": true
   },
   "401866456": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 44.5,
-   "lockedAt": "2026-11-04T16:05:12.813Z",
+   "lockedAt": "2026-11-04T16:31:16.905Z",
    "provisional": true
   },
   "401866457": {
@@ -111,7 +111,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 52.5,
-   "lockedAt": "2026-11-04T16:05:12.813Z",
+   "lockedAt": "2026-11-04T16:31:16.905Z",
    "provisional": true
   }
  },
@@ -905,7 +905,7 @@
    }
   ]
  },
- "updated": "2026-11-04T16:05:12.813Z",
+ "updated": "2026-11-04T16:31:16.905Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -990,15 +990,15 @@
    "key": "ladder:2026-11-04",
    "day": "2026-11-04",
    "n": 2,
-   "book": "BetMGM",
+   "book": "FanDuel",
    "tier": "light",
    "stake": 0.5,
    "size": 0,
-   "american": 261,
-   "dec": 3.6136,
-   "chance": 0.2491,
-   "breakEven": 0.2767,
-   "ev": -0.0286,
+   "american": 286,
+   "dec": 3.8564,
+   "chance": 0.2496,
+   "breakEven": 0.2593,
+   "ev": -0.0375,
    "firstKick": "2026-11-05T00:00:00.000Z",
    "legs": [
     {
@@ -1021,17 +1021,17 @@
     },
     {
      "id": "401866455|sp|home",
-     "label": "MASS -3",
+     "label": "MASS -3.5",
      "kind": "sp",
      "game_id": "401866455",
      "game": "BALL @ MASS",
      "league": "cfb",
      "kick": "2026-11-05T00:00Z",
-     "price": -112,
-     "line": -3,
-     "win": 0.4813,
-     "bookWin": 0.4711,
-     "value": -0.0169,
+     "price": 102,
+     "line": -3.5,
+     "win": 0.4822,
+     "bookWin": 0.4721,
+     "value": -0.0259,
      "cat": "play",
      "why": "MASS is the side. Our number is 2.4 points off the current line. MASS is at home. Our line moved from MASS -5.7 to MASS -5.4. Our total moved from 49.5 to 48.9. The line moved from MASS -3.5 to MASS -3.0. We followed -0.3 of that move. The total moved from 49.5 to 48.5. We followed -0.7. Benign conditions — little weather tax.",
      "prop": null,
@@ -1042,7 +1042,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-04T16:05:12.813Z"
+   "lockedAt": "2026-11-04T16:31:16.905Z"
   }
  ],
  "teasers": [],
