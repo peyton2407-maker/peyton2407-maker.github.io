@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 48.5,
-   "lockedAt": "2026-11-04T20:21:47.563Z",
+   "lockedAt": "2026-11-04T20:29:48.777Z",
    "provisional": true
   },
   "401866456": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 44.5,
-   "lockedAt": "2026-11-04T20:21:47.563Z",
+   "lockedAt": "2026-11-04T20:29:48.777Z",
    "provisional": true
   },
   "401866457": {
@@ -111,7 +111,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 52.5,
-   "lockedAt": "2026-11-04T20:21:47.563Z",
+   "lockedAt": "2026-11-04T20:29:48.777Z",
    "provisional": true
   }
  },
@@ -905,7 +905,7 @@
    }
   ]
  },
- "updated": "2026-11-04T20:21:47.563Z",
+ "updated": "2026-11-04T20:29:48.777Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -985,66 +985,6 @@
    "provisional": false,
    "lockedAt": "2026-11-03T22:34:19.270Z",
    "paidDec": 3.7092
-  },
-  {
-   "key": "ladder:2026-11-04",
-   "day": "2026-11-04",
-   "n": 2,
-   "book": null,
-   "tier": "light",
-   "stake": 0.5,
-   "size": 0,
-   "american": 264,
-   "dec": 3.6446,
-   "chance": 0.2649,
-   "breakEven": 0.2744,
-   "ev": -0.0345,
-   "firstKick": "2026-11-05T00:00:00.000Z",
-   "legs": [
-    {
-     "id": "401866457|sp|home",
-     "label": "SAC +25.5",
-     "kind": "sp",
-     "game_id": "401866457",
-     "game": "TOL @ SAC",
-     "league": "cfb",
-     "kick": "2026-11-05T00:00Z",
-     "price": -110,
-     "line": 25.5,
-     "win": 0.5127,
-     "bookWin": 0.5,
-     "value": -0.0212,
-     "cat": "dog",
-     "why": "SAC is getting 25.5. Our number has them covering by 2.8 points.",
-     "alt": null,
-     "prop": null,
-     "result": null
-    },
-    {
-     "id": "401866455|sp|home",
-     "label": "MASS -2.5",
-     "kind": "sp",
-     "game_id": "401866455",
-     "game": "BALL @ MASS",
-     "league": "cfb",
-     "kick": "2026-11-05T00:00Z",
-     "price": -110,
-     "line": -2.5,
-     "win": 0.5167,
-     "bookWin": 0.5001,
-     "value": -0.0136,
-     "cat": "play",
-     "why": "MASS is the side. Our number is 2.6 points off the current line. MASS is at home. Our total moved from 49.5 to 48.9. The total moved from 49.5 to 48.5. We followed -0.7. Benign conditions — little weather tax.",
-     "alt": null,
-     "prop": null,
-     "result": null
-    }
-   ],
-   "result": null,
-   "units": null,
-   "locked": false,
-   "provisional": true,
-   "lockedAt": "2026-11-04T20:21:47.563Z"
   }
  ],
  "teasers": [],
