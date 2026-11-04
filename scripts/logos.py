@@ -116,6 +116,23 @@ def faces():
     print(f"{new} new headshots; {len(out['nfl'])} saved")
 
 
+def webp_copy(png):
+    """A WebP copy next to each logo (half the bytes at the same 128 px); the site shows these,
+    the PNGs stay for the game pages and link previews."""
+    out = png.with_suffix(".webp")
+    if out.exists() and out.stat().st_mtime >= png.stat().st_mtime:
+        return False
+    try:
+        from PIL import Image
+        with Image.open(png) as im:
+            im.load()
+            im.save(out, "WEBP", quality=90, method=6)
+        return True
+    except Exception as e:
+        print("webp error", png.name, e)
+        return False
+
+
 def main():
     try:
         faces()
@@ -149,7 +166,11 @@ def main():
         out[league][tid] = 1
         new += 1
         time.sleep(0.05)
-    if new:
+    made = sum(webp_copy(f) for f in sorted(OUT.glob("*/*.png")))
+    if made:
+        print(f"{made} WebP copies made")
+    if new or made or not out.get("webp"):
+        out["webp"] = 1
         out["v"] += 1
         LIST.write_text(json.dumps(out, separators=(",", ":"), sort_keys=True) + "\n")
     print(f"{len(found)} teams; {new} new logos; {len(out['nfl'])} NFL and {len(out['cfb'])} college saved")

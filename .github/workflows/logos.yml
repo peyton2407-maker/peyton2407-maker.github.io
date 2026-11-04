@@ -20,7 +20,9 @@ jobs:
         with:
           python-version: "3.12"
       - name: Save team logos
-        run: python3 scripts/logos.py
+        run: |
+          pip install --quiet pillow
+          python3 scripts/logos.py
       - name: Commit any changes
         run: |
           git config user.name "peyton2407-maker"

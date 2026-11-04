@@ -1,0 +1,70 @@
+name: Change check
+# After a change to the site's code or the picks: every page opened in a real browser, desktop
+# and phone, testing the commit itself (scripts/change_check.py). On a failure, one phone alert
+# through the same ntfy topic as the pick alerts (not again while it stays broken), and an
+# all-clear when it's fixed. No Odds API calls; free on a public repository.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "split/**"
+      - "boom.html"
+      - "hashmark.html"
+      - "scripts/**"
+      - ".github/workflows/**"
+      - "data/locks.json"
+      - "data/past-scorecards.json"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: change-check
+  cancel-in-progress: true
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install the browser
+        run: |
+          pip install --quiet playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Open every page
+        id: check
+        continue-on-error: true
+        run: python3 scripts/change_check.py
+      - name: Alert on a change in state
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          OUTCOME: ${{ steps.check.outcome }}
+          MSG: ${{ github.event.head_commit.message }}
+        run: |
+          TOPIC="${NTFY_TOPIC:-$(python3 -c "import json;print(json.load(open('scripts/alerts.json'))['topic'])")}"
+          # the last finished run before this one
+          prev=$(gh api "repos/${{ github.repository }}/actions/workflows/change-check.yml/runs?status=completed&per_page=5" --jq "[.workflow_runs[] | select(.id != ${{ github.run_id }})][0].conclusion" 2>/dev/null || echo "")
+          link="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          first=$(printf '%s' "$MSG" | head -n1 | cut -c1-90)
+          if [ "$OUTCOME" != "success" ]; then
+            if [ "$prev" != "failure" ]; then
+              body="After: ${first}"$'\n'"$(head -c 900 check-out/summary.txt 2>/dev/null)"
+              curl -s -H "Title: Double Gs: something broke on the site" -H "Tags: warning" -H "Priority: high" -H "Click: $link" -d "$body" "https://ntfy.sh/$TOPIC" >/dev/null || true
+            fi
+            exit 1
+          fi
+          if [ "$prev" = "failure" ]; then
+            curl -s -H "Title: Double Gs: site check passing again" -H "Tags: white_check_mark" -H "Click: $link" -d "Every page opens without errors again, after: ${first}" "https://ntfy.sh/$TOPIC" >/dev/null || true
+          fi
+      - name: Keep the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: change-check
+          path: check-out/
+          retention-days: 7

@@ -8432,6 +8432,19 @@ function altRecordHtml() {
     ${recent ? `<details><summary>Recent lines</summary><ul class="tz-rec-list">${recent}</ul></details>` : ""}
   </article>`;
 }
+// The books' alternate lines (222 KB), loaded only by the pages that use them: the Boom Room,
+// the Ladder, the builder and Create your own. They can change how a ticket is priced
+// (altSwap), so cached prices are dropped and the page is drawn again when they land.
+function ensureAlt() {
+  if (window.PB_ALT || typeof pbFetchOnce !== "function") return Promise.resolve();
+  return pbFetchOnce("alt", "/data/alt-lines.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_ALT = d; window.__readyPriceCache = new Map(); window.__ladderLive = null; }).then(() => {
+    if (!window.PB_ALT) return;
+    try {
+      if (view === "parlay" && typeof renderParlays === "function") renderParlays();
+      if (view === "ladder" && typeof renderLadder === "function") renderLadder();
+    } catch (e) {}
+  });
+}
 function openAltInBuilder(spec) {
   const [id, ln, bk] = String(spec || "").split("@");
   openInBuilder(id);
@@ -9054,6 +9067,7 @@ function renderCollegeParlayBoard() {
 }
 
 function renderParlays() {
+  try { ensureAlt(); } catch (e) {}
   window.__readyWhySeen = new Set();
   window.__readyPriceCache = new Map();
   const bestEl = document.getElementById("parlayBest");
@@ -9103,11 +9117,7 @@ function renderParlays() {
   if (league === "alts") {
     if (stamp) stamp.textContent = "Alternate spreads and totals that beat their price, NFL and college, with why.";
     if (bestEl) bestEl.innerHTML = "";
-    if (!window.PB_ALT) {
-      pbFetchOnce("cal", "/data/calibration.json", (d) => { window.PB_CAL = d; });
-      pbFetchOnce("alt", "/data/alt-lines.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_ALT = d; })
-        .then(() => window.__pbFetch.cal).then(() => { if (view === "parlay" && window.__parlayLg === "alts") renderParlays(); });
-    }
+    if (!window.PB_ALT) pbFetchOnce("cal", "/data/calibration.json", (d) => { window.PB_CAL = d; });
     try { hero.innerHTML = altFinderHtml(); } catch (e) { console.error(e); hero.innerHTML = `<div class="empty">The alt line finder couldn't build its list.</div>`; }
     if (!hero.__altWired) {
       hero.__altWired = true;
@@ -14793,6 +14803,7 @@ function crWireBox(root) {
 function renderCreate() {
   const root = document.getElementById("createSection");
   if (!root) return;
+  try { ensureAlt(); } catch (e) {}
   if (!root.__built) {
     root.__built = true;
     root.innerHTML = `<div class="cr-wrap">
@@ -15646,6 +15657,7 @@ function wireChallenge(box) {
 function renderLadder() {
   const box = document.getElementById("ladderBoard");
   if (!box) return;
+  try { ensureAlt(); } catch (e) {}
   const rows = ladderRows();
   const cur = ladderCurrent();
   const done = rows.filter((r) => r.result || (r.locked && cur && cur.row.key !== r.key)).sort((a, b) => String(b.day).localeCompare(String(a.day)));
@@ -18976,12 +18988,18 @@ function applyReportWeather(file) {
   return n;
 }
 let __elevenSaved = 0;
+// one download per two minutes, shared by everything that asks for the report at once
+function elevenFile() {
+  const key = Math.floor(Date.now() / 120000);
+  const c = elevenFile.c;
+  if (c && c.key === key) return c.p;
+  const p = fetch("/data/eleven.json?t=" + key).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+  elevenFile.c = { key, p };
+  return p;
+}
 async function installElevenReport() {
   let file = null;
-  try {
-    const res = await fetch("/data/eleven.json?t=" + Math.floor(Date.now() / 120000));
-    if (res.ok) file = await res.json();
-  } catch (e) { return; }
+  try { file = await elevenFile(); } catch (e) { return; }
   if (!file || !file.ymd) return;
   const today = etFields().ymd;
   const age = (new Date(today + "T12:00:00Z") - new Date(file.ymd + "T12:00:00Z")) / 86400000;
@@ -22659,7 +22677,7 @@ function renderBuilderNow() {
   if (!PB.__loaded) { pbLoad(); pbFromUrl(); PB.__loaded = true; }
   pbFetchOnce("cal", "/data/calibration.json", (d) => { window.PB_CAL = d; });
   pbFetchOnce("books", "/data/books.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_BOOKS = d; });
-  pbFetchOnce("alt", "/data/alt-lines.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_ALT = d; });
+  ensureAlt();
   pbFetchOnce("props", "/data/props.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_PROPS = d; });
   if (!window.__pbPropPull && !window.__pbPropDone && typeof ensureWeekProps === "function") {
     window.__pbPropPull = Promise.resolve()
@@ -22970,7 +22988,8 @@ function fixLogoUrl(u, league, id) {
     else if (!tid) tid = (window.__NFL_ABBR_ID || {})[m[2].toLowerCase()] || null;
   } else if (!/espncdn\.com/.test(u)) return u;
   if (!lg || !tid || !(L[lg] || {})[tid]) return u;
-  const local = `/assets/logos/${lg}/${tid}.png?v=${L.v || 1}`;
+  // the WebP copy (half the bytes at the same 128 px) once scripts/logos.py has made them
+  const local = `/assets/logos/${lg}/${tid}.${L.webp ? "webp" : "png"}?v=${L.v || 1}`;
   window.__LOGO_ORIG[local] = u;
   return local;
 }
@@ -23238,10 +23257,6 @@ async function boot() {
       if (!window.LINE_HIST) return;
       if (view === "nfl" || view === "cfb" || view === "all" || view === "live") renderBoard();
       if (window.__openGameId) openGame(window.__openGameId, { fromHash: true });
-    });
-    // alternate lines can change how a ticket is priced (altSwap): drop the cached prices
-    pbFetchOnce("alt", "/data/alt-lines.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_ALT = d; window.__readyPriceCache = new Map(); }).then(() => {
-      if (window.PB_ALT && view === "parlay" && typeof renderParlays === "function") renderParlays();
     });
     pbFetchOnce("books", "/data/books.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_BOOKS = d; }).then(() => {
       if (!window.PB_BOOKS) return;
