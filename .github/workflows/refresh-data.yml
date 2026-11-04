@@ -47,13 +47,19 @@ jobs:
         run: python3 scripts/books.py
       - name: Save player-prop prices for the parlay builder
         # With an ODDS_API_KEY secret (the-odds-api.com) this uses licensed odds data from
-        # DraftKings, FanDuel, BetMGM and BetRivers. Set the repository variable
-        # ODDS_API_PLAN to "paid" on a paid plan for hourly updates.
+        # DraftKings, FanDuel, BetMGM and BetRivers. It reads the plan size from the API's own
+        # credit counts (scripts/odds_budget.py), so an upgrade turns on fresher pulls and the
+        # extra markets by itself.
         continue-on-error: true
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           ODDS_API_PLAN: ${{ vars.ODDS_API_PLAN }}
         run: python3 scripts/props.py
+      - name: Real alternate spreads and totals (paid Odds API plan only, from spare credits)
+        continue-on-error: true
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: python3 scripts/alt_lines.py
       - name: The NFL board as visitors see it (settled in the page itself)
         continue-on-error: true
         timeout-minutes: 6
@@ -76,6 +82,8 @@ jobs:
           if [ -f data/props.json ]; then git add data/props.json; fi
           if [ -f data/season.json ]; then git add data/season.json; fi
           if [ -f data/props-status.json ]; then git add data/props-status.json; fi
+          if [ -f data/odds-budget.json ]; then git add data/odds-budget.json; fi
+          if [ -f data/alt-lines.json ]; then git add data/alt-lines.json; fi
           if git diff --cached --quiet; then
             echo "Nothing new."
             exit 0

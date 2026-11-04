@@ -27,6 +27,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import books  # noqa: E402  (scoreboard matching is shared)
+import odds_budget  # noqa: E402  (the shared credit budget)
 
 ROOT = Path(__file__).resolve().parents[1]
 SNAP = ROOT / "data" / "snapshot.json"
@@ -152,17 +153,22 @@ def parse(payload):
 ODDS_API = "https://api.the-odds-api.com/v4/sports/americanfootball_nfl"
 ODDS_MARKETS = {"player_pass_yds": "pass_yds", "player_pass_tds": "pass_td", "player_rush_yds": "rush_yds",
                 "player_reception_yds": "rec_yds", "player_receptions": "rec"}
+# extra markets once the plan has room for them (priced and shown on the props page; not
+# posted as picks until they've been tracked): anytime touchdown, rush attempts, interceptions
+EXTRA_MARKETS = {"player_anytime_td": "td", "player_rush_attempts": "rush_att", "player_pass_interceptions": "pass_int"}
 ODDS_BOOKS = {"draftkings": "DraftKings", "fanduel": "FanDuel", "betmgm": "BetMGM", "betrivers": "BetRivers",
               "williamhill_us": "Caesars", "fanatics": "Fanatics", "espnbet": "ESPN BET"}
 FREE_BOOKS = ["draftkings", "fanduel", "betmgm", "betrivers"]   # Caesars and Fanatics need a paid plan
 RESERVE = 25   # never spend the last credits
 
 
-def odds_get(path, params, key):
+def odds_get(path, params, key, base=None):
+    """-> (payload, {"x-requests-remaining", "x-requests-used", "x-requests-last"})"""
     q = dict(params or {}, apiKey=key)
-    req = urllib.request.Request(f"{ODDS_API}{path}?{urllib.parse.urlencode(q)}", headers={"Accept": "application/json"})
+    req = urllib.request.Request(f"{base or ODDS_API}{path}?{urllib.parse.urlencode(q)}", headers={"Accept": "application/json"})
     with urllib.request.urlopen(req, timeout=30) as res:
-        return json.loads(res.read().decode("utf-8")), res.headers.get("x-requests-remaining")
+        h = {k: res.headers.get(k) for k in ("x-requests-remaining", "x-requests-used", "x-requests-last")}
+        return json.loads(res.read().decode("utf-8")), h
 
 
 def due(kick, fetched, now, mode):
@@ -170,7 +176,8 @@ def due(kick, fetched, now, mode):
     free (500 credits a month): once per game, about a day before kickoff, and night games
     again in their last three hours. A full NFL slate is ~15 games x 5 markets = ~75 credits a
     week plus ~15 for the night games, ~390 a month.
-    paid: every 6 hours, then hourly in the last day."""
+    paid: every 6 hours, then hourly in the last day.
+    This is the core pull; fresher pulls on a bigger plan come from due_fresh."""
     hours = (kick - now) / 3600
     age = (now - fetched) / 3600 if fetched else 1e9
     if hours < 0:
@@ -185,6 +192,19 @@ def due(kick, fetched, now, mode):
     return (et_hour >= 19 or et_hour < 3) and hours <= 3 and age >= 6
 
 
+def due_fresh(kick, fetched, now, tier):
+    """Extra pulls when the plan has room: small (about 20K credits a month) every 3 hours in
+    the last day and every 12 before that within 3 days; big every hour in the last day and
+    every 6 within 4 days. Only from the budget's spare credits."""
+    hours = (kick - now) / 3600
+    age = (now - fetched) / 3600 if fetched else 1e9
+    if hours < 0 or tier == "free":
+        return False
+    if tier == "big":
+        return (hours <= 24 and age >= 1) or (hours <= 96 and age >= 6)
+    return (hours <= 24 and age >= 3) or (hours <= 72 and age >= 12)
+
+
 def parse_odds_api(payload):
     out = {}
     for bk in payload.get("bookmakers") or []:
@@ -192,13 +212,15 @@ def parse_odds_api(payload):
         if not book:
             continue
         for mk in bk.get("markets") or []:
-            stat = ODDS_MARKETS.get(mk.get("key"))
+            stat = ODDS_MARKETS.get(mk.get("key")) or EXTRA_MARKETS.get(mk.get("key"))
             if not stat:
                 continue
             for oc in mk.get("outcomes") or []:
                 side = str(oc.get("name") or "").lower()
                 name = oc.get("description")
                 line, odds = num(oc.get("point")), num(oc.get("price"))
+                if stat == "td" and side in ("yes", "no"):   # anytime touchdown: yes / no, no line
+                    side, line = ("over" if side == "yes" else "under"), 0.5
                 if side not in ("over", "under") or not name or line is None or odds is None or abs(odds) < 100:
                     continue
                 ent = out.setdefault(name_key(name), {"name": name, "stats": {}})
@@ -207,7 +229,11 @@ def parse_odds_api(payload):
 
 
 def odds_api_main(key, nfl, fx):
-    mode = os.environ.get("ODDS_API_PLAN", "").strip().lower() or "free"
+    budget = odds_budget.load()
+    tier = odds_budget.tier(budget)
+    if tier == "free" and os.environ.get("ODDS_API_PLAN", "").strip().lower() == "paid":
+        tier = "small"
+    mode = "paid" if tier != "free" else "free"
     now = datetime.now(timezone.utc).timestamp()
     old = {}
     try:
@@ -221,9 +247,9 @@ def odds_api_main(key, nfl, fx):
         if gid in keep and old.get("source") == "The Odds API":
             out["games"][gid] = v
             out["fetched"][gid] = (old.get("fetched") or {}).get(gid)
-    status = {"source": "The Odds API", "plan": mode, "board_games": len(nfl), "fetched_now": 0, "errors": []}
+    status = {"source": "The Odds API", "plan": mode, "tier": tier, "monthly": odds_budget.monthly(budget), "board_games": len(nfl), "fetched_now": 0, "fresh_now": 0, "extra_markets": 0, "errors": []}
     try:
-        events, _ = (json.loads((fx / "events.json").read_text()), None) if fx else odds_get("/events", {}, key)
+        events, _ = (json.loads((fx / "events.json").read_text()), None) if fx else odds_get("/events", {}, key)   # free
     except Exception as e:
         status["errors"].append(f"events: {str(e)[:200]}")
         STATUS.write_text(json.dumps(status, indent=1) + "\n")
@@ -241,28 +267,49 @@ def odds_api_main(key, nfl, fx):
         if not ev:
             continue
         fetched = books.ts(out["fetched"].get(gid)) if out["fetched"].get(gid) else None
-        if not due(kick, fetched, now, mode):
+        # the core pull (once a day before kickoff, night games again) comes first; fresher
+        # pulls and the extra markets only from the month's spare credits
+        core = due(kick, fetched, now, "free")
+        fresh = not core and due_fresh(kick, fetched, now, tier)
+        if not core and not fresh:
             continue
-        if remaining is not None and int(remaining) - len(ODDS_MARKETS) < RESERVE:
-            status["errors"].append("stopped to keep the last credits")
-            break
-        bks = list(ODDS_BOOKS) if mode == "paid" else FREE_BOOKS
+        markets = dict(ODDS_MARKETS)
+        if tier != "free" and odds_budget.can_spend(budget, len(ODDS_MARKETS) + len(EXTRA_MARKETS), "extra" if fresh else "core") and odds_budget.can_spend(budget, len(EXTRA_MARKETS), "extra"):
+            markets.update(EXTRA_MARKETS)
+        cost = len(markets)
+        if not odds_budget.can_spend(budget, cost, "extra" if fresh else "core"):
+            if core and len(status["errors"]) < 5:
+                status["errors"].append("stopped to keep the last credits")
+            if core:
+                break
+            continue
+        bks = list(ODDS_BOOKS) if tier != "free" else FREE_BOOKS
         try:
             if fx:
-                payload, remaining = json.loads((fx / f"event-{ev['id']}.json").read_text()), None
+                payload, hdr = json.loads((fx / f"event-{ev['id']}.json").read_text()), {}
             else:
-                payload, remaining = odds_get(f"/events/{ev['id']}/odds", {"bookmakers": ",".join(bks), "markets": ",".join(ODDS_MARKETS), "oddsFormat": "american"}, key)
+                payload, hdr = odds_get(f"/events/{ev['id']}/odds", {"bookmakers": ",".join(bks), "markets": ",".join(markets), "oddsFormat": "american"}, key)
+            remaining = (hdr or {}).get("x-requests-remaining")
+            odds_budget.record(budget, hdr, "props", cost)
+            if fresh or len(markets) > len(ODDS_MARKETS):
+                odds_budget.spent_extra(budget, cost if fresh else len(markets) - len(ODDS_MARKETS))
         except Exception as e:
             if len(status["errors"]) < 5:
                 status["errors"].append(f"{gid}: {str(e)[:200]}")
             continue
         players = parse_odds_api(payload)
         status["fetched_now"] += 1
+        if fresh:
+            status["fresh_now"] += 1
+        if len(markets) > len(ODDS_MARKETS):
+            status["extra_markets"] += 1
         if players:
             out["games"][gid] = players
             out["fetched"][gid] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    status["credits_left"] = remaining
+    status["credits_left"] = remaining if remaining is not None else budget.get("remaining")
     status["games_with_prices"] = len(out["games"])
+    if not fx:
+        odds_budget.save(budget)
     STATUS.write_text(json.dumps(status, indent=1) + "\n")
     print(f"Odds API ({mode}): fetched {status['fetched_now']} games now, {len(out['games'])} games with prop prices, credits left {remaining}")
     if status["fetched_now"] and out["games"]:

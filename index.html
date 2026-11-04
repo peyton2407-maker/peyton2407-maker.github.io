@@ -7972,6 +7972,7 @@ function teaserFinderHtml() {
       <button type="button" class="ready-open" data-openteaser="${pbEsc(ids)}">Open as a 6-point teaser in the builder</button></article>`;
   };
   const best = (t2[0] && t2[0].ev >= -0.01) || (t3[0] && t3[0].ev >= -0.01);
+  if (legs.length < 2) return intro + `<div class="cr-take"><b>Only one qualifying leg this week:</b> ${pbEsc(legs[0].team.abbr + " " + pbLine(legs[0].from) + " → " + pbLine(legs[0].to))}, ${Math.round(legs[0].win * 100)}% by our checked chance. A teaser needs two; lines move all week, so check back closer to kickoff.</div>` + legList;
   const nGood = t2.filter((t) => t.ev >= 0.02).length + t3.filter((t) => t.ev >= 0.02).length, nFair = t2.filter((t) => t.ev >= -0.01).length + t3.filter((t) => t.ev >= -0.01).length;
   return intro + `<div class="cr-take">${best ? (nGood ? `<b>${nGood} ticket${nGood === 1 ? "" : "s"} beat${nGood === 1 ? "s" : ""} ${pk}</b> by our checked chances.` : `<b>${nFair} ticket${nFair === 1 ? " is" : "s are"} about a fair price at ${pk}</b> by our checked chances: no clear edge from our numbers, so the case rests on the historical rate. At -110 it would be a better bet.`) : `<b>No ticket beats ${pk} this week by our checked chances.</b> Our model gives these legs ${legs.map((l) => Math.round(l.win * 100) + "%").join(", ")}; at ${pk} each needs ${(need2 * 100).toFixed(1)}%. The historical rate is the case for them; our number says the books have priced this week's in.`}</div>`
     + (t2.length ? `<h3 class="ladder-h">Best 2-team tickets</h3>` + t2.map((t, i) => card(t, i, 2)).join("") : "")
@@ -8069,7 +8070,30 @@ function tzSeasonBackfill() {
   }));
   return out;
 }
+// past seasons' closing lines (data/backtests/odds-nfl-<season>.json, scripts/odds_history.py)
+function tzLoadHistory() {
+  if (window.__tzHist || typeof pbFetchOnce !== "function") return;
+  window.__tzHist = {};
+  fetch("/data/backtests/odds-index.json?t=" + Math.floor(Date.now() / 3600000)).then((r) => (r.ok ? r.json() : null)).then((idx) => {
+    if (!idx || !idx.files) return;
+    return Promise.all(idx.files.map((f) => fetch("/data/backtests/" + f).then((r) => (r.ok ? r.json() : null)).then((d) => { if (d && d.season) window.__tzHist[d.season] = d; }).catch(() => {})));
+  }).catch(() => {}).then(() => { if (typeof view !== "undefined" && view === "parlay" && window.__parlayLg === "teasers") renderParlays(); });
+}
+function tzHistoryLegs(d) {
+  const out = [];
+  (d.games || []).forEach((r) => {
+    if (r.close_spread == null) return;
+    ["home", "away"].forEach((side) => {
+      const line = side === "home" ? Number(r.close_spread) : -Number(r.close_spread);
+      if (!tzQualifies(line)) return;
+      const m = (side === "home" ? r.hs - r.as : r.as - r.hs) + line + 6;
+      out.push({ result: Math.abs(m) < 1e-9 ? "PUSH" : m > 0 ? "HIT" : "MISS", low: r.close_total != null && r.close_total <= 49 });
+    });
+  });
+  return out;
+}
 function teaserRecordHtml() {
+  tzLoadHistory();
   const L = (window.GG_LOCKS || {}).teaserLegs || [], T = (window.GG_LOCKS || {}).teasers || [];
   const back = tzSeasonBackfill();
   // the tracked legs replace the backfilled ones for the same game
@@ -8089,6 +8113,11 @@ function teaserRecordHtml() {
       <div><b>${lowA.length ? lowW + "-" + lowL : "—"}</b><span>Totals 49 or less · ${pct(lowW, lowL)}</span></div>
       <div><b>${tk.length ? tw + "-" + tl : "—"}</b><span>Weekly tickets${tk.length ? " · " + (tu >= 0 ? "+" : "−") + Math.abs(tu).toFixed(2) + "u" : ""}</span></div>
     </div>
+    ${(() => {
+      const H = window.__tzHist || {};
+      const rows = Object.keys(H).sort().map((yr) => { const L = tzHistoryLegs(H[yr]); const w = L.filter((x) => x.result === "HIT").length, l = L.filter((x) => x.result === "MISS").length, lw = L.filter((x) => x.low && x.result === "HIT").length, ll = L.filter((x) => x.low && x.result === "MISS").length; return L.length ? `<li><b>${yr} season</b> <span>${w}-${l} (${pct(w, l)}) · totals 49 or less ${lw}-${ll} (${pct(lw, ll)})</span></li>` : ""; }).filter(Boolean);
+      return rows.length ? `<div class="lbl">Past seasons at the closing line</div><ul class="tz-rec-list">${rows.join("")}</ul>` : "";
+    })()}
     <p class="subn">${all.length ? `Every NFL spread this season that closed at +1.5 to +2.5 or -7.5 to -8.5, teased six points and graded from the final; a 2-team ticket at -120 needs 73.9% a leg. ` : ""}${all.length < 60 ? `That's ${all.length} leg${all.length === 1 ? "" : "s"} so far, too few to prove much either way; the long-run rate is built over hundreds.` : ""} From this week on, every qualifying leg is logged at its last line before kickoff, and each week's best 2-team ticket is saved and locked 90 minutes before its first game at -120.</p>
     ${cur ? `<div class="cr-take"><b>This week's ticket:</b> ${cur.legs.map((x) => pbEsc(x.team + " " + pbLine(x.from) + " → " + pbLine(x.to))).join(" + ")} at -120 · ${cur.locked ? "locked" : "saved, locks 90 minutes before " + pbEsc(fmt.when(cur.firstKick))}</div>` : ""}
     ${tick ? `<div class="lbl">Weekly tickets</div><ul class="tz-rec-list">${tick}</ul>` : ""}
@@ -12040,7 +12069,9 @@ function propFairOver(m, mk, over) {
 function postedLean(p) {
   let pick = null;
   marketsFor(p).forEach((m) => {
-    if (m.key === "pass_int" || m.key === "rush_att") return;
+    // anytime TD, rush attempts and interceptions are priced and shown, not posted as picks,
+    // until they have a graded record of their own
+    if (m.key === "pass_int" || m.key === "rush_att" || m.key === "td") return;
     const mk = propMarket(p, m.key);
     if (!mk) return;
     const over = ourChance(m.mean, mk.line, m.key, false);
@@ -20254,6 +20285,22 @@ function pbCond(kind, side, line) {
   if (kind === "ml") return side === "home" ? { v: "m", lo: 0 } : { v: "m", hi: 0 };
   return null;
 }
+// a real alternate line's price (data/alt-lines.json, paid Odds API plan): at one book, or the
+// best across the books when none is picked
+function pbAltPrice(gid, kind, side, line, book) {
+  const g = window.PB_ALT && window.PB_ALT.games && window.PB_ALT.games[String(gid)];
+  if (!g || !g.books) return null;
+  const key = String(Number(line).toFixed(1));
+  let best = null;
+  Object.keys(g.books).forEach((bk) => {
+    if (book && bk !== book) return;
+    const m = ((g.books[bk] || {})[kind] || {})[side] || {};
+    const pr = m[key] != null ? m[key] : m[String(Number(line))];
+    if (pr == null) return;
+    if (!best || pbDec(pr) > pbDec(best.price)) best = { price: Number(pr), book: bk };
+  });
+  return best;
+}
 function pbBookRow(gid, book) { const b = window.PB_BOOKS && window.PB_BOOKS.games && window.PB_BOOKS.games[String(gid)]; return b && book ? b[book] || null : null; }
 // A leg as it stands right now. opts.shift moves a spread/total line in the bettor's favor (teasers).
 function pbLeg(stored, opts) {
@@ -20316,6 +20363,11 @@ function pbLeg(stored, opts) {
         const a = 1 / pbDec(bookPrice), b = 1 / pbDec(op);
         mkt = { win: (a / (a + b)) * (1 - mkt.push), push: mkt.push };
       }
+    }
+    if (bookPrice == null && line !== mainLine) {
+      // a real alternate line at a book, when the paid plan has pulled them
+      const alt = pbAltPrice(g.id, kind, side, line, st.book || null);
+      if (alt) { bookPrice = alt.price; priceSource = alt.book; }
     }
     if (bookPrice == null && line !== mainLine && mkt && mkt.win > 0) {
       // alternate line: price it off the market's own view of the game, with a bigger cut
@@ -22001,6 +22053,7 @@ function renderBuilderNow() {
   if (!PB.__loaded) { pbLoad(); pbFromUrl(); PB.__loaded = true; }
   pbFetchOnce("cal", "/data/calibration.json", (d) => { window.PB_CAL = d; });
   pbFetchOnce("books", "/data/books.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_BOOKS = d; });
+  pbFetchOnce("alt", "/data/alt-lines.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_ALT = d; });
   pbFetchOnce("props", "/data/props.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_PROPS = d; });
   if (!window.__pbPropPull && !window.__pbPropDone && typeof ensureWeekProps === "function") {
     window.__pbPropPull = Promise.resolve()
@@ -22580,6 +22633,7 @@ async function boot() {
       if (view === "nfl" || view === "cfb" || view === "all" || view === "live") renderBoard();
       if (window.__openGameId) openGame(window.__openGameId, { fromHash: true });
     });
+    pbFetchOnce("alt", "/data/alt-lines.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_ALT = d; });
     pbFetchOnce("books", "/data/books.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_BOOKS = d; }).then(() => {
       if (!window.PB_BOOKS) return;
       if (view === "nfl" || view === "cfb" || view === "all" || view === "live") renderBoard();

@@ -97,6 +97,11 @@ def futures(sport_hint, teams, key):
     if not sk:
         return None, None
     data, hdr = get_json(f"{ODDS}/sports/{sk}/odds/?apiKey={urllib.parse.quote(key)}&regions=us&markets=outrights&oddsFormat=american&bookmakers={BOOKS}", headers=True)
+    try:
+        import odds_budget
+        b = odds_budget.load(); odds_budget.record(b, hdr, "futures", int(float(hdr.get("x-requests-last") or 1))); odds_budget.save(b)
+    except Exception:
+        pass
     best, implied = {}, {}
     for ev in data or []:
         for bk in ev.get("bookmakers") or []:
