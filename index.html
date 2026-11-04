@@ -2023,6 +2023,12 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .alt-intro p { margin: 0 0 10px; }
 .alt-stamp { margin: 4px 0 0; }
 .alt-note { color: var(--sun); }
+.cfb-rule { grid-column: 1 / -1; margin: 0 0 6px; color: var(--ink-soft); line-height: 1.55; max-width: 80ch; }
+.cfb-play { margin: 10px 0 4px; padding: 10px 12px; border-radius: 10px; background: var(--turf-soft); border: 1px solid var(--line-2); display: grid; gap: 2px; }
+.cfb-play b { font-size: 1.1rem; color: var(--sun); }
+.cfb-play span:not(.lbl) { color: var(--ink-soft); font-size: .9rem; }
+.cfb-play.near { background: transparent; border-style: dashed; }
+.cfb-has-play { border-color: var(--line-2); }
 .ladder-pass { margin: 14px 0; padding: 12px 14px; border: 1px dashed var(--line-2); border-radius: var(--radius); color: var(--ink-soft); line-height: 1.55; }
 .ladder-pass b { color: var(--ink); }
 .cr-pick-legs li { line-height: 1.5; }
@@ -2964,7 +2970,7 @@ table.props b.down { color: var(--muted); font-weight: 600; }
           <option value="td">Team touchdowns</option>
         </select>
         <select id="cfbSort" class="lg-select">
-          <option value="best">Sort: strongest lean</option>
+          <option value="best">Sort: the plays first</option>
           <option value="spread">Sort: spread edge</option>
           <option value="total">Sort: total edge</option>
           <option value="conf">Sort: confidence</option>
@@ -12791,6 +12797,21 @@ function cfbPickScore(g) {
   return +s.toFixed(2);
 }
 
+// a college game's play, the same test as the college play of the day: an under on a total of 58+
+// or a forecast that takes 1.5+ off, at the best book, when it beats the price; or why a 58+
+// total isn't one
+function cfbAngleFor(g) {
+  if (!g || g.completed || (typeof pbStarted === "function" && pbStarted(g))) return null;
+  const wxTest = (gg, b) => b.kind === "Under" && Number((gg.proj || {}).weather_adj_total) <= -1.5;
+  let play = null;
+  try { play = potdCfbCandidates(g, wxTest)[0] || null; } catch (e) { play = null; }
+  if (play) return { play };
+  let bp = null;
+  try { bp = bestPriceFor(g.id + "|tot|under"); } catch (e) { bp = null; }
+  const b = bp && bp.best;
+  if (b && b.line != null && Number(b.line) >= CFB_HIGH_TOTAL) return { near: `The total is ${pbTot(Number(b.line))}, but the best under price (${pbAm(b.price)}${b.book ? " at " + b.book : ""}) needs more than the ${Math.round(CFB_HIGH_RATE * 100)}% the angle has hit.` };
+  return null;
+}
 function renderCfbPicks() {
   if (!$("#cfbPickBoard")) return;
   const day = ($("#cfbDay") && $("#cfbDay").value) || "best";
@@ -12811,9 +12832,16 @@ function renderCfbPicks() {
   if (q) {
     games = games.filter((g) => `${g.name} ${g.home.abbr} ${g.away.abbr} ${g.venue || ""}`.toLowerCase().includes(q));
   }
-  games.forEach((g) => { g._cfbScore = cfbPickScore(g); });
+  games.forEach((g) => { g._cfbScore = cfbPickScore(g); g._angle = cfbAngleFor(g); });
   games.sort((a, b) => {
     const pa = a.proj || {}, pb = b.proj || {};
+    if (sort === "best") {
+      // the plays (the angles that held up over years), best value first; then every other game
+      // by kickoff. A lean off our rating isn't a reason to put a game on top.
+      const ea = a._angle && a._angle.play ? a._angle.play.ev : null, eb = b._angle && b._angle.play ? b._angle.play.ev : null;
+      if (ea != null || eb != null) return (eb == null ? -1 : 0) - (ea == null ? -1 : 0) || (eb || 0) - (ea || 0);
+      return String(a.date || "").localeCompare(String(b.date || ""));
+    }
     if (sort === "spread") return Math.abs(pb.edge_spread || 0) - Math.abs(pa.edge_spread || 0);
     if (sort === "total") return Math.abs(pb.edge_total || 0) - Math.abs(pa.edge_total || 0);
     if (sort === "conf") return (pb.confidence || 0) - (pa.confidence || 0);
@@ -12821,18 +12849,20 @@ function renderCfbPicks() {
     return (b._cfbScore || 0) - (a._cfbScore || 0);
   });
   games.forEach((g) => attachCfbPeriods(g));
-  const list = day === "best" ? games.slice(0, 18) : games;
-  const plays = list.filter((g) => (g.proj || {}).pick && g.proj.pick !== "NO PLAY").length;
+  const nPlays = games.filter((g) => g._angle && g._angle.play).length;
+  const list = day === "best" ? games.slice(0, Math.max(18, nPlays)) : games;
+  const topPlay = list.find((g) => g._angle && g._angle.play);
   $("#cfbPickStats").innerHTML = `
-    <div class="stat"><b>${list.length}</b><span>${day === "best" ? "featured CFB leans" : "games in this filter"}</span></div>
-    <div class="stat"><b>${plays}</b><span>spread tickets</span></div>
-    <div class="stat"><b>${list.filter((g)=>(g.proj||{}).total_pick && g.proj.total_pick!=="NO PLAY").length}</b><span>O/U tickets</span></div>
-    <div class="stat"><b>${list[0] ? list[0].short_name : "—"}</b><span>top card</span></div>`;
+    <div class="stat"><b>${nPlays}</b><span>${nPlays === 1 ? "play" : "plays"} this week (unders)</span></div>
+    <div class="stat"><b>${list.length}</b><span>${day === "best" ? "games shown" : "games in this filter"}</span></div>
+    <div class="stat"><b>${topPlay ? pbEsc(topPlay._angle.play.line) : "—"}</b><span>${topPlay ? pbEsc(topPlay.short_name) + ", the best price" : "no play yet"}</span></div>
+    <div class="stat"><b>Info only</b><span>spread and total leans off our rating</span></div>`;
+  const note = `<p class="cfb-rule">The college plays are unders from the two angles that have held up over years: a total of ${CFB_HIGH_TOTAL} or more (561-458, 55.1%, at the closing total on 2021-2026 FBS games), or a forecast that takes 1.5+ points off the total. Each is priced at the best book and is a play only when it beats that price. Our spread and total leans are on every card for information: picks off our rating went 47.7% on spreads over five seasons and 44% on totals, so they aren't plays.</p>`;
   if (!list.length) {
-    $("#cfbPickBoard").innerHTML = `<div class="empty">No college games in this filter.</div>`;
+    $("#cfbPickBoard").innerHTML = note + `<div class="empty">No college games in this filter.</div>`;
     return;
   }
-  $("#cfbPickBoard").innerHTML = list.map((g) => {
+  $("#cfbPickBoard").innerHTML = note + list.map((g) => {
     const p = g.proj || {}, o = g.odds || {};
     const awayTd = estTds(p.away_points), homeTd = estTds(p.home_points);
     const totTd = (awayTd || 0) + (homeTd || 0);
@@ -12843,16 +12873,21 @@ function renderCfbPicks() {
     else if (market === "td") headline = `${g.away.abbr} ${awayTd ?? "—"} TD · ${g.home.abbr} ${homeTd ?? "—"} TD`;
     else headline = [p.pick_line || p.pick, p.total_pick].filter((x) => x && x !== "NO PLAY").join(" · ") || "market aligned";
     const wx = g.indoor ? "Dome" : ((g.weather && g.weather.condition) || "Outdoor");
-    return `<article class="prop-card" data-id="${g.id}">
+    const A = g._angle, play = A && A.play;
+    const playHtml = play
+      ? `<div class="cfb-play"><span class="lbl">The play</span><b>${pbEsc(play.line)} ${pbAm(play.price)}${play.book ? " at " + pbEsc(play.book) : ""}</b><span>${pbEsc(play.angle === "weather" ? "Forecast under" : play.angle === "weather + high total" ? "Both angles" : "Total of " + CFB_HIGH_TOTAL + "+")} · counted at ${Math.round(play.hit * 100)}%, needs ${Math.round(100 / pbDec(play.price))}% · +${(play.ev * 100).toFixed(1)}% value</span></div>`
+      : A && A.near ? `<div class="cfb-play near"><span class="lbl">No play</span><span>${pbEsc(A.near)}</span></div>` : "";
+    return `<article class="prop-card${play ? " cfb-has-play" : ""}" data-id="${g.id}">
       <div class="who">
         <div>
           <h4 class="mu">${matchupHtml(g)}</h4>
           <div class="prop-meta">${fmt.when(g.date)} · ${g.venue || ""} · ${wx}</div>
         </div>
-        <div class="pick-score">${g._cfbScore.toFixed(1)}</div>
+        ${play ? `<div class="pick-score">+${(play.ev * 100).toFixed(1)}%</div>` : ""}
       </div>
+      ${playHtml}
       <div class="prop-stats">
-        <div><span class="lbl">Lean</span><b>${headline}</b></div>
+        <div><span class="lbl">Our lean (info only)</span><b>${headline}</b></div>
         <div><span class="lbl">Score range</span><b>${p.score_low_away != null ? `${g.away.abbr} ${p.score_low_away}–${p.score_high_away} · ${g.home.abbr} ${p.score_low_home}–${p.score_high_home}` : `${p.away_points ?? "—"}–${p.home_points ?? "—"}`}</b></div>
         <div><span class="lbl">Market</span><b>${o.details || "No line"} · tot ${o.total ?? "—"}</b></div>
         <div><span class="lbl">Spread edge</span><b>${fmt.signed(p.edge_spread)}</b></div>
@@ -23261,6 +23296,7 @@ async function boot() {
     pbFetchOnce("books", "/data/books.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_BOOKS = d; }).then(() => {
       if (!window.PB_BOOKS) return;
       if (view === "nfl" || view === "cfb" || view === "all" || view === "live") renderBoard();
+      if (view === "cfbpicks" && typeof renderCfbPicks === "function") renderCfbPicks();
       if (window.__openGameId) openGame(window.__openGameId, { fromHash: true });
     });
   } catch (e) {}
