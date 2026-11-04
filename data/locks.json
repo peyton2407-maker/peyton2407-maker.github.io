@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": -3,
    "total": 49.5,
-   "lockedAt": "2026-11-04T15:01:51.936Z",
+   "lockedAt": "2026-11-04T15:16:37.579Z",
    "provisional": true
   },
   "401866456": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 44.5,
-   "lockedAt": "2026-11-04T15:01:51.936Z",
+   "lockedAt": "2026-11-04T15:16:37.579Z",
    "provisional": true
   },
   "401866457": {
@@ -111,7 +111,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 52.5,
-   "lockedAt": "2026-11-04T15:01:51.936Z",
+   "lockedAt": "2026-11-04T15:16:37.579Z",
    "provisional": true
   }
  },
@@ -905,7 +905,7 @@
    }
   ]
  },
- "updated": "2026-11-04T15:01:51.936Z",
+ "updated": "2026-11-04T15:16:37.579Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1042,27 +1042,11 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-04T15:01:51.936Z"
+   "lockedAt": "2026-11-04T15:16:37.579Z"
   }
  ],
  "teasers": [],
  "teaserLegs": [
-  {
-   "id": "401873039|sp|away",
-   "gid": "401873039",
-   "team": "CLE",
-   "side": "away",
-   "game": "CLE @ NO",
-   "kick": "2026-11-08T18:00Z",
-   "from": 1.5,
-   "to": 7.5,
-   "book": "Caesars",
-   "win": 0.6756,
-   "bookWin": 0.6897,
-   "total": 42.5,
-   "result": null,
-   "final": null
-  },
   {
    "id": "401873041|sp|home",
    "gid": "401873041",
