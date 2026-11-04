@@ -40,6 +40,11 @@ CHECK = """() => {
 def syntax():
     """Every inline script in index.html and the other pages parses."""
     bad = []
+    for js in sorted((ROOT / "js").glob("*.js")):
+        r = subprocess.run(["node", "--check", str(js)], capture_output=True, text=True)
+        if r.returncode:
+            lines = r.stderr.strip().splitlines()
+            bad.append(f"{js.relative_to(ROOT)} doesn't parse: " + next((l for l in lines if "Error" in l), "error").strip()[:160])
     for page in [ROOT / "index.html", ROOT / "split" / "index.html", ROOT / "boom.html", ROOT / "hashmark.html"]:
         if not page.exists():
             continue
@@ -127,6 +132,10 @@ def problems(size, res):
 async def main():
     OUT.mkdir(exist_ok=True)
     found = [f"script: {x}" for x in syntax()]
+    # a separately loaded script (js/*.js) whose version stamp in index.html is out of date
+    st = subprocess.run([sys.executable, str(ROOT / "scripts" / "stamp_assets.py"), "--check"], capture_output=True, text=True, cwd=ROOT)
+    if st.returncode:
+        found += [f"script: {x} (run scripts/stamp_assets.py)" for x in st.stdout.strip().splitlines()]
     report = {"syntax": found[:]}
     if not found:
         async with async_playwright() as p:
