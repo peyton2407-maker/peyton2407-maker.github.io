@@ -10743,10 +10743,23 @@ function countLines(mean) {
 // A player's recent numbers came against the defenses he happened to face. Compare those
 // defenses (what each gave up to his position in this stat, per game) with this week's: a
 // receiver on a hot streak against soft defenses who now faces a stingy one gets his number
-// trimmed, and the reverse. Half of the difference, scaled down when this defense has played
-// few games, capped at 15% either way. Needs 3+ of his recent games against known defenses.
+// trimmed, and the reverse. Each defense's number is pulled toward the league's (six games'
+// weight), then half the difference is used, capped at 12% either way. Only a position's main
+// stats, and only with 3+ of his recent games against known defenses.
+const PROP_OPP_STATS = { QB: ["pass_yds", "pass_td", "rush_yds"], RB: ["rush_yds", "rec_yds", "rec"], WR: ["rec_yds", "rec"], TE: ["rec_yds", "rec"] };
+function propDefLeague(t) {
+  // each position and stat's average across all defenses, to pull small samples toward
+  if (propDefLeague.c && propDefLeague.c.t === t) return propDefLeague.c.v;
+  const sum = {}, cnt = {};
+  Object.keys(t).forEach((k) => { const i = k.indexOf("|"), pk = k.slice(i + 1); sum[pk] = (sum[pk] || 0) + t[k].avg; cnt[pk] = (cnt[pk] || 0) + 1; });
+  const v = {};
+  Object.keys(sum).forEach((pk) => { v[pk] = sum[pk] / cnt[pk]; });
+  propDefLeague.c = { t, v };
+  return v;
+}
 function propOppAdj(p, key) {
   if (!p || !p.opp || !p.pos || !PROP_DEF_STAT[key] || !window.GAMELOGS) return null;
+  if (!(PROP_OPP_STATS[p.pos] || []).includes(key)) return null;
   const memo = propOppAdj.m || (propOppAdj.m = new Map());
   const mk = p.id + "|" + key + "|" + p.opp;
   const t = typeof propDefTable === "function" ? propDefTable() : null;
@@ -10758,13 +10771,17 @@ function propOppAdj(p, key) {
   const pack = window.GAMELOGS[String(p.id)];
   const rows = ((pack && pack.rows) || []).filter((r) => r && r.o && Number.isFinite(Number(r[key]))).slice(0, 8);
   const faced = rows.map((r) => t[`${r.o}|${p.pos}|${key}`]).filter(Boolean);
-  if (cur && faced.length >= 3) {
-    const pastAvg = faced.reduce((a, x) => a + x.avg, 0) / faced.length;
-    if (pastAvg > 0 && cur.avg > 0) {
-      const raw = cur.avg / pastAvg;
-      const w = 0.5 * Math.min(1, cur.games / 8);
-      const f = Math.max(0.85, Math.min(1.15, 1 + w * (raw - 1)));
-      v = { f, raw, oppAvg: cur.avg, pastAvg, n: faced.length, rank: cur.rank, of: cur.of, opp: p.opp, pos: p.pos, key };
+  const lg = propDefLeague(t)[`${p.pos}|${key}`];
+  if (cur && faced.length >= 3 && lg > 0) {
+    // each defense's number pulled toward the league's by six games' weight, so a defense that
+    // has seen few players at this position can't swing it alone
+    const shr = (x) => (x.avg * x.games + lg * 6) / (x.games + 6);
+    const pastAvg = faced.reduce((a, x) => a + shr(x), 0) / faced.length;
+    const curAvg = shr(cur);
+    if (pastAvg > 0 && curAvg > 0) {
+      const raw = curAvg / pastAvg;
+      const f = Math.max(0.88, Math.min(1.12, 1 + 0.5 * (raw - 1)));
+      v = { f, raw, oppAvg: cur.avg, pastAvg: faced.reduce((a, x) => a + x.avg, 0) / faced.length, n: faced.length, rank: cur.rank, of: cur.of, opp: p.opp, pos: p.pos, key };
     }
   }
   memo.set(mk, { t, v });
