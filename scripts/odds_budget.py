@@ -15,6 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FILE = ROOT / "data" / "odds-budget.json"
+PLAN = Path(__file__).with_name("odds-plan.json")
 RESERVE = 25
 
 
@@ -65,6 +66,15 @@ def monthly(b):
     return int(b.get("monthly") or 500)
 
 
+def target(b):
+    """What the jobs aim to spend this month: scripts/odds-plan.json, never more than the plan."""
+    try:
+        t = int(json.loads(PLAN.read_text()).get("monthly_target") or 0)
+    except Exception:
+        t = 0
+    return min(monthly(b), t) if t > 0 else monthly(b)
+
+
 def tier(b):
     """free (the 500-credit plan), small (up to ~20K), big (more)."""
     m = monthly(b)
@@ -90,12 +100,18 @@ def can_spend(b, cost, priority="core"):
     spare = max(0, int(rem) - RESERVE)
     if priority == "core":
         return cost <= spare
-    extra = spare - CORE_WEEK * (days_left() / 7)
-    if extra <= 0:
+    core_rest = CORE_WEEK * (days_left() / 7)
+    # the pool for everything optional: up to the monthly target, never into the reserve or
+    # the rest of the month's core pulls
+    pool = min(spare - core_rest, target(b) - int(b.get("used") or 0) - core_rest)
+    if pool <= 0:
         return False
     day = _now().strftime("%Y-%m-%d")
     spent = b.setdefault("extra_by_day", {}).get(day, 0)
-    return cost <= extra and spent + cost <= extra / days_left() * 1.5
+    # game days get more (props move most on Saturday and Sunday); what a quiet day leaves
+    # unspent rolls into the days after, since the pace is worked out again every run
+    mult = 2.2 if _now().weekday() in (5, 6) else 1.3
+    return cost <= pool and spent + cost <= pool / days_left() * mult
 
 
 def spent_extra(b, cost):

@@ -1,0 +1,4 @@
+{
+ "monthly_target": 13000,
+ "note": "Credits the Odds API jobs aim to use each month (the plan allows more). The first prop pull for every NFL game always comes first; fresher prop pulls, the extra markets and alternate lines share the rest, paced by day so the month lands near this number. Past-season pulls are on top, run by hand."
+}

@@ -193,16 +193,21 @@ def due(kick, fetched, now, mode):
 
 
 def due_fresh(kick, fetched, now, tier):
-    """Extra pulls when the plan has room: small (about 20K credits a month) every 3 hours in
-    the last day and every 12 before that within 3 days; big every hour in the last day and
-    every 6 within 4 days. Only from the budget's spare credits."""
+    """Extra pulls when the plan has room: hourly in the last 6 hours, every 2 hours in the
+    last day, every 6 within 3 days, every 12 within 5. Only from the budget's optional pool,
+    which is paced to the monthly target in scripts/odds-plan.json."""
     hours = (kick - now) / 3600
     age = (now - fetched) / 3600 if fetched else 1e9
     if hours < 0 or tier == "free":
         return False
-    if tier == "big":
-        return (hours <= 24 and age >= 1) or (hours <= 96 and age >= 6)
-    return (hours <= 24 and age >= 3) or (hours <= 72 and age >= 12)
+    # (the budget's daily pace decides how many of these actually run)
+    if hours <= 6:
+        return age >= 1
+    if hours <= 24:
+        return age >= 2
+    if hours <= 72:
+        return age >= 6
+    return hours <= 120 and age >= 12
 
 
 def parse_odds_api(payload):

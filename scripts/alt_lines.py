@@ -37,11 +37,11 @@ def due(league, kick, fetched, now, tier):
     age = (now - fetched) / 3600 if fetched else 1e9
     if hours < 0:
         return False
-    if hours <= 3 and age >= 2:
-        return True
-    if tier == "big":
-        return hours <= (96 if league == "nfl" else 48) and age >= 6
-    return hours <= (72 if league == "nfl" else 48) and age >= 20
+    if hours <= 3:
+        return age >= 1
+    if league == "nfl":
+        return (hours <= 24 and age >= 3) or (hours <= 96 and age >= 6)
+    return (hours <= 24 and age >= 6) or (hours <= 48 and age >= 12)
 
 
 def parse(payload, ev):
@@ -97,8 +97,7 @@ def main():
     for league in ("nfl", "cfb"):
         todo = sorted([g for g in board if g["league"] == league], key=lambda g: g.get("date") or "")
         todo = [g for g in todo if due(league, books.ts(g["date"]), books.ts((games.get(str(g["id"])) or {}).get("fetched")) if (games.get(str(g["id"])) or {}).get("fetched") else None, now, tier)]
-        if league == "cfb" and tier != "big":
-            todo = todo[:30]
+        # soonest first; the budget's daily pace decides how far down the list it gets
         if not todo:
             continue
         try:
