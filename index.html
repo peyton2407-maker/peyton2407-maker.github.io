@@ -2001,6 +2001,14 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .ladder-clv em { font-style: normal; color: var(--faint, #808ba0); }
 .ladder-clv-t { margin: 8px 0 4px; padding: 8px 10px; border-radius: 10px; background: rgba(242,184,64,.07); }
 .ladder-clv-t span { display: block; margin-top: 2px; font-weight: 400; color: var(--ink-soft); }
+.tz-intro p { margin: 6px 0; font-size: 14.5px; line-height: 1.55; }
+.tz-price { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 6px; font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+.tz-price span { margin-right: 4px; }
+.tz-price button { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line-2); background: transparent; color: var(--ink); font: 700 13px var(--body); cursor: pointer; }
+.tz-price button.on { border-color: var(--sun); background: rgba(242,184,64,.14); }
+.tz-leg-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.tz-chance { font-weight: 800; color: var(--sun); }
+.tz-legs > li, .tz-intro ~ .parlay-card .parlay-legs > li { cursor: pointer; }
 .cr-live-box { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 10px 12px; border-radius: 12px; background: rgba(240,122,106,.10); border: 1px solid rgba(240,122,106,.35); font-size: 14px; }
 .cr-live-box b { color: var(--bad, #f07a6a); font-weight: 800; }
 .cr-live-box .cr-act { flex: none; min-height: 32px; margin-left: auto; }
@@ -2782,6 +2790,7 @@ table.props b.down { color: var(--muted); font-weight: 600; }
         <div class="tabs" id="parlayTabs" style="flex:1">
           <button class="ptab active" type="button" data-parlay="nfl">NFL parlays</button>
           <button class="ptab" type="button" data-parlay="ml">NFL moneylines</button>
+          <button class="ptab" type="button" data-parlay="teasers">Teaser finder</button>
           <button class="ptab" type="button" data-parlay="dogs">Underdog parlays</button>
           <button class="ptab" type="button" data-parlay="favs">Favorite parlays</button>
           <button class="ptab" type="button" data-parlay="totals">Totals</button>
@@ -7857,6 +7866,115 @@ function openInBuilder(ids) {
   setView("builder", { push: true });
   window.scrollTo(0, 0);
 }
+// ==== Teaser finder ===========================================================================
+// NFL games end on 3 and 7 more than any other margins. A 6-point teaser on a spread that
+// crosses both (an underdog of +1.5 to +2.5 moved to +7.5 to +8.5, a favorite of -7.5 to -8.5
+// moved to -1.5 to -2.5) picks up the most of them: these legs have covered roughly 72-75% of
+// the time over the years, against 73.9% a 2-team 6-point teaser at -120 needs per leg.
+// Each leg is checked at every book's line, so a +2.5 at one book counts when the board says +3.
+const TZ_PRICES = { "-110": { 2: -110, 3: 160 }, "-120": { 2: -120, 3: 150 }, "-130": { 2: -130, 3: 140 } };
+function tzQualifies(line) { return (line >= 1.5 && line <= 2.5) || (line <= -7.5 && line >= -8.5); }
+function teaserFinderLegs() {
+  const out = [];
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.league !== "nfl" || g.completed || !g.odds || g.odds.home_spread == null) return;
+    if (!(Date.parse(g.date) > Date.now())) return;
+    if (typeof isThisNflWeek === "function" && !isThisNflWeek(g)) return;
+    ["home", "away"].forEach((side) => {
+      const id = `${g.id}|sp|${side}`;
+      const main = side === "home" ? Number(g.odds.home_spread) : -Number(g.odds.home_spread);
+      // the main line, or any book's line that qualifies when the main one doesn't
+      let line = tzQualifies(main) ? main : null, book = null, books = [];
+      const bp = typeof bestPriceFor === "function" ? bestPriceFor(id) : null;
+      (bp && bp.rows ? bp.rows : []).forEach((r) => { if (r.line != null && tzQualifies(Number(r.line))) books.push(r.book + " " + pbLine(Number(r.line))); });
+      if (line == null && bp && bp.rows) {
+        const ok = bp.rows.filter((r) => r.line != null && tzQualifies(Number(r.line))).sort((a, b) => (side === "home" ? 0 : 0) || (Number(b.line) - Number(a.line)));
+        if (ok.length) { line = Number(ok[0].line); book = ok[0].book; }
+      }
+      if (line == null) return;
+      const base = pbLeg({ id, line });
+      const t = pbLeg({ id, line }, { shift: 6 });
+      if (!base || !t || t.started) return;
+      const total = Number(g.odds.total);
+      const team = side === "home" ? g.home : g.away, opp = side === "home" ? g.away : g.home;
+      out.push({ id, gid: String(g.id), g, side, team, opp, from: line, to: Number(t.line), book, books, leg: t, win: t.win, bookWin: t.bookWin, push: t.push || 0, total, low: Number.isFinite(total) && total <= 49, home: side === "home", dog: line > 0 });
+    });
+  });
+  // one side per game (both sides can't qualify, but guard anyway), best chance first
+  const byG = new Map();
+  out.forEach((l) => { const o = byG.get(l.gid); if (!o || l.win > o.win) byG.set(l.gid, l); });
+  return [...byG.values()].sort((a, b) => b.win - a.win);
+}
+function teaserTickets(legs, n, priceKey) {
+  const price = TZ_PRICES[priceKey][n];
+  const combos = typeof pbCombos === "function" ? pbCombos(legs.length, n) : [];
+  return combos.map((c) => {
+    const L = c.map((i) => legs[i]);
+    const pAll = L.reduce((a, l) => a * l.win, 1);
+    // a push drops the leg and the ticket falls back a size (2-team with a push grades as a
+    // single at -110 at most books); this keeps the simple all-win chance for ranking and
+    // prices pushes into the value
+    let ev = 0;
+    const walk = (i, p, wins) => {
+      if (i === n) { const pay = wins === n ? pbDec(price) : wins >= 2 ? pbDec(TZ_PRICES[priceKey][wins] || price) : wins === 1 && n === 2 ? pbDec(-110) : 1; ev += p * pay; return; }
+      const l = L[i];
+      walk(i + 1, p * l.win, wins + 1);
+      if (l.push > 0) walk(i + 1, p * l.push, wins);
+    };
+    walk(0, 1, 0);
+    return { legs: L, price, pAll, ev: ev - 1, breakEven: 1 / pbDec(price) };
+  }).sort((a, b) => b.ev - a.ev);
+}
+function teaserLegHtml(l, pk) {
+  pk = pk || "-120";
+  const need = Math.sqrt(1 / pbDec(TZ_PRICES[pk][2]));
+  const kick = fmt.when(l.g.date);
+  const tags = [l.dog ? (l.home ? "home dog" : "road dog") : (l.home ? "home favorite" : "road favorite"), l.low ? `total ${pbTot(l.total)}` : Number.isFinite(l.total) ? `total ${pbTot(l.total)} (high)` : ""].filter(Boolean);
+  const needs = l.to > 0 ? `${l.team.short} can lose by up to ${Math.ceil(l.to) - 1}` : `${l.team.short} have to win by ${Math.floor(-l.to) + 1} or more`;
+  return `<li data-tzgame="${pbEsc(l.gid)}"><div class="tz-leg-top"><b>${pbEsc(l.team.abbr)} ${pbLine(l.from)} → ${pbLine(l.to)}</b><span class="tz-chance">${Math.round(l.win * 100)}%</span></div>
+    <div class="subn">${pbEsc(l.g.short_name)} · ${kick} · ${tags.map(pbEsc).join(" · ")}${l.book ? ` · ${pbEsc(l.book)} has ${pbLine(l.from)}` : ""}</div>
+    <div class="prop-why">${pbEsc(needs)}. Our checked chance at ${pbLine(l.to)} is ${Math.round(l.win * 100)}%, the books' ${Math.round(l.bookWin * 100)}%; a 2-team teaser at ${pk} needs ${(need * 100).toFixed(1)}% a leg.${l.low ? "" : " The total is above 49, where each point is worth less, so this leg is weaker than the usual teaser leg."}</div></li>`;
+}
+function teaserFinderHtml() {
+  const legs = teaserFinderLegs();
+  const pk = TZ_PRICES[window.__tzPrice] ? window.__tzPrice : "-120";
+  const need2 = Math.sqrt(1 / pbDec(TZ_PRICES[pk][2]));
+  const intro = `<article class="parlay-card ready tz-intro"><div class="td-mkt">How it works</div>
+    <p>NFL games end on 3 and 7 points more than any other margins. A 6-point teaser moves a spread six points your way, and when the move crosses both 3 and 7 it picks up the most finishes: an underdog of <b>+1.5 to +2.5</b> becomes +7.5 to +8.5, a favorite of <b>-7.5 to -8.5</b> becomes -1.5 to -2.5. Those legs have covered roughly 72–75% of the time over the years, one of the few bets that has beaten the book.</p>
+    <p>The price decides it. A 2-team 6-point teaser needs each leg to cover <b>${(Math.sqrt(1 / pbDec(-110)) * 100).toFixed(1)}% at -110, ${(Math.sqrt(1 / pbDec(-120)) * 100).toFixed(1)}% at -120, ${(Math.sqrt(1 / pbDec(-130)) * 100).toFixed(1)}% at -130</b>. Many books have moved to -130 or worse; at those prices the edge is mostly gone, so shop for -120. Legs are strongest when the game total is 49 or less.</p>
+    <div class="tz-price"><span>Your book's 2-team price</span>${Object.keys(TZ_PRICES).map((k) => `<button type="button" data-tzprice="${k}" class="${k === pk ? "on" : ""}">${k}</button>`).join("")}</div></article>`;
+  if (!legs.length) return intro + `<div class="empty">No NFL spread this week sits at +1.5 to +2.5 or -7.5 to -8.5 at any book we track. Lines move all week; check back closer to kickoff.</div>`;
+  const legList = `<h3 class="ladder-h">This week's qualifying legs (${legs.length})</h3><ul class="parlay-legs tz-legs">${legs.map((l) => teaserLegHtml(l, pk)).join("")}</ul>`;
+  const t2 = legs.length >= 2 ? teaserTickets(legs, 2, pk).slice(0, 5) : [];
+  const t3 = legs.length >= 3 ? teaserTickets(legs, 3, pk).slice(0, 2) : [];
+  const card = (t, i, n) => {
+    const v = t.ev, cls = v >= 0.02 ? "good" : v >= -0.01 ? "" : "bad";
+    const vt = v >= 0.02 ? `Good price: +${Math.round(v * 100)}% value` : v >= -0.01 ? "About a fair price" : `The book has the edge: ${Math.round(v * 100)}% value`;
+    const ids = t.legs.map((l) => l.id + "@" + l.from + (l.book ? "@" + l.book : "")).join("~");
+    return `<article class="parlay-card ready"><div class="td-mkt">${i === 0 ? "Best" : "Next best"} ${n}-team teaser</div>
+      <div class="parlay-odds">${pbAm(t.price)}</div>
+      <div class="subn">$10 pays ${pbMoney(10 * pbDec(t.price))} · hits about ${pbPct(t.pAll)} of the time, the price needs ${pbPct(t.breakEven)}</div>
+      <div class="ready-val ${cls}">${vt}</div>
+      ${sizeHtml(kellyUnits(t.pAll, t.price, { cap: 1 }))}
+      <ul class="parlay-legs">${t.legs.map((l) => teaserLegHtml(l, pk)).join("")}</ul>
+      <button type="button" class="ready-open" data-openteaser="${pbEsc(ids)}">Open as a 6-point teaser in the builder</button></article>`;
+  };
+  const best = (t2[0] && t2[0].ev >= -0.01) || (t3[0] && t3[0].ev >= -0.01);
+  const nGood = t2.filter((t) => t.ev >= 0.02).length + t3.filter((t) => t.ev >= 0.02).length, nFair = t2.filter((t) => t.ev >= -0.01).length + t3.filter((t) => t.ev >= -0.01).length;
+  return intro + `<div class="cr-take">${best ? (nGood ? `<b>${nGood} ticket${nGood === 1 ? "" : "s"} beat${nGood === 1 ? "s" : ""} ${pk}</b> by our checked chances.` : `<b>${nFair} ticket${nFair === 1 ? " is" : "s are"} about a fair price at ${pk}</b> by our checked chances: no clear edge from our numbers, so the case rests on the historical rate. At -110 it would be a better bet.`) : `<b>No ticket beats ${pk} this week by our checked chances.</b> Our model gives these legs ${legs.map((l) => Math.round(l.win * 100) + "%").join(", ")}; at ${pk} each needs ${(need2 * 100).toFixed(1)}%. The historical rate is the case for them; our number says the books have priced this week's in.`}</div>`
+    + (t2.length ? `<h3 class="ladder-h">Best 2-team tickets</h3>` + t2.map((t, i) => card(t, i, 2)).join("") : "")
+    + (t3.length ? `<h3 class="ladder-h">Best 3-team tickets</h3>` + t3.map((t, i) => card(t, i, 3)).join("") : "")
+    + legList;
+}
+function openTeaserInBuilder(spec) {
+  const parts = String(spec || "").split("~").map((x) => { const [id, ln, bk] = x.split("@"); return { id, line: ln != null && ln !== "" ? Number(ln) : null, book: bk || null }; });
+  openInBuilder(parts.map((x) => x.id).join("~"));
+  // keep the line that qualified (a book's +2.5 when the board says +3)
+  PB.legs.forEach((st) => { const x = parts.find((q) => q.id === st.id); if (x && x.line != null) { st.line = x.line; const l = pbLeg({ id: st.id, line: x.line }); if (l) st.label = l.label; } });
+  PB.mode = "teaser"; PB.teaserPts = "6";
+  try { pbSave(); } catch (e) {}
+  try { if (typeof renderBuilder === "function") renderBuilder(); } catch (e) {}
+}
 function parlayCardHtml(r) {
   return readyCardHtml(`${r.title} parlay`, r.thought, r.legs);
 }
@@ -8497,6 +8615,23 @@ function renderParlays() {
   const stamp = document.getElementById("parlayStamp");
   const hero = document.getElementById("parlayHero");
   if (!hero) return;
+  if (league === "teasers") {
+    if (stamp) stamp.textContent = "NFL 6-point teasers through 3 and 7, this week's games only.";
+    if (bestEl) bestEl.innerHTML = "";
+    try { hero.innerHTML = teaserFinderHtml(); } catch (e) { hero.innerHTML = `<div class="empty">The teaser finder couldn't build this week's list.</div>`; }
+    if (!hero.__tzWired) {
+      hero.__tzWired = true;
+      hero.addEventListener("click", (e) => {
+        const t = e.target.closest("[data-openteaser]");
+        if (t) { e.stopPropagation(); openTeaserInBuilder(t.dataset.openteaser); return; }
+        const p = e.target.closest("[data-tzprice]");
+        if (p) { e.stopPropagation(); window.__tzPrice = p.dataset.tzprice; renderParlays(); return; }
+        const li = e.target.closest("[data-tzgame]");
+        if (li && window.__parlayLg === "teasers") openGame(li.dataset.tzgame);
+      });
+    }
+    return;
+  }
   if (league === "props") {
     if (typeof pbFetchOnce === "function") {
       pbFetchOnce("props", "/data/props.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_PROPS = d; if (view === "parlay") renderParlays(); });
