@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-04T12:01:32.846Z",
+   "lockedAt": "2026-11-04T12:16:49.652Z",
    "provisional": true
   },
   "401866457": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 52.5,
-   "lockedAt": "2026-11-04T12:01:32.846Z",
+   "lockedAt": "2026-11-04T12:16:49.652Z",
    "provisional": true
   }
  },
@@ -884,7 +884,7 @@
    }
   ]
  },
- "updated": "2026-11-04T12:01:32.846Z",
+ "updated": "2026-11-04T12:16:49.652Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -969,15 +969,15 @@
    "key": "ladder:2026-11-04",
    "day": "2026-11-04",
    "n": 2,
-   "book": "FanDuel",
+   "book": "Caesars",
    "tier": "light",
    "stake": 0.5,
    "size": 0,
-   "american": 260,
-   "dec": 3.5986,
-   "chance": 0.2653,
-   "breakEven": 0.2779,
-   "ev": -0.0451,
+   "american": 205,
+   "dec": 3.0485,
+   "chance": 0.3146,
+   "breakEven": 0.328,
+   "ev": -0.0411,
    "firstKick": "2026-11-05T00:00:00.000Z",
    "legs": [
     {
@@ -988,31 +988,31 @@
      "game": "TOL @ SAC",
      "league": "cfb",
      "kick": "2026-11-05T00:00Z",
-     "price": -110,
+     "price": -113,
      "line": 25.5,
-     "win": 0.5127,
-     "bookWin": 0.5,
-     "value": -0.0213,
+     "win": 0.5182,
+     "bookWin": 0.5065,
+     "value": -0.0232,
      "cat": "dog",
      "why": "SAC is getting 25.5. Our number has them covering by 2.8 points.",
      "prop": null,
      "result": null
     },
     {
-     "id": "401866456|ml|home",
-     "label": "EMU to win",
+     "id": "401866455|ml|home",
+     "label": "MASS to win",
      "kind": "ml",
-     "game_id": "401866456",
-     "game": "CMU VS EMU",
+     "game_id": "401866455",
+     "game": "BALL @ MASS",
      "league": "cfb",
-     "kick": "2026-11-05T00:30Z",
-     "price": -113,
+     "kick": "2026-11-05T00:00Z",
+     "price": -162,
      "line": null,
-     "win": 0.5176,
-     "bookWin": 0.5174,
-     "value": -0.0244,
+     "win": 0.607,
+     "bookWin": 0.6038,
+     "value": -0.0183,
      "cat": "ml",
-     "why": "EMU to win: our checked chance is 52%, the books' 52%.",
+     "why": "MASS to win: our checked chance is 61%, the books' 60%.",
      "prop": null,
      "result": null
     }
@@ -1021,7 +1021,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-04T12:01:32.846Z"
+   "lockedAt": "2026-11-04T12:16:49.652Z"
   }
  ],
  "teasers": [],
