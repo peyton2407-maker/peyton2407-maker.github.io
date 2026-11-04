@@ -1,0 +1,44 @@
+name: College opening totals
+# By hand: opening college totals for past seasons from The Odds API's historical odds
+# (paid plan; ~160 credits a season, capped), for the high-total under test.
+on:
+  workflow_dispatch:
+    inputs:
+      seasons:
+        description: "Seasons, e.g. 2021-2025"
+        default: "2021-2025"
+      max_credits:
+        description: "Most credits to spend this run"
+        default: "1000"
+permissions:
+  contents: write
+concurrency:
+  group: odds-history
+  cancel-in-progress: false
+jobs:
+  openers:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Pull the openers
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: python3 scripts/odds_history_openers.py --seasons "${{ github.event.inputs.seasons }}" --max-credits "${{ github.event.inputs.max_credits }}"
+      - name: Commit
+        run: |
+          git config user.name "peyton2407-maker"
+          git config user.email "331867039+peyton2407-maker@users.noreply.github.com"
+          git add data/backtests data/odds-budget.json 2>/dev/null || true
+          if git diff --cached --quiet; then echo "Nothing new."; exit 0; fi
+          git commit -m "College opening totals: ${{ github.event.inputs.seasons }}"
+          for i in 1 2 3; do
+            if { git pull --rebase -X theirs --quiet origin main || { git rebase --abort 2>/dev/null; false; }; } && git push; then exit 0; fi
+            sleep 5
+          done
+          exit 1
