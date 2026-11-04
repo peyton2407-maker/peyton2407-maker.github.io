@@ -10743,10 +10743,11 @@ function countLines(mean) {
 // A player's recent numbers came against the defenses he happened to face. Compare those
 // defenses (what each gave up to his position in this stat, per game) with this week's: a
 // receiver on a hot streak against soft defenses who now faces a stingy one gets his number
-// trimmed, and the reverse. Each defense's number is pulled toward the league's (six games'
-// weight), then half the difference is used, capped at 12% either way. Only a position's main
-// stats, and only with 3+ of his recent games against known defenses.
-const PROP_OPP_STATS = { QB: ["pass_yds", "pass_td", "rush_yds"], RB: ["rush_yds", "rec_yds", "rec"], WR: ["rec_yds", "rec"], TE: ["rec_yds", "rec"] };
+// trimmed, and the reverse. Yards and the volume behind them both count: receptions and
+// receiving yards also use targets allowed, rushing yards carries allowed (PROP_OPP_MIX). Each
+// defense's number is pulled toward the league's (six games' weight), then half the difference
+// is used, capped at 12% either way; only with 3+ of his recent games against known defenses.
+const PROP_OPP_STATS = { QB: ["pass_yds", "pass_td", "rush_yds", "rush_att"], RB: ["rush_yds", "rush_att", "rec_yds", "rec"], WR: ["rec_yds", "rec", "rush_yds"], TE: ["rec_yds", "rec"] };
 function propDefLeague(t) {
   // each position and stat's average across all defenses, to pull small samples toward
   if (propDefLeague.c && propDefLeague.c.t === t) return propDefLeague.c.v;
@@ -10757,8 +10758,29 @@ function propDefLeague(t) {
   propDefLeague.c = { t, v };
   return v;
 }
+// which defensive numbers decide each prop: yards and the volume behind them (receptions and
+// receiving yards also look at targets allowed, rushing yards at carries allowed), weighted
+const PROP_OPP_MIX = {
+  pass_yds: [["pass_yds", 1]], pass_td: [["pass_td", 1]],
+  rush_yds: [["rush_yds", 2], ["rush_att", 1]], rush_att: [["rush_att", 1]],
+  rec_yds: [["rec_yds", 2], ["targets", 1]], rec: [["rec", 1], ["targets", 1]]
+};
+// one defensive number: this week's defense against the ones he faced, each pulled toward the
+// league's average by six games' weight so a defense that has seen few players can't swing it
+function propOppPart(p, stat, t) {
+  const cur = t[`${p.opp}|${p.pos}|${stat}`];
+  const lg = propDefLeague(t)[`${p.pos}|${stat}`];
+  const pack = window.GAMELOGS[String(p.id)];
+  const rows = ((pack && pack.rows) || []).filter((r) => r && r.o).slice(0, 8);
+  const faced = rows.map((r) => t[`${r.o}|${p.pos}|${stat}`]).filter(Boolean);
+  if (!cur || faced.length < 3 || !(lg > 0)) return null;
+  const shr = (x) => (x.avg * x.games + lg * 6) / (x.games + 6);
+  const pastS = faced.reduce((a, x) => a + shr(x), 0) / faced.length, curS = shr(cur);
+  if (!(pastS > 0 && curS > 0)) return null;
+  return { stat, raw: curS / pastS, oppAvg: cur.avg, pastAvg: faced.reduce((a, x) => a + x.avg, 0) / faced.length, n: faced.length, rank: cur.rank, of: cur.of };
+}
 function propOppAdj(p, key) {
-  if (!p || !p.opp || !p.pos || !PROP_DEF_STAT[key] || !window.GAMELOGS) return null;
+  if (!p || !p.opp || !p.pos || !PROP_OPP_MIX[key] || !window.GAMELOGS) return null;
   if (!(PROP_OPP_STATS[p.pos] || []).includes(key)) return null;
   const memo = propOppAdj.m || (propOppAdj.m = new Map());
   const mk = p.id + "|" + key + "|" + p.opp;
@@ -10767,22 +10789,13 @@ function propOppAdj(p, key) {
   const hit = memo.get(mk);
   if (hit && hit.t === t) return hit.v;
   let v = null;
-  const cur = t[`${p.opp}|${p.pos}|${key}`];
-  const pack = window.GAMELOGS[String(p.id)];
-  const rows = ((pack && pack.rows) || []).filter((r) => r && r.o && Number.isFinite(Number(r[key]))).slice(0, 8);
-  const faced = rows.map((r) => t[`${r.o}|${p.pos}|${key}`]).filter(Boolean);
-  const lg = propDefLeague(t)[`${p.pos}|${key}`];
-  if (cur && faced.length >= 3 && lg > 0) {
-    // each defense's number pulled toward the league's by six games' weight, so a defense that
-    // has seen few players at this position can't swing it alone
-    const shr = (x) => (x.avg * x.games + lg * 6) / (x.games + 6);
-    const pastAvg = faced.reduce((a, x) => a + shr(x), 0) / faced.length;
-    const curAvg = shr(cur);
-    if (pastAvg > 0 && curAvg > 0) {
-      const raw = curAvg / pastAvg;
-      const f = Math.max(0.88, Math.min(1.12, 1 + 0.5 * (raw - 1)));
-      v = { f, raw, oppAvg: cur.avg, pastAvg: faced.reduce((a, x) => a + x.avg, 0) / faced.length, n: faced.length, rank: cur.rank, of: cur.of, opp: p.opp, pos: p.pos, key };
-    }
+  const parts = PROP_OPP_MIX[key].map(([stat, w]) => { const x = propOppPart(p, stat, t); return x ? Object.assign(x, { w }) : null; }).filter(Boolean);
+  if (parts.length && parts[0].stat === PROP_OPP_MIX[key][0][0]) {
+    const W = parts.reduce((a, x) => a + x.w, 0);
+    const raw = Math.exp(parts.reduce((a, x) => a + x.w * Math.log(x.raw), 0) / W);
+    const f = Math.max(0.88, Math.min(1.12, 1 + 0.5 * (raw - 1)));
+    const main = parts[0];
+    v = { f, raw, parts, oppAvg: main.oppAvg, pastAvg: main.pastAvg, n: main.n, rank: main.rank, of: main.of, opp: p.opp, pos: p.pos, key };
   }
   memo.set(mk, { t, v });
   return v;
@@ -10790,16 +10803,17 @@ function propOppAdj(p, key) {
 function propOppNote(p, key) {
   const a = propOppAdj(p, key);
   if (!a || Math.abs(a.f - 1) < 0.02) return "";
-  const stat = PROP_DEF_STAT[key];
-  const tougher = a.oppAvg < a.pastAvg;
-  const most = a.rank <= a.of / 2;
-  return `His last ${a.n} games came against defenses giving up ${Math.round(a.pastAvg * 10) / 10} ${stat} a game to ${a.pos}s; ${a.opp} gives up ${Math.round(a.oppAvg * 10) / 10} (${crOrd(most ? a.rank : a.of - a.rank + 1)} ${most ? "most" : "fewest"} in the league). ${tougher ? "A tougher defense than he's been seeing, so we trimmed" : "An easier defense than he's been seeing, so we raised"} his projection ${Math.round(Math.abs(a.f - 1) * 100)}%.`;
+  const r1 = (x) => Math.round(x * 10) / 10;
+  const bits = a.parts.map((x) => `${r1(x.pastAvg)} ${PROP_DEF_STAT[x.stat]}`);
+  const now = a.parts.map((x) => { const most = x.rank <= x.of / 2; return `${r1(x.oppAvg)} ${PROP_DEF_STAT[x.stat]} (${crOrd(most ? x.rank : x.of - x.rank + 1)} ${most ? "most" : "fewest"})`; });
+  const tougher = a.f < 1;
+  return `His last ${a.n} games came against defenses giving up ${bits.join(" and ")} a game to ${a.pos}s; ${a.opp} gives up ${now.join(" and ")}. ${tougher ? "A tougher matchup than he's been seeing, so we trimmed" : "An easier matchup than he's been seeing, so we raised"} his projection ${Math.round(Math.abs(a.f - 1) * 100)}%.`;
 }
 function marketsFor(p) {
   const rows = [];
   const adj = (key, mean) => { const a = propOppAdj(p, key); return a ? Number(mean) * a.f : Number(mean); };
   const yards = (key, label, mean) => { mean = adj(key, mean); if (Number(mean) >= 8) rows.push({ key, label, mean: Number(mean), lines: yardLines(mean), under: false }); };
-  const counts = (key, label, mean, lines) => { if (key === "rec" || key === "pass_td") mean = adj(key, mean); if (Number(mean) > 0.05) rows.push({ key, label, mean: Number(mean), lines, under: key === "pass_int" }); };
+  const counts = (key, label, mean, lines) => { if (key === "rec" || key === "pass_td" || key === "rush_att") mean = adj(key, mean); if (Number(mean) > 0.05) rows.push({ key, label, mean: Number(mean), lines, under: key === "pass_int" }); };
   if (p.pos === "QB") {
     yards("pass_yds", "Pass yards", p.pass_yds);
     counts("pass_td", "Pass touchdowns", p.pass_td, [0.5, 1.5, 2.5]);
@@ -11825,7 +11839,7 @@ function propFormHtml(p) {
 // From the game logs of every player on the board (data/gamelogs.json): per opponent and game,
 // the yards, catches and TDs the tracked players at a position put up, averaged per game and
 // ranked against the other 31 defenses (1 = gives up the most).
-const PROP_DEF_STAT = { pass_yds: "pass yds", pass_td: "pass TDs", rush_yds: "rush yds", rec_yds: "rec yds", rec: "catches" };
+const PROP_DEF_STAT = { pass_yds: "pass yds", pass_td: "pass TDs", rush_yds: "rush yds", rush_att: "carries", rec_yds: "rec yds", rec: "catches", targets: "targets" };
 function propDefTable() {
   const logs = window.GAMELOGS;
   if (!logs) return null;

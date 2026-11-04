@@ -7,7 +7,7 @@ log for this season and last (the page's own parseGamelog), keeping the 17 most 
 games. A player fetched in the last 20 hours is skipped, so the job is cheap to run often.
 Writes data/gamelogs.json: {"updated", "players": {id: {"at", "pos", "rows": [...]}}}; each row has
 date, opp and the stats (pass_yds, pass_td, pass_att, cmp, rush_yds, rush_att, rec, rec_yds,
-td). Players no longer on the board drop off after two weeks.
+targets, td). Players no longer on the board drop off after two weeks.
 Usage: python3 scripts/gamelogs.py
 """
 import asyncio
@@ -23,7 +23,8 @@ from playwright.async_api import async_playwright
 ROOT = Path(__file__).resolve().parents[1]
 SITE = "https://peyton2407-maker.github.io"
 OUT = ROOT / "data" / "gamelogs.json"
-KEEP = ["pass_yds", "pass_td", "pass_att", "cmp", "rush_yds", "rush_att", "rec", "rec_yds", "td"]
+KEEP = ["pass_yds", "pass_td", "pass_att", "cmp", "rush_yds", "rush_att", "rec", "rec_yds", "targets", "td"]
+VERSION = 2   # 2: rows carry targets; players saved before it are fetched again once
 
 JS = """
 async (skip) => {
@@ -105,7 +106,7 @@ def main():
     except Exception:
         old = {}
     players = old.get("players") or {}
-    fresh = [pid for pid, v in players.items() if v.get("at") and now - datetime.fromisoformat(v["at"].replace("Z", "+00:00")) < timedelta(hours=20)]
+    fresh = [pid for pid, v in players.items() if v.get("v") == VERSION and v.get("at") and now - datetime.fromisoformat(v["at"].replace("Z", "+00:00")) < timedelta(hours=20)]
     res = asyncio.run(run(fresh))
     stamp = now.strftime("%Y-%m-%dT%H:%M:%SZ")
     got = 0
@@ -119,7 +120,7 @@ def main():
                 if r.get(k) is not None:
                     row[k] = r[k]
             slim.append(row)
-        players[pid] = {"at": stamp, "rows": slim}
+        players[pid] = {"at": stamp, "v": VERSION, "rows": slim}
         got += 1
     for pid, ps in (res.get("pos") or {}).items():   # position, for the matchup ranks
         if pid in players and ps:
