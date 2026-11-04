@@ -2023,6 +2023,23 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .alt-intro p { margin: 0 0 10px; }
 .alt-stamp { margin: 4px 0 0; }
 .alt-note { color: var(--sun); }
+.work-tbl th[scope="row"] a { color: var(--ink); text-decoration: none; border-bottom: 1px dotted var(--line-2); }
+.work-v { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: .82rem; font-weight: 700; white-space: nowrap; background: var(--card-2); color: var(--ink-soft); }
+.work-v.up { background: rgba(79,208,138,.16); color: var(--win, #4fd08a); }
+.work-v.down { background: rgba(255,106,92,.16); color: var(--rose); }
+.work-v.even { background: var(--sun-soft); color: var(--sun); }
+.work-tbl tr.work-retired, .work-tbl tr.work-info { opacity: .72; }
+@media (max-width: 640px) {
+  .work-tbl thead { display: none; }
+  .work-tbl, .work-tbl tbody { display: block; }
+  .work-tbl tr { display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 14px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .work-tbl th[scope="row"] { flex: 1 1 55%; padding: 0; }
+  .work-tbl td.work-vc { order: 1; padding: 0; margin-left: auto; }
+  .work-tbl td:not(.work-vc) { order: 2; padding: 0; border: 0; font-size: .9rem; color: var(--ink-soft); }
+  .work-tbl td:not(.work-vc)::before { content: attr(data-l) " "; color: var(--muted); font-size: .8rem; }
+  .work-tbl td.work-empty { display: none; }
+}
+
 .cfb-rule { grid-column: 1 / -1; margin: 0 0 6px; color: var(--ink-soft); line-height: 1.55; max-width: 80ch; }
 .cfb-play { margin: 10px 0 4px; padding: 10px 12px; border-radius: 10px; background: var(--turf-soft); border: 1px solid var(--line-2); display: grid; gap: 2px; }
 .cfb-play b { font-size: 1.1rem; color: var(--sun); }
@@ -18323,15 +18340,120 @@ function proofRecapHtml(sel) {
     <button type="button" class="ch-share" data-recapshare="${pbEsc(text)}">Share the recap</button>
     <p class="subn">Written from the graded picks every Tuesday, covering Tuesday through Monday Night Football.</p></article>`;
 }
+// ---- what's working: every tracked record in one table ----------------------------------
+// One row per thing the site tracks, with its record, units, return per bet and closing-line
+// value where it's measured, and a verdict by fixed rules: under 30 graded is too early; then
+// +2% a bet or better is working, -5% or worse is losing, in between is about even. Teaser legs
+// are judged by their cover rate against the 73.9% a 2-team ticket at -120 needs. Retired
+// records and the leans we show for information keep their numbers, labeled.
+const WORK_MIN = 30, WORK_UP = 0.02, WORK_DOWN = -0.05;
+function workRows() {
+  const rows = [];
+  const add = (r) => rows.push(Object.assign({ w: 0, l: 0, p: 0, units: null, staked: null, clv: null, tag: null }, r));
+  const am = (u, n) => (n ? u / n : null);
+  // plays of the day
+  try {
+    const N = potdTally(potdPublished("nfl"));
+    const nflClv = proofPotdRows().filter((r) => r.league === "nfl" && r.clv != null && proofKickOf(r) <= Date.now());
+    add({ key: "nflpotd", name: "NFL play of the day", view: "nflpotd", w: N.hit, l: N.miss, p: N.push, units: N.units, staked: N.n, clv: nflClv.length ? { b: nflClv.filter((r) => r.clv > 0.01).length, n: nflClv.length } : null });
+    const C = potdPublished("cfb");
+    const since = (r) => String(r.kick || r.day || "") >= CFB_RULE_START;
+    const cn = potdTally(C.filter(since)), co = potdTally(C.filter((r) => !since(r)));
+    add({ key: "cfbpotd", name: "College play of the day (rule from Nov 4)", view: "potd", w: cn.hit, l: cn.miss, p: cn.push, units: cn.units, staked: cn.n });
+    if (co.n) add({ key: "cfbpotd-old", name: "College play of the day (old rule)", view: "potd", w: co.hit, l: co.miss, p: co.push, units: co.units, staked: co.n, tag: "retired" });
+  } catch (e) {}
+  // the Ladder
+  try {
+    const R = ladderRows();
+    const val = R.filter((r) => (r.tier || "value") === "value" && r.result), lite = R.filter((r) => r.tier === "light" && r.result);
+    const T = (list) => ({ w: list.filter((r) => r.result === "HIT").length, l: list.filter((r) => r.result === "MISS").length, p: list.filter((r) => r.result === "PUSH").length, units: list.reduce((a, r) => a + Number(r.units || 0), 0), staked: list.reduce((a, r) => a + Number(r.stake || 1), 0) });
+    const cv = ladderClvTally(R.filter((r) => (r.tier || "value") === "value"));
+    add(Object.assign({ key: "ladder", name: "The Ladder", view: "ladder", clv: cv.n ? { b: cv.beat, n: cv.n } : null }, T(val)));
+    if (lite.length) add(Object.assign({ key: "ladder-light", name: "Ladder light days", view: "ladder", tag: "retired" }, T(lite)));
+  } catch (e) {}
+  // teasers
+  try {
+    const L = ((window.GG_LOCKS || {}).teaserLegs || []).filter((x) => x.result);
+    const ids = new Set(L.map((x) => String(x.gid || x.id).split("|")[0]));
+    const legs = tzSeasonBackfill().filter((b) => !ids.has(String(b.id))).concat(L);
+    add({ key: "tzlegs", name: "Teaser legs through 3 and 7", view: "parlay", sub: "teasers", w: legs.filter((x) => x.result === "HIT").length, l: legs.filter((x) => x.result === "MISS").length, p: legs.filter((x) => x.result === "PUSH").length, need: Math.sqrt(1 / pbDec(-120)) });
+    const TT = ((window.GG_LOCKS || {}).teasers || []).filter((r) => r.result);
+    add({ key: "tztix", name: "Weekly teaser ticket", view: "parlay", sub: "teasers", w: TT.filter((r) => r.result === "HIT").length, l: TT.filter((r) => r.result === "MISS").length, p: TT.filter((r) => r.result === "PUSH").length, units: TT.reduce((a, r) => a + Number(r.units || 0), 0), staked: TT.length });
+  } catch (e) {}
+  // alternate lines
+  try {
+    const A = ((window.GG_LOCKS || {}).altLines || []).filter((x) => x.result);
+    add({ key: "alt", name: "Alt lines", view: "parlay", sub: "alts", w: A.filter((x) => x.result === "HIT").length, l: A.filter((x) => x.result === "MISS").length, p: A.filter((x) => x.result === "PUSH").length, units: A.reduce((a, x) => a + Number(x.units || 0), 0), staked: A.length });
+  } catch (e) {}
+  // player props, unders and overs apart
+  try {
+    const P = ((window.PROP_RECORD || {}).picks || []).filter((x) => x.result && ["win", "loss", "push"].includes(x.result.out));
+    ["under", "over"].forEach((side) => {
+      const s = P.filter((x) => x.take === side);
+      if (!s.length && side === "over") return;
+      add({ key: "props-" + side, name: `Player prop ${side}s`, view: "props", w: s.filter((x) => x.result.out === "win").length, l: s.filter((x) => x.result.out === "loss").length, p: s.filter((x) => x.result.out === "push").length, units: s.reduce((a, x) => a + Number(x.result.units || 0), 0), staked: s.length });
+    });
+  } catch (e) {}
+  // the board's own picks, spreads and totals apart (college ones are shown as information)
+  try {
+    const clvOf = (lg, field, flag) => { const b = proofBoardRows().filter((r) => r.league === lg && r[flag] && r[field] != null && proofKickOf(r) <= Date.now()); return b.length ? { b: b.filter((r) => Number(r[field]) > 0.01).length, n: b.length } : null; };
+    [["nfl", "spread", "NFL board: spread picks", "clv_side", "side_play"], ["nfl", "total", "NFL board: total picks", "clv_total", "total_play"], ["cfb", "spread", "College board: spread leans", "clv_side", "side_play"], ["cfb", "total", "College board: total leans", "clv_total", "total_play"]].forEach(([lg, kind, name, f, flag]) => {
+      const t = scoreTally(lg, kind);
+      add({ key: "board-" + lg + "-" + kind, name, view: lg === "nfl" ? "nfl" : "cfbpicks", w: t.w, l: t.l, p: t.psh, units: t.w * (100 / 110) - t.l, staked: t.w + t.l + t.psh, clv: clvOf(lg, f, flag), tag: lg === "cfb" ? "info" : null });
+    });
+  } catch (e) {}
+  rows.forEach((r) => {
+    const n = r.w + r.l + r.p;
+    r.n = n;
+    r.roi = r.units != null && r.staked ? r.units / r.staked : null;
+    if (r.tag === "retired") r.verdict = { k: "retired", t: "Retired" };
+    else if (r.tag === "info") r.verdict = { k: "info", t: "Info only" };
+    else if (n < WORK_MIN) r.verdict = { k: "early", t: n ? `Too early (${n} of ${WORK_MIN})` : "Nothing graded yet" };
+    else if (r.need != null) { const hit = r.w / Math.max(1, r.w + r.l); r.verdict = hit >= r.need ? { k: "up", t: "Working" } : hit >= r.need - 0.03 ? { k: "even", t: "About even" } : { k: "down", t: "Losing" }; }
+    else r.verdict = r.roi >= WORK_UP ? { k: "up", t: "Working" } : r.roi <= WORK_DOWN ? { k: "down", t: "Losing" } : { k: "even", t: "About even" };
+  });
+  const order = { down: 0, up: 1, even: 2, early: 3, info: 4, retired: 5 };
+  return rows.sort((a, b) => order[a.verdict.k] - order[b.verdict.k] || b.n - a.n);
+}
+function proofWorkHtml() {
+  const rows = workRows();
+  if (!rows.length) return "";
+  const rec = (r) => r.n ? `${r.w}-${r.l}${r.p ? "-" + r.p : ""}` : "—";
+  const u = (x) => x == null ? "—" : `${x >= 0 ? "+" : "−"}${Math.abs(x).toFixed(2)}u`;
+  const pct = (x) => x == null ? "—" : `${x >= 0 ? "+" : "−"}${Math.abs(x * 100).toFixed(1)}%`;
+  const losing = rows.filter((r) => r.verdict.k === "down"), working = rows.filter((r) => r.verdict.k === "up");
+  const head = losing.length
+    ? `<p class="proof-head"><b>${losing.map((r) => pbEsc(r.name)).join(", ")}</b> ${losing.length === 1 ? "is" : "are"} losing over a real sample and worth a look.${working.length ? ` Working: ${working.map((r) => pbEsc(r.name)).join(", ")}.` : ""}</p>`
+    : working.length ? `<p class="proof-head">Working over a real sample: <b>${working.map((r) => pbEsc(r.name)).join(", ")}</b>. Nothing is losing over ${WORK_MIN}+ graded bets.</p>`
+    : `<p class="proof-head">Nothing has ${WORK_MIN}+ graded bets yet, so it's too early to call any of these.</p>`;
+  const body = rows.map((r) => `<tr class="work-${r.verdict.k}">
+      <th scope="row"><a href="#${r.view}" data-workgo="${r.view}${r.sub ? ":" + r.sub : ""}">${pbEsc(r.name)}</a></th>
+      <td data-l="W-L"${r.n ? "" : ' class="work-empty"'}>${rec(r)}</td>
+      <td data-l="${r.need != null ? "Covered" : "Units"}"${r.n ? "" : ' class="work-empty"'}>${r.need != null ? (r.w + r.l ? Math.round(r.w / (r.w + r.l) * 100) + "% <span class=\"subn\">needs " + (r.need * 100).toFixed(1) + "%</span>" : "—") : r.n ? u(r.units) : "—"}</td>
+      <td data-l="Per bet"${r.n && r.need == null ? "" : ' class="work-empty"'}>${r.need != null ? "—" : pct(r.roi)}</td>
+      <td data-l="Beat the close"${r.clv ? "" : ' class="work-empty"'}>${r.clv ? `${Math.round(r.clv.b / r.clv.n * 100)}% <span class="subn">of ${r.clv.n}</span>` : "—"}</td>
+      <td class="work-vc"><span class="work-v ${r.verdict.k}">${pbEsc(r.verdict.t)}</span></td>
+    </tr>`).join("");
+  return `<article class="proof-card work-card"><h3>What's working</h3>
+    <p class="subn">Every record the site tracks, in one place. Units are 1 unit a bet at the price saved (the Ladder's retired light days at ½u); "beat the close" is how often the pick got a better number than the closing line, where that's measured.</p>
+    ${head}
+    <div class="proof-tbl-wrap"><table class="proof-tbl work-tbl"><thead><tr><th>Record</th><th>W-L</th><th>Units</th><th>Per bet</th><th>Beat the close</th><th>Verdict</th></tr></thead><tbody>${body}</tbody></table></div>
+    <p class="subn">The verdict: fewer than ${WORK_MIN} graded is too early to call; after that, ${pct(WORK_UP)} a bet or better is working and ${pct(WORK_DOWN)} or worse is losing. Teaser legs are judged by how often they cover against the 73.9% each needs. Retired records are rules we've stopped using; the college leans are shown on the site for information, not as plays. Your own saved tickets are on Create your own.</p>
+  </article>`;
+}
 function renderProof() {
   const box = document.getElementById("proofBox");
   if (!box) return;
   if (!window.PROP_RECORD && typeof loadPropRecord === "function") loadPropRecord();
   const f = box.__pcf || "all", wk = box.__wk || null;
-  try { box.innerHTML = proofRecapHtml(wk) + proofClvHtml() + proofCalHtml(f); } catch (e) { box.innerHTML = ""; return; }
+  let work = "";
+  try { work = proofWorkHtml(); } catch (e) { console.error(e); work = ""; }
+  try { box.innerHTML = work + proofRecapHtml(wk) + proofClvHtml() + proofCalHtml(f); } catch (e) { box.innerHTML = work; return; }
   if (!box.__wired) {
     box.__wired = true;
     box.addEventListener("click", (e) => {
+      const wg = e.target.closest("[data-workgo]");
+      if (wg) { e.preventDefault(); const [v, sub] = wg.dataset.workgo.split(":"); if (sub) window.__parlayLg = sub; setView(v, { push: true }); window.scrollTo(0, 0); return; }
       const c = e.target.closest("[data-pcf]");
       if (c) { box.__pcf = c.dataset.pcf; renderProof(); return; }
       const sh = e.target.closest("[data-recapshare]");
