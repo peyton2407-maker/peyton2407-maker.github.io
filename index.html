@@ -2023,6 +2023,8 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .alt-intro p { margin: 0 0 10px; }
 .alt-stamp { margin: 4px 0 0; }
 .alt-note { color: var(--sun); }
+.ladder-pass { margin: 14px 0; padding: 12px 14px; border: 1px dashed var(--line-2); border-radius: var(--radius); color: var(--ink-soft); line-height: 1.55; }
+.ladder-pass b { color: var(--ink); }
 .cr-pick-legs li { line-height: 1.5; }
 .cr-pick-legs li span { color: var(--ink-soft); }
 .cr-pickq .cr-link { display: block; margin-top: 6px; }
@@ -14409,7 +14411,12 @@ function crPickLadder(q) {
   let row = null, live = false;
   if (q.when === "yesterday") row = rows.filter((r) => r.day < today).pop() || null;
   else if (q.when === "last") row = rows.filter((r) => r.result).pop() || null;
-  else { const c = ladderCurrent(); if (c) { row = c.row; live = c.live; } }
+  let passNote = "";
+  if (q.when !== "yesterday" && q.when !== "last") {
+    const c = ladderCurrent(); if (c) { row = c.row; live = c.live; }
+    try { passNote = ladderPassDays(row ? row.day : null).map(ladderPassHtml).join(""); } catch (e) { passNote = ""; }
+  }
+  if (!row && passNote) return passNote;
   if (!row) return `<div class="empty">${q.when === "now" || q.when === "next" ? "There's no Ladder ticket for the next game day yet. It's built from 12 hours before the day's first game." : "There's no finished Ladder ticket to look back on yet."}</div>`;
   const legs = row.legs || [];
   const pct = (x) => Math.round(Number(x) * 100) + "%";
@@ -14433,7 +14440,7 @@ function crPickLadder(q) {
     return `<li data-id="${pbEsc(String(l.game_id))}">${lines.join("<br>")}${clv}${ask}</li>`;
   }).join("");
   const res = row.result ? `<p class="cr-take"><b>${row.result === "HIT" ? "It hit" : row.result === "MISS" ? "It missed" : "It pushed"}:</b> ${row.units >= 0 ? "+" : "−"}${Math.abs(row.units).toFixed(2)}u.${row.result === "MISS" ? ` A ${pbPct(row.chance)} ticket misses ${pbPct(1 - row.chance)} of the time, so one miss says little; the Ladder is judged on the run of tickets and on whether they beat the closing prices.` : ""}</p>` : "";
-  return `<article class="parlay-card ready cr-ticket cr-explain cr-pickq">
+  return passNote + `<article class="parlay-card ready cr-ticket cr-explain cr-pickq">
     <div class="td-mkt">${row.result ? "The Ladder ticket" : live ? "The Ladder's pick right now" : "Today's Ladder ticket"} · ${pbEsc(dayName)}</div>
     <div class="cr-leg-top"><b class="cr-ex-label">${row.n}-leg · ${pbAm(row.american)}</b><span class="cr-px">${row.book ? pbEsc(row.book) : ""}</span></div>
     <div class="subn">Checked chance ${pbPct(row.chance)} · needs ${pbPct(row.breakEven)} · ${(row.ev >= 0 ? "+" : "−") + Math.abs(row.ev * 100).toFixed(1)}% value · ${row.result ? "graded" : row.locked ? "locked" : "not locked yet, it can still change"}</div>
@@ -15137,12 +15144,13 @@ function ladderLegPool(day, minLeg, light) {
     pool.push(Object.assign({}, l, { _id: id, _v: v, cat }));
   });
   const safe = (fn) => { try { return fn() || []; } catch (e) { return []; } };
-  // College spreads stay off: picks off a power rating against the line went 458-503 (47.7%)
-  // on 2020-2025 college games, worse as the gap grew. College totals and moneylines stay on.
+  // College spreads stay off, on every day: picks off a power rating against the line went
+  // 458-503 (47.7%) on 2020-2025 college games, worse as the gap grew. College totals and
+  // moneylines stay on.
   ["nfl", "cfb"].forEach((lg) => {
-    add(safe(() => collectParlayLegs().filter((l) => l.league === lg && (light || !(lg === "cfb" && l.kind === "spread")))), "play");
+    add(safe(() => collectParlayLegs().filter((l) => l.league === lg && !(lg === "cfb" && l.kind === "spread"))), "play");
     add(safe(() => moneylineLegs(lg, !!light)), "ml");
-    if (lg === "nfl" || light) {
+    if (lg === "nfl") {
       add(safe(() => leanSideLegs(lg, true, 0.3)), "dog");
       add(safe(() => leanSideLegs(lg, false, 0.3)), "fav");
     }
@@ -15168,34 +15176,59 @@ function ladderLegPool(day, minLeg, light) {
 // ticket, the closest to a fair price with no leg more than 5% under its price and college
 // spreads allowed (half a unit),
 // so quiet days still post one without lowering the bar for the main record.
-function ladderBuild(skip) {
-  const days = [...new Set((DATA.games || []).filter((g) => g && !g.completed && Date.parse(g.date) > Date.now())
-    .sort((a, b) => String(a.date).localeCompare(String(b.date))).map((g) => potdDayKey(g.date)))].filter((d) => !(skip && skip.has(d)));
-  const search = (legs, legFloor, evFloor) => {
-    let best = null;
-    const tryBag = (bag) => {
-      if (new Set(bag.map((l) => String(l.game_id))).size !== bag.length) return;
-      const x = readyPrice(bag);
-      if (!x || (x.r.sameGame && x.r.sameGame.length)) return;
-      if (x.mapped.some((m) => !(m.pb.value >= legFloor - 0.005))) return;   // still good at the ticket's book
-      if (!(x.r.pAll >= LADDER_MIN_CHANCE) || !(x.r.ev > evFloor)) return;
-      if (!best || x.r.ev > best.x.r.ev) best = { bag, x };
-    };
-    for (let i = 0; i < legs.length; i++) for (let j = i + 1; j < legs.length; j++) {
-      tryBag([legs[i], legs[j]]);
-      for (let k = j + 1; k < legs.length; k++) tryBag([legs[i], legs[j], legs[k]]);
-    }
-    return best;
+function ladderSearch(legs, legFloor, evFloor) {
+  let best = null;
+  const tryBag = (bag) => {
+    if (new Set(bag.map((l) => String(l.game_id))).size !== bag.length) return;
+    const x = readyPrice(bag);
+    if (!x || (x.r.sameGame && x.r.sameGame.length)) return;
+    if (x.mapped.some((m) => !(m.pb.value >= legFloor - 0.005))) return;   // still good at the ticket's book
+    if (!(x.r.pAll >= LADDER_MIN_CHANCE) || !(x.r.ev > evFloor)) return;
+    if (!best || x.r.ev > best.x.r.ev) best = { bag, x };
   };
-  for (const day of days.slice(0, 8)) {
+  for (let i = 0; i < legs.length; i++) for (let j = i + 1; j < legs.length; j++) {
+    tryBag([legs[i], legs[j]]);
+    for (let k = j + 1; k < legs.length; k++) tryBag([legs[i], legs[j], legs[k]]);
+  }
+  return best;
+}
+function ladderGameDays(skip) {
+  return [...new Set((DATA.games || []).filter((g) => g && !g.completed && Date.parse(g.date) > Date.now())
+    .sort((a, b) => String(a.date).localeCompare(String(b.date))).map((g) => potdDayKey(g.date)))].filter((d) => !(skip && skip.has(d)));
+}
+// The ticket for the next game day that has one (skipping days already locked): every leg beats
+// its own price at the book that pays the most, and the ticket clears the value bar. A day
+// without one is a pass, like the college play of the day: no ticket, nothing tracked. (Until
+// Nov 4 a pass day got a "light" ticket at half a unit, the closest to fair; that posted bets
+// the model expected to lose, so it's gone. Those tickets stay in the record, marked.)
+function ladderBuild(skip) {
+  for (const day of ladderGameDays(skip).slice(0, 8)) {
     const strict = ladderLegPool(day);
-    const best = strict.length >= 2 ? search(strict, LADDER_MIN_LEG, 0.01) : null;
+    const best = strict.length >= 2 ? ladderSearch(strict, LADDER_MIN_LEG, 0.01) : null;
     if (best) return { day, legs: best.bag, x: best.x, light: false };
-    const loose = ladderLegPool(day, -0.05, true);
-    const lite = loose.length >= 2 ? search(loose, -0.05, -0.08) : null;
-    if (lite) return { day, legs: lite.bag, x: lite.x, light: true };
   }
   return null;
+}
+// game days before the next ticket that are passes, each with the closest ticket it had (for
+// information, never tracked)
+function ladderPassDays(nextDay) {
+  const lockedDays = new Set(ladderRows().filter((r) => r.locked || r.result).map((r) => r.day));
+  const memo = ladderPassDays.memo;
+  const sig = [nextDay, (DATA.games || []).length, (window.PB_BOOKS || {}).updated, Math.floor(Date.now() / 300000)].join("|");
+  if (memo && memo.sig === sig) return memo.v;
+  const out = [];
+  for (const day of ladderGameDays(lockedDays).slice(0, 1)) {
+    if (nextDay && day >= nextDay) break;
+    let near = null;
+    try { const loose = ladderLegPool(day, -0.05, true); near = loose.length >= 2 ? ladderSearch(loose, -0.05, -0.08) : null; } catch (e) { near = null; }
+    out.push({ day, near: near ? ladderRow({ day, legs: near.bag, x: near.x, light: true }) : null });
+  }
+  ladderPassDays.memo = { sig, v: out };
+  return out;
+}
+function ladderPassHtml(p) {
+  const n = p.near;
+  return `<div class="ladder-pass"><b>No Ladder for ${pbEsc(potdDayName(n && n.firstKick ? n.firstKick : p.day + "T17:00:00Z"))}.</b> No 2- or 3-leg ticket from that day's games had every leg beating its price, so it's a pass: nothing posted, nothing tracked, and a Challenge run waits for the next ticket.${n ? ` The closest was ${n.legs.map((l) => pbEsc(l.label) + " " + pbAm(l.price)).join(" + ")} at ${pbAm(n.american)}${n.book ? " (" + pbEsc(n.book) + ")" : ""}, ${(n.ev >= 0 ? "+" : "−") + Math.abs(n.ev * 100).toFixed(1)}% value by our checked chance, which is why it isn't a bet.` : ""}</div>`;
 }
 function ladderRow(pick) {
   const x = pick.x;
@@ -15289,6 +15322,12 @@ function ladderLockRun(out, changes, now, iso, due, early) {
   window.__ladderFresh = true;
   let pick = null;
   try { pick = ladderBuild(lockedDays); } finally { window.__ladderFresh = false; }
+  // a saved ticket that isn't the pick any more (its day turned into a pass, or the pick moved
+  // to another day) comes off before it can lock
+  const pickKey = pick ? "ladder:" + pick.day : null;
+  [...mine.entries()].forEach(([k, r]) => {
+    if (r.provisional && !r.locked && !r.result && k !== pickKey && Date.parse(r.firstKick) > now) { mine.delete(k); changes.push("dropped provisional ladder " + r.day + " (no ticket clears the bar now)"); }
+  });
   if (pick) {
     const row = ladderRow(pick);
     const was = mine.get(row.key);
@@ -15474,10 +15513,10 @@ function ladderRecordHtml(rows) {
   };
   const bySize = [2, 3].map((n) => { const t = ladderTally(rows.filter((r) => r.n === n)); return t.n || t.push ? `<div><span class="lbl">${n}-leg tickets</span><b>${t.hit}-${t.miss} · ${u(t.units)}</b></div>` : ""; }).join("");
   const pending = rows.filter((r) => r.locked && !r.result).length;
-  const byTier = ["value", "light"].map((t) => { const x = ladderTally(rows.filter((r) => (r.tier || "value") === t)); return x.n || x.push ? `<div><span class="lbl">${t === "value" ? "Value tickets (1u)" : "Light days (½u)"}</span><b>${x.hit}-${x.miss} · ${u(x.units)}</b></div>` : ""; }).join("");
+  const byTier = ["value", "light"].map((t) => { const x = ladderTally(rows.filter((r) => (r.tier || "value") === t)); return x.n || x.push ? `<div><span class="lbl">${t === "value" ? "Value tickets (1u)" : "Light days (½u, retired Nov 4)"}</span><b>${x.hit}-${x.miss} · ${u(x.units)}</b></div>` : ""; }).join("");
   return `<article class="prop-card potd-rec ladder-rec">
     <div class="who"><div><h4>The Ladder</h4>
-      <div class="prop-meta">One parlay every game day, 2 or 3 legs from different games: NFL sides, totals, moneylines and prop unders, college totals and moneylines. A value ticket (1u) has every leg beating its own price at the book that pays the most, and hits 15%+ of the time. On a day without one, a light ticket (½u), the closest to fair, tracked apart. It locks 90 minutes before the first leg and is graded leg by leg. Each leg is also checked against its closing price, the last market price before kickoff: beating the close again and again is the surest early sign the picks are good, long before the win-loss record settles.</div></div>
+      <div class="prop-meta">One parlay on a game day that has a good one, 2 or 3 legs from different games: NFL sides, totals, moneylines and prop unders, college totals and moneylines (never college spreads). Every leg beats its own price at the book that pays the most, and the ticket hits 15%+ of the time. A day without one is a pass: nothing posted, nothing tracked. (Before Nov 4 a pass day got a "light" ticket at ½u, the closest to fair; those are kept in the record, apart.) It locks 90 minutes before the first leg and is graded leg by leg. Each leg is also checked against its closing price, the last market price before kickoff: beating the close again and again is the surest early sign the picks are good, long before the win-loss record settles.</div></div>
       <div class="pick-score">${T.hit}-${T.miss}</div></div>
     <div class="prop-stats">
       <div><span class="lbl">Tickets</span><b>${T.n ? Math.round((T.hit / T.n) * 100) + "% hit" : "No finished tickets yet"}</b></div>
@@ -15582,7 +15621,7 @@ function ladderChallengeHtml(rows) {
           <div><b>${C.tickets}</b><span>Tickets</span></div>
         </div>
         <div class="ch-actions"><button type="button" class="ch-share" data-chshare="${pbEsc(shareTxt)}">Share the run</button><a href="#ladder" class="ch-rules-link" data-chrules="1">How it works</a></div>
-        <div class="ch-rules" hidden><p>Every game day the Ladder posts one parlay and locks it 90 minutes before the first leg. The challenge bets the whole bankroll on it: a hit multiplies the bankroll by the ticket's locked price, a push carries it over, a miss ends the run, and the next ticket starts a new run at the starting stake. Light days count too, since that's the ticket of the day. Every run comes from tickets the server locked and graded, so nothing here can be changed after the fact; change the starting stake and every run is redrawn at that amount.</p><p>This is a way to follow the picks, not a staking plan: rolling everything into parlays loses the whole run on one miss. For real money, the bet sizes on each ticket are the ones to use.</p></div>
+        <div class="ch-rules" hidden><p>Every game day the Ladder posts one parlay and locks it 90 minutes before the first leg. The challenge bets the whole bankroll on it: a hit multiplies the bankroll by the ticket's locked price, a push carries it over, a miss ends the run, and the next ticket starts a new run at the starting stake. A day with no ticket is a pass: the run just waits for the next ticket, so passing never ends it. (The light-day tickets from before Nov 4 count, since they were the ticket of the day.) Every run comes from tickets the server locked and graded, so nothing here can be changed after the fact; change the starting stake and every run is redrawn at that amount.</p><p>This is a way to follow the picks, not a staking plan: rolling everything into parlays loses the whole run on one miss. For real money, the bet sizes on each ticket are the ones to use.</p></div>
       </div>
       <ol class="ch-ladder" aria-label="This run, rung by rung">${rungs.join("")}</ol>
     </div>
@@ -15610,9 +15649,12 @@ function renderLadder() {
   const rows = ladderRows();
   const cur = ladderCurrent();
   const done = rows.filter((r) => r.result || (r.locked && cur && cur.row.key !== r.key)).sort((a, b) => String(b.day).localeCompare(String(a.day)));
+  let passes = [];
+  try { passes = ladderPassDays(cur ? cur.row.day : null); } catch (e) { passes = []; }
   box.innerHTML = ladderChallengeHtml(rows) + bankrollHtml() + ladderRecordHtml(rows)
+    + passes.map(ladderPassHtml).join("")
     + (cur ? `<h3 class="ladder-h">${cur.row.locked ? "Today's ladder" : "Next ladder"}</h3>` + ladderTicketHtml(cur.row, { live: cur.live, builder: true })
-      : `<div class="empty">No ladder right now: no game day in the next week has two games with legs close enough to their price. It shows here as soon as one does.</div>`)
+      : `<div class="empty">No other game day in the next week has a ticket yet. Player prop prices, where many Ladder legs come from, post about a day before each NFL game, so the weekend's tickets usually show up Saturday or Sunday morning.</div>`)
     + alertsHtml()
     + (done.length ? `<h3 class="ladder-h">Every ladder</h3>` + done.map((r) => ladderTicketHtml(r)).join("") : "");
   wireBankroll(box, renderLadder);
@@ -15632,14 +15674,16 @@ function ladderTileHtml() {
   const cur = ladderCurrent();
   const T = ladderTally(ladderRows());
   const rec = T.n ? `${T.hit}-${T.miss} · ${T.units >= 0 ? "+" : "−"}${Math.abs(T.units).toFixed(2)}u` : "New";
-  if (!cur) return `<div class="lbl">The Ladder · ${rec}</div><p class="subn">No ladder right now. It posts when a game day has two legs that each beat their price.</p><a href="#ladder" data-view="ladder" class="ladder-link">See the record</a>`;
+  if (!cur) return `<div class="lbl">The Ladder · ${rec}</div><p class="subn">No ladder right now. It posts when a game day has two legs that each beat their price; a day without one is a pass.</p><a href="#ladder" data-view="ladder" class="ladder-link">See the record</a>`;
   const r = cur.row;
+  const today = potdDayKey(new Date().toISOString());
+  const passToday = r.day !== today && (DATA.games || []).some((g) => g && !g.completed && Date.parse(g.date) > Date.now() && potdDayKey(g.date) === today) && !ladderRows().some((x) => x.day === today);
   const CH = ladderChallenge(ladderRows(), chStart());
   const chLine = CH.cur && CH.wins(CH.cur) ? `<div class="ch-tile">Challenge: ${chMoney(CH.start)} → <b>${chMoney(CH.cur.bank)}</b> · rung ${CH.wins(CH.cur)}${r.dec ? ` · next ${chMoney(CH.cur.bank * Number(r.dec))}` : ""}</div>` : `<div class="ch-tile">Challenge: rung 0 · ${chMoney(CH.start)} rides on this ticket${CH.best && CH.best.peak > CH.start ? ` · best run ${chMoney(CH.best.peak)}` : ""}</div>`;
   return `<div class="lbl">The Ladder · ${rec}</div>${chLine}
     <div class="ladder-tile-price"><b>${pbAm(r.american)}</b> ${r.book ? "at " + pbEsc(r.book) : ""} · ${r.n} legs · ${r.tier === "light" ? "light day, ½u" : (r.ev >= 0 ? "+" : "") + (r.ev * 100).toFixed(0) + "% value"}</div>
     <ul class="ladder-tile-legs">${r.legs.map((l) => `<li>${pbEsc(l.label)} <span class="subn">${pbAm(l.price)}</span></li>`).join("")}</ul>
-    <div class="subn">${r.locked ? "Locked" : "Locks 90 minutes before the first leg"} · ${pbEsc(potdDayName(r.firstKick || r.day))}</div>
+    <div class="subn">${r.locked ? "Locked" : "Locks 90 minutes before the first leg"} · ${pbEsc(potdDayName(r.firstKick || r.day))}${passToday ? " · today is a pass: no ticket beat its price" : ""}</div>
     <a href="#ladder" data-view="ladder" class="ladder-link">The Ladder and its record</a>`;
 }
 function potdWindowKey(window, bet) {
