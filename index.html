@@ -1994,6 +1994,13 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .cr-ex-label { font: 800 22px var(--display); }
 .cr-change { margin: 4px 0 0; color: var(--ink); }
 .cr-link { border: 0; background: none; color: var(--sun); font: 700 13px var(--body); cursor: pointer; padding: 0; text-decoration: underline; }
+.ladder-clv { margin-top: 4px; font-size: 13px; color: var(--ink-soft); }
+.ladder-clv b { color: var(--ink); }
+.ladder-clv.up b { color: var(--good, #6fd08c); }
+.ladder-clv.down b { color: var(--bad, #f07a6a); }
+.ladder-clv em { font-style: normal; color: var(--faint, #808ba0); }
+.ladder-clv-t { margin: 8px 0 4px; padding: 8px 10px; border-radius: 10px; background: rgba(242,184,64,.07); }
+.ladder-clv-t span { display: block; margin-top: 2px; font-weight: 400; color: var(--ink-soft); }
 .cr-live-box { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 10px 12px; border-radius: 12px; background: rgba(240,122,106,.10); border: 1px solid rgba(240,122,106,.35); font-size: 14px; }
 .cr-live-box b { color: var(--bad, #f07a6a); font-weight: 800; }
 .cr-live-box .cr-act { flex: none; min-height: 32px; margin-left: auto; }
@@ -14228,6 +14235,19 @@ function ladderLockRun(out, changes, now, iso, due, early) {
       mine.set(row.key, row);
     }
   }
+  // closing line value: until each leg kicks off, keep the latest market price for it; the last
+  // one saved before kickoff is its close
+  mine.forEach((r) => {
+    if (!r.locked || !(now - Date.parse(r.firstKick || r.day) < 14 * 864e5)) return;
+    (r.legs || []).forEach((l) => {
+      if (l.close && Date.parse(l.kick) <= now) return;
+      const c = ladderCloseSnap(r, l, now);
+      if (!c) return;
+      const sig = (x) => x ? [x.line, x.price, x.fair, x.src].join("|") : "";
+      if (sig(c) !== sig(l.close)) { l.close = c; changes.push("ladder close " + r.day + " " + l.label); }
+      else if (l.close) l.close.at = c.at;
+    });
+  });
   mine.forEach((r) => {
     if (!r.locked || r.result) return;
     if (gradeLadderRow(r)) changes.push("ladder " + r.day + (r.result ? " " + r.result : " leg graded"));
@@ -14262,12 +14282,82 @@ function ladderTally(rows) {
   const staked = done.reduce((a, r) => a + Number(r.stake || 1), 0);
   return { n: hit + miss, hit, miss, push, units, roi: staked ? units / staked : 0, legsW: lw, legsL: legs.length - lw, streak, avgDec };
 }
+// the market's price for a locked leg right now (before kickoff): the line and price at the
+// ticket's book, and the books' no-vig chance of the bet exactly as we locked it (same line).
+// After kickoff with nothing saved, the hourly line history's last line before kickoff.
+function ladderCloseSnap(row, l, now) {
+  const kick = Date.parse(l.kick);
+  const parts = String(l.id).split("|"), kind = parts[1];
+  if (Number.isFinite(kick) && kick > now) {
+    let at = null;
+    try { at = row.book ? pbLeg({ id: l.id, book: row.book }) : null; } catch (e) {}
+    if (!at || at.started || (row.book && at.priceSource !== row.book)) { try { const bp = kind !== "pp" ? bestPriceFor(l.id) : null; at = bp && bp.best ? pbLeg({ id: l.id, book: bp.best.book }) : pbLeg({ id: l.id }); } catch (e) { at = null; } }
+    if (!at || at.started) return null;
+    let ours = null;
+    try { ours = kind === "sp" || kind === "tot" ? pbLeg({ id: l.id, line: Number(l.line) }) : pbLeg({ id: l.id }); } catch (e) {}
+    if (kind === "pp" && at.line != null && Number(at.line) !== Number(l.line)) ours = null;
+    const fair = ours && ours.bookWin > 0 ? +Number(ours.bookWin).toFixed(4) : null;
+    const push = ours && ours.push ? +Number(ours.push).toFixed(4) : 0;
+    return { at: new Date(now).toISOString(), line: at.line != null ? Number(at.line) : null, price: at.price != null ? Number(at.price) : null, book: at.priceSource && !/standard|typical|estimated/.test(at.priceSource) ? at.priceSource : null, fair, push, src: "books" };
+  }
+  if (l.close || kind === "pp" || kind === "ml") return null;
+  const h = typeof lineHist === "function" ? lineHist({ id: l.game_id }) : null;
+  if (!h || !Number.isFinite(kick)) return null;
+  const before = h.filter((x) => x[0] * 60000 <= kick);
+  const last = before[before.length - 1];
+  if (!last) return null;
+  const side = parts[parts.length - 1];
+  const ln = kind === "sp" ? (last[1] == null ? null : side === "home" ? Number(last[1]) : -Number(last[1])) : (last[2] == null ? null : Number(last[2]));
+  if (ln == null) return null;
+  return { at: new Date(last[0] * 60000).toISOString(), line: ln, price: null, book: null, fair: null, push: 0, src: "history" };
+}
+// how a locked leg did against its close: points of line, and value at the closing market
+function ladderClv(l) {
+  const c = l && l.close;
+  if (!c) return null;
+  const kind = String(l.id).split("|")[1], side = String(l.id).split("|").pop();
+  let pts = null;
+  if (c.line != null && l.line != null && (kind === "sp" || kind === "tot")) pts = kind === "sp" ? Number(l.line) - c.line : (side === "over" ? c.line - Number(l.line) : Number(l.line) - c.line);
+  const val = c.fair != null && l.price != null ? c.fair * pbDec(Number(l.price)) + (c.push || 0) - 1 : null;
+  // beat the close = the market's own chance of our exact bet went up between the lock and
+  // kickoff (cut taken out both times), so the price we took was better than the closing one
+  const move = c.fair != null && l.bookWin != null ? c.fair - Number(l.bookWin) : null;
+  let beat = null;
+  if (move != null) beat = move >= 0.01 ? 1 : move <= -0.01 ? -1 : 0;
+  else if (pts != null) beat = pts > 0.01 ? 1 : pts < -0.01 ? -1 : 0;
+  else if (kind === "ml" && c.price != null && l.price != null) beat = pbDec(Number(l.price)) > pbDec(c.price) + 1e-9 ? 1 : pbDec(Number(l.price)) < pbDec(c.price) - 1e-9 ? -1 : 0;
+  return { pts, val, move, beat, final: Date.parse(l.kick) <= Date.now() };
+}
+function ladderClvText(l) {
+  const v = ladderClv(l);
+  if (!v) return "";
+  const c = l.close;
+  const kind = String(l.id).split("|")[1];
+  const lineTxt = c.line != null && kind === "sp" ? pbLine(c.line) : c.line != null && kind !== "ml" ? pbTot(c.line) : "";
+  const now = `${lineTxt}${c.price != null ? (lineTxt ? " " : "") + pbAm(c.price) : ""}`;
+  const parts = [];
+  if (v.pts != null && Math.abs(v.pts) >= 0.25) parts.push(`${v.pts > 0 ? "+" : "−"}${Math.abs(v.pts).toFixed(1)} pt${Math.abs(v.pts) === 1 ? "" : "s"} of line`);
+  if (v.move != null && Math.abs(v.move) >= 0.01) parts.push(`books' chance ${(Number(l.bookWin) * 100).toFixed(1)}% → ${(c.fair * 100).toFixed(1)}%`);
+  if (v.val != null) parts.push(`worth ${v.val >= 0 ? "+" : "−"}${Math.abs(v.val * 100).toFixed(1)}% at the ${v.final ? "closing" : "current"} prices`);
+  const verdict = v.beat > 0 ? (v.final ? "Beat the close" : "Market moving our way") : v.beat < 0 ? (v.final ? "Lost to the close" : "Market moving against it") : (v.final ? "Matched the close" : "Market hasn't moved");
+  return `<div class="ladder-clv ${v.beat > 0 ? "up" : v.beat < 0 ? "down" : ""}"><b>${verdict}</b>${now ? ` · ${v.final ? "closed" : "now"} ${pbEsc(now)}` : ""}${parts.length ? " · " + parts.join(", ") : ""}${c.src === "history" ? " <em>(line only)</em>" : ""}</div>`;
+}
+function ladderClvTally(rows) {
+  const legs = rows.filter((r) => r.locked).flatMap((r) => r.legs || []).filter((l) => Date.parse(l.kick) <= Date.now()).map(ladderClv).filter((v) => v && v.beat != null);
+  const vals = legs.filter((v) => v.val != null).map((v) => v.val);
+  const moves = legs.filter((v) => v.move != null).map((v) => v.move);
+  const pts = legs.filter((v) => v.pts != null).map((v) => v.pts);
+  const tickets = rows.filter((r) => r.locked && (r.legs || []).length && r.legs.every((l) => Date.parse(l.kick) <= Date.now() && ladderClv(l) && ladderClv(l).val != null))
+    .map((r) => r.legs.reduce((a, l) => a * (l.close.fair + (l.close.push || 0)), 1) * Number(r.dec) - 1);
+  return { n: legs.length, beat: legs.filter((v) => v.beat > 0).length, lost: legs.filter((v) => v.beat < 0).length, avgVal: vals.length ? vals.reduce((a, x) => a + x, 0) / vals.length : null, avgPts: pts.length ? pts.reduce((a, x) => a + x, 0) / pts.length : null, avgMove: moves.length ? moves.reduce((a, x) => a + x, 0) / moves.length : null, tickets: tickets.length, avgTicket: tickets.length ? tickets.reduce((a, x) => a + x, 0) / tickets.length : null };
+}
 function ladderLegHtml(l, showResult) {
   const res = l.result ? `<span class="potd-res ${l.result === "HIT" ? "hit" : l.result === "MISS" ? "miss" : ""}">${l.result === "HIT" ? "Hit" : l.result === "MISS" ? "Miss" : l.result === "PUSH" ? "Push" : "Void"}</span>` : "";
   const when = l.kick ? fmt.when(l.kick) : "";
   return `<li data-id="${pbEsc(String(l.game_id))}"><b>${pbEsc(l.label)}</b> ${showResult ? res : ""}
     <div class="subn">${pbEsc(l.game || "")} · ${when} · ${pbAm(l.price)} · ${LADDER_CAT[l.cat] || ""}${l.league ? " · " + (l.league === "nfl" ? "NFL" : "College") : ""}</div>
     <div class="prop-why">Our checked chance ${Math.round(Number(l.win) * 100)}%, the books' ${Math.round(Number(l.bookWin) * 100)}%: ${(Number(l.value) * 100 >= 0 ? "+" : "") + (Number(l.value) * 100).toFixed(1)}% at this price.${l.why && !/checked chance/.test(l.why) && l.cat !== "dog" && l.cat !== "fav" ? " " + l.why : ""}</div>
+    ${showResult ? ladderClvText(l) : ""}
     ${l.final ? `<div class="prop-why"><b>${pbEsc(l.final)}</b></div>` : ""}</li>`;
 }
 function ladderTicketHtml(row, opts) {
@@ -14288,6 +14378,12 @@ function ladderTicketHtml(row, opts) {
       return k > 0 ? sizeHtml(Math.min(0.5, k), "light day") : `<span class="bet-size none">Bet size: <b>pass</b> <em>A light day: no ticket beat its price, so this one is tracked at ½u for the record, not a bet we'd make.</em></span>`;
     })()}
     <ul class="parlay-legs">${(row.legs || []).map((l) => ladderLegHtml(l, !!row.locked)).join("")}</ul>
+    ${(() => {
+      if (!row.locked || !(row.legs || []).every((l) => l.close && l.close.fair != null)) return "";
+      const v = row.legs.reduce((a, l) => a * (l.close.fair + (l.close.push || 0)), 1) * Number(row.dec) - 1;
+      const fin = row.legs.every((l) => Date.parse(l.kick) <= Date.now());
+      return `<div class="ladder-clv ladder-clv-t ${v > 0.0005 ? "up" : v < -0.0005 ? "down" : ""}"><b>${fin ? "Closing value" : "Value at the market now"}: ${v >= 0 ? "+" : "−"}${Math.abs(v * 100).toFixed(1)}%</b><span>What ${pbAm(row.american)} is worth if the ${fin ? "closing" : "current"} prices are right. When it locked: ${(row.ev >= 0 ? "+" : "−") + Math.abs(row.ev * 100).toFixed(1)}% by our checked chance.</span></div>`;
+    })()}
     <div class="subn">${lockLine}${row.note ? " " + pbEsc(row.note) : ""}</div>
     ${o.builder && !row.result ? `<button type="button" class="ready-open" data-openpb="${row.legs.map((l) => l.id).join("~")}">Open in parlay builder</button>` : ""}
   </article>`;
@@ -14309,7 +14405,7 @@ function ladderRecordHtml(rows) {
   const byTier = ["value", "light"].map((t) => { const x = ladderTally(rows.filter((r) => (r.tier || "value") === t)); return x.n || x.push ? `<div><span class="lbl">${t === "value" ? "Value tickets (1u)" : "Light days (½u)"}</span><b>${x.hit}-${x.miss} · ${u(x.units)}</b></div>` : ""; }).join("");
   return `<article class="prop-card potd-rec ladder-rec">
     <div class="who"><div><h4>The Ladder</h4>
-      <div class="prop-meta">One parlay every game day, 2 or 3 legs from different games: NFL sides, totals, moneylines and prop unders, college totals and moneylines. A value ticket (1u) has every leg beating its own price at the book that pays the most, and hits 15%+ of the time. On a day without one, a light ticket (½u), the closest to fair, tracked apart. It locks 90 minutes before the first leg and is graded leg by leg.</div></div>
+      <div class="prop-meta">One parlay every game day, 2 or 3 legs from different games: NFL sides, totals, moneylines and prop unders, college totals and moneylines. A value ticket (1u) has every leg beating its own price at the book that pays the most, and hits 15%+ of the time. On a day without one, a light ticket (½u), the closest to fair, tracked apart. It locks 90 minutes before the first leg and is graded leg by leg. Each leg is also checked against its closing price, the last market price before kickoff: beating the close again and again is the surest early sign the picks are good, long before the win-loss record settles.</div></div>
       <div class="pick-score">${T.hit}-${T.miss}</div></div>
     <div class="prop-stats">
       <div><span class="lbl">Tickets</span><b>${T.n ? Math.round((T.hit / T.n) * 100) + "% hit" : "No finished tickets yet"}</b></div>
@@ -14318,6 +14414,7 @@ function ladderRecordHtml(rows) {
       ${T.streak ? `<div><span class="lbl">Streak</span><b>${T.streak}</b></div>` : ""}
       ${T.avgDec ? `<div><span class="lbl">Average price</span><b>${pbAm(pbAmerican(T.avgDec))}</b></div>` : ""}
       ${pending ? `<div><span class="lbl">Locked, not finished</span><b>${pending}</b></div>` : ""}
+      ${(() => { const C = ladderClvTally(rows); return C.n ? `<div><span class="lbl">Beat the closing price</span><b>${C.beat} of ${C.n} legs · ${Math.round(C.beat / C.n * 100)}%</b></div>${C.avgMove != null ? `<div><span class="lbl">Market move after lock</span><b class="${C.avgMove >= 0 ? "up" : "down"}">${C.avgMove >= 0 ? "+" : "−"}${Math.abs(C.avgMove * 100).toFixed(1)} pts of chance a leg</b></div>` : ""}${C.avgVal != null ? `<div><span class="lbl">Average closing value</span><b class="${C.avgVal >= 0 ? "up" : "down"}">${C.avgVal >= 0 ? "+" : "−"}${Math.abs(C.avgVal * 100).toFixed(1)}% a leg${C.avgTicket != null ? " · " + (C.avgTicket >= 0 ? "+" : "−") + Math.abs(C.avgTicket * 100).toFixed(1) + "% a ticket" : ""}</b></div>` : ""}${C.avgPts != null ? `<div><span class="lbl">Line vs close</span><b>${C.avgPts >= 0 ? "+" : "−"}${Math.abs(C.avgPts).toFixed(1)} pts a leg</b></div>` : ""}` : `<div><span class="lbl">Beat the closing price</span><b>Tracked from the next locked ticket</b></div>`; })()}
       ${byTier}
       ${bySize}
       ${groups((r, l) => l.cat, LADDER_CAT)}

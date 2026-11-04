@@ -98,7 +98,7 @@ async def main():
         # player props can be the NFL play of the day: load projections and prop prices first
         # (ensurePotdProps waits for the 11:00 / kickoff reports; then the injury feed, then
         # projections re-attached to all of it, so the lock uses everything a visitor's page has)
-        await page.evaluate("async () => { try { if (typeof ensurePotdProps === 'function') await ensurePotdProps(); } catch (e) {} try { if (typeof fetchInjuries === 'function') await fetchInjuries(false); } catch (e) {} try { if (typeof refreshWeekProps === 'function') refreshWeekProps(); } catch (e) {} }")
+        await page.evaluate("async () => { try { if (typeof ensurePotdProps === 'function') await ensurePotdProps(); } catch (e) {} try { if (typeof fetchInjuries === 'function') await fetchInjuries(false); } catch (e) {} try { if (typeof refreshWeekProps === 'function') refreshWeekProps(); } catch (e) {} try { if (!window.LINE_HIST && typeof pbFetchOnce === 'function') await pbFetchOnce('hist', '/data/line-history.json?t=' + Date.now(), (d) => { window.LINE_HIST = d; }); } catch (e) {} }")
         if args.inject:
             await page.evaluate(args.inject)
         result = await page.evaluate(
