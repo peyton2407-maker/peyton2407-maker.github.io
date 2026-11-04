@@ -1,12 +1,9 @@
 async () => {
   try { await ensurePotdProps(); } catch (e) {}
   const rows = nextPropRows();
-  const adj = [];
-  rows.forEach((p) => ["pass_yds", "rush_yds", "rec_yds", "rec", "pass_td"].forEach((k) => { const a = propOppAdj(p, k); if (a) adj.push([p.name, p.opp, k, +a.f.toFixed(3), +a.raw.toFixed(2), a.n]); }));
-  adj.sort((a, b) => Math.abs(b[3] - 1) - Math.abs(a[3] - 1));
-  const fs = adj.map((x) => x[3]);
-  const note = (() => { for (const p of rows) { for (const k of ["rec_yds", "rush_yds", "pass_yds"]) { const n = propOppNote(p, k); if (n) return p.name + ": " + n; } } return ""; })();
-  setView("score");
-  await new Promise((r) => setTimeout(r, 2500));
-  return { props: rows.length, logs: !!window.GAMELOGS, adjusted: adj.length, moved: fs.filter((f) => Math.abs(f - 1) >= 0.02).length, capped: fs.filter((f) => Math.abs(f - 1) >= 0.149).length, avg: fs.length ? +(fs.reduce((a, x) => a + x, 0) / fs.length).toFixed(3) : null, top: adj.slice(0, 8), note, proof: (document.getElementById("proofBox").textContent || "").replace(/\s+/g, " ").slice(0, 900) };
+  const by = {};
+  rows.forEach((p) => ["pass_yds", "pass_td", "rush_yds", "rush_att", "rec_yds", "rec"].forEach((k) => { const a = propOppAdj(p, k); if (!a) return; const b = by[k] = by[k] || { n: 0, moved: 0, max: 0, withTargets: 0 }; b.n++; if (Math.abs(a.f - 1) >= 0.02) b.moved++; b.max = Math.max(b.max, Math.abs(a.f - 1)); if (a.parts.some((x) => x.stat === "targets" || x.stat === "rush_att")) b.withTargets++; }));
+  const notes = [];
+  for (const p of rows) { for (const k of ["rec", "rec_yds", "rush_yds"]) { const n = propOppNote(p, k); if (n && /targets|carries/.test(n)) { notes.push(p.name + " (" + k + "): " + n); break; } } if (notes.length >= 3) break; }
+  return { props: rows.length, by, notes };
 }
