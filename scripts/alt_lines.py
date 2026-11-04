@@ -4,8 +4,8 @@
 
 Only on a paid plan, and only from the month's spare credits (scripts/odds_budget.py): the
 first prop pull for every NFL game always comes first. Each game costs 2 credits a pull
-(alternate_spreads + alternate_totals, one region). Small plan: NFL games within three days
-once a day and again in the last three hours; college games within two days once a day,
+(alternate_spreads + alternate_totals, one region). Small plan: NFL games within a week
+twice a day and again in the last three hours; college games within two days once a day,
 soonest first, up to 30. Big plan: every 6 hours and again in the last three hours, every
 college game. Writes data/alt-lines.json: {"updated", "games": {game id: {"fetched", "books":
 {book: {"sp": {"home": {line: price}, "away": {...}}, "tot": {"over": {...}, "under": {...}}}}}}}.
@@ -40,7 +40,7 @@ def due(league, kick, fetched, now, tier):
     if hours <= 3:
         return age >= 1
     if league == "nfl":
-        return (hours <= 24 and age >= 3) or (hours <= 96 and age >= 6)
+        return (hours <= 24 and age >= 3) or (hours <= 96 and age >= 6) or (hours <= 168 and age >= 12)
     return (hours <= 24 and age >= 6) or (hours <= 48 and age >= 12)
 
 

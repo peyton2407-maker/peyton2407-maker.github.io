@@ -2018,6 +2018,23 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 @media (max-width: 420px) { .tz-rec-stats { grid-template-columns: 1fr; } }
 .tz-leg-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
 .tz-chance { font-weight: 800; color: var(--sun); }
+.alt-wrap { grid-column: 1 / -1; max-width: 880px; }
+.alt-intro { color: var(--ink-soft); line-height: 1.55; max-width: 72ch; }
+.alt-intro p { margin: 0 0 10px; }
+.alt-stamp { margin: 4px 0 0; }
+.alt-h { font-family: var(--display); font-size: 1.5rem; letter-spacing: .01em; margin: 22px 0 10px; }
+.alt-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.alt-card { background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--turf); border-radius: var(--radius); padding: 14px 16px; cursor: pointer; }
+.alt-card.proj { border-left-color: var(--sky, #7ec8e3); }
+.alt-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.alt-bet { font-size: 1.2rem; color: var(--ink); }
+.alt-px { color: var(--ink-soft); font-weight: 600; white-space: nowrap; }
+.alt-ev { font-weight: 800; font-size: 1.15rem; color: var(--sun); white-space: nowrap; }
+.alt-meta { color: var(--muted); font-size: .9rem; margin-top: 2px; }
+.alt-src { display: inline-block; margin-top: 8px; font-size: .8rem; font-weight: 700; padding: 2px 9px; border-radius: 999px; background: var(--turf-soft); color: var(--sun); }
+.alt-card.proj .alt-src { background: var(--sky-soft, rgba(126,200,227,.14)); color: var(--sky, #7ec8e3); }
+.alt-why { margin: 8px 0 10px; color: var(--ink-soft); font-size: .93rem; line-height: 1.55; max-width: 78ch; }
+.alt-card .ready-open { width: auto; padding-inline: 18px; }
 .tz-legs > li, .tz-intro ~ .parlay-card .parlay-legs > li { cursor: pointer; }
 .cr-live-box { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 10px 12px; border-radius: 12px; background: rgba(240,122,106,.10); border: 1px solid rgba(240,122,106,.35); font-size: 14px; }
 .cr-live-box b { color: var(--bad, #f07a6a); font-weight: 800; }
@@ -2801,6 +2818,7 @@ table.props b.down { color: var(--muted); font-weight: 600; }
           <button class="ptab active" type="button" data-parlay="nfl">NFL parlays</button>
           <button class="ptab" type="button" data-parlay="ml">NFL moneylines</button>
           <button class="ptab" type="button" data-parlay="teasers">Teaser finder</button>
+          <button class="ptab" type="button" data-parlay="alts">Alt lines</button>
           <button class="ptab" type="button" data-parlay="dogs">Underdog parlays</button>
           <button class="ptab" type="button" data-parlay="favs">Favorite parlays</button>
           <button class="ptab" type="button" data-parlay="totals">Totals</button>
@@ -8133,6 +8151,173 @@ function openTeaserInBuilder(spec) {
   try { pbSave(); } catch (e) {}
   try { if (typeof renderBuilder === "function") renderBuilder(); } catch (e) {}
 }
+// ==== Alt line finder ========================================================================
+// Every alternate spread and total the books post (data/alt-lines.json), checked against our
+// projection at that exact line: the same checked chance the builder uses (the market's view of
+// the game, moved toward ours by what our graded picks have earned), times the best book's price
+// for that line. Two reasons a line shows up: one book pays more than the other books' two-sided
+// prices at that line say it's worth (alt ladders are priced by formula and disagree), or our
+// projection is far enough from the market's that the extra points are worth more than the book
+// charges. College spreads only count for the first reason: our college spread rating lost over
+// five seasons of testing.
+const ALT_MIN_EV = 0.03, ALT_PRICE_LO = -300, ALT_PRICE_HI = 300;
+const ALT_KEYS = { nfl: [3, 7, 10, 14, 6, 4], cfb: [3, 7, 10, 14, 17, 21] };
+function altFinderRows() {
+  const A = window.PB_ALT && window.PB_ALT.games;
+  if (!A) return [];
+  const best = new Map();
+  (DATA.games || []).forEach((g) => {
+    const alt = A[String(g.id)];
+    if (!alt || !alt.books || pbStarted(g) || !g.home || !g.away) return;
+    const o = g.odds || {};
+    const views = pbViews(g);
+    [["sp", ["home", "away"]], ["tot", ["over", "under"]]].forEach(([kind, sides]) => {
+      const main = kind === "sp" ? (o.home_spread != null ? Number(o.home_spread) : null) : (o.total != null ? Number(o.total) : null);
+      if (main == null || !Number.isFinite(main)) return;
+      const k = pbKeep(g.league, kind === "sp" ? "spread" : "total").k;
+      sides.forEach((side) => {
+        const mainLine = kind === "sp" ? (side === "home" ? main : -main) : main;
+        const lines = new Set();
+        Object.values(alt.books).forEach((b) => Object.keys(((b || {})[kind] || {})[side] || {}).forEach((x) => lines.add(Number(x))));
+        lines.forEach((line) => {
+          if (!Number.isFinite(line) || Math.abs(line - mainLine) < 0.5) return;
+          const px = pbAltPrice(g.id, kind, side, line, null);
+          if (!px || px.price < ALT_PRICE_LO || px.price > ALT_PRICE_HI) return;
+          const b = pbSideAt(kind, side, line, views.bM, views.bT), m = pbSideAt(kind, side, line, views.mM, views.mT);
+          if (!b || !m) return;
+          // the market's chance at this exact line: every book's two-sided price there with the
+          // cut taken out, median across books. A bell curve off the main line puts too much on
+          // blowouts and shootouts, so far-off alternates would all look cheap; our projection
+          // only moves this by how far our curve sits from the market's curve at the same line.
+          const fair = altFair(alt, kind, side, line);
+          if (!fair || fair.n < 2) return;
+          const mw = fair.p * (1 - m.push);
+          const win = Math.max(0.01, Math.min(0.99, mw + k * (b.win - m.win))), push = m.push + k * (b.push - m.push);
+          const dec = pbDec(px.price);
+          const ev = win * dec + push - 1, mev = mw * dec + m.push - 1;
+          if (ev < ALT_MIN_EV) return;
+          // college spreads: only when the book's own main line already says the alt is cheap
+          if (g.league === "cfb" && kind === "sp" && mev < 0.005) return;
+          // the next-best book for this line, to show what shopping is worth
+          let next = null;
+          Object.keys(alt.books).forEach((bk) => {
+            if (bk === px.book) return;
+            const pr = ((((alt.books[bk] || {})[kind] || {})[side]) || {})[String(line.toFixed(1))];
+            if (pr != null && (!next || pbDec(pr) > pbDec(next.price))) next = { book: bk, price: Number(pr) };
+          });
+          const row = { g, kind, side, line, mainLine, price: px.price, book: px.book, next, win, push, mwin: mw, nBooks: fair.n, bwin: b.win, ev, mev, k, views };
+          const key = g.id + "|" + kind + "|" + side;
+          const was = best.get(key);
+          // one line per side of a game: the best value, ties to the line closer to the main one
+          if (!was || ev > was.ev + 0.005 || (Math.abs(ev - was.ev) <= 0.005 && Math.abs(line - mainLine) < Math.abs(was.line - mainLine))) best.set(key, row);
+        });
+      });
+    });
+  });
+  return [...best.values()].sort((a, b) => b.ev - a.ev);
+}
+// no-vig chance of one side at one line across the books that post both sides there
+function altFair(alt, kind, side, line) {
+  const other = { home: "away", away: "home", over: "under", under: "over" }[side];
+  const oline = kind === "sp" ? -line : line;
+  const ps = [];
+  Object.values(alt.books).forEach((b) => {
+    const m = (b || {})[kind] || {};
+    const a = ((m[side] || {})[String(line.toFixed(1))]), c = ((m[other] || {})[String(oline.toFixed(1))]);
+    if (a == null || c == null) return;
+    const ia = 1 / pbDec(a), ic = 1 / pbDec(c);
+    ps.push(ia / (ia + ic));
+  });
+  if (!ps.length) return null;
+  ps.sort((x, y) => x - y);
+  const n = ps.length;
+  return { p: n % 2 ? ps[(n - 1) / 2] : (ps[n / 2 - 1] + ps[n / 2]) / 2, n };
+}
+// the key margins a moved spread gains (buying points) or gives up (selling them), with how often
+// the market's view of this game ends on each
+function altKeysCrossed(r) {
+  if (r.kind !== "sp" || !r.views.mM) return [];
+  const lo = Math.min(-r.line, -r.mainLine), hi = Math.max(-r.line, -r.mainLine);
+  const out = [];
+  for (let x = Math.floor(lo) + 1; x <= hi; x++) {
+    if (Math.abs(x) < 1 || x !== Math.round(x)) continue;
+    const at = pbAt(r.views.mM, r.side === "home" ? x : -x);
+    if (ALT_KEYS[r.g.league].includes(Math.abs(x)) || at >= 0.05) out.push({ x, at });
+  }
+  return out;
+}
+function altLabel(r) {
+  const team = r.side === "home" ? r.g.home : r.g.away;
+  return r.kind === "sp" ? `${team.abbr} ${pbLine(r.line)}` : `${r.side === "over" ? "Over" : "Under"} ${pbTot(r.line)}`;
+}
+function altWhy(r) {
+  const nfl = r.g.league === "nfl";
+  const team = r.side === "home" ? r.g.home : r.g.away;
+  const p = r.g.proj || {};
+  const out = [];
+  const pct = (x) => Math.round(x * 100) + "%";
+  const buying = r.kind === "sp" ? r.line > r.mainLine : (r.side === "over" ? r.line < r.mainLine : r.line > r.mainLine);
+  const pts = Math.abs(r.line - r.mainLine);
+  if (r.kind === "sp") {
+    const ours = p.hashmark_home_spread != null ? Number(p.hashmark_home_spread) : Number(p.away_points) - Number(p.home_points);
+    const oursSide = r.side === "home" ? ours : -ours;
+    out.push(`The main line is ${team.abbr} ${pbLine(r.mainLine)}${Number.isFinite(oursSide) ? `; we make it ${team.abbr} ${pbLine(Math.round(oursSide * 2) / 2)}` : ""}. ${buying ? `This buys ${pts} point${pts === 1 ? "" : "s"}` : `This gives up ${pts} point${pts === 1 ? "" : "s"} for a bigger price`}.`);
+    const keys = altKeysCrossed(r);
+    if (keys.length) {
+      const grp = (w) => { const k = keys.filter((x) => (x.x > 0) === w); if (!k.length) return ""; const t = k.map((x) => `${Math.abs(x.x)} (${(x.at * 100).toFixed(1)}%)`); return `${pbEsc(team.short)} ${w ? "winning" : "losing"} by exactly ${t.length > 1 ? t.slice(0, -1).join(", ") + " or " + t[t.length - 1] : t[0]}`; };
+      out.push(`${buying ? "It picks up" : "It gives up"} ${[grp(true), grp(false)].filter(Boolean).join(" and ")}, how often games like this end there.`);
+    }
+  } else {
+    const ours = p.hashmark_total != null ? Number(p.hashmark_total) : Number(p.home_points) + Number(p.away_points);
+    out.push(`The main total is ${pbTot(r.mainLine)}${Number.isFinite(ours) ? `; we make it ${pbTot(Math.round(ours * 2) / 2)}` : ""}. ${buying ? `This moves it ${pts} point${pts === 1 ? "" : "s"} your way` : `This moves it ${pts} point${pts === 1 ? "" : "s"} against you for a bigger price`}.`);
+    const wx = Number(p.weather_adj_total);
+    if (Number.isFinite(wx) && Math.abs(wx) >= 1) out.push(`The forecast ${wx < 0 ? "takes" : "adds"} ${Math.abs(wx).toFixed(1)} points ${wx < 0 ? "off" : "to"} our total.`);
+  }
+  const need = 1 / pbDec(r.price);
+  out.push(`${pbEsc(r.book)} pays ${pbAm(r.price)}, which needs ${(need * 100).toFixed(1)}%. Our checked chance is ${pct(r.win)}${r.push > 0.01 ? ` (plus ${(r.push * 100).toFixed(0)}% to push)` : ""}; the ${r.nBooks} books that post both sides of this line put it at ${pct(r.mwin)}, cut taken out.`);
+  if (r.mev > 0.005) out.push(`Even by the other books' price for this line, ${pbEsc(r.book)} is ${(r.mev * 100).toFixed(1)}% better than fair, so it doesn't lean on our projection.`);
+  else out.push(`The value comes from our projection: by the books' price alone it's ${(r.mev * 100).toFixed(1)}% short, and we move ${Math.round(r.k * 100)}% of the way toward our number, what our graded ${r.kind === "sp" ? "spread" : "total"} picks have earned.`);
+  if (r.next) out.push(`Next best: ${pbEsc(r.next.book)} at ${pbAm(r.next.price)}.`);
+  return out.join(" ");
+}
+function altRowHtml(r) {
+  const kick = fmt.when(r.g.date);
+  const spec = `${r.g.id}|${r.kind}|${r.side}@${r.line}@${r.book}`;
+  const src = r.mev > 0.005 ? "Best price beats the market" : "Our projection";
+  return `<li class="alt-card ${r.mev > 0.005 ? "mkt" : "proj"}" data-altgame="${pbEsc(String(r.g.id))}">
+    <div class="alt-top"><div><b class="alt-bet">${pbEsc(altLabel(r))}</b> <span class="alt-px">${pbEsc(pbAm(r.price))} at ${pbEsc(r.book)}</span></div><span class="alt-ev">+${(r.ev * 100).toFixed(1)}%</span></div>
+    <div class="alt-meta">${pbEsc(r.g.short_name)} · ${kick} · ${r.kind === "sp" ? "Alt spread" : "Alt total"} · ${Math.round(r.win * 100)}% to hit</div>
+    <span class="alt-src">${src}</span>
+    <p class="alt-why">${altWhy(r)}</p>
+    <button type="button" class="ready-open" data-openalt="${pbEsc(spec)}">Open in the builder</button></li>`;
+}
+function altFinderHtml() {
+  const A = window.PB_ALT && window.PB_ALT.games;
+  const intro = `<div class="alt-intro"><p>Every alternate spread and total the books post, checked at that exact line. A line shows here when its best price beats our checked chance by ${Math.round(ALT_MIN_EV * 100)}% or more, between ${pbAm(ALT_PRICE_LO)} and ${pbAm(ALT_PRICE_HI)}. One line per side of a game, the best one.</p>
+    <p>The market's chance at each line comes from the books' own prices for both sides of that line, cut taken out. Books price their alternate ladders by formula and don't all agree, so one book is sometimes well ahead of the rest; those show as <b>Best price beats the market</b> and are the stronger kind. <b>Our projection</b> picks lean on our number being better than the market's; college spreads never count that way, since our college spread rating lost over five seasons of testing.</p></div>`;
+  const wrap = (x) => `<div class="alt-wrap">${x}</div>`;
+  if (!A) return wrap(intro + `<div class="empty">Loading the books' alternate lines…</div>`);
+  const rows = altFinderRows();
+  const n = Object.keys(A).filter((id) => { const g = pbGame(id); return g && !pbStarted(g); }).length;
+  const stamp = window.PB_ALT.updated ? `Alternate lines from ${n} upcoming game${n === 1 ? "" : "s"}, pulled ${fmt.when(window.PB_ALT.updated)}. NFL games come in during the week and college games two days out, refreshed more often near kickoff.` : "";
+  if (!rows.length) return wrap(intro + `<div class="empty">No alternate line beats its price right now. ${pbEsc(stamp)}</div>`);
+  const sec = (lg, name) => {
+    const r = rows.filter((x) => x.g.league === lg).slice(0, 12);
+    return r.length ? `<h3 class="alt-h">${name}</h3><ul class="alt-list">${r.map(altRowHtml).join("")}</ul>` : "";
+  };
+  return wrap(intro + `<p class="subn alt-stamp">${pbEsc(stamp)}</p>` + sec("nfl", "NFL") + sec("cfb", "College"));
+}
+function openAltInBuilder(spec) {
+  const [id, ln, bk] = String(spec || "").split("@");
+  openInBuilder(id);
+  PB.legs.forEach((st) => {
+    if (st.id !== id) return;
+    st.line = Number(ln); if (bk) st.book = bk;
+    const l = pbLeg(st); if (l) st.label = l.label;
+  });
+  try { pbSave(); } catch (e) {}
+  try { if (typeof renderBuilder === "function") renderBuilder(); } catch (e) {}
+}
 function parlayCardHtml(r) {
   return readyCardHtml(`${r.title} parlay`, r.thought, r.legs);
 }
@@ -8786,6 +8971,27 @@ function renderParlays() {
         if (p) { e.stopPropagation(); window.__tzPrice = p.dataset.tzprice; renderParlays(); return; }
         const li = e.target.closest("[data-tzgame]");
         if (li && window.__parlayLg === "teasers") openGame(li.dataset.tzgame);
+      });
+    }
+    return;
+  }
+  if (league === "alts") {
+    if (stamp) stamp.textContent = "Alternate spreads and totals that beat their price, NFL and college, with why.";
+    if (bestEl) bestEl.innerHTML = "";
+    if (!window.PB_ALT) {
+      pbFetchOnce("cal", "/data/calibration.json", (d) => { window.PB_CAL = d; });
+      pbFetchOnce("alt", "/data/alt-lines.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_ALT = d; })
+        .then(() => window.__pbFetch.cal).then(() => { if (view === "parlay" && window.__parlayLg === "alts") renderParlays(); });
+    }
+    try { hero.innerHTML = altFinderHtml(); } catch (e) { console.error(e); hero.innerHTML = `<div class="empty">The alt line finder couldn't build its list.</div>`; }
+    if (!hero.__altWired) {
+      hero.__altWired = true;
+      hero.addEventListener("click", (e) => {
+        if (window.__parlayLg !== "alts") return;
+        const t = e.target.closest("[data-openalt]");
+        if (t) { e.stopPropagation(); openAltInBuilder(t.dataset.openalt); return; }
+        const li = e.target.closest("[data-altgame]");
+        if (li) openGame(li.dataset.altgame);
       });
     }
     return;
@@ -20414,6 +20620,13 @@ function pbLeg(stored, opts) {
       // a real alternate line at a book, when the paid plan has pulled them
       const alt = pbAltPrice(g.id, kind, side, line, st.book || null);
       if (alt) { bookPrice = alt.price; priceSource = alt.book; }
+    }
+    if (line !== mainLine && !shift && mkt && typeof altFair === "function") {
+      // the market's chance at a moved line from the books' own two-sided prices there (the alt
+      // line finder's reading), when at least two books post both sides
+      const ag = window.PB_ALT && window.PB_ALT.games && window.PB_ALT.games[String(g.id)];
+      const fair = ag && ag.books ? altFair(ag, kind, side, line) : null;
+      if (fair && fair.n >= 2) mkt = { win: fair.p * (1 - mkt.push), push: mkt.push };
     }
     if (bookPrice == null && line !== mainLine && mkt && mkt.win > 0) {
       // alternate line: price it off the market's own view of the game, with a bigger cut

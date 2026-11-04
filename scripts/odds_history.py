@@ -85,7 +85,7 @@ def main():
     print(f"{len(sched)} finished games; {len(slots)} kickoff times still to price")
     spent = 0
     for slot in slots:
-        if spent + 20 > args.max_credits or not odds_budget.can_spend(budget, 20, "extra"):
+        if spent + 20 > args.max_credits or not odds_budget.can_spend(budget, 20, "backfill"):
             print("stopped: credit cap or the month's spare credits")
             break
         t = datetime.fromisoformat(slot.replace("Z", "+00:00")) - timedelta(minutes=10)
@@ -96,7 +96,6 @@ def main():
             continue
         cost = int(float((hdr or {}).get("x-requests-last") or 20))
         odds_budget.record(budget, hdr, "history", cost)
-        odds_budget.spent_extra(budget, cost)
         spent += cost
         for ev in payload.get("data") or []:
             hn, an = books.norm(ev.get("home_team")), books.norm(ev.get("away_team"))

@@ -139,6 +139,10 @@ def can_spend(b, cost, priority="core"):
     pool = min(spare - keep_free() - core_rest, target(b) - own_spent(b) - core_rest)
     if pool <= 0:
         return False
+    if priority == "backfill":
+        # one-off pulls of past seasons, run by hand: the month's pool only, never the daily
+        # pace the site's live pulls run on
+        return cost <= pool
     day = _now().strftime("%Y-%m-%d")
     spent = b.setdefault("extra_by_day", {}).get(day, 0)
     # game days get more (props move most on Saturday and Sunday); what a quiet day leaves

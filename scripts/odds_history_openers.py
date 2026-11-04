@@ -62,7 +62,7 @@ def main():
             snap = t.strftime("%Y-%m-%dT%H:%M:%SZ")
             if snap in done:
                 continue
-            if spent + 10 > args.max_credits or not odds_budget.can_spend(budget, 10, "extra"):
+            if spent + 10 > args.max_credits or not odds_budget.can_spend(budget, 10, "backfill"):
                 print("stopped: credit cap or the month's optional pool")
                 break
             try:
@@ -72,7 +72,6 @@ def main():
                 continue
             cost = int(float((hdr or {}).get("x-requests-last") or 10))
             odds_budget.record(budget, hdr, "history", cost)
-            odds_budget.spent_extra(budget, cost)
             spent += cost
             done.add(snap)
             n = 0
