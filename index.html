@@ -2566,6 +2566,100 @@ table.props b.down { color: var(--muted); font-weight: 600; }
 .potd-head b { font-size: 16px; }
 .potd-res { display: inline-block; min-width: 46px; text-align: center; font: 700 12px var(--body); padding: 3px 8px; border-radius: 999px; background: rgba(237,241,247,.08); color: var(--ink-soft); }
 .potd-res.hit { background: rgba(60,196,126,.14); color: var(--win); } .potd-res.miss { background: rgba(242,84,91,.13); color: #ff9b8f; }
+/* ---- play of the day: the slip, the record strip, the ledger ---- */
+#potdBoard, #nflPotdBoard { display: block; }
+.potd-slip { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 210px; background: linear-gradient(160deg, var(--card-2), var(--card) 60%); border: 1px solid var(--line-2); border-radius: 18px; margin: 0 0 18px; cursor: pointer; overflow: hidden; }
+.slip-main { padding: 22px 24px 20px; min-width: 0; }
+.slip-top { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); font-size: .86rem; }
+.slip-tag { color: var(--sun); font-weight: 700; }
+.slip-match { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; margin: 12px 0 2px; }
+.slip-match .tlogo { width: 26px; height: 26px; }
+.slip-match b { font-size: 1.02rem; color: var(--ink); }
+.slip-match > span { color: var(--muted); }
+.slip-match em { font-style: normal; color: var(--muted); font-size: .88rem; flex-basis: 100%; }
+.slip-bet { font-family: var(--display); font-weight: 800; font-size: clamp(2.4rem, 6vw, 3.6rem); line-height: .95; letter-spacing: .005em; color: var(--ink); margin: 14px 0 4px; }
+.slip-px { font-size: 1.05rem; color: var(--ink-soft); }
+.slip-px b { color: var(--sun); font-size: 1.25rem; }
+.slip-meter { margin: 16px 0 4px; max-width: 520px; }
+.slip-track { position: relative; height: 8px; border-radius: 999px; background: rgba(237,241,247,.08); }
+.slip-track i { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: linear-gradient(90deg, var(--turf), var(--sun)); }
+.slip-track s { position: absolute; top: -5px; width: 2px; height: 18px; margin-left: -1px; background: var(--ink); border-radius: 2px; }
+.slip-cap { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-top: 8px; font-size: .88rem; color: var(--muted); }
+.slip-cap b { color: var(--ink); }
+.slip-cap .up b { color: var(--win, #4fd08a); } .slip-cap .down b { color: #ff9b8f; }
+.slip-why { margin: 16px 0 0; max-width: 68ch; color: var(--ink-soft); line-height: 1.6; font-size: .98rem; }
+.slip-facts { display: flex; flex-wrap: wrap; gap: 10px 28px; margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--line); }
+.slip-facts dt { color: var(--muted); font-size: .8rem; }
+.slip-facts dd { margin: 2px 0 0; color: var(--ink); font-weight: 600; }
+.slip-stub { position: relative; display: flex; flex-direction: column; gap: 14px; padding: 22px 20px; border-left: 2px dashed var(--line-2); background: rgba(227,168,62,.05); }
+.slip-stub::before, .slip-stub::after { content: ""; position: absolute; left: -12px; width: 22px; height: 22px; border-radius: 50%; background: var(--paper); border: 1px solid var(--line-2); }
+.slip-stub::before { top: -12px; } .slip-stub::after { bottom: -12px; }
+.slip-stub div span { display: block; color: var(--muted); font-size: .8rem; }
+.slip-stub div b { display: block; color: var(--ink); font-size: 1.05rem; margin-top: 2px; }
+.slip-open { margin-top: auto; color: var(--sun); font-weight: 700; font-size: .9rem; }
+.potd-none { margin: 0 0 18px; padding: 20px 22px; border: 1px dashed var(--line-2); border-radius: 18px; color: var(--ink-soft); line-height: 1.55; max-width: 80ch; }
+.potd-none b { color: var(--ink); }
+.potd-recbar { display: grid; gap: 12px; padding: 18px 22px; margin: 0 0 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--card); }
+.rb-main { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px; }
+.rb-lbl { flex-basis: 100%; color: var(--muted); font-size: .86rem; }
+.rb-rec { font-family: var(--display); font-weight: 800; font-size: 2.4rem; line-height: 1; color: var(--ink); }
+.rb-sub { color: var(--ink-soft); }
+.potd-recbar .up { color: var(--win, #4fd08a); } .potd-recbar .down { color: #ff9b8f; }
+.rb-segs { display: flex; flex-wrap: wrap; gap: 10px; }
+.rb-seg { padding: 8px 12px; border-radius: 10px; background: var(--card-2); }
+.rb-seg.now { box-shadow: inset 0 0 0 1px var(--line-2); }
+.rb-seg span { display: block; font-size: .8rem; color: var(--muted); }
+.rb-seg b { color: var(--ink); }
+.rb-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.rb-chip { padding: 4px 10px; border-radius: 999px; background: rgba(237,241,247,.05); font-size: .88rem; color: var(--ink-soft); }
+.rb-chip em { font-style: normal; color: var(--muted); }
+.rb-how summary { cursor: pointer; color: var(--sun); font-weight: 600; font-size: .92rem; }
+.rb-how p { margin: 8px 0 0; color: var(--ink-soft); line-height: 1.6; max-width: 76ch; }
+.potd-ledger { margin: 0 0 22px; }
+.lg-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+.lg-head h3 { margin: 0; font: 700 20px var(--display); }
+.lg-filter { display: flex; gap: 6px; }
+.lg-filter button { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink-soft); font: 600 .85rem var(--body); cursor: pointer; }
+.lg-filter button.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.lg-filter button:focus-visible, .lg-row summary:focus-visible { outline: 2px solid var(--sun); outline-offset: 2px; }
+.lg-week { border: 1px solid var(--line); border-radius: 14px; background: var(--card); margin: 0 0 12px; overflow: hidden; }
+.lg-wk { display: flex; justify-content: space-between; padding: 9px 14px; background: var(--card-2); font-size: .9rem; color: var(--ink-soft); }
+.lg-wk b { color: var(--ink); }
+.lg-wk .up { color: var(--win, #4fd08a); } .lg-wk .down { color: #ff9b8f; }
+.lg-row { border-top: 1px solid var(--line); }
+.lg-week .lg-row:first-of-type { border-top: 0; }
+.lg-row summary { display: grid; grid-template-columns: 92px minmax(0, 1.4fr) minmax(0, 1fr) 60px 64px; gap: 12px; align-items: center; padding: 11px 14px; cursor: pointer; list-style: none; }
+.lg-row summary::-webkit-details-marker { display: none; }
+.lg-row summary:hover { background: rgba(237,241,247,.03); }
+.lg-day { color: var(--muted); font-size: .86rem; }
+.lg-bet b { color: var(--ink); }
+.lg-bet em { font-style: normal; color: var(--muted); font-size: .86rem; margin-left: 8px; }
+.lg-bet i { font-style: normal; border-bottom: 1px dotted var(--muted); }
+.lg-game { color: var(--ink-soft); font-size: .9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lg-u { text-align: right; font-weight: 700; }
+.lg-u .up { color: var(--win, #4fd08a); } .lg-u .down { color: #ff9b8f; }
+.lg-row[open] summary { background: rgba(237,241,247,.03); }
+.lg-body { padding: 4px 14px 14px 118px; color: var(--ink-soft); line-height: 1.55; font-size: .93rem; }
+.lg-body p { margin: 6px 0; max-width: 76ch; }
+.lg-body .lbl { display: block; }
+.lg-facts { display: flex; flex-wrap: wrap; gap: 4px 16px; color: var(--muted); font-size: .86rem; }
+.lg-open { margin-top: 6px; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--line-2); background: transparent; color: var(--sun); font: 600 .85rem var(--body); cursor: pointer; }
+@media (max-width: 720px) {
+  .potd-slip { grid-template-columns: 1fr; }
+  .slip-main { padding: 18px 18px 16px; }
+  .slip-stub { flex-direction: row; flex-wrap: wrap; gap: 10px 22px; padding: 14px 18px 16px; border-left: 0; border-top: 2px dashed var(--line-2); }
+  .slip-stub::before, .slip-stub::after { top: -12px; bottom: auto; }
+  .slip-stub::before { left: -12px; } .slip-stub::after { left: auto; right: -12px; }
+  .slip-open { margin-top: 0; flex-basis: 100%; }
+  .lg-row summary { grid-template-columns: minmax(0, 1fr) auto auto; gap: 4px 10px; }
+  .lg-day { grid-column: 1 / -1; grid-row: 1; }
+  .lg-bet { grid-column: 1; grid-row: 2; }
+  .lg-res { grid-column: 2; grid-row: 2; }
+  .lg-u { grid-column: 3; grid-row: 2; }
+  .lg-game { grid-column: 1 / -1; grid-row: 3; }
+  .lg-body { padding: 4px 14px 14px; }
+}
+
 .potd-u { font: 700 15px var(--display); } .potd-u .up { color: var(--win); } .potd-u .down { color: #ff9b8f; }
 .potd-why, .potd-final { margin-top: 8px; font-size: 13.5px; color: var(--ink); }
 .potd-why .lbl, .potd-final .lbl { display: block; font-size: 11.5px; font-weight: 600; color: var(--muted); }
@@ -14057,29 +14151,6 @@ function gradeSavedPotd(league) {
   });
   try { localStorage.setItem("gg-potd-log", JSON.stringify(bag)); } catch (e) {}
 }
-function potdCard(bet, title) {
-  const g = bet.g;
-  const pct = Math.round(bet.hit * 100);
-  const p = g.proj || {};
-  const label = bet.label || "Next game";
-  return `<article class="prop-card" data-id="${g.id}">
-    <div class="who">
-      <div>
-        <h4>${escHtml(title)} · ${escHtml(g.away.abbr)} ${g.neutral ? "vs" : "@"} ${escHtml(g.home.abbr)}</h4>
-        <div class="prop-meta">${escHtml(label)} · ${fmt.when(g.date)} · ${escHtml(g.venue || "")}${bet.locked ? " · locked" : ""}</div>
-      </div>
-      <div class="pick-score">${pct}%</div>
-    </div>
-    <div class="prop-stats">
-      <div><span class="lbl">${escHtml(bet.kind)}</span><b>${escHtml(bet.line)}${bet.price != null ? " · " + escHtml(pbAm(bet.price)) + (bet.book ? " " + escHtml(bet.book) : "") : ""}</b></div>
-      <div><span class="lbl">DraftKings</span><b>${escHtml((g.odds && g.odds.details) || "—")} · total ${escHtml(String((g.odds && g.odds.total) != null ? g.odds.total : "—"))}</b></div>
-      ${(() => { const i = !bet.prop && typeof bestPriceInfo === "function" ? bestPriceInfo(g, bet.line) : null; return i ? `<div><span class="lbl">Best price now</span><b>${escHtml(i.best)}${i.dk ? `<span class="subn"> DraftKings ${escHtml(i.dk)}</span>` : ""}</b></div>` : ""; })()}
-      <div><span class="lbl">Our score</span><b>${g.away.abbr} ${p.away_points ?? "—"} – ${g.home.abbr} ${p.home_points ?? "—"}</b></div>
-      <div><span class="lbl">Bet size</span><b>${unitsText(kellyUnits(Number(bet.hit), bet.price != null ? Number(bet.price) : -110))}</b></div>
-      <div style="grid-column:1/-1"><span class="lbl">Why this one</span><b>${escHtml(bet.why)}</b></div>
-    </div>
-  </article>`;
-}
 // The published record: plays the server locked before kickoff (data/locks.json and
 // data/past-scorecards.json), the same for every visitor. Units are one unit at the price saved
 // when the play locked (a standard -110 for the early plays saved without a price).
@@ -14108,71 +14179,117 @@ function potdTally(rows) {
   const units = done.reduce((a, r) => a + potdUnits(r), 0);
   return { hit, miss, push, n: done.length, units, roi: done.length ? units / done.length : 0, pct: hit + miss ? hit / (hit + miss) : null };
 }
+// ---- the play of the day pages: the play as a slip, the record strip, the ledger -----------
+function potdLockText(g, locked) {
+  const k = Date.parse(g.date);
+  if (locked) return "Locked";
+  if (!Number.isFinite(k)) return "Locks before kickoff";
+  const at = new Date(k - 90 * 60 * 1000);
+  return "Locks " + at.toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" });
+}
+function potdCard(bet, title) {
+  const g = bet.g, p = g.proj || {};
+  const price = bet.price != null ? Number(bet.price) : -110;
+  const need = 1 / pbDec(price), ours = Number(bet.hit);
+  const ev = bet.ev != null ? Number(bet.ev) : ours * pbDec(price) - 1;
+  const best = !bet.prop && typeof bestPriceInfo === "function" ? bestPriceInfo(g, bet.line) : null;
+  const size = unitsText(kellyUnits(ours, price));
+  const k = Date.parse(g.date);
+  const kick = Number.isFinite(k) ? new Date(k).toLocaleString([], { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : "";
+  const facts = [];
+  if (p.away_points != null && p.home_points != null && !bet.prop) facts.push(["Our score", `${escHtml(g.away.abbr)} ${p.away_points} – ${escHtml(g.home.abbr)} ${p.home_points}`]);
+  if (g.odds && g.odds.details) facts.push(["Market", `${escHtml(g.odds.details)}${g.odds.total != null ? " · total " + escHtml(String(g.odds.total)) : ""}`]);
+  if (best) facts.push(["Best price now", `${escHtml(best.best)}${best.dk ? ` <span class="subn">DraftKings ${escHtml(best.dk)}</span>` : ""}`]);
+  const fill = Math.max(2, Math.min(98, ours * 100)), tick = Math.max(2, Math.min(98, need * 100));
+  return `<article class="potd-slip" data-id="${g.id}">
+    <div class="slip-main">
+      <div class="slip-top"><span class="slip-tag">${escHtml(title)}</span><span>${escHtml(bet.label || "Next game")}</span></div>
+      <div class="slip-match">${teamLogo(g.away)}<b>${escHtml(g.away.abbr)}</b><span>${g.neutral ? "vs" : "@"}</span>${teamLogo(g.home)}<b>${escHtml(g.home.abbr)}</b><em>${escHtml(kick)}${g.venue ? " · " + escHtml(g.venue) : ""}</em></div>
+      <div class="slip-bet">${escHtml(bet.line)}</div>
+      <div class="slip-px"><b>${escHtml(pbAm(price))}</b>${bet.book ? ` at ${escHtml(bet.book)}` : ""}</div>
+      <div class="slip-meter" role="img" aria-label="Our chance ${Math.round(ours * 100)} percent; the price needs ${(need * 100).toFixed(1)} percent">
+        <div class="slip-track"><i style="width:${fill}%"></i><s style="left:${tick}%"></s></div>
+        <div class="slip-cap"><span>Our chance <b>${Math.round(ours * 100)}%</b></span><span>The price needs <b>${(need * 100).toFixed(1)}%</b></span><span class="${ev >= 0 ? "up" : "down"}"><b>${ev >= 0 ? "+" : "−"}${Math.abs(ev * 100).toFixed(1)}%</b> value</span></div>
+      </div>
+      <p class="slip-why">${escHtml(bet.why)}</p>
+      ${facts.length ? `<dl class="slip-facts">${facts.map(([a, b]) => `<div><dt>${a}</dt><dd>${b}</dd></div>`).join("")}</dl>` : ""}
+    </div>
+    <aside class="slip-stub">
+      <div><span>Bet size</span><b>${escHtml(size)}</b></div>
+      <div><span>Status</span><b>${escHtml(potdLockText(g, bet.locked))}</b></div>
+      <div><span>Kickoff</span><b>${Number.isFinite(k) ? escHtml(new Date(k).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" })) : "—"}</b></div>
+      <span class="slip-open">Open the game</span>
+    </aside>
+  </article>`;
+}
 function potdRecordCard(league) {
   const all = potdPublished(league);
   const T = potdTally(all);
   const name = league === "nfl" ? "NFL" : "College";
   const rec = (t) => `${t.hit}-${t.miss}${t.push ? "-" + t.push : ""}`;
   const u = (x) => `${x >= 0 ? "+" : "−"}${Math.abs(x).toFixed(2)}u`;
-  const kinds = ["Spread", "Over", "Under", "Moneyline", "Player prop"].map((k) => {
-    const t = potdTally(all.filter((r) => r.kind === k));
-    return t.n ? `<div><span class="lbl">${k}s</span><b>${rec(t)} · ${u(t.units)}</b></div>` : "";
-  }).join("");
-  // current streak, newest first
   const done = all.filter((r) => r.result === "HIT" || r.result === "MISS");
   let streak = "";
   if (done.length) { const s = done[0].result; let n = 0; for (const r of done) { if (r.result !== s) break; n++; } streak = (s === "HIT" ? "Won " : "Lost ") + n + " straight"; }
-  const pending = all.filter((r) => !r.result && !r.provisional).length;
-  // college changed rules on Nov 4: show the new rule apart from what came before it
-  let rule = "";
+  const kinds = ["Spread", "Over", "Under", "Moneyline", "Player prop"].map((k) => { const t = potdTally(all.filter((r) => r.kind === k)); return t.n ? `<span class="rb-chip"><em>${k}s</em> ${rec(t)} <b class="${t.units >= 0 ? "up" : "down"}">${u(t.units)}</b></span>` : ""; }).join("");
+  let segs = "";
   if (league !== "nfl") {
     const since = (r) => String(r.kick || r.day || "") >= CFB_RULE_START;
     const N = potdTally(all.filter(since)), O = potdTally(all.filter((r) => !since(r)));
-    rule = `<div><span class="lbl">Current rule (from Nov 4)</span><b>${N.n ? rec(N) + " · " + u(N.units) : "First play still to finish"}</b></div>`
-      + (O.n ? `<div><span class="lbl">Old rule (before Nov 4)</span><b>${rec(O)} · ${u(O.units)}</b></div>` : "");
+    segs = `<div class="rb-segs"><div class="rb-seg now"><span>Current rule, from Nov 4</span><b>${N.n ? rec(N) + " · " + u(N.units) : "First play still to finish"}</b></div>${O.n ? `<div class="rb-seg"><span>Old rule, before Nov 4</span><b>${rec(O)} · ${u(O.units)}</b></div>` : ""}</div>`;
   }
-  return `<article class="prop-card potd-rec">
-    <div class="who">
-      <div>
-        <h4>${name} play of the day record</h4>
-        <div class="prop-meta">${league === "nfl" ? "Any NFL bet can be the play: a side, a total, a moneyline or any player prop. We take the one that beats its sportsbook price by the most. " : "From Nov 4 the college play is an under, from one of two angles that have held up over years: a total of 58 or more (561-458, 55.1%, at the closing total on 2021-2026 FBS games, holding in both halves of that stretch), or a forecast (rain, strong wind) that takes 1.5+ points off the total. Each is priced at the best book and only played when it beats that price; we take the best one. College spread picks off a power rating lost over five seasons of testing (47.7%), so they're out. "}One play per game, or one best play when 4 or more games kick off together. It locks 90 minutes before kickoff and is graded against the final. Every play is listed below with why we took it.</div>
-      </div>
-      <div class="pick-score">${rec(T)}</div>
+  const how = league === "nfl"
+    ? "Any NFL bet can be the play: a side, a total, a moneyline or a player prop. We take the one that beats its best price by the most, weighted by how that kind of play has done. One play per game, or one best play when 4 or more games kick off together."
+    : `Since Nov 4 the college play is an under, from one of two angles that have held up over years: a total of ${CFB_HIGH_TOTAL} or more (561-458, 55.1%, at the closing total on 2021-2026 FBS games, holding in both halves of that stretch), or a forecast with rain or strong wind that takes 1.5+ points off the total. Each is priced at the best book and is only played when it beats that price; we take the best one. College spread picks off a power rating went 47.7% over five seasons of testing, so they're out. One play per game, or one best play when 4 or more games kick off together.`;
+  return `<section class="potd-recbar">
+    <div class="rb-main">
+      <span class="rb-lbl">${name} play of the day record</span>
+      <b class="rb-rec">${T.n ? rec(T) : "—"}</b>
+      <span class="rb-sub">${T.n ? `<b class="${T.units >= 0 ? "up" : "down"}">${u(T.units)}</b> · ${(T.roi >= 0 ? "+" : "−") + Math.abs(T.roi * 100).toFixed(1)}% a play · ${Math.round(T.pct * 100)}% hit${streak ? " · " + streak : ""}` : "The first lock starts the record"}</span>
     </div>
-    <div class="prop-stats">
-      <div><span class="lbl">Hit rate</span><b>${T.pct == null ? "No finished plays yet" : Math.round(T.pct * 100) + "%"}</b></div>
-      <div><span class="lbl">Units</span><b class="${T.units >= 0 ? "up" : "down"}">${T.n ? u(T.units) + " · " + (T.roi >= 0 ? "+" : "−") + Math.abs(T.roi * 100).toFixed(1) + "% a play" : "—"}</b></div>
-      ${streak ? `<div><span class="lbl">Streak</span><b>${streak}</b></div>` : ""}
-      ${pending ? `<div><span class="lbl">Locked, not played</span><b>${pending}</b></div>` : ""}
-      ${rule}
-      ${kinds}
-    </div>
-  </article>`;
+    ${segs}
+    ${kinds ? `<div class="rb-chips">${kinds}</div>` : ""}
+    <details class="rb-how"><summary>How it's picked</summary><p>${how} It locks 90 minutes before kickoff, at the price and book saved then, and is graded against the final. Every play is in the ledger below with why we took it.</p></details>
+  </section>`;
 }
 function potdHistoryHtml(league) {
   const rows = potdPublished(league);
   if (!rows.length) return "";
-  const when = (r) => { const t = Date.parse(r.kick || r.day || ""); return Number.isFinite(t) ? new Date(t).toLocaleDateString([], { weekday: "short", month: "short", day: "numeric", timeZone: "America/New_York" }) : "Week " + r.week; };
-  const res = (r) => r.result === "HIT" ? `<span class="potd-res hit">Hit</span>` : r.result === "MISS" ? `<span class="potd-res miss">Miss</span>` : r.result === "PUSH" ? `<span class="potd-res">Push</span>` : r.result === "VOID" ? `<span class="potd-res">Void</span>` : r.provisional ? `<span class="potd-res">Not locked yet</span>` : `<span class="potd-res">Locked</span>`;
-  const u = (r) => { if (!r.result) return ""; const x = potdUnits(r); return `<span class="${x > 0 ? "up" : x < 0 ? "down" : ""}">${x >= 0 ? "+" : "−"}${Math.abs(x).toFixed(2)}u</span>`; };
-  return `<section class="potd-log">
-    <h3>Every ${league === "nfl" ? "NFL" : "college"} play of the day</h3>
-    ${rows.map((r) => `<article class="potd-row ${r.result ? r.result.toLowerCase() : "open"}" ${r.id ? `data-id="${pbEsc(String(r.id))}"` : ""}>
-      <div class="potd-head">
-        ${res(r)}
-        <div><b>${pbEsc(r.line)}</b> <span class="muted">${pbEsc(pbAm(potdPrice(r)))}${r.book ? " " + pbEsc(r.book) : r.price == null ? " · standard price (not saved then)" : ""}</span>
-          <div class="subn">${pbEsc(r.game || "")} · ${when(r)} · Week ${pbEsc(String(r.week || ""))}${r.label ? " · " + pbEsc(r.label) : ""}</div></div>
-        <div class="potd-u">${u(r)}</div>
+  const f = (window.__potdFilter || {})[league] || "all";
+  const show = rows.filter((r) => f === "all" || (f === "hit" ? r.result === "HIT" : f === "miss" ? r.result === "MISS" : true));
+  const day = (r) => { const t = Date.parse(r.kick || r.day || ""); return Number.isFinite(t) ? new Date(t).toLocaleDateString([], { weekday: "short", month: "short", day: "numeric", timeZone: "America/New_York" }) : ""; };
+  const res = (r) => r.result === "HIT" ? `<span class="potd-res hit">Hit</span>` : r.result === "MISS" ? `<span class="potd-res miss">Miss</span>` : r.result === "PUSH" ? `<span class="potd-res">Push</span>` : r.result === "VOID" ? `<span class="potd-res">Void</span>` : r.provisional ? `<span class="potd-res">Saved</span>` : `<span class="potd-res">Locked</span>`;
+  const u = (x) => `${x >= 0 ? "+" : "−"}${Math.abs(x).toFixed(2)}u`;
+  const units = (r) => r.result ? `<span class="${potdUnits(r) > 0 ? "up" : potdUnits(r) < 0 ? "down" : ""}">${u(potdUnits(r))}</span>` : "";
+  // weeks, newest first, each with its own total
+  const weeks = [];
+  show.forEach((r) => { const k = String(r.week || "—"); let w = weeks.find((x) => x.k === k); if (!w) { w = { k, rows: [] }; weeks.push(w); } w.rows.push(r); });
+  const row = (r) => `<details class="lg-row ${r.result ? r.result.toLowerCase() : "open"}">
+      <summary>
+        <span class="lg-day">${pbEsc(day(r))}</span>
+        <span class="lg-bet"><b>${pbEsc(r.line)}</b><em>${pbEsc(pbAm(potdPrice(r)))}${r.book && !/standard/i.test(r.book) ? " " + pbEsc(r.book) : r.price == null || /standard/i.test(r.book || "") ? ' <i title="Plays from before prices were saved are counted at a standard -110">std</i>' : ""}</em></span>
+        <span class="lg-game">${pbEsc(r.game || "")}</span>
+        <span class="lg-res">${res(r)}</span>
+        <span class="lg-u">${units(r)}</span>
+      </summary>
+      <div class="lg-body">
+        <p><span class="lbl">Why we took it</span>${pbEsc(r.why || "")}</p>
+        <div class="lg-facts">
+          ${r.hitPct ? `<span>Our chance ${r.hitPct}%${r.bookPct ? " · the books' " + r.bookPct + "%" : ""}</span>` : ""}
+          ${r.ours ? `<span>Our line ${pbEsc(r.ours)}</span>` : ""}
+          ${r.market ? `<span>Market ${pbEsc(r.market)}</span>` : ""}
+          ${r.score ? `<span>Our score ${pbEsc(r.score)}</span>` : ""}
+          ${r.label ? `<span>${pbEsc(r.label)}</span>` : ""}
+        </div>
+        ${r.result ? `<p><span class="lbl">How it finished</span>${pbEsc(r.final || "")}${r.by ? " · " + pbEsc(r.by) : ""}${r.resultWhy && !r.by ? " · " + pbEsc(r.resultWhy) : ""}</p>` : ""}
+        ${r.id ? `<button type="button" class="lg-open" data-id="${pbEsc(String(r.id))}">Open the game</button>` : ""}
       </div>
-      <div class="potd-why"><span class="lbl">Why we took it</span>${pbEsc(r.why || "")}</div>
-      <div class="potd-facts">
-        ${r.hitPct ? `<span>Our chance ${r.hitPct}%${r.bookPct ? " · book " + r.bookPct + "%" : ""}</span>` : ""}
-        ${r.ours ? `<span>Our line ${pbEsc(r.ours)}</span>` : ""}
-        ${r.market ? `<span>Market ${pbEsc(r.market)}</span>` : ""}
-        ${r.score ? `<span>Our score ${pbEsc(r.score)}</span>` : ""}
-      </div>
-      ${r.result ? `<div class="potd-final"><span class="lbl">How it finished</span>${pbEsc(r.final || "")}${r.by ? " · " + pbEsc(r.by) : ""}${r.resultWhy && !r.by ? " · " + pbEsc(r.resultWhy) : ""}</div>` : ""}
-    </article>`).join("")}
+    </details>`;
+  const T = potdTally(rows);
+  return `<section class="potd-ledger">
+    <div class="lg-head"><h3>Every ${league === "nfl" ? "NFL" : "college"} play of the day</h3>
+      <div class="lg-filter" role="group" aria-label="Show">${[["all", "All " + rows.length], ["hit", "Hits " + T.hit], ["miss", "Misses " + T.miss]].map(([k, t]) => `<button type="button" data-potdf="${k}" data-lg="${league}" class="${f === k ? "on" : ""}" aria-pressed="${f === k}">${t}</button>`).join("")}</div></div>
+    ${weeks.map((w) => { const t = potdTally(w.rows); return `<div class="lg-week"><div class="lg-wk"><b>Week ${pbEsc(w.k)}</b><span>${t.n ? `${t.hit}-${t.miss}${t.push ? "-" + t.push : ""} · <span class="${t.units >= 0 ? "up" : "down"}">${u(t.units)}</span>` : "Not finished"}</span></div>${w.rows.map(row).join("")}</div>`; }).join("") || `<div class="empty">No plays in this filter.</div>`}
   </section>`;
 }
 function potdRecordCardOld(league) {
@@ -14199,15 +14316,27 @@ function potdRecordCardOld(league) {
     ${last && (last.resultWhy || last.why) ? `<p class="subn" style="margin:8px 0 0"><b>How the last one finished:</b> ${escHtml(last.resultWhy || last.why)}</p>` : ""}
   </article>`;
 }
+// one click handler per board: the slip and "Open the game" open the game; the filters redraw
+function potdWire(board, redraw) {
+  if (board.__potdWired) return;
+  board.__potdWired = true;
+  board.addEventListener("click", (e) => {
+    const fb = e.target.closest("[data-potdf]");
+    if (fb) { e.preventDefault(); window.__potdFilter = Object.assign({}, window.__potdFilter, { [fb.dataset.lg]: fb.dataset.potdf }); redraw(); return; }
+    if (e.target.closest("summary")) return;
+    const el = e.target.closest("[data-id]");
+    if (el) openGame(el.dataset.id);
+  });
+}
 function renderNflPotd() {
   const board = document.getElementById("nflPotdBoard");
   if (!board) return;
   gradeSavedPotd("nfl");
   const bet = nflPotd();
   rememberPotd("nfl", bet);
-  const current = bet ? potdCard(bet, "NFL POTD") : `<div class="empty">No NFL bet left this week beats its price: no side, total, moneyline or player prop. So there is no play of the day yet. Player prop prices come in about a day before each kickoff.</div>`;
-  board.innerHTML = potdRecordCard("nfl") + current + (typeof alertsHtml === "function" ? alertsHtml() : "") + potdHistoryHtml("nfl");
-  board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
+  const current = bet ? potdCard(bet, "NFL play of the day") : `<div class="potd-none"><b>No NFL play yet.</b> No NFL bet left this week beats its price: no side, total, moneyline or player prop. Player prop prices come in about a day before each kickoff, so check back then.</div>`;
+  board.innerHTML = current + potdRecordCard("nfl") + potdHistoryHtml("nfl") + (typeof alertsHtml === "function" ? alertsHtml() : "");
+  potdWire(board, renderNflPotd);
 }
 function renderPotd() {
   const board = document.getElementById("potdBoard");
@@ -14215,9 +14344,9 @@ function renderPotd() {
   gradeSavedPotd("cfb");
   const bet = cfbPotd();
   rememberPotd("cfb", bet);
-  const current = bet ? potdCard(bet, "POTD") : `<div class="empty">No college play of the day right now. The play is a weather under, and no game on the board has rain or strong wind in its forecast that moves our total 1.5+ under the line. Forecasts update every hour.</div>`;
-  board.innerHTML = potdRecordCard("cfb") + current + (typeof alertsHtml === "function" ? alertsHtml() : "") + potdHistoryHtml("cfb");
-  board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
+  const current = bet ? potdCard(bet, "College play of the day") : `<div class="potd-none"><b>No college play right now.</b> No game coming up qualifies: the play is an under on a total of ${CFB_HIGH_TOTAL} or more, or where the forecast takes 1.5+ points off the total, and only when the best price beats the rate. Passing is part of the rule.</div>`;
+  board.innerHTML = current + potdRecordCard("cfb") + potdHistoryHtml("cfb") + (typeof alertsHtml === "function" ? alertsHtml() : "");
+  potdWire(board, renderPotd);
 }
 
 const NFL_DIV = {
