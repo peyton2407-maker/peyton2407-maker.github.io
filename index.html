@@ -2074,6 +2074,71 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .bankroll-row label { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-weight: 600; }
 .bankroll-row input { width: 130px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line-2); background: var(--paper); color: var(--ink); font: inherit; }
 .ladder-h { margin: 10px 0 0; font: 700 20px var(--display); }
+/* The Ladder Challenge */
+.ch { position: relative; overflow: hidden; padding: 18px 18px 14px; border-radius: 18px; border: 1px solid rgba(242,184,64,.35);
+  background: radial-gradient(120% 90% at 100% 0%, rgba(242,184,64,.16), transparent 55%), var(--card); }
+.ch-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 10px 16px; }
+.ch-title h3 { margin: 0; font: 800 26px/1.05 var(--display); letter-spacing: .005em; }
+.ch-title p { margin: 4px 0 0; max-width: 46ch; font-size: 14px; color: var(--ink-soft); }
+.ch-stake { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+.ch-stake span { color: var(--ink); }
+.ch-stake input { width: 76px; padding: 7px 8px; border-radius: 10px; border: 1px solid var(--line-2); background: var(--paper); color: var(--ink); font: 700 15px var(--body); }
+.ch-body { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 18px; margin-top: 14px; }
+.ch-step { font-size: 13px; font-weight: 800; color: var(--sun); }
+.ch-big { margin-top: 2px; font: 800 58px/1 var(--display); letter-spacing: -.01em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.ch-sub { margin-top: 6px; font-size: 14.5px; color: var(--ink-soft); }
+.ch-goal { margin-top: 14px; }
+.ch-goal-bar { height: 8px; border-radius: 4px; background: var(--line-2); overflow: hidden; }
+.ch-goal-bar i { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, rgba(242,184,64,.55), var(--sun)); }
+.ch-goal-txt { display: flex; justify-content: space-between; gap: 8px; margin-top: 5px; font-size: 12.5px; color: var(--ink-soft); }
+.ch-ms-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.ch-ms { padding: 3px 9px; border-radius: 999px; border: 1px dashed var(--line-2); font-size: 12px; font-weight: 800; color: var(--faint, #808ba0); }
+.ch-ms.past { border-style: solid; color: var(--ink-soft); }
+.ch-ms.on { border: 1px solid var(--sun); background: rgba(242,184,64,.16); color: var(--sun); }
+.ch-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 14px; }
+.ch-stats div { padding: 8px 6px; border-radius: 10px; background: rgba(255,255,255,.03); border: 1px solid var(--line); text-align: center; }
+.ch-stats b { display: block; font: 800 18px var(--display); }
+.ch-stats span { font-size: 11.5px; color: var(--ink-soft); }
+.ch-actions { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
+.ch-share { min-height: 40px; padding: 0 16px; border: 0; border-radius: 10px; background: var(--sun); color: #1a1405; font: 800 14px var(--body); cursor: pointer; }
+.ch-rules-link { color: var(--ink-soft); font-size: 13px; font-weight: 700; }
+.ch-rules { margin-top: 10px; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+.ch-rules p { margin: 0 0 6px; }
+/* the ladder itself: two rails, one rung per step, the next rung on top */
+.ch-ladder { position: relative; margin: 0; padding: 4px 0 4px; list-style: none; display: grid; gap: 0; }
+.ch-ladder::before, .ch-ladder::after { content: ""; position: absolute; top: 0; bottom: 0; width: 4px; border-radius: 2px; background: linear-gradient(180deg, rgba(242,184,64,.15), rgba(242,184,64,.6)); }
+.ch-ladder::before { left: 6px; } .ch-ladder::after { left: 50px; }
+.ch-rung { position: relative; display: grid; grid-template-columns: 60px 1fr auto; align-items: center; gap: 10px; min-height: 58px; }
+.ch-bar { position: absolute; left: 6px; width: 48px; height: 6px; top: 50%; margin-top: -3px; border-radius: 3px; background: var(--sun); box-shadow: 0 0 0 3px rgba(242,184,64,.12); }
+.ch-r-main { grid-column: 2; }
+.ch-r-main b { display: block; font: 800 19px var(--display); font-variant-numeric: tabular-nums; }
+.ch-r-main span { font-size: 12.5px; color: var(--ink-soft); }
+.ch-r-side { grid-column: 3; text-align: right; font-size: 12px; font-weight: 700; color: var(--ink-soft); max-width: 15ch; }
+.ch-r-side em { display: block; font-style: normal; font-weight: 400; color: var(--faint, #808ba0); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ch-rung.next .ch-bar { background: transparent; border: 2px dashed var(--sun); box-shadow: none; animation: chPulse 2.4s ease-in-out infinite; }
+.ch-rung.next .ch-r-main b { color: var(--sun); }
+.ch-rung.push .ch-bar { background: var(--ink-soft); }
+.ch-rung.base .ch-bar { background: var(--line-2); box-shadow: none; }
+.ch-rung.base .ch-r-main b { color: var(--ink-soft); }
+@keyframes chPulse { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+@media (prefers-reduced-motion: reduce) { .ch-rung.next .ch-bar { animation: none; } }
+.ch-hist { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 10px; }
+.ch-hist summary { cursor: pointer; font-weight: 800; font-size: 14px; }
+.ch-hist ol { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.ch-hist li { padding: 9px 11px; border-radius: 10px; background: rgba(255,255,255,.03); border: 1px solid var(--line); }
+.ch-h-top { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 14px; }
+.ch-h-top span { color: var(--ink-soft); font-size: 13px; }
+.ch-h-path { margin: 4px 0 2px; font: 700 14px var(--body); font-variant-numeric: tabular-nums; }
+.ch-pill { padding: 2px 8px; border-radius: 999px; font-size: 11.5px; font-weight: 800; }
+.ch-pill.live { background: rgba(111,208,140,.16); color: var(--good, #6fd08c); }
+.ch-pill.end { background: rgba(240,122,106,.14); color: var(--bad, #f07a6a); }
+.ch-tile { margin: 4px 0 6px; font-size: 13px; color: var(--ink-soft); }
+.ch-tile b { color: var(--sun); }
+@media (max-width: 720px) {
+  .ch-body { grid-template-columns: 1fr; }
+  .ch-big { font-size: 50px; }
+  .ch-stats { grid-template-columns: repeat(2, 1fr); }
+}
 .ladder-ticket .potd-head { margin-bottom: 8px; }
 .ladder-tile { padding: 14px 16px; }
 .ladder-tile .lbl { font-weight: 700; color: var(--sun); }
@@ -14422,18 +14487,129 @@ function ladderRecordHtml(rows) {
     </div>
   </article>`;
 }
+// ==== The Ladder Challenge ===================================================================
+// Start with a stake, put it all on each day's Ladder, roll every win into the next ticket.
+// A miss ends the run and the next ticket starts a new one at the stake; a push carries the
+// bankroll over. Built only from tickets the server locked and graded (data/locks.json), so
+// every past run stays exactly as it happened.
+const CH_KEY = "gg-ladder-start";
+const CH_GOALS = [100, 250, 500, 1000, 2500, 5000, 10000, 25000, 100000];
+function chStart() { try { const v = Number(localStorage.getItem(CH_KEY) || 10); return v >= 1 && v <= 10000 ? v : 10; } catch (e) { return 10; } }
+function ladderChallenge(rows, start) {
+  const done = rows.filter((r) => r && r.locked && r.result).sort((a, b) => String(a.day).localeCompare(String(b.day)));
+  const runs = [];
+  let run = null;
+  done.forEach((r) => {
+    if (!run) run = { n: runs.length + 1, from: r.day, steps: [], bank: start, peak: start, status: "active", end: null };
+    const before = run.bank;
+    if (r.result === "HIT") { run.bank = before * Number(r.dec || 1); run.steps.push({ row: r, before, after: run.bank, res: "HIT" }); run.peak = Math.max(run.peak, run.bank); }
+    else if (r.result === "MISS") { run.steps.push({ row: r, before, after: 0, res: "MISS" }); run.status = "ended"; run.end = r; runs.push(run); run = null; }
+    else { run.steps.push({ row: r, before, after: before, res: "PUSH" }); }
+  });
+  if (run) runs.push(run);
+  const cur = runs.length && runs[runs.length - 1].status === "active" ? runs[runs.length - 1] : null;
+  const wins = (x) => x.steps.filter((s) => s.res === "HIT").length;
+  const best = runs.slice().sort((a, b) => b.peak - a.peak || wins(b) - wins(a))[0] || null;
+  const longest = runs.reduce((m, x) => Math.max(m, wins(x)), 0);
+  return { runs, cur, best, longest, wins, start, tickets: done.length };
+}
+function chDay(d) {
+  const t = /^\d{4}-\d{2}-\d{2}$/.test(String(d)) ? Date.parse(d + "T17:00:00Z") : Date.parse(d);
+  if (!Number.isFinite(t)) return String(d || "");
+  return new Date(t).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "America/New_York" });
+}
+function chMoney(x) { return x >= 10000 ? "$" + Math.round(x).toLocaleString() : pbMoney(x); }
+function chShort(x) { return x >= 1e6 ? "$" + (x / 1e6).toFixed(x >= 1e7 ? 0 : 1) + "M" : x >= 1e4 ? "$" + Math.round(x / 1000) + "K" : x >= 1000 ? "$" + (x / 1000).toFixed(1).replace(/\.0$/, "") + "K" : "$" + Math.round(x); }
+function ladderChallengeHtml(rows) {
+  const start = chStart();
+  const C = ladderChallenge(rows, start);
+  const curRow = (() => { try { const c = ladderCurrent(); return c && !c.row.result ? c.row : null; } catch (e) { return null; } })();
+  const active = C.cur;
+  const bank = active ? active.bank : start;
+  const steps = active ? C.wins(active) : 0;
+  const goal = CH_GOALS.find((g) => g > bank * 1.0001 && g >= start * 2) || bank * 10;
+  const nextBank = curRow ? bank * Number(curRow.dec || 1) : null;
+  const pct = Math.max(0, Math.min(1, Math.log(bank / start) / Math.log(goal / start)));
+  const toGo = (() => { if (!curRow) return null; const per = Number(curRow.dec || 3.5); const k = Math.ceil(Math.log(goal / bank) / Math.log(per)); return Number.isFinite(k) && k > 0 ? k : null; })();
+  // the rungs, top to bottom: next (pending), then the wins and pushes of this run, then the start
+  const rungs = [];
+  if (curRow) rungs.push(`<li class="ch-rung next"><span class="ch-bar"></span><div class="ch-r-main"><b>${chMoney(nextBank)}</b><span>if the ${pbEsc(chDay(curRow.day))} ticket (${pbAm(curRow.american)}) hits</span></div><div class="ch-r-side">${curRow.locked ? "Locked" : "Locks before kickoff"}<em>${pbEsc(curRow.legs.map((l) => l.label).join(" + "))}</em></div></li>`);
+  let wk = 0;
+  const numbered = (active ? active.steps : []).map((st) => Object.assign({ k: st.res === "HIT" ? ++wk : null }, st));
+  numbered.reverse().forEach((st) => {
+    rungs.push(`<li class="ch-rung ${st.res === "PUSH" ? "push" : "won"}"><span class="ch-bar"></span><div class="ch-r-main"><b>${chMoney(st.after)}</b><span>${st.res === "PUSH" ? "push, rolled over" : "rung " + st.k + " · " + pbAm(st.row.american)}</span></div><div class="ch-r-side">${pbEsc(chDay(st.row.day))}<em>${pbEsc(st.row.legs.map((l) => l.label).join(" + "))}</em></div></li>`);
+  });
+  rungs.push(`<li class="ch-rung base"><span class="ch-bar"></span><div class="ch-r-main"><b>${chMoney(start)}</b><span>${active ? "start of this run · " + pbEsc(chDay(active.from)) : "the starting stake"}</span></div></li>`);
+  const lastEnded = C.runs.filter((r) => r.status === "ended").slice(-1)[0];
+  const headline = active && steps
+    ? `<div class="ch-big">${chMoney(bank)}</div><div class="ch-sub">${chMoney(start)} → ${chMoney(bank)} in ${steps} ${steps === 1 ? "win" : "straight wins"}${active.steps.some((s) => s.res === "PUSH") ? " (plus a push)" : ""}</div>`
+    : `<div class="ch-big">${chMoney(start)}</div><div class="ch-sub">${lastEnded ? `A new run starts with the next ticket. The last one reached ${chMoney(lastEnded.peak)} before the ${pbEsc(chDay(lastEnded.end.day))} ticket missed.` : "The first run starts with the next ticket."}</div>`;
+  const milestones = CH_GOALS.filter((g) => g >= start * 2).slice(0, 6).map((g) => {
+    const hitBy = C.runs.filter((r) => r.peak >= g).length;
+    return `<span class="ch-ms ${bank >= g ? "on" : hitBy ? "past" : ""}" title="${hitBy ? "Reached in " + hitBy + " run" + (hitBy === 1 ? "" : "s") : "Not reached yet"}">${chShort(g)}</span>`;
+  }).join("");
+  const hist = C.runs.slice().reverse().map((r) => {
+    const w = C.wins(r);
+    const status = r.status === "active" ? `<span class="ch-pill live">Live</span>` : `<span class="ch-pill end">Ended</span>`;
+    const path = [r.steps.length ? chShort(start) : ""].concat(r.steps.map((s) => s.res === "MISS" ? "✕" : s.res === "PUSH" ? "=" : chShort(s.after))).filter(Boolean).join(" → ");
+    return `<li><div class="ch-h-top">${status}<b>Run ${r.n}</b><span>${w} win${w === 1 ? "" : "s"} · peak ${chMoney(r.peak)}</span></div><div class="ch-h-path">${pbEsc(path)}</div><div class="subn">${pbEsc(chDay(r.from))}${r.end ? " to " + pbEsc(chDay(r.end.day)) + ", ended by " + pbEsc(r.end.legs.filter((l) => l.result === "MISS").map((l) => l.label).join(" and ") || "a miss") : " to now"}</div></li>`;
+  }).join("");
+  const shareTxt = active && steps
+    ? `Double Gs Ladder Challenge: ${chMoney(start)} → ${chMoney(bank)} in ${steps} straight. ${curRow ? `Next rung ${pbAm(curRow.american)} for ${chMoney(nextBank)}.` : ""}`
+    : `Double Gs Ladder Challenge: start with ${chMoney(start)}, roll every win into the next day's ticket.${C.best && C.best.peak > start ? ` Best run so far: ${chMoney(C.best.peak)}.` : ""}`;
+  return `<article class="ch">
+    <div class="ch-top">
+      <div class="ch-title"><h3>The Ladder Challenge</h3><p>Put ${chMoney(start)} on the Ladder and let every win ride on the next day's ticket. One miss and it starts over.</p></div>
+      <label class="ch-stake">Start with <span>$</span><input id="chStart" type="number" inputmode="decimal" min="1" max="10000" step="1" value="${start}" aria-label="Starting stake in dollars"></label>
+    </div>
+    <div class="ch-body">
+      <div class="ch-now">
+        <div class="ch-step">${active && steps ? `Rung ${steps}` : "Rung 0"}${curRow ? ` · next: ${pbAm(curRow.american)}` : ""}</div>
+        ${headline}
+        <div class="ch-goal"><div class="ch-goal-bar"><i style="width:${(pct * 100).toFixed(1)}%"></i></div><div class="ch-goal-txt"><span>Next goal ${chMoney(goal)}</span><span>${toGo ? `about ${toGo} more win${toGo === 1 ? "" : "s"} at today's price` : ""}</span></div></div>
+        <div class="ch-ms-row">${milestones}</div>
+        <div class="ch-stats">
+          <div><b>${C.best ? chMoney(C.best.peak) : "—"}</b><span>Best run</span></div>
+          <div><b>${C.longest}</b><span>Longest streak</span></div>
+          <div><b>${C.runs.length}</b><span>Runs</span></div>
+          <div><b>${C.tickets}</b><span>Tickets</span></div>
+        </div>
+        <div class="ch-actions"><button type="button" class="ch-share" data-chshare="${pbEsc(shareTxt)}">Share the run</button><a href="#ladder" class="ch-rules-link" data-chrules="1">How it works</a></div>
+        <div class="ch-rules" hidden><p>Every game day the Ladder posts one parlay and locks it 90 minutes before the first leg. The challenge bets the whole bankroll on it: a hit multiplies the bankroll by the ticket's locked price, a push carries it over, a miss ends the run, and the next ticket starts a new run at the starting stake. Light days count too, since that's the ticket of the day. Every run comes from tickets the server locked and graded, so nothing here can be changed after the fact; change the starting stake and every run is redrawn at that amount.</p><p>This is a way to follow the picks, not a staking plan: rolling everything into parlays loses the whole run on one miss. For real money, the bet sizes on each ticket are the ones to use.</p></div>
+      </div>
+      <ol class="ch-ladder" aria-label="This run, rung by rung">${rungs.join("")}</ol>
+    </div>
+    ${hist ? `<details class="ch-hist"${C.runs.length <= 3 ? " open" : ""}><summary>Every run (${C.runs.length})</summary><ol>${hist}</ol></details>` : ""}
+  </article>`;
+}
+function wireChallenge(box) {
+  const inp = box.querySelector("#chStart");
+  if (inp) inp.addEventListener("change", () => { const v = Math.max(1, Math.min(10000, Math.round(Number(inp.value) || 10))); try { localStorage.setItem(CH_KEY, String(v)); } catch (e) {} renderLadder(); });
+  const sh = box.querySelector("[data-chshare]");
+  if (sh) sh.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const text = sh.dataset.chshare, url = location.origin + location.pathname + "#ladder";
+    const done = (m) => { const o = sh.textContent; sh.textContent = m; setTimeout(() => { sh.textContent = o; }, 2000); };
+    if (navigator.share && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent || "")) navigator.share({ title: "The Ladder Challenge", text, url }).catch(() => {});
+    else if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text + " " + url).then(() => done("Copied"), () => done("Copy the address bar"));
+    else done("Copy the address bar");
+  });
+  const rl = box.querySelector("[data-chrules]");
+  if (rl) rl.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); const r = box.querySelector(".ch-rules"); if (r) { r.hidden = !r.hidden; rl.textContent = r.hidden ? "How it works" : "Hide"; } });
+}
 function renderLadder() {
   const box = document.getElementById("ladderBoard");
   if (!box) return;
   const rows = ladderRows();
   const cur = ladderCurrent();
   const done = rows.filter((r) => r.result || (r.locked && cur && cur.row.key !== r.key)).sort((a, b) => String(b.day).localeCompare(String(a.day)));
-  box.innerHTML = bankrollHtml() + ladderRecordHtml(rows)
+  box.innerHTML = ladderChallengeHtml(rows) + bankrollHtml() + ladderRecordHtml(rows)
     + (cur ? `<h3 class="ladder-h">${cur.row.locked ? "Today's ladder" : "Next ladder"}</h3>` + ladderTicketHtml(cur.row, { live: cur.live, builder: true })
       : `<div class="empty">No ladder right now: no game day in the next week has two games with legs close enough to their price. It shows here as soon as one does.</div>`)
     + alertsHtml()
     + (done.length ? `<h3 class="ladder-h">Every ladder</h3>` + done.map((r) => ladderTicketHtml(r)).join("") : "");
   wireBankroll(box, renderLadder);
+  wireChallenge(box);
   if (!box.__wired) {
     box.__wired = true;
     box.addEventListener("click", (e) => {
@@ -14451,7 +14627,9 @@ function ladderTileHtml() {
   const rec = T.n ? `${T.hit}-${T.miss} · ${T.units >= 0 ? "+" : "−"}${Math.abs(T.units).toFixed(2)}u` : "New";
   if (!cur) return `<div class="lbl">The Ladder · ${rec}</div><p class="subn">No ladder right now. It posts when a game day has two legs that each beat their price.</p><a href="#ladder" data-view="ladder" class="ladder-link">See the record</a>`;
   const r = cur.row;
-  return `<div class="lbl">The Ladder · ${rec}</div>
+  const CH = ladderChallenge(ladderRows(), chStart());
+  const chLine = CH.cur && CH.wins(CH.cur) ? `<div class="ch-tile">Challenge: ${chMoney(CH.start)} → <b>${chMoney(CH.cur.bank)}</b> · rung ${CH.wins(CH.cur)}${r.dec ? ` · next ${chMoney(CH.cur.bank * Number(r.dec))}` : ""}</div>` : `<div class="ch-tile">Challenge: rung 0 · ${chMoney(CH.start)} rides on this ticket${CH.best && CH.best.peak > CH.start ? ` · best run ${chMoney(CH.best.peak)}` : ""}</div>`;
+  return `<div class="lbl">The Ladder · ${rec}</div>${chLine}
     <div class="ladder-tile-price"><b>${pbAm(r.american)}</b> ${r.book ? "at " + pbEsc(r.book) : ""} · ${r.n} legs · ${r.tier === "light" ? "light day, ½u" : (r.ev >= 0 ? "+" : "") + (r.ev * 100).toFixed(0) + "% value"}</div>
     <ul class="ladder-tile-legs">${r.legs.map((l) => `<li>${pbEsc(l.label)} <span class="subn">${pbAm(l.price)}</span></li>`).join("")}</ul>
     <div class="subn">${r.locked ? "Locked" : "Locks 90 minutes before the first leg"} · ${pbEsc(potdDayName(r.firstKick || r.day))}</div>
