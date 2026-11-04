@@ -6,6 +6,8 @@ Usage: python3 scripts/page_probe.py props
 """
 import asyncio
 import json
+import mimetypes
+import os
 import sys
 from pathlib import Path
 
@@ -13,6 +15,26 @@ from playwright.async_api import async_playwright
 
 SITE = "https://peyton2407-maker.github.io"
 OUT = Path("probe-out")
+# PROBE_LOCAL=1: the site's own files come from this checkout (a branch being tested before it
+# goes live), everything else (ESPN, the odds feeds) from the internet as usual
+LOCAL = os.environ.get("PROBE_LOCAL") == "1"
+ROOT = Path(__file__).resolve().parents[1]
+
+
+async def local_route(r):
+    url = r.request.url
+    if not url.startswith(SITE):
+        return await r.continue_()
+    path = url[len(SITE):].split("?")[0].split("#")[0] or "/"
+    f = ROOT / path.lstrip("/")
+    if f.is_dir():
+        f = f / "index.html"
+    if not f.exists():
+        return await r.fulfill(status=404, body=b"not found")
+    ct = mimetypes.guess_type(str(f))[0] or "application/octet-stream"
+    if ct.startswith("text/") or ct in ("application/json", "application/javascript"):
+        ct += "; charset=utf-8"
+    return await r.fulfill(status=200, body=f.read_bytes(), headers={"content-type": ct})
 
 PROPS_DIAG = """() => {
   const rows = (typeof collectNflProps === 'function' ? collectNflProps() : []);
@@ -54,6 +76,8 @@ async def main(view, js=None):
         browser = await p.chromium.launch()
         for name, vp in (("desktop", {"width": 1280, "height": 900}), ("phone", {"width": 390, "height": 844})):
             ctx = await browser.new_context(viewport=vp)
+            if LOCAL:
+                await ctx.route("**/*", local_route)
             page = await ctx.new_page()
             errors = []
             page.on("pageerror", lambda e: errors.append(str(e)[:300]))

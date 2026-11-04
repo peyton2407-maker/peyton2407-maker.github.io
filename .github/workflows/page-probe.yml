@@ -6,6 +6,9 @@ on:
       view:
         description: "Page (hash), e.g. props"
         default: "props"
+      local:
+        description: "Test this branch's files with live data (not the published site)"
+        default: "false"
 permissions:
   contents: write
 jobs:
@@ -22,6 +25,8 @@ jobs:
           pip install --quiet playwright==1.56.0
           python -m playwright install --with-deps chromium
       - name: Capture
+        env:
+          PROBE_LOCAL: ${{ github.event.inputs.local == 'true' && '1' || '0' }}
         run: python3 scripts/page_probe.py "${{ github.event.inputs.view }}" scripts/probe.js
       - name: Push to the probe branch
         run: |

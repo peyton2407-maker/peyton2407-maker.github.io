@@ -2985,8 +2985,8 @@ table.props b.down { color: var(--muted); font-weight: 600; }
           <option value="QB">QB rush TDs</option>
         </select>
         <select id="tdSort" class="lg-select">
-          <option value="hit">Sort: most likely</option>
           <option value="value">Sort: best value</option>
+          <option value="hit">Sort: most likely</option>
           <option value="lambda">Sort: projected TDs</option>
           <option value="kick">Sort: kickoff</option>
         </select>
@@ -7319,6 +7319,56 @@ function buildGameTdModel(g) {
     };
   });
 }
+// The books' anytime-touchdown prices for a player (data/props.json, the "Yes" side at 0.5,
+// pulled with the player props): the best one, and every book's, for the card.
+function tdOffers(r) {
+  if (typeof pbPropOffers !== "function") return null;
+  const offs = (pbPropOffers(r.game_id, r.name, "td") || []).filter((o) => o.side === "over" && Math.abs(Number(o.line) - 0.5) < 1e-9 && Math.abs(Number(o.odds)) >= 100);
+  if (!offs.length) return null;
+  // a book far out of line with the others is a stale or mislabeled price, not a better one
+  // (one book at +230 when four have -245): with 3+ books, drop any whose chance is under 65% or
+  // over 150% of the middle book's
+  let use = offs;
+  if (offs.length >= 3) {
+    const imp = offs.map((o) => 1 / pbDec(o.odds)).sort((a, b) => a - b);
+    const med = imp[Math.floor(imp.length / 2)];
+    use = offs.filter((o) => { const q = 1 / pbDec(o.odds); return q >= med * 0.65 && q <= med * 1.5; });
+    if (!use.length) use = offs;
+  }
+  const sorted = use.slice().sort((a, b) => pbDec(b.odds) - pbDec(a.odds));
+  return { best: sorted[0], all: sorted, dropped: offs.length - use.length };
+}
+// The market's own chance a player scores. Books post only the "Yes" price, with a big cut, so
+// each player's median price across books is turned into expected touchdowns, and a team's are
+// scaled to add up to the touchdowns its spread and total imply (the share of them our model
+// puts on the players with a price). The checked chance is that, moved toward ours by as much
+// as our graded touchdown picks back (the prior for an unproven market until they do).
+function tdMarketMap(rows) {
+  const sig = [(window.PB_PROPS || {}).updated, rows.length].join("|");
+  if (tdMarketMap.c && tdMarketMap.c.sig === sig) return tdMarketMap.c.m;
+  const team = {}, m = new Map();
+  rows.forEach((r) => {
+    const off = tdOffers(r);
+    const k = r.game_id + "|" + r.side;
+    const t = team[k] || (team[k] = { ours: 0, oursPriced: 0, book: 0, list: [] });
+    t.ours += r.lam;
+    if (!off) return;
+    const imp = off.all.map((o) => 1 / pbDec(o.odds)).sort((a, b) => a - b);
+    const n = imp.length, med = n % 2 ? imp[(n - 1) / 2] : (imp[n / 2 - 1] + imp[n / 2]) / 2;
+    const lam = -Math.log(Math.max(0.01, 1 - Math.min(0.97, med)));
+    t.oursPriced += r.lam; t.book += lam; t.list.push({ r, off, lam });
+  });
+  Object.entries(team).forEach(([k, t]) => {
+    const g = pbGame(k.split("|")[0]), side = k.split("|")[1], o = (g && g.odds) || {};
+    if (!t.list.length || o.total == null || o.home_spread == null || !(t.book > 0)) return;
+    const hp = (Number(o.total) - Number(o.home_spread)) / 2, pts = side === "home" ? hp : Number(o.total) - hp;
+    const cover = t.ours > 0 ? Math.min(1, t.oursPriced / t.ours) : 1;
+    const scale = (pts * 0.68 / 7) * 0.94 * cover / t.book;
+    t.list.forEach((x) => m.set(x.r.game_id + "|" + x.r.id, { off: x.off, mkt: 1 - Math.exp(-x.lam * scale), n: x.off.all.length }));
+  });
+  tdMarketMap.c = { sig, m };
+  return m;
+}
 function collectTdBoard() {
   const rows = [];
   (DATA.games || []).forEach((g) => {
@@ -7337,9 +7387,15 @@ function renderTdDesk() {
   if (!board) return;
   const market = (document.getElementById("tdMarket") || {}).value || "anytime";
   const pos = (document.getElementById("tdPos") || {}).value || "ALL";
-  const sort = (document.getElementById("tdSort") || {}).value || "hit";
+  const sort = (document.getElementById("tdSort") || {}).value || "value";
+  if (!window.PB_PROPS && typeof pbFetchOnce === "function" && !renderTdDesk.asked) {
+    renderTdDesk.asked = true;
+    pbFetchOnce("props", "/data/props.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_PROPS = d; }).then(() => { if (view === "tds") renderTdDesk(); });
+  }
   const q = ((document.getElementById("tdQ") || {}).value || "").toLowerCase();
   let rows = collectTdBoard();
+  const MK = tdMarketMap(rows);
+  const keep = typeof pbKeep === "function" ? pbKeep("nfl", "td").k : 0.25;
   const expand = [];
   rows.forEach((r) => {
     const mkts = market === "mix" ? ["anytime", "first", "two"] : [market];
@@ -7348,10 +7404,14 @@ function renderTdDesk() {
       if (m === "anytime" && hit < 0.08) return;
       if (m === "first" && hit < 0.03) return;
       if (m === "two" && hit < 0.04) return;
+      const mk = m === "anytime" ? MK.get(r.game_id + "|" + r.id) : null;
+      const off = mk ? mk.off : null;
+      const win = mk ? Math.max(0.005, Math.min(0.99, mk.mkt + keep * (hit - mk.mkt))) : null;
       expand.push({
         ...r, market: m, hit,
         label: m === "first" ? "First TD of the game" : m === "two" ? "Scores 2+ TDs" : "Scores a TD",
-        fair: m === "first" ? r.fairFirst : m === "two" ? r.fairTwo : r.fairAny
+        fair: m === "first" ? r.fairFirst : m === "two" ? r.fairTwo : r.fairAny,
+        off, mkt: mk ? mk.mkt : null, win, ev: off && r.lam > 0 ? win * pbDec(off.best.odds) - 1 : null
       });
     });
   });
@@ -7360,7 +7420,7 @@ function renderTdDesk() {
   expand.sort((a, b) => {
     if (sort === "lambda") return b.lam - a.lam;
     if (sort === "kick") return String(a.date).localeCompare(String(b.date)) || b.hit - a.hit;
-    if (sort === "value") return (b.hit / 0.45) - (a.hit / 0.45) || b.hit - a.hit;
+    if (sort === "value") return (b.ev == null ? -9 : b.ev) - (a.ev == null ? -9 : a.ev) || b.hit - a.hit;
     return b.hit - a.hit;
   });
   const stamp = document.getElementById("tdStamp");
@@ -7412,11 +7472,14 @@ function renderTdDesk() {
           <div class="prop-meta">${r.pos} · ${r.team} vs ${r.opp} · ${r.game}</div>
           </div>
         </div>
-        <div class="td-pct">${Math.round(r.hit * 100)}%</div>
+        <div class="td-pct">${Math.round((r.win != null ? r.win : r.hit) * 100)}%</div>
       </div>
-      <div class="td-bar"><span style="width:${Math.min(100, Math.max(6, r.hit * 100))}%"></span></div>
+      <div class="td-bar"><span style="width:${Math.min(100, Math.max(6, (r.win != null ? r.win : r.hit) * 100))}%"></span></div>
       <div class="prop-stats">
-        <div><span class="lbl">Payout if it hits</span><b>${r.fair}</b></div>
+        <div><span class="lbl">Best price</span><b>${r.off ? `${pbAm(r.off.best.odds)} <span class="subn">${pbEsc(r.off.best.book)}</span>` : r.market === "anytime" ? `<span class="subn">Not posted yet</span>` : `<span class="subn">Books don't post this one to us</span>`}</b></div>
+        <div><span class="lbl">${r.win != null ? "Our number" : "Our fair price"}</span><b>${r.win != null ? Math.round(r.hit * 100) + "% · " : ""}${r.fair}</b></div>
+        ${r.mkt != null ? `<div><span class="lbl">Books' chance</span><b>${Math.round(r.mkt * 100)}% <span class="subn">from ${r.off.all.length} book${r.off.all.length === 1 ? "" : "s"}</span></b></div>` : ""}
+        ${r.ev != null ? `<div><span class="lbl">Value at the best price</span><b class="${r.ev >= 0 ? "up" : "down"}">${r.ev >= 0 ? "+" : "−"}${Math.abs(r.ev * 100).toFixed(1)}%</b></div>` : ""}
         <div><span class="lbl">Expected TDs</span><b>${r.lam.toFixed(2)}</b></div>
         <div><span class="lbl">Scores / scores twice</span><b>${Math.round(r.anytime * 100)}% · ${Math.round(r.two * 100)}%</b></div>
         <div><span class="lbl">First TD of game</span><b>${Math.round(r.first * 100)}%</b></div>
