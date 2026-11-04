@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": -3,
    "total": 48.5,
-   "lockedAt": "2026-11-04T15:32:11.520Z",
+   "lockedAt": "2026-11-04T16:05:12.813Z",
    "provisional": true
   },
   "401866456": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 44.5,
-   "lockedAt": "2026-11-04T15:32:11.520Z",
+   "lockedAt": "2026-11-04T16:05:12.813Z",
    "provisional": true
   },
   "401866457": {
@@ -111,7 +111,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 52.5,
-   "lockedAt": "2026-11-04T15:32:11.520Z",
+   "lockedAt": "2026-11-04T16:05:12.813Z",
    "provisional": true
   }
  },
@@ -905,7 +905,7 @@
    }
   ]
  },
- "updated": "2026-11-04T15:32:11.520Z",
+ "updated": "2026-11-04T16:05:12.813Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -990,50 +990,50 @@
    "key": "ladder:2026-11-04",
    "day": "2026-11-04",
    "n": 2,
-   "book": "bet365",
+   "book": "BetMGM",
    "tier": "light",
    "stake": 0.5,
    "size": 0,
-   "american": 354,
-   "dec": 4.5432,
-   "chance": 0.2122,
-   "breakEven": 0.2201,
-   "ev": -0.036,
+   "american": 261,
+   "dec": 3.6136,
+   "chance": 0.2491,
+   "breakEven": 0.2767,
+   "ev": -0.0286,
    "firstKick": "2026-11-05T00:00:00.000Z",
    "legs": [
     {
-     "id": "401866457|sp|home",
-     "label": "SAC +25.5",
-     "kind": "sp",
-     "game_id": "401866457",
-     "game": "TOL @ SAC",
+     "id": "401866456|ml|home",
+     "label": "EMU to win",
+     "kind": "ml",
+     "game_id": "401866456",
+     "game": "CMU VS EMU",
      "league": "cfb",
-     "kick": "2026-11-05T00:00Z",
-     "price": -111,
-     "line": 25.5,
-     "win": 0.5145,
-     "bookWin": 0.5022,
-     "value": -0.0219,
-     "cat": "dog",
-     "why": "SAC is getting 25.5. Our number has them covering by 2.8 points.",
+     "kick": "2026-11-05T00:30Z",
+     "price": -110,
+     "line": null,
+     "win": 0.5176,
+     "bookWin": 0.5174,
+     "value": -0.0119,
+     "cat": "ml",
+     "why": "EMU to win: our checked chance is 52%, the books' 52%.",
      "prop": null,
      "result": null
     },
     {
-     "id": "401866455|ml|away",
-     "label": "BALL to win",
-     "kind": "ml",
+     "id": "401866455|sp|home",
+     "label": "MASS -3",
+     "kind": "sp",
      "game_id": "401866455",
      "game": "BALL @ MASS",
      "league": "cfb",
      "kick": "2026-11-05T00:00Z",
-     "price": 139,
-     "line": null,
-     "win": 0.4124,
-     "bookWin": 0.417,
-     "value": -0.0144,
-     "cat": "ml",
-     "why": "BALL to win: our checked chance is 41%, the books' 42%.",
+     "price": -112,
+     "line": -3,
+     "win": 0.4813,
+     "bookWin": 0.4711,
+     "value": -0.0169,
+     "cat": "play",
+     "why": "MASS is the side. Our number is 2.4 points off the current line. MASS is at home. Our line moved from MASS -5.7 to MASS -5.4. Our total moved from 49.5 to 48.9. The line moved from MASS -3.5 to MASS -3.0. We followed -0.3 of that move. The total moved from 49.5 to 48.5. We followed -0.7. Benign conditions — little weather tax.",
      "prop": null,
      "result": null
     }
@@ -1042,7 +1042,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-04T15:32:11.520Z"
+   "lockedAt": "2026-11-04T16:05:12.813Z"
   }
  ],
  "teasers": [],
