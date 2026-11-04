@@ -1,8 +1,14 @@
 {
- "checked_at": "2026-11-04T01:38:17Z",
+ "checked_at": "2026-11-04T19:55:54Z",
  "errors": [],
  "console": [],
- "failed_requests": {},
+ "failed_requests": {
+  "a.espncdn.com": {
+   "count": 3,
+   "example": "https://a.espncdn.com/i/teamlogos/ncaa/500/16.png",
+   "reason": "net::ERR_ABORTED"
+  }
+ },
  "bad_status": {},
  "screens": {
   "home": {
@@ -10,7 +16,7 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 1149,
+   "chars": 1325,
    "images": 40,
    "broken_images": []
   },
@@ -19,17 +25,17 @@
    "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 5542,
-   "images": 35,
+   "chars": 5021,
+   "images": 37,
    "broken_images": []
   },
   "cfb": {
    "visible": true,
-   "count": 63,
+   "count": 61,
    "summary": [],
    "empty": [],
-   "chars": 10264,
-   "images": 93,
+   "chars": 9840,
+   "images": 97,
    "broken_images": []
   },
   "builder": {
@@ -37,8 +43,8 @@
    "count": 16,
    "summary": [],
    "empty": [],
-   "chars": 2517,
-   "images": 15,
+   "chars": 2578,
+   "images": 32,
    "broken_images": []
   },
   "season": {
@@ -46,16 +52,16 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3208,
+   "chars": 3233,
    "images": 42,
    "broken_images": []
   },
   "score": {
    "visible": true,
-   "count": 352,
+   "count": 366,
    "summary": [],
    "empty": [],
-   "chars": 21586,
+   "chars": 23998,
    "images": 0,
    "broken_images": []
   },
@@ -64,7 +70,7 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3263,
+   "chars": 3267,
    "images": 35,
    "broken_images": []
   },
@@ -73,7 +79,7 @@
    "count": 6,
    "summary": [],
    "empty": [],
-   "chars": 938,
+   "chars": 949,
    "images": 12,
    "broken_images": []
   },
@@ -82,19 +88,19 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 5787,
-   "images": 22,
+   "chars": 7230,
+   "images": 17,
    "broken_images": []
   },
   "tds": {
    "visible": true,
    "count": 48,
    "summary": [
-    "180 TD tickets in this filter 68% top anytime (III) 219 first-TD names mod"
+    "190 TD tickets in this filter 68% top anytime (III) 220 first-TD names mod"
    ],
    "empty": [],
-   "chars": 3981,
-   "images": 19,
+   "chars": 4005,
+   "images": 24,
    "broken_images": []
   },
   "charts": {
@@ -102,19 +108,19 @@
    "count": 29,
    "summary": [],
    "empty": [],
-   "chars": 3896,
-   "images": 5,
+   "chars": 3724,
+   "images": 4,
    "broken_images": []
   },
   "value": {
    "visible": true,
    "count": 72,
    "summary": [
-    "147 value tickets in this filter 139 TD plus-money 6 spread / dog sides 54% b"
+    "291 value tickets in this filter 147 TD plus-money 6 spread / dog sides 85% b"
    ],
    "empty": [],
-   "chars": 4039,
-   "images": 18,
+   "chars": 3452,
+   "images": 37,
    "broken_images": []
   },
   "parlay": {
@@ -122,7 +128,7 @@
    "count": 5,
    "summary": [],
    "empty": [],
-   "chars": 2813,
+   "chars": 3073,
    "images": 0,
    "broken_images": []
   },
@@ -131,22 +137,20 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2870,
-   "images": 8,
+   "chars": 2926,
+   "images": 13,
    "broken_images": []
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "530 listed THU \u00b7 11:31 PM ET 529 listed FRI \u00b7 11:45 PM ET 473 listed S",
-    "464 listed SUN \u00b7 11:45 PM ET 583 listed TUE \u00b7 8:16 PM ET 596 listed CA",
-    "39 listed BAL @ BUF 29 listed TEN @ CIN 29 listed ARI @ DAL 33 listed",
-    "28 listed LV @ NYJ 32 listed CLE @ PIT 30 listed ATL @ TB 29 listed I"
+    "471 listed THU Not posted FRI Not posted SAT Not posted SUN Not posted",
+    "471 listed 0 probable \u00b7 75% 135 questionable / GTD \u00b7 50% 1 doubtful \u00b7 "
    ],
    "empty": [],
-   "chars": 5546,
-   "images": 7,
+   "chars": 4170,
+   "images": 4,
    "broken_images": []
   },
   "nflwx": {
@@ -154,7 +158,7 @@
    "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 5222,
+   "chars": 5200,
    "images": 30,
    "broken_images": []
   },
@@ -162,10 +166,8 @@
    "visible": true,
    "count": 4,
    "summary": [],
-   "empty": [
-    "No NFL bet left this week beats its price: no side, total, moneyline or player prop. So there is no play of the day yet. Player prop prices "
-   ],
-   "chars": 4809,
+   "empty": [],
+   "chars": 5053,
    "images": 0,
    "broken_images": []
   },
@@ -176,8 +178,8 @@
     "18 featured CFB leans 6 spread tickets 0 O/U tickets AFA @ ARMY top car"
    ],
    "empty": [],
-   "chars": 6156,
-   "images": 32,
+   "chars": 6217,
+   "images": 30,
    "broken_images": []
   }
  },
@@ -185,7 +187,7 @@
   "open": true,
   "hero": true,
   "shown_twice": false,
-  "logos_ok": 17
+  "logos_ok": 18
  },
  "split": {
   "games": 16,
