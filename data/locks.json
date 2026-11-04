@@ -60,16 +60,16 @@
    "away": "BALL",
    "date": "2026-11-05T00:00Z",
    "pick": "MASS",
-   "pick_line": "MASS -3.0",
+   "pick_line": "MASS -3.5",
    "total_pick": "NO PLAY",
    "side_play": true,
-   "our_margin": 5.63,
+   "our_margin": 5.7,
    "our_total": 49.5,
    "confidence": 51,
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-04T12:31:16.366Z",
+   "lockedAt": "2026-11-04T13:01:22.270Z",
    "provisional": true
   },
   "401866456": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 44.5,
-   "lockedAt": "2026-11-04T12:31:16.366Z",
+   "lockedAt": "2026-11-04T13:01:22.270Z",
    "provisional": true
   },
   "401866457": {
@@ -111,7 +111,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 52.5,
-   "lockedAt": "2026-11-04T12:31:16.366Z",
+   "lockedAt": "2026-11-04T13:01:22.270Z",
    "provisional": true
   }
  },
@@ -905,7 +905,7 @@
    }
   ]
  },
- "updated": "2026-11-04T12:31:16.366Z",
+ "updated": "2026-11-04T13:01:22.270Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -998,7 +998,7 @@
    "dec": 3.0485,
    "chance": 0.3146,
    "breakEven": 0.328,
-   "ev": -0.0411,
+   "ev": -0.041,
    "firstKick": "2026-11-05T00:00:00.000Z",
    "legs": [
     {
@@ -1042,7 +1042,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-04T12:31:16.366Z"
+   "lockedAt": "2026-11-04T13:01:22.270Z"
   }
  ],
  "teasers": [],
