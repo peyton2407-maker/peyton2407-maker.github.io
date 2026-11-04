@@ -61,15 +61,15 @@
    "date": "2026-11-05T00:00Z",
    "pick": "MASS",
    "pick_line": "MASS -2.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "UNDER 48.5",
    "side_play": true,
    "our_margin": 5.1,
-   "our_total": 49.5,
+   "our_total": 48.9,
    "confidence": 51,
    "total_play": false,
    "spread": -2.5,
-   "total": 49.5,
-   "lockedAt": "2026-11-04T20:02:06.150Z",
+   "total": 48.5,
+   "lockedAt": "2026-11-04T20:21:47.563Z",
    "provisional": true
   },
   "401866456": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 44.5,
-   "lockedAt": "2026-11-04T20:02:06.150Z",
+   "lockedAt": "2026-11-04T20:21:47.563Z",
    "provisional": true
   },
   "401866457": {
@@ -111,7 +111,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 52.5,
-   "lockedAt": "2026-11-04T20:02:06.150Z",
+   "lockedAt": "2026-11-04T20:21:47.563Z",
    "provisional": true
   }
  },
@@ -905,7 +905,7 @@
    }
   ]
  },
- "updated": "2026-11-04T20:02:06.150Z",
+ "updated": "2026-11-04T20:21:47.563Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -990,30 +990,30 @@
    "key": "ladder:2026-11-04",
    "day": "2026-11-04",
    "n": 2,
-   "book": "BetMGM",
+   "book": null,
    "tier": "light",
    "stake": 0.5,
    "size": 0,
-   "american": 260,
-   "dec": 3.6006,
-   "chance": 0.2604,
-   "breakEven": 0.2777,
-   "ev": -0.0356,
+   "american": 264,
+   "dec": 3.6446,
+   "chance": 0.2649,
+   "breakEven": 0.2744,
+   "ev": -0.0345,
    "firstKick": "2026-11-05T00:00:00.000Z",
    "legs": [
     {
      "id": "401866457|sp|home",
-     "label": "SAC +25",
+     "label": "SAC +25.5",
      "kind": "sp",
      "game_id": "401866457",
      "game": "TOL @ SAC",
      "league": "cfb",
      "kick": "2026-11-05T00:00Z",
-     "price": -108,
-     "line": 25,
-     "win": 0.4953,
-     "bookWin": 0.4843,
-     "value": -0.0189,
+     "price": -110,
+     "line": 25.5,
+     "win": 0.5127,
+     "bookWin": 0.5,
+     "value": -0.0212,
      "cat": "dog",
      "why": "SAC is getting 25.5. Our number has them covering by 2.8 points.",
      "alt": null,
@@ -1028,13 +1028,13 @@
      "game": "BALL @ MASS",
      "league": "cfb",
      "kick": "2026-11-05T00:00Z",
-     "price": -115,
+     "price": -110,
      "line": -2.5,
-     "win": 0.5258,
-     "bookWin": 0.5108,
-     "value": -0.017,
+     "win": 0.5167,
+     "bookWin": 0.5001,
+     "value": -0.0136,
      "cat": "play",
-     "why": "MASS is the side. Our number is 2.6 points off the current line. MASS is at home. Nothing since the locked score was big enough to move the line. Benign conditions — little weather tax.",
+     "why": "MASS is the side. Our number is 2.6 points off the current line. MASS is at home. Our total moved from 49.5 to 48.9. The total moved from 49.5 to 48.5. We followed -0.7. Benign conditions — little weather tax.",
      "alt": null,
      "prop": null,
      "result": null
@@ -1044,7 +1044,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-04T20:02:06.150Z"
+   "lockedAt": "2026-11-04T20:21:47.563Z"
   }
  ],
  "teasers": [],
@@ -1075,8 +1075,8 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.7432,
-   "bookWin": 0.7432,
+   "win": 0.7461,
+   "bookWin": 0.743,
    "total": 40.5,
    "result": null,
    "final": null
