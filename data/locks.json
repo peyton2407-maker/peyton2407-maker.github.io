@@ -77,7 +77,7 @@
     "close_line": -7.5,
     "closeAt": "2026-10-18T16:30:00.000Z",
     "close_src": "history",
-    "clv": 0.0
+    "clv": 0
    },
    {
     "key": "game:401873005",
@@ -102,7 +102,7 @@
     "close_line": 5.5,
     "closeAt": "2026-10-18T15:28:00.000Z",
     "close_src": "history",
-    "clv": 0.0
+    "clv": 0
    },
    {
     "key": "game:401873023",
@@ -381,7 +381,7 @@
     "close_line": 55.5,
     "closeAt": "2026-10-16T22:31:00.000Z",
     "close_src": "history",
-    "clv": 0.0
+    "clv": 0
    },
    {
     "key": "game:401869844",
@@ -406,7 +406,7 @@
     "close_line": 48.5,
     "closeAt": "2026-10-16T23:27:00.000Z",
     "close_src": "history",
-    "clv": 0.0
+    "clv": 0
    },
    {
     "key": "slate:2026-10-17",
@@ -431,7 +431,7 @@
     "close_line": 47.5,
     "closeAt": "2026-10-17T16:30:00.000Z",
     "close_src": "history",
-    "clv": 1.0
+    "clv": 1
    },
    {
     "key": "game:401858492",
@@ -456,7 +456,7 @@
     "close_line": 51.5,
     "closeAt": "2026-10-18T01:33:00.000Z",
     "close_src": "history",
-    "clv": 0.0
+    "clv": 0
    },
    {
     "key": "game:401871069",
@@ -506,7 +506,7 @@
     "close_line": -1.5,
     "closeAt": "2026-10-20T23:28:00.000Z",
     "close_src": "history",
-    "clv": 0.0
+    "clv": 0
    },
    {
     "key": "game:401871070",
@@ -602,7 +602,7 @@
     "close_line": -15.5,
     "closeAt": "2026-10-24T10:49:00.000Z",
     "close_src": "history",
-    "clv": 0.0
+    "clv": 0
    },
    {
     "key": "game:401871072",
@@ -631,7 +631,7 @@
     "big": false,
     "savedAt": 1793142880131,
     "by": "Missed by 15.5",
-    "close_line": 6.0,
+    "close_line": 6,
     "closeAt": "2026-10-27T21:14:00.000Z",
     "close_src": "history",
     "clv": -0.5
@@ -664,10 +664,10 @@
     "savedAt": 1793202229493,
     "note": "No lock run landed in the 90 minutes before kickoff; this is the last play saved before kickoff.",
     "by": "Missed by 21",
-    "close_line": 3.0,
+    "close_line": 3,
     "closeAt": "2026-10-28T20:59:00.000Z",
     "close_src": "history",
-    "clv": 0.0
+    "clv": 0
    },
    {
     "key": "game:401871058",
@@ -700,7 +700,7 @@
     "close_line": 1.5,
     "closeAt": "2026-10-28T20:59:00.000Z",
     "close_src": "history",
-    "clv": 0.0
+    "clv": 0
    }
   ]
  },
@@ -842,7 +842,7 @@
    }
   ]
  },
- "updated": "2026-11-04T05:46:37.926Z",
+ "updated": "2026-11-04T07:01:37.461Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -922,6 +922,41 @@
    "provisional": false,
    "lockedAt": "2026-11-03T22:34:19.270Z",
    "paidDec": 3.7092
+  }
+ ],
+ "teasers": [],
+ "teaserLegs": [
+  {
+   "id": "401873039|sp|away",
+   "gid": "401873039",
+   "team": "CLE",
+   "side": "away",
+   "game": "CLE @ NO",
+   "kick": "2026-11-08T18:00Z",
+   "from": 1.5,
+   "to": 7.5,
+   "book": null,
+   "win": 0.7414,
+   "bookWin": 0.7491,
+   "total": 42.5,
+   "result": null,
+   "final": null
+  },
+  {
+   "id": "401873041|sp|home",
+   "gid": "401873041",
+   "team": "CAR",
+   "side": "home",
+   "game": "DEN @ CAR",
+   "kick": "2026-11-08T18:00Z",
+   "from": 2.5,
+   "to": 8.5,
+   "book": "DraftKings",
+   "win": 0.729,
+   "bookWin": 0.7161,
+   "total": 43.5,
+   "result": null,
+   "final": null
   }
  ]
 }
