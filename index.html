@@ -2023,6 +2023,9 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .alt-intro p { margin: 0 0 10px; }
 .alt-stamp { margin: 4px 0 0; }
 .alt-note { color: var(--sun); }
+.tz-alt { margin: 8px 0; line-height: 1.5; }
+div.tz-alt.better { padding: 10px 12px; border-radius: 10px; background: var(--turf-soft); border: 1px solid var(--line-2); color: var(--ink-soft); }
+div.tz-alt.better b { color: var(--sun); }
 .work-tbl th[scope="row"] a { color: var(--ink); text-decoration: none; border-bottom: 1px dotted var(--line-2); }
 .work-v { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: .82rem; font-weight: 700; white-space: nowrap; background: var(--card-2); color: var(--ink-soft); }
 .work-v.up { background: rgba(79,208,138,.16); color: var(--win, #4fd08a); }
@@ -8010,6 +8013,38 @@ function teaserLegHtml(l, pk) {
     <div class="subn">${pbEsc(l.g.short_name)} · ${kick} · ${tags.map(pbEsc).join(" · ")}${l.book ? ` · ${pbEsc(l.book)} has ${pbLine(l.from)}` : ""}</div>
     <div class="prop-why">${pbEsc(needs)}. Our checked chance at ${pbLine(l.to)} is ${Math.round(l.win * 100)}%, the books' ${Math.round(l.bookWin * 100)}%; a 2-team teaser at ${pk} needs ${(need * 100).toFixed(1)}% a leg.${l.low ? "" : " The total is above 49, where each point is worth less, so this leg is weaker than the usual teaser leg."}</div></li>`;
 }
+// The same bet as alternate lines: a 6-point teaser on CAR +2.5 and SEA -8.5 wins exactly when
+// a parlay of CAR +8.5 and SEA -2.5 does, so whichever pays more is the better way to bet it.
+// Real alternate prices (data/alt-lines.json) at each book that posts every leg's teased line;
+// a parlay is placed at one book, so the best single book counts.
+function tzAltCompare(t) {
+  const A = window.PB_ALT && window.PB_ALT.games;
+  if (!A || !t || !t.legs) return null;
+  const books = new Set();
+  t.legs.forEach((l) => Object.keys(((A[l.gid] || {}).books) || {}).forEach((b) => books.add(b)));
+  let best = null;
+  books.forEach((bk) => {
+    const prices = t.legs.map((l) => { const x = pbAltPrice(l.gid, "sp", l.side, l.to, bk); return x ? x.price : null; });
+    if (prices.some((x) => x == null)) return;
+    const dec = prices.reduce((a, x) => a * pbDec(x), 1);
+    if (!best || dec > best.dec) best = { book: bk, prices, dec };
+  });
+  if (!best) return null;
+  best.american = pbAmerican(best.dec);
+  best.ev = t.pAll * best.dec - 1;
+  best.teaserDec = pbDec(t.price);
+  best.better = best.dec > best.teaserDec + 0.005;
+  return best;
+}
+function tzAltHtml(t) {
+  const c = tzAltCompare(t);
+  if (!c) return window.PB_ALT ? `<p class="subn tz-alt">No book we track posts every one of these teased lines as an alternate line, so the teaser is the only way to bet it.</p>` : "";
+  const legsTxt = t.legs.map((l, i) => `${pbEsc(l.team.abbr)} ${pbLine(l.to)} ${pbAm(c.prices[i])}`).join(" + ");
+  const diff = Math.abs(10 * c.dec - 10 * c.teaserDec);
+  return c.better
+    ? `<div class="tz-alt better"><b>Cheaper as alt lines: ${pbAm(c.american)} at ${pbEsc(c.book)}.</b> ${legsTxt} is the same bet as this teaser and pays ${pbMoney(10 * c.dec)} on $10 against the teaser's ${pbMoney(10 * c.teaserDec)}, ${pbMoney(diff)} more. By our chances that's ${(c.ev >= 0 ? "+" : "−") + Math.abs(c.ev * 100).toFixed(1)}% value.</div>`
+    : `<p class="subn tz-alt">As alt lines it's ${legsTxt} = ${pbAm(c.american)} at ${pbEsc(c.book)}, the best book, which pays ${pbMoney(diff)} less on $10 than the teaser at ${pbAm(t.price)}. The teaser is the better way to bet it.</p>`;
+}
 function teaserFinderHtml() {
   const legs = teaserFinderLegs();
   const pk = TZ_PRICES[window.__tzPrice] ? window.__tzPrice : "-120";
@@ -8034,7 +8069,9 @@ function teaserFinderHtml() {
       <div class="ready-val ${cls}">${vt}</div>
       ${sizeHtml(kellyUnits(t.pAll, t.price, { cap: 1 }))}
       <ul class="parlay-legs">${t.legs.map((l) => teaserLegHtml(l, pk)).join("")}</ul>
-      <button type="button" class="ready-open" data-openteaser="${pbEsc(ids)}">Open as a 6-point teaser in the builder</button></article>`;
+      ${(() => { try { return tzAltHtml(t); } catch (e) { return ""; } })()}
+      <button type="button" class="ready-open" data-openteaser="${pbEsc(ids)}">Open as a 6-point teaser in the builder</button>
+      ${(() => { try { const c = tzAltCompare(t); return c && c.better ? `<button type="button" class="ready-open" data-openpb="${pbEsc(t.legs.map((l) => l.id + "@" + l.to + "@" + c.book).join("~"))}">Open the alt-line parlay in the builder</button>` : ""; } catch (e) { return ""; } })()}</article>`;
   };
   const best = (t2[0] && t2[0].ev >= -0.01) || (t3[0] && t3[0].ev >= -0.01);
   if (legs.length < 2) return intro + `<div class="cr-take"><b>Only one qualifying leg this week:</b> ${pbEsc(legs[0].team.abbr + " " + pbLine(legs[0].from) + " → " + pbLine(legs[0].to))}, ${Math.round(legs[0].win * 100)}% by our checked chance. A teaser needs two; lines move all week, so check back closer to kickoff.</div>` + legList;
