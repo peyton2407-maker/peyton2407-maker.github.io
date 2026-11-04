@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 49.5,
-   "lockedAt": "2026-11-04T18:46:31.210Z",
+   "lockedAt": "2026-11-04T19:16:41.013Z",
    "provisional": true
   },
   "401866456": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 44.5,
-   "lockedAt": "2026-11-04T18:46:31.210Z",
+   "lockedAt": "2026-11-04T19:16:41.013Z",
    "provisional": true
   },
   "401866457": {
@@ -111,7 +111,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 52.5,
-   "lockedAt": "2026-11-04T18:46:31.210Z",
+   "lockedAt": "2026-11-04T19:16:41.013Z",
    "provisional": true
   }
  },
@@ -905,7 +905,7 @@
    }
   ]
  },
- "updated": "2026-11-04T18:46:31.210Z",
+ "updated": "2026-11-04T19:16:41.013Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -990,17 +990,36 @@
    "key": "ladder:2026-11-04",
    "day": "2026-11-04",
    "n": 2,
-   "book": "DraftKings",
+   "book": "BetMGM",
    "tier": "light",
    "stake": 0.5,
    "size": 0,
-   "american": 270,
-   "dec": 3.7025,
-   "chance": 0.26,
-   "breakEven": 0.2701,
-   "ev": -0.0372,
+   "american": 260,
+   "dec": 3.6006,
+   "chance": 0.2604,
+   "breakEven": 0.2777,
+   "ev": -0.0356,
    "firstKick": "2026-11-05T00:00:00.000Z",
    "legs": [
+    {
+     "id": "401866457|sp|home",
+     "label": "SAC +25",
+     "kind": "sp",
+     "game_id": "401866457",
+     "game": "TOL @ SAC",
+     "league": "cfb",
+     "kick": "2026-11-05T00:00Z",
+     "price": -108,
+     "line": 25,
+     "win": 0.4953,
+     "bookWin": 0.4843,
+     "value": -0.0189,
+     "cat": "dog",
+     "why": "SAC is getting 25.5. Our number has them covering by 2.8 points.",
+     "alt": null,
+     "prop": null,
+     "result": null
+    },
     {
      "id": "401866455|sp|home",
      "label": "MASS -2.5",
@@ -1019,32 +1038,13 @@
      "alt": null,
      "prop": null,
      "result": null
-    },
-    {
-     "id": "401866456|ml|away",
-     "label": "CMU to win",
-     "kind": "ml",
-     "game_id": "401866456",
-     "game": "CMU VS EMU",
-     "league": "cfb",
-     "kick": "2026-11-05T00:30Z",
-     "price": -102,
-     "line": null,
-     "win": 0.4946,
-     "bookWin": 0.4957,
-     "value": -0.0205,
-     "cat": "ml",
-     "why": "CMU to win: our checked chance is 49%, the books' 50%.",
-     "alt": null,
-     "prop": null,
-     "result": null
     }
    ],
    "result": null,
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-04T18:46:31.210Z"
+   "lockedAt": "2026-11-04T19:16:41.013Z"
   }
  ],
  "teasers": [],
@@ -1062,6 +1062,22 @@
    "win": 0.7527,
    "bookWin": 0.7527,
    "total": 43.5,
+   "result": null,
+   "final": null
+  },
+  {
+   "id": "401873048|sp|home",
+   "gid": "401873048",
+   "team": "SEA",
+   "side": "home",
+   "game": "ARI @ SEA",
+   "kick": "2026-11-08T21:25Z",
+   "from": -8.5,
+   "to": -2.5,
+   "book": null,
+   "win": 0.7432,
+   "bookWin": 0.7432,
+   "total": 40.5,
    "result": null,
    "final": null
   }
@@ -1231,12 +1247,12 @@
    "game": "NYG @ PHI",
    "kick": "2026-11-08T18:00Z",
    "line": 33.5,
-   "mainLine": 39.5,
+   "mainLine": 38.5,
    "price": 230,
    "book": "ESPN BET",
-   "win": 0.33,
+   "win": 0.3281,
    "mwin": 0.3254,
-   "ev": 0.0889,
+   "ev": 0.0827,
    "mev": 0.0739,
    "src": "mkt",
    "result": null,
