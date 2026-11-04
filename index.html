@@ -12691,7 +12691,7 @@ function potdNflCandidates(g) {
 //    so it needs about -118 or better to be a play.
 // Power-rating spreads (47.7% over 2020-25) and home underdogs (strong 2021-23, gone at
 // true home games in 2024-25) are left out.
-const CFB_HIGH_TOTAL = 58, CFB_HIGH_RATE = 0.545;
+const CFB_HIGH_TOTAL = 58, CFB_HIGH_RATE = 0.545, CFB_RULE_START = "2026-11-04";
 function potdCfbCandidates(g, wxTest) {
   const out = [];
   const o = g.odds || {};
@@ -15363,6 +15363,14 @@ function potdRecordCard(league) {
   let streak = "";
   if (done.length) { const s = done[0].result; let n = 0; for (const r of done) { if (r.result !== s) break; n++; } streak = (s === "HIT" ? "Won " : "Lost ") + n + " straight"; }
   const pending = all.filter((r) => !r.result && !r.provisional).length;
+  // college changed rules on Nov 4: show the new rule apart from what came before it
+  let rule = "";
+  if (league !== "nfl") {
+    const since = (r) => String(r.kick || r.day || "") >= CFB_RULE_START;
+    const N = potdTally(all.filter(since)), O = potdTally(all.filter((r) => !since(r)));
+    rule = `<div><span class="lbl">Current rule (from Nov 4)</span><b>${N.n ? rec(N) + " · " + u(N.units) : "First play still to finish"}</b></div>`
+      + (O.n ? `<div><span class="lbl">Old rule (before Nov 4)</span><b>${rec(O)} · ${u(O.units)}</b></div>` : "");
+  }
   return `<article class="prop-card potd-rec">
     <div class="who">
       <div>
@@ -15376,6 +15384,7 @@ function potdRecordCard(league) {
       <div><span class="lbl">Units</span><b class="${T.units >= 0 ? "up" : "down"}">${T.n ? u(T.units) + " · " + (T.roi >= 0 ? "+" : "−") + Math.abs(T.roi * 100).toFixed(1) + "% a play" : "—"}</b></div>
       ${streak ? `<div><span class="lbl">Streak</span><b>${streak}</b></div>` : ""}
       ${pending ? `<div><span class="lbl">Locked, not played</span><b>${pending}</b></div>` : ""}
+      ${rule}
       ${kinds}
     </div>
   </article>`;
