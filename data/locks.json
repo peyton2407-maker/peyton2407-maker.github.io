@@ -61,15 +61,15 @@
    "date": "2026-11-05T00:00Z",
    "pick": "MASS",
    "pick_line": "MASS -3.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "UNDER 48.5",
    "side_play": false,
    "our_margin": 5.05,
-   "our_total": 49.5,
+   "our_total": 48.9,
    "confidence": null,
    "total_play": false,
    "spread": -2.5,
-   "total": 49.5,
-   "lockedAt": "2026-11-04T17:16:31.667Z",
+   "total": 48.5,
+   "lockedAt": "2026-11-04T17:31:40.332Z",
    "provisional": true
   },
   "401866456": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 44.5,
-   "lockedAt": "2026-11-04T17:16:31.667Z",
+   "lockedAt": "2026-11-04T17:31:40.332Z",
    "provisional": true
   },
   "401866457": {
@@ -111,7 +111,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 52.5,
-   "lockedAt": "2026-11-04T17:16:31.667Z",
+   "lockedAt": "2026-11-04T17:31:40.332Z",
    "provisional": true
   }
  },
@@ -905,7 +905,7 @@
    }
   ]
  },
- "updated": "2026-11-04T17:16:31.667Z",
+ "updated": "2026-11-04T17:31:40.332Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1042,7 +1042,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-04T17:16:31.667Z"
+   "lockedAt": "2026-11-04T17:31:40.332Z"
   }
  ],
  "teasers": [],
