@@ -4,10 +4,10 @@
  "tier": "small",
  "monthly": 20000,
  "board_games": 29,
- "fetched_now": 13,
- "fresh_now": 13,
- "extra_markets": 13,
+ "fetched_now": 0,
+ "fresh_now": 0,
+ "extra_markets": 0,
  "errors": [],
- "credits_left": "19893",
+ "credits_left": 19891,
  "games_with_prices": 14
 }
