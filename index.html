@@ -2023,6 +2023,7 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .alt-intro p { margin: 0 0 10px; }
 .alt-stamp { margin: 4px 0 0; }
 .alt-note { color: var(--sun); }
+.is-offline #stamp::after { content: " · no connection, showing the last saved update"; color: var(--sun); }
 .tz-alt { margin: 8px 0; line-height: 1.5; }
 div.tz-alt.better { padding: 10px 12px; border-radius: 10px; background: var(--turf-soft); border: 1px solid var(--line-2); color: var(--ink-soft); }
 div.tz-alt.better b { color: var(--sun); }
@@ -21331,6 +21332,16 @@ window.addEventListener("error", (e) => {
   img.style.visibility = "hidden";
 }, true);
 
+// Repeat visits and no signal (sw.js): logos, fonts and js/ files kept on the phone, the page
+// and data from the network first with the last saved copy as the fallback. Not under
+// automation, where the lock job and the checks serve the files themselves.
+if ("serviceWorker" in navigator && !navigator.webdriver && location.protocol === "https:") {
+  window.addEventListener("load", () => { navigator.serviceWorker.register("/sw.js").catch(() => {}); });
+}
+function netState() { document.documentElement.classList.toggle("is-offline", navigator.onLine === false); }
+window.addEventListener("online", netState);
+window.addEventListener("offline", netState);
+netState();
 async function boot() {
   try { await loadDeskData(); } catch (e) {
     console.warn("desk data", e);

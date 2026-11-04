@@ -40,7 +40,7 @@ CHECK = """() => {
 def syntax():
     """Every inline script in index.html and the other pages parses."""
     bad = []
-    for js in sorted((ROOT / "js").glob("*.js")):
+    for js in sorted((ROOT / "js").glob("*.js")) + [x for x in [ROOT / "sw.js"] if x.exists()]:
         r = subprocess.run(["node", "--check", str(js)], capture_output=True, text=True)
         if r.returncode:
             lines = r.stderr.strip().splitlines()
