@@ -2074,6 +2074,42 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .bankroll-row label { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-weight: 600; }
 .bankroll-row input { width: 130px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line-2); background: var(--paper); color: var(--ink); font: inherit; }
 .ladder-h { margin: 10px 0 0; font: 700 20px var(--display); }
+.ph-opp { margin-top: 6px; font-size: 12.5px; line-height: 1.45; color: var(--ink-soft); }
+/* proof: closing line value, calibration, weekly recap */
+.proof { display: grid; gap: 12px; margin-bottom: 14px; }
+.proof-card { padding: 16px; border-radius: 16px; background: var(--card); border: 1px solid var(--line-2); display: grid; gap: 8px; min-width: 0; }
+.proof-card h3 { margin: 0; font: 800 21px var(--display); }
+.proof-card .subn { margin: 0; }
+.proof-head { margin: 2px 0; font-size: 15.5px; line-height: 1.5; }
+.proof-tbl-wrap { overflow-x: auto; }
+.proof-tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.proof-tbl th, .proof-tbl td { padding: 7px 8px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.proof-tbl thead th { font-size: 12px; color: var(--ink-soft); font-weight: 700; }
+.proof-tbl td.subn { white-space: normal; }
+.pc-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.pc-chips button { padding: 6px 11px; border-radius: 999px; border: 1px solid var(--line-2); background: transparent; color: var(--ink); font: 700 13px var(--body); cursor: pointer; }
+.pc-chips button em { font-style: normal; color: var(--ink-soft); font-weight: 600; margin-left: 2px; }
+.pc-chips button.on { border-color: var(--sun); background: rgba(242,184,64,.14); }
+.pc-chips button:disabled { opacity: .45; cursor: default; }
+.pc-svg { width: 100%; height: auto; max-width: 640px; }
+.pc-grid { stroke: var(--line); stroke-width: 1; }
+.pc-ax { fill: var(--ink-soft); font-size: 11px; }
+.pc-axt { fill: var(--ink-soft); font-size: 12px; font-weight: 700; }
+.pc-diag { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 5 5; }
+.pc-diag-t { font-style: italic; }
+.pc-c { fill: var(--sun); stroke: var(--card); stroke-width: 2; }
+.pc-err { stroke: var(--sun); stroke-width: 2; stroke-linecap: round; opacity: .45; }
+.pc-lbl { fill: var(--ink); font-size: 12px; font-weight: 700; }
+.pc-dot:focus { outline: none; }
+.pc-dot:hover .pc-c, .pc-dot:focus .pc-c { stroke: var(--ink); }
+.pc-table summary { cursor: pointer; font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+.recap { background: radial-gradient(110% 80% at 100% 0%, rgba(242,184,64,.12), transparent 60%), var(--card); }
+.recap-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.recap-top select { padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line-2); background: var(--paper); color: var(--ink); font: 600 13px var(--body); }
+.recap-story { margin: 0; font-size: 16px; line-height: 1.5; }
+.recap-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 14px; font-variant-numeric: tabular-nums; }
+.recap-list b { display: inline-block; min-width: 9.5em; }
+.recap .ch-share { justify-self: start; }
 /* The Ladder Challenge */
 .ch { position: relative; overflow: hidden; padding: 18px 18px 14px; border-radius: 18px; border: 1px solid rgba(242,184,64,.35);
   background: radial-gradient(120% 90% at 100% 0%, rgba(242,184,64,.16), transparent 55%), var(--card); }
@@ -2551,6 +2587,7 @@ table.props b.down { color: var(--muted); font-weight: 600; }
     </section>
 
     <section id="scoreSection" style="display:none">
+      <div id="proofBox" class="proof"></div>
       <div class="controls">
         <div class="league-tabs" id="scoreLeague" role="tablist" aria-label="League">
           <button type="button" data-league="nfl">NFL</button>
@@ -10703,10 +10740,49 @@ function countLines(mean) {
   const mid = Math.max(0.5, Math.round(Number(mean)) - 0.5);
   return [mid - 1, mid, mid + 1].filter((n) => n >= 0.5);
 }
+// A player's recent numbers came against the defenses he happened to face. Compare those
+// defenses (what each gave up to his position in this stat, per game) with this week's: a
+// receiver on a hot streak against soft defenses who now faces a stingy one gets his number
+// trimmed, and the reverse. Half of the difference, scaled down when this defense has played
+// few games, capped at 15% either way. Needs 3+ of his recent games against known defenses.
+function propOppAdj(p, key) {
+  if (!p || !p.opp || !p.pos || !PROP_DEF_STAT[key] || !window.GAMELOGS) return null;
+  const memo = propOppAdj.m || (propOppAdj.m = new Map());
+  const mk = p.id + "|" + key + "|" + p.opp;
+  const t = typeof propDefTable === "function" ? propDefTable() : null;
+  if (!t) return null;
+  const hit = memo.get(mk);
+  if (hit && hit.t === t) return hit.v;
+  let v = null;
+  const cur = t[`${p.opp}|${p.pos}|${key}`];
+  const pack = window.GAMELOGS[String(p.id)];
+  const rows = ((pack && pack.rows) || []).filter((r) => r && r.o && Number.isFinite(Number(r[key]))).slice(0, 8);
+  const faced = rows.map((r) => t[`${r.o}|${p.pos}|${key}`]).filter(Boolean);
+  if (cur && faced.length >= 3) {
+    const pastAvg = faced.reduce((a, x) => a + x.avg, 0) / faced.length;
+    if (pastAvg > 0 && cur.avg > 0) {
+      const raw = cur.avg / pastAvg;
+      const w = 0.5 * Math.min(1, cur.games / 8);
+      const f = Math.max(0.85, Math.min(1.15, 1 + w * (raw - 1)));
+      v = { f, raw, oppAvg: cur.avg, pastAvg, n: faced.length, rank: cur.rank, of: cur.of, opp: p.opp, pos: p.pos, key };
+    }
+  }
+  memo.set(mk, { t, v });
+  return v;
+}
+function propOppNote(p, key) {
+  const a = propOppAdj(p, key);
+  if (!a || Math.abs(a.f - 1) < 0.02) return "";
+  const stat = PROP_DEF_STAT[key];
+  const tougher = a.oppAvg < a.pastAvg;
+  const most = a.rank <= a.of / 2;
+  return `His last ${a.n} games came against defenses giving up ${Math.round(a.pastAvg * 10) / 10} ${stat} a game to ${a.pos}s; ${a.opp} gives up ${Math.round(a.oppAvg * 10) / 10} (${crOrd(most ? a.rank : a.of - a.rank + 1)} ${most ? "most" : "fewest"} in the league). ${tougher ? "A tougher defense than he's been seeing, so we trimmed" : "An easier defense than he's been seeing, so we raised"} his projection ${Math.round(Math.abs(a.f - 1) * 100)}%.`;
+}
 function marketsFor(p) {
   const rows = [];
-  const yards = (key, label, mean) => { if (Number(mean) >= 8) rows.push({ key, label, mean: Number(mean), lines: yardLines(mean), under: false }); };
-  const counts = (key, label, mean, lines) => { if (Number(mean) > 0.05) rows.push({ key, label, mean: Number(mean), lines, under: key === "pass_int" }); };
+  const adj = (key, mean) => { const a = propOppAdj(p, key); return a ? Number(mean) * a.f : Number(mean); };
+  const yards = (key, label, mean) => { mean = adj(key, mean); if (Number(mean) >= 8) rows.push({ key, label, mean: Number(mean), lines: yardLines(mean), under: false }); };
+  const counts = (key, label, mean, lines) => { if (key === "rec" || key === "pass_td") mean = adj(key, mean); if (Number(mean) > 0.05) rows.push({ key, label, mean: Number(mean), lines, under: key === "pass_int" }); };
   if (p.pos === "QB") {
     yards("pass_yds", "Pass yards", p.pass_yds);
     counts("pass_td", "Pass touchdowns", p.pass_td, [0.5, 1.5, 2.5]);
@@ -11807,6 +11883,7 @@ function propContextHtml(p) {
 // from ESPN's box score. data/prop-record.json.
 async function propRecordPicks() {
   try { if (typeof ensureWeekProps === "function") await ensureWeekProps(); } catch (e) {}
+  try { if (typeof loadGamelogs === "function") await loadGamelogs(); } catch (e) {}
   try { pullDkLines.at = 0; await pullDkLines(); } catch (e) {}
   const now = Date.now();
   const lined = Object.keys(((window.PB_PROPS || {}).games) || {}).filter((gid) => {
@@ -11825,10 +11902,10 @@ async function propRecordPicks() {
   return { picks, lined };
 }
 function loadPropRecord() {
-  if (typeof pbFetchOnce !== "function" || loadPropRecord.asked) return;
-  loadPropRecord.asked = true;
-  pbFetchOnce("proprecord", "/data/prop-record.json?t=" + Math.floor(Date.now() / 900000), (d) => { window.PROP_RECORD = d || { picks: [] }; })
-    .then(() => { if (typeof view !== "undefined" && view === "props") renderProps(); });
+  if (typeof pbFetchOnce !== "function") return Promise.resolve();
+  if (loadPropRecord.asked) return loadPropRecord.asked;
+  return (loadPropRecord.asked = pbFetchOnce("proprecord", "/data/prop-record.json?t=" + Math.floor(Date.now() / 900000), (d) => { window.PROP_RECORD = d || { picks: [] }; })
+    .then(() => { if (typeof view !== "undefined" && view === "props") renderProps(); if (typeof view !== "undefined" && view === "score") renderProof(); }));
 }
 function propRecordHtml() {
   const R = window.PROP_RECORD;
@@ -11999,8 +12076,8 @@ function renderProps() {
 // How often the player cleared this exact line: last 5, last 10 and this season, from
 // data/gamelogs.json (scripts/gamelogs.py, refreshed every few hours), with a bar per game.
 function loadGamelogs() {
-  if (typeof pbFetchOnce !== "function") return;
-  pbFetchOnce("gamelogs", "/data/gamelogs.json?t=" + Math.floor(Date.now() / 3600000), (d) => { window.GAMELOGS = (d && d.players) || {}; })
+  if (typeof pbFetchOnce !== "function") return Promise.resolve();
+  return pbFetchOnce("gamelogs", "/data/gamelogs.json?t=" + Math.floor(Date.now() / 3600000), (d) => { window.GAMELOGS = (d && d.players) || {}; })
     .then(() => { if (window.GAMELOGS && typeof view !== "undefined" && view === "props") renderProps(); });
 }
 function propHistoryHtml(p) {
@@ -12028,6 +12105,7 @@ function propHistoryHtml(p) {
     <div class="lbl">${lean.take} ${line} ${pbEsc(lean.m.label.toLowerCase())}, game by game</div>
     <div class="ph-row">${part(rows.slice(0, 5), "Last 5")}${part(rows.slice(0, 10), "Last 10")}${part(rows.filter((r) => Number(r.s) === yr), String(yr))}</div>
     <div class="ph-bars"><span class="ph-line" style="bottom:${Math.round(line / top * 100)}%"></span>${bars}</div>
+    ${(() => { const n = propOppNote(p, key); return n ? `<div class="ph-opp">${pbEsc(n)}</div>` : ""; })()}
   </div>`;
 }
 function estTds(pts) {
@@ -12762,6 +12840,7 @@ function crPropFacts(l, rows) {
       rows.push(["Matchup", `${pbEsc(p.opp)} gives up the ${crOrd(most ? d.rank : d.of - d.rank + 1)} ${most ? "most" : "fewest"} ${PROP_DEF_STAT[key]} to ${pbEsc(p.pos)}s (${Math.round(d.avg * 10) / 10} a game)${(most && !under) || (!most && under) ? ", which helps this pick" : most && under ? ", the one thing working against this under" : ""}.`]);
     }
   } catch (e) {}
+  { const n = propOppNote(p, key); if (n) rows.push(["Schedule", pbEsc(n)]); }
   if (p.injury && p.injury !== "ACTIVE") rows.push(["Status", `He's listed ${pbEsc(String(p.injury).toLowerCase())}. If he doesn't play, most books void the leg.`]);
 }
 function crLegFacts(l, pb) {
@@ -15478,6 +15557,7 @@ function ensurePotdProps() {
     .then(() => (typeof pullDkLines === "function" ? pullDkLines() : null))
     // the saved 11:00 / kickoff injury and weather reports, then projections re-attached to them
     .then(() => (typeof installElevenReport === "function" ? installElevenReport() : null))
+    .then(() => (typeof loadGamelogs === "function" ? loadGamelogs() : null))
     .catch(() => {})
     .then(() => {
       try { refreshWeekProps(); } catch (e) {}
@@ -16208,6 +16288,52 @@ function lockClv(lock) {
   }
   return { side, total };
 }
+// what a play of the day is, in the board's terms: spread (side, line), total (over/under,
+// line) or player prop (player, stat, side, line)
+function potdParse(row) {
+  if (!row) return null;
+  if (row.prop && row.prop.stat) return { kind: "pp", side: row.prop.side, line: Number(row.prop.line), pid: String(row.prop.pid), stat: row.prop.stat };
+  const t = String(row.line || "");
+  let m = t.match(/^(OVER|UNDER)\s+(\d+(?:\.\d+)?)/i);
+  if (m) return { kind: "tot", side: m[1].toLowerCase(), line: Number(m[2]) };
+  m = t.match(/^([A-Z0-9&.'-]{2,6})\s+([+-]?\d+(?:\.\d+)?|PK)\b/i);
+  if (m && /spread/i.test(row.kind || "spread")) {
+    const [aw, hm] = String(row.game || "").split(" @ ").map((x) => x.trim());
+    const side = m[1].toUpperCase() === String(hm || "").toUpperCase() ? "home" : m[1].toUpperCase() === String(aw || "").toUpperCase() ? "away" : null;
+    if (!side) return null;
+    return { kind: "sp", side, line: /pk/i.test(m[2]) ? 0 : Number(m[2]) };
+  }
+  return null;
+}
+function potdCloseNow(row, g) {
+  const P = potdParse(row);
+  if (!P || !g) return null;
+  const o = g.odds || {};
+  if (P.kind === "sp" && o.home_spread != null) return { line: P.side === "home" ? Number(o.home_spread) : -Number(o.home_spread), src: "board" };
+  if (P.kind === "tot" && o.total != null) return { line: Number(o.total), src: "board" };
+  if (P.kind === "pp" && typeof dkFor === "function") { const d = dkFor(row.id, P.pid); if (d && d[P.stat] != null) return { line: Number(d[P.stat]), src: "board" }; }
+  return null;
+}
+function potdCloseHist(row, kick) {
+  const P = potdParse(row);
+  if (!P || P.kind === "pp") return null;
+  const h = typeof lineHist === "function" ? lineHist({ id: row.id }) : null;
+  if (!h) return null;
+  const before = h.filter((x) => x[0] * 60000 <= kick);
+  const last = before[before.length - 1];
+  if (!last) return null;
+  if (P.kind === "sp" && last[1] != null) return { line: P.side === "home" ? Number(last[1]) : -Number(last[1]), src: "history", at: new Date(last[0] * 60000).toISOString() };
+  if (P.kind === "tot" && last[2] != null) return { line: Number(last[2]), src: "history", at: new Date(last[0] * 60000).toISOString() };
+  return null;
+}
+// points of line gained (+) or given up (-) between the play and the close
+function potdClvPts(row) {
+  const P = potdParse(row);
+  if (!P || row.close_line == null || !Number.isFinite(P.line)) return null;
+  const c = Number(row.close_line);
+  const v = P.kind === "sp" ? P.line - c : (P.side === "over" ? c - P.line : P.line - c);
+  return +v.toFixed(1);
+}
 // Called by the lock runner. Returns the updated locks object and a list of what changed.
 function ggLockRun(prev) {
   const now = Date.now();
@@ -16289,6 +16415,23 @@ function ggLockRun(prev) {
     lock.clv_total = c.total;
     changes.push((first ? "closing line " : "closing line moved ") + lock.short);
   });
+  // play of the day: the same closing line (spreads, totals and player props by line); a play
+  // locked before this with no saved close gets the hourly line history's last line before kickoff
+  ["nfl", "cfb"].forEach((lg) => (out.potd[lg] || []).forEach((row) => {
+    if (!row || !row.locked || !row.id) return;
+    const k = kickOf(row.id);
+    const kick = k && Number.isFinite(k.kick) ? k.kick : Date.parse(row.kick);
+    if (!Number.isFinite(kick)) return;
+    const pre = k && now < kick && now >= kick - 60 * 60000;
+    const post = k && now >= kick && now <= kick + 15 * 60000 && !row.closeAt;
+    let c = null;
+    if (pre || post) c = potdCloseNow(row, k.g);
+    else if (!row.closeAt && now > kick && now - kick < 45 * 864e5) c = potdCloseHist(row, kick);
+    if (!c || c.line == null) return;
+    if (row.closeAt && row.close_line === c.line) return;
+    row.close_line = c.line; row.closeAt = c.at || iso; row.close_src = c.src; row.clv = potdClvPts(row);
+    changes.push("play of the day closing line " + (row.game || row.id));
+  }));
   const key = deskWeekKey();
   if (!out.card || out.card.weekKey !== key) {
     const legs = buildWeeklyLegs(DATA.games || []);
@@ -16976,7 +17119,202 @@ async function stampFinalScores() {
   }).finally(() => { window.__finalStamp = null; });
   return window.__finalStamp;
 }
+// ==== Proof: closing line value, calibration, and the weekly recap ==========================
+function proofPotdRows() {
+  const m = new Map();
+  ["nfl", "cfb"].forEach((lg) => {
+    ((window.POTD_LOG || {})[lg] || []).forEach((r) => { if (r && r.key) m.set(lg + "|" + r.key, Object.assign({ league: lg }, r)); });
+    (((window.GG_LOCKS || {}).potd || {})[lg] || []).forEach((r) => { if (r && r.key) m.set(lg + "|" + r.key, Object.assign({ league: lg }, m.get(lg + "|" + r.key) || {}, r)); });
+  });
+  return [...m.values()].filter((r) => r.locked !== false);
+}
+function proofBoardRows() {
+  const m = new Map();
+  ["nfl", "cfb"].forEach((lg) => { const pc = (window.PAST_CARDS || {})[lg] || {}; Object.values(pc).forEach((arr) => (arr || []).forEach((r) => { if (r && r.id) m.set(lg + ":" + r.id, Object.assign({ league: lg }, r)); })); });
+  Object.values(((window.GG_LOCKS || {}).plays) || {}).forEach((r) => { if (r && r.id) { const k = (r.league || "") + ":" + r.id; m.set(k, Object.assign({}, m.get(k) || {}, r)); } });
+  return [...m.values()];
+}
+function proofKickOf(r) { const t = Date.parse(r.kick || r.date || r.firstKick || (r.day ? r.day + "T17:00:00Z" : "")); return Number.isFinite(t) ? t : null; }
+// every pick that has a closing line: {product, label, pts, beat, at}
+function proofClvRows() {
+  const out = [], now = Date.now();
+  const add = (product, label, pts, at, beat) => { if (pts == null && beat == null) return; const b = beat != null ? beat : pts > 0.01 ? 1 : pts < -0.01 ? -1 : 0; out.push({ product, label, pts, beat: b, at }); };
+  const board = proofBoardRows();
+  board.forEach((r) => {
+    const t = proofKickOf(r); if (!(t <= now)) return;
+    if (r.side_play && r.clv_side != null) add("board", r.pick_line || r.pick, Number(r.clv_side), t);
+    if (r.total_play && r.clv_total != null) add("board", r.total_pick, Number(r.clv_total), t);
+  });
+  proofPotdRows().forEach((r) => { const t = proofKickOf(r); if (t <= now && r.clv != null) add("potd", r.line, Number(r.clv), t); });
+  (typeof ladderRows === "function" ? ladderRows() : []).filter((r) => r.locked).forEach((r) => (r.legs || []).forEach((l) => {
+    const t = Date.parse(l.kick); if (!(t <= now)) return;
+    const v = typeof ladderClv === "function" ? ladderClv(l) : null;
+    if (v && v.beat != null) add("ladder", l.label, v.pts, t, v.beat);
+  }));
+  const card = (window.GG_LOCKS || {}).card;
+  if (card && card.legs) {
+    const byId = new Map(board.map((r) => [String(r.id), r]));
+    card.legs.forEach((l) => {
+      const t = Date.parse(l.date); if (!(t <= now)) return;
+      const b = byId.get(String(l.id)); if (!b) return;
+      if (l.pick && l.pick !== "NO PLAY" && b.clv_side != null) add("card", l.pick, Number(b.clv_side), t);
+      if (l.total && l.total !== "NO PLAY" && b.clv_total != null) add("card", l.total, Number(b.clv_total), t);
+    });
+  }
+  return out;
+}
+// every graded pick with a stated chance: {product, p, hit, at, label, price}
+function proofCalRows() {
+  const out = [];
+  ((window.PROP_RECORD || {}).picks || []).forEach((x) => { const o = (x.result || {}).out; if ((o === "win" || o === "loss") && x.chance > 0) out.push({ product: "props", p: Number(x.chance), hit: o === "win", at: Date.parse(x.kick), label: `${x.name} ${x.take} ${x.line} ${String(PROP_LBL[x.stat] || x.stat).toLowerCase()}`, price: x.price, units: (x.result || {}).units }); });
+  proofPotdRows().forEach((r) => { if ((r.result === "HIT" || r.result === "MISS") && r.hitPct > 0) out.push({ product: "potd", p: Number(r.hitPct) / 100, hit: r.result === "HIT", at: proofKickOf(r), label: r.line, price: r.price, league: r.league }); });
+  (typeof ladderRows === "function" ? ladderRows() : []).forEach((r) => (r.legs || []).forEach((l) => { if ((l.result === "HIT" || l.result === "MISS") && l.win > 0) out.push({ product: "ladder", p: Number(l.win), hit: l.result === "HIT", at: Date.parse(l.kick), label: l.label, price: l.price }); }));
+  return out;
+}
+const PROOF_NAMES = { board: "Board plays", potd: "Play of the day", ladder: "The Ladder", card: "Weekly card", props: "Player props" };
+function proofClvHtml() {
+  const rows = proofClvRows();
+  const prods = ["potd", "ladder", "board", "card"];
+  const tally = (list) => { const b = list.filter((x) => x.beat > 0).length, l = list.filter((x) => x.beat < 0).length, m = list.filter((x) => x.beat === 0).length; const pts = list.filter((x) => x.pts != null); return { n: list.length, b, l, m, pct: b + l ? b / (b + l) : null, avg: pts.length ? pts.reduce((a, x) => a + x.pts, 0) / pts.length : null }; };
+  const all = tally(rows);
+  const line = (t) => t.pct == null ? "—" : `${Math.round(t.pct * 100)}%`;
+  const avgTxt = (a) => a == null ? "—" : `${a >= 0 ? "+" : "−"}${Math.abs(a).toFixed(2)} pts`;
+  const head = all.n
+    ? `<p class="proof-head">Our picks <b>beat the closing line ${line(all)} of the time</b> (${all.b} beat, ${all.l} lost to it${all.m ? `, ${all.m} matched it` : ""}, across ${all.n} picks), and finished an average of <b>${avgTxt(all.avg)}</b> ${all.avg >= 0 ? "better" : "worse"} than the close.</p>`
+    : `<p class="proof-head">No closing lines recorded yet.</p>`;
+  const table = `<div class="proof-tbl-wrap"><table class="proof-tbl"><thead><tr><th>Pick</th><th>With a close</th><th>Beat</th><th>Matched</th><th>Lost to it</th><th>Beat %</th><th>Average</th></tr></thead><tbody>
+    ${prods.map((k) => { const t = tally(rows.filter((x) => x.product === k)); return `<tr><th scope="row">${PROOF_NAMES[k]}</th>${t.n ? `<td>${t.n}</td><td>${t.b}</td><td>${t.m}</td><td>${t.l}</td><td><b>${line(t)}</b></td><td>${avgTxt(t.avg)}</td>` : `<td colspan="6" class="subn">Starts with the next one that locks</td>`}</tr>`; }).join("")}
+    <tr><th scope="row">${PROOF_NAMES.props}</th><td colspan="6" class="subn">Saved at the last price before kickoff, so each one is the close by design.</td></tr>
+  </tbody></table></div>`;
+  return `<article class="proof-card"><h3>Closing line value</h3><p class="subn">The closing line is the market's last word before kickoff, set by the most money and information. Picks that keep getting a better number than the close win over time, so this is the earliest honest test of whether there's an edge, well before a win-loss record can tell.</p>${head}${table}<p class="subn">Points of line between the number we picked and the close: spreads and totals, and player props by their line. The Ladder also counts a leg as beating the close when the books' chance of it went up after it locked. A matched close is neither. Play-of-the-day picks from before Nov 4 are measured against the hourly line history.</p></article>`;
+}
+function proofCalHtml(filter) {
+  const all = proofCalRows();
+  const rows = filter && filter !== "all" ? all.filter((r) => r.product === filter) : all;
+  const edges = [0, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 1.01];
+  const names = ["under 45%", "45–50%", "50–55%", "55–60%", "60–65%", "65–70%", "70%+"];
+  const B = edges.slice(0, -1).map((lo, i) => { const hi = edges[i + 1]; const g = rows.filter((r) => r.p >= lo && r.p < hi); const n = g.length; const said = n ? g.reduce((a, r) => a + r.p, 0) / n : null; const hit = n ? g.filter((r) => r.hit).length / n : null; return { name: names[i], n, said, hit, se: n ? Math.sqrt(Math.max(0.0001, hit * (1 - hit)) / n) : null }; }).filter((b) => b.n);
+  const n = rows.length, said = n ? rows.reduce((a, r) => a + r.p, 0) / n : 0, hit = n ? rows.filter((r) => r.hit).length / n : 0;
+  const gap = hit - said;
+  const verdict = !n ? "No graded picks yet." : n < 40 ? `Only ${n} graded picks here, too few to judge yet.` : Math.abs(gap) <= 0.025 ? `Our chances have been about right: we said ${Math.round(said * 100)}% on average and they hit ${Math.round(hit * 100)}%.` : gap < 0 ? `Our chances have run ${Math.round(-gap * 100)} points high: we said ${Math.round(said * 100)}% on average and they hit ${Math.round(hit * 100)}%. The checked chance shrinks toward the books' number for exactly this reason, and the weekly recalibration keeps adjusting it.` : `Our chances have run ${Math.round(gap * 100)} points low: we said ${Math.round(said * 100)}% and they hit ${Math.round(hit * 100)}%, so the picks have done better than we claimed.`;
+  // the chart: what we said (x) vs how often it hit (y); dots on the dashed line are perfectly calibrated
+  const W = 560, H = 300, L = 46, R = 14, T = 14, Bm = 40;
+  const x0 = 0.35, x1 = 0.85, y0 = 0.15, y1 = 1;
+  const X = (v) => L + (W - L - R) * (Math.max(x0, Math.min(x1, v)) - x0) / (x1 - x0);
+  const Y = (v) => T + (H - T - Bm) * (1 - (Math.max(y0, Math.min(y1, v)) - y0) / (y1 - y0));
+  const gx = [0.4, 0.5, 0.6, 0.7, 0.8].map((v) => `<line x1="${X(v)}" x2="${X(v)}" y1="${T}" y2="${H - Bm}" class="pc-grid"/><text x="${X(v)}" y="${H - Bm + 16}" text-anchor="middle" class="pc-ax">${Math.round(v * 100)}%</text>`).join("");
+  const gy = [0.2, 0.4, 0.6, 0.8, 1].map((v) => `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" class="pc-grid"/><text x="${L - 8}" y="${Y(v) + 4}" text-anchor="end" class="pc-ax">${Math.round(v * 100)}%</text>`).join("");
+  const maxN = Math.max(1, ...B.map((b) => b.n));
+  const dots = B.map((b) => {
+    const r = 5 + 5 * Math.sqrt(b.n / maxN);
+    // Wilson 95% interval (stays sensible for tiny groups and 0% / 100%)
+    const z = 1.96, nn = b.n, ph = b.hit, den = 1 + z * z / nn, mid = (ph + z * z / (2 * nn)) / den, half = z * Math.sqrt(ph * (1 - ph) / nn + z * z / (4 * nn * nn)) / den;
+    const lo = Math.max(0, mid - half), hi = Math.min(1, mid + half);
+    return `<g class="pc-dot" tabindex="0"><title>${b.name}: ${b.n} pick${b.n === 1 ? "" : "s"}. We said ${Math.round(b.said * 100)}% on average; they hit ${Math.round(b.hit * 100)}% (range ${Math.round(lo * 100)}–${Math.round(hi * 100)}%).</title>
+      <line x1="${X(b.said)}" x2="${X(b.said)}" y1="${Y(lo)}" y2="${Y(hi)}" class="pc-err"/>
+      <circle cx="${X(b.said)}" cy="${Y(b.hit)}" r="${r.toFixed(1)}" class="pc-c"/>
+      <text x="${X(b.said) + r + 4}" y="${Y(b.hit) + 4}" class="pc-lbl">${Math.round(b.hit * 100)}%</text></g>`;
+  }).join("");
+  const svg = `<svg viewBox="0 0 ${W} ${H}" class="pc-svg" role="img" aria-label="How often our picks hit at each stated chance">
+    ${gx}${gy}
+    <line x1="${X(x0)}" y1="${Y(x0)}" x2="${X(x1)}" y2="${Y(x1)}" class="pc-diag"/>
+    <text x="${X(0.78)}" y="${Y(0.78) - 8}" text-anchor="end" class="pc-ax pc-diag-t">right on</text>
+    ${dots}
+    <text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle" class="pc-axt">The chance we gave</text>
+    <text x="12" y="${(T + H - Bm) / 2}" text-anchor="middle" transform="rotate(-90 12 ${(T + H - Bm) / 2})" class="pc-axt">How often it hit</text>
+  </svg>`;
+  const chips = ["all", "props", "potd", "ladder"].map((k) => { const c = k === "all" ? all.length : all.filter((r) => r.product === k).length; return `<button type="button" data-pcf="${k}" class="${(filter || "all") === k ? "on" : ""}"${c ? "" : " disabled"}>${k === "all" ? "Everything" : PROOF_NAMES[k]} <em>${c}</em></button>`; }).join("");
+  const table = `<details class="pc-table"><summary>See the numbers</summary><table class="proof-tbl"><thead><tr><th>We said</th><th>Picks</th><th>Average said</th><th>Hit</th></tr></thead><tbody>${B.map((b) => `<tr><th scope="row">${b.name}</th><td>${b.n}</td><td>${Math.round(b.said * 100)}%</td><td><b>${Math.round(b.hit * 100)}%</b></td></tr>`).join("")}</tbody></table></details>`;
+  return `<article class="proof-card"><h3>When we say 60%, does it hit 60%?</h3><p class="subn">Every graded pick, grouped by the checked chance we gave it before kickoff. A dot on the dashed line means those picks hit exactly as often as we said; the bar through each dot is the range a group that size could land in by luck. Bigger dots are more picks.</p>
+    <div class="pc-chips">${chips}</div>
+    <p class="proof-head">${verdict}</p>
+    ${n ? svg : ""}
+    ${n ? table : ""}
+    <p class="subn">Player prop projections are adjusted for the defenses a player has been facing compared with this week's: a hot streak against soft defenses doesn't carry over in full to a tough one.</p></article>`;
+}
+// weekly recap: Tuesday to Monday (Eastern), the week every NFL slate fits in
+function proofWeekStart(t) {
+  const et = new Date(new Date(t).toLocaleString("en-US", { timeZone: "America/New_York" }));
+  const back = (et.getDay() + 5) % 7;   // days since Tuesday
+  et.setHours(0, 0, 0, 0); et.setDate(et.getDate() - back);
+  const off = new Date(t).getTime() - new Date(new Date(t).toLocaleString("en-US", { timeZone: "America/New_York" })).getTime();
+  return et.getTime() + off;
+}
+function proofRecapData(ws) {
+  const we = ws + 7 * 864e5, inWk = (t) => Number.isFinite(t) && t >= ws && t < we;
+  const potd = proofPotdRows().filter((r) => inWk(proofKickOf(r)) && (r.result === "HIT" || r.result === "MISS" || r.result === "PUSH"));
+  const lad = (typeof ladderRows === "function" ? ladderRows() : []).filter((r) => r.result && inWk(proofKickOf(r)));
+  const board = [];
+  ["nfl", "cfb"].forEach((lg) => { try { (scorecardRows(lg) || []).forEach((r) => { const t = Date.parse(r.date); if (!inWk(t)) return; if (r.side_play && (r.ats === "HIT" || r.ats === "MISS")) board.push({ lg, label: r.pick_line, res: r.ats }); if (r.total_play && (r.ou === "HIT" || r.ou === "MISS")) board.push({ lg, label: r.total_pick, res: r.ou }); }); } catch (e) {} });
+  const props = ((window.PROP_RECORD || {}).picks || []).filter((x) => inWk(Date.parse(x.kick)) && x.result && (x.result.out === "win" || x.result.out === "loss"));
+  const clv = proofClvRows().filter((x) => inWk(x.at));
+  return { ws, we, potd, lad, board, props, clv, any: potd.length + lad.length + board.length + props.length };
+}
+function proofRecapHtml(sel) {
+  const now = Date.now();
+  const cur = proofWeekStart(now);
+  const weeks = [];
+  for (let k = 1; k <= 8; k++) { const ws = cur - k * 7 * 864e5; const d = proofRecapData(ws); if (d.any) weeks.push(d); }
+  if (!weeks.length) return `<article class="proof-card recap"><h3>Week in review</h3><p class="subn">The first recap posts the Tuesday after a full week of graded picks.</p></article>`;
+  const D = weeks.find((w) => String(w.ws) === String(sel)) || weeks[0];
+  const day = (t) => new Date(t).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "America/New_York" });
+  const wl = (arr, f) => { const w = arr.filter((x) => f(x) === 1).length, l = arr.filter((x) => f(x) === -1).length, p = arr.filter((x) => f(x) === 0).length; return `${w}-${l}${p ? "-" + p : ""}`; };
+  const potdRes = (r) => r.result === "HIT" ? 1 : r.result === "MISS" ? -1 : 0;
+  const ladU = D.lad.reduce((a, r) => a + Number(r.units || 0), 0);
+  const propU = D.props.reduce((a, x) => a + Number(x.result.units || 0), 0);
+  const u = (x) => `${x >= 0 ? "+" : "−"}${Math.abs(x).toFixed(2)}u`;
+  const lines = [];
+  if (D.potd.length) lines.push(`<li><b>Play of the day</b> ${wl(D.potd, potdRes)}${["nfl", "cfb"].map((lg) => { const a = D.potd.filter((r) => r.league === lg); return a.length ? ` · ${lg === "nfl" ? "NFL" : "College"} ${wl(a, potdRes)}` : ""; }).join("")}</li>`);
+  if (D.lad.length) lines.push(`<li><b>The Ladder</b> ${wl(D.lad, potdRes)} · ${u(ladU)}</li>`);
+  if (D.board.length) lines.push(`<li><b>Board plays</b> ${wl(D.board, (x) => x.res === "HIT" ? 1 : -1)}${["nfl", "cfb"].map((lg) => { const a = D.board.filter((r) => r.lg === lg); return a.length ? ` · ${lg === "nfl" ? "NFL" : "College"} ${wl(a, (x) => x.res === "HIT" ? 1 : -1)}` : ""; }).join("")}</li>`);
+  if (D.props.length) lines.push(`<li><b>Player props</b> ${wl(D.props, (x) => x.result.out === "win" ? 1 : -1)} · ${u(propU)}</li>`);
+  if (D.clv.length) { const b = D.clv.filter((x) => x.beat > 0).length, l = D.clv.filter((x) => x.beat < 0).length; lines.push(`<li><b>Against the close</b> beat it on ${b} of ${D.clv.length}${l ? `, lost to it on ${l}` : ""}</li>`); }
+  // the story: overall, best call, toughest miss
+  const graded = [].concat(
+    D.potd.filter((r) => r.result !== "PUSH").map((r) => ({ hit: r.result === "HIT", p: Number(r.hitPct) / 100, label: r.line, what: "play of the day", price: r.price })),
+    D.lad.filter((r) => r.result !== "PUSH").map((r) => ({ hit: r.result === "HIT", p: Number(r.chance), label: r.legs.map((l) => l.label).join(" + "), what: "Ladder", price: r.american })),
+    D.props.map((x) => ({ hit: x.result.out === "win", p: Number(x.chance), label: `${x.name} ${x.take} ${x.line} ${String(PROP_LBL[x.stat] || x.stat).toLowerCase()}`, what: "prop", price: x.price }))
+  );
+  const W = graded.filter((g) => g.hit).length, Lo = graded.length - W;
+  const best = graded.filter((g) => g.hit && g.price != null).sort((a, b) => pbDec(b.price) - pbDec(a.price))[0];
+  const worst = graded.filter((g) => !g.hit && g.p > 0).sort((a, b) => b.p - a.p)[0];
+  const exp = graded.reduce((a, g) => a + (g.p || 0), 0);
+  const story = [];
+  story.push(`${W}-${Lo} across the play of the day, the Ladder and player props${graded.length ? `, against about ${Math.round(exp)} wins our chances expected` : ""}.`);
+  if (best) story.push(`Best call: ${best.label} (${best.what}, ${pbAm(best.price)}).`);
+  if (worst) story.push(`Toughest miss: ${worst.label}, a ${Math.round(worst.p * 100)}% ${worst.what}.`);
+  const text = `Double Gs, week of ${day(D.ws)} – ${day(D.we - 864e5)}: ${story.join(" ")}`;
+  const opts = weeks.map((w) => `<option value="${w.ws}"${w === D ? " selected" : ""}>${day(w.ws)} – ${day(w.we - 864e5)}</option>`).join("");
+  return `<article class="proof-card recap"><div class="recap-top"><h3>Week in review</h3><select id="recapWeek" aria-label="Week">${opts}</select></div>
+    <p class="recap-story">${pbEsc(story.join(" "))}</p>
+    <ul class="recap-list">${lines.join("")}</ul>
+    <button type="button" class="ch-share" data-recapshare="${pbEsc(text)}">Share the recap</button>
+    <p class="subn">Written from the graded picks every Tuesday, covering Tuesday through Monday Night Football.</p></article>`;
+}
+function renderProof() {
+  const box = document.getElementById("proofBox");
+  if (!box) return;
+  if (!window.PROP_RECORD && typeof loadPropRecord === "function") loadPropRecord();
+  const f = box.__pcf || "all", wk = box.__wk || null;
+  try { box.innerHTML = proofRecapHtml(wk) + proofClvHtml() + proofCalHtml(f); } catch (e) { box.innerHTML = ""; return; }
+  if (!box.__wired) {
+    box.__wired = true;
+    box.addEventListener("click", (e) => {
+      const c = e.target.closest("[data-pcf]");
+      if (c) { box.__pcf = c.dataset.pcf; renderProof(); return; }
+      const sh = e.target.closest("[data-recapshare]");
+      if (sh) {
+        const text = sh.dataset.recapshare, url = location.origin + location.pathname + "#score";
+        const done = (m) => { const o = sh.textContent; sh.textContent = m; setTimeout(() => { sh.textContent = o; }, 2000); };
+        if (navigator.share && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent || "")) navigator.share({ title: "Double Gs week in review", text, url }).catch(() => {});
+        else if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text + " " + url).then(() => done("Copied"), () => done("Copy the address bar"));
+      }
+    });
+    box.addEventListener("change", (e) => { if (e.target && e.target.id === "recapWeek") { box.__wk = e.target.value; renderProof(); } });
+  }
+}
 function renderScorecard() {
+  try { renderProof(); } catch (e) {}
   const needsFinal = (DATA.games || []).some((g) => {
     if (!g || g.completed || !g.date || (g.league !== "nfl" && g.league !== "cfb")) return false;
     const kick = new Date(g.date).getTime();

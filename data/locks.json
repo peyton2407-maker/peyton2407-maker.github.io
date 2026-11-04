@@ -73,7 +73,11 @@
     "kick": "2026-10-18T20:25Z",
     "big": false,
     "savedAt": 1792349783227,
-    "by": "Covered by 8.5"
+    "by": "Covered by 8.5",
+    "close_line": -7.5,
+    "closeAt": "2026-10-18T16:30:00.000Z",
+    "close_src": "history",
+    "clv": 0.0
    },
    {
     "key": "game:401873005",
@@ -94,7 +98,11 @@
     "kick": "2026-10-18T20:25Z",
     "big": false,
     "savedAt": 1792352872931,
-    "by": "Covered by 2.5"
+    "by": "Covered by 2.5",
+    "close_line": 5.5,
+    "closeAt": "2026-10-18T15:28:00.000Z",
+    "close_src": "history",
+    "clv": 0.0
    },
    {
     "key": "game:401873023",
@@ -369,7 +377,11 @@
     "kick": "2026-10-16T23:30Z",
     "big": false,
     "savedAt": 1792188562626,
-    "by": "Final total 48, 7.5 under 55.5"
+    "by": "Final total 48, 7.5 under 55.5",
+    "close_line": 55.5,
+    "closeAt": "2026-10-16T22:31:00.000Z",
+    "close_src": "history",
+    "clv": 0.0
    },
    {
     "key": "game:401869844",
@@ -390,7 +402,11 @@
     "kick": "2026-10-17T00:00Z",
     "big": false,
     "savedAt": 1792193788787,
-    "by": "Final total 67, 18.5 over 48.5"
+    "by": "Final total 67, 18.5 over 48.5",
+    "close_line": 48.5,
+    "closeAt": "2026-10-16T23:27:00.000Z",
+    "close_src": "history",
+    "clv": 0.0
    },
    {
     "key": "slate:2026-10-17",
@@ -411,7 +427,11 @@
     "kick": "2026-10-17T17:00Z",
     "big": true,
     "savedAt": 1792253869278,
-    "by": "Final total 69, 22.5 over 46.5"
+    "by": "Final total 69, 22.5 over 46.5",
+    "close_line": 47.5,
+    "closeAt": "2026-10-17T16:30:00.000Z",
+    "close_src": "history",
+    "clv": 1.0
    },
    {
     "key": "game:401858492",
@@ -432,7 +452,11 @@
     "kick": "2026-10-18T03:00Z",
     "big": false,
     "savedAt": 1792292220708,
-    "by": "Final total 31, 20.5 under 51.5"
+    "by": "Final total 31, 20.5 under 51.5",
+    "close_line": 51.5,
+    "closeAt": "2026-10-18T01:33:00.000Z",
+    "close_src": "history",
+    "clv": 0.0
    },
    {
     "key": "game:401871069",
@@ -453,7 +477,11 @@
     "kick": "2026-10-20T23:00Z",
     "big": false,
     "savedAt": 1792532574310,
-    "by": "Missed by 20"
+    "by": "Missed by 20",
+    "close_line": 3.5,
+    "closeAt": "2026-10-20T22:32:00.000Z",
+    "close_src": "history",
+    "clv": -0.5
    },
    {
     "key": "game:401871092",
@@ -474,7 +502,11 @@
     "kick": "2026-10-20T23:30Z",
     "big": false,
     "savedAt": 1792537782838,
-    "by": "Missed by 8.5"
+    "by": "Missed by 8.5",
+    "close_line": -1.5,
+    "closeAt": "2026-10-20T23:28:00.000Z",
+    "close_src": "history",
+    "clv": 0.0
    },
    {
     "key": "game:401871070",
@@ -495,7 +527,11 @@
     "kick": "2026-10-22T00:00Z",
     "big": false,
     "savedAt": 1792622789562,
-    "by": "Missed by 3"
+    "by": "Missed by 3",
+    "close_line": 3.5,
+    "closeAt": "2026-10-21T23:59:00.000Z",
+    "close_src": "history",
+    "clv": -0.5
    },
    {
     "key": "game:401864525",
@@ -516,7 +552,11 @@
     "kick": "2026-10-24T01:00Z",
     "big": false,
     "savedAt": 1792798306477,
-    "by": "Covered by 20"
+    "by": "Covered by 20",
+    "close_line": 6.5,
+    "closeAt": "2026-10-24T00:35:00.000Z",
+    "close_src": "history",
+    "clv": -0.5
    },
    {
     "key": "game:401858272",
@@ -558,7 +598,11 @@
     "kick": "2026-10-24T16:00Z",
     "big": true,
     "savedAt": 1792856994307,
-    "by": "Covered by 12.5"
+    "by": "Covered by 12.5",
+    "close_line": -15.5,
+    "closeAt": "2026-10-24T10:49:00.000Z",
+    "close_src": "history",
+    "clv": 0.0
    },
    {
     "key": "game:401871072",
@@ -586,7 +630,11 @@
     "kick": "2026-10-28T00:00Z",
     "big": false,
     "savedAt": 1793142880131,
-    "by": "Missed by 15.5"
+    "by": "Missed by 15.5",
+    "close_line": 6.0,
+    "closeAt": "2026-10-27T21:14:00.000Z",
+    "close_src": "history",
+    "clv": -0.5
    },
    {
     "key": "game:401871057",
@@ -615,7 +663,11 @@
     "big": false,
     "savedAt": 1793202229493,
     "note": "No lock run landed in the 90 minutes before kickoff; this is the last play saved before kickoff.",
-    "by": "Missed by 21"
+    "by": "Missed by 21",
+    "close_line": 3.0,
+    "closeAt": "2026-10-28T20:59:00.000Z",
+    "close_src": "history",
+    "clv": 0.0
    },
    {
     "key": "game:401871058",
@@ -644,7 +696,11 @@
     "big": false,
     "savedAt": 1793219760683,
     "note": "No lock run landed in the 90 minutes before kickoff; this is the last play saved before kickoff.",
-    "by": "Missed by 14.5"
+    "by": "Missed by 14.5",
+    "close_line": 1.5,
+    "closeAt": "2026-10-28T20:59:00.000Z",
+    "close_src": "history",
+    "clv": 0.0
    }
   ]
  },
