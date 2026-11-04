@@ -15201,6 +15201,8 @@ function potdLockDetail(bet) {
       const id = potdLegId(g, bet.line);
       const leg = id && typeof pbLeg === "function" ? pbLeg({ id }) : null;
       if (leg) { out.price = leg.price; out.book = leg.priceSource === "standard" ? "standard -110" : leg.priceSource; out.bookPct = Math.round((leg.bookWin || 0) * 100); }
+      // a pick priced at a named book (the college unders take the book with the best number)
+      if (bet.book && bet.price != null) { out.price = bet.price; out.book = bet.book; }
     }
     if (bet.ev != null) out.ev = Math.round(bet.ev * 1000) / 1000;
     if (p.hashmark_home_spread != null) out.ours = cfbSideLabel(g, p.hashmark_home_spread) + (p.hashmark_total != null ? " · total " + Number(p.hashmark_total).toFixed(1) : "");
