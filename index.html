@@ -2022,6 +2022,12 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .alt-intro { color: var(--ink-soft); line-height: 1.55; max-width: 72ch; }
 .alt-intro p { margin: 0 0 10px; }
 .alt-stamp { margin: 4px 0 0; }
+.alt-note { color: var(--sun); }
+.alt-rec { margin-top: 26px; padding: 16px 18px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); }
+.alt-rec .alt-h { margin-top: 0; }
+.alt-rec-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 10px; }
+.alt-rec-stats b { display: block; font-size: 1.35rem; color: var(--ink); }
+.alt-rec-stats span { color: var(--muted); font-size: .88rem; }
 .alt-h { font-family: var(--display); font-size: 1.5rem; letter-spacing: .01em; margin: 22px 0 10px; }
 .alt-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
 .alt-card { background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--turf); border-radius: var(--radius); padding: 14px 16px; cursor: pointer; }
@@ -7831,7 +7837,14 @@ function readyPrice(legs) {
   const names = new Set();
   mapped.forEach((m) => Object.keys((((window.PB_BOOKS || {}).games || {})[m.pb.gid]) || {}).forEach((b) => names.add(b)));
   names.forEach((book) => {
-    const legsB = mapped.map((m) => { const pb = pbLeg({ id: m.id, book }); return pb && !pb.started && pb.priceSource === book ? pb : null; });
+    const legsB = mapped.map((m) => {
+      const pb = pbLeg({ id: m.id, book });
+      if (!(pb && !pb.started && pb.priceSource === book)) return null;
+      // the same bet at this book's alternate line, when that's worth more (altSwap)
+      let sw = null;
+      try { sw = typeof altSwap === "function" ? altSwap(m.id, book, pb) : null; } catch (e) { sw = null; }
+      return sw || pb;
+    });
     if (legsB.some((x) => !x)) return;
     const r = pbParlay(legsB, 0);
     if (r.ev > best.r.ev + 1e-9) best = { mapped: mapped.map((m, i) => Object.assign({}, m, { pb: legsB[i] })), r, book };
@@ -7870,7 +7883,8 @@ function readyCardHtml(title, thought, legs, force) {
       const posted = String(m.l.label || "").trim();
       // compare as numbers, so "HOU -7.0" and "HOU -7" count as the same line
       const norm = (t) => String(t).toUpperCase().replace(/([+-]?\d+(?:\.\d+)?)/g, (n) => String(Number(n))).replace(/\s+/g, " ").replace(/\bPK\b/, "0");
-      const moved = posted && norm(posted) !== norm(m.pb.label) && m.pb.kind !== "ml" ? `<div class="prop-why">Posted as ${pbEsc(posted)}; ${x.book ? "at " + pbEsc(x.book) + " it's" : "the line is now"} ${pbEsc(m.pb.label)}.</div>` : "";
+      const moved = m.pb.alt ? `<div class="prop-why alt-note">Alternate line: ${pbEsc(m.pb.alt.label)} ${pbEsc(pbAm(m.pb.alt.price))} is the pick; ${pbEsc(x.book || m.pb.priceSource)}'s ${pbEsc(m.pb.label)} at ${pbEsc(pbAm(m.pb.price))} is the same bet worth more (${(m.pb.alt.value * 100).toFixed(1)}% → ${(m.pb.value * 100).toFixed(1)}% value), and beats the other books' price for that line.</div>`
+        : posted && norm(posted) !== norm(m.pb.label) && m.pb.kind !== "ml" ? `<div class="prop-why">Posted as ${pbEsc(posted)}; ${x.book ? "at " + pbEsc(x.book) + " it's" : "the line is now"} ${pbEsc(m.pb.label)}.</div>` : "";
       // each leg's reason is written out once per page; later tickets point back to it
       const seen = window.__readyWhySeen || (window.__readyWhySeen = new Set());
       const whyKey = m.id + "|" + (m.l.why || "");
@@ -7878,14 +7892,19 @@ function readyCardHtml(title, thought, legs, force) {
       if (m.l.why) seen.add(whyKey);
       return `<li data-id="${m.pb.gid}"><b>${pbEsc(m.pb.label)}</b><div class="subn">${pbEsc(m.pb.game)} · ${pbAm(m.pb.price)}${src(m.pb)} · ${pbPct(m.pb.win, 0)}</div>${moved}${why}</li>`;
     }).join("")}</ul>
-    <button type="button" class="ready-open" data-openpb="${mapped.map((m) => m.id).join("~")}">Open in parlay builder</button>
+    <button type="button" class="ready-open" data-openpb="${mapped.map((m) => m.pb.alt ? m.id + "@" + m.pb.line + "@" + (x.book || m.pb.priceSource) : m.id).join("~")}">Open in parlay builder</button>
   </article>`;
 }
 function openInBuilder(ids) {
   if (!PB.__loaded) { pbLoad(); PB.__loaded = true; }
-  PB.legs = String(ids || "").split("~").filter(Boolean).slice(0, PB_MAX_LEGS).map((id) => {
-    const l = pbLeg({ id });
-    return l ? { id, label: l.label, game: l.game } : null;
+  // each leg is an id, or id@line@book for an alternate line at one book
+  PB.legs = String(ids || "").split("~").filter(Boolean).slice(0, PB_MAX_LEGS).map((tok) => {
+    const [id, ln, bk] = tok.split("@");
+    const st = { id };
+    if (ln != null && ln !== "" && Number.isFinite(Number(ln))) st.line = Number(ln);
+    if (bk) st.book = bk;
+    const l = pbLeg(st);
+    return l ? Object.assign(st, { label: l.label, game: l.game }) : null;
   }).filter(Boolean);
   const g = PB.legs[0] && pbGame(PB.legs[0].id.split("|")[0]);
   if (g) PB.league = g.league;
@@ -8233,6 +8252,37 @@ function altFair(alt, kind, side, line) {
   const n = ps.length;
   return { p: n % 2 ? ps[(n - 1) / 2] : (ps[n / 2 - 1] + ps[n / 2]) / 2, n };
 }
+// A spread or total leg at one book, swapped for that book's alternate line of the same bet when
+// the alternate is worth more: it has to beat the market by the books' own two-sided prices at
+// that line (not by our projection), keep the leg's chance within 5 points (so a safe leg stays
+// safe and the ticket keeps its shape), be no more than 4 points from the main line, and add at
+// least a point of value. Cached per leg, book and alt-lines pull.
+const ALT_SWAP_MAX = 4, ALT_SWAP_CHANCE = 0.05, ALT_SWAP_GAIN = 0.01;
+function altSwap(id, book, base) {
+  if (!base || !book || base.started || !(base.kind === "sp" || base.kind === "tot") || base.priceSource !== book) return null;
+  const A = window.PB_ALT && window.PB_ALT.games, ag = A && A[base.gid];
+  const mk = ag && ag.books && ag.books[book] && ag.books[book][base.kind] && ag.books[book][base.kind][base.side];
+  if (!mk) return null;
+  const memo = altSwap.memo || (altSwap.memo = new Map());
+  const sig = [id, book, window.PB_ALT.updated, base.line, base.price, Math.round(base.win * 1000)].join("|");
+  if (memo.has(sig)) return memo.get(sig);
+  let best = null;
+  Object.keys(mk).forEach((k) => {
+    const line = Number(k);
+    if (!Number.isFinite(line) || Math.abs(line - base.line) < 0.5 || Math.abs(line - base.line) > ALT_SWAP_MAX) return;
+    const fair = altFair(ag, base.kind, base.side, line);
+    if (!fair || fair.n < 2) return;
+    const pb = pbLeg({ id, line, book });
+    if (!pb || pb.started || pb.priceSource !== book || pb.price < ALT_PRICE_LO || pb.price > ALT_PRICE_HI) return;
+    const mval = pb.bookWin * pb.dec + (pb.push || 0) - 1;
+    if (mval < 0.005 || Math.abs(pb.win - base.win) > ALT_SWAP_CHANCE || pb.value < base.value + ALT_SWAP_GAIN) return;
+    if (!best || pb.value > best.value) best = pb;
+  });
+  if (best) best.alt = { line: base.line, price: base.price, value: +base.value.toFixed(4), label: base.label };
+  memo.set(sig, best);
+  if (memo.size > 4000) memo.clear();
+  return best;
+}
 // the key margins a moved spread gains (buying points) or gives up (selling them), with how often
 // the market's view of this game ends on each
 function altKeysCrossed(r) {
@@ -8300,12 +8350,82 @@ function altFinderHtml() {
   const rows = altFinderRows();
   const n = Object.keys(A).filter((id) => { const g = pbGame(id); return g && !pbStarted(g); }).length;
   const stamp = window.PB_ALT.updated ? `Alternate lines from ${n} upcoming game${n === 1 ? "" : "s"}, pulled ${fmt.when(window.PB_ALT.updated)}. NFL games come in during the week and college games two days out, refreshed more often near kickoff.` : "";
-  if (!rows.length) return wrap(intro + `<div class="empty">No alternate line beats its price right now. ${pbEsc(stamp)}</div>`);
+  if (!rows.length) { let rec = ""; try { rec = altRecordHtml(); } catch (e) {} return wrap(intro + `<div class="empty">No alternate line beats its price right now. ${pbEsc(stamp)}</div>` + rec); }
   const sec = (lg, name) => {
     const r = rows.filter((x) => x.g.league === lg).slice(0, 12);
     return r.length ? `<h3 class="alt-h">${name}</h3><ul class="alt-list">${r.map(altRowHtml).join("")}</ul>` : "";
   };
-  return wrap(intro + `<p class="subn alt-stamp">${pbEsc(stamp)}</p>` + sec("nfl", "NFL") + sec("cfb", "College"));
+  let rec = "";
+  try { rec = altRecordHtml(); } catch (e) { rec = ""; }
+  return wrap(intro + `<p class="subn alt-stamp">${pbEsc(stamp)}</p>` + sec("nfl", "NFL") + sec("cfb", "College") + rec);
+}
+// ---- the alt line record ---------------------------------------------------------------
+// Every line the finder shows is logged (data/locks.json "altLines"), kept at its latest line,
+// book and price until kickoff (one that drops off the list before then is dropped), and graded
+// from the final at 1 unit at that price. So the record is every flagged line at its last
+// listing before kickoff.
+function altLogRow(r) {
+  return {
+    id: r.g.id + "|" + r.kind + "|" + r.side, gid: String(r.g.id), league: r.g.league, kind: r.kind, side: r.side,
+    label: altLabel(r), game: r.g.short_name, kick: r.g.date, line: r.line, mainLine: r.mainLine, price: r.price, book: r.book,
+    win: +r.win.toFixed(4), mwin: +r.mwin.toFixed(4), ev: +r.ev.toFixed(4), mev: +r.mev.toFixed(4), src: r.mev > 0.005 ? "mkt" : "proj",
+    result: null, final: null, units: null
+  };
+}
+function altGradeRow(x) {
+  if (x.result) return false;
+  const f = typeof ladderFinal === "function" ? ladderFinal(x.gid) : null;
+  if (!f || !Number.isFinite(f.hs) || !Number.isFinite(f.as)) return false;
+  const L = Number(x.line);
+  let c;
+  if (x.kind === "sp") c = (x.side === "home" ? f.hs - f.as : f.as - f.hs) + L;
+  else c = x.side === "over" ? f.hs + f.as - L : L - (f.hs + f.as);
+  x.result = c > 0 ? "HIT" : c < 0 ? "MISS" : "PUSH";
+  x.units = x.result === "HIT" ? +(pbDec(x.price) - 1).toFixed(4) : x.result === "MISS" ? -1 : 0;
+  x.final = `${f.away} ${f.as}, ${f.home} ${f.hs}`;
+  return true;
+}
+function altLockRun(out, changes, now) {
+  out.altLines = out.altLines || [];
+  if (!window.PB_ALT) return;
+  let rows = [];
+  try { rows = altFinderRows(); } catch (e) { rows = []; }
+  const L = new Map(out.altLines.map((x) => [x.id, x]));
+  const live = new Set();
+  rows.forEach((r) => {
+    const row = altLogRow(r);
+    live.add(row.id);
+    const was = L.get(row.id);
+    if (was && Date.parse(was.kick) <= now) return;
+    const sig = (x) => x ? [x.line, x.book, x.price, Math.round(x.ev * 200)].join("|") : "";
+    if (sig(was) !== sig(row)) { L.set(row.id, row); changes.push("alt line " + row.label + " " + pbAm(row.price) + " " + row.book); }
+  });
+  L.forEach((x, id) => { if (!live.has(id) && Date.parse(x.kick) > now && !x.result) { L.delete(id); changes.push("alt line off the list " + x.label); } });
+  L.forEach((x) => { if (Date.parse(x.kick) <= now && altGradeRow(x)) changes.push("alt line " + x.label + " " + x.result); });
+  out.altLines = [...L.values()].sort((a, b) => String(a.kick).localeCompare(String(b.kick))).slice(-600);
+}
+function altRecordHtml() {
+  const all = ((window.GG_LOCKS || {}).altLines || []).filter(Boolean);
+  const done = all.filter((x) => x.result);
+  const T = (rows) => { const w = rows.filter((x) => x.result === "HIT").length, l = rows.filter((x) => x.result === "MISS").length, p = rows.filter((x) => x.result === "PUSH").length, u = rows.reduce((a, x) => a + Number(x.units || 0), 0); return { w, l, p, n: rows.length, u, roi: rows.length ? u / rows.length : 0 }; };
+  const rec = (t) => t.n ? `${t.w}-${t.l}${t.p ? "-" + t.p : ""}` : "—";
+  const un = (t) => t.n ? `${t.u >= 0 ? "+" : "−"}${Math.abs(t.u).toFixed(2)}u · ${t.roi >= 0 ? "+" : "−"}${Math.abs(t.roi * 100).toFixed(1)}% a bet` : "No finished lines yet";
+  const A = T(done), M = T(done.filter((x) => x.src === "mkt")), P = T(done.filter((x) => x.src === "proj"));
+  const N = T(done.filter((x) => x.league === "nfl")), C = T(done.filter((x) => x.league === "cfb"));
+  const open = all.filter((x) => !x.result && Date.parse(x.kick) > Date.now()).length;
+  const exp = done.length ? done.reduce((a, x) => a + Number(x.ev || 0), 0) / done.length : null;
+  const recent = done.slice().reverse().slice(0, 10).map((x) => `<li class="${x.result === "HIT" ? "hit" : x.result === "MISS" ? "miss" : ""}"><b>${pbEsc(x.label)} ${pbEsc(pbAm(x.price))}</b> <span>${x.result === "HIT" ? "Hit" : x.result === "MISS" ? "Miss" : "Push"} · ${pbEsc(x.book)} · ${pbEsc(x.game)} · ${pbEsc(x.final || "")}</span></li>`).join("");
+  return `<article class="alt-rec">
+    <h3 class="alt-h">The alt line record</h3>
+    <div class="alt-rec-stats">
+      <div><b>${rec(A)}</b><span>${un(A)}</span></div>
+      <div><b>${rec(M)}</b><span>Best price beats the market${M.n ? " · " + un(M) : ""}</span></div>
+      <div><b>${rec(P)}</b><span>Our projection${P.n ? " · " + un(P) : ""}</span></div>
+      <div><b>${rec(N)} / ${rec(C)}</b><span>NFL / college</span></div>
+    </div>
+    <p class="subn">Every line this tab shows is logged at its last line, book and price before kickoff and graded from the final, 1 unit each. A line that drops off the list before kickoff isn't counted.${exp != null ? ` These lines were expected to return ${exp >= 0 ? "+" : "−"}${Math.abs(exp * 100).toFixed(1)}% a bet.` : ""}${done.length < 100 ? ` ${done.length} graded so far: at plus-money prices, records swing a lot until there are a few hundred.` : ""}${open ? ` ${open} on the list now.` : ""}</p>
+    ${recent ? `<details><summary>Recent lines</summary><ul class="tz-rec-list">${recent}</ul></details>` : ""}
+  </article>`;
 }
 function openAltInBuilder(spec) {
   const [id, ln, bk] = String(spec || "").split("@");
@@ -14907,6 +15027,7 @@ function ladderRow(pick) {
       id: m.id, label: m.pb.label, kind, game_id: String(m.pb.gid), game: g ? g.short_name : m.pb.game, league: g ? g.league : null,
       kick: g ? g.date : null, price: m.pb.price, line: m.pb.line, win: +Number(m.pb.win).toFixed(4), bookWin: +Number(m.pb.bookWin).toFixed(4),
       value: +Number(m.pb.value).toFixed(4), cat: m.l.cat || null, why: m.l.why || "",
+      alt: m.pb.alt ? { line: m.pb.alt.line, price: m.pb.alt.price, value: m.pb.alt.value, label: m.pb.alt.label } : null,
       prop: kind === "pp" ? { pid: String(m.pb.pid), stat: m.pb.stat, side: m.pb.side, line: Number(m.pb.line), name: m.pb.player } : null,
       result: null
     };
@@ -15060,7 +15181,8 @@ function ladderCloseSnap(row, l, now) {
   const parts = String(l.id).split("|"), kind = parts[1];
   if (Number.isFinite(kick) && kick > now) {
     let at = null;
-    try { at = row.book ? pbLeg({ id: l.id, book: row.book }) : null; } catch (e) {}
+    try { at = row.book ? pbLeg(l.alt ? { id: l.id, book: row.book, line: Number(l.line) } : { id: l.id, book: row.book }) : null; } catch (e) {}
+    if (l.alt && at && at.priceSource !== row.book) at = null;
     if (!at || at.started || (row.book && at.priceSource !== row.book)) { try { const bp = kind !== "pp" ? bestPriceFor(l.id) : null; at = bp && bp.best ? pbLeg({ id: l.id, book: bp.best.book }) : pbLeg({ id: l.id }); } catch (e) { at = null; } }
     if (!at || at.started) return null;
     let ours = null;
@@ -15087,7 +15209,7 @@ function ladderClv(l) {
   if (!c) return null;
   const kind = String(l.id).split("|")[1], side = String(l.id).split("|").pop();
   let pts = null;
-  if (c.line != null && l.line != null && (kind === "sp" || kind === "tot")) pts = kind === "sp" ? Number(l.line) - c.line : (side === "over" ? c.line - Number(l.line) : Number(l.line) - c.line);
+  if (c.line != null && l.line != null && (kind === "sp" || kind === "tot") && !l.alt) pts = kind === "sp" ? Number(l.line) - c.line : (side === "over" ? c.line - Number(l.line) : Number(l.line) - c.line);
   const val = c.fair != null && l.price != null ? c.fair * pbDec(Number(l.price)) + (c.push || 0) - 1 : null;
   // beat the close = the market's own chance of our exact bet went up between the lock and
   // kickoff (cut taken out both times), so the price we took was better than the closing one
@@ -15127,6 +15249,7 @@ function ladderLegHtml(l, showResult) {
   return `<li data-id="${pbEsc(String(l.game_id))}"><b>${pbEsc(l.label)}</b> ${showResult ? res : ""}
     <div class="subn">${pbEsc(l.game || "")} · ${when} · ${pbAm(l.price)} · ${LADDER_CAT[l.cat] || ""}${l.league ? " · " + (l.league === "nfl" ? "NFL" : "College") : ""}</div>
     <div class="prop-why">Our checked chance ${Math.round(Number(l.win) * 100)}%, the books' ${Math.round(Number(l.bookWin) * 100)}%: ${(Number(l.value) * 100 >= 0 ? "+" : "") + (Number(l.value) * 100).toFixed(1)}% at this price.${l.why && !/checked chance/.test(l.why) && l.cat !== "dog" && l.cat !== "fav" ? " " + l.why : ""}</div>
+    ${l.alt ? `<div class="prop-why alt-note">Alternate line: the pick is ${pbEsc(l.alt.label)} ${pbEsc(pbAm(l.alt.price))}; this book's ${pbEsc(l.label)} at ${pbEsc(pbAm(l.price))} is the same bet worth more (${(Number(l.alt.value) * 100).toFixed(1)}% → ${(Number(l.value) * 100).toFixed(1)}% value).</div>` : ""}
     ${showResult ? ladderClvText(l) : ""}
     ${l.final ? `<div class="prop-why"><b>${pbEsc(l.final)}</b></div>` : ""}</li>`;
 }
@@ -17129,6 +17252,7 @@ function ggLockRun(prev) {
   });
   try { ladderLockRun(out, changes, now, iso, due, early); } catch (e) { console.warn("ladder", e); }
   try { teaserLockRun(out, changes, now, iso, due, early); } catch (e) { console.warn("teaser", e); }
+  try { altLockRun(out, changes, now); } catch (e) { console.warn("alt lines", e); }
   if (changes.length) out.updated = iso;
   return { locks: out, changes };
 }
@@ -22892,7 +23016,10 @@ async function boot() {
       if (view === "nfl" || view === "cfb" || view === "all" || view === "live") renderBoard();
       if (window.__openGameId) openGame(window.__openGameId, { fromHash: true });
     });
-    pbFetchOnce("alt", "/data/alt-lines.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_ALT = d; });
+    // alternate lines can change how a ticket is priced (altSwap): drop the cached prices
+    pbFetchOnce("alt", "/data/alt-lines.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_ALT = d; window.__readyPriceCache = new Map(); }).then(() => {
+      if (window.PB_ALT && view === "parlay" && typeof renderParlays === "function") renderParlays();
+    });
     pbFetchOnce("books", "/data/books.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_BOOKS = d; }).then(() => {
       if (!window.PB_BOOKS) return;
       if (view === "nfl" || view === "cfb" || view === "all" || view === "live") renderBoard();
