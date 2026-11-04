@@ -249,7 +249,12 @@ def odds_api_main(key, nfl, fx):
             out["fetched"][gid] = (old.get("fetched") or {}).get(gid)
     status = {"source": "The Odds API", "plan": mode, "tier": tier, "monthly": odds_budget.monthly(budget), "board_games": len(nfl), "fetched_now": 0, "fresh_now": 0, "extra_markets": 0, "errors": []}
     try:
-        events, _ = (json.loads((fx / "events.json").read_text()), None) if fx else odds_get("/events", {}, key)   # free
+        events, ehdr = (json.loads((fx / "events.json").read_text()), None) if fx else odds_get("/events", {}, key)   # free
+        if ehdr:   # free call, but its headers tell the plan size: an upgrade shows up right away
+            odds_budget.record(budget, ehdr, "events", 0)
+            tier = odds_budget.tier(budget) if odds_budget.tier(budget) != "free" else tier
+            mode = "paid" if tier != "free" else "free"
+            status.update({"tier": tier, "plan": mode, "monthly": odds_budget.monthly(budget)})
     except Exception as e:
         status["errors"].append(f"events: {str(e)[:200]}")
         STATUS.write_text(json.dumps(status, indent=1) + "\n")

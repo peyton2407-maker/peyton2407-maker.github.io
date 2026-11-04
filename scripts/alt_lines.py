@@ -74,6 +74,12 @@ def main():
     key = os.environ.get("ODDS_API_KEY", "").strip() or stored_key()
     budget = odds_budget.load()
     tier = odds_budget.tier(budget)
+    if key and tier == "free" and budget.get("monthly") is None:
+        try:   # free call; its headers tell the plan size
+            _, h = odds_get("/events", {}, key, base=BASE + SPORT["nfl"])
+            odds_budget.record(budget, h, "events", 0); odds_budget.save(budget); tier = odds_budget.tier(budget)
+        except Exception:
+            pass
     if not key or tier == "free":
         print(f"Alternate lines: skipped ({'no key' if not key else 'free plan'})")
         return 0
