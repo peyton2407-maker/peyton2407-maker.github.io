@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 49.5,
-   "lockedAt": "2026-11-04T19:16:41.013Z",
+   "lockedAt": "2026-11-04T19:31:18.438Z",
    "provisional": true
   },
   "401866456": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 44.5,
-   "lockedAt": "2026-11-04T19:16:41.013Z",
+   "lockedAt": "2026-11-04T19:31:18.438Z",
    "provisional": true
   },
   "401866457": {
@@ -111,7 +111,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 52.5,
-   "lockedAt": "2026-11-04T19:16:41.013Z",
+   "lockedAt": "2026-11-04T19:31:18.438Z",
    "provisional": true
   }
  },
@@ -905,7 +905,7 @@
    }
   ]
  },
- "updated": "2026-11-04T19:16:41.013Z",
+ "updated": "2026-11-04T19:31:18.438Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1044,7 +1044,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-04T19:16:41.013Z"
+   "lockedAt": "2026-11-04T19:31:18.438Z"
   }
  ],
  "teasers": [],
@@ -1452,6 +1452,28 @@
    "mwin": 0.3594,
    "ev": 0.0338,
    "mev": 0.0243,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873049|sp|away",
+   "gid": "401873049",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "away",
+   "label": "GB -4.5",
+   "game": "GB @ NE",
+   "kick": "2026-11-08T21:25Z",
+   "line": -4.5,
+   "mainLine": 3,
+   "price": 280,
+   "book": "Fanatics",
+   "win": 0.2827,
+   "mwin": 0.2701,
+   "ev": 0.0742,
+   "mev": 0.0264,
    "src": "mkt",
    "result": null,
    "final": null,
