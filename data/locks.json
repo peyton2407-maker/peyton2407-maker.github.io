@@ -63,13 +63,13 @@
    "pick_line": "MASS -3.5",
    "total_pick": "NO PLAY",
    "side_play": true,
-   "our_margin": 5.7,
+   "our_margin": 5.37,
    "our_total": 49.5,
    "confidence": 51,
    "total_play": false,
-   "spread": -3.5,
+   "spread": -3,
    "total": 49.5,
-   "lockedAt": "2026-11-04T13:16:32.312Z",
+   "lockedAt": "2026-11-04T14:16:44.867Z",
    "provisional": true
   },
   "401866456": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 44.5,
-   "lockedAt": "2026-11-04T13:16:32.312Z",
+   "lockedAt": "2026-11-04T14:16:44.867Z",
    "provisional": true
   },
   "401866457": {
@@ -111,7 +111,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 52.5,
-   "lockedAt": "2026-11-04T13:16:32.312Z",
+   "lockedAt": "2026-11-04T14:16:44.867Z",
    "provisional": true
   }
  },
@@ -905,7 +905,7 @@
    }
   ]
  },
- "updated": "2026-11-04T13:16:32.312Z",
+ "updated": "2026-11-04T14:16:44.867Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -990,35 +990,17 @@
    "key": "ladder:2026-11-04",
    "day": "2026-11-04",
    "n": 2,
-   "book": "FanDuel",
+   "book": "bet365",
    "tier": "light",
    "stake": 0.5,
    "size": 0,
-   "american": 210,
-   "dec": 3.1023,
-   "chance": 0.3112,
-   "breakEven": 0.3223,
-   "ev": -0.0345,
+   "american": 354,
+   "dec": 4.5432,
+   "chance": 0.2122,
+   "breakEven": 0.2201,
+   "ev": -0.036,
    "firstKick": "2026-11-05T00:00:00.000Z",
    "legs": [
-    {
-     "id": "401866455|ml|home",
-     "label": "MASS to win",
-     "kind": "ml",
-     "game_id": "401866455",
-     "game": "BALL @ MASS",
-     "league": "cfb",
-     "kick": "2026-11-05T00:00Z",
-     "price": -160,
-     "line": null,
-     "win": 0.607,
-     "bookWin": 0.6038,
-     "value": -0.0136,
-     "cat": "ml",
-     "why": "MASS to win: our checked chance is 61%, the books' 60%.",
-     "prop": null,
-     "result": null
-    },
     {
      "id": "401866457|sp|home",
      "label": "SAC +25.5",
@@ -1027,13 +1009,31 @@
      "game": "TOL @ SAC",
      "league": "cfb",
      "kick": "2026-11-05T00:00Z",
-     "price": -110,
+     "price": -111,
      "line": 25.5,
-     "win": 0.5127,
-     "bookWin": 0.5,
-     "value": -0.0212,
+     "win": 0.5145,
+     "bookWin": 0.5022,
+     "value": -0.0219,
      "cat": "dog",
      "why": "SAC is getting 25.5. Our number has them covering by 2.8 points.",
+     "prop": null,
+     "result": null
+    },
+    {
+     "id": "401866455|ml|away",
+     "label": "BALL to win",
+     "kind": "ml",
+     "game_id": "401866455",
+     "game": "BALL @ MASS",
+     "league": "cfb",
+     "kick": "2026-11-05T00:00Z",
+     "price": 139,
+     "line": null,
+     "win": 0.4124,
+     "bookWin": 0.417,
+     "value": -0.0144,
+     "cat": "ml",
+     "why": "BALL to win: our checked chance is 41%, the books' 42%.",
      "prop": null,
      "result": null
     }
@@ -1042,7 +1042,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-04T13:16:32.312Z"
+   "lockedAt": "2026-11-04T14:16:44.867Z"
   }
  ],
  "teasers": [],
