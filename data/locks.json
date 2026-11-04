@@ -786,7 +786,7 @@
    }
   ]
  },
- "updated": "2026-11-04T03:31:27.370Z",
+ "updated": "2026-11-04T05:01:15.026Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -819,7 +819,8 @@
      "cat": "dog",
      "why": "BUFF is getting 6.5. Our number has them covering by 4.9 points.",
      "prop": null,
-     "result": null
+     "result": "HIT",
+     "final": "BUFF 34 – M-OH 31"
     },
     {
      "id": "401866453|sp|home",
@@ -841,11 +842,12 @@
      "final": "OHIO 28 – AKR 20"
     }
    ],
-   "result": null,
-   "units": null,
+   "result": "HIT",
+   "units": 1.355,
    "locked": true,
    "provisional": false,
-   "lockedAt": "2026-11-03T22:34:19.270Z"
+   "lockedAt": "2026-11-03T22:34:19.270Z",
+   "paidDec": 3.7092
   }
  ]
 }
