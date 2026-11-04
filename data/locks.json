@@ -69,7 +69,28 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-04T12:16:49.652Z",
+   "lockedAt": "2026-11-04T12:31:16.366Z",
+   "provisional": true
+  },
+  "401866456": {
+   "id": "401866456",
+   "league": "cfb",
+   "week": 10,
+   "short": "CMU VS EMU",
+   "home": "EMU",
+   "away": "CMU",
+   "date": "2026-11-05T00:30Z",
+   "pick": "CMU",
+   "pick_line": "CMU +1.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 1.1,
+   "our_total": 44.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -1.5,
+   "total": 44.5,
+   "lockedAt": "2026-11-04T12:31:16.366Z",
    "provisional": true
   },
   "401866457": {
@@ -90,7 +111,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 52.5,
-   "lockedAt": "2026-11-04T12:16:49.652Z",
+   "lockedAt": "2026-11-04T12:31:16.366Z",
    "provisional": true
   }
  },
@@ -884,7 +905,7 @@
    }
   ]
  },
- "updated": "2026-11-04T12:16:49.652Z",
+ "updated": "2026-11-04T12:31:16.366Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1021,7 +1042,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-04T12:16:49.652Z"
+   "lockedAt": "2026-11-04T12:31:16.366Z"
   }
  ],
  "teasers": [],
