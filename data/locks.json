@@ -94,7 +94,12 @@
    "total_play": false,
    "spread": 2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-04T23:01:36.949Z"
+   "lockedAt": "2026-11-04T23:01:36.949Z",
+   "close_spread": 3,
+   "close_total": 44.5,
+   "closeAt": "2026-11-04T23:34:17.988Z",
+   "clv_side": 4.5,
+   "clv_total": null
   },
   "401866457": {
    "id": "401866457",
@@ -115,10 +120,10 @@
    "spread": 25.5,
    "total": 52.5,
    "lockedAt": "2026-11-04T22:31:26.439Z",
-   "close_spread": 24.5,
+   "close_spread": 25.5,
    "close_total": 52.5,
-   "closeAt": "2026-11-04T23:16:15.501Z",
-   "clv_side": 1,
+   "closeAt": "2026-11-04T23:34:17.988Z",
+   "clv_side": 0,
    "clv_total": null
   }
  },
@@ -912,7 +917,7 @@
    }
   ]
  },
- "updated": "2026-11-04T23:16:15.501Z",
+ "updated": "2026-11-04T23:34:17.988Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1040,12 +1045,12 @@
    "game": "TOL @ SAC",
    "kick": "2026-11-05T00:00Z",
    "line": 16.5,
-   "mainLine": 24.5,
+   "mainLine": 25.5,
    "price": 240,
    "book": "BetRivers",
-   "win": 0.304,
+   "win": 0.3075,
    "mwin": 0.2959,
-   "ev": 0.0335,
+   "ev": 0.0455,
    "mev": 0.006,
    "src": "mkt",
    "result": null,
