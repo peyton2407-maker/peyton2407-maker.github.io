@@ -2006,6 +2006,16 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .tz-price span { margin-right: 4px; }
 .tz-price button { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line-2); background: transparent; color: var(--ink); font: 700 13px var(--body); cursor: pointer; }
 .tz-price button.on { border-color: var(--sun); background: rgba(242,184,64,.14); }
+.tz-rec-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 6px 0; }
+.tz-rec-stats div { padding: 8px 6px; border-radius: 10px; background: rgba(242,184,64,.07); text-align: center; }
+.tz-rec-stats b { display: block; font: 800 20px var(--display); }
+.tz-rec-stats span { font-size: 11.5px; color: var(--ink-soft); }
+.tz-rec-list { margin: 4px 0 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 13px; }
+.tz-rec-list span { color: var(--ink-soft); }
+.tz-rec-list li.hit b { color: var(--good, #6fd08c); }
+.tz-rec-list li.miss b { color: var(--bad, #f07a6a); }
+.tz-rec details summary { cursor: pointer; font-size: 13px; font-weight: 700; color: var(--ink-soft); margin-top: 6px; }
+@media (max-width: 420px) { .tz-rec-stats { grid-template-columns: 1fr; } }
 .tz-leg-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
 .tz-chance { font-weight: 800; color: var(--sun); }
 .tz-legs > li, .tz-intro ~ .parlay-card .parlay-legs > li { cursor: pointer; }
@@ -7939,7 +7949,9 @@ function teaserFinderHtml() {
   const legs = teaserFinderLegs();
   const pk = TZ_PRICES[window.__tzPrice] ? window.__tzPrice : "-120";
   const need2 = Math.sqrt(1 / pbDec(TZ_PRICES[pk][2]));
-  const intro = `<article class="parlay-card ready tz-intro"><div class="td-mkt">How it works</div>
+  let rec = "";
+  try { rec = teaserRecordHtml(); } catch (e) { rec = ""; }
+  const intro = rec + `<article class="parlay-card ready tz-intro"><div class="td-mkt">How it works</div>
     <p>NFL games end on 3 and 7 points more than any other margins. A 6-point teaser moves a spread six points your way, and when the move crosses both 3 and 7 it picks up the most finishes: an underdog of <b>+1.5 to +2.5</b> becomes +7.5 to +8.5, a favorite of <b>-7.5 to -8.5</b> becomes -1.5 to -2.5. Those legs have covered roughly 72–75% of the time over the years, one of the few bets that has beaten the book.</p>
     <p>The price decides it. A 2-team 6-point teaser needs each leg to cover <b>${(Math.sqrt(1 / pbDec(-110)) * 100).toFixed(1)}% at -110, ${(Math.sqrt(1 / pbDec(-120)) * 100).toFixed(1)}% at -120, ${(Math.sqrt(1 / pbDec(-130)) * 100).toFixed(1)}% at -130</b>. Many books have moved to -130 or worse; at those prices the edge is mostly gone, so shop for -120. Legs are strongest when the game total is 49 or less.</p>
     <div class="tz-price"><span>Your book's 2-team price</span>${Object.keys(TZ_PRICES).map((k) => `<button type="button" data-tzprice="${k}" class="${k === pk ? "on" : ""}">${k}</button>`).join("")}</div></article>`;
@@ -7965,6 +7977,123 @@ function teaserFinderHtml() {
     + (t2.length ? `<h3 class="ladder-h">Best 2-team tickets</h3>` + t2.map((t, i) => card(t, i, 2)).join("") : "")
     + (t3.length ? `<h3 class="ladder-h">Best 3-team tickets</h3>` + t3.map((t, i) => card(t, i, 3)).join("") : "")
     + legList;
+}
+// ---- the teaser record -----------------------------------------------------------------
+// Each NFL week the best 2-team ticket from the finder is saved from 12 hours before its first
+// leg, locked 90 minutes before it (at -120) and graded from the finals. Separately, every leg
+// that qualifies is logged until its own kickoff (a leg that moves out of range before then
+// drops off), so the leg record is every qualifying spread at its last line before kickoff.
+function tzLegRow(l) {
+  return { id: l.id, gid: l.gid, team: l.team.abbr, side: l.side, game: l.g.short_name, kick: l.g.date, from: l.from, to: l.to, book: l.book || null, win: +Number(l.win).toFixed(4), bookWin: +Number(l.bookWin).toFixed(4), total: Number.isFinite(l.total) ? l.total : null, result: null, final: null };
+}
+function tzGradeLeg(l) {
+  if (l.result) return false;
+  const f = typeof ladderFinal === "function" ? ladderFinal(l.gid) : null;
+  if (!f) return false;
+  const m = (l.side === "home" ? f.hs - f.as : f.as - f.hs) + Number(l.to);
+  l.result = Math.abs(m) < 1e-9 ? "PUSH" : m > 0 ? "HIT" : "MISS";
+  l.final = `${f.away} ${f.as}, ${f.home} ${f.hs}`;
+  return true;
+}
+function tzGradeRow(r) {
+  let ch = false;
+  (r.legs || []).forEach((l) => { if (tzGradeLeg(l)) ch = true; });
+  if (!r.result && (r.legs || []).every((l) => l.result)) {
+    const res = r.legs.map((l) => l.result);
+    const hits = res.filter((x) => x === "HIT").length, miss = res.includes("MISS");
+    if (miss) { r.result = "MISS"; r.units = -1; }
+    else if (hits === r.legs.length) { r.result = "HIT"; r.units = +(pbDec(r.price) - 1).toFixed(4); }
+    else if (hits === 1) { r.result = "HIT"; r.units = +(pbDec(-110) - 1).toFixed(4); r.note = "One leg pushed, so it graded as a straight bet at -110."; }
+    else { r.result = "PUSH"; r.units = 0; }
+    ch = true;
+  }
+  return ch;
+}
+function teaserLockRun(out, changes, now, iso, due, early) {
+  out.teasers = out.teasers || [];
+  out.teaserLegs = out.teaserLegs || [];
+  let legs = [];
+  try { legs = teaserFinderLegs(); } catch (e) { legs = []; }
+  // 1) every qualifying leg, kept current until its kickoff
+  const L = new Map(out.teaserLegs.map((x) => [x.id, x]));
+  const live = new Set();
+  legs.forEach((l) => {
+    const row = tzLegRow(l);
+    live.add(row.id);
+    const was = L.get(row.id);
+    if (was && Date.parse(was.kick) <= now) return;
+    const sig = (x) => x ? [x.from, x.to, x.book, x.win].join("|") : "";
+    if (sig(was) !== sig(row)) { L.set(row.id, row); changes.push("teaser leg " + row.team + " " + pbLine(row.from)); }
+  });
+  L.forEach((x, id) => { if (!live.has(id) && Date.parse(x.kick) > now && !x.result) { L.delete(id); changes.push("teaser leg out of range " + x.team); } });
+  L.forEach((x) => { if (Date.parse(x.kick) <= now && tzGradeLeg(x)) changes.push("teaser leg " + x.team + " " + x.result); });
+  out.teaserLegs = [...L.values()].sort((a, b) => String(a.kick).localeCompare(String(b.kick))).slice(-400);
+  // 2) the week's ticket
+  const mine = new Map(out.teasers.filter((r) => r && r.key).map((r) => [r.key, r]));
+  const key = "teaser:" + deskWeekKey();
+  const was = mine.get(key);
+  if (!(was && (was.locked || was.result)) && legs.length >= 2) {
+    const t = teaserTickets(legs, 2, "-120")[0];
+    const first = Math.min(...t.legs.map((l) => Date.parse(l.g.date)));
+    if (early(first)) {
+      const row = { key, week: deskWeekKey(), n: 2, price: -120, chance: +t.pAll.toFixed(4), ev: +t.ev.toFixed(4), firstKick: new Date(first).toISOString(), legs: t.legs.map(tzLegRow), result: null, units: null };
+      const sig = (r) => r ? r.legs.map((l) => l.id + "@" + l.from).join("~") : "";
+      if (due(first)) { Object.assign(row, { locked: true, provisional: false, lockedAt: iso }); changes.push("locked teaser " + row.legs.map((l) => l.team + " " + pbLine(l.to)).join(" + ")); }
+      else { Object.assign(row, { locked: false, provisional: true, lockedAt: iso }); if (sig(was) !== sig(row)) changes.push("provisional teaser " + row.legs.map((l) => l.team + " " + pbLine(l.to)).join(" + ")); }
+      mine.set(key, row);
+    }
+  }
+  mine.forEach((r) => {
+    if (r.provisional && !r.locked && Date.parse(r.firstKick) <= now) { r.provisional = false; r.locked = true; r.note = "No lock run landed in the 90 minutes before the first leg; this is the last ticket saved before kickoff."; changes.push("kept provisional teaser " + r.week); }
+    if (r.locked && !r.result && tzGradeRow(r)) changes.push("teaser " + r.week + (r.result ? " " + r.result : " leg graded"));
+  });
+  out.teasers = [...mine.values()].sort((a, b) => String(a.firstKick).localeCompare(String(b.firstKick)));
+}
+// this season's board at the closing line: every NFL spread that closed at +1.5 to +2.5 or
+// -7.5 to -8.5, teased six points and graded from the final score
+function tzSeasonBackfill() {
+  const out = [];
+  const pc = (window.PAST_CARDS || {}).nfl || {};
+  const seen = new Set();
+  Object.values(pc).forEach((arr) => (arr || []).forEach((r) => {
+    if (!r || seen.has(r.id) || r.hs == null || r.hs === "" || r.as == null) return;
+    seen.add(r.id);
+    const close = r.close_spread != null ? Number(r.close_spread) : r.spread != null ? Number(r.spread) : null;
+    if (close == null || !Number.isFinite(close)) return;
+    ["home", "away"].forEach((side) => {
+      const line = side === "home" ? close : -close;
+      if (!tzQualifies(line)) return;
+      const m = (side === "home" ? Number(r.hs) - Number(r.as) : Number(r.as) - Number(r.hs)) + line + 6;
+      out.push({ id: r.id, week: r.week, team: side === "home" ? r.homeAbbr || r.home : r.awayAbbr || r.away, game: r.short, from: line, to: line + 6, total: r.close_total != null ? Number(r.close_total) : r.total, result: Math.abs(m) < 1e-9 ? "PUSH" : m > 0 ? "HIT" : "MISS", final: `${r.awayAbbr || r.away} ${r.as}, ${r.homeAbbr || r.home} ${r.hs}` });
+    });
+  }));
+  return out;
+}
+function teaserRecordHtml() {
+  const L = (window.GG_LOCKS || {}).teaserLegs || [], T = (window.GG_LOCKS || {}).teasers || [];
+  const back = tzSeasonBackfill();
+  // the tracked legs replace the backfilled ones for the same game
+  const tracked = L.filter((x) => x.result);
+  const ids = new Set(tracked.map((x) => String(x.gid || x.id).split("|")[0]));
+  const all = back.filter((b) => !ids.has(String(b.id))).concat(tracked.map((x) => ({ id: x.gid, week: null, team: x.team, game: x.game, from: x.from, to: x.to, total: x.total, result: x.result, final: x.final, tracked: true })));
+  const w = all.filter((x) => x.result === "HIT").length, l = all.filter((x) => x.result === "MISS").length, ps = all.filter((x) => x.result === "PUSH").length;
+  const lowA = all.filter((x) => x.total != null && x.total <= 49), lowW = lowA.filter((x) => x.result === "HIT").length, lowL = lowA.filter((x) => x.result === "MISS").length;
+  const tk = T.filter((r) => r.result), tw = tk.filter((r) => r.result === "HIT").length, tl = tk.filter((r) => r.result === "MISS").length, tu = tk.reduce((a, r) => a + Number(r.units || 0), 0);
+  const cur = T.find((r) => !r.result);
+  const pct = (a, b) => a + b ? Math.round(a / (a + b) * 100) + "%" : "—";
+  const legList = all.slice().reverse().slice(0, 12).map((x) => `<li class="${x.result === "HIT" ? "hit" : x.result === "MISS" ? "miss" : ""}"><b>${pbEsc(x.team)} ${pbLine(x.from)} → ${pbLine(x.to)}</b> <span>${x.result === "HIT" ? "Covered" : x.result === "MISS" ? "Missed" : "Push"} · ${pbEsc(x.final || "")}${x.week ? " · week " + x.week : ""}</span></li>`).join("");
+  const tick = T.slice().reverse().slice(0, 6).map((r) => `<li class="${r.result === "HIT" ? "hit" : r.result === "MISS" ? "miss" : ""}"><b>${r.legs.map((x) => pbEsc(x.team + " " + pbLine(x.to))).join(" + ")}</b> <span>${r.result ? (r.result === "HIT" ? "Won" : r.result === "MISS" ? "Lost" : "Push") + " · " + (r.units >= 0 ? "+" : "−") + Math.abs(r.units).toFixed(2) + "u" : r.locked ? "Locked, not finished" : "Saved, locks 90 min before the first leg"} · ${pbAm(r.price)}</span></li>`).join("");
+  return `<article class="parlay-card ready tz-rec"><div class="td-mkt">The teaser record</div>
+    <div class="tz-rec-stats">
+      <div><b>${w}-${l}${ps ? "-" + ps : ""}</b><span>Qualifying legs · ${pct(w, l)} covered</span></div>
+      <div><b>${lowA.length ? lowW + "-" + lowL : "—"}</b><span>Totals 49 or less · ${pct(lowW, lowL)}</span></div>
+      <div><b>${tk.length ? tw + "-" + tl : "—"}</b><span>Weekly tickets${tk.length ? " · " + (tu >= 0 ? "+" : "−") + Math.abs(tu).toFixed(2) + "u" : ""}</span></div>
+    </div>
+    <p class="subn">${all.length ? `Every NFL spread this season that closed at +1.5 to +2.5 or -7.5 to -8.5, teased six points and graded from the final; a 2-team ticket at -120 needs 73.9% a leg. ` : ""}${all.length < 60 ? `That's ${all.length} leg${all.length === 1 ? "" : "s"} so far, too few to prove much either way; the long-run rate is built over hundreds.` : ""} From this week on, every qualifying leg is logged at its last line before kickoff, and each week's best 2-team ticket is saved and locked 90 minutes before its first game at -120.</p>
+    ${cur ? `<div class="cr-take"><b>This week's ticket:</b> ${cur.legs.map((x) => pbEsc(x.team + " " + pbLine(x.from) + " → " + pbLine(x.to))).join(" + ")} at -120 · ${cur.locked ? "locked" : "saved, locks 90 minutes before " + pbEsc(fmt.when(cur.firstKick))}</div>` : ""}
+    ${tick ? `<div class="lbl">Weekly tickets</div><ul class="tz-rec-list">${tick}</ul>` : ""}
+    ${legList ? `<details><summary>Recent legs</summary><ul class="tz-rec-list">${legList}</ul></details>` : ""}
+  </article>`;
 }
 function openTeaserInBuilder(spec) {
   const parts = String(spec || "").split("~").map((x) => { const [id, ln, bk] = x.split("@"); return { id, line: ln != null && ln !== "" ? Number(ln) : null, book: bk || null }; });
@@ -16657,6 +16786,7 @@ function ggLockRun(prev) {
     out.potd[lg] = Array.from(mine.values());
   });
   try { ladderLockRun(out, changes, now, iso, due, early); } catch (e) { console.warn("ladder", e); }
+  try { teaserLockRun(out, changes, now, iso, due, early); } catch (e) { console.warn("teaser", e); }
   if (changes.length) out.updated = iso;
   return { locks: out, changes };
 }
