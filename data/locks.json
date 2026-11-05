@@ -917,7 +917,7 @@
    }
   ]
  },
- "updated": "2026-11-05T06:16:36.893Z",
+ "updated": "2026-11-05T07:16:22.920Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1464,28 +1464,6 @@
    "mwin": 0.3037,
    "ev": 0.0541,
    "mev": 0.0327,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873051|sp|away",
-   "gid": "401873051",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "away",
-   "label": "BUF -7.5",
-   "game": "BUF @ MIN",
-   "kick": "2026-11-10T01:15Z",
-   "line": -7.5,
-   "mainLine": -3.5,
-   "price": 215,
-   "book": "ESPN BET",
-   "win": 0.3315,
-   "mwin": 0.3315,
-   "ev": 0.0441,
-   "mev": 0.0441,
    "src": "mkt",
    "result": null,
    "final": null,
