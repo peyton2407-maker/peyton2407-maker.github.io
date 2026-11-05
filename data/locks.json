@@ -917,7 +917,7 @@
    }
   ]
  },
- "updated": "2026-11-05T07:31:16.495Z",
+ "updated": "2026-11-05T08:16:32.285Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1014,22 +1014,6 @@
    "win": 0.7527,
    "bookWin": 0.7527,
    "total": 43.5,
-   "result": null,
-   "final": null
-  },
-  {
-   "id": "401873039|sp|away",
-   "gid": "401873039",
-   "team": "CLE",
-   "side": "away",
-   "game": "CLE @ NO",
-   "kick": "2026-11-08T18:00Z",
-   "from": 2.5,
-   "to": 8.5,
-   "book": "bet365",
-   "win": 0.7024,
-   "bookWin": 0.7161,
-   "total": 42.5,
    "result": null,
    "final": null
   },
@@ -1442,28 +1426,6 @@
    "mwin": 0.2778,
    "ev": 0.0692,
    "mev": 0.0556,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873050|tot|under",
-   "gid": "401873050",
-   "league": "nfl",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 40.5",
-   "game": "TB @ CHI",
-   "kick": "2026-11-09T01:20Z",
-   "line": 40.5,
-   "mainLine": 47.5,
-   "price": 240,
-   "book": "ESPN BET",
-   "win": 0.31,
-   "mwin": 0.3037,
-   "ev": 0.0541,
-   "mev": 0.0327,
    "src": "mkt",
    "result": null,
    "final": null,
