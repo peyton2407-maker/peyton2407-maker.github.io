@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 72.5,
-   "lockedAt": "2026-11-05T16:01:23.223Z",
+   "lockedAt": "2026-11-05T16:25:09.506Z",
    "provisional": true
   },
   "401866453": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": 13.5,
    "total": 57.5,
-   "lockedAt": "2026-11-05T16:01:23.223Z",
+   "lockedAt": "2026-11-05T16:25:09.506Z",
    "provisional": true
   },
   "401873037": {
@@ -176,17 +176,17 @@
    "home": "BAL",
    "away": "JAX",
    "date": "2026-11-06T01:15Z",
-   "pick": "JAX",
-   "pick_line": "JAX -10.0",
+   "pick": "BAL",
+   "pick_line": "BAL +10.0",
    "total_pick": "OVER 39.5",
    "side_play": false,
-   "our_margin": -10.48,
+   "our_margin": -9.43,
    "our_total": 40.2,
    "confidence": null,
    "total_play": false,
    "spread": 10,
    "total": 39.5,
-   "lockedAt": "2026-11-05T16:01:23.223Z",
+   "lockedAt": "2026-11-05T16:25:09.506Z",
    "provisional": true
   }
  },
@@ -478,15 +478,15 @@
     "price": -120,
     "book": "BetMGM",
     "ev": 0.082,
-    "ours": "JAX -10.5 · total 40.2",
-    "score": "JAX 25.3 – BAL 14.9",
+    "ours": "JAX -9.4 · total 40.2",
+    "score": "JAX 24.8 – BAL 15.4",
     "market": "JAX -10.0 · total 39.5",
-    "lockedAt": "2026-11-05T16:01:23.246Z",
+    "lockedAt": "2026-11-05T16:25:09.522Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T01:15Z",
     "big": false,
-    "savedAt": 1793894483246
+    "savedAt": 1793895909522
    }
   ],
   "cfb": [
@@ -899,12 +899,12 @@
     "ours": "UTSA -5.7 · total 72.5",
     "score": "UTSA 39.1 – FAU 33.4",
     "market": "UTSA -6.5 · total 72.5",
-    "lockedAt": "2026-11-05T16:01:23.249Z",
+    "lockedAt": "2026-11-05T16:25:09.524Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T00:30Z",
     "big": false,
-    "savedAt": 1793894483249
+    "savedAt": 1793895909524
    }
   ]
  },
@@ -1046,7 +1046,7 @@
    }
   ]
  },
- "updated": "2026-11-05T16:01:23.223Z",
+ "updated": "2026-11-05T16:25:09.506Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1156,7 +1156,7 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.7185,
+   "win": 0.735,
    "bookWin": 0.743,
    "total": 39.5,
    "result": null,
@@ -1309,9 +1309,9 @@
    "mainLine": 3.5,
    "price": 280,
    "book": "Fanatics",
-   "win": 0.3127,
+   "win": 0.3087,
    "mwin": 0.2845,
-   "ev": 0.1883,
+   "ev": 0.1732,
    "mev": 0.0811,
    "src": "mkt",
    "result": null,
@@ -1463,9 +1463,9 @@
    "mainLine": 8.5,
    "price": 300,
    "book": "BetRivers",
-   "win": 0.2784,
+   "win": 0.2624,
    "mwin": 0.2548,
-   "ev": 0.1354,
+   "ev": 0.0709,
    "mev": 0.0402,
    "src": "mkt",
    "result": null,
@@ -1529,9 +1529,9 @@
    "mainLine": 47.5,
    "price": 240,
    "book": "ESPN BET",
-   "win": 0.3055,
+   "win": 0.3114,
    "mwin": 0.2993,
-   "ev": 0.0388,
+   "ev": 0.0587,
    "mev": 0.0175,
    "src": "mkt",
    "result": null,
@@ -1553,10 +1553,10 @@
    "price": 370,
    "book": "FanDuel",
    "books": 6,
-   "ours": 0.4483,
+   "ours": 0.4609,
    "mkt": 0.1963,
-   "win": 0.2593,
-   "ev": 0.2187,
+   "win": 0.2625,
+   "ev": 0.2336,
    "result": null,
    "final": null,
    "units": null
@@ -1574,10 +1574,10 @@
    "price": 350,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.3786,
-   "mkt": 0.2029,
-   "win": 0.2468,
-   "ev": 0.1105,
+   "ours": 0.3727,
+   "mkt": 0.2028,
+   "win": 0.2453,
+   "ev": 0.1039,
    "result": null,
    "final": null,
    "units": null
@@ -1658,10 +1658,10 @@
    "price": 550,
    "book": "FanDuel",
    "books": 4,
-   "ours": 0.2961,
+   "ours": 0.2933,
    "mkt": 0.1167,
-   "win": 0.1615,
-   "ev": 0.05,
+   "win": 0.1609,
+   "ev": 0.0456,
    "result": null,
    "final": null,
    "units": null
