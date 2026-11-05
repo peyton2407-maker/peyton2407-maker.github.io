@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 72.5,
-   "lockedAt": "2026-11-05T14:16:45.880Z",
+   "lockedAt": "2026-11-05T14:31:19.982Z",
    "provisional": true
   },
   "401866453": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 57.5,
-   "lockedAt": "2026-11-05T14:16:45.880Z",
+   "lockedAt": "2026-11-05T14:31:19.982Z",
    "provisional": true
   },
   "401873037": {
@@ -186,7 +186,7 @@
    "total_play": false,
    "spread": 10,
    "total": 39.5,
-   "lockedAt": "2026-11-05T14:16:45.880Z",
+   "lockedAt": "2026-11-05T14:31:19.982Z",
    "provisional": true
   }
  },
@@ -481,12 +481,12 @@
     "ours": "JAX -10.5 · total 40.2",
     "score": "JAX 25.3 – BAL 14.9",
     "market": "JAX -10.0 · total 39.5",
-    "lockedAt": "2026-11-05T14:16:45.900Z",
+    "lockedAt": "2026-11-05T14:31:19.999Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T01:15Z",
     "big": false,
-    "savedAt": 1793888205900
+    "savedAt": 1793889079999
    }
   ],
   "cfb": [
@@ -899,12 +899,12 @@
     "ours": "UTSA -5.7 · total 72.5",
     "score": "UTSA 39.1 – FAU 33.4",
     "market": "UTSA -6.5 · total 72.5",
-    "lockedAt": "2026-11-05T14:16:45.902Z",
+    "lockedAt": "2026-11-05T14:31:20.001Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T00:30Z",
     "big": false,
-    "savedAt": 1793888205902
+    "savedAt": 1793889080001
    }
   ]
  },
@@ -1046,7 +1046,7 @@
    }
   ]
  },
- "updated": "2026-11-05T14:16:45.880Z",
+ "updated": "2026-11-05T14:31:19.982Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1256,12 +1256,12 @@
    "game": "UNM @ NEV",
    "kick": "2026-11-07T02:00Z",
    "line": 28.5,
-   "mainLine": 36.5,
+   "mainLine": 37.5,
    "price": 300,
    "book": "FanDuel",
-   "win": 0.2628,
+   "win": 0.2651,
    "mwin": 0.2628,
-   "ev": 0.0514,
+   "ev": 0.0603,
    "mev": 0.0514,
    "src": "mkt",
    "result": null,
