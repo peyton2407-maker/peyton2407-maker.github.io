@@ -19,8 +19,7 @@
    "total_play": false,
    "spread": 7,
    "total": 72.5,
-   "lockedAt": "2026-11-05T22:46:13.977Z",
-   "provisional": true
+   "lockedAt": "2026-11-05T23:09:54.599Z"
   },
   "401866453": {
    "id": "401866453",
@@ -165,7 +164,7 @@
    "total_play": false,
    "spread": 14,
    "total": 57.5,
-   "lockedAt": "2026-11-05T22:46:13.977Z",
+   "lockedAt": "2026-11-05T23:09:54.599Z",
    "provisional": true
   },
   "401873037": {
@@ -186,7 +185,7 @@
    "total_play": false,
    "spread": 10,
    "total": 39.5,
-   "lockedAt": "2026-11-05T22:46:13.977Z",
+   "lockedAt": "2026-11-05T23:09:54.599Z",
    "provisional": true
   }
  },
@@ -481,12 +480,12 @@
     "ours": "JAX -9.4 · total 40.2",
     "score": "JAX 24.8 – BAL 15.4",
     "market": "JAX -10.0 · total 39.5",
-    "lockedAt": "2026-11-05T22:46:13.992Z",
+    "lockedAt": "2026-11-05T23:09:54.615Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T01:15Z",
     "big": false,
-    "savedAt": 1793918773992
+    "savedAt": 1793920194615
    }
   ],
   "cfb": [
@@ -886,25 +885,24 @@
     "kind": "Under",
     "line": "UNDER 72.5",
     "hitPct": 55,
-    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 72.5. At -106 (FanDuel) the price needs 51%; we count it at 55%, so it's 5.9% better than the price.",
+    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 72.5. At -112 (FanDuel) the price needs 53%; we count it at 55%, so it's 3.2% better than the price.",
     "label": "Thursday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 1.5,
-    "price": -106,
+    "units": 1,
+    "price": -112,
     "book": "FanDuel",
-    "bookPct": 51,
-    "ev": 0.059,
+    "bookPct": 50,
+    "ev": 0.032,
     "ours": "UTSA -6.0 · total 72.5",
     "score": "UTSA 39.3 – FAU 33.2",
     "market": "UTSA -7.0 · total 72.5",
-    "lockedAt": "2026-11-05T22:46:13.993Z",
-    "locked": false,
-    "provisional": true,
+    "lockedAt": "2026-11-05T23:09:54.616Z",
+    "locked": true,
     "kick": "2026-11-06T00:30Z",
     "big": false,
-    "savedAt": 1793918773993
+    "savedAt": 1793920194616
    }
   ]
  },
@@ -1007,7 +1005,7 @@
    }
   ]
  },
- "updated": "2026-11-05T22:46:13.977Z",
+ "updated": "2026-11-05T23:09:54.599Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2034,10 +2032,10 @@
    "price": 650,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.2108,
-   "mkt": 0.1311,
-   "win": 0.1511,
-   "ev": 0.1329,
+   "ours": 0.2116,
+   "mkt": 0.1325,
+   "win": 0.1523,
+   "ev": 0.142,
    "result": null,
    "final": null,
    "units": null
@@ -2055,10 +2053,10 @@
    "price": 575,
    "book": "Fanatics",
    "books": 6,
-   "ours": 0.2036,
-   "mkt": 0.1412,
-   "win": 0.1568,
-   "ev": 0.0581,
+   "ours": 0.2025,
+   "mkt": 0.1393,
+   "win": 0.1551,
+   "ev": 0.0469,
    "result": null,
    "final": null,
    "units": null
@@ -2076,31 +2074,31 @@
    "price": 450,
    "book": "Fanatics",
    "books": 6,
-   "ours": 0.2617,
-   "mkt": 0.1779,
-   "win": 0.1989,
-   "ev": 0.0937,
+   "ours": 0.2604,
+   "mkt": 0.1756,
+   "win": 0.1968,
+   "ev": 0.0825,
    "result": null,
    "final": null,
    "units": null
   },
   {
-   "key": "401873046|4596334",
+   "key": "401873046|4258173",
    "gid": "401873046",
-   "pid": "4596334",
-   "name": "Keaton Mitchell",
-   "pos": "RB",
-   "team": "LAC",
-   "opp": "HOU",
+   "pid": "4258173",
+   "name": "Nico Collins",
+   "pos": "WR",
+   "team": "HOU",
+   "opp": "LAC",
    "game": "HOU @ LAC",
    "kick": "2026-11-08T21:05Z",
-   "price": 650,
-   "book": "FanDuel",
+   "price": 160,
+   "book": "BetMGM",
    "books": 6,
-   "ours": 0.1682,
-   "mkt": 0.1284,
-   "win": 0.1384,
-   "ev": 0.0377,
+   "ours": 0.406,
+   "mkt": 0.3929,
+   "win": 0.3962,
+   "ev": 0.0301,
    "result": null,
    "final": null,
    "units": null
