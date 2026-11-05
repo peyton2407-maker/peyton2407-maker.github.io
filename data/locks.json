@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 72.5,
-   "lockedAt": "2026-11-05T15:46:18.909Z",
+   "lockedAt": "2026-11-05T16:01:23.223Z",
    "provisional": true
   },
   "401866453": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": 13.5,
    "total": 57.5,
-   "lockedAt": "2026-11-05T15:46:18.909Z",
+   "lockedAt": "2026-11-05T16:01:23.223Z",
    "provisional": true
   },
   "401873037": {
@@ -186,7 +186,7 @@
    "total_play": false,
    "spread": 10,
    "total": 39.5,
-   "lockedAt": "2026-11-05T15:46:18.909Z",
+   "lockedAt": "2026-11-05T16:01:23.223Z",
    "provisional": true
   }
  },
@@ -481,12 +481,12 @@
     "ours": "JAX -10.5 · total 40.2",
     "score": "JAX 25.3 – BAL 14.9",
     "market": "JAX -10.0 · total 39.5",
-    "lockedAt": "2026-11-05T15:46:18.930Z",
+    "lockedAt": "2026-11-05T16:01:23.246Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T01:15Z",
     "big": false,
-    "savedAt": 1793893578930
+    "savedAt": 1793894483246
    }
   ],
   "cfb": [
@@ -899,12 +899,12 @@
     "ours": "UTSA -5.7 · total 72.5",
     "score": "UTSA 39.1 – FAU 33.4",
     "market": "UTSA -6.5 · total 72.5",
-    "lockedAt": "2026-11-05T15:46:18.932Z",
+    "lockedAt": "2026-11-05T16:01:23.249Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T00:30Z",
     "big": false,
-    "savedAt": 1793893578932
+    "savedAt": 1793894483249
    }
   ]
  },
@@ -1046,7 +1046,7 @@
    }
   ]
  },
- "updated": "2026-11-05T15:46:18.909Z",
+ "updated": "2026-11-05T16:01:23.223Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1143,22 +1143,6 @@
    "win": 0.7527,
    "bookWin": 0.7527,
    "total": 43.5,
-   "result": null,
-   "final": null
-  },
-  {
-   "id": "401873039|sp|away",
-   "gid": "401873039",
-   "team": "CLE",
-   "side": "away",
-   "game": "CLE @ NO",
-   "kick": "2026-11-08T18:00Z",
-   "from": 2.5,
-   "to": 8.5,
-   "book": "bet365",
-   "win": 0.7024,
-   "bookWin": 0.7161,
-   "total": 42.5,
    "result": null,
    "final": null
   },
@@ -1263,50 +1247,6 @@
    "mwin": 0.2628,
    "ev": 0.0603,
    "mev": 0.0514,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401856855|sp|home",
-   "gid": "401856855",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "home",
-   "label": "ARIZ -18.5",
-   "game": "TCU @ ARIZ",
-   "kick": "2026-11-07T03:15Z",
-   "line": -18.5,
-   "mainLine": -7.5,
-   "price": 280,
-   "book": "FanDuel",
-   "win": 0.2721,
-   "mwin": 0.2721,
-   "ev": 0.0341,
-   "mev": 0.0341,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401856855|tot|over",
-   "gid": "401856855",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "over",
-   "label": "Over 55.5",
-   "game": "TCU @ ARIZ",
-   "kick": "2026-11-07T03:15Z",
-   "line": 55.5,
-   "mainLine": 45.5,
-   "price": 300,
-   "book": "FanDuel",
-   "win": 0.2577,
-   "mwin": 0.2577,
-   "ev": 0.0308,
-   "mev": 0.0308,
    "src": "mkt",
    "result": null,
    "final": null,
