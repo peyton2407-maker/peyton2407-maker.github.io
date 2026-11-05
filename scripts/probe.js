@@ -1,1 +1,4 @@
-async () => { const rows = [...document.querySelectorAll(".tdl-row")]; const first = rows[0] && rows[0].querySelector("summary"); if (first) first.click(); await new Promise((r) => setTimeout(r, 300)); return { rows: rows.length, more: (document.querySelector(".tdl-more") || {}).innerText, open: !!document.querySelector(".tdl-row[open]"), body: (document.querySelector(".tdl-row[open] .tdl-body") || {}).innerText, games: document.getElementById("tdGame").options.length }; }
+async () => {
+  await new Promise((r) => setTimeout(r, 5000));
+  return (DATA.games || []).filter((g) => g.league === "nfl" && !g.completed && isThisNflWeek(g)).map((g) => { const s = g.situational || {}; return { game: g.short_name, line: (g.odds || {}).details, ours: (g.proj || {}).hashmark_home_spread, adj: s.margin_adj, pick: (g.proj || {}).pick, notes: s.notes }; });
+}
