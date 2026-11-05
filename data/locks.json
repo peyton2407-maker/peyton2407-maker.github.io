@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 72.5,
-   "lockedAt": "2026-11-05T15:16:41.560Z",
+   "lockedAt": "2026-11-05T15:46:18.909Z",
    "provisional": true
   },
   "401866453": {
@@ -157,15 +157,15 @@
    "date": "2026-11-06T01:00Z",
    "pick": "USM",
    "pick_line": "USM +13.5",
-   "total_pick": "OVER 58.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
    "our_margin": -13.05,
-   "our_total": 58.1,
+   "our_total": 57.5,
    "confidence": null,
    "total_play": false,
    "spread": 13.5,
-   "total": 58.5,
-   "lockedAt": "2026-11-05T15:16:41.560Z",
+   "total": 57.5,
+   "lockedAt": "2026-11-05T15:46:18.909Z",
    "provisional": true
   },
   "401873037": {
@@ -186,7 +186,7 @@
    "total_play": false,
    "spread": 10,
    "total": 39.5,
-   "lockedAt": "2026-11-05T15:16:41.560Z",
+   "lockedAt": "2026-11-05T15:46:18.909Z",
    "provisional": true
   }
  },
@@ -481,12 +481,12 @@
     "ours": "JAX -10.5 · total 40.2",
     "score": "JAX 25.3 – BAL 14.9",
     "market": "JAX -10.0 · total 39.5",
-    "lockedAt": "2026-11-05T15:16:41.578Z",
+    "lockedAt": "2026-11-05T15:46:18.930Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T01:15Z",
     "big": false,
-    "savedAt": 1793891801578
+    "savedAt": 1793893578930
    }
   ],
   "cfb": [
@@ -899,12 +899,12 @@
     "ours": "UTSA -5.7 · total 72.5",
     "score": "UTSA 39.1 – FAU 33.4",
     "market": "UTSA -6.5 · total 72.5",
-    "lockedAt": "2026-11-05T15:16:41.581Z",
+    "lockedAt": "2026-11-05T15:46:18.932Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T00:30Z",
     "big": false,
-    "savedAt": 1793891801581
+    "savedAt": 1793893578932
    }
   ]
  },
@@ -1046,7 +1046,7 @@
    }
   ]
  },
- "updated": "2026-11-05T15:16:41.560Z",
+ "updated": "2026-11-05T15:46:18.909Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
