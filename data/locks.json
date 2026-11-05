@@ -917,7 +917,7 @@
    }
   ]
  },
- "updated": "2026-11-05T04:16:53.305Z",
+ "updated": "2026-11-05T04:31:37.191Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1127,12 +1127,12 @@
    "game": "UNM @ NEV",
    "kick": "2026-11-07T02:00Z",
    "line": -19.5,
-   "mainLine": -9.5,
+   "mainLine": -10,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2687,
+   "win": 0.271,
    "mwin": 0.2687,
-   "ev": 0.0343,
+   "ev": 0.0434,
    "mev": 0.0343,
    "src": "mkt",
    "result": null,
