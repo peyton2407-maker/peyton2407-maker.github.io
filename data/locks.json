@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 7,
    "total": 72.5,
-   "lockedAt": "2026-11-05T22:31:31.048Z",
+   "lockedAt": "2026-11-05T22:46:13.977Z",
    "provisional": true
   },
   "401866453": {
@@ -155,17 +155,17 @@
    "home": "USM",
    "away": "JMU",
    "date": "2026-11-06T01:00Z",
-   "pick": "USM",
-   "pick_line": "USM +14.0",
-   "total_pick": "UNDER 57.5",
+   "pick": "JMU",
+   "pick_line": "JMU -14.0",
+   "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": -13.23,
-   "our_total": 57.9,
+   "our_margin": -14.3,
+   "our_total": 57.5,
    "confidence": null,
    "total_play": false,
    "spread": 14,
    "total": 57.5,
-   "lockedAt": "2026-11-05T22:31:31.048Z",
+   "lockedAt": "2026-11-05T22:46:13.977Z",
    "provisional": true
   },
   "401873037": {
@@ -186,7 +186,7 @@
    "total_play": false,
    "spread": 10,
    "total": 39.5,
-   "lockedAt": "2026-11-05T22:31:31.048Z",
+   "lockedAt": "2026-11-05T22:46:13.977Z",
    "provisional": true
   }
  },
@@ -481,12 +481,12 @@
     "ours": "JAX -9.4 · total 40.2",
     "score": "JAX 24.8 – BAL 15.4",
     "market": "JAX -10.0 · total 39.5",
-    "lockedAt": "2026-11-05T22:31:31.071Z",
+    "lockedAt": "2026-11-05T22:46:13.992Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T01:15Z",
     "big": false,
-    "savedAt": 1793917891071
+    "savedAt": 1793918773992
    }
   ],
   "cfb": [
@@ -899,12 +899,12 @@
     "ours": "UTSA -6.0 · total 72.5",
     "score": "UTSA 39.3 – FAU 33.2",
     "market": "UTSA -7.0 · total 72.5",
-    "lockedAt": "2026-11-05T22:31:31.073Z",
+    "lockedAt": "2026-11-05T22:46:13.993Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T00:30Z",
     "big": false,
-    "savedAt": 1793917891073
+    "savedAt": 1793918773993
    }
   ]
  },
@@ -1007,7 +1007,7 @@
    }
   ]
  },
- "updated": "2026-11-05T22:31:31.048Z",
+ "updated": "2026-11-05T22:46:13.977Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1248,9 +1248,9 @@
    "mainLine": 38.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2727,
+   "win": 0.275,
    "mwin": 0.275,
-   "ev": 0.0364,
+   "ev": 0.045,
    "mev": 0.045,
    "src": "mkt",
    "result": null,
@@ -1336,9 +1336,9 @@
    "mainLine": 38.5,
    "price": 250,
    "book": "FanDuel",
-   "win": 0.2982,
+   "win": 0.296,
    "mwin": 0.296,
-   "ev": 0.0438,
+   "ev": 0.036,
    "mev": 0.036,
    "src": "mkt",
    "result": null,
@@ -2164,6 +2164,27 @@
    "mkt": 0.1628,
    "win": 0.1744,
    "ev": 0.0467,
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "key": "401873049|4831959",
+   "gid": "401873049",
+   "pid": "4831959",
+   "name": "Eli Raridon",
+   "pos": "TE",
+   "team": "NE",
+   "opp": "GB",
+   "game": "GB @ NE",
+   "kick": "2026-11-08T21:25Z",
+   "price": 255,
+   "book": "BetRivers",
+   "books": 6,
+   "ours": 0.3638,
+   "mkt": 0.2872,
+   "win": 0.3064,
+   "ev": 0.0876,
    "result": null,
    "final": null,
    "units": null
