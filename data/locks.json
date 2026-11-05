@@ -917,7 +917,7 @@
    }
   ]
  },
- "updated": "2026-11-05T09:16:36.404Z",
+ "updated": "2026-11-05T10:16:32.493Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1014,22 +1014,6 @@
    "win": 0.7527,
    "bookWin": 0.7527,
    "total": 43.5,
-   "result": null,
-   "final": null
-  },
-  {
-   "id": "401873039|sp|away",
-   "gid": "401873039",
-   "team": "CLE",
-   "side": "away",
-   "game": "CLE @ NO",
-   "kick": "2026-11-08T18:00Z",
-   "from": 2.5,
-   "to": 8.5,
-   "book": "bet365",
-   "win": 0.7024,
-   "bookWin": 0.7161,
-   "total": 42.5,
    "result": null,
    "final": null
   },
