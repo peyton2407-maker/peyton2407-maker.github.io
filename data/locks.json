@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 72.5,
-   "lockedAt": "2026-11-05T12:31:23.632Z",
+   "lockedAt": "2026-11-05T13:01:34.966Z",
    "provisional": true
   },
   "401866453": {
@@ -146,6 +146,27 @@
    "closeAt": "2026-11-04T23:34:17.988Z",
    "clv_side": 0,
    "clv_total": null
+  },
+  "401869964": {
+   "id": "401869964",
+   "league": "cfb",
+   "week": 10,
+   "short": "JMU @ USM",
+   "home": "USM",
+   "away": "JMU",
+   "date": "2026-11-06T01:00Z",
+   "pick": "JMU",
+   "pick_line": "JMU -14.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -14.7,
+   "our_total": 57.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 14.5,
+   "total": 57.5,
+   "lockedAt": "2026-11-05T13:01:34.966Z",
+   "provisional": true
   }
  },
  "potd": {
@@ -821,12 +842,12 @@
     "ours": "UTSA -5.8 · total 72.5",
     "score": "UTSA 39.1 – FAU 33.4",
     "market": "UTSA -6.5 · total 72.5",
-    "lockedAt": "2026-11-05T12:31:23.650Z",
+    "lockedAt": "2026-11-05T13:01:34.986Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T00:30Z",
     "big": false,
-    "savedAt": 1793881883650
+    "savedAt": 1793883694986
    }
   ]
  },
@@ -968,7 +989,7 @@
    }
   ]
  },
- "updated": "2026-11-05T12:31:23.632Z",
+ "updated": "2026-11-05T13:01:34.966Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
