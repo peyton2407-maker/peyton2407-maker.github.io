@@ -4860,7 +4860,7 @@ function nflLineMove(g, lockedSp, lockedTot) {
   const cur = g.odds && g.odds.home_spread != null ? Number(g.odds.home_spread) : (g._dkSpread != null ? Number(g._dkSpread) : null);
   const curT = g.odds && g.odds.total != null ? Number(g.odds.total) : (g._dkTotal != null ? Number(g._dkTotal) : null);
   const lineMove = cur != null && lockedSp != null ? Math.abs(cur - Number(lockedSp)) : 0;
-  if (lineMove >= 0.5) notes.push("The line has moved from " + cfbSideLabel(g, lockedSp) + " to " + cfbSideLabel(g, cur) + " since it opened. Our number starts from the current line.");
+  if (lineMove >= 0.5) notes.push("The market has moved from " + cfbSideLabel(g, lockedSp) + " to " + cfbSideLabel(g, cur) + " since it opened; our number follows the current line, so that move is already in it.");
   if (curT != null && lockedTot != null && Math.abs(curT - Number(lockedTot)) >= 0.5) notes.push("The total has moved from " + lockedTot + " to " + curT + ".");
   // Injuries: ESPN's ratings (our 30%) are slow to take a starter out, so every injury corrects
   // that share. News that came out after the line opened, with the line not yet moved, isn't
@@ -4868,7 +4868,7 @@ function nflLineMove(g, lockedSp, lockedTot) {
   const openAt = g.open && g.open.minute ? Number(g.open.minute) * 60000 : null;
   const share = 1 - LIVE.MARKET_WEIGHT_NFL;
   const since = lineMove >= 1 || !openAt ? Date.now() + 864e5 : openAt;
-  const nudge = cfbStarterNudge(g, { qb: 3.5, qbSeason: 4.5, snap: 0.85, backup: 0.4, total: 0, nfl: true, since, oldWeight: share });
+  const nudge = cfbStarterNudge(g, { qb: 3.5, qbSeason: 4.5, snap: 0.85, backup: 0.4, total: 0, nfl: true, since, oldWeight: share, qbOldWeight: 0 });
   margin += nudge.margin;
   nudge.notes.forEach((n) => notes.push(n));
   const trip = nflRestTravel(g);
@@ -4960,7 +4960,7 @@ function applySituationalToGame(g) {
     p.win_prob_home = +normCdf(Number(p.blended_margin) / sigma).toFixed(4);
     p.win_prob_away = +(1 - p.win_prob_home).toFixed(4);
   }
-  g.situational = { margin_adj: moveM, total_adj: moveT, notes: moved.notes.length ? moved.notes : ["Nothing since the locked score was big enough to move the line."] };
+  g.situational = { margin_adj: moveM, total_adj: moveT, notes: moved.notes.length ? moved.notes : ["Nothing this week moved our number off the market's."] };
   if (g.box) {
     g.box.home_points = p.home_points;
     g.box.away_points = p.away_points;
@@ -5973,11 +5973,14 @@ function cfbStarterNudge(g, scale) {
     // doubled it: the Giants were docked 4.5 points on top of a line that already knew their
     // quarterback was gone.
     let w = 1;
+    const pos = cfbPosOf(r);
     if (scale && scale.since) {
       const t = Date.parse(r.date || "");
-      if (!Number.isFinite(t) || t < scale.since) w = scale.oldWeight != null ? scale.oldWeight : 0.3;
+      // a quarterback's injury is in ESPN's rating too (it rates the starter who plays: with
+      // Lamar Jackson out it had Jacksonville winning at Baltimore by 7), so for one the line
+      // has already priced, there's nothing left to correct (qbOldWeight 0)
+      if (!Number.isFinite(t) || t < scale.since) w = pos === "QB" && scale.qbOldWeight != null ? scale.qbOldWeight : (scale.oldWeight != null ? scale.oldWeight : 0.3);
     }
-    const pos = cfbPosOf(r);
     const blob = String((r.short || "") + " " + (r.name || "")).toLowerCase();
     const side = r.side === "home" || r.side === "away" ? r.side : "";
     if (!side) return;
@@ -5989,7 +5992,7 @@ function cfbStarterNudge(g, scale) {
       if (/has started|veteran backup|experienced backup|won the job/.test(blob)) pts = +(pts * backupCut).toFixed(2);
       else if (/first (career )?start|freshman|never started/.test(blob)) pts = +(pts * 1.1).toFixed(2);
       pts = +(pts * w).toFixed(2);
-      if (!bestQb[side] || pts > bestQb[side].pts) bestQb[side] = { r, pts, blob };
+      if (!bestQb[side] || pts > bestQb[side].pts) bestQb[side] = { r, pts, blob, w };
       return;
     }
     const share = (scale && scale.nfl) ? nflSnapShare(g, r) : (scale && scale.cfb) ? cfbPlayerShare(g, r) : cfbSnapShare(r);
@@ -6003,7 +6006,7 @@ function cfbStarterNudge(g, scale) {
     const full = base * snapScale;
     if (!full) return;
     const pts = +(full * share * w).toFixed(2);
-    if (!bestSnap[side] || pts > bestSnap[side].pts) bestSnap[side] = { r, pts, share, spot: spot };
+    if (!bestSnap[side] || pts > bestSnap[side].pts) bestSnap[side] = { r, pts, share, spot: spot, w };
   });
   let home = 0;
   let away = 0;
@@ -6020,7 +6023,12 @@ function cfbStarterNudge(g, scale) {
     else { away += item.pts; qbAway += item.pts; }
     if (!(scale && scale.total === 0)) total -= Math.min(1.2, item.pts * 0.18);
     const backup = /has started|veteran backup|experienced backup|won the job/.test(item.blob) ? " The backup has started before, so this is smaller." : "";
-    const qbNote = (item.r.name || "Quarterback") + " is out. That is worth " + item.pts.toFixed(1) + " points against " + team + "." + backup;
+    const nm = item.r.name || "The quarterback";
+    // NFL: say what it does to our line (a correction, not the player's worth)
+    const qbNote = scale && scale.nfl
+      ? (item.pts < 0.05 ? nm + " is out. The line and ESPN's rating already account for it, so we don't move our line for it."
+        : nm + " is out and the line hasn't moved for it yet, so we move ours " + item.pts.toFixed(1) + " points against " + team + "." + backup)
+      : nm + " is out. That is worth " + item.pts.toFixed(1) + " points against " + team + "." + backup;
     notes.push(qbNote);
     qbNotes.push(qbNote);
     qbOut.push(side);
@@ -6032,7 +6040,10 @@ function cfbStarterNudge(g, scale) {
     else away += item.pts;
     if (!(scale && scale.total === 0)) total -= Math.min(0.4, item.pts * 0.12);
     const job = item.spot === "lt" ? "starting left tackle" : item.spot === "rt" ? "starting right tackle" : item.spot === "rb" ? "starting back" : item.spot === "te" ? "starting tight end" : (item.spot === "wr1" || item.spot === "wr2") ? "starting receiver" : (scale && scale.cfb ? (cfbPosOf(item.r) === "LT" ? "starting left tackle" : cfbPosOf(item.r) === "RT" ? "starting right tackle" : cfbPosOf(item.r) === "RB" ? "starting back" : cfbPosOf(item.r) === "TE" ? "starting tight end" : (cfbPosOf(item.r) === "WR" ? "starting receiver" : (["OT", "T"].includes(cfbPosOf(item.r)) ? "starting tackle" : ""))) : "");
-    notes.push((item.r.name || "Starter") + " is out" + (job ? ". He is the " + job + " and" : " and") + " takes about " + Math.round(item.share * 100) + "% of the snaps. That is worth " + item.pts.toFixed(1) + " against " + team + ".");
+    const lead = (item.r.name || "Starter") + " is out" + (job ? ". He is the " + job + " and" : " and") + " takes about " + Math.round(item.share * 100) + "% of the snaps.";
+    notes.push(scale && scale.nfl
+      ? lead + (item.w < 1 ? " The line has it, but ESPN's rating is slow to take a starter like him out, so we move our line " + item.pts.toFixed(1) + " points against " + team + "." : " The line hasn't moved for it yet, so we move ours " + item.pts.toFixed(1) + " points against " + team + ".")
+      : lead + " That is worth " + item.pts.toFixed(1) + " against " + team + ".");
   });
   return {
     margin: Math.max(-6.5, Math.min(6.5, +(away - home).toFixed(2))),
@@ -6648,7 +6659,7 @@ function applySplitDesk() {
     g.situational = {
       margin_adj: moveM,
       total_adj: moveT,
-      notes: moved.notes.length ? moved.notes : ["Nothing since the locked score was big enough to move the line."]
+      notes: moved.notes.length ? moved.notes : ["Nothing this week moved our number off The Split's."]
     };
   });
   applyCfbQbPass();
@@ -11071,11 +11082,11 @@ function cfbPickWhy(g) {
 function deskPanelHtml(g) {
   const s = g.situational || { margin_adj: 0, total_adj: 0, notes: [] };
   const college = g && g.league === "cfb";
-  const notes = college ? cfbPickWhy(g) : ((s.notes && s.notes.length) ? s.notes : ["We did not move this line."]);
+  const notes = college ? cfbPickWhy(g) : ((s.notes && s.notes.length) ? s.notes : ["Nothing this week moved our number off the market's."]);
   const moved = Math.abs(Number(s.margin_adj) || 0) >= 0.2 || Math.abs(Number(s.total_adj) || 0) >= 0.2;
   const nums = college && !moved ? "" : `<div class="desk-nums"><b>Spread ${fmt.signed(s.margin_adj || 0)}</b><b>Total ${fmt.signed(s.total_adj || 0)}</b></div>`;
   return `<div class="desk-panel">
-    <div class="lbl">${college ? "Why we picked this line" : "Why we moved this line"}</div>
+    <div class="lbl">${college ? "Why we picked this line" : moved ? "Why we moved this line" : "What's moved this line"}</div>
     ${nums}
     <ul class="desk-notes">${notes.map((n) => `<li>${n}</li>`).join("")}</ul>
   </div>`;
