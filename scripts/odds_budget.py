@@ -123,20 +123,27 @@ CORE_WEEK = 95   # one core prop pull per NFL game a week (15 games x 5 markets)
 
 
 def can_spend(b, cost, priority="core"):
-    """core: the first prop pull for a game, limited only by the reserve. extra: anything else,
-    only from what's left after keeping the rest of the month's core pulls, spread over the
-    days left (half again, so a busy NFL Sunday can borrow from quiet Tuesdays)."""
+    """The one limit is this site's own spending: never past monthly_target (13,000) in a billing
+    month, counted from its own jobs only, so another project on the same key never slows it
+    down or stops it. Within that: core (the first prop pull for a game) always comes first;
+    extra (anything else) only from what's left after keeping the rest of the month's core
+    pulls, spread over the days left (half again, so a busy NFL Sunday can borrow from quiet
+    Tuesdays). The account's own floor (RESERVE credits left) is the only other stop, since
+    calls past it would fail anyway."""
     rem = b.get("remaining")
     if rem is None:
         rem = monthly(b)
     spare = max(0, int(rem) - RESERVE)
+    left = target(b) - own_spent(b)   # this site's own allowance left this month
     if priority == "core":
-        return cost <= spare
+        return cost <= spare and cost <= left
     core_rest = CORE_WEEK * (days_left() / 7)
-    # the pool for everything optional: up to the monthly target (this site's own spending),
-    # never into the credits kept free for other projects, the reserve, or the rest of the
-    # month's core pulls
-    pool = min(spare - keep_free() - core_rest, target(b) - own_spent(b) - core_rest)
+    # the pool for everything optional: this site's allowance left, after the rest of the
+    # month's core pulls; paced on that alone (what the account has left only matters as the
+    # floor below, so another project's use never slows the site)
+    if cost > spare:
+        return False
+    pool = left - core_rest
     if pool <= 0:
         return False
     if priority == "backfill":
