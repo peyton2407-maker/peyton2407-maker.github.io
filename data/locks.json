@@ -917,7 +917,7 @@
    }
   ]
  },
- "updated": "2026-11-05T08:16:32.285Z",
+ "updated": "2026-11-05T09:16:36.404Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1018,6 +1018,22 @@
    "final": null
   },
   {
+   "id": "401873039|sp|away",
+   "gid": "401873039",
+   "team": "CLE",
+   "side": "away",
+   "game": "CLE @ NO",
+   "kick": "2026-11-08T18:00Z",
+   "from": 2.5,
+   "to": 8.5,
+   "book": "bet365",
+   "win": 0.7024,
+   "bookWin": 0.7161,
+   "total": 42.5,
+   "result": null,
+   "final": null
+  },
+  {
    "id": "401873048|sp|home",
    "gid": "401873048",
    "team": "SEA",
@@ -1056,28 +1072,6 @@
    "result": "HIT",
    "final": "TOL 20, SAC 17",
    "units": 2.4
-  },
-  {
-   "id": "401873037|sp|away",
-   "gid": "401873037",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "away",
-   "label": "JAX -19",
-   "game": "JAX @ BAL",
-   "kick": "2026-11-06T01:15Z",
-   "line": -19,
-   "mainLine": -10,
-   "price": 295,
-   "book": "BetRivers",
-   "win": 0.2595,
-   "mwin": 0.2542,
-   "ev": 0.0384,
-   "mev": 0.0174,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
   },
   {
    "id": "401862818|tot|over",
@@ -1443,13 +1437,13 @@
    "opp": "JAX",
    "game": "JAX @ BAL",
    "kick": "2026-11-06T01:15Z",
-   "price": 400,
-   "book": "Fanatics",
+   "price": 380,
+   "book": "FanDuel",
    "books": 6,
    "ours": 0.4483,
-   "mkt": 0.2002,
-   "win": 0.2622,
-   "ev": 0.311,
+   "mkt": 0.1974,
+   "win": 0.2601,
+   "ev": 0.2485,
    "result": null,
    "final": null,
    "units": null
@@ -1468,9 +1462,9 @@
    "book": "DraftKings",
    "books": 6,
    "ours": 0.3786,
-   "mkt": 0.2036,
-   "win": 0.2473,
-   "ev": 0.113,
+   "mkt": 0.1996,
+   "win": 0.2443,
+   "ev": 0.0994,
    "result": null,
    "final": null,
    "units": null
