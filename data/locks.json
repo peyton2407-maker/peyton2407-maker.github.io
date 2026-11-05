@@ -917,7 +917,7 @@
    }
   ]
  },
- "updated": "2026-11-05T02:16:32.125Z",
+ "updated": "2026-11-05T03:01:54.999Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1360,28 +1360,6 @@
    "mwin": 0.2576,
    "ev": 0.1467,
    "mev": 0.0515,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873049|sp|away",
-   "gid": "401873049",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "away",
-   "label": "GB -3.5",
-   "game": "GB @ NE",
-   "kick": "2026-11-08T21:25Z",
-   "line": -3.5,
-   "mainLine": 3,
-   "price": 250,
-   "book": "BetMGM",
-   "win": 0.3013,
-   "mwin": 0.2882,
-   "ev": 0.0545,
-   "mev": 0.0089,
    "src": "mkt",
    "result": null,
    "final": null,
