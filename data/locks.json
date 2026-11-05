@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 72.5,
-   "lockedAt": "2026-11-05T15:01:30.372Z",
+   "lockedAt": "2026-11-05T15:16:41.560Z",
    "provisional": true
   },
   "401866453": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": 13.5,
    "total": 58.5,
-   "lockedAt": "2026-11-05T15:01:30.372Z",
+   "lockedAt": "2026-11-05T15:16:41.560Z",
    "provisional": true
   },
   "401873037": {
@@ -186,7 +186,7 @@
    "total_play": false,
    "spread": 10,
    "total": 39.5,
-   "lockedAt": "2026-11-05T15:01:30.372Z",
+   "lockedAt": "2026-11-05T15:16:41.560Z",
    "provisional": true
   }
  },
@@ -481,12 +481,12 @@
     "ours": "JAX -10.5 · total 40.2",
     "score": "JAX 25.3 – BAL 14.9",
     "market": "JAX -10.0 · total 39.5",
-    "lockedAt": "2026-11-05T15:01:30.390Z",
+    "lockedAt": "2026-11-05T15:16:41.578Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T01:15Z",
     "big": false,
-    "savedAt": 1793890890390
+    "savedAt": 1793891801578
    }
   ],
   "cfb": [
@@ -884,27 +884,27 @@
     "id": "401862817",
     "game": "UTSA @ FAU",
     "kind": "Under",
-    "line": "UNDER 72.5",
+    "line": "UNDER 73.5",
     "hitPct": 55,
-    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 72.5. At -108 (FanDuel) the price needs 52%; we count it at 55%, so it's 5.0% better than the price.",
+    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 73.5. At -109 (Caesars) the price needs 52%; we count it at 55%, so it's 4.5% better than the price.",
     "label": "Thursday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
     "units": 1.25,
-    "price": -108,
-    "book": "FanDuel",
+    "price": -109,
+    "book": "Caesars",
     "bookPct": 50,
-    "ev": 0.05,
+    "ev": 0.045,
     "ours": "UTSA -5.7 · total 72.5",
     "score": "UTSA 39.1 – FAU 33.4",
     "market": "UTSA -6.5 · total 72.5",
-    "lockedAt": "2026-11-05T15:01:30.392Z",
+    "lockedAt": "2026-11-05T15:16:41.581Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T00:30Z",
     "big": false,
-    "savedAt": 1793890890392
+    "savedAt": 1793891801581
    }
   ]
  },
@@ -1046,7 +1046,7 @@
    }
   ]
  },
- "updated": "2026-11-05T15:01:30.372Z",
+ "updated": "2026-11-05T15:16:41.560Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
