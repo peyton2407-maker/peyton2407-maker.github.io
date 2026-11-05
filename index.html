@@ -8988,7 +8988,7 @@ function collectPropParlayLegs() {
   nextPropRows().forEach((p) => {
     if (!readyThisWeek({ game_id: p.game_id })) return;
     const L = postedLean(p);
-    if (!L || L.take !== "Under" || L.price == null || L.fair == null || !(L.value > 0.005)) return;
+    if (!L || L.take !== "Under" || L.price == null || L.fair == null || !(L.value > 0.005) || L.cold) return;
     const stat = L.m.key;
     if (!VAL_LBL[stat] || !["pass_yds", "pass_td", "rush_yds", "rec_yds", "rec"].includes(stat)) return;
     const mean = L.m.mean >= 10 ? Math.round(L.m.mean) : Number(L.m.mean).toFixed(1);
@@ -12891,7 +12891,30 @@ function postedLean(p) {
       if (!pick || score > pick.score) pick = { m, line: mk.line, chance: ours, raw, take, fair, price, book: mk.best[side] ? mk.best[side].book : null, value, edge, score, mk };
     });
   });
+  if (pick) {
+    pick.hist = propColdHist(p, pick.m.key, pick.line, pick.take);
+    pick.cold = !!(pick.hist && pick.hist.cold);
+  }
   return pick;
+}
+// The posted side's last 8 games, graded at today's line. A side that hit 2 of 8 or fewer
+// (at least 5 games) is "cold": it is still saved to the prop record, but it isn't played on
+// the Ladder, the play of the day, tickets or the game pages. Graded props through week 9: cold
+// sides won 40.8% against our 52.9% (20-29, -11.2u); every other group was even or better.
+// The record keeps grading cold sides on their own so this can be undone if it was luck.
+const PROP_COLD_MAX = 0.25;
+function propColdHist(p, key, line, take) {
+  try {
+    const pack = window.GAMELOGS && window.GAMELOGS[String(p.id)];
+    if (!pack || !(pack.rows || []).length) return null;
+    const kd = String(p.date || p.kick || "").slice(0, 10);
+    const rows = pack.rows.filter((r) => Number.isFinite(Number(r[key])) && (!kd || String(r.d || "") < kd))
+      .sort((a, b) => String(b.d || "").localeCompare(String(a.d || ""))).slice(0, 8);
+    if (rows.length < 5) return { hits: null, n: rows.length, cold: false };
+    const under = String(take).toLowerCase() === "under", ln = Number(line);
+    const hits = rows.filter((r) => under ? Number(r[key]) < ln : Number(r[key]) > ln).length;
+    return { hits, n: rows.length, cold: hits / rows.length <= PROP_COLD_MAX };
+  } catch (e) { return null; }
 }
 function propTicketId(p, lean) {
   return lean && ["pass_yds", "pass_td", "rush_yds", "rec_yds", "rec"].includes(lean.m.key) ? `${p.game_id}|pp|${p.id}|${lean.m.key}|${lean.take.toLowerCase()}` : null;
@@ -13014,6 +13037,7 @@ async function propRecordPicks() {
       gid: String(p.game_id), pid: String(p.id), name: p.name, pos: p.pos, team: p.team, opp: p.opp, kick: p.date, week: p.week,
       stat: L.m.key, take: L.take.toLowerCase(), line: L.line, price: L.price, book: L.book, mean: +Number(L.m.mean).toFixed(2),
       chance: +L.chance.toFixed(4), model: +L.raw.toFixed(4), books: +L.fair.toFixed(4), value: +L.value.toFixed(4),
+      ...(L.hist && L.hist.hits != null ? { last8: L.hist.hits + "/" + L.hist.n } : {}), ...(L.cold ? { cold: true } : {}),
     };
   }).filter(Boolean);
   return { picks, lined };
@@ -13029,7 +13053,8 @@ function propRecordHtml() {
   if (!R) return "";
   const all = R.picks || [];
   const graded = all.filter((x) => x.result && x.result.out !== "void");
-  const plus = graded.filter((x) => x.value > 0);
+  const plus = graded.filter((x) => x.value > 0 && !x.cold);
+  const coldSkips = graded.filter((x) => x.value > 0 && x.cold);
   const pending = all.filter((x) => !x.result && Date.parse(x.kick) > Date.now() - 6 * 3600e3);
   const tally = (list) => {
     const w = list.filter((x) => x.result.out === "win").length, l = list.filter((x) => x.result.out === "loss").length, pu = list.filter((x) => x.result.out === "push").length;
@@ -13047,7 +13072,8 @@ function propRecordHtml() {
   const row = (name, list) => { if (!list.length) return ""; const t = tally(list); return `<tr><td>${name}</td><td class="num">${rec(t)}</td><td class="num ${t.u >= 0 ? "up" : "down"}">${units(t.u)}</td><td class="num">${Math.round(t.said * 100)}% · ${Math.round(t.hit * 100)}%</td></tr>`; };
   const byMk = Object.keys(PROP_LBL).map((k) => row(PROP_LBL[k], plus.filter((x) => x.stat === k))).join("");
   const byTier = [row("Value 0-3%", plus.filter((x) => x.value < 0.03)), row("Value 3-6%", plus.filter((x) => x.value >= 0.03 && x.value < 0.06)), row("Value 6%+", plus.filter((x) => x.value >= 0.06))].join("");
-  const sides = [row("Overs", plus.filter((x) => x.take === "over")), row("Unders", plus.filter((x) => x.take === "under"))].join("");
+  const sides = [row("Overs", plus.filter((x) => x.take === "over")), row("Unders", plus.filter((x) => x.take === "under"))].join("")
+    + row(`<span title="Sides that hit 2 or fewer of the player's last 8 games at the line. Not played since Nov 5; graded here to check that skipping them helps.">Skipped: cold last 8</span>`, coldSkips);
   const recent = graded.slice().sort((a, b) => String(b.kick).localeCompare(String(a.kick))).slice(0, 12).map((x) => {
     const o = x.result.out;
     return `<li class="${o}"><b>${o === "win" ? "W" : o === "loss" ? "L" : "P"}</b> ${pbEsc(x.name)} ${x.take} ${x.line} ${PROP_LBL[x.stat] || x.stat} <span class="muted">(${x.result.actual}) ${pbAm(x.price)}${x.value > 0 ? "" : " · didn't beat the price"}</span></li>`;
@@ -13142,7 +13168,7 @@ function renderProps() {
     const pick = L
       ? `<div class="pp-pick ${L.score > 0 ? "plus" : ""}">
           <div><span class="lbl">Our side</span><b>${L.take} ${L.line} ${PROP_LBL[L.m.key] || L.m.label}</b>
-          <small>${Math.round(L.chance * 100)}% checked${L.fair != null ? ` (our model ${Math.round(L.raw * 100)}%, books ${Math.round(L.fair * 100)}%)` : " (no prices yet)"}${L.price != null ? ` · best ${pbAm(L.price)} ${pbEsc(L.book || "")}` : ""}</small>${L.price != null && L.fair != null ? `<small class="bet-size-s">Bet size: <b>${unitsText(kellyUnits(L.chance, L.price))}</b></small>` : ""}${p.injury && p.injury !== "ACTIVE" && L.take === "Over" ? `<small class="pp-warn">He's ${pbEsc(String(p.injury).toLowerCase())}. A line well under our number often means the books expect a smaller role.</small>` : ""}</div>
+          <small>${Math.round(L.chance * 100)}% checked${L.fair != null ? ` (our model ${Math.round(L.raw * 100)}%, books ${Math.round(L.fair * 100)}%)` : " (no prices yet)"}${L.price != null ? ` · best ${pbAm(L.price)} ${pbEsc(L.book || "")}` : ""}</small>${L.price != null && L.fair != null ? `<small class="bet-size-s">Bet size: <b>${unitsText(kellyUnits(L.chance, L.price))}</b></small>` : ""}${p.injury && p.injury !== "ACTIVE" && L.take === "Over" ? `<small class="pp-warn">He's ${pbEsc(String(p.injury).toLowerCase())}. A line well under our number often means the books expect a smaller role.</small>` : ""}${L.cold && L.score > 0 ? `<small class="pp-warn">Not played: this side hit only ${L.hist.hits} of his last ${L.hist.n} at this line. Sides that cold have lost more often than our numbers said, so the Ladder, play of the day and tickets pass on it. It's still graded below as a skip.</small>` : ""}</div>
           ${L.value != null ? `<span class="pp-val ${L.value > 0 ? "plus" : "minus"}">${L.value > 0 ? "+" : ""}${Math.round(L.value * 100)}%</span>` : ""}
           ${tid ? `<button type="button" class="pp-add" data-addprop="${tid}" aria-pressed="${!!inTicket}">${inTicket ? "On ticket" : "Add to ticket"}</button>` : ""}
         </div>`
@@ -13486,7 +13512,7 @@ function potdNflCandidates(g) {
   if (typeof nextPropRows === "function" && typeof postedLean === "function") {
     nextPropRows().filter((p) => String(p.game_id) === String(g.id)).forEach((p) => {
       const L = postedLean(p);
-      if (!L || L.price == null || L.value == null || !(L.value > 0.005) || L.fair == null) return;
+      if (!L || L.price == null || L.value == null || !(L.value > 0.005) || L.fair == null || L.cold) return;
       // unders only: graded prop unders are 42-20 where the market is priced both ways; overs
       // are about break-even (15-13)
       if (L.take !== "Under") return;
@@ -19088,7 +19114,7 @@ function bestPropLean(g) {
   let best = null;
   nextPropRows().filter((p) => String(p.game_id) === String(g.id)).forEach((p) => {
     const L = postedLean(p);
-    if (!L || L.price == null || L.value == null || !(L.value > 0.005) || L.chance == null) return;
+    if (!L || L.price == null || L.value == null || !(L.value > 0.005) || L.chance == null || L.cold) return;
     if (!best || L.value > best.value) {
       best = { name: p.name, side: L.take.toLowerCase(), line: L.line, market: PROP_LBL[L.m.key] || L.m.label, key: L.m.key,
                proj: Number(L.m.mean), hit: L.chance, value: L.value, price: L.price, book: L.book };
