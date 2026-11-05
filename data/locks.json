@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 7,
    "total": 72.5,
-   "lockedAt": "2026-11-05T21:16:29.948Z",
+   "lockedAt": "2026-11-05T22:16:29.051Z",
    "provisional": true
   },
   "401866453": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": 13.5,
    "total": 58.5,
-   "lockedAt": "2026-11-05T21:16:29.948Z",
+   "lockedAt": "2026-11-05T22:16:29.051Z",
    "provisional": true
   },
   "401873037": {
@@ -186,7 +186,7 @@
    "total_play": false,
    "spread": 10,
    "total": 39.5,
-   "lockedAt": "2026-11-05T21:16:29.948Z",
+   "lockedAt": "2026-11-05T22:16:29.051Z",
    "provisional": true
   }
  },
@@ -481,12 +481,12 @@
     "ours": "JAX -9.4 · total 40.2",
     "score": "JAX 24.8 – BAL 15.4",
     "market": "JAX -10.0 · total 39.5",
-    "lockedAt": "2026-11-05T21:16:29.967Z",
+    "lockedAt": "2026-11-05T22:16:29.073Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T01:15Z",
     "big": false,
-    "savedAt": 1793913389967
+    "savedAt": 1793916989073
    }
   ],
   "cfb": [
@@ -894,17 +894,17 @@
     "units": 1.5,
     "price": -106,
     "book": "FanDuel",
-    "bookPct": 50,
+    "bookPct": 51,
     "ev": 0.059,
     "ours": "UTSA -6.0 · total 72.5",
     "score": "UTSA 39.3 – FAU 33.2",
     "market": "UTSA -7.0 · total 72.5",
-    "lockedAt": "2026-11-05T21:16:29.969Z",
+    "lockedAt": "2026-11-05T22:16:29.075Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T00:30Z",
     "big": false,
-    "savedAt": 1793913389969
+    "savedAt": 1793916989075
    }
   ]
  },
@@ -1007,7 +1007,7 @@
    }
   ]
  },
- "updated": "2026-11-05T21:16:29.948Z",
+ "updated": "2026-11-05T22:16:29.051Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1245,12 +1245,12 @@
    "game": "UCLA @ MINN",
    "kick": "2026-11-07T17:00Z",
    "line": 30.5,
-   "mainLine": 39.5,
+   "mainLine": 38.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.275,
+   "win": 0.2727,
    "mwin": 0.275,
-   "ev": 0.045,
+   "ev": 0.0364,
    "mev": 0.045,
    "src": "mkt",
    "result": null,
@@ -1333,12 +1333,12 @@
    "game": "UCLA @ MINN",
    "kick": "2026-11-07T17:00Z",
    "line": 47.5,
-   "mainLine": 39.5,
+   "mainLine": 38.5,
    "price": 250,
    "book": "FanDuel",
-   "win": 0.296,
+   "win": 0.2982,
    "mwin": 0.296,
-   "ev": 0.036,
+   "ev": 0.0438,
    "mev": 0.036,
    "src": "mkt",
    "result": null,
@@ -1808,28 +1808,6 @@
    "units": null
   },
   {
-   "id": "401873049|tot|under",
-   "gid": "401873049",
-   "league": "nfl",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 36.5",
-   "game": "GB @ NE",
-   "kick": "2026-11-08T21:25Z",
-   "line": 36.5,
-   "mainLine": 45.5,
-   "price": 285,
-   "book": "FanDuel",
-   "win": 0.2679,
-   "mwin": 0.2645,
-   "ev": 0.0316,
-   "mev": 0.0184,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401873050|tot|under",
    "gid": "401873050",
    "league": "nfl",
@@ -1889,9 +1867,9 @@
    "book": "FanDuel",
    "books": 6,
    "ours": 0.4609,
-   "mkt": 0.2006,
-   "win": 0.2657,
-   "ev": 0.2752,
+   "mkt": 0.2016,
+   "win": 0.2664,
+   "ev": 0.2789,
    "result": null,
    "final": null,
    "units": null
@@ -1906,13 +1884,13 @@
    "opp": "BAL",
    "game": "JAX @ BAL",
    "kick": "2026-11-06T01:15Z",
-   "price": 335,
-   "book": "BetRivers",
+   "price": 300,
+   "book": "BetMGM",
    "books": 6,
    "ours": 0.3727,
-   "mkt": 0.2347,
-   "win": 0.2692,
-   "ev": 0.1711,
+   "mkt": 0.2432,
+   "win": 0.2756,
+   "ev": 0.1022,
    "result": null,
    "final": null,
    "units": null
