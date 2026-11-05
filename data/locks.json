@@ -1011,7 +1011,7 @@
    }
   ]
  },
- "updated": "2026-11-05T23:46:34.961Z",
+ "updated": "2026-11-05T23:51:52.755Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1870,10 +1870,10 @@
    "price": 380,
    "book": "FanDuel",
    "books": 6,
-   "ours": 0.4609,
-   "mkt": 0.2016,
-   "win": 0.2664,
-   "ev": 0.2789,
+   "ours": 0.4657,
+   "mkt": 0.2046,
+   "win": 0.2699,
+   "ev": 0.2956,
    "result": null,
    "final": null,
    "units": null
@@ -1891,10 +1891,10 @@
    "price": 300,
    "book": "BetMGM",
    "books": 6,
-   "ours": 0.3727,
-   "mkt": 0.2432,
-   "win": 0.2756,
-   "ev": 0.1022,
+   "ours": 0.3704,
+   "mkt": 0.241,
+   "win": 0.2734,
+   "ev": 0.0935,
    "result": null,
    "final": null,
    "units": null
