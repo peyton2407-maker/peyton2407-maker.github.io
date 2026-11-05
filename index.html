@@ -7435,6 +7435,25 @@ function tdHit(r, market) {
 // a rushing or receiving touchdown is a hit, a game without one a miss, and a player who didn't
 // play is void, the way the books settle it. 1 unit at the price saved.
 const TD_PICK_MIN = 0.03;
+// red-zone usage (data/red-zone.json, scripts/red_zone.py from the nflverse play-by-play): a
+// player's carries and targets inside the 10 over his team's last 4 games, against the team's
+function tdRedZone(r) {
+  const RZ = window.TD_RZ;
+  let d = RZ && RZ.players && RZ.players[String(r.id)];
+  if (!d && RZ && RZ.teams && RZ.teams[r.team]) {
+    // not listed = no touches inside the 10; say so only if he played at least 3 of those games
+    const t = RZ.teams[r.team], rows = (((window.GAMELOGS || {})[String(r.id)] || {}).rows) || [];
+    const played = rows.filter((x) => x.d >= String(t.from || "").slice(0, 10) && Number(x.s) === Number(RZ.season)).length;
+    if (played >= 3) d = { team: r.team, car10: 0, tgt10: 0, team_car10: t.car10, team_tgt10: t.tgt10, games: t.games };
+  }
+  if (!d || !(d.team_car10 + d.team_tgt10 > 0)) return null;
+  const parts = [];
+  if (d.car10 > 0 || (r.pos === "RB" && d.team_car10 > 0)) parts.push(`${d.car10} of ${d.team}'s ${d.team_car10} carries`);
+  if (d.tgt10 > 0 || ((r.pos === "WR" || r.pos === "TE") && d.team_tgt10 > 0)) parts.push(`${d.tgt10} of their ${d.team_tgt10} targets`);
+  if (!parts.length) return null;
+  const none = d.car10 === 0 && d.tgt10 === 0;
+  return { d, text: none ? `none of ${d.team}'s ${d.team_car10 + d.team_tgt10} carries and targets inside the 10 over the last ${d.games} games` : `${parts.join(" and ")} inside the 10 over the last ${d.games} games` };
+}
 function tdValueRows() {
   const rows = collectTdBoard(), MK = tdMarketMap(rows);
   const keep = typeof pbKeep === "function" ? pbKeep("nfl", "td").k : 0.25;
@@ -7519,6 +7538,8 @@ function renderTdDesk() {
   const market = (document.getElementById("tdMarket") || {}).value || "anytime";
   const pos = (document.getElementById("tdPos") || {}).value || "ALL";
   const sort = (document.getElementById("tdSort") || {}).value || "value";
+  if (!window.GAMELOGS && !renderTdDesk.logs && typeof loadGamelogs === "function") { renderTdDesk.logs = true; loadGamelogs().then(() => { if (view === "tds") renderTdDesk(); }); }
+  if (!window.TD_RZ && typeof pbFetchOnce === "function") pbFetchOnce("rz", "/data/red-zone.json?t=" + Math.floor(Date.now() / 3600000), (d) => { window.TD_RZ = d; }).then(() => { if (window.TD_RZ && view === "tds") renderTdDesk(); });
   if (!window.PB_PROPS && typeof pbFetchOnce === "function" && !renderTdDesk.asked) {
     renderTdDesk.asked = true;
     pbFetchOnce("props", "/data/props.json?t=" + Math.floor(Date.now() / 600000), (d) => { window.PB_PROPS = d; }).then(() => { if (view === "tds") renderTdDesk(); });
@@ -7635,9 +7656,10 @@ function renderTdDesk() {
           <div><dt>Expected TDs</dt><dd>${r.lam.toFixed(2)}</dd></div>
           <div><dt>Scores 2+</dt><dd>${pct(r.two)}</dd></div>
           <div><dt>First TD of the game</dt><dd>${pct(r.first)}</dd></div>
+          ${(() => { const z = tdRedZone(r); return z ? `<div><dt>Inside the 10, last ${z.d.games} games</dt><dd>${z.d.car10}/${z.d.team_car10} carries · ${z.d.tgt10}/${z.d.team_tgt10} targets</dd></div>` : ""; })()}
         </dl>
         ${priced && r.off.all.length > 1 ? `<p class="tdl-books">${r.off.all.map((o) => `<span>${pbEsc(o.book)} <b>${pbAm(o.odds)}</b></span>`).join("")}</p>` : ""}
-        <p class="tdl-why">${pbEsc(r.why)}</p>
+        <p class="tdl-why">${(() => { const z = tdRedZone(r); const base = z ? String(r.why).replace(/ · he gets the red-zone carries/, "") : String(r.why); return pbEsc(z ? base + " · " + z.text : base); })()}</p>
         <button type="button" class="lg-open" data-id="${pbEsc(String(r.game_id))}">Open the game</button>
       </div>
     </details>`;
