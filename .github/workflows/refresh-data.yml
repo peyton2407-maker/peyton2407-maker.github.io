@@ -83,6 +83,7 @@ jobs:
           if [ -f data/season.json ]; then git add data/season.json; fi
           if [ -f data/props-status.json ]; then git add data/props-status.json; fi
           if [ -f data/odds-budget.json ]; then git add data/odds-budget.json; fi
+          if [ -f data/odds-log.json ]; then git add data/odds-log.json; fi
           if [ -f data/alt-lines.json ]; then git add data/alt-lines.json; fi
           if git diff --cached --quiet; then
             echo "Nothing new."

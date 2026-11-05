@@ -34,7 +34,7 @@ jobs:
         run: |
           git config user.name "peyton2407-maker"
           git config user.email "331867039+peyton2407-maker@users.noreply.github.com"
-          git add data/backtests data/odds-budget.json 2>/dev/null || true
+          git add data/backtests data/odds-budget.json data/odds-log.json 2>/dev/null || true
           if git diff --cached --quiet; then echo "Nothing new."; exit 0; fi
           git commit -m "Past-season odds: ${{ github.event.inputs.season }}"
           for i in 1 2 3; do

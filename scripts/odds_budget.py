@@ -15,6 +15,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FILE = ROOT / "data" / "odds-budget.json"
+LOG = ROOT / "data" / "odds-log.json"   # every call: when, which job, what for, what it cost (the credits page)
+LOG_KEEP = 4000
 PLAN = Path(__file__).with_name("odds-plan.json")
 RESERVE = 25
 
@@ -49,7 +51,7 @@ def load():
     if b.get("month") == month[:7]:   # the file from before cycles started on reset_day
         b["month"] = month
     if b.get("month") != month:   # a new billing month: the allowance resets
-        b = {"month": month, "monthly": b.get("monthly"), "remaining": b.get("monthly"), "used": 0, "by_day": {}, "by_job": {}, "at": None}
+        b = {"month": month, "monthly": b.get("monthly"), "remaining": b.get("monthly"), "used": 0, "by_day": {}, "by_job": {}, "by_day_job": {}, "at": None, "history": (b.get("history") or [])[-11:] + [{"month": b.get("month"), "spent": own_spent(b), "by_job": b.get("by_job") or {}}] if b.get("month") else []}
     b.setdefault("by_day", {})
     b.setdefault("by_job", {})
     return b
@@ -62,8 +64,38 @@ def save(b):
         pass
 
 
-def record(b, headers, job, cost):
-    """After a call: the response headers (a dict-like) and what the call cost."""
+def _et_day(n):
+    # Eastern date (the credits page shows days the way the owner lives them); DST handled
+    # by the US rule: second Sunday of March to first Sunday of November
+    def nth_sunday(y, m, k):
+        d = datetime(y, m, 1, tzinfo=timezone.utc)
+        first = (6 - d.weekday()) % 7 + 1
+        return datetime(y, m, first + 7 * (k - 1), 7, tzinfo=timezone.utc)
+    dst = nth_sunday(n.year, 3, 2) <= n < nth_sunday(n.year, 11, 1).replace(hour=6)
+    from datetime import timedelta
+    return (n - timedelta(hours=4 if dst else 5)).strftime("%Y-%m-%d")
+
+
+def log_call(job, what, cost):
+    """Append one call to data/odds-log.json (the newest LOG_KEEP kept)."""
+    if not cost:
+        return
+    try:
+        d = json.loads(LOG.read_text()) if LOG.exists() else {}
+    except Exception:
+        d = {}
+    calls = d.get("calls") or []
+    calls.append({"t": _now().strftime("%Y-%m-%dT%H:%M:%SZ"), "job": job, "what": str(what or "")[:120], "cost": int(cost)})
+    d = {"calls": calls[-LOG_KEEP:]}
+    try:
+        LOG.write_text(json.dumps(d, separators=(",", ":")) + "\n")
+    except Exception:
+        pass
+
+
+def record(b, headers, job, cost, what=""):
+    """After a call: the response headers (a dict-like), what the call cost, and what it was
+    for (shown on the credits page)."""
     rem = headers.get("x-requests-remaining") if headers else None
     used = headers.get("x-requests-used") if headers else None
     try:
@@ -78,7 +110,12 @@ def record(b, headers, job, cost):
     day = _now().strftime("%Y-%m-%d")
     b["by_day"][day] = b["by_day"].get(day, 0) + int(cost or 0)
     b["by_job"][job] = b["by_job"].get(job, 0) + int(cost or 0)
+    if cost:
+        et = _et_day(_now())
+        dj = b.setdefault("by_day_job", {}).setdefault(et, {})
+        dj[job] = dj.get(job, 0) + int(cost)
     b["at"] = _now().strftime("%Y-%m-%dT%H:%M:%SZ")
+    log_call(job, what, cost)
 
 
 def monthly(b):

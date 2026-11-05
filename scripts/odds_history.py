@@ -95,7 +95,7 @@ def main():
             print(slot, "error", str(e)[:150])
             continue
         cost = int(float((hdr or {}).get("x-requests-last") or 20))
-        odds_budget.record(budget, hdr, "history", cost)
+        odds_budget.record(budget, hdr, "history", cost, f"Past NFL closing lines · {args.season}")
         spent += cost
         for ev in payload.get("data") or []:
             hn, an = books.norm(ev.get("home_team")), books.norm(ev.get("away_team"))

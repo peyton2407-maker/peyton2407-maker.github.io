@@ -123,7 +123,7 @@ def main():
                 print(g["id"], "error", str(e)[:150])
                 continue
             cost = int(float((hdr or {}).get("x-requests-last") or 2))
-            odds_budget.record(budget, hdr, "alt_lines", cost)
+            odds_budget.record(budget, hdr, "alt_lines", cost, f"{'NFL' if league == 'nfl' else 'College'} alt lines · {g.get('short_name') or g['id']}")
             odds_budget.spent_extra(budget, cost)
             spent += cost
             lines = parse(payload, ev)

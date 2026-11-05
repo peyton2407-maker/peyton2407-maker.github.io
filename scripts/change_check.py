@@ -45,7 +45,7 @@ def syntax():
         if r.returncode:
             lines = r.stderr.strip().splitlines()
             bad.append(f"{js.relative_to(ROOT)} doesn't parse: " + next((l for l in lines if "Error" in l), "error").strip()[:160])
-    for page in [ROOT / "index.html", ROOT / "split" / "index.html", ROOT / "boom.html", ROOT / "hashmark.html"]:
+    for page in [ROOT / "index.html", ROOT / "split" / "index.html", ROOT / "boom.html", ROOT / "hashmark.html", ROOT / "credits.html"]:
         if not page.exists():
             continue
         html = page.read_text(encoding="utf-8", errors="replace")

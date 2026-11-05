@@ -71,7 +71,7 @@ def main():
                 print(snap, "error", str(e)[:150])
                 continue
             cost = int(float((hdr or {}).get("x-requests-last") or 10))
-            odds_budget.record(budget, hdr, "history", cost)
+            odds_budget.record(budget, hdr, "history", cost, f"Past college opening totals · {snap[:10]}")
             spent += cost
             done.add(snap)
             n = 0

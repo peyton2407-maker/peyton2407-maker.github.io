@@ -300,7 +300,7 @@ def odds_api_main(key, nfl, fx):
             else:
                 payload, hdr = odds_get(f"/events/{ev['id']}/odds", {"bookmakers": ",".join(bks), "markets": ",".join(markets), "oddsFormat": "american"}, key)
             remaining = (hdr or {}).get("x-requests-remaining")
-            odds_budget.record(budget, hdr, "props", cost)
+            odds_budget.record(budget, hdr, "props", cost, f"NFL props · {g.get('short_name') or gid} · {'refresh' if fresh else 'first pull'}{' + extra markets' if len(markets) > len(ODDS_MARKETS) else ''}")
             if fresh or len(markets) > len(ODDS_MARKETS):
                 odds_budget.spent_extra(budget, cost if fresh else len(markets) - len(ODDS_MARKETS))
         except Exception as e:

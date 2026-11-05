@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Odds API credits · Double Gs</title>
+<link rel="icon" href="/icon-192.png">
+<style>
+@font-face { font-family: "Barlow"; src: url("/assets/fonts/barlow-400.woff2") format("woff2"); font-weight: 300 500; font-display: swap; }
+@font-face { font-family: "Barlow"; src: url("/assets/fonts/barlow-600.woff2") format("woff2"); font-weight: 600 700; font-display: swap; }
+@font-face { font-family: "Big Shoulders Display"; src: url("/assets/fonts/big-shoulders-800.woff2") format("woff2"); font-weight: 600 900; font-display: swap; }
+:root {
+  color-scheme: dark;
+  --paper: #0d1628; --card: #141f36; --card-2: #1b2945;
+  --ink: #edf1f7; --ink-soft: #c2cbdb; --muted: #8d99b1;
+  --line: rgba(237,241,247,.09); --line-2: rgba(237,241,247,.18);
+  --sun: #f4cb72; --win: #4fd08a; --rose: #ff8a7d;
+  --s-props: #3987e5; --s-alt: #d95926; --s-history: #199e70; --s-futures: #c98500;
+  --display: "Big Shoulders Display", "Barlow Condensed", Impact, sans-serif;
+  --body: Barlow, "Segoe UI", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 16px/1.5 var(--body); }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 28px 20px 60px; }
+a { color: var(--sun); }
+.top { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 18px; }
+h1 { margin: 0; font: 800 clamp(30px, 6vw, 44px)/1 var(--display); letter-spacing: .01em; }
+.sub { color: var(--muted); font-size: .92rem; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.tile { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+.tile b { display: block; font: 800 34px/1 var(--display); color: var(--ink); }
+.tile span { color: var(--muted); font-size: .88rem; }
+.cap { height: 8px; border-radius: 999px; background: rgba(237,241,247,.08); margin: 10px 0 6px; overflow: hidden; position: relative; }
+.cap i { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: linear-gradient(90deg, #e3a83e, var(--sun)); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; margin-bottom: 18px; }
+.card h2 { margin: 0 0 4px; font: 700 22px var(--display); }
+.card .sub { margin: 0 0 12px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 4px 0 10px; font-size: .88rem; color: var(--ink-soft); }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; background: var(--c); }
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart svg text { font-size: 12px; }
+.chart .grid line { stroke: var(--line); }
+.chart .axis text { fill: var(--muted); font: 12px var(--body); }
+.chart .total { fill: var(--ink-soft); font: 600 11px var(--body); }
+.chart rect.hit { fill: transparent; cursor: pointer; }
+.chart rect.hit:hover + g rect, .chart g.col:hover rect.seg { opacity: .85; }
+.tip { position: absolute; pointer-events: none; background: #0a1120; border: 1px solid var(--line-2); border-radius: 10px; padding: 8px 10px; font-size: .86rem; min-width: 170px; box-shadow: 0 10px 30px rgba(0,0,0,.45); display: none; z-index: 2; }
+.tip b { display: block; margin-bottom: 4px; }
+.tip div { display: flex; justify-content: space-between; gap: 14px; color: var(--ink-soft); }
+.tip div i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; background: var(--c); }
+.toggle { background: transparent; border: 1px solid var(--line-2); color: var(--ink-soft); border-radius: 999px; padding: 5px 12px; font: 600 .85rem var(--body); cursor: pointer; }
+.toggle:focus-visible, button:focus-visible { outline: 2px solid var(--sun); outline-offset: 2px; }
+table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+th, td { text-align: left; padding: 8px 10px; border-top: 1px solid var(--line); }
+thead th { color: var(--muted); font-weight: 600; font-size: .82rem; border-top: 0; }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+.sw { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 8px; background: var(--c); }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.muted { color: var(--muted); }
+.daypick { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+.daypick button { background: transparent; border: 1px solid var(--line); color: var(--ink-soft); border-radius: 999px; padding: 4px 11px; font: 600 .84rem var(--body); cursor: pointer; }
+.daypick button.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.err { color: var(--rose); }
+@media (max-width: 760px) { .cols { grid-template-columns: 1fr; } .wrap { padding: 20px 14px 48px; } td, th { padding: 7px 6px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><h1>Odds API credits</h1><span class="sub" id="upd">Loading…</span></div>
+  <div class="tiles" id="tiles"></div>
+  <section class="card">
+    <h2>Credits a day</h2>
+    <p class="sub">What this site's jobs spent each day this billing month (Eastern time), by job. Hover or tap a day for the breakdown.</p>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div class="legend" id="legend"></div><button class="toggle" id="tbl" type="button" aria-pressed="false">Show as a table</button></div>
+    <div class="chart" id="chart"><div class="tip" id="tip" role="tooltip"></div></div>
+    <div id="table" hidden></div>
+  </section>
+  <div class="cols">
+    <section class="card">
+      <h2>Where it goes</h2>
+      <p class="sub">By job: today, the last 7 days and this billing month.</p>
+      <div id="jobs"></div>
+    </section>
+    <section class="card">
+      <h2>What a day was spent on</h2>
+      <p class="sub">Every call that day, grouped by what it pulled.</p>
+      <div class="daypick" id="daypick"></div>
+      <div id="whatday"></div>
+    </section>
+  </div>
+  <section class="card">
+    <h2>Latest calls</h2>
+    <p class="sub">The newest 40 calls to the Odds API, as each job made them.</p>
+    <div id="calls"></div>
+  </section>
+  <p class="sub">The site's limit is its own 13,000 credits a billing month (it renews on the 4th), counted from these jobs only; your other project on the same key doesn't count against it. Updated with the hourly data refresh. This page isn't linked from the site.</p>
+</div>
+<script>
+const JOBS = { props: ["Player props", "--s-props"], alt_lines: ["Alternate lines", "--s-alt"], history: ["Past seasons (one-off)", "--s-history"], futures: ["Futures", "--s-futures"] };
+const ORDER = ["props", "alt_lines", "history", "futures"];
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const n0 = (x) => Math.round(x).toLocaleString();
+function etDay(d) { return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(d); }
+function dayLabel(ymd, long) { const d = new Date(ymd + "T17:00:00Z"); return d.toLocaleDateString("en-US", long ? { weekday: "short", month: "short", day: "numeric", timeZone: "America/New_York" } : { month: "numeric", day: "numeric", timeZone: "America/New_York" }); }
+function addDays(ymd, k) { const d = new Date(ymd + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() + k); return d.toISOString().slice(0, 10); }
+async function get(u) { const r = await fetch(u + (u.includes("?") ? "&" : "?") + "t=" + Date.now(), { cache: "no-store" }); if (!r.ok) throw new Error(u); return r.json(); }
+
+(async () => {
+  let B, L, P;
+  try { [B, L, P] = await Promise.all([get("/data/odds-budget.json"), get("/data/odds-log.json").catch(() => ({ calls: [] })), get("/scripts/odds-plan.json").catch(() => ({}))]); }
+  catch (e) { document.getElementById("upd").innerHTML = `<span class="err">Couldn't load the credit data. Refresh to try again.</span>`; return; }
+  const cap = Number(P.monthly_target) || 13000;
+  const today = etDay(new Date());
+  const start = String(B.month || today).slice(0, 10);
+  const byDay = B.by_day_job || {};
+  const own = Object.values(B.by_job || {}).reduce((a, x) => a + Number(x || 0), 0);
+  // the billing month runs to the day before the next reset
+  const s = new Date(start + "T12:00:00Z"); const next = new Date(Date.UTC(s.getUTCFullYear(), s.getUTCMonth() + 1, s.getUTCDate(), 12));
+  const days = []; for (let d = start; d <= today; d = addDays(d, 1)) days.push(d);
+  const totalOf = (d, live) => Object.entries(byDay[d] || {}).reduce((a, [k, v]) => a + (live && k === "history" ? 0 : Number(v || 0)), 0);
+  const done = days.filter((d) => d < today);
+  const last7 = done.slice(-7);
+  const avg7 = last7.length ? last7.reduce((a, d) => a + totalOf(d, true), 0) / last7.length : totalOf(today, true);
+  const daysLeft = Math.max(0, (next - Date.now()) / 864e5);
+  const projected = own + avg7 * daysLeft;
+  document.getElementById("upd").textContent = B.at ? "Updated " + new Date(B.at).toLocaleString([], { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : "";
+  document.getElementById("tiles").innerHTML = `
+    <div class="tile"><b>${n0(totalOf(today))}</b><span>today so far</span></div>
+    <div class="tile"><b>${n0(avg7)}</b><span>a day, ${last7.length >= 2 ? "average of the last " + last7.length + " full days" : "so far"} (regular jobs only)</span></div>
+    <div class="tile"><b>${n0(own)}</b><div class="cap" role="img" aria-label="${n0(own)} of ${n0(cap)} used"><i style="width:${Math.min(100, own / cap * 100)}%"></i></div><span>of the site's ${n0(cap)} this month · renews ${next.toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" })}</span></div>
+    <div class="tile"><b>${n0(projected)}</b><span>projected for the month at that pace${projected > cap ? " · would stop at " + n0(cap) : ""}</span></div>
+    <div class="tile"><b>${B.remaining != null ? n0(B.remaining) : "—"}</b><span>left on the whole account${B.monthly ? " (plan " + n0(B.monthly) + ")" : ""}</span></div>`;
+  const used = ORDER.filter((k) => days.some((d) => (byDay[d] || {})[k]) || (B.by_job || {})[k]);
+  // the chart leaves out one-off past-season pulls so regular days stay readable; the tables keep them
+  const inChart = used.filter((k) => k !== "history");
+  const chartTotal = (d) => inChart.reduce((a, k) => a + Number((byDay[d] || {})[k] || 0), 0);
+  const oneOff = days.reduce((a, d) => a + Number((byDay[d] || {}).history || 0), 0);
+  document.getElementById("legend").innerHTML = inChart.map((k) => `<span style="--c:var(${JOBS[k][1]})">${JOBS[k][0]}</span>`).join("");
+
+  // the chart: one stacked column a day
+  const chartBox = document.getElementById("chart");
+  const W = Math.max(300, Math.round(chartBox.clientWidth || 960)), H = W < 520 ? 240 : 300, pad = { l: 44, r: 8, t: 18, b: 28 };
+  const max = Math.max(50, ...days.map((d) => chartTotal(d)));
+  const step = max > 600 ? 200 : max > 300 ? 100 : max > 120 ? 50 : 20;
+  const top = Math.ceil(max / step) * step;
+  const y = (v) => pad.t + (H - pad.t - pad.b) * (1 - v / top);
+  const bw = (W - pad.l - pad.r) / Math.max(days.length, 7);
+  const barW = Math.max(6, Math.min(44, bw * 0.62));
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Credits used each day by job"><g class="grid">`;
+  for (let v = 0; v <= top; v += step) svg += `<line x1="${pad.l}" x2="${W - pad.r}" y1="${y(v)}" y2="${y(v)}"/>`;
+  svg += `</g><g class="axis">`;
+  for (let v = 0; v <= top; v += step) svg += `<text x="${pad.l - 8}" y="${y(v) + 4}" text-anchor="end">${n0(v)}</text>`;
+  const every = Math.max(1, Math.ceil(days.length / Math.max(4, Math.floor((W - pad.l) / 46))));
+  days.forEach((d, i) => { if (i % every === 0 || d === today) svg += `<text x="${pad.l + bw * i + bw / 2}" y="${H - 8}" text-anchor="middle">${dayLabel(d)}</text>`; });
+  svg += `</g>`;
+  days.forEach((d, i) => {
+    const x = pad.l + bw * i + (bw - barW) / 2;
+    let acc = 0;
+    svg += `<g class="col" data-day="${d}">`;
+    const segs = inChart.filter((k) => (byDay[d] || {})[k] > 0);
+    segs.forEach((k, j) => {
+      const v = Number(byDay[d][k]);
+      const y0 = y(acc), y1 = y(acc + v);
+      const h = Math.max(1, y0 - y1 - (j < segs.length - 1 ? 2 : 0));
+      const r = j === segs.length - 1 ? 4 : 0;
+      svg += r ? `<path class="seg" fill="var(${JOBS[k][1]})" d="M${x},${y0} v${-(h - r)} a${r},${r} 0 0 1 ${r},${-r} h${barW - 2 * r} a${r},${r} 0 0 1 ${r},${r} v${h - r} z"/>` : `<rect class="seg" x="${x}" y="${y0 - h}" width="${barW}" height="${h}" fill="var(${JOBS[k][1]})"/>`;
+      acc += v;
+    });
+    const t = chartTotal(d);
+    if (t > 0 && (days.length <= 14 || d === today || t === max)) svg += `<text class="total" x="${x + barW / 2}" y="${y(t) - 6}" text-anchor="middle">${n0(t)}</text>`;
+    svg += `<rect class="hit" x="${pad.l + bw * i}" y="${pad.t}" width="${bw}" height="${H - pad.t - pad.b}" tabindex="0" aria-label="${dayLabel(d, true)}: ${n0(t)} credits"/></g>`;
+  });
+  svg += `</svg>`;
+  const chart = document.getElementById("chart");
+  chart.insertAdjacentHTML("beforeend", svg + (oneOff ? `<p class="sub" style="margin:8px 0 0">Left out of the chart: ${n0(oneOff)} credits of one-off past-season pulls this month (in the tables and the tooltip).</p>` : ""));
+  const tip = document.getElementById("tip");
+  const show = (g, ev) => {
+    const d = g.dataset.day, row = byDay[d] || {};
+    tip.innerHTML = `<b>${dayLabel(d, true)} · ${n0(totalOf(d))} credits</b>` + used.filter((k) => row[k]).map((k) => `<div><span><i style="--c:var(${JOBS[k][1]})"></i>${JOBS[k][0]}</span><span>${n0(row[k])}</span></div>`).join("") + (totalOf(d) ? "" : `<div><span>No calls</span><span></span></div>`);
+    tip.style.display = "block";
+    const box = chart.getBoundingClientRect(), hb = g.querySelector(".hit").getBoundingClientRect();
+    let left = hb.left - box.left + hb.width / 2 - tip.offsetWidth / 2;
+    left = Math.max(0, Math.min(box.width - tip.offsetWidth, left));
+    tip.style.left = left + "px"; tip.style.top = Math.max(0, hb.top - box.top + 8) + "px";
+  };
+  chart.querySelectorAll("g.col").forEach((g) => {
+    g.addEventListener("mouseenter", (e) => show(g, e)); g.addEventListener("mouseleave", () => { tip.style.display = "none"; });
+    g.addEventListener("focusin", (e) => show(g, e)); g.addEventListener("focusout", () => { tip.style.display = "none"; });
+    g.addEventListener("click", () => pickDay(g.dataset.day));
+  });
+  // the same numbers as a table
+  document.getElementById("table").innerHTML = `<table><thead><tr><th>Day</th>${used.map((k) => `<th class="n">${JOBS[k][0]}</th>`).join("")}<th class="n">Total</th></tr></thead><tbody>${days.slice().reverse().map((d) => `<tr><td>${dayLabel(d, true)}</td>${used.map((k) => `<td class="n">${n0((byDay[d] || {})[k] || 0)}</td>`).join("")}<td class="n"><b>${n0(totalOf(d))}</b></td></tr>`).join("")}</tbody></table>`;
+  const tb = document.getElementById("tbl");
+  tb.addEventListener("click", () => { const t = document.getElementById("table"), on = t.hidden; t.hidden = !on; chart.hidden = on; tb.textContent = on ? "Show as a chart" : "Show as a table"; tb.setAttribute("aria-pressed", String(on)); });
+
+  // by job
+  const sum = (ds, k) => ds.reduce((a, d) => a + Number((byDay[d] || {})[k] || 0), 0);
+  const w7 = days.slice(-7);
+  document.getElementById("jobs").innerHTML = `<table><thead><tr><th>Job</th><th class="n">Today</th><th class="n">7 days</th><th class="n">Month</th></tr></thead><tbody>${used.map((k) => `<tr><td><span class="sw" style="--c:var(${JOBS[k][1]})"></span>${JOBS[k][0]}</td><td class="n">${n0(sum([today], k))}</td><td class="n">${n0(sum(w7, k))}</td><td class="n">${n0((B.by_job || {})[k] || 0)}</td></tr>`).join("")}<tr><td><b>Total</b></td><td class="n"><b>${n0(totalOf(today))}</b></td><td class="n"><b>${n0(w7.reduce((a, d) => a + totalOf(d), 0))}</b></td><td class="n"><b>${n0(own)}</b></td></tr></tbody></table>`;
+
+  // what a day was spent on, from the call log
+  const calls = (L.calls || []).slice();
+  const logDays = [...new Set(calls.map((c) => etDay(new Date(c.t))))].sort().reverse().slice(0, 7);
+  function pickDay(d) {
+    document.querySelectorAll("#daypick button").forEach((b) => b.classList.toggle("on", b.dataset.d === d));
+    const list = calls.filter((c) => etDay(new Date(c.t)) === d);
+    const g = new Map();
+    list.forEach((c) => { const key = c.job + "|" + c.what; const x = g.get(key) || { job: c.job, what: c.what, n: 0, cost: 0 }; x.n++; x.cost += Number(c.cost || 0); g.set(key, x); });
+    const rows = [...g.values()].sort((a, b) => b.cost - a.cost);
+    document.getElementById("whatday").innerHTML = rows.length ? `<table><thead><tr><th>Pulled</th><th class="n">Calls</th><th class="n">Credits</th></tr></thead><tbody>${rows.slice(0, 30).map((r) => `<tr><td><span class="sw" style="--c:var(${(JOBS[r.job] || [, "--muted"])[1]})"></span>${esc(r.what || (JOBS[r.job] || [r.job])[0])}</td><td class="n">${r.n}</td><td class="n">${n0(r.cost)}</td></tr>`).join("")}</tbody></table>${rows.length > 30 ? `<p class="sub">${rows.length - 30} more.</p>` : ""}` : `<p class="muted">No calls logged that day.</p>`;
+  }
+  document.getElementById("daypick").innerHTML = logDays.map((d) => `<button type="button" data-d="${d}">${d === today ? "Today" : dayLabel(d, true)}</button>`).join("");
+  document.getElementById("daypick").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) pickDay(b.dataset.d); });
+  if (logDays.length) pickDay(logDays[0]); else document.getElementById("whatday").innerHTML = `<p class="muted">No calls logged yet.</p>`;
+
+  // latest calls
+  const recent = calls.slice(-40).reverse();
+  document.getElementById("calls").innerHTML = recent.length ? `<table><thead><tr><th>When</th><th>Job</th><th>What</th><th class="n">Credits</th></tr></thead><tbody>${recent.map((c) => `<tr><td class="muted">${new Date(c.t).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" })}</td><td><span class="sw" style="--c:var(${(JOBS[c.job] || [, "--muted"])[1]})"></span>${esc((JOBS[c.job] || [c.job])[0])}</td><td>${esc(c.what)}</td><td class="n">${n0(c.cost)}</td></tr>`).join("")}</tbody></table>` : `<p class="muted">No calls logged yet.</p>`;
+})();
+</script>
+</body>
+</html>
