@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 72.5,
-   "lockedAt": "2026-11-05T14:46:33.245Z",
+   "lockedAt": "2026-11-05T15:01:30.372Z",
    "provisional": true
   },
   "401866453": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": 13.5,
    "total": 58.5,
-   "lockedAt": "2026-11-05T14:46:33.245Z",
+   "lockedAt": "2026-11-05T15:01:30.372Z",
    "provisional": true
   },
   "401873037": {
@@ -186,7 +186,7 @@
    "total_play": false,
    "spread": 10,
    "total": 39.5,
-   "lockedAt": "2026-11-05T14:46:33.245Z",
+   "lockedAt": "2026-11-05T15:01:30.372Z",
    "provisional": true
   }
  },
@@ -481,12 +481,12 @@
     "ours": "JAX -10.5 · total 40.2",
     "score": "JAX 25.3 – BAL 14.9",
     "market": "JAX -10.0 · total 39.5",
-    "lockedAt": "2026-11-05T14:46:33.264Z",
+    "lockedAt": "2026-11-05T15:01:30.390Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T01:15Z",
     "big": false,
-    "savedAt": 1793889993264
+    "savedAt": 1793890890390
    }
   ],
   "cfb": [
@@ -899,12 +899,12 @@
     "ours": "UTSA -5.7 · total 72.5",
     "score": "UTSA 39.1 – FAU 33.4",
     "market": "UTSA -6.5 · total 72.5",
-    "lockedAt": "2026-11-05T14:46:33.266Z",
+    "lockedAt": "2026-11-05T15:01:30.392Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T00:30Z",
     "big": false,
-    "savedAt": 1793889993266
+    "savedAt": 1793890890392
    }
   ]
  },
@@ -1046,7 +1046,7 @@
    }
   ]
  },
- "updated": "2026-11-05T14:46:33.245Z",
+ "updated": "2026-11-05T15:01:30.372Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1869,6 +1869,27 @@
    "mkt": 0.1309,
    "win": 0.1411,
    "ev": 0.0585,
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "key": "401873051|4262921",
+   "gid": "401873051",
+   "pid": "4262921",
+   "name": "Justin Jefferson",
+   "pos": "WR",
+   "team": "MIN",
+   "opp": "BUF",
+   "game": "BUF @ MIN",
+   "kick": "2026-11-10T01:15Z",
+   "price": 180,
+   "book": "Fanatics",
+   "books": 6,
+   "ours": 0.4489,
+   "mkt": 0.3502,
+   "win": 0.3749,
+   "ev": 0.0497,
    "result": null,
    "final": null,
    "units": null
