@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 72.5,
-   "lockedAt": "2026-11-05T19:01:47.877Z",
+   "lockedAt": "2026-11-05T19:16:27.389Z",
    "provisional": true
   },
   "401866453": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": 13.5,
    "total": 58.5,
-   "lockedAt": "2026-11-05T19:01:47.877Z",
+   "lockedAt": "2026-11-05T19:16:27.389Z",
    "provisional": true
   },
   "401873037": {
@@ -186,7 +186,7 @@
    "total_play": false,
    "spread": 10,
    "total": 39.5,
-   "lockedAt": "2026-11-05T19:01:47.877Z",
+   "lockedAt": "2026-11-05T19:16:27.389Z",
    "provisional": true
   }
  },
@@ -461,13 +461,13 @@
     "game": "JAX @ BAL",
     "kind": "Player prop",
     "line": "Justice Hill under 2.5 receptions",
-    "hitPct": 53,
-    "why": "We project Justice Hill for 2.2 receptions against a line of 2.5. Our checked chance on the under is 53%; the books' own chance is 49%. At +100 (ESPN BET) that is 6.8% better than the price.",
+    "hitPct": 51,
+    "why": "We project Justice Hill for 2.2 receptions against a line of 2.5. Our checked chance on the under is 51%; the books' own chance is 46%. At +110 (ESPN BET) that is 7% better than the price.",
     "label": "Thursday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 1.75,
+    "units": 1.5,
     "prop": {
      "pid": "4038441",
      "name": "Justice Hill",
@@ -475,18 +475,18 @@
      "side": "under",
      "line": 2.5
     },
-    "price": 100,
+    "price": 110,
     "book": "ESPN BET",
-    "ev": 0.068,
+    "ev": 0.07,
     "ours": "JAX -9.4 · total 40.2",
     "score": "JAX 24.8 – BAL 15.4",
     "market": "JAX -10.0 · total 39.5",
-    "lockedAt": "2026-11-05T19:01:47.898Z",
+    "lockedAt": "2026-11-05T19:16:27.412Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T01:15Z",
     "big": false,
-    "savedAt": 1793905307898
+    "savedAt": 1793906187412
    }
   ],
   "cfb": [
@@ -886,25 +886,25 @@
     "kind": "Under",
     "line": "UNDER 72.5",
     "hitPct": 55,
-    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 72.5. At -112 (FanDuel) the price needs 53%; we count it at 55%, so it's 3.2% better than the price.",
+    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 72.5. At -108 (BetRivers) the price needs 52%; we count it at 55%, so it's 5.0% better than the price.",
     "label": "Thursday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 1,
-    "price": -112,
-    "book": "FanDuel",
+    "units": 1.25,
+    "price": -108,
+    "book": "BetRivers",
     "bookPct": 51,
-    "ev": 0.032,
+    "ev": 0.05,
     "ours": "UTSA -5.7 · total 72.5",
     "score": "UTSA 39.1 – FAU 33.4",
     "market": "UTSA -6.5 · total 72.5",
-    "lockedAt": "2026-11-05T19:01:47.900Z",
+    "lockedAt": "2026-11-05T19:16:27.414Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T00:30Z",
     "big": false,
-    "savedAt": 1793905307900
+    "savedAt": 1793906187414
    }
   ]
  },
@@ -1007,7 +1007,7 @@
    }
   ]
  },
- "updated": "2026-11-05T19:01:47.877Z",
+ "updated": "2026-11-05T19:16:27.389Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1566,6 +1566,28 @@
    "units": null
   },
   {
+   "id": "401873040|sp|home",
+   "gid": "401873040",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "home",
+   "label": "IND +2",
+   "game": "DAL @ IND",
+   "kick": "2026-11-08T18:00Z",
+   "line": 2,
+   "mainLine": 5.5,
+   "price": 185,
+   "book": "BetRivers",
+   "win": 0.3637,
+   "mwin": 0.355,
+   "ev": 0.0614,
+   "mev": 0.0364,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873046|tot|under",
    "gid": "401873046",
    "league": "nfl",
@@ -1710,12 +1732,12 @@
    "game": "JAX @ BAL",
    "kick": "2026-11-06T01:15Z",
    "price": 380,
-   "book": "DraftKings",
+   "book": "FanDuel",
    "books": 6,
    "ours": 0.4609,
-   "mkt": 0.1972,
-   "win": 0.2631,
-   "ev": 0.263,
+   "mkt": 0.2027,
+   "win": 0.2672,
+   "ev": 0.2828,
    "result": null,
    "final": null,
    "units": null
@@ -1730,13 +1752,13 @@
    "opp": "BAL",
    "game": "JAX @ BAL",
    "kick": "2026-11-06T01:15Z",
-   "price": 350,
+   "price": 360,
    "book": "BetRivers",
    "books": 6,
    "ours": 0.3727,
-   "mkt": 0.2027,
-   "win": 0.2452,
-   "ev": 0.1034,
+   "mkt": 0.2039,
+   "win": 0.2461,
+   "ev": 0.1321,
    "result": null,
    "final": null,
    "units": null
