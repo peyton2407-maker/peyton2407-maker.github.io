@@ -1,23 +1,17 @@
 {
- "checked_at": "2026-11-04T19:55:54Z",
+ "checked_at": "2026-11-05T01:46:03Z",
  "errors": [],
  "console": [],
- "failed_requests": {
-  "a.espncdn.com": {
-   "count": 3,
-   "example": "https://a.espncdn.com/i/teamlogos/ncaa/500/16.png",
-   "reason": "net::ERR_ABORTED"
-  }
- },
+ "failed_requests": {},
  "bad_status": {},
  "screens": {
   "home": {
    "visible": true,
-   "count": 14,
+   "count": 17,
    "summary": [],
    "empty": [],
-   "chars": 1325,
-   "images": 40,
+   "chars": 1467,
+   "images": 46,
    "broken_images": []
   },
   "nfl": {
@@ -25,7 +19,7 @@
    "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 5021,
+   "chars": 5074,
    "images": 37,
    "broken_images": []
   },
@@ -34,7 +28,7 @@
    "count": 61,
    "summary": [],
    "empty": [],
-   "chars": 9840,
+   "chars": 9854,
    "images": 97,
    "broken_images": []
   },
@@ -43,8 +37,8 @@
    "count": 16,
    "summary": [],
    "empty": [],
-   "chars": 2578,
-   "images": 32,
+   "chars": 2577,
+   "images": 14,
    "broken_images": []
   },
   "season": {
@@ -52,16 +46,16 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3233,
+   "chars": 3235,
    "images": 42,
    "broken_images": []
   },
   "score": {
    "visible": true,
-   "count": 366,
+   "count": 389,
    "summary": [],
    "empty": [],
-   "chars": 23998,
+   "chars": 26141,
    "images": 0,
    "broken_images": []
   },
@@ -70,17 +64,17 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3267,
+   "chars": 3363,
    "images": 35,
    "broken_images": []
   },
   "card": {
    "visible": true,
-   "count": 6,
+   "count": 8,
    "summary": [],
    "empty": [],
-   "chars": 949,
-   "images": 12,
+   "chars": 1102,
+   "images": 16,
    "broken_images": []
   },
   "props": {
@@ -88,19 +82,17 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 7230,
+   "chars": 7974,
    "images": 17,
    "broken_images": []
   },
   "tds": {
    "visible": true,
-   "count": 48,
-   "summary": [
-    "190 TD tickets in this filter 68% top anytime (III) 220 first-TD names mod"
-   ],
+   "count": 1,
+   "summary": [],
    "empty": [],
-   "chars": 4005,
-   "images": 24,
+   "chars": 3742,
+   "images": 28,
    "broken_images": []
   },
   "charts": {
@@ -109,26 +101,26 @@
    "summary": [],
    "empty": [],
    "chars": 3724,
-   "images": 4,
+   "images": 5,
    "broken_images": []
   },
   "value": {
    "visible": true,
    "count": 72,
    "summary": [
-    "291 value tickets in this filter 147 TD plus-money 6 spread / dog sides 85% b"
+    "312 value tickets in this filter 149 TD plus-money 6 spread / dog sides 89% b"
    ],
    "empty": [],
-   "chars": 3452,
-   "images": 37,
+   "chars": 3455,
+   "images": 35,
    "broken_images": []
   },
   "parlay": {
    "visible": true,
-   "count": 5,
+   "count": 4,
    "summary": [],
    "empty": [],
-   "chars": 3073,
+   "chars": 2834,
    "images": 0,
    "broken_images": []
   },
@@ -137,19 +129,19 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2926,
-   "images": 13,
+   "chars": 2880,
+   "images": 11,
    "broken_images": []
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "471 listed THU Not posted FRI Not posted SAT Not posted SUN Not posted",
-    "471 listed 0 probable \u00b7 75% 135 questionable / GTD \u00b7 50% 1 doubtful \u00b7 "
+    "518 listed THU Not posted FRI Not posted SAT Not posted SUN Not posted",
+    "518 listed 0 probable \u00b7 75% 178 questionable / GTD \u00b7 50% 2 doubtful \u00b7 "
    ],
    "empty": [],
-   "chars": 4170,
+   "chars": 4387,
    "images": 4,
    "broken_images": []
   },
@@ -158,7 +150,7 @@
    "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 5200,
+   "chars": 3988,
    "images": 30,
    "broken_images": []
   },
@@ -167,19 +159,17 @@
    "count": 4,
    "summary": [],
    "empty": [],
-   "chars": 5053,
-   "images": 0,
+   "chars": 1702,
+   "images": 2,
    "broken_images": []
   },
   "cfbpicks": {
    "visible": true,
    "count": 18,
-   "summary": [
-    "18 featured CFB leans 6 spread tickets 0 O/U tickets AFA @ ARMY top car"
-   ],
+   "summary": [],
    "empty": [],
-   "chars": 6217,
-   "images": 30,
+   "chars": 6956,
+   "images": 36,
    "broken_images": []
   }
  },
