@@ -917,7 +917,7 @@
    }
   ]
  },
- "updated": "2026-11-05T03:01:54.999Z",
+ "updated": "2026-11-05T03:31:21.091Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1053,9 +1053,9 @@
    "ev": 0.0455,
    "mev": 0.006,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "TOL 20, SAC 17",
+   "units": 2.4
   },
   {
    "id": "401873037|sp|away",
@@ -1118,6 +1118,28 @@
    "mwin": 0.2687,
    "ev": 0.0343,
    "mev": 0.0343,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401856855|sp|home",
+   "gid": "401856855",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "home",
+   "label": "ARIZ -18.5",
+   "game": "TCU @ ARIZ",
+   "kick": "2026-11-07T03:15Z",
+   "line": -18.5,
+   "mainLine": -7.5,
+   "price": 280,
+   "book": "FanDuel",
+   "win": 0.2721,
+   "mwin": 0.2721,
+   "ev": 0.0341,
+   "mev": 0.0341,
    "src": "mkt",
    "result": null,
    "final": null,
