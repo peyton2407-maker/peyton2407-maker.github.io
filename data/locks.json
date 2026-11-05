@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 73.5,
-   "lockedAt": "2026-11-05T16:46:19.437Z",
+   "lockedAt": "2026-11-05T17:01:38.115Z",
    "provisional": true
   },
   "401866453": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": 13.5,
    "total": 57.5,
-   "lockedAt": "2026-11-05T16:46:19.437Z",
+   "lockedAt": "2026-11-05T17:01:38.115Z",
    "provisional": true
   },
   "401873037": {
@@ -186,7 +186,7 @@
    "total_play": false,
    "spread": 10,
    "total": 39.5,
-   "lockedAt": "2026-11-05T16:46:19.437Z",
+   "lockedAt": "2026-11-05T17:01:38.115Z",
    "provisional": true
   }
  },
@@ -481,12 +481,12 @@
     "ours": "JAX -9.4 · total 40.2",
     "score": "JAX 24.8 – BAL 15.4",
     "market": "JAX -10.0 · total 39.5",
-    "lockedAt": "2026-11-05T16:46:19.455Z",
+    "lockedAt": "2026-11-05T17:01:38.137Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T01:15Z",
     "big": false,
-    "savedAt": 1793897179455
+    "savedAt": 1793898098137
    }
   ],
   "cfb": [
@@ -899,98 +899,59 @@
     "ours": "UTSA -5.7 · total 73.2",
     "score": "UTSA 39.5 – FAU 33.8",
     "market": "UTSA -6.5 · total 73.5",
-    "lockedAt": "2026-11-05T16:46:19.457Z",
+    "lockedAt": "2026-11-05T17:01:38.140Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T00:30Z",
     "big": false,
-    "savedAt": 1793897179457
+    "savedAt": 1793898098140
    }
   ]
  },
  "card": {
-  "weekKey": "nfl-8|cfb-10",
+  "weekKey": "nfl-9|cfb-10",
   "frozen": true,
-  "lockedAt": "2026-11-02T11:01:32.673Z",
+  "lockedAt": "2026-11-05T17:01:38.115Z",
   "title": "Double Gs weekly card",
   "legs": [
    {
-    "id": "401856742",
+    "id": "401858288",
     "league": "cfb",
-    "short": "VAN @ MSST",
-    "date": "2026-11-07T21:15Z",
-    "home": "MSST",
-    "away": "VAN",
-    "text": "MSST -3.0 · OVER 48.5",
-    "pick": "MSST -3.0",
-    "total": "OVER 48.5",
-    "proj": "VAN 22.8 – MSST 27.6",
-    "edge": 1.79
+    "short": "VT @ SMU",
+    "date": "2026-11-07T00:00Z",
+    "home": "SMU",
+    "away": "VT",
+    "text": "VT +6.5",
+    "pick": "VT +6.5",
+    "total": "NO PLAY",
+    "proj": "VT 26.1 – SMU 30.4",
+    "edge": -2.3
    },
    {
-    "id": "401858292",
+    "id": "401870795",
     "league": "cfb",
-    "short": "UNC @ CONN",
-    "date": "2026-11-07T17:00Z",
-    "home": "CONN",
-    "away": "UNC",
-    "text": "OVER 54.5",
-    "pick": "NO PLAY",
-    "total": "OVER 54.5",
-    "proj": "UNC 32.5 – CONN 24.3",
-    "edge": -1.12
+    "short": "LIB @ NMSU",
+    "date": "2026-11-08T01:00Z",
+    "home": "NMSU",
+    "away": "LIB",
+    "text": "NMSU +16.5",
+    "pick": "NMSU +16.5",
+    "total": "NO PLAY",
+    "proj": "LIB 30.4 – NMSU 16.1",
+    "edge": 2.1
    },
    {
-    "id": "401869936",
+    "id": "401864534",
     "league": "cfb",
-    "short": "ULM @ ARST",
-    "date": "2026-11-07T20:00Z",
-    "home": "ARST",
-    "away": "ULM",
-    "text": "OVER 52.5",
-    "pick": "NO PLAY",
-    "total": "OVER 52.5",
-    "proj": "ULM 19.1 – ARST 34.9",
-    "edge": 1.31
-   },
-   {
-    "id": "401858510",
-    "league": "cfb",
-    "short": "NEB @ ILL",
-    "date": "2026-11-07T01:00Z",
-    "home": "ILL",
-    "away": "NEB",
-    "text": "OVER 49.5",
-    "pick": "NO PLAY",
-    "total": "OVER 49.5",
-    "proj": "NEB 28.8 – ILL 23.9",
-    "edge": -0.39
-   },
-   {
-    "id": "401858517",
-    "league": "cfb",
-    "short": "RUTG @ WIS",
-    "date": "2026-11-07T21:15Z",
-    "home": "WIS",
-    "away": "RUTG",
-    "text": "OVER 45.5",
-    "pick": "NO PLAY",
-    "total": "OVER 45.5",
-    "proj": "RUTG 15.5 – WIS 32.5",
-    "edge": -0.49
-   },
-   {
-    "id": "401856849",
-    "league": "cfb",
-    "short": "BYU @ UTAH",
-    "date": "2026-11-07T17:00Z",
-    "home": "UTAH",
-    "away": "BYU",
-    "text": "OVER 47.5",
-    "pick": "NO PLAY",
-    "total": "OVER 47.5",
-    "proj": "BYU 22.4 – UTAH 28.1",
-    "edge": 0.23
+    "short": "NIU @ SJSU",
+    "date": "2026-11-07T21:00Z",
+    "home": "SJSU",
+    "away": "NIU",
+    "text": "SJSU -10.0",
+    "pick": "SJSU -10.0",
+    "total": "NO PLAY",
+    "proj": "NIU 19.9 – SJSU 31.6",
+    "edge": 1.8
    },
    {
     "id": "401858291",
@@ -999,54 +960,54 @@
     "date": "2026-11-08T00:30Z",
     "home": "ND",
     "away": "MIA",
-    "text": "OVER 57.5",
-    "pick": "NO PLAY",
-    "total": "OVER 57.5",
-    "proj": "MIA 27.1 – ND 32.1",
-    "edge": -0.58
+    "text": "MIA +7.5",
+    "pick": "MIA +7.5",
+    "total": "NO PLAY",
+    "proj": "MIA 24.9 – ND 30.6",
+    "edge": -1.8
    },
    {
-    "id": "401869945",
+    "id": "401856744",
     "league": "cfb",
-    "short": "ODU @ CCU",
-    "date": "2026-11-07T18:00Z",
-    "home": "CCU",
-    "away": "ODU",
-    "text": "UNDER 44.5",
-    "pick": "NO PLAY",
-    "total": "UNDER 44.5",
-    "proj": "ODU 17.2 – CCU 25.1",
-    "edge": 0.35
+    "short": "TA&M @ SC",
+    "date": "2026-11-07T20:00Z",
+    "home": "SC",
+    "away": "TA&M",
+    "text": "TA&M +7.0",
+    "pick": "TA&M +7.0",
+    "total": "NO PLAY",
+    "proj": "TA&M 23 – SC 28.5",
+    "edge": -1.5
    },
    {
-    "id": "401862820",
-    "league": "cfb",
-    "short": "TEM @ NAVY",
-    "date": "2026-11-07T20:30Z",
-    "home": "NAVY",
-    "away": "TEM",
-    "text": "OVER 53.5",
+    "id": "401873038",
+    "league": "nfl",
+    "short": "CIN VS ATL",
+    "date": "2026-11-08T14:30Z",
+    "home": "ATL",
+    "away": "CIN",
+    "text": "UNDER 52.5",
     "pick": "NO PLAY",
-    "total": "OVER 53.5",
-    "proj": "TEM 24.4 – NAVY 31.7",
-    "edge": -0.11
+    "total": "UNDER 52.5",
+    "proj": "CIN 27.6 – ATL 23.3",
+    "edge": -1.4
    },
    {
-    "id": "401858285",
-    "league": "cfb",
-    "short": "CLEM @ SYR",
-    "date": "2026-11-07T17:00Z",
-    "home": "SYR",
-    "away": "CLEM",
-    "text": "UNDER 49.5",
+    "id": "401873050",
+    "league": "nfl",
+    "short": "TB @ CHI",
+    "date": "2026-11-09T01:20Z",
+    "home": "CHI",
+    "away": "TB",
+    "text": "UNDER 47.5",
     "pick": "NO PLAY",
-    "total": "UNDER 49.5",
-    "proj": "CLEM 24.4 – SYR 22.8",
-    "edge": -0.13
+    "total": "UNDER 47.5",
+    "proj": "TB 20 – CHI 25.6",
+    "edge": -0.44
    }
   ]
  },
- "updated": "2026-11-05T16:46:19.437Z",
+ "updated": "2026-11-05T17:01:38.115Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
