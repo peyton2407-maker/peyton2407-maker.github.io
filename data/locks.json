@@ -917,7 +917,7 @@
    }
   ]
  },
- "updated": "2026-11-05T00:09:03.292Z",
+ "updated": "2026-11-05T00:50:08.068Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1621,27 +1621,6 @@
    "mkt": 0.1848,
    "win": 0.2038,
    "ev": 0.1212,
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "key": "401873043|4567156",
-   "gid": "401873043",
-   "pid": "4567156",
-   "name": "Treylon Burks",
-   "pos": "WR",
-   "team": "WSH",
-   "opp": "LAR",
-   "game": "LAR @ WSH",
-   "kick": "2026-11-08T18:00Z",
-   "price": 450,
-   "book": "DraftKings",
-   "books": 6,
-   "ours": 0.2974,
-   "mkt": 0.1659,
-   "win": 0.1988,
-   "ev": 0.0934,
    "result": null,
    "final": null,
    "units": null
