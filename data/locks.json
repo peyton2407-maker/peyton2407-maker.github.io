@@ -1,6 +1,27 @@
 {
  "v": 1,
  "plays": {
+  "401862817": {
+   "id": "401862817",
+   "league": "cfb",
+   "week": 10,
+   "short": "UTSA @ FAU",
+   "home": "FAU",
+   "away": "UTSA",
+   "date": "2026-11-06T00:30Z",
+   "pick": "FAU",
+   "pick_line": "FAU +6.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -5.77,
+   "our_total": 72.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 6.5,
+   "total": 72.5,
+   "lockedAt": "2026-11-05T12:31:23.632Z",
+   "provisional": true
+  },
   "401866453": {
    "id": "401866453",
    "league": "cfb",
@@ -776,6 +797,36 @@
     "closeAt": "2026-10-28T20:59:00.000Z",
     "close_src": "history",
     "clv": 0
+   },
+   {
+    "key": "game:401862817",
+    "week": 10,
+    "day": "2026-11-05",
+    "league": "cfb",
+    "id": "401862817",
+    "game": "UTSA @ FAU",
+    "kind": "Under",
+    "line": "UNDER 73.5",
+    "hitPct": 55,
+    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 73.5. At -115 (BetRivers) the price needs 53%; we count it at 55%, so it's 1.9% better than the price.",
+    "label": "Thursday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 0.5,
+    "price": -115,
+    "book": "BetRivers",
+    "bookPct": 50,
+    "ev": 0.019,
+    "ours": "UTSA -5.8 · total 72.5",
+    "score": "UTSA 39.1 – FAU 33.4",
+    "market": "UTSA -6.5 · total 72.5",
+    "lockedAt": "2026-11-05T12:31:23.650Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-06T00:30Z",
+    "big": false,
+    "savedAt": 1793881883650
    }
   ]
  },
@@ -917,7 +968,7 @@
    }
   ]
  },
- "updated": "2026-11-05T12:16:39.517Z",
+ "updated": "2026-11-05T12:31:23.632Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
