@@ -19,7 +19,12 @@
    "total_play": false,
    "spread": 7,
    "total": 72.5,
-   "lockedAt": "2026-11-05T23:09:54.599Z"
+   "lockedAt": "2026-11-05T23:09:54.599Z",
+   "close_spread": 7,
+   "close_total": 72.5,
+   "closeAt": "2026-11-05T23:31:35.108Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401866453": {
    "id": "401866453",
@@ -164,8 +169,7 @@
    "total_play": false,
    "spread": 14,
    "total": 57.5,
-   "lockedAt": "2026-11-05T23:09:54.599Z",
-   "provisional": true
+   "lockedAt": "2026-11-05T23:31:35.108Z"
   },
   "401873037": {
    "id": "401873037",
@@ -185,7 +189,7 @@
    "total_play": false,
    "spread": 10,
    "total": 39.5,
-   "lockedAt": "2026-11-05T23:09:54.599Z",
+   "lockedAt": "2026-11-05T23:31:35.108Z",
    "provisional": true
   }
  },
@@ -480,12 +484,12 @@
     "ours": "JAX -9.4 · total 40.2",
     "score": "JAX 24.8 – BAL 15.4",
     "market": "JAX -10.0 · total 39.5",
-    "lockedAt": "2026-11-05T23:09:54.615Z",
+    "lockedAt": "2026-11-05T23:31:35.135Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T01:15Z",
     "big": false,
-    "savedAt": 1793920194615
+    "savedAt": 1793921495135
    }
   ],
   "cfb": [
@@ -902,7 +906,11 @@
     "locked": true,
     "kick": "2026-11-06T00:30Z",
     "big": false,
-    "savedAt": 1793920194616
+    "savedAt": 1793920194616,
+    "close_line": 72.5,
+    "closeAt": "2026-11-05T23:31:35.108Z",
+    "close_src": "board",
+    "clv": 0
    }
   ]
  },
@@ -1005,7 +1013,7 @@
    }
   ]
  },
- "updated": "2026-11-05T23:09:54.599Z",
+ "updated": "2026-11-05T23:31:35.108Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
