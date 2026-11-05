@@ -2023,6 +2023,44 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .alt-intro p { margin: 0 0 10px; }
 .alt-stamp { margin: 4px 0 0; }
 .alt-note { color: var(--sun); }
+.tdl { grid-column: 1 / -1; border: 1px solid var(--line); border-radius: 16px; background: var(--card); overflow: hidden; }
+.tdl-head, .tdl-row summary { display: grid; grid-template-columns: 34px minmax(0, 1fr) 132px 92px 84px; gap: 12px; align-items: center; padding: 10px 16px; }
+.tdl-head { background: var(--card-2); color: var(--muted); font-size: .8rem; }
+.tdl-head span:nth-child(n+3) { text-align: right; }
+.tdl-row { border-top: 1px solid var(--line); }
+.tdl-row summary { cursor: pointer; list-style: none; }
+.tdl-row summary::-webkit-details-marker { display: none; }
+.tdl-row summary:hover, .tdl-row[open] summary { background: rgba(237,241,247,.03); }
+.tdl-row summary:focus-visible { outline: 2px solid var(--sun); outline-offset: -2px; }
+.tdl-row.val { box-shadow: inset 3px 0 0 var(--turf); }
+.tdl-rank { color: var(--muted); font-weight: 700; text-align: center; }
+.tdl-who { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.tdl-who > span { display: grid; min-width: 0; }
+.tdl-who b { color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tdl-who em, .tdl-px em, .tdl-ch em, .tdl-ev em { font-style: normal; color: var(--muted); font-size: .8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tdl-px, .tdl-ch, .tdl-ev { display: grid; text-align: right; }
+.tdl-px b { color: var(--sun); font-size: 1.05rem; }
+.tdl-ch b { color: var(--ink); }
+.tdl-ev .up { color: var(--win, #4fd08a); } .tdl-ev .down { color: #ff9b8f; }
+.tdl-body { padding: 4px 16px 16px 62px; color: var(--ink-soft); font-size: .93rem; }
+.tdl-body dl { display: flex; flex-wrap: wrap; gap: 8px 26px; margin: 4px 0 8px; }
+.tdl-body dt { color: var(--muted); font-size: .8rem; }
+.tdl-body dd { margin: 2px 0 0; color: var(--ink); font-weight: 600; }
+.tdl-books { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 6px 0; font-size: .86rem; color: var(--muted); }
+.tdl-books b { color: var(--ink-soft); }
+.tdl-why { margin: 6px 0 8px; max-width: 76ch; line-height: 1.5; }
+.tdl-more { display: block; width: 100%; padding: 12px; border: 0; border-top: 1px solid var(--line); background: transparent; color: var(--sun); font: 700 .92rem var(--body); cursor: pointer; }
+@media (max-width: 720px) {
+  .tdl-head { display: none; }
+  .tdl-row summary { grid-template-columns: 22px minmax(0, 1fr) auto; gap: 6px 10px; padding: 10px 12px; }
+  .tdl-rank { grid-row: 1 / span 2; }
+  .tdl-who { grid-column: 2 / -1; }
+  .tdl-px { grid-column: 2; grid-row: 2; text-align: left; display: flex; gap: 6px; align-items: baseline; }
+  .tdl-ch { grid-column: 3; grid-row: 2; display: flex; gap: 4px; align-items: baseline; }
+  .tdl-ev { grid-column: 2 / -1; grid-row: 3; text-align: left; display: flex; gap: 6px; align-items: baseline; }
+  .tdl-ev:empty { display: none; }
+  .tdl-body { padding: 4px 12px 14px; }
+}
 .td-hero-nums { display: flex; flex-wrap: wrap; gap: 2px 12px; margin-top: 6px; font-size: .88rem; color: var(--ink-soft); }
 .td-hero-nums .up { color: var(--win, #4fd08a); font-weight: 700; } .td-hero-nums .down { color: #ff9b8f; }
 .td-rec { display: grid; gap: 6px; padding: 16px 20px; margin: 0 0 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--card); }
@@ -2996,6 +3034,7 @@ table.props b.down { color: var(--muted); font-weight: 600; }
           <option value="lambda">Sort: projected TDs</option>
           <option value="kick">Sort: kickoff</option>
         </select>
+        <select id="tdGame" class="lg-select" aria-label="Game"><option value="ALL">All games</option></select>
         <input id="tdQ" placeholder="Search player, team, game…" />
       </div>
       <p class="subn" id="tdStamp" style="margin:0 0 10px">Chance each player scores. First TD = the first touchdown of the whole game. 2+ = they score twice.</p>
@@ -7508,6 +7547,15 @@ function renderTdDesk() {
     });
   });
   if (pos !== "ALL") expand.splice(0, expand.length, ...expand.filter((r) => r.pos === pos));
+  // the game filter, kept to this week's games that have players on the board
+  const gsel = document.getElementById("tdGame");
+  if (gsel) {
+    const games = [...new Map(rows.map((r) => [String(r.game_id), r])).values()].sort((a, b) => String(a.date).localeCompare(String(b.date)));
+    const cur = gsel.value || "ALL";
+    const opts = `<option value="ALL">All games</option>` + games.map((r) => `<option value="${pbEsc(String(r.game_id))}">${pbEsc(r.game)} · ${pbEsc(fmt.when(r.date))}</option>`).join("");
+    if (gsel.__opts !== opts) { gsel.innerHTML = opts; gsel.__opts = opts; gsel.value = games.some((r) => String(r.game_id) === cur) ? cur : "ALL"; }
+    if (gsel.value !== "ALL") expand.splice(0, expand.length, ...expand.filter((r) => String(r.game_id) === gsel.value));
+  }
   if (q) expand.splice(0, expand.length, ...expand.filter((r) => `${r.name} ${r.team} ${r.game} ${r.opp}`.toLowerCase().includes(q)));
   expand.sort((a, b) => {
     if (sort === "lambda") return b.lam - a.lam;
@@ -7560,37 +7608,55 @@ function renderTdDesk() {
       </article>`).join("") : "";
     hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
   }
-  const list = expand.slice(0, 48);
+  const SHOW = 25;
+  const list = window.__tdShowAll ? expand : expand.slice(0, SHOW);
   if (!list.length) {
-    board.innerHTML = `<div class="empty">No players in this filter. Try another market or position.</div>`;
+    board.innerHTML = `<div class="empty" style="grid-column:1/-1">No players in this filter. Try another market, position or game.</div>`;
     return;
   }
-  board.innerHTML = list.map((r, i) => `
-    <article class="prop-card td-card" data-id="${r.game_id}">
-      <div class="who">
-        <div class="who-row">
-          ${faceHtml(r.id, r.name, 48)}
-          <div>
-          <div class="td-mkt">#${i + 1} · ${r.label}</div>
-          <h4>${r.name}</h4>
-          <div class="prop-meta">${r.pos} · ${r.team} vs ${r.opp} · ${r.game}</div>
-          </div>
-        </div>
-        <div class="td-pct">${Math.round((r.win != null ? r.win : r.hit) * 100)}%</div>
+  const pct = (x) => Math.round(x * 100) + "%";
+  const kick = (r) => { const t = Date.parse(r.date); return Number.isFinite(t) ? new Date(t).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" }) : ""; };
+  const row = (r, i) => {
+    const chance = r.win != null ? r.win : r.hit;
+    const priced = !!r.off;
+    return `<details class="tdl-row${r.ev != null && r.ev >= TD_PICK_MIN ? " val" : ""}">
+      <summary>
+        <span class="tdl-rank">${i + 1}</span>
+        <span class="tdl-who">${faceHtml(r.id, r.name, 34)}<span><b>${pbEsc(r.name)}</b><em>${pbEsc(r.pos)} · ${pbEsc(r.team)} vs ${pbEsc(r.opp)} · ${pbEsc(kick(r))}</em></span></span>
+        <span class="tdl-px">${priced ? `<b>${pbAm(r.off.best.odds)}</b><em>${pbEsc(r.off.best.book)}</em>` : `<b>${pbEsc(r.fair)}</b><em>${r.market === "anytime" ? "our price, books not posted" : "our price"}</em>`}</span>
+        <span class="tdl-ch"><b>${pct(chance)}</b><em>${r.market === "first" ? "first TD" : r.market === "two" ? "2+ TDs" : "to score"}</em></span>
+        <span class="tdl-ev">${r.ev != null ? `<b class="${r.ev >= 0 ? "up" : "down"}">${r.ev >= 0 ? "+" : "−"}${Math.abs(r.ev * 100).toFixed(1)}%</b><em>value</em>` : ""}</span>
+      </summary>
+      <div class="tdl-body">
+        <dl>
+          ${r.mkt != null ? `<div><dt>Books' chance</dt><dd>${pct(r.mkt)} <span class="subn">from ${r.off.all.length} book${r.off.all.length === 1 ? "" : "s"}</span></dd></div>` : ""}
+          <div><dt>Our number</dt><dd>${pct(r.hit)} · ${pbEsc(r.fair)}</dd></div>
+          ${r.win != null ? `<div><dt>Checked chance</dt><dd>${pct(r.win)}</dd></div>` : ""}
+          <div><dt>Expected TDs</dt><dd>${r.lam.toFixed(2)}</dd></div>
+          <div><dt>Scores 2+</dt><dd>${pct(r.two)}</dd></div>
+          <div><dt>First TD of the game</dt><dd>${pct(r.first)}</dd></div>
+        </dl>
+        ${priced && r.off.all.length > 1 ? `<p class="tdl-books">${r.off.all.map((o) => `<span>${pbEsc(o.book)} <b>${pbAm(o.odds)}</b></span>`).join("")}</p>` : ""}
+        <p class="tdl-why">${pbEsc(r.why)}</p>
+        <button type="button" class="lg-open" data-id="${pbEsc(String(r.game_id))}">Open the game</button>
       </div>
-      <div class="td-bar"><span style="width:${Math.min(100, Math.max(6, (r.win != null ? r.win : r.hit) * 100))}%"></span></div>
-      <div class="prop-stats">
-        <div><span class="lbl">Best price</span><b>${r.off ? `${pbAm(r.off.best.odds)} <span class="subn">${pbEsc(r.off.best.book)}</span>` : r.market === "anytime" ? `<span class="subn">Not posted yet</span>` : `<span class="subn">Books don't post this one to us</span>`}</b></div>
-        <div><span class="lbl">${r.win != null ? "Our number" : "Our fair price"}</span><b>${r.win != null ? Math.round(r.hit * 100) + "% · " : ""}${r.fair}</b></div>
-        ${r.mkt != null ? `<div><span class="lbl">Books' chance</span><b>${Math.round(r.mkt * 100)}% <span class="subn">from ${r.off.all.length} book${r.off.all.length === 1 ? "" : "s"}</span></b></div>` : ""}
-        ${r.ev != null ? `<div><span class="lbl">Value at the best price</span><b class="${r.ev >= 0 ? "up" : "down"}">${r.ev >= 0 ? "+" : "−"}${Math.abs(r.ev * 100).toFixed(1)}%</b></div>` : ""}
-        <div><span class="lbl">Expected TDs</span><b>${r.lam.toFixed(2)}</b></div>
-        <div><span class="lbl">Scores / scores twice</span><b>${Math.round(r.anytime * 100)}% · ${Math.round(r.two * 100)}%</b></div>
-        <div><span class="lbl">First TD of game</span><b>${Math.round(r.first * 100)}%</b></div>
-      </div>
-      <p class="subn" style="margin:8px 0 0">${r.why}</p>
-    </article>`).join("");
-  board.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
+    </details>`;
+  };
+  board.innerHTML = `<div class="tdl">
+    <div class="tdl-head"><span></span><span>Player</span><span>Best price</span><span>Chance</span><span>Value</span></div>
+    ${list.map(row).join("")}
+    ${expand.length > SHOW ? `<button type="button" class="tdl-more" data-tdmore="1">${window.__tdShowAll ? "Show the top " + SHOW : "Show all " + expand.length}</button>` : ""}
+  </div>`;
+  if (!board.__tdWired) {
+    board.__tdWired = true;
+    board.addEventListener("click", (e) => {
+      const m = e.target.closest("[data-tdmore]");
+      if (m) { window.__tdShowAll = !window.__tdShowAll; renderTdDesk(); return; }
+      if (e.target.closest("summary")) return;
+      const el = e.target.closest("[data-id]");
+      if (el) openGame(el.dataset.id);
+    });
+  }
 }
 
 // ---- player prop chances, measured --------------------------------------------------------
@@ -21802,7 +21868,7 @@ async function boot() {
   });
   document.getElementById("propParlaySize")?.addEventListener("change", renderPropParlays);
   const rerenderTd = () => renderTdDesk();
-  ["tdMarket","tdPos","tdSort"].forEach((id) => document.getElementById(id)?.addEventListener("change", rerenderTd));
+  ["tdMarket","tdPos","tdSort","tdGame"].forEach((id) => document.getElementById(id)?.addEventListener("change", () => { window.__tdShowAll = false; rerenderTd(); }));
   document.getElementById("tdQ")?.addEventListener("input", rerenderTd);
   bindLeagueTabs("scoreLeague", () => {
     const root = document.getElementById("scoreWeek");
