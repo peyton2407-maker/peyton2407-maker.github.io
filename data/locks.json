@@ -917,7 +917,7 @@
    }
   ]
  },
- "updated": "2026-11-05T03:31:21.091Z",
+ "updated": "2026-11-05T03:46:22.159Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1140,6 +1140,28 @@
    "mwin": 0.2721,
    "ev": 0.0341,
    "mev": 0.0341,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401856855|tot|over",
+   "gid": "401856855",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "over",
+   "label": "Over 55.5",
+   "game": "TCU @ ARIZ",
+   "kick": "2026-11-07T03:15Z",
+   "line": 55.5,
+   "mainLine": 45.5,
+   "price": 300,
+   "book": "FanDuel",
+   "win": 0.2577,
+   "mwin": 0.2577,
+   "ev": 0.0308,
+   "mev": 0.0308,
    "src": "mkt",
    "result": null,
    "final": null,
