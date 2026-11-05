@@ -2023,6 +2023,8 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .alt-intro p { margin: 0 0 10px; }
 .alt-stamp { margin: 4px 0 0; }
 .alt-note { color: var(--sun); }
+.td-hero-nums { display: flex; flex-wrap: wrap; gap: 2px 12px; margin-top: 6px; font-size: .88rem; color: var(--ink-soft); }
+.td-hero-nums .up { color: var(--win, #4fd08a); font-weight: 700; } .td-hero-nums .down { color: #ff9b8f; }
 .td-rec { display: grid; gap: 6px; padding: 16px 20px; margin: 0 0 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--card); }
 .td-rec-main { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px; }
 .td-rec .up { color: var(--win, #4fd08a); } .td-rec .down { color: #ff9b8f; }
@@ -7465,7 +7467,7 @@ function tdRecordHtml() {
   return `<section class="td-rec">
     <div class="td-rec-main">
       <span class="rb-lbl">The anytime TD record</span>
-      <b class="rb-rec">${done.length ? `${w}-${l}` : "—"}</b>
+      ${done.length ? `<b class="rb-rec">${w}-${l}</b>` : ""}
       <span class="rb-sub">${done.length ? `<b class="${u >= 0 ? "up" : "down"}">${um(u)}</b> · ${(u / done.length >= 0 ? "+" : "−") + Math.abs(u / done.length * 100).toFixed(1)}% a bet · ${w} scored where we expected ${expHits.toFixed(1)}` : "Starts with this week's games"}${open ? ` · ${open} on the list now` : ""}</span>
     </div>
     <p class="subn">Every anytime pick shown at ${Math.round(TD_PICK_MIN * 100)}%+ value is logged at its last price and book before kickoff and graded from the box score, 1 unit each; a player who doesn't play is void.${done.length && done.length < 100 ? ` ${done.length} graded so far: at long prices a record swings a lot until there are a few hundred.` : ""}${done.length ? ` These were expected to return ${(exp / done.length >= 0 ? "+" : "−") + Math.abs(exp / done.length * 100).toFixed(1)}% a bet.` : ""}</p>
@@ -7514,43 +7516,53 @@ function renderTdDesk() {
     return b.hit - a.hit;
   });
   const stamp = document.getElementById("tdStamp");
-  if (stamp) stamp.textContent = "Chance they score. First TD = first score of the game. 2+ = they score twice.";
+  if (stamp) stamp.textContent = "Every NFL player's chance to score a touchdown this week. Value is our checked chance against the best book price.";
+  // the three picks on top: three different players, each for a different reason
+  const anyRows = collectTdBoard().map((r) => {
+    const mk = MK.get(r.game_id + "|" + r.id);
+    if (!mk || !(r.lam > 0)) return null;
+    const win = Math.max(0.005, Math.min(0.99, mk.mkt + keep * (r.anytime - mk.mkt)));
+    return { ...r, market: "anytime", off: mk.off, mkt: mk.mkt, win, hit: r.anytime, fair: r.fairAny, ev: win * pbDec(mk.off.best.odds) - 1 };
+  }).filter(Boolean);
+  const used = new Set();
+  const pick = (list, why) => { const r = list.find((x) => !used.has(x.id)); if (r) used.add(r.id); return r ? Object.assign({}, r, { why: why(r) }) : null; };
+  const byEv = anyRows.slice().sort((a, b) => b.ev - a.ev);
+  const heroes = [
+    pick(byEv.filter((r) => r.ev > 0), () => "Best value"),
+    pick(byEv.filter((r) => r.ev > 0 && r.off.best.odds >= 1000), () => "Best long shot"),
+    pick(byEv.filter((r) => r.ev > 0 && r.off.best.odds <= 200), () => "Best value at +200 or shorter")
+  ].filter(Boolean);
   const stats = document.getElementById("tdStats");
   if (stats) {
-    const any = collectTdBoard().sort((a, b) => b.anytime - a.anytime)[0];
+    const recs = ((window.GG_LOCKS || {}).tdPicks || []).filter((x) => x.result === "HIT" || x.result === "MISS");
+    const rw = recs.filter((x) => x.result === "HIT").length;
+    const upd = window.PB_PROPS && window.PB_PROPS.updated ? fmt.when(window.PB_PROPS.updated) : "";
     stats.innerHTML = `
-      <div class="stat"><b>${expand.length}</b><span>TD tickets in this filter</span></div>
-      <div class="stat"><b>${any ? Math.round(any.anytime * 100) + "%" : "—"}</b><span>top anytime (${any ? any.name.split(" ").slice(-1)[0] : "—"})</span></div>
-      <div class="stat"><b>${expand.filter((r) => r.market === "first" || market === "first").length || collectTdBoard().length}</b><span>first-TD names modeled</span></div>
-      <div class="stat"><b>${expand.filter((r) => r.two >= 0.12 || r.market === "two").length}</b><span>real 2+ shots</span></div>`;
+      <div class="stat"><b>${anyRows.length}</b><span>of ${collectTdBoard().length} players have a book price</span></div>
+      <div class="stat"><b>${anyRows.filter((r) => r.ev >= TD_PICK_MIN).length}</b><span>value picks (${Math.round(TD_PICK_MIN * 100)}%+), tracked in the record</span></div>
+      <div class="stat"><b>${recs.length ? rw + "-" + (recs.length - rw) : "New"}</b><span>anytime TD record</span></div>
+      <div class="stat"><b>${upd ? pbEsc(upd.replace(/^\w+,\s*/, "")) : "—"}</b><span>prices last updated</span></div>`;
   }
   const recBox = document.getElementById("tdRecord");
   if (recBox) { try { recBox.innerHTML = tdRecordHtml(); } catch (e) { recBox.innerHTML = ""; } }
   const hero = document.getElementById("tdHero");
-  const chalk = collectTdBoard().slice().sort((a, b) => b.anytime - a.anytime);
-  const firsts = collectTdBoard().slice().sort((a, b) => b.first - a.first);
-  const twos = collectTdBoard().slice().sort((a, b) => b.two - a.two);
-  const heroes = [
-    chalk[0] && { ...chalk[0], market: "anytime", hit: chalk[0].anytime, label: "Scores a TD", fair: chalk[0].fairAny },
-    firsts[0] && { ...firsts[0], market: "first", hit: firsts[0].first, label: "First TD of the game", fair: firsts[0].fairFirst },
-    twos[0] && { ...twos[0], market: "two", hit: twos[0].two, label: "Scores 2+ TDs", fair: twos[0].fairTwo }
-  ].filter(Boolean);
   if (hero) {
-    hero.innerHTML = heroes.map((r) => `
+    hero.innerHTML = heroes.length ? heroes.map((r) => `
       <article class="td-hero-card" data-id="${r.game_id}">
         <div class="who-row">${faceHtml(r.id, r.name, 64)}<div>
-        <div class="td-mkt">${r.label}</div>
-        <div class="td-pct">${Math.round(r.hit * 100)}%</div>
-        <h3>${r.name}</h3>
-        <div class="subn">${r.pos} · ${r.team} vs ${r.opp} · ${r.game}</div>
+        <div class="td-mkt">${pbEsc(r.why)}</div>
+        <div class="td-pct">${pbAm(r.off.best.odds)}</div>
+        <h3>${pbEsc(r.name)}</h3>
+        <div class="subn">${pbEsc(r.pos)} · ${pbEsc(r.team)} vs ${pbEsc(r.opp)} · ${pbEsc(fmt.when(r.date))}</div>
+        <div class="td-hero-nums"><span>at ${pbEsc(r.off.best.book)}</span><span>${Math.round(r.win * 100)}% to score</span><span class="${r.ev >= 0 ? "up" : "down"}">${r.ev >= 0 ? "+" : "−"}${Math.abs(r.ev * 100).toFixed(1)}% value</span></div>
         </div></div>
-        <div class="td-bar"><span style="width:${Math.min(100, r.hit * 100)}%"></span></div>
-      </article>`).join("");
+        <div class="td-bar"><span style="width:${Math.min(100, r.win * 100)}%"></span></div>
+      </article>`).join("") : "";
     hero.querySelectorAll("[data-id]").forEach((el) => el.addEventListener("click", () => openGame(el.dataset.id)));
   }
   const list = expand.slice(0, 48);
   if (!list.length) {
-    board.innerHTML = `<div class="empty">No TD tickets in this filter. Flip the market dropdown.</div>`;
+    board.innerHTML = `<div class="empty">No players in this filter. Try another market or position.</div>`;
     return;
   }
   board.innerHTML = list.map((r, i) => `
