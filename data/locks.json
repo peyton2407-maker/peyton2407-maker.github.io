@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 72.5,
-   "lockedAt": "2026-11-05T13:24:53.590Z",
+   "lockedAt": "2026-11-05T13:31:30.140Z",
    "provisional": true
   },
   "401866453": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 57.5,
-   "lockedAt": "2026-11-05T13:24:53.590Z",
+   "lockedAt": "2026-11-05T13:31:30.140Z",
    "provisional": true
   },
   "401873037": {
@@ -186,7 +186,7 @@
    "total_play": false,
    "spread": 10,
    "total": 39.5,
-   "lockedAt": "2026-11-05T13:24:53.590Z",
+   "lockedAt": "2026-11-05T13:31:30.140Z",
    "provisional": true
   }
  },
@@ -481,12 +481,12 @@
     "ours": "JAX -10.5 · total 40.2",
     "score": "JAX 25.3 – BAL 14.9",
     "market": "JAX -10.0 · total 39.5",
-    "lockedAt": "2026-11-05T13:24:53.607Z",
+    "lockedAt": "2026-11-05T13:31:30.160Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T01:15Z",
     "big": false,
-    "savedAt": 1793885093607
+    "savedAt": 1793885490160
    }
   ],
   "cfb": [
@@ -899,12 +899,12 @@
     "ours": "UTSA -5.7 · total 72.5",
     "score": "UTSA 39.1 – FAU 33.4",
     "market": "UTSA -6.5 · total 72.5",
-    "lockedAt": "2026-11-05T13:24:53.609Z",
+    "lockedAt": "2026-11-05T13:31:30.162Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T00:30Z",
     "big": false,
-    "savedAt": 1793885093609
+    "savedAt": 1793885490162
    }
   ]
  },
@@ -1046,7 +1046,7 @@
    }
   ]
  },
- "updated": "2026-11-05T13:24:53.590Z",
+ "updated": "2026-11-05T13:31:30.140Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1637,10 +1637,10 @@
    "price": 380,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.261,
-   "mkt": 0.2028,
-   "win": 0.2173,
-   "ev": 0.0432,
+   "ours": 0.2701,
+   "mkt": 0.2161,
+   "win": 0.2296,
+   "ev": 0.102,
    "result": null,
    "final": null,
    "units": null
@@ -1704,6 +1704,27 @@
    "mkt": 0.166,
    "win": 0.1831,
    "ev": 0.0527,
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "key": "401873039|3929645",
+   "gid": "401873039",
+   "pid": "3929645",
+   "name": "Juwan Johnson",
+   "pos": "TE",
+   "team": "NO",
+   "opp": "CLE",
+   "game": "CLE @ NO",
+   "kick": "2026-11-08T18:00Z",
+   "price": 320,
+   "book": "DraftKings",
+   "books": 6,
+   "ours": 0.2701,
+   "mkt": 0.2441,
+   "win": 0.2506,
+   "ev": 0.0525,
    "result": null,
    "final": null,
    "units": null
