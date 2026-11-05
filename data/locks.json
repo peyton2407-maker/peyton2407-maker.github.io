@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 72.5,
-   "lockedAt": "2026-11-05T13:01:34.966Z",
+   "lockedAt": "2026-11-05T13:05:16.714Z",
    "provisional": true
   },
   "401866453": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 57.5,
-   "lockedAt": "2026-11-05T13:01:34.966Z",
+   "lockedAt": "2026-11-05T13:05:16.714Z",
    "provisional": true
   }
  },
@@ -827,27 +827,27 @@
     "id": "401862817",
     "game": "UTSA @ FAU",
     "kind": "Under",
-    "line": "UNDER 73.5",
+    "line": "UNDER 72.5",
     "hitPct": 55,
-    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 73.5. At -115 (BetRivers) the price needs 53%; we count it at 55%, so it's 1.9% better than the price.",
+    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 72.5. At -108 (FanDuel) the price needs 52%; we count it at 55%, so it's 5.0% better than the price.",
     "label": "Thursday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 0.5,
-    "price": -115,
-    "book": "BetRivers",
+    "units": 1.25,
+    "price": -108,
+    "book": "FanDuel",
     "bookPct": 50,
-    "ev": 0.019,
+    "ev": 0.05,
     "ours": "UTSA -5.8 · total 72.5",
     "score": "UTSA 39.1 – FAU 33.4",
     "market": "UTSA -6.5 · total 72.5",
-    "lockedAt": "2026-11-05T13:01:34.986Z",
+    "lockedAt": "2026-11-05T13:05:16.738Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T00:30Z",
     "big": false,
-    "savedAt": 1793883694986
+    "savedAt": 1793883916738
    }
   ]
  },
@@ -989,7 +989,7 @@
    }
   ]
  },
- "updated": "2026-11-05T13:01:34.966Z",
+ "updated": "2026-11-05T13:05:16.714Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1090,6 +1090,22 @@
    "final": null
   },
   {
+   "id": "401873039|sp|away",
+   "gid": "401873039",
+   "team": "CLE",
+   "side": "away",
+   "game": "CLE @ NO",
+   "kick": "2026-11-08T18:00Z",
+   "from": 2.5,
+   "to": 8.5,
+   "book": "bet365",
+   "win": 0.7024,
+   "bookWin": 0.7161,
+   "total": 42.5,
+   "result": null,
+   "final": null
+  },
+  {
    "id": "401873048|sp|home",
    "gid": "401873048",
    "team": "SEA",
@@ -1152,22 +1168,22 @@
    "units": null
   },
   {
-   "id": "401862818|tot|over",
+   "id": "401862818|tot|under",
    "gid": "401862818",
    "league": "cfb",
    "kind": "tot",
-   "side": "over",
-   "label": "Over 48.5",
+   "side": "under",
+   "label": "Under 31.5",
    "game": "USF @ ECU",
    "kick": "2026-11-07T00:30Z",
-   "line": 48.5,
+   "line": 31.5,
    "mainLine": 39.5,
-   "price": 280,
+   "price": 235,
    "book": "FanDuel",
-   "win": 0.2715,
-   "mwin": 0.2774,
-   "ev": 0.0316,
-   "mev": 0.0542,
+   "win": 0.3089,
+   "mwin": 0.3025,
+   "ev": 0.0347,
+   "mev": 0.0133,
    "src": "mkt",
    "result": null,
    "final": null,
