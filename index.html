@@ -14568,7 +14568,7 @@ function pickHistory(spec) {
     const stat = spec.prop.stat, L = Number(spec.prop.line), under = spec.prop.side === "under";
     const slots = playerSlots(spec.prop.pid, spec.prop.team_id || playerTeamId(spec.prop.pid, spec.gid), before, stat);
     const played = slots.filter((x) => !x.dnp);
-    if (played.length < 3) return null;
+    if (!played.length || (played.length < 3 && !slots.some((x) => x.dnp))) return null;
     const lbl = PICK_STAT_LBL[stat] || stat;
     const pts = slots.map((x) => x.dnp
       ? { label: (x.home === false ? "@" : "") + x.o, tip: `${day(x.t)} vs ${x.o}: did not play`, dnp: true }
@@ -14576,7 +14576,7 @@ function pickHistory(spec) {
     const binary = stat === "td" && L === 0.5;
     const avg = played.reduce((a, x) => a + x.v, 0) / played.length;
     const dn = slots.length - played.length;
-    return { mode: binary ? "dots" : "bars", series: [{ name: "", rows: pts }], cut: L, dnp: dn, title: `${spec.prop.name.split(" ").slice(-1)[0]} ${under ? "under" : "over"} ${L} ${lbl}`,
+    return { mode: binary ? "dots" : "bars", series: [{ name: "", rows: pts }], cut: L, dnp: dn, thin: played.length < 3, title: `${spec.prop.name.split(" ").slice(-1)[0]} ${under ? "under" : "over"} ${L} ${lbl}`,
       note: (binary ? `Scored in ${played.filter((x) => x.v > 0).length} of the ${played.length} games he played.` : `Averaging ${avg.toFixed(1)} in the ${played.length} games he played, against a line of ${L}.`) + (dn ? ` ${dn} game${dn === 1 ? "" : "s"} he didn't play (DNP) ${dn === 1 ? "isn't" : "aren't"} counted.` : "") };
   }
   if (!g || !g.home || !g.away) return null;
@@ -14645,7 +14645,7 @@ function pickHistoryHtml(spec, compact) {
   return `<div class="pick-hist${compact ? " compact" : ""}">
     <div class="ph-head"><b>${hits} of ${n - pushes}</b><span>${pbEsc(h.title)}, last ${h.dnp ? n + " played" : h.series.length > 1 ? n + " games (" + h.series.map((s) => s.name + " " + s.rows.length).join(", ") + ")" : n + " games"}, graded at today's line${h.dnp ? ` · ${h.dnp} DNP not counted` : ""}${pushes ? ` · ${pushes} push${pushes === 1 ? "" : "es"}` : ""}</span></div>
     ${h.series.map((s) => `${h.series.length > 1 ? `<div class="ph-name">${pbEsc(s.name)} games</div>` : ""}${chart(s)}`).join("")}
-    <p class="ph-note">${pbEsc(h.note)}${h.mode === "bars" ? " The dashed line is today's line; solid bars are the games where this pick would have hit." : " Filled marks are hits."} Past games, not a forecast${n < 8 && !h.dnp ? `: only ${n} played so far` : ""}.</p>
+    <p class="ph-note">${h.thin ? `Only ${n} game${n === 1 ? "" : "s"} played in his team's last ${n + (h.dnp || 0)}: too few to read anything into. ` : ""}${pbEsc(h.note)}${h.mode === "bars" ? " The dashed line is today's line; solid bars are the games where this pick would have hit." : " Filled marks are hits."} Past games, not a forecast${n < 8 && !h.dnp ? `: only ${n} played so far` : ""}.</p>
   </div>`;
 }
 // the spec for a play of the day or a Ladder leg
