@@ -24,6 +24,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
         run: |
           start=$(date +%s)
           kick() {  # workflow file, then optional input key=value
@@ -37,6 +38,26 @@ jobs:
             n=$(gh api "repos/$REPO/actions/workflows/$1/runs?per_page=5" --jq '[.workflow_runs[] | select(.status != "completed")] | length' 2>/dev/null || echo 0)
             [ "${n:-0}" -gt 0 ]
           }
+          # GitHub Pages can fail to publish (a 500 on its side): then the site stays on the old
+          # version until someone reruns it. Every 15 minutes: if the newest publish failed, rerun
+          # it (up to 3 tries); if it still fails, one alert to the phone.
+          alerted=""; pages_wf=""
+          publish_check() {
+            [ -n "$pages_wf" ] || pages_wf=$(gh api "repos/$REPO/actions/workflows" --jq '.workflows[] | select(.path == "dynamic/pages/pages-build-deployment") | .id' 2>/dev/null)
+            [ -n "$pages_wf" ] || return 0
+            row=$(gh api "repos/$REPO/actions/workflows/$pages_wf/runs?per_page=1" --jq '.workflow_runs[0] | [.id, .status, (.conclusion // ""), .run_attempt, .head_sha[0:8]] | @tsv' 2>/dev/null) || return 0
+            [ -n "$row" ] || return 0
+            IFS=$'\t' read -r id st concl att sha <<< "$row"
+            [ "$st" = "completed" ] && [ "$concl" = "failure" ] || return 0
+            if [ "${att:-1}" -lt 3 ]; then
+              gh api -X POST "repos/$REPO/actions/runs/$id/rerun" >/dev/null 2>&1 && echo "$(date -u +%H:%M) publish $sha failed, rerun (try $(( att + 1 )))" || echo "$(date -u +%H:%M) publish $sha failed, rerun refused"
+            elif [ "$alerted" != "$id" ]; then
+              alerted="$id"
+              topic="${NTFY_TOPIC:-$(gh api "repos/$REPO/contents/scripts/alerts.json" --jq '.content' 2>/dev/null | base64 -d 2>/dev/null | python3 -c 'import json,sys;print(json.load(sys.stdin).get("topic",""))' 2>/dev/null)}"
+              [ -n "$topic" ] && curl -s -H "Title: Double Gs: the site isn't publishing" -H "Tags: warning" -H "Priority: high" -H "Click: https://github.com/$REPO/actions/runs/$id" -d "GitHub Pages failed to publish update $sha three times, so the live site is on an older version. Rerun it from the link, or it publishes with the next update." "https://ntfy.sh/$topic" >/dev/null || true
+              echo "$(date -u +%H:%M) publish $sha failed 3 times, alert sent"
+            fi
+          }
           last_q=-1; last_h=-1
           while [ $(( $(date +%s) - start )) -lt $(( 345 * 60 )) ]; do
             now=$(date +%s); q=$(( now / 900 )); h=$(( now / 3600 ))
@@ -44,6 +65,7 @@ jobs:
               last_q=$q
               busy lock-picks.yml || kick lock-picks.yml
               busy gameday.yml || kick gameday.yml due_check=yes
+              publish_check
             fi
             if [ "$h" != "$last_h" ]; then
               last_h=$h
