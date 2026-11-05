@@ -2023,6 +2023,23 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .alt-intro p { margin: 0 0 10px; }
 .alt-stamp { margin: 4px 0 0; }
 .alt-note { color: var(--sun); }
+.pick-hist { margin: 16px 0 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: rgba(237,241,247,.03); max-width: 460px; }
+.pick-hist.compact { margin: 8px 0 4px; padding: 10px 12px; max-width: 380px; }
+.ph-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.ph-head b { font: 800 24px/1 var(--display); color: var(--ink); }
+.pick-hist.compact .ph-head b { font-size: 20px; }
+.ph-head span { color: var(--muted); font-size: .84rem; }
+.ph-name { color: var(--ink-soft); font-size: .8rem; font-weight: 700; margin: 8px 0 -2px; }
+.ph-svg { display: block; width: 100%; height: auto; margin-top: 6px; overflow: visible; }
+.ph-svg .ph-hit { fill: var(--win, #4fd08a); }
+.ph-svg .ph-miss { fill: none; stroke: var(--muted); stroke-width: 1.5; }
+.ph-svg .ph-push { fill: var(--muted); opacity: .5; }
+.ph-svg .ph-tick { fill: none; stroke: var(--paper, #0d1628); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ph-svg .ph-cut { stroke: var(--sun); stroke-width: 1.5; stroke-dasharray: 4 3; }
+.ph-svg .ph-zero { stroke: var(--line-2); stroke-width: 1; }
+.ph-svg .ph-val { fill: var(--ink-soft); font: 600 10px var(--body); }
+.ph-svg .ph-lbl { fill: var(--muted); font: 500 9.5px var(--body); }
+.ph-note { margin: 6px 0 0; color: var(--muted); font-size: .82rem; line-height: 1.45; }
 .tdl { grid-column: 1 / -1; border: 1px solid var(--line); border-radius: 16px; background: var(--card); overflow: hidden; }
 .tdl-head, .tdl-row summary { display: grid; grid-template-columns: 34px minmax(0, 1fr) 132px 92px 84px; gap: 12px; align-items: center; padding: 10px 16px; }
 .tdl-head { background: var(--card-2); color: var(--muted); font-size: .8rem; }
@@ -14046,6 +14063,7 @@ function ladderLegHtml(l, showResult) {
   return `<li data-id="${pbEsc(String(l.game_id))}"><b>${pbEsc(l.label)}</b> ${showResult ? res : ""}
     <div class="subn">${pbEsc(l.game || "")} · ${when} · ${pbAm(l.price)} · ${LADDER_CAT[l.cat] || ""}${l.league ? " · " + (l.league === "nfl" ? "NFL" : "College") : ""}</div>
     <div class="prop-why">Our checked chance ${Math.round(Number(l.win) * 100)}%, the books' ${Math.round(Number(l.bookWin) * 100)}%: ${(Number(l.value) * 100 >= 0 ? "+" : "") + (Number(l.value) * 100).toFixed(1)}% at this price.${l.why && !/checked chance/.test(l.why) && l.cat !== "dog" && l.cat !== "fav" ? " " + l.why : ""}</div>
+    ${!l.result ? (() => { try { return pickHistoryHtml(pickSpecFromLeg(l), true); } catch (e) { return ""; } })() : ""}
     ${l.alt ? `<div class="prop-why alt-note">Alternate line: the pick is ${pbEsc(l.alt.label)} ${pbEsc(pbAm(l.alt.price))}; this book's ${pbEsc(l.label)} at ${pbEsc(pbAm(l.price))} is the same bet worth more (${(Number(l.alt.value) * 100).toFixed(1)}% → ${(Number(l.value) * 100).toFixed(1)}% value).</div>` : ""}
     ${showResult ? ladderClvText(l) : ""}
     ${l.final ? `<div class="prop-why"><b>${pbEsc(l.final)}</b></div>` : ""}</li>`;
@@ -14225,6 +14243,7 @@ function wireChallenge(box) {
 function renderLadder() {
   const box = document.getElementById("ladderBoard");
   if (!box) return;
+  pickLogsFor(() => { if (view === "ladder") renderLadder(); });
   try { ensureAlt(); } catch (e) {}
   const rows = ladderRows();
   const cur = ladderCurrent();
@@ -14458,6 +14477,121 @@ function potdTally(rows) {
   return { hit, miss, push, n: done.length, units, roi: done.length ? units / done.length : 0, pct: hit + miss ? hit / (hit + miss) : null };
 }
 // ---- the play of the day pages: the play as a slip, the record strip, the ledger -----------
+// ---- the last 8 games at today's line (play of the day, Ladder legs) ----------------------
+// Each pick graded against the team's or player's last 8 games at the line it's at today:
+// a spread by the team's margins, a total by both teams' game totals, a moneyline by wins, a
+// player prop by his game logs. Past games, not a prediction; the sample is small and says so.
+function pickTeamGames(league, teamId, before) {
+  const seen = new Set(), out = [];
+  const add = (r) => {
+    if (!r || seen.has(String(r.id))) return;
+    const t = Date.parse(r.date);
+    if (!Number.isFinite(t) || !(t < before)) return;
+    const home = String(r.homeId) === String(teamId), away = String(r.awayId) === String(teamId);
+    if (!home && !away) return;
+    const hs = Number(r.hs), as = Number(r.as);
+    if (!Number.isFinite(hs) || !Number.isFinite(as)) return;
+    seen.add(String(r.id));
+    out.push({ t, home, pts: home ? hs : as, opp: home ? as : hs, oppAbbr: home ? r.awayAbbr : r.homeAbbr });
+  };
+  (DATA.games || []).forEach((g) => { if (g && g.league === league && g.completed && g.home && g.away) add({ id: g.id, date: g.date, homeId: g.home.id, awayId: g.away.id, homeAbbr: g.home.abbr, awayAbbr: g.away.abbr, hs: g.home.score, as: g.away.score }); });
+  (window.WEEK_RESULTS || []).forEach((r) => { if (r && r.league === league) add(r); });
+  return out.sort((a, b) => b.t - a.t).slice(0, 8).reverse();
+}
+const PICK_STAT_LBL = { pass_yds: "pass yds", pass_td: "pass TDs", rush_yds: "rush yds", rush_att: "carries", rec: "catches", rec_yds: "rec yds", targets: "targets", td: "TDs", pass_int: "INTs" };
+function pickHistory(spec) {
+  const g = spec.gid ? pbGame(spec.gid) : null;
+  const before = Number.isFinite(spec.before) ? spec.before : (g ? Date.parse(g.date) : Date.now());
+  const day = (t) => new Date(t).toLocaleDateString([], { month: "numeric", day: "numeric" });
+  if (spec.kind === "pp" && spec.prop) {
+    const pack = (window.GAMELOGS || {})[String(spec.prop.pid)];
+    const stat = spec.prop.stat, L = Number(spec.prop.line), under = spec.prop.side === "under";
+    const rows = ((pack && pack.rows) || []).filter((r) => Number.isFinite(Number(r[stat])) && Date.parse(r.d + "T12:00:00Z") < before).slice(0, 8).reverse();
+    if (rows.length < 3) return null;
+    const pts = rows.map((r) => { const v = Number(r[stat]); return { label: r.o || "", tip: `${day(Date.parse(r.d + "T12:00:00Z"))} vs ${r.o}: ${v} ${PICK_STAT_LBL[stat] || stat}`, v, hit: under ? v < L : v > L, push: v === L }; });
+    const binary = stat === "td" && L === 0.5;
+    const avg = rows.reduce((a, r) => a + Number(r[stat]), 0) / rows.length;
+    return { mode: binary ? "dots" : "bars", series: [{ name: "", rows: pts }], cut: L, title: `${spec.prop.name.split(" ").slice(-1)[0]} ${under ? "under" : "over"} ${L} ${PICK_STAT_LBL[stat] || stat}`, note: binary ? `Scored in ${pts.filter((x) => x.v > 0).length} of his last ${pts.length} games.` : `Averaging ${avg.toFixed(1)} over these games, against a line of ${L}.` };
+  }
+  if (!g || !g.home || !g.away) return null;
+  const lg = g.league;
+  if (spec.kind === "sp" || spec.kind === "ml") {
+    const team = spec.side === "home" ? g.home : g.away;
+    const games = pickTeamGames(lg, team.id, before);
+    if (games.length < 3) return null;
+    const line = spec.kind === "ml" ? 0 : Number(spec.line);
+    const pts = games.map((x) => { const m = x.pts - x.opp; const c = m + line; return { label: (x.home ? "" : "@") + (x.oppAbbr || ""), tip: `${day(x.t)} ${x.home ? "vs" : "at"} ${x.oppAbbr}: ${x.pts}-${x.opp}, ${m > 0 ? "won by " + m : m < 0 ? "lost by " + -m : "tied"}`, v: m, hit: c > 0, push: c === 0 }; });
+    const avg = games.reduce((a, x) => a + x.pts - x.opp, 0) / games.length;
+    return spec.kind === "ml"
+      ? { mode: "dots", series: [{ name: "", rows: pts }], cut: 0, title: `${team.abbr} to win`, note: `Won ${pts.filter((x) => x.v > 0).length} of their last ${pts.length}, by ${avg >= 0 ? "+" : "−"}${Math.abs(avg).toFixed(1)} a game on average.` }
+      : { mode: "bars", series: [{ name: "", rows: pts }], cut: -line, signed: true, title: `${team.abbr} ${pbLine(line)}`, note: `Average margin ${avg >= 0 ? "+" : "−"}${Math.abs(avg).toFixed(1)}; ${line < 0 ? "they need to win by " + Math.floor(-line + 1) : line > 0 ? "they can lose by up to " + Math.ceil(line - 1) : "they need to win"} to cover ${pbLine(line)}.` };
+  }
+  if (spec.kind === "tot") {
+    const L = Number(spec.line), under = spec.side === "under";
+    const series = [g.away, g.home].map((team) => {
+      const games = pickTeamGames(lg, team.id, before);
+      return { name: team.abbr, rows: games.map((x) => { const v = x.pts + x.opp; return { label: (x.home ? "" : "@") + (x.oppAbbr || ""), tip: `${day(x.t)} ${team.abbr} ${x.home ? "vs" : "at"} ${x.oppAbbr}: ${x.pts}-${x.opp}, total ${v}`, v, hit: under ? v < L : v > L, push: v === L }; }) };
+    }).filter((s) => s.rows.length >= 3);
+    if (!series.length) return null;
+    const all = series.flatMap((s) => s.rows);
+    const avg = all.reduce((a, x) => a + x.v, 0) / all.length;
+    return { mode: "bars", series, cut: L, title: `${under ? "Under" : "Over"} ${pbTot(L)}`, note: `Their games have averaged ${avg.toFixed(1)} points, against a total of ${pbTot(L)}.` };
+  }
+  return null;
+}
+function pickHistoryHtml(spec, compact) {
+  let h = null;
+  try { h = pickHistory(spec); } catch (e) { h = null; }
+  if (!h) return "";
+  const all = h.series.flatMap((s) => s.rows);
+  const hits = all.filter((x) => x.hit).length, pushes = all.filter((x) => x.push).length, n = all.length;
+  const W = 300, H = compact ? 92 : 112, top = 16, bot = 18;
+  const chart = (s) => {
+    if (h.mode === "dots") {
+      const cw = W / Math.max(8, s.rows.length);
+      return `<svg class="ph-svg" viewBox="0 0 ${W} 44" role="img" aria-label="${pbEsc(s.name || h.title)}: ${s.rows.filter((x) => x.hit).length} of ${s.rows.length}">${s.rows.map((x, i) => {
+        const cx = cw * i + cw / 2;
+        return `<g><title>${pbEsc(x.tip)}</title>${x.hit ? `<circle cx="${cx}" cy="14" r="9" class="ph-hit"/><path d="M${cx - 4},14 l3,3 l5,-6" class="ph-tick"/>` : `<circle cx="${cx}" cy="14" r="8" class="ph-miss"/>`}<text x="${cx}" y="38" text-anchor="middle" class="ph-lbl">${pbEsc(x.label)}</text></g>`;
+      }).join("")}</svg>`;
+    }
+    const vals = s.rows.map((x) => x.v).concat([h.cut]);
+    const lo = Math.min(0, ...vals), hi = Math.max(0, ...vals);
+    const span = (hi - lo) || 1;
+    const y = (v) => top + (H - top - bot) * (1 - (v - lo) / (span * 1.08));
+    const cw = W / Math.max(8, s.rows.length), bw = Math.min(24, cw * 0.62);
+    const base = y(0), cut = y(h.cut);
+    return `<svg class="ph-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${pbEsc((s.name ? s.name + " " : "") + h.title)}: ${s.rows.filter((x) => x.hit).length} of ${s.rows.length} at this line">
+      ${lo < 0 ? `<line x1="0" x2="${W}" y1="${base}" y2="${base}" class="ph-zero"/>` : ""}
+      ${s.rows.map((x, i) => {
+        const cx = cw * i + cw / 2, y1 = y(x.v), yt = Math.min(base, y1), hgt = Math.max(2, Math.abs(base - y1));
+        return `<g><title>${pbEsc(x.tip)}</title><rect x="${cx - bw / 2}" y="${yt}" width="${bw}" height="${hgt}" rx="3" class="${x.push ? "ph-push" : x.hit ? "ph-hit" : "ph-miss"}"/>
+          <text x="${cx}" y="${x.v >= 0 ? yt - 4 : yt + hgt + 11}" text-anchor="middle" class="ph-val">${h.signed && x.v > 0 ? "+" : ""}${x.v}</text>
+          <text x="${cx}" y="${H - 4}" text-anchor="middle" class="ph-lbl">${pbEsc(x.label)}</text></g>`;
+      }).join("")}
+      <line x1="0" x2="${W}" y1="${cut}" y2="${cut}" class="ph-cut"/>
+    </svg>`;
+  };
+  return `<div class="pick-hist${compact ? " compact" : ""}">
+    <div class="ph-head"><b>${hits} of ${n - pushes}</b><span>${pbEsc(h.title)}, last ${h.series.length > 1 ? n + " games (" + h.series.map((s) => s.name + " " + s.rows.length).join(", ") + ")" : n + " games"}, graded at today's line${pushes ? ` · ${pushes} push${pushes === 1 ? "" : "es"}` : ""}</span></div>
+    ${h.series.map((s) => `${h.series.length > 1 ? `<div class="ph-name">${pbEsc(s.name)} games</div>` : ""}${chart(s)}`).join("")}
+    <p class="ph-note">${pbEsc(h.note)}${h.mode === "bars" ? " The dashed line is today's line; solid bars are the games where this pick would have hit." : " Filled marks are hits."} Past games, not a forecast${n < 8 ? `: only ${n} played so far` : ""}.</p>
+  </div>`;
+}
+// the spec for a play of the day or a Ladder leg
+function pickSpecFromBet(bet) {
+  const g = bet.g;
+  if (bet.prop) return { kind: "pp", gid: g.id, prop: bet.prop };
+  const id = bet.legId || (typeof potdLegId === "function" ? potdLegId(g, bet.line) : null);
+  if (!id) return null;
+  const parts = String(id).split("|"), kind = parts[1], side = parts[2];
+  const m = String(bet.line).match(/([+-]?\d+(?:\.\d+)?)(?!.*\d)/);
+  return { kind, gid: g.id, side, line: kind === "ml" ? 0 : m ? Number(m[1]) : null };
+}
+function pickSpecFromLeg(l) {
+  const parts = String(l.id).split("|");
+  if (l.kind === "pp" && l.prop) return { kind: "pp", gid: parts[0], prop: l.prop, before: Date.parse(l.kick) };
+  return { kind: l.kind, gid: parts[0], side: parts[parts.length - 1], line: l.kind === "ml" ? 0 : Number(l.line), before: Date.parse(l.kick) };
+}
 function potdLockText(g, locked) {
   const k = Date.parse(g.date);
   if (locked) return "Locked";
@@ -14490,6 +14624,7 @@ function potdCard(bet, title) {
         <div class="slip-cap"><span>Our chance <b>${Math.round(ours * 100)}%</b></span><span>The price needs <b>${(need * 100).toFixed(1)}%</b></span><span class="${ev >= 0 ? "up" : "down"}"><b>${ev >= 0 ? "+" : "−"}${Math.abs(ev * 100).toFixed(1)}%</b> value</span></div>
       </div>
       <p class="slip-why">${escHtml(bet.why)}</p>
+      ${(() => { try { const sp = pickSpecFromBet(bet); return sp ? pickHistoryHtml(sp) : ""; } catch (e) { return ""; } })()}
       ${facts.length ? `<dl class="slip-facts">${facts.map(([a, b]) => `<div><dt>${a}</dt><dd>${b}</dd></div>`).join("")}</dl>` : ""}
     </div>
     <aside class="slip-stub">
@@ -14606,9 +14741,16 @@ function potdWire(board, redraw) {
     if (el) openGame(el.dataset.id);
   });
 }
+// the last-8 charts read the player game logs: load them once, then draw again
+function pickLogsFor(redraw) {
+  if (window.GAMELOGS || pickLogsFor.asked || typeof loadGamelogs !== "function") return;
+  pickLogsFor.asked = true;
+  loadGamelogs().then(() => { try { redraw(); } catch (e) {} });
+}
 function renderNflPotd() {
   const board = document.getElementById("nflPotdBoard");
   if (!board) return;
+  pickLogsFor(() => { if (view === "nflpotd") renderNflPotd(); });
   gradeSavedPotd("nfl");
   const bet = nflPotd();
   rememberPotd("nfl", bet);
@@ -14619,6 +14761,7 @@ function renderNflPotd() {
 function renderPotd() {
   const board = document.getElementById("potdBoard");
   if (!board) return;
+  pickLogsFor(() => { if (view === "potd") renderPotd(); });
   gradeSavedPotd("cfb");
   const bet = cfbPotd();
   rememberPotd("cfb", bet);
