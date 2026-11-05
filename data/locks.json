@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 72.5,
-   "lockedAt": "2026-11-05T17:16:42.097Z",
+   "lockedAt": "2026-11-05T17:37:57.226Z",
    "provisional": true
   },
   "401866453": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": 13.5,
    "total": 57.5,
-   "lockedAt": "2026-11-05T17:16:42.097Z",
+   "lockedAt": "2026-11-05T17:37:57.226Z",
    "provisional": true
   },
   "401873037": {
@@ -186,7 +186,7 @@
    "total_play": false,
    "spread": 10,
    "total": 39.5,
-   "lockedAt": "2026-11-05T17:16:42.097Z",
+   "lockedAt": "2026-11-05T17:37:57.226Z",
    "provisional": true
   }
  },
@@ -481,12 +481,12 @@
     "ours": "JAX -9.4 · total 40.2",
     "score": "JAX 24.8 – BAL 15.4",
     "market": "JAX -10.0 · total 39.5",
-    "lockedAt": "2026-11-05T17:16:42.116Z",
+    "lockedAt": "2026-11-05T17:37:57.247Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T01:15Z",
     "big": false,
-    "savedAt": 1793899002116
+    "savedAt": 1793900277247
    }
   ],
   "cfb": [
@@ -899,12 +899,12 @@
     "ours": "UTSA -5.7 · total 72.5",
     "score": "UTSA 39.1 – FAU 33.4",
     "market": "UTSA -6.5 · total 72.5",
-    "lockedAt": "2026-11-05T17:16:42.119Z",
+    "lockedAt": "2026-11-05T17:37:57.249Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-06T00:30Z",
     "big": false,
-    "savedAt": 1793899002119
+    "savedAt": 1793900277250
    }
   ]
  },
@@ -1007,7 +1007,7 @@
    }
   ]
  },
- "updated": "2026-11-05T17:16:42.097Z",
+ "updated": "2026-11-05T17:37:57.226Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2005,10 +2005,10 @@
    "price": 475,
    "book": "DraftKings",
    "books": 4,
-   "ours": 0.1914,
-   "mkt": 0.1951,
-   "win": 0.1942,
-   "ev": 0.1166,
+   "ours": 0.1892,
+   "mkt": 0.1923,
+   "win": 0.1915,
+   "ev": 0.1014,
    "result": null,
    "final": null,
    "units": null
