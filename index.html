@@ -2039,6 +2039,8 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .ph-svg .ph-zero { stroke: var(--line-2); stroke-width: 1; }
 .ph-svg .ph-val { fill: var(--ink-soft); font: 600 10px var(--body); }
 .ph-svg .ph-lbl { fill: var(--muted); font: 500 9.5px var(--body); }
+.ph-svg .ph-dnp { fill: var(--muted); font: 700 9px var(--body); letter-spacing: .02em; }
+.ph-svg .ph-dnpbox { fill: var(--card); stroke: var(--muted); stroke-dasharray: 3 3; stroke-opacity: .55; }
 .ph-note { margin: 6px 0 0; color: var(--muted); font-size: .82rem; line-height: 1.45; }
 .tdl { grid-column: 1 / -1; border: 1px solid var(--line); border-radius: 16px; background: var(--card); overflow: hidden; }
 .tdl-head, .tdl-row summary { display: grid; grid-template-columns: 34px minmax(0, 1fr) 132px 92px 84px; gap: 12px; align-items: center; padding: 10px 16px; }
@@ -12905,15 +12907,12 @@ function postedLean(p) {
 const PROP_COLD_MAX = 0.25;
 function propColdHist(p, key, line, take) {
   try {
-    const pack = window.GAMELOGS && window.GAMELOGS[String(p.id)];
-    if (!pack || !(pack.rows || []).length) return null;
-    const kd = String(p.date || p.kick || "").slice(0, 10);
-    const rows = pack.rows.filter((r) => Number.isFinite(Number(r[key])) && (!kd || String(r.d || "") < kd))
-      .sort((a, b) => String(b.d || "").localeCompare(String(a.d || ""))).slice(0, 8);
-    if (rows.length < 5) return { hits: null, n: rows.length, cold: false };
+    const k = Date.parse(p.date || p.kick || "");
+    const slots = playerSlots(p.id, p.team_id || playerTeamId(p.id, p.game_id), Number.isFinite(k) ? k : Date.now(), key).filter((x) => !x.dnp);
+    if (slots.length < 5) return { hits: null, n: slots.length, cold: false };
     const under = String(take).toLowerCase() === "under", ln = Number(line);
-    const hits = rows.filter((r) => under ? Number(r[key]) < ln : Number(r[key]) > ln).length;
-    return { hits, n: rows.length, cold: hits / rows.length <= PROP_COLD_MAX };
+    const hits = slots.filter((x) => under ? x.v < ln : x.v > ln).length;
+    return { hits, n: slots.length, cold: hits / slots.length <= PROP_COLD_MAX };
   } catch (e) { return null; }
 }
 function propTicketId(p, lean) {
@@ -14524,20 +14523,61 @@ function pickTeamGames(league, teamId, before) {
   (window.WEEK_RESULTS || []).forEach((r) => { if (r && r.league === league) add(r); });
   return out.sort((a, b) => b.t - a.t).slice(0, 8).reverse();
 }
+// A player's last 8 team games before `before`: each one either the box-score row he played or
+// a DNP (no row for that game, or a row with nothing in it: no attempts, targets or stats,
+// which is how an inactive or injured game shows up). DNPs are shown but never graded.
+// Games logged for another team (a trade) are kept. Without the team's schedule this falls
+// back to the games he has rows for.
+const PICK_ZERO_KEYS = ["pass_att", "cmp", "pass_yds", "rush_att", "rush_yds", "rec", "rec_yds", "targets", "td"];
+function pickRowEmpty(r) { return PICK_ZERO_KEYS.every((k) => !(Number(r[k]) > 0 || Number(r[k]) < 0)); }
+function playerTeamId(pid, gid) {
+  const g = gid && typeof pbGame === "function" ? pbGame(gid) : null;
+  const pl = g && (g.props || []).find((x) => String(x.id) === String(pid));
+  return pl && pl.team_id ? String(pl.team_id) : null;
+}
+function playerSlots(pid, teamId, before, stat) {
+  const pack = (window.GAMELOGS || {})[String(pid)];
+  const rows = ((pack && pack.rows) || []).map((r) => ({ r, t: Date.parse(r.d + "T12:00:00Z") })).filter((x) => Number.isFinite(x.t) && x.t < before);
+  // games played after his game log was last pulled aren't in it yet: leave them out rather
+  // than call them DNPs
+  const pulled = Date.parse((pack && pack.at) || "");
+  const day = 864e5;
+  const team = (teamId ? pickTeamGames("nfl", teamId, before) : []).filter((gm) => !Number.isFinite(pulled) || gm.t + 4 * 3600e3 <= pulled);
+  if (team.length >= 3) {
+    const used = new Set();
+    const slots = team.map((gm) => {
+      const m = rows.find((x, i) => !used.has(i) && Math.abs(x.t - gm.t) < 1.6 * day && (!x.r.o || !gm.oppAbbr || x.r.o === gm.oppAbbr));
+      if (m) used.add(rows.indexOf(m));
+      const dnp = !m || pickRowEmpty(m.r) || !Number.isFinite(Number(m.r[stat]));
+      return { t: gm.t, o: gm.oppAbbr || (m && m.r.o) || "", home: gm.home, dnp, v: dnp ? null : Number(m.r[stat]) };
+    });
+    // rows from games that aren't this team's (he was traded): his own games, in date order
+    const first = team[0].t;
+    rows.forEach((x, i) => { if (!used.has(i) && x.t > first - 1.6 * day && Number.isFinite(Number(x.r[stat])) && !pickRowEmpty(x.r)) slots.push({ t: x.t, o: x.r.o || "", dnp: false, v: Number(x.r[stat]) }); });
+    return slots.sort((a, b) => a.t - b.t).slice(-8);
+  }
+  return rows.filter((x) => Number.isFinite(Number(x.r[stat]))).sort((a, b) => b.t - a.t).slice(0, 8).reverse()
+    .map((x) => { const dnp = pickRowEmpty(x.r); return { t: x.t, o: x.r.o || "", dnp, v: dnp ? null : Number(x.r[stat]) }; });
+}
 const PICK_STAT_LBL = { pass_yds: "pass yds", pass_td: "pass TDs", rush_yds: "rush yds", rush_att: "carries", rec: "catches", rec_yds: "rec yds", targets: "targets", td: "TDs", pass_int: "INTs" };
 function pickHistory(spec) {
   const g = spec.gid ? pbGame(spec.gid) : null;
   const before = Number.isFinite(spec.before) ? spec.before : (g ? Date.parse(g.date) : Date.now());
   const day = (t) => new Date(t).toLocaleDateString([], { month: "numeric", day: "numeric" });
   if (spec.kind === "pp" && spec.prop) {
-    const pack = (window.GAMELOGS || {})[String(spec.prop.pid)];
     const stat = spec.prop.stat, L = Number(spec.prop.line), under = spec.prop.side === "under";
-    const rows = ((pack && pack.rows) || []).filter((r) => Number.isFinite(Number(r[stat])) && Date.parse(r.d + "T12:00:00Z") < before).slice(0, 8).reverse();
-    if (rows.length < 3) return null;
-    const pts = rows.map((r) => { const v = Number(r[stat]); return { label: r.o || "", tip: `${day(Date.parse(r.d + "T12:00:00Z"))} vs ${r.o}: ${v} ${PICK_STAT_LBL[stat] || stat}`, v, hit: under ? v < L : v > L, push: v === L }; });
+    const slots = playerSlots(spec.prop.pid, spec.prop.team_id || playerTeamId(spec.prop.pid, spec.gid), before, stat);
+    const played = slots.filter((x) => !x.dnp);
+    if (played.length < 3) return null;
+    const lbl = PICK_STAT_LBL[stat] || stat;
+    const pts = slots.map((x) => x.dnp
+      ? { label: (x.home === false ? "@" : "") + x.o, tip: `${day(x.t)} vs ${x.o}: did not play`, dnp: true }
+      : { label: (x.home === false ? "@" : "") + x.o, tip: `${day(x.t)} vs ${x.o}: ${x.v} ${lbl}`, v: x.v, hit: under ? x.v < L : x.v > L, push: x.v === L });
     const binary = stat === "td" && L === 0.5;
-    const avg = rows.reduce((a, r) => a + Number(r[stat]), 0) / rows.length;
-    return { mode: binary ? "dots" : "bars", series: [{ name: "", rows: pts }], cut: L, title: `${spec.prop.name.split(" ").slice(-1)[0]} ${under ? "under" : "over"} ${L} ${PICK_STAT_LBL[stat] || stat}`, note: binary ? `Scored in ${pts.filter((x) => x.v > 0).length} of his last ${pts.length} games.` : `Averaging ${avg.toFixed(1)} over these games, against a line of ${L}.` };
+    const avg = played.reduce((a, x) => a + x.v, 0) / played.length;
+    const dn = slots.length - played.length;
+    return { mode: binary ? "dots" : "bars", series: [{ name: "", rows: pts }], cut: L, dnp: dn, title: `${spec.prop.name.split(" ").slice(-1)[0]} ${under ? "under" : "over"} ${L} ${lbl}`,
+      note: (binary ? `Scored in ${played.filter((x) => x.v > 0).length} of the ${played.length} games he played.` : `Averaging ${avg.toFixed(1)} in the ${played.length} games he played, against a line of ${L}.`) + (dn ? ` ${dn} game${dn === 1 ? "" : "s"} he didn't play (DNP) ${dn === 1 ? "isn't" : "aren't"} counted.` : "") };
   }
   if (!g || !g.home || !g.away) return null;
   const lg = g.league;
@@ -14569,7 +14609,7 @@ function pickHistoryHtml(spec, compact) {
   let h = null;
   try { h = pickHistory(spec); } catch (e) { h = null; }
   if (!h) return "";
-  const all = h.series.flatMap((s) => s.rows);
+  const all = h.series.flatMap((s) => s.rows).filter((x) => !x.dnp);
   const hits = all.filter((x) => x.hit).length, pushes = all.filter((x) => x.push).length, n = all.length;
   const W = 300, H = compact ? 92 : 112, top = 16, bot = 18;
   const chart = (s) => {
@@ -14577,10 +14617,11 @@ function pickHistoryHtml(spec, compact) {
       const cw = W / Math.max(8, s.rows.length);
       return `<svg class="ph-svg" viewBox="0 0 ${W} 44" role="img" aria-label="${pbEsc(s.name || h.title)}: ${s.rows.filter((x) => x.hit).length} of ${s.rows.length}">${s.rows.map((x, i) => {
         const cx = cw * i + cw / 2;
+        if (x.dnp) return `<g><title>${pbEsc(x.tip)}</title><text x="${cx}" y="18" text-anchor="middle" class="ph-dnp">DNP</text><text x="${cx}" y="38" text-anchor="middle" class="ph-lbl">${pbEsc(x.label)}</text></g>`;
         return `<g><title>${pbEsc(x.tip)}</title>${x.hit ? `<circle cx="${cx}" cy="14" r="9" class="ph-hit"/><path d="M${cx - 4},14 l3,3 l5,-6" class="ph-tick"/>` : `<circle cx="${cx}" cy="14" r="8" class="ph-miss"/>`}<text x="${cx}" y="38" text-anchor="middle" class="ph-lbl">${pbEsc(x.label)}</text></g>`;
       }).join("")}</svg>`;
     }
-    const vals = s.rows.map((x) => x.v).concat([h.cut]);
+    const vals = s.rows.filter((x) => !x.dnp).map((x) => x.v).concat([h.cut]);
     const lo = Math.min(0, ...vals), hi = Math.max(0, ...vals);
     const span = (hi - lo) || 1;
     const y = (v) => top + (H - top - bot) * (1 - (v - lo) / (span * 1.08));
@@ -14588,19 +14629,23 @@ function pickHistoryHtml(spec, compact) {
     const base = y(0), cut = y(h.cut);
     return `<svg class="ph-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${pbEsc((s.name ? s.name + " " : "") + h.title)}: ${s.rows.filter((x) => x.hit).length} of ${s.rows.length} at this line">
       ${lo < 0 ? `<line x1="0" x2="${W}" y1="${base}" y2="${base}" class="ph-zero"/>` : ""}
+      ${s.rows.some((x) => x.dnp) ? `<line x1="0" x2="${W}" y1="${cut}" y2="${cut}" class="ph-cut"/>` : ""}
       ${s.rows.map((x, i) => {
-        const cx = cw * i + cw / 2, y1 = y(x.v), yt = Math.min(base, y1), hgt = Math.max(2, Math.abs(base - y1));
+        const cx = cw * i + cw / 2;
+        if (x.dnp) return `<g><title>${pbEsc(x.tip)}</title><rect x="${cx - bw / 2}" y="${base - 22}" width="${bw}" height="22" rx="3" class="ph-dnpbox"/><text x="${cx}" y="${base - 7}" text-anchor="middle" class="ph-dnp">DNP</text>
+          <text x="${cx}" y="${H - 4}" text-anchor="middle" class="ph-lbl">${pbEsc(x.label)}</text></g>`;
+        const y1 = y(x.v), yt = Math.min(base, y1), hgt = Math.max(2, Math.abs(base - y1));
         return `<g><title>${pbEsc(x.tip)}</title><rect x="${cx - bw / 2}" y="${yt}" width="${bw}" height="${hgt}" rx="3" class="${x.push ? "ph-push" : x.hit ? "ph-hit" : "ph-miss"}"/>
           <text x="${cx}" y="${x.v >= 0 ? yt - 4 : yt + hgt + 11}" text-anchor="middle" class="ph-val">${h.signed && x.v > 0 ? "+" : ""}${x.v}</text>
           <text x="${cx}" y="${H - 4}" text-anchor="middle" class="ph-lbl">${pbEsc(x.label)}</text></g>`;
       }).join("")}
-      <line x1="0" x2="${W}" y1="${cut}" y2="${cut}" class="ph-cut"/>
+      ${s.rows.some((x) => x.dnp) ? "" : `<line x1="0" x2="${W}" y1="${cut}" y2="${cut}" class="ph-cut"/>`}
     </svg>`;
   };
   return `<div class="pick-hist${compact ? " compact" : ""}">
-    <div class="ph-head"><b>${hits} of ${n - pushes}</b><span>${pbEsc(h.title)}, last ${h.series.length > 1 ? n + " games (" + h.series.map((s) => s.name + " " + s.rows.length).join(", ") + ")" : n + " games"}, graded at today's line${pushes ? ` · ${pushes} push${pushes === 1 ? "" : "es"}` : ""}</span></div>
+    <div class="ph-head"><b>${hits} of ${n - pushes}</b><span>${pbEsc(h.title)}, last ${h.dnp ? n + " played" : h.series.length > 1 ? n + " games (" + h.series.map((s) => s.name + " " + s.rows.length).join(", ") + ")" : n + " games"}, graded at today's line${h.dnp ? ` · ${h.dnp} DNP not counted` : ""}${pushes ? ` · ${pushes} push${pushes === 1 ? "" : "es"}` : ""}</span></div>
     ${h.series.map((s) => `${h.series.length > 1 ? `<div class="ph-name">${pbEsc(s.name)} games</div>` : ""}${chart(s)}`).join("")}
-    <p class="ph-note">${pbEsc(h.note)}${h.mode === "bars" ? " The dashed line is today's line; solid bars are the games where this pick would have hit." : " Filled marks are hits."} Past games, not a forecast${n < 8 ? `: only ${n} played so far` : ""}.</p>
+    <p class="ph-note">${pbEsc(h.note)}${h.mode === "bars" ? " The dashed line is today's line; solid bars are the games where this pick would have hit." : " Filled marks are hits."} Past games, not a forecast${n < 8 && !h.dnp ? `: only ${n} played so far` : ""}.</p>
   </div>`;
 }
 // the spec for a play of the day or a Ladder leg
