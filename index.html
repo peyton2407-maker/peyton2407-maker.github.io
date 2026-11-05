@@ -2023,6 +2023,10 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .alt-intro p { margin: 0 0 10px; }
 .alt-stamp { margin: 4px 0 0; }
 .alt-note { color: var(--sun); }
+.td-rec { display: grid; gap: 6px; padding: 16px 20px; margin: 0 0 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--card); }
+.td-rec-main { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px; }
+.td-rec .up { color: var(--win, #4fd08a); } .td-rec .down { color: #ff9b8f; }
+.td-rec .subn { margin: 0; max-width: 80ch; }
 .is-offline #stamp::after { content: " · no connection, showing the last saved update"; color: var(--sun); }
 .tz-alt { margin: 8px 0; line-height: 1.5; }
 div.tz-alt.better { padding: 10px 12px; border-radius: 10px; background: var(--turf-soft); border: 1px solid var(--line-2); color: var(--ink-soft); }
@@ -2993,6 +2997,7 @@ table.props b.down { color: var(--muted); font-weight: 600; }
         <input id="tdQ" placeholder="Search player, team, game…" />
       </div>
       <p class="subn" id="tdStamp" style="margin:0 0 10px">Chance each player scores. First TD = the first touchdown of the whole game. 2+ = they score twice.</p>
+      <div id="tdRecord"></div>
       <div class="td-hero" id="tdHero"></div>
       <div class="stat-row" id="tdStats"></div>
       <div class="prop-board td-board" id="tdBoard"></div>
@@ -7382,6 +7387,91 @@ function tdHit(r, market) {
   if (market === "two") return r.two;
   return r.anytime;
 }
+// ---- the anytime touchdown record -------------------------------------------------------
+// Every anytime pick the page shows at 3%+ value (checked chance against the best price) is
+// logged by the lock run (data/locks.json "tdPicks"), kept at its latest price and book until
+// kickoff (one that drops below the bar before then comes off), and graded from the game logs:
+// a rushing or receiving touchdown is a hit, a game without one a miss, and a player who didn't
+// play is void, the way the books settle it. 1 unit at the price saved.
+const TD_PICK_MIN = 0.03;
+function tdValueRows() {
+  const rows = collectTdBoard(), MK = tdMarketMap(rows);
+  const keep = typeof pbKeep === "function" ? pbKeep("nfl", "td").k : 0.25;
+  const out = [];
+  rows.forEach((r) => {
+    const mk = MK.get(r.game_id + "|" + r.id);
+    if (!mk || !(r.lam > 0) || r.anytime < 0.03) return;
+    const win = Math.max(0.005, Math.min(0.99, mk.mkt + keep * (r.anytime - mk.mkt)));
+    const ev = win * pbDec(mk.off.best.odds) - 1;
+    if (ev >= TD_PICK_MIN) out.push({ r, mk, win, ev });
+  });
+  return out.sort((a, b) => b.ev - a.ev);
+}
+function tdGradeRow(x, now) {
+  if (x.result) return false;
+  const kick = Date.parse(x.kick);
+  if (!(now - kick > 4 * 3600e3)) return false;
+  const pack = (window.GAMELOGS || {})[String(x.pid)];
+  const rows = (pack && pack.rows) || [];
+  // the logs date a game in UTC (a Monday night game is Tuesday's), so either date counts, and
+  // the opponent has to match
+  const days = new Set([potdDayKey(x.kick), new Date(kick).toISOString().slice(0, 10)]);
+  const opp = (r) => typeof sameOpp === "function" ? sameOpp(r.o, x.opp) : r.o === x.opp;
+  const hit = rows.find((r) => days.has(r.d) && (!x.opp || opp(r))) || rows.find((r) => opp(r) && Math.abs(Date.parse(r.d + "T12:00:00Z") - kick) < 2.5 * 864e5);
+  if (hit) {
+    const td = Number(hit.td || 0);
+    x.result = td > 0 ? "HIT" : "MISS";
+    x.units = x.result === "HIT" ? +(pbDec(x.price) - 1).toFixed(4) : -1;
+    x.final = td > 0 ? `${td} TD${td === 1 ? "" : "s"}` : "No TD";
+    return true;
+  }
+  // logs refreshed well after the game with no row for it: he didn't play
+  const fresh = pack && Date.parse(pack.at) > kick + 30 * 3600e3;
+  if (fresh || now - kick > 6 * 864e5) { x.result = "VOID"; x.units = 0; x.final = "Didn't play"; return true; }
+  return false;
+}
+function tdLockRun(out, changes, now) {
+  out.tdPicks = out.tdPicks || [];
+  const L = new Map(out.tdPicks.map((x) => [x.key, x]));
+  if (window.PB_PROPS) {
+    let rows = [];
+    try { rows = tdValueRows(); } catch (e) { rows = []; }
+    const live = new Set();
+    rows.forEach(({ r, mk, win, ev }) => {
+      const key = r.game_id + "|" + r.id;
+      live.add(key);
+      const was = L.get(key);
+      if (was && Date.parse(was.kick) <= now) return;
+      const row = { key, gid: String(r.game_id), pid: String(r.id), name: r.name, pos: r.pos, team: r.team, opp: r.opp, game: r.game, kick: r.date,
+        price: Number(mk.off.best.odds), book: mk.off.best.book, books: mk.off.all.length, ours: +r.anytime.toFixed(4), mkt: +mk.mkt.toFixed(4), win: +win.toFixed(4), ev: +ev.toFixed(4), result: null, final: null, units: null };
+      const sig = (x) => x ? [x.price, x.book, Math.round(x.ev * 200)].join("|") : "";
+      if (sig(was) !== sig(row)) { L.set(key, row); changes.push("td pick " + r.name + " " + pbAm(row.price) + " " + row.book); }
+    });
+    L.forEach((x, k) => { if (!live.has(k) && Date.parse(x.kick) > now && !x.result) { L.delete(k); changes.push("td pick off the list " + x.name); } });
+  }
+  L.forEach((x) => { if (Date.parse(x.kick) <= now && tdGradeRow(x, now)) changes.push("td pick " + x.name + " " + x.result); });
+  out.tdPicks = [...L.values()].sort((a, b) => String(a.kick).localeCompare(String(b.kick))).slice(-1500);
+}
+function tdRecordHtml() {
+  const all = ((window.GG_LOCKS || {}).tdPicks || []).filter(Boolean);
+  const done = all.filter((x) => x.result === "HIT" || x.result === "MISS");
+  const w = done.filter((x) => x.result === "HIT").length, l = done.length - w;
+  const u = done.reduce((a, x) => a + Number(x.units || 0), 0);
+  const exp = done.reduce((a, x) => a + Number(x.ev || 0), 0);
+  const expHits = done.reduce((a, x) => a + Number(x.win || 0), 0);
+  const open = all.filter((x) => !x.result && Date.parse(x.kick) > Date.now()).length;
+  const um = (x) => `${x >= 0 ? "+" : "−"}${Math.abs(x).toFixed(2)}u`;
+  const recent = done.slice().reverse().slice(0, 12).map((x) => `<li class="${x.result === "HIT" ? "hit" : "miss"}"><b>${pbEsc(x.name)} ${pbEsc(pbAm(x.price))}</b> <span>${x.result === "HIT" ? "Scored" : "No TD"} · ${pbEsc(x.book)} · ${pbEsc(x.game)}${x.final && x.result === "HIT" ? " · " + pbEsc(x.final) : ""}</span></li>`).join("");
+  return `<section class="td-rec">
+    <div class="td-rec-main">
+      <span class="rb-lbl">The anytime TD record</span>
+      <b class="rb-rec">${done.length ? `${w}-${l}` : "—"}</b>
+      <span class="rb-sub">${done.length ? `<b class="${u >= 0 ? "up" : "down"}">${um(u)}</b> · ${(u / done.length >= 0 ? "+" : "−") + Math.abs(u / done.length * 100).toFixed(1)}% a bet · ${w} scored where we expected ${expHits.toFixed(1)}` : "Starts with this week's games"}${open ? ` · ${open} on the list now` : ""}</span>
+    </div>
+    <p class="subn">Every anytime pick shown at ${Math.round(TD_PICK_MIN * 100)}%+ value is logged at its last price and book before kickoff and graded from the box score, 1 unit each; a player who doesn't play is void.${done.length && done.length < 100 ? ` ${done.length} graded so far: at long prices a record swings a lot until there are a few hundred.` : ""}${done.length ? ` These were expected to return ${(exp / done.length >= 0 ? "+" : "−") + Math.abs(exp / done.length * 100).toFixed(1)}% a bet.` : ""}</p>
+    ${recent ? `<details><summary>Recent picks</summary><ul class="tz-rec-list">${recent}</ul></details>` : ""}
+  </section>`;
+}
 function renderTdDesk() {
   const board = document.getElementById("tdBoard");
   if (!board) return;
@@ -7434,6 +7524,8 @@ function renderTdDesk() {
       <div class="stat"><b>${expand.filter((r) => r.market === "first" || market === "first").length || collectTdBoard().length}</b><span>first-TD names modeled</span></div>
       <div class="stat"><b>${expand.filter((r) => r.two >= 0.12 || r.market === "two").length}</b><span>real 2+ shots</span></div>`;
   }
+  const recBox = document.getElementById("tdRecord");
+  if (recBox) { try { recBox.innerHTML = tdRecordHtml(); } catch (e) { recBox.innerHTML = ""; } }
   const hero = document.getElementById("tdHero");
   const chalk = collectTdBoard().slice().sort((a, b) => b.anytime - a.anytime);
   const firsts = collectTdBoard().slice().sort((a, b) => b.first - a.first);
@@ -11696,16 +11788,28 @@ function parseGamelog(d, season) {
         const meta = events[String(ev.eventId)] || {};
         const stats = ev.stats || [];
         const bag = { id: String(ev.eventId), season, opp: (meta.opponent && meta.opponent.abbreviation) || "", week: meta.week, date: meta.gameDate || "" };
-        let i = 0;
-        cats.forEach((c) => {
-          const slice = stats.slice(i, i + (c.count || 0));
-          const num = (idx) => { const n = parseFloat(slice[idx]); return Number.isFinite(n) ? n : null; };
-          if (c.name === "passing") { bag.cmp = num(0); bag.pass_att = num(1); bag.pass_yds = num(2); bag.pass_td = num(5); bag.pass_int = num(6); bag.sacks = num(8); }
-          else if (c.name === "rushing") { bag.rush_att = num(0); bag.rush_yds = num(1); bag.ypc = num(2); bag.rush_td = num(3); }
-          else if (c.name === "receiving") { bag.rec = num(0); bag.targets = num(1); bag.rec_yds = num(2); bag.rec_td = num(4); }
-          else if (c.name === "fumbles") { bag.fum = num(0); bag.fum_lost = num(1); }
-          i += c.count || 0;
-        });
+        // read each stat by its column name: ESPN orders the columns by position (a receiver's
+        // rushing block is carries, yards, average, long, TD; a back's puts TD before long), so
+        // fixed places read a receiver's longest run as his rushing touchdowns
+        const names = Array.isArray(d.names) && d.names.length === stats.length ? d.names : null;
+        if (names) {
+          const by = (n) => { const k = names.indexOf(n); if (k < 0) return null; const v = parseFloat(stats[k]); return Number.isFinite(v) ? v : null; };
+          Object.assign(bag, { cmp: by("completions"), pass_att: by("passingAttempts"), pass_yds: by("passingYards"), pass_td: by("passingTouchdowns"), pass_int: by("interceptions"), sacks: by("sacks"),
+            rush_att: by("rushingAttempts"), rush_yds: by("rushingYards"), ypc: by("yardsPerRushAttempt"), rush_td: by("rushingTouchdowns"),
+            rec: by("receptions"), targets: by("receivingTargets"), rec_yds: by("receivingYards"), rec_td: by("receivingTouchdowns"), fum: by("fumbles"), fum_lost: by("fumblesLost") });
+          Object.keys(bag).forEach((k) => { if (bag[k] === null) delete bag[k]; });
+        } else {
+          let i = 0;
+          cats.forEach((c) => {
+            const slice = stats.slice(i, i + (c.count || 0));
+            const num = (idx) => { const n = parseFloat(slice[idx]); return Number.isFinite(n) ? n : null; };
+            if (c.name === "passing") { bag.cmp = num(0); bag.pass_att = num(1); bag.pass_yds = num(2); bag.pass_td = num(5); bag.pass_int = num(6); bag.sacks = num(8); }
+            else if (c.name === "rushing") { bag.rush_att = num(0); bag.rush_yds = num(1); bag.ypc = num(2); bag.rush_td = num(3); }
+            else if (c.name === "receiving") { bag.rec = num(0); bag.targets = num(1); bag.rec_yds = num(2); bag.rec_td = num(4); }
+            else if (c.name === "fumbles") { bag.fum = num(0); bag.fum_lost = num(1); }
+            i += c.count || 0;
+          });
+        }
         bag.td = (Number(bag.rush_td) || 0) + (Number(bag.rec_td) || 0);
         rows.push(bag);
       });
@@ -15876,6 +15980,7 @@ function ggLockRun(prev) {
   try { ladderLockRun(out, changes, now, iso, due, early); } catch (e) { console.warn("ladder", e); }
   try { teaserLockRun(out, changes, now, iso, due, early); } catch (e) { console.warn("teaser", e); }
   try { altLockRun(out, changes, now); } catch (e) { console.warn("alt lines", e); }
+  try { tdLockRun(out, changes, now); } catch (e) { console.warn("td picks", e); }
   if (changes.length) out.updated = iso;
   return { locks: out, changes };
 }
@@ -16720,6 +16825,11 @@ function workRows() {
   try {
     const A = ((window.GG_LOCKS || {}).altLines || []).filter((x) => x.result);
     add({ key: "alt", name: "Alt lines", view: "parlay", sub: "alts", w: A.filter((x) => x.result === "HIT").length, l: A.filter((x) => x.result === "MISS").length, p: A.filter((x) => x.result === "PUSH").length, units: A.reduce((a, x) => a + Number(x.units || 0), 0), staked: A.length });
+  } catch (e) {}
+  // anytime touchdowns
+  try {
+    const D = ((window.GG_LOCKS || {}).tdPicks || []).filter((x) => x.result === "HIT" || x.result === "MISS");
+    add({ key: "tdpicks", name: "Anytime TD picks", view: "tds", w: D.filter((x) => x.result === "HIT").length, l: D.filter((x) => x.result === "MISS").length, units: D.reduce((a, x) => a + Number(x.units || 0), 0), staked: D.length });
   } catch (e) {}
   // player props, unders and overs apart
   try {

@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE = "https://peyton2407-maker.github.io"
 OUT = ROOT / "data" / "gamelogs.json"
 KEEP = ["pass_yds", "pass_td", "pass_att", "cmp", "rush_yds", "rush_att", "rec", "rec_yds", "targets", "td"]
-VERSION = 2   # 2: rows carry targets; players saved before it are fetched again once
+VERSION = 3   # 2: rows carry targets; 3: stats read by column name (a receiver's longest run was read as his rushing TDs); players saved before it are fetched again once
 
 JS = """
 async (skip) => {
