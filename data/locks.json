@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -7,
    "total": 46.5,
-   "lockedAt": "2026-11-06T15:16:18.466Z",
+   "lockedAt": "2026-11-06T15:31:29.716Z",
    "provisional": true
   },
   "401858288": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -6.5,
    "total": 56.5,
-   "lockedAt": "2026-11-06T15:16:18.466Z",
+   "lockedAt": "2026-11-06T15:31:29.716Z",
    "provisional": true
   },
   "401858510": {
@@ -51,17 +51,17 @@
    "home": "ILL",
    "away": "NEB",
    "date": "2026-11-07T01:00Z",
-   "pick": "NEB",
-   "pick_line": "NEB -4.5",
+   "pick": "ILL",
+   "pick_line": "ILL +4.0",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": -4.7,
+   "our_margin": -4.37,
    "our_total": 50.5,
    "confidence": null,
    "total_play": false,
-   "spread": 4.5,
+   "spread": 4,
    "total": 50.5,
-   "lockedAt": "2026-11-06T15:16:18.466Z",
+   "lockedAt": "2026-11-06T15:31:29.716Z",
    "provisional": true
   },
   "401862817": {
@@ -107,7 +107,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 39.5,
-   "lockedAt": "2026-11-06T15:16:18.466Z",
+   "lockedAt": "2026-11-06T15:31:29.716Z",
    "provisional": true
   },
   "401864533": {
@@ -128,7 +128,7 @@
    "total_play": false,
    "spread": 10,
    "total": 38.5,
-   "lockedAt": "2026-11-06T15:16:18.466Z",
+   "lockedAt": "2026-11-06T15:31:29.716Z",
    "provisional": true
   },
   "401866453": {
@@ -1166,7 +1166,7 @@
    }
   ]
  },
- "updated": "2026-11-06T15:16:18.466Z",
+ "updated": "2026-11-06T15:31:29.716Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1403,12 +1403,12 @@
    "game": "NEB @ ILL",
    "kick": "2026-11-07T01:00Z",
    "line": -3.5,
-   "mainLine": 4.5,
+   "mainLine": 4,
    "price": 275,
    "book": "BetRivers",
-   "win": 0.2771,
+   "win": 0.2756,
    "mwin": 0.2771,
-   "ev": 0.039,
+   "ev": 0.0334,
    "mev": 0.039,
    "src": "mkt",
    "result": null,
