@@ -1058,7 +1058,7 @@
    }
   ]
  },
- "updated": "2026-11-06T02:24:06.887Z",
+ "updated": "2026-11-06T02:31:55.729Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1632,6 +1632,28 @@
    "mwin": 0.2931,
    "ev": 0.0337,
    "mev": 0.0259,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401858516|tot|under",
+   "gid": "401858516",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 34.5",
+   "game": "PSU @ WASH",
+   "kick": "2026-11-07T20:30Z",
+   "line": 34.5,
+   "mainLine": 44.5,
+   "price": 300,
+   "book": "FanDuel",
+   "win": 0.2616,
+   "mwin": 0.2545,
+   "ev": 0.0462,
+   "mev": 0.0179,
    "src": "mkt",
    "result": null,
    "final": null,
