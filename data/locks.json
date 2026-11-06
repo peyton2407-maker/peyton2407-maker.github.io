@@ -195,10 +195,10 @@
    "spread": 10,
    "total": 39.5,
    "lockedAt": "2026-11-05T23:46:34.961Z",
-   "close_spread": 9.5,
+   "close_spread": 8.5,
    "close_total": 39.5,
-   "closeAt": "2026-11-06T00:16:15.107Z",
-   "clv_side": 0.5,
+   "closeAt": "2026-11-06T00:39:23.014Z",
+   "clv_side": 1.5,
    "clv_total": 0
   }
  },
@@ -923,6 +923,35 @@
     "closeAt": "2026-11-05T23:31:35.108Z",
     "close_src": "board",
     "clv": 0
+   },
+   {
+    "key": "game:401869964",
+    "week": 10,
+    "day": "2026-11-05",
+    "league": "cfb",
+    "id": "401869964",
+    "game": "JMU @ USM",
+    "kind": "Under",
+    "line": "UNDER 58.5",
+    "hitPct": 55,
+    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 58.5. At -115 (BetMGM) the price needs 53%; we count it at 55%, so it's 1.9% better than the price.",
+    "label": "Thursday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 0.5,
+    "price": -115,
+    "book": "BetMGM",
+    "bookPct": 52,
+    "ev": 0.019,
+    "ours": "JMU -13.0 · total 58.1",
+    "score": "JMU 35.5 – USM 22.6",
+    "market": "JMU -13.5 · total 58.5",
+    "lockedAt": "2026-11-06T00:39:23.025Z",
+    "locked": true,
+    "kick": "2026-11-06T01:00Z",
+    "big": false,
+    "savedAt": 1793925563025
    }
   ]
  },
@@ -1025,7 +1054,7 @@
    }
   ]
  },
- "updated": "2026-11-06T00:16:15.107Z",
+ "updated": "2026-11-06T00:39:23.014Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1107,8 +1136,73 @@
    "paidDec": 3.7092
   }
  ],
- "teasers": [],
+ "teasers": [
+  {
+   "key": "teaser:nfl-9|cfb-10",
+   "week": "nfl-9|cfb-10",
+   "n": 2,
+   "price": -120,
+   "chance": 0.5592,
+   "ev": 0.0253,
+   "firstKick": "2026-11-06T01:15:00.000Z",
+   "legs": [
+    {
+     "id": "401873041|sp|home",
+     "gid": "401873041",
+     "team": "CAR",
+     "side": "home",
+     "game": "DEN @ CAR",
+     "kick": "2026-11-08T18:00Z",
+     "from": 2.5,
+     "to": 8.5,
+     "book": null,
+     "win": 0.7524,
+     "bookWin": 0.7524,
+     "total": 44.5,
+     "result": null,
+     "final": null
+    },
+    {
+     "id": "401873037|sp|away",
+     "gid": "401873037",
+     "team": "JAX",
+     "side": "away",
+     "game": "JAX @ BAL",
+     "kick": "2026-11-06T01:15Z",
+     "from": -8.5,
+     "to": -2.5,
+     "book": null,
+     "win": 0.7433,
+     "bookWin": 0.7434,
+     "total": 39.5,
+     "result": null,
+     "final": null
+    }
+   ],
+   "result": null,
+   "units": null,
+   "locked": true,
+   "provisional": false,
+   "lockedAt": "2026-11-06T00:39:23.014Z"
+  }
+ ],
  "teaserLegs": [
+  {
+   "id": "401873037|sp|away",
+   "gid": "401873037",
+   "team": "JAX",
+   "side": "away",
+   "game": "JAX @ BAL",
+   "kick": "2026-11-06T01:15Z",
+   "from": -8.5,
+   "to": -2.5,
+   "book": null,
+   "win": 0.7433,
+   "bookWin": 0.7434,
+   "total": 39.5,
+   "result": null,
+   "final": null
+  },
   {
    "id": "401873041|sp|home",
    "gid": "401873041",
@@ -1928,10 +2022,10 @@
    "price": 360,
    "book": "FanDuel",
    "books": 6,
-   "ours": 0.4657,
-   "mkt": 0.2029,
-   "win": 0.2686,
-   "ev": 0.2357,
+   "ours": 0.4732,
+   "mkt": 0.209,
+   "win": 0.275,
+   "ev": 0.2651,
    "result": null,
    "final": null,
    "units": null
@@ -1949,10 +2043,10 @@
    "price": 285,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.3549,
-   "mkt": 0.2534,
-   "win": 0.2788,
-   "ev": 0.0733,
+   "ours": 0.3514,
+   "mkt": 0.249,
+   "win": 0.2746,
+   "ev": 0.0572,
    "result": null,
    "final": null,
    "units": null
