@@ -1058,7 +1058,7 @@
    }
   ]
  },
- "updated": "2026-11-06T03:09:12.987Z",
+ "updated": "2026-11-06T04:24:05.755Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1179,8 +1179,8 @@
      "win": 0.7433,
      "bookWin": 0.7434,
      "total": 39.5,
-     "result": null,
-     "final": null
+     "result": "HIT",
+     "final": "JAX 33, BAL 10"
     }
    ],
    "result": null,
@@ -1204,8 +1204,8 @@
    "win": 0.7432,
    "bookWin": 0.7432,
    "total": 40.5,
-   "result": null,
-   "final": null
+   "result": "HIT",
+   "final": "JAX 33, BAL 10"
   },
   {
    "id": "401873041|sp|home",
@@ -1742,6 +1742,28 @@
    "mwin": 0.2725,
    "ev": 0.0448,
    "mev": 0.0082,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401860912|tot|under",
+   "gid": "401860912",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 60.5",
+   "game": "TXST @ ORST",
+   "kick": "2026-11-08T03:30Z",
+   "line": 60.5,
+   "mainLine": 71.5,
+   "price": 259,
+   "book": "DraftKings",
+   "win": 0.2978,
+   "mwin": 0.2838,
+   "ev": 0.069,
+   "mev": 0.0189,
    "src": "mkt",
    "result": null,
    "final": null,
