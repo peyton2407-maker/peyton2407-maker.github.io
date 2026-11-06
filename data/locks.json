@@ -1061,7 +1061,7 @@
    }
   ]
  },
- "updated": "2026-11-06T09:31:23.797Z",
+ "updated": "2026-11-06T11:16:14.740Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2308,10 +2308,10 @@
    "price": 575,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0.2558,
+   "ours": 0.2546,
    "mkt": 0.1287,
-   "win": 0.1605,
-   "ev": 0.0833,
+   "win": 0.1602,
+   "ev": 0.0811,
    "result": null,
    "final": null,
    "units": null
@@ -2413,10 +2413,10 @@
    "price": 650,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.2015,
+   "ours": 0.2025,
    "mkt": 0.1367,
-   "win": 0.1529,
-   "ev": 0.1464,
+   "win": 0.1531,
+   "ev": 0.1484,
    "result": null,
    "final": null,
    "units": null
@@ -2434,10 +2434,10 @@
    "price": 500,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.2592,
+   "ours": 0.2604,
    "mkt": 0.1618,
-   "win": 0.1862,
-   "ev": 0.1169,
+   "win": 0.1865,
+   "ev": 0.1188,
    "result": null,
    "final": null,
    "units": null
