@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -7,
    "total": 46.5,
-   "lockedAt": "2026-11-06T19:31:25.148Z",
+   "lockedAt": "2026-11-06T19:46:26.846Z",
    "provisional": true
   },
   "401858288": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -6.5,
    "total": 56.5,
-   "lockedAt": "2026-11-06T19:31:25.148Z",
+   "lockedAt": "2026-11-06T19:46:26.846Z",
    "provisional": true
   },
   "401858510": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 4,
    "total": 50.5,
-   "lockedAt": "2026-11-06T19:31:25.148Z",
+   "lockedAt": "2026-11-06T19:46:26.846Z",
    "provisional": true
   },
   "401862817": {
@@ -107,7 +107,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 39.5,
-   "lockedAt": "2026-11-06T19:31:25.148Z",
+   "lockedAt": "2026-11-06T19:46:26.846Z",
    "provisional": true
   },
   "401864533": {
@@ -128,7 +128,7 @@
    "total_play": false,
    "spread": 10,
    "total": 38.5,
-   "lockedAt": "2026-11-06T19:31:25.148Z",
+   "lockedAt": "2026-11-06T19:46:26.846Z",
    "provisional": true
   },
   "401866453": {
@@ -1166,7 +1166,7 @@
    }
   ]
  },
- "updated": "2026-11-06T19:31:25.148Z",
+ "updated": "2026-11-06T19:46:26.846Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1909,12 +1909,12 @@
    "game": "NYG @ PHI",
    "kick": "2026-11-08T18:00Z",
    "line": -4.5,
-   "mainLine": 3.5,
+   "mainLine": 3,
    "price": 280,
    "book": "Fanatics",
-   "win": 0.2955,
+   "win": 0.292,
    "mwin": 0.2714,
-   "ev": 0.123,
+   "ev": 0.1097,
    "mev": 0.0312,
    "src": "mkt",
    "result": null,
@@ -2263,10 +2263,10 @@
    "price": 575,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0.2947,
-   "mkt": 0.1265,
-   "win": 0.1686,
-   "ev": 0.138,
+   "ours": 0.2961,
+   "mkt": 0.1282,
+   "win": 0.1702,
+   "ev": 0.1488,
    "result": null,
    "final": null,
    "units": null
@@ -2305,10 +2305,10 @@
    "price": 575,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0.2558,
-   "mkt": 0.1287,
-   "win": 0.1605,
-   "ev": 0.0833,
+   "ours": 0.257,
+   "mkt": 0.131,
+   "win": 0.1625,
+   "ev": 0.0969,
    "result": null,
    "final": null,
    "units": null
@@ -2431,10 +2431,10 @@
    "price": 775,
    "book": "BetMGM",
    "books": 6,
-   "ours": 0.1271,
-   "mkt": 0.1263,
-   "win": 0.1265,
-   "ev": 0.1071,
+   "ours": 0.1265,
+   "mkt": 0.1249,
+   "win": 0.1253,
+   "ev": 0.0965,
    "result": null,
    "final": null,
    "units": null
@@ -2452,10 +2452,10 @@
    "price": 450,
    "book": "BetMGM",
    "books": 6,
-   "ours": 0.1733,
-   "mkt": 0.1997,
-   "win": 0.1931,
-   "ev": 0.0621,
+   "ours": 0.1725,
+   "mkt": 0.1976,
+   "win": 0.1913,
+   "ev": 0.0522,
    "result": null,
    "final": null,
    "units": null
@@ -2473,10 +2473,10 @@
    "price": 500,
    "book": "FanDuel",
    "books": 6,
-   "ours": 0.2241,
-   "mkt": 0.1587,
-   "win": 0.1751,
-   "ev": 0.0503,
+   "ours": 0.2231,
+   "mkt": 0.157,
+   "win": 0.1735,
+   "ev": 0.0411,
    "result": null,
    "final": null,
    "units": null
