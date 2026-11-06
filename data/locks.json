@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -7,
    "total": 46.5,
-   "lockedAt": "2026-11-06T23:01:45.250Z",
+   "lockedAt": "2026-11-06T23:16:17.423Z",
    "provisional": true
   },
   "401858288": {
@@ -65,7 +65,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 51.5,
-   "lockedAt": "2026-11-06T23:01:45.250Z",
+   "lockedAt": "2026-11-06T23:16:17.423Z",
    "provisional": true
   },
   "401862817": {
@@ -131,7 +131,7 @@
    "total_play": false,
    "spread": 10,
    "total": 38.5,
-   "lockedAt": "2026-11-06T23:01:45.250Z",
+   "lockedAt": "2026-11-06T23:16:17.423Z",
    "provisional": true
   },
   "401866453": {
@@ -1169,7 +1169,7 @@
    }
   ]
  },
- "updated": "2026-11-06T23:01:45.250Z",
+ "updated": "2026-11-06T23:16:17.423Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1617,28 +1617,6 @@
    "units": null
   },
   {
-   "id": "401856849|tot|over",
-   "gid": "401856849",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "over",
-   "label": "Over 58.5",
-   "game": "BYU @ UTAH",
-   "kick": "2026-11-07T17:00Z",
-   "line": 58.5,
-   "mainLine": 48.5,
-   "price": 280,
-   "book": "FanDuel",
-   "win": 0.2728,
-   "mwin": 0.2728,
-   "ev": 0.0366,
-   "mev": 0.0366,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401869945|sp|home",
    "gid": "401869945",
    "league": "cfb",
@@ -1721,28 +1699,6 @@
    "mwin": 0.3103,
    "ev": 0.0594,
    "mev": 0.0395,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401858516|tot|under",
-   "gid": "401858516",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 34.5",
-   "game": "PSU @ WASH",
-   "kick": "2026-11-07T20:30Z",
-   "line": 34.5,
-   "mainLine": 44.5,
-   "price": 285,
-   "book": "FanDuel",
-   "win": 0.2688,
-   "mwin": 0.2667,
-   "ev": 0.035,
-   "mev": 0.0268,
    "src": "mkt",
    "result": null,
    "final": null,
