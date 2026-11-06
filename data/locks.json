@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -7,
    "total": 46.5,
-   "lockedAt": "2026-11-06T20:31:45.289Z",
+   "lockedAt": "2026-11-06T20:46:17.797Z",
    "provisional": true
   },
   "401858288": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -6,
    "total": 56.5,
-   "lockedAt": "2026-11-06T20:31:45.289Z",
+   "lockedAt": "2026-11-06T20:46:17.797Z",
    "provisional": true
   },
   "401858510": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 4,
    "total": 50.5,
-   "lockedAt": "2026-11-06T20:31:45.289Z",
+   "lockedAt": "2026-11-06T20:46:17.797Z",
    "provisional": true
   },
   "401862817": {
@@ -100,14 +100,14 @@
    "pick": "USF",
    "pick_line": "USF +1.5",
    "total_pick": "NO PLAY",
-   "side_play": true,
-   "our_margin": -1.45,
+   "side_play": false,
+   "our_margin": 0.5,
    "our_total": 39.5,
-   "confidence": 51,
+   "confidence": null,
    "total_play": false,
-   "spread": 1.5,
+   "spread": -1.5,
    "total": 39.5,
-   "lockedAt": "2026-11-06T20:31:45.289Z",
+   "lockedAt": "2026-11-06T20:46:17.797Z",
    "provisional": true
   },
   "401864533": {
@@ -128,7 +128,7 @@
    "total_play": false,
    "spread": 10,
    "total": 38.5,
-   "lockedAt": "2026-11-06T20:31:45.289Z",
+   "lockedAt": "2026-11-06T20:46:17.797Z",
    "provisional": true
   },
   "401866453": {
@@ -1166,7 +1166,7 @@
    }
   ]
  },
- "updated": "2026-11-06T20:31:45.289Z",
+ "updated": "2026-11-06T20:46:17.797Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1513,12 +1513,12 @@
    "game": "UCLA @ MINN",
    "kick": "2026-11-07T17:00Z",
    "line": -3.5,
-   "mainLine": 4.5,
+   "mainLine": 4,
    "price": 265,
    "book": "Fanatics",
-   "win": 0.2949,
+   "win": 0.2934,
    "mwin": 0.276,
-   "ev": 0.0763,
+   "ev": 0.0709,
    "mev": 0.0073,
    "src": "mkt",
    "result": null,
