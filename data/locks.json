@@ -1058,7 +1058,7 @@
    }
   ]
  },
- "updated": "2026-11-06T01:10:14.966Z",
+ "updated": "2026-11-06T01:31:34.188Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1885,17 +1885,17 @@
    "league": "nfl",
    "kind": "sp",
    "side": "home",
-   "label": "IND +2",
+   "label": "IND +1.5",
    "game": "DAL @ IND",
    "kick": "2026-11-08T18:00Z",
-   "line": 2,
+   "line": 1.5,
    "mainLine": 5.5,
-   "price": 185,
+   "price": 190,
    "book": "BetRivers",
-   "win": 0.3637,
-   "mwin": 0.355,
-   "ev": 0.0614,
-   "mev": 0.0364,
+   "win": 0.3567,
+   "mwin": 0.348,
+   "ev": 0.0345,
+   "mev": 0.0093,
    "src": "mkt",
    "result": null,
    "final": null,
