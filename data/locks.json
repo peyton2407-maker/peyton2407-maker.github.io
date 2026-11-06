@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -7,
    "total": 46.5,
-   "lockedAt": "2026-11-06T21:16:27.758Z",
+   "lockedAt": "2026-11-06T21:46:21.892Z",
    "provisional": true
   },
   "401858288": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -6,
    "total": 56.5,
-   "lockedAt": "2026-11-06T21:16:27.758Z",
+   "lockedAt": "2026-11-06T21:46:21.892Z",
    "provisional": true
   },
   "401858510": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 4,
    "total": 50.5,
-   "lockedAt": "2026-11-06T21:16:27.758Z",
+   "lockedAt": "2026-11-06T21:46:21.892Z",
    "provisional": true
   },
   "401862817": {
@@ -107,7 +107,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 39.5,
-   "lockedAt": "2026-11-06T21:16:27.758Z",
+   "lockedAt": "2026-11-06T21:46:21.892Z",
    "provisional": true
   },
   "401864533": {
@@ -128,7 +128,7 @@
    "total_play": false,
    "spread": 10,
    "total": 38.5,
-   "lockedAt": "2026-11-06T21:16:27.758Z",
+   "lockedAt": "2026-11-06T21:46:21.892Z",
    "provisional": true
   },
   "401866453": {
@@ -1166,7 +1166,7 @@
    }
   ]
  },
- "updated": "2026-11-06T21:16:27.758Z",
+ "updated": "2026-11-06T21:46:21.892Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1325,8 +1325,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7527,
-   "bookWin": 0.7527,
+   "win": 0.7524,
+   "bookWin": 0.7524,
    "total": 44.5,
    "result": null,
    "final": null
@@ -2303,10 +2303,10 @@
    "price": 370,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.2632,
+   "ours": 0.2731,
    "mkt": 0.2179,
-   "win": 0.2292,
-   "ev": 0.0774,
+   "win": 0.2317,
+   "ev": 0.0891,
    "result": null,
    "final": null,
    "units": null
@@ -2324,10 +2324,10 @@
    "price": 310,
    "book": "BetMGM",
    "books": 6,
-   "ours": 0.2701,
-   "mkt": 0.2496,
-   "win": 0.2547,
-   "ev": 0.0443,
+   "ours": 0.2645,
+   "mkt": 0.2528,
+   "win": 0.2557,
+   "ev": 0.0485,
    "result": null,
    "final": null,
    "units": null
@@ -2450,10 +2450,10 @@
    "price": 300,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.3052,
+   "ours": 0.3148,
    "mkt": 0.2449,
-   "win": 0.26,
-   "ev": 0.0399,
+   "win": 0.2624,
+   "ev": 0.0495,
    "result": null,
    "final": null,
    "units": null
