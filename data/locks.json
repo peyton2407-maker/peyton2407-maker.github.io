@@ -951,7 +951,11 @@
     "locked": true,
     "kick": "2026-11-06T01:00Z",
     "big": false,
-    "savedAt": 1793925563025
+    "savedAt": 1793925563025,
+    "close_line": 58.5,
+    "closeAt": "2026-11-06T00:46:24.296Z",
+    "close_src": "board",
+    "clv": 0
    }
   ]
  },
@@ -1054,7 +1058,7 @@
    }
   ]
  },
- "updated": "2026-11-06T00:39:23.014Z",
+ "updated": "2026-11-06T00:46:24.296Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
