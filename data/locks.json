@@ -1061,7 +1061,7 @@
    }
   ]
  },
- "updated": "2026-11-06T09:16:15.187Z",
+ "updated": "2026-11-06T09:31:23.797Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1685,6 +1685,28 @@
    "units": null
   },
   {
+   "id": "401862821|tot|under",
+   "gid": "401862821",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 58.5",
+   "game": "RICE @ UNT",
+   "kick": "2026-11-07T21:00Z",
+   "line": 58.5,
+   "mainLine": 64.5,
+   "price": 190,
+   "book": "FanDuel",
+   "win": 0.3597,
+   "mwin": 0.3597,
+   "ev": 0.0431,
+   "mev": 0.0431,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401856742|sp|away",
    "gid": "401856742",
    "league": "cfb",
@@ -2286,10 +2308,10 @@
    "price": 575,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0.2546,
+   "ours": 0.2558,
    "mkt": 0.1287,
-   "win": 0.1602,
-   "ev": 0.0811,
+   "win": 0.1605,
+   "ev": 0.0833,
    "result": null,
    "final": null,
    "units": null
@@ -2391,10 +2413,10 @@
    "price": 650,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.2025,
+   "ours": 0.2015,
    "mkt": 0.1367,
-   "win": 0.1531,
-   "ev": 0.1484,
+   "win": 0.1529,
+   "ev": 0.1464,
    "result": null,
    "final": null,
    "units": null
@@ -2412,10 +2434,10 @@
    "price": 500,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.2604,
+   "ours": 0.2592,
    "mkt": 0.1618,
-   "win": 0.1865,
-   "ev": 0.1188,
+   "win": 0.1862,
+   "ev": 0.1169,
    "result": null,
    "final": null,
    "units": null
