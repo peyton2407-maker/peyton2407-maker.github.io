@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -7,
    "total": 46.5,
-   "lockedAt": "2026-11-06T20:16:45.201Z",
+   "lockedAt": "2026-11-06T20:31:45.289Z",
    "provisional": true
   },
   "401858288": {
@@ -31,16 +31,16 @@
    "away": "VT",
    "date": "2026-11-07T00:00Z",
    "pick": "VT",
-   "pick_line": "VT +6.5",
+   "pick_line": "VT +6.0",
    "total_pick": "UNDER 56.5",
-   "side_play": true,
-   "our_margin": 4.2,
+   "side_play": false,
+   "our_margin": 5.37,
    "our_total": 55.6,
-   "confidence": 51,
+   "confidence": null,
    "total_play": false,
-   "spread": -6.5,
+   "spread": -6,
    "total": 56.5,
-   "lockedAt": "2026-11-06T20:16:45.201Z",
+   "lockedAt": "2026-11-06T20:31:45.289Z",
    "provisional": true
   },
   "401858510": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 4,
    "total": 50.5,
-   "lockedAt": "2026-11-06T20:16:45.201Z",
+   "lockedAt": "2026-11-06T20:31:45.289Z",
    "provisional": true
   },
   "401862817": {
@@ -100,14 +100,14 @@
    "pick": "USF",
    "pick_line": "USF +1.5",
    "total_pick": "NO PLAY",
-   "side_play": false,
-   "our_margin": 0.5,
+   "side_play": true,
+   "our_margin": -1.45,
    "our_total": 39.5,
-   "confidence": null,
+   "confidence": 51,
    "total_play": false,
-   "spread": -1.5,
+   "spread": 1.5,
    "total": 39.5,
-   "lockedAt": "2026-11-06T20:16:45.201Z",
+   "lockedAt": "2026-11-06T20:31:45.289Z",
    "provisional": true
   },
   "401864533": {
@@ -128,7 +128,7 @@
    "total_play": false,
    "spread": 10,
    "total": 38.5,
-   "lockedAt": "2026-11-06T20:16:45.201Z",
+   "lockedAt": "2026-11-06T20:31:45.289Z",
    "provisional": true
   },
   "401866453": {
@@ -1166,7 +1166,7 @@
    }
   ]
  },
- "updated": "2026-11-06T20:16:45.201Z",
+ "updated": "2026-11-06T20:31:45.289Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2556,10 +2556,10 @@
    "price": 1200,
    "book": "FanDuel",
    "books": 5,
-   "ours": 0.0721,
-   "mkt": 0.0888,
-   "win": 0.0846,
-   "ev": 0.1003,
+   "ours": 0.0708,
+   "mkt": 0.0868,
+   "win": 0.0828,
+   "ev": 0.0762,
    "result": null,
    "final": null,
    "units": null
