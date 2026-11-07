@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 53.5,
-   "lockedAt": "2026-11-07T05:46:46.631Z",
+   "lockedAt": "2026-11-07T06:01:12.487Z",
    "provisional": true
   },
   "401856849": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 49.5,
-   "lockedAt": "2026-11-07T05:46:46.631Z",
+   "lockedAt": "2026-11-07T06:01:12.487Z",
    "provisional": true
   },
   "401856853": {
@@ -61,7 +61,28 @@
    "total_play": false,
    "spread": -10,
    "total": 50.5,
-   "lockedAt": "2026-11-07T05:46:46.631Z",
+   "lockedAt": "2026-11-07T06:01:12.487Z",
+   "provisional": true
+  },
+  "401856854": {
+   "id": "401856854",
+   "league": "cfb",
+   "week": 10,
+   "short": "OKST @ KSU",
+   "home": "KSU",
+   "away": "OKST",
+   "date": "2026-11-07T18:00Z",
+   "pick": "KSU",
+   "pick_line": "KSU +6.5",
+   "total_pick": "NO PLAY",
+   "side_play": true,
+   "our_margin": -4.7,
+   "our_total": 62.5,
+   "confidence": 51,
+   "total_play": false,
+   "spread": 6.5,
+   "total": 62.5,
+   "lockedAt": "2026-11-07T06:01:12.487Z",
    "provisional": true
   },
   "401856855": {
@@ -107,7 +128,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 49.5,
-   "lockedAt": "2026-11-07T05:46:46.631Z",
+   "lockedAt": "2026-11-07T06:01:12.487Z",
    "provisional": true
   },
   "401858286": {
@@ -128,7 +149,7 @@
    "total_play": false,
    "spread": 4,
    "total": 51.5,
-   "lockedAt": "2026-11-07T05:46:46.631Z",
+   "lockedAt": "2026-11-07T06:01:12.487Z",
    "provisional": true
   },
   "401858288": {
@@ -174,7 +195,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 52.5,
-   "lockedAt": "2026-11-07T05:46:46.631Z",
+   "lockedAt": "2026-11-07T06:01:12.487Z",
    "provisional": true
   },
   "401858292": {
@@ -195,7 +216,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 54.5,
-   "lockedAt": "2026-11-07T05:46:46.631Z",
+   "lockedAt": "2026-11-07T06:01:12.487Z",
    "provisional": true
   },
   "401858510": {
@@ -241,7 +262,7 @@
    "total_play": false,
    "spread": 4,
    "total": 38.5,
-   "lockedAt": "2026-11-07T05:46:46.631Z",
+   "lockedAt": "2026-11-07T06:01:12.487Z",
    "provisional": true
   },
   "401858515": {
@@ -262,7 +283,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 56.5,
-   "lockedAt": "2026-11-07T05:46:46.631Z",
+   "lockedAt": "2026-11-07T06:01:12.487Z",
    "provisional": true
   },
   "401862817": {
@@ -333,7 +354,7 @@
    "total_play": false,
    "spread": 3,
    "total": 50.5,
-   "lockedAt": "2026-11-07T05:46:46.631Z",
+   "lockedAt": "2026-11-07T06:01:12.487Z",
    "provisional": true
   },
   "401864533": {
@@ -485,6 +506,27 @@
    "closeAt": "2026-11-04T23:34:17.988Z",
    "clv_side": 0,
    "clv_total": null
+  },
+  "401869945": {
+   "id": "401869945",
+   "league": "cfb",
+   "week": 10,
+   "short": "ODU @ CCU",
+   "home": "CCU",
+   "away": "ODU",
+   "date": "2026-11-07T18:00Z",
+   "pick": "CCU",
+   "pick_line": "CCU -6.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 7.3,
+   "our_total": 45.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -6.5,
+   "total": 45.5,
+   "lockedAt": "2026-11-07T06:01:12.487Z",
+   "provisional": true
   },
   "401869964": {
    "id": "401869964",
@@ -1396,7 +1438,7 @@
    }
   ]
  },
- "updated": "2026-11-07T05:46:46.631Z",
+ "updated": "2026-11-07T06:01:12.487Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1558,6 +1600,22 @@
    "win": 0.729,
    "bookWin": 0.7161,
    "total": 44.5,
+   "result": null,
+   "final": null
+  },
+  {
+   "id": "401873045|sp|home",
+   "gid": "401873045",
+   "team": "KC",
+   "side": "home",
+   "game": "NYJ @ KC",
+   "kick": "2026-11-08T18:00Z",
+   "from": -8.5,
+   "to": -2.5,
+   "book": null,
+   "win": 0.746,
+   "bookWin": 0.743,
+   "total": 48.5,
    "result": null,
    "final": null
   },
@@ -2306,6 +2364,28 @@
    "units": null
   },
   {
+   "id": "401873045|sp|home",
+   "gid": "401873045",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "home",
+   "label": "KC -17.5",
+   "game": "NYJ @ KC",
+   "kick": "2026-11-08T18:00Z",
+   "line": -17.5,
+   "mainLine": -8.5,
+   "price": 265,
+   "book": "ESPN BET",
+   "win": 0.2836,
+   "mwin": 0.28,
+   "ev": 0.035,
+   "mev": 0.0222,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873046|sp|home",
    "gid": "401873046",
    "league": "nfl",
@@ -2642,10 +2722,10 @@
    "price": 425,
    "book": "BetMGM",
    "books": 6,
-   "ours": 0.3024,
-   "mkt": 0.2086,
-   "win": 0.232,
-   "ev": 0.2181,
+   "ours": 0.3076,
+   "mkt": 0.2133,
+   "win": 0.2369,
+   "ev": 0.2435,
    "result": null,
    "final": null,
    "units": null
@@ -2663,10 +2743,10 @@
    "price": 1300,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.1164,
-   "mkt": 0.0761,
-   "win": 0.0862,
-   "ev": 0.2069,
+   "ours": 0.1187,
+   "mkt": 0.078,
+   "win": 0.0882,
+   "ev": 0.2347,
    "result": null,
    "final": null,
    "units": null
