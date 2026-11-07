@@ -44,7 +44,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 45.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
+   "lockedAt": "2026-11-07T19:46:29.861Z",
    "provisional": true
   },
   "401856740": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 56.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
+   "lockedAt": "2026-11-07T19:46:29.861Z",
    "provisional": true
   },
   "401856742": {
@@ -111,8 +111,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 48.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
-   "provisional": true
+   "lockedAt": "2026-11-07T19:46:29.861Z"
   },
   "401856743": {
    "id": "401856743",
@@ -182,7 +181,7 @@
    "total_play": false,
    "spread": -6,
    "total": 49.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
+   "lockedAt": "2026-11-07T19:46:29.861Z",
    "provisional": true
   },
   "401856849": {
@@ -228,7 +227,12 @@
    "total_play": false,
    "spread": -6,
    "total": 48.5,
-   "lockedAt": "2026-11-07T19:16:29.414Z"
+   "lockedAt": "2026-11-07T19:16:29.414Z",
+   "close_spread": -6,
+   "close_total": 48.5,
+   "closeAt": "2026-11-07T19:46:29.861Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401856851": {
    "id": "401856851",
@@ -273,7 +277,7 @@
    "total_play": false,
    "spread": -3,
    "total": 47.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
+   "lockedAt": "2026-11-07T19:46:29.861Z",
    "provisional": true
   },
   "401856853": {
@@ -369,7 +373,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 66.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
+   "lockedAt": "2026-11-07T19:46:29.861Z",
    "provisional": true
   },
   "401858285": {
@@ -441,7 +445,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 62.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
+   "lockedAt": "2026-11-07T19:46:29.861Z",
    "provisional": true
   },
   "401858288": {
@@ -537,7 +541,7 @@
    "total_play": false,
    "spread": -7,
    "total": 54.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
+   "lockedAt": "2026-11-07T19:46:29.861Z",
    "provisional": true
   },
   "401858292": {
@@ -608,7 +612,7 @@
    "total_play": false,
    "spread": -14,
    "total": 39.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
+   "lockedAt": "2026-11-07T19:46:29.861Z",
    "provisional": true
   },
   "401858512": {
@@ -654,7 +658,7 @@
    "total_play": false,
    "spread": 3,
    "total": 42.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
+   "lockedAt": "2026-11-07T19:46:29.861Z",
    "provisional": true
   },
   "401858514": {
@@ -750,8 +754,7 @@
    "total_play": false,
    "spread": -19.5,
    "total": 45.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
-   "provisional": true
+   "lockedAt": "2026-11-07T19:46:29.861Z"
   },
   "401860911": {
    "id": "401860911",
@@ -771,7 +774,7 @@
    "total_play": false,
    "spread": 16.5,
    "total": 69.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
+   "lockedAt": "2026-11-07T19:46:29.861Z",
    "provisional": true
   },
   "401860912": {
@@ -792,7 +795,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 71.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
+   "lockedAt": "2026-11-07T19:46:29.861Z",
    "provisional": true
   },
   "401860913": {
@@ -813,7 +816,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 43.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
+   "lockedAt": "2026-11-07T19:46:29.861Z",
    "provisional": true
   },
   "401862817": {
@@ -979,7 +982,7 @@
    "total_play": false,
    "spread": -4,
    "total": 43.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
+   "lockedAt": "2026-11-07T19:46:29.861Z",
    "provisional": true
   },
   "401864532": {
@@ -1000,7 +1003,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 48.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
+   "lockedAt": "2026-11-07T19:46:29.861Z",
    "provisional": true
   },
   "401864533": {
@@ -1066,7 +1069,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
+   "lockedAt": "2026-11-07T19:46:29.861Z",
    "provisional": true
   },
   "401866453": {
@@ -1339,7 +1342,7 @@
    "total_play": false,
    "spread": -7,
    "total": 56.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
+   "lockedAt": "2026-11-07T19:46:29.861Z",
    "provisional": true
   },
   "401870795": {
@@ -1360,7 +1363,7 @@
    "total_play": false,
    "spread": 15.5,
    "total": 46.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
+   "lockedAt": "2026-11-07T19:46:29.861Z",
    "provisional": true
   },
   "401871073": {
@@ -1426,7 +1429,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 45.5,
-   "lockedAt": "2026-11-07T19:31:32.789Z",
+   "lockedAt": "2026-11-07T19:46:29.861Z",
    "provisional": true
   },
   "401871076": {
@@ -2388,7 +2391,7 @@
    }
   ]
  },
- "updated": "2026-11-07T19:31:32.789Z",
+ "updated": "2026-11-07T19:46:29.861Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2546,9 +2549,9 @@
    "kick": "2026-11-08T18:00Z",
    "from": 2.5,
    "to": 8.5,
-   "book": "FanDuel",
-   "win": 0.729,
-   "bookWin": 0.7161,
+   "book": null,
+   "win": 0.7528,
+   "bookWin": 0.7528,
    "total": 44.5,
    "result": null,
    "final": null
@@ -3197,12 +3200,12 @@
    "game": "CIN VS ATL",
    "kick": "2026-11-08T14:30Z",
    "line": -7.5,
-   "mainLine": -3.5,
+   "mainLine": -3,
    "price": 200,
    "book": "FanDuel",
-   "win": 0.3482,
+   "win": 0.3622,
    "mwin": 0.3388,
-   "ev": 0.0445,
+   "ev": 0.0866,
    "mev": 0.0165,
    "src": "mkt",
    "result": null,
@@ -3241,13 +3244,13 @@
    "game": "CLE @ NO",
    "kick": "2026-11-08T18:00Z",
    "line": -10,
-   "mainLine": -3.5,
+   "mainLine": -3,
    "price": 300,
    "book": "ESPN BET",
-   "win": 0.262,
-   "mwin": 0.2533,
-   "ev": 0.0795,
-   "mev": 0.0442,
+   "win": 0.2666,
+   "mwin": 0.2537,
+   "ev": 0.0966,
+   "mev": 0.0443,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -3263,13 +3266,13 @@
    "game": "DEN @ CAR",
    "kick": "2026-11-08T18:00Z",
    "line": -5,
-   "mainLine": 3,
+   "mainLine": 2.5,
    "price": 265,
    "book": "Fanatics",
-   "win": 0.2967,
-   "mwin": 0.2847,
-   "ev": 0.105,
-   "mev": 0.0605,
+   "win": 0.2842,
+   "mwin": 0.2842,
+   "ev": 0.0604,
+   "mev": 0.0604,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -3574,10 +3577,10 @@
    "price": 1500,
    "book": "FanDuel",
    "books": 5,
-   "ours": 0.0877,
-   "mkt": 0.0587,
-   "win": 0.0659,
-   "ev": 0.0551,
+   "ours": 0.0885,
+   "mkt": 0.0594,
+   "win": 0.0667,
+   "ev": 0.0666,
    "result": null,
    "final": null,
    "units": null
@@ -3616,10 +3619,10 @@
    "price": 450,
    "book": "BetMGM",
    "books": 6,
-   "ours": 0.2514,
-   "mkt": 0.1684,
-   "win": 0.1891,
-   "ev": 0.0402,
+   "ours": 0.2505,
+   "mkt": 0.1667,
+   "win": 0.1877,
+   "ev": 0.0322,
    "result": null,
    "final": null,
    "units": null
@@ -3658,10 +3661,10 @@
    "price": 380,
    "book": "Fanatics",
    "books": 6,
-   "ours": 0.2697,
-   "mkt": 0.2114,
-   "win": 0.226,
-   "ev": 0.0848,
+   "ours": 0.2677,
+   "mkt": 0.2094,
+   "win": 0.224,
+   "ev": 0.075,
    "result": null,
    "final": null,
    "units": null
@@ -3679,10 +3682,10 @@
    "price": 425,
    "book": "BetMGM",
    "books": 6,
-   "ours": 0.2997,
-   "mkt": 0.2069,
-   "win": 0.2301,
-   "ev": 0.2081,
+   "ours": 0.3024,
+   "mkt": 0.2117,
+   "win": 0.2344,
+   "ev": 0.2306,
    "result": null,
    "final": null,
    "units": null
@@ -3700,10 +3703,10 @@
    "price": 1300,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.1153,
-   "mkt": 0.0738,
-   "win": 0.0841,
-   "ev": 0.178,
+   "ours": 0.1164,
+   "mkt": 0.0756,
+   "win": 0.0858,
+   "ev": 0.2016,
    "result": null,
    "final": null,
    "units": null
@@ -3730,27 +3733,6 @@
    "units": null
   },
   {
-   "key": "401873039|3054850",
-   "gid": "401873039",
-   "pid": "3054850",
-   "name": "Alvin Kamara",
-   "pos": "RB",
-   "team": "NO",
-   "opp": "CLE",
-   "game": "CLE @ NO",
-   "kick": "2026-11-08T18:00Z",
-   "price": 285,
-   "book": "DraftKings",
-   "books": 6,
-   "ours": 0.3148,
-   "mkt": 0.2535,
-   "win": 0.2689,
-   "ev": 0.0351,
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "key": "401873039|4241463",
    "gid": "401873039",
    "pid": "4241463",
@@ -3763,31 +3745,10 @@
    "price": 700,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0.1828,
-   "mkt": 0.1443,
-   "win": 0.1539,
-   "ev": 0.2315,
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "key": "401873041|4241985",
-   "gid": "401873041",
-   "pid": "4241985",
-   "name": "J.K. Dobbins",
-   "pos": "RB",
-   "team": "DEN",
-   "opp": "CAR",
-   "game": "DEN @ CAR",
-   "kick": "2026-11-08T18:00Z",
-   "price": 285,
-   "book": "Fanatics",
-   "books": 6,
-   "ours": 0.336,
-   "mkt": 0.2467,
-   "win": 0.269,
-   "ev": 0.0356,
+   "ours": 0.1845,
+   "mkt": 0.146,
+   "win": 0.1556,
+   "ev": 0.2452,
    "result": null,
    "final": null,
    "units": null
@@ -3805,10 +3766,10 @@
    "price": 300,
    "book": "BetMGM",
    "books": 6,
-   "ours": 0.2697,
-   "mkt": 0.2593,
-   "win": 0.2619,
-   "ev": 0.0477,
+   "ours": 0.2677,
+   "mkt": 0.2569,
+   "win": 0.2596,
+   "ev": 0.0384,
    "result": null,
    "final": null,
    "units": null
