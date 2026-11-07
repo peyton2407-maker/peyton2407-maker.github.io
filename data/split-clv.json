@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-07T22:01:34Z",
+ "updated": "2026-11-07T23:01:21Z",
  "about": "Every side The Split took: the line when first picked, the closing line, and how many points the line moved toward our side (clv). Only picks still standing at kickoff count (counts: true); ones The Split dropped before the game are listed but not counted. Positive average CLV over a season is the sign of a real edge; win-loss needs far more games.",
  "summary": {
   "record": {
@@ -10,16 +10,16 @@
    "even": 14,
    "lost_close": 19,
    "at_first": {
-    "w": 56,
+    "w": 57,
     "l": 66,
     "p": 3,
-    "pct": 0.459
+    "pct": 0.463
    },
    "at_close": {
-    "w": 20,
+    "w": 21,
     "l": 22,
     "p": 2,
-    "pct": 0.476
+    "pct": 0.488
    }
   },
   "by_week": {
@@ -131,16 +131,16 @@
     "even": 2,
     "lost_close": 2,
     "at_first": {
-     "w": 0,
+     "w": 1,
      "l": 2,
      "p": 0,
-     "pct": 0.0
+     "pct": 0.333
     },
     "at_close": {
-     "w": 0,
+     "w": 1,
      "l": 2,
      "p": 0,
-     "pct": 0.0
+     "pct": 0.333
     }
    }
   },
@@ -3377,9 +3377,9 @@
    "close": -6.5,
    "close_src": "last look",
    "clv": -0.0,
-   "final": null,
-   "ats_first": null,
-   "ats_close": null,
+   "final": "GAST 39 - APP 23",
+   "ats_first": "W",
+   "ats_close": "W",
    "counts": true
   },
   {
@@ -3443,7 +3443,7 @@
    "first_at": "2026-11-04T22:38:59Z",
    "hours_before": 73.9,
    "last": -7.0,
-   "last_at": "2026-11-07T22:01:34Z",
+   "last_at": "2026-11-07T23:01:21Z",
    "dropped": false,
    "flipped": false,
    "close": -7.0,
@@ -3467,7 +3467,7 @@
    "first_at": "2026-11-06T18:06:43Z",
    "hours_before": 30.4,
    "last": 3.0,
-   "last_at": "2026-11-07T22:01:34Z",
+   "last_at": "2026-11-07T23:01:21Z",
    "dropped": false,
    "flipped": false,
    "close": 3.0,
