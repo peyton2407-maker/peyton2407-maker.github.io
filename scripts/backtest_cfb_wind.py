@@ -19,36 +19,46 @@ def get(url, tries=4):
 G = [r for r in csv.DictReader(open("data/backtests/cfb-hist-lines.csv")) if r["neutral_site"] != "True"]
 print("games (not neutral):", len(G))
 # stadium of each home team: ESPN team page -> venue city/state + indoor; then Open-Meteo geocoding
-venue = {}
-for tid in sorted({r["home_id"] for r in G}):
+from concurrent.futures import ThreadPoolExecutor
+def find_venue(tid):
     j = get(f"https://site.api.espn.com/apis/site/v2/sports/football/college-football/teams/{tid}")
     t = (j or {}).get("team") or {}
     v = t.get("venue") or (t.get("franchise") or {}).get("venue") or {}
     if not (v.get("address") or {}).get("city"):
-        # the core API: the team's venue is a link
         c = get(f"https://sports.core.api.espn.com/v2/sports/football/leagues/college-football/seasons/2025/teams/{tid}?lang=en&region=us")
         ref = ((c or {}).get("venue") or {}).get("$ref")
         if ref: v = get(ref.replace("http://", "https://")) or v
-    if not venue and not (v.get("address") or {}).get("city"):
-        print("debug team keys", tid, list(t)[:30], json.dumps(v)[:300])
     a = v.get("address") or {}
     city, state = a.get("city"), a.get("state")
-    if not city: continue
+    if not city: return tid, None
     q = get("https://geocoding-api.open-meteo.com/v1/search?count=10&language=en&format=json&countryCode=US&name=" + urllib.parse.quote(city))
     res = (q or {}).get("results") or []
     pick = next((x for x in res if state and (x.get("admin1", "").lower().startswith(state.lower()) or state.lower() in (x.get("admin1_code") or "").lower())), None) or (res[0] if res else None)
-    if not pick: continue
-    venue[tid] = dict(lat=pick["latitude"], lon=pick["longitude"], indoor=bool(v.get("indoor")), name=v.get("fullName"), city=city, state=state)
-    time.sleep(0.15)
+    if not pick: return tid, None
+    return tid, dict(lat=pick["latitude"], lon=pick["longitude"], indoor=bool(v.get("indoor")), name=v.get("fullName"), city=city, state=state)
+venue = {}
+with ThreadPoolExecutor(8) as ex:
+    for tid, v in ex.map(find_venue, sorted({r["home_id"] for r in G})):
+        if v: venue[tid] = v
+        elif len(venue) < 3: print("no stadium for team", tid)
 print("stadiums found:", len(venue), "indoor:", sum(v["indoor"] for v in venue.values()))
 # weather: one archive pull per stadium for the whole span, hourly wind (mph) and precipitation (in)
+# only the game days are needed: one pull per stadium per season (Aug 20 - Jan 20)
+need = collections.defaultdict(set)
+for r in G: need[r["home_id"]].add(int(r["season"]))
+def pull(tid):
+    v = venue[tid]; out = {}
+    for yr in sorted(need[tid]):
+        j = get(f"https://archive-api.open-meteo.com/v1/archive?latitude={v['lat']:.3f}&longitude={v['lon']:.3f}&start_date={yr}-08-20&end_date={yr + 1}-01-20&hourly=precipitation,wind_speed_10m,wind_gusts_10m&wind_speed_unit=mph&precipitation_unit=inch&timezone=GMT")
+        if not j: continue
+        h = j["hourly"]; out.update({t: (w, g, p) for t, w, g, p in zip(h["time"], h["wind_speed_10m"], h["wind_gusts_10m"], h["precipitation"])})
+    return tid, out
 wx = {}
-for tid, v in venue.items():
-    if v["indoor"]: continue
-    j = get(f"https://archive-api.open-meteo.com/v1/archive?latitude={v['lat']}&longitude={v['lon']}&start_date=2021-08-20&end_date=2026-01-20&hourly=precipitation,wind_speed_10m,wind_gusts_10m&wind_speed_unit=mph&precipitation_unit=inch&timezone=GMT")
-    if not j: continue
-    h = j["hourly"]; wx[tid] = {t: (w, g, p) for t, w, g, p in zip(h["time"], h["wind_speed_10m"], h["wind_gusts_10m"], h["precipitation"])}
-    time.sleep(0.4)
+todo = [t for t, v in venue.items() if not v["indoor"]]
+with ThreadPoolExecutor(6) as ex:
+    for i, (tid, out) in enumerate(ex.map(pull, todo)):
+        if out: wx[tid] = out
+        if i % 20 == 0: print("weather", i, "of", len(todo))
 print("stadiums with weather:", len(wx))
 R = []
 for r in G:

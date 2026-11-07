@@ -10,7 +10,7 @@ permissions:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
-      - run: python3 scripts/backtest_cfb_wind.py
+      - run: python3 -u scripts/backtest_cfb_wind.py
