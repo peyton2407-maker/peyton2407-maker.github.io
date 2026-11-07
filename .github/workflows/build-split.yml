@@ -47,11 +47,15 @@ jobs:
           python3 scripts/build_split.py $args
       - name: Copy the picks and matchup notes to the main site
         run: python3 scripts/sync_split.py
+      - name: Track whether The Split's picks beat the closing line
+        continue-on-error: true
+        run: python3 scripts/split_clv.py
       - name: Commit any changes
         run: |
           git config user.name "peyton2407-maker"
           git config user.email "331867039+peyton2407-maker@users.noreply.github.com"
           git add split/index.html split/advanced.json data/desk-cfb.json data/split-notes.json
+          if [ -f data/split-clv.json ]; then git add data/split-clv.json; fi
           if git diff --cached --quiet; then
             echo "Nothing new."
             exit 0
