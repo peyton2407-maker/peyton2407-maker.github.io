@@ -19,7 +19,12 @@
    "total_play": false,
    "spread": -6.5,
    "total": 46.5,
-   "lockedAt": "2026-11-07T01:46:24.184Z"
+   "lockedAt": "2026-11-07T01:46:24.184Z",
+   "close_spread": -6.5,
+   "close_total": 46.5,
+   "closeAt": "2026-11-07T02:16:35.025Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401858288": {
    "id": "401858288",
@@ -1181,7 +1186,7 @@
    }
   ]
  },
- "updated": "2026-11-07T02:01:22.059Z",
+ "updated": "2026-11-07T02:16:35.025Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
