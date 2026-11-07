@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -7,
    "total": 46.5,
-   "lockedAt": "2026-11-07T00:04:20.004Z",
+   "lockedAt": "2026-11-07T00:36:55.138Z",
    "provisional": true
   },
   "401858288": {
@@ -140,8 +140,7 @@
    "total_play": false,
    "spread": 10,
    "total": 38.5,
-   "lockedAt": "2026-11-07T00:04:20.004Z",
-   "provisional": true
+   "lockedAt": "2026-11-07T00:36:55.138Z"
   },
   "401866453": {
    "id": "401866453",
@@ -1178,7 +1177,7 @@
    }
   ]
  },
- "updated": "2026-11-07T00:04:20.004Z",
+ "updated": "2026-11-07T00:36:55.138Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1336,9 +1335,9 @@
    "kick": "2026-11-08T18:00Z",
    "from": 2.5,
    "to": 8.5,
-   "book": null,
-   "win": 0.7524,
-   "bookWin": 0.7524,
+   "book": "DraftKings",
+   "win": 0.729,
+   "bookWin": 0.7161,
    "total": 44.5,
    "result": null,
    "final": null
@@ -2044,6 +2043,28 @@
    "units": null
   },
   {
+   "id": "401873041|sp|home",
+   "gid": "401873041",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "home",
+   "label": "CAR -5.5",
+   "game": "DEN @ CAR",
+   "kick": "2026-11-08T18:00Z",
+   "line": -5.5,
+   "mainLine": 3,
+   "price": 265,
+   "book": "Fanatics",
+   "win": 0.2828,
+   "mwin": 0.2707,
+   "ev": 0.0322,
+   "mev": -0.0119,
+   "src": "proj",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873046|sp|home",
    "gid": "401873046",
    "league": "nfl",
@@ -2254,10 +2275,10 @@
    "price": 1500,
    "book": "FanDuel",
    "books": 5,
-   "ours": 0.0885,
-   "mkt": 0.0597,
-   "win": 0.0669,
-   "ev": 0.0706,
+   "ours": 0.0877,
+   "mkt": 0.059,
+   "win": 0.0662,
+   "ev": 0.059,
    "result": null,
    "final": null,
    "units": null
@@ -2296,10 +2317,10 @@
    "price": 450,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.2505,
-   "mkt": 0.1676,
-   "win": 0.1883,
-   "ev": 0.0359,
+   "ours": 0.2514,
+   "mkt": 0.1693,
+   "win": 0.1898,
+   "ev": 0.044,
    "result": null,
    "final": null,
    "units": null
@@ -2506,10 +2527,10 @@
    "price": 300,
    "book": "Fanatics",
    "books": 6,
-   "ours": 0.3348,
-   "mkt": 0.246,
-   "win": 0.2682,
-   "ev": 0.0726,
+   "ours": 0.336,
+   "mkt": 0.2482,
+   "win": 0.2702,
+   "ev": 0.0806,
    "result": null,
    "final": null,
    "units": null
