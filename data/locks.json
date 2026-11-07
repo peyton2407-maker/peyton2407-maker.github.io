@@ -44,7 +44,12 @@
    "total_play": false,
    "spread": -4,
    "total": 45.5,
-   "lockedAt": "2026-11-07T23:16:22.323Z"
+   "lockedAt": "2026-11-07T23:16:22.323Z",
+   "close_spread": -4,
+   "close_total": 46.5,
+   "closeAt": "2026-11-07T23:46:33.166Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401856740": {
    "id": "401856740",
@@ -389,7 +394,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 66.5,
-   "lockedAt": "2026-11-07T23:31:33.548Z",
+   "lockedAt": "2026-11-07T23:46:33.166Z",
    "provisional": true
   },
   "401858285": {
@@ -836,7 +841,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 71.5,
-   "lockedAt": "2026-11-07T23:31:33.548Z",
+   "lockedAt": "2026-11-07T23:46:33.166Z",
    "provisional": true
   },
   "401860913": {
@@ -857,7 +862,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 43.5,
-   "lockedAt": "2026-11-07T23:31:33.548Z",
+   "lockedAt": "2026-11-07T23:46:33.166Z",
    "provisional": true
   },
   "401862817": {
@@ -1053,7 +1058,7 @@
    "total_play": false,
    "spread": 7,
    "total": 48.5,
-   "lockedAt": "2026-11-07T23:31:33.548Z",
+   "lockedAt": "2026-11-07T23:46:33.166Z",
    "provisional": true
   },
   "401864533": {
@@ -1124,7 +1129,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-07T23:31:33.548Z",
+   "lockedAt": "2026-11-07T23:46:33.166Z",
    "provisional": true
   },
   "401866453": {
@@ -2502,7 +2507,7 @@
    }
   ]
  },
- "updated": "2026-11-07T23:31:33.548Z",
+ "updated": "2026-11-07T23:46:33.166Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3597,12 +3602,12 @@
    "game": "GB @ NE",
    "kick": "2026-11-08T21:25Z",
    "line": -4.5,
-   "mainLine": 3,
+   "mainLine": 3.5,
    "price": 270,
    "book": "BetMGM",
-   "win": 0.2834,
+   "win": 0.2825,
    "mwin": 0.2709,
-   "ev": 0.0487,
+   "ev": 0.0454,
    "mev": 0.0022,
    "src": "proj",
    "result": null,
