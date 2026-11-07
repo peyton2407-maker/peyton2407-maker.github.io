@@ -5980,6 +5980,32 @@ function cfbSnapShare(r) {
   if (["WR", "TE"].includes(pos) && /wr1|number one|no\. 1|leading receiver|go-to/.test(blob)) return 0.55;
   return 0;
 }
+// When a college injury report was posted (ms), or NaN. Covers gives "Mon, Oct 5" with no
+// year, so the year comes from the game's kickoff.
+function cfbInjuryTime(r, g) {
+  const raw = String((r && r.date) || "").trim();
+  if (!raw) return NaN;
+  if (/\d{4}/.test(raw)) return Date.parse(raw);
+  const ko = Date.parse((g && g.date) || "") || Date.now();
+  const year = new Date(ko).getUTCFullYear();
+  const m = raw.replace(/^[A-Za-z]{3},?\s*/, "").match(/^([A-Za-z]{3})[a-z]*\.?\s+(\d{1,2})/);
+  if (!m) return NaN;
+  let t = Date.parse(m[1] + " " + m[2] + ", " + year + " 12:00 UTC");
+  if (Number.isFinite(t) && t > ko + 2 * 864e5) t = Date.parse(m[1] + " " + m[2] + ", " + (year - 1) + " 12:00 UTC");
+  return t;
+}
+// A college injury reported more than 6 days before kickoff is old news: the opening line,
+// and so The Split's number (65% market), already has it, and the team has usually played
+// without him. Moving our number for it again counted it twice: on Nov 7, 2026, quarterbacks
+// out since October (Sayin, Iamaleava, Lonergan, Singleton, Szarka, Taylor) moved 8 games
+// 4.5-6 points and wiped out three of The Split's five sides.
+const CFB_INJ_FRESH_DAYS = 6;
+function cfbInjuryIsOld(r, g) {
+  const t = cfbInjuryTime(r, g);
+  if (!Number.isFinite(t)) return false;
+  const ko = Date.parse((g && g.date) || "");
+  return t < (Number.isFinite(ko) ? ko : Date.now()) - CFB_INJ_FRESH_DAYS * 864e5;
+}
 function cfbStarterNudge(g, scale) {
   const qbBase = scale && scale.qb != null ? scale.qb : 4.5;
   const qbSeason = scale && scale.qbSeason != null ? scale.qbSeason : 6;
@@ -5988,6 +6014,7 @@ function cfbStarterNudge(g, scale) {
   const bestSnap = {};
   (g.injuries || []).forEach((r) => {
     if (!cfbOutTag(r)) return;
+    if (g.league === "cfb" && cfbInjuryIsOld(r, g)) return;
     // NFL: news older than the line we measure from is already inside the market's share of
     // our number (70%), so it only corrects ESPN's rating share (30%). Counting it in full
     // doubled it: the Giants were docked 4.5 points on top of a line that already knew their
@@ -10403,7 +10430,8 @@ function cfbStarterOut(g) {
     if (!qb) continue;
     const hit = bag.find((r) => String(r.pos || "").toUpperCase() === "QB"
       && /OUT|DOUBT|IR|SUSP|INACTIVE/.test(String(r.tag || r.status || "").toUpperCase())
-      && sameSquad(r.team, g[side]) && last(r.name) === last(qb) && first(r.name) === first(qb));
+      && sameSquad(r.team, g[side]) && last(r.name) === last(qb) && first(r.name) === first(qb)
+      && !cfbInjuryIsOld(r, g));
     if (hit) return { side, qb, name: hit.name, tag: String(hit.tag || hit.status || "").toUpperCase() };
   }
   return null;
@@ -10444,7 +10472,7 @@ function attachInjuriesToGames(){
       name:r.name, id:r.id, status:r.tag||r.status, pos:r.pos, tag:r.tag, league:r.league||g.league,
       playPct: ((r.league || g.league) === "cfb" || (r.league || g.league) === "nfl") ? (r.playPct != null ? r.playPct : cfbPlayPct(r.tag)) : null,
       side: sameSquad(r.team, g.home) ? "home" : "away",
-      short:r.short, reporter:r.reporter, score:r.score
+      short:r.short, date:g.league === "cfb" ? r.date : undefined, reporter:r.reporter, score:r.score
     }));
     window.__FACES = null;
   });
