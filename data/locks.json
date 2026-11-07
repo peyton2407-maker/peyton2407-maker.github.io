@@ -1181,7 +1181,7 @@
    }
   ]
  },
- "updated": "2026-11-07T01:46:24.184Z",
+ "updated": "2026-11-07T02:01:22.059Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1836,12 +1836,12 @@
    "game": "COLO @ ASU",
    "kick": "2026-11-08T00:30Z",
    "line": -12.5,
-   "mainLine": -3.5,
+   "mainLine": -3,
    "price": 278,
    "book": "DraftKings",
-   "win": 0.2732,
+   "win": 0.2763,
    "mwin": 0.2699,
-   "ev": 0.0326,
+   "ev": 0.0443,
    "mev": 0.0204,
    "src": "mkt",
    "result": null,
