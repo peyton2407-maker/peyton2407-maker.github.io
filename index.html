@@ -1339,6 +1339,7 @@ img.share-card { max-height: 230px; object-fit: contain; background: #05070b; }
 .pick-tag { display: inline-block; font-size: 10.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 1px 6px; border-radius: 6px; vertical-align: 1px; }
 .pick-tag.play { background: var(--turf-soft); color: var(--turf); }
 .pick-tag.lean { background: rgba(255,255,255,.06); color: var(--muted); }
+.plays-note { grid-column: 1 / -1; margin: 2px 2px 0; font-size: 12.5px; line-height: 1.45; color: var(--muted); }
 .stat.plays-stat span { line-height: 1.4; }
 .stat-row:has(.plays-stat.lead) .plays-stat { order: -1; }
 .stat.plays-stat.lead { border-color: var(--turf); }
@@ -15951,6 +15952,7 @@ function playsForScorecard(league) {
       row.published = true;
       if (lock.side_play != null) row.side_play = !!lock.side_play;
       if (lock.total_play != null) row.total_play = !!lock.total_play;
+      if (lock.not_split) row.not_split = true;
       if (lock.clv_side != null || lock.clv_total != null) row.clv = lock.clv_side != null ? lock.clv_side : lock.clv_total;
     }
     const old = byId[String(g.id)];
@@ -16380,7 +16382,8 @@ function ggArchive(locks, past) {
         side_play: r.side_play, total_play: r.total_play,
         spread: r.spread, total: r.total, close_spread: r.close_spread, close_total: r.close_total,
         our_margin: r.our_margin, our_total: r.our_total, confidence: r.confidence,
-        clv_side: r.clv_side, clv_total: r.clv_total
+        clv_side: r.clv_side, clv_total: r.clv_total,
+        not_split: r.not_split || undefined
       }));
       changes.push("archived " + lg + " week " + wk + " (" + rows.length + " picks)");
     }
@@ -16475,7 +16478,7 @@ function realPlaysTally(rows, kind) {
   (rows || []).forEach((r) => {
     if (!r) return;
     const parts = [];
-    if (kind !== "total" && r.side_play === true) parts.push(r.ats);
+    if (kind !== "total" && r.side_play === true && !r.not_split) parts.push(r.ats);
     if (kind !== "spread" && r.total_play === true) parts.push(r.ou);
     parts.forEach((x) => {
       n++;
@@ -16487,10 +16490,31 @@ function realPlaysTally(rows, kind) {
   return { w, l, psh, graded: w + l, tracked: n };
 }
 // Small tag on a locked pick: "play" if the board called it, "lean" if it didn't.
-function playTag(flag) {
+function playTag(flag, notCounted) {
+  if (flag === true && notCounted) return ' <span class="pick-tag lean" title="The Split never picked this game, so it is not counted in the record">not counted</span>';
   if (flag === true) return ' <span class="pick-tag play">play</span>';
   if (flag === false) return ' <span class="pick-tag lean">lean</span>';
   return "";
+}
+// The record counts real plays only: picks the board called a play when they locked. Leans
+// (games with no play) are listed but never counted, and neither are the college plays from
+// that The Split never picked (marked not_split; a bug fixed Nov 7, 2026).
+function playsStatsHtml(rows, kind, pending) {
+  const list = rows || [];
+  const t = realPlaysTally(list, kind);
+  const clvRows = kind === "total" ? [] : list.filter((r) => r && r.side_play === true && !r.not_split && r.clv != null);
+  const clv = clvRows.length ? clvRows.reduce((s, r) => s + Number(r.clv), 0) / clvRows.length : null;
+  const gone = kind === "total" ? [] : list.filter((r) => r && r.side_play === true && r.not_split);
+  const cnt = (x) => gone.filter((r) => r.ats === x).length;
+  const gw = cnt("HIT"), gl = cnt("MISS"), gp = cnt("PUSH");
+  const note = gone.length
+    ? `<p class="plays-note">Not counted: ${gone.length} college ${gone.length === 1 ? "play" : "plays"} (${gw}-${gl}${gp ? "-" + gp : ""}) that The Split never picked. A bug, fixed Nov 7, let the board's own adjustments turn games The Split passed on into plays. They stay listed, marked "not counted".</p>`
+    : "";
+  return `
+    <div class="stat"><b>${t.w}-${t.l}${t.psh ? "-" + t.psh : ""}</b><span>record, real plays only</span></div>
+    <div class="stat"><b>${t.graded ? Math.round(100 * t.w / t.graded) + "%" : "—"}</b><span>hit rate</span></div>
+    <div class="stat"><b>${pending}</b><span>still live / upcoming</span></div>
+    <div class="stat"><b>${clv == null ? "—" : (clv > 0 ? "+" : "") + clv.toFixed(1)}</b><span>avg vs close</span></div>${note}`;
 }
 // Real plays become the headline once they have a meaningful sample.
 const REAL_PLAYS_HEADLINE_MIN = 20;
@@ -16688,9 +16712,7 @@ function renderHome() {
       <a class="home-jump hot" href="#nfl" data-jump="nfl"><b>NFL board</b><span>This week's sides, totals, weather</span></a>
       <a class="home-jump" href="#score" data-jump="score"><b>Scorecard</b><span>${(() => {
         const rp = tally.plays || { w: 0, l: 0, psh: 0, graded: 0 };
-        const all = tally.n ? recordText(tally) + " all picks, incl. leans" : "No graded picks yet";
-        if (rp.graded >= REAL_PLAYS_HEADLINE_MIN) return "Real plays " + recordText(rp) + " · " + all;
-        return all + (rp.graded ? " · real plays " + recordText(rp) + " so far" : " · real plays tracked from Oct 15");
+        return rp.graded ? "Real plays " + recordText(rp) : "No graded plays yet";
       })()}</span></a>`;
     // clicks handled globally via href + hash
   }
@@ -17283,12 +17305,7 @@ function renderScorecard() {
   const t = scoreTally(league, kind, week);
   const pct = t.n ? Math.round(100 * t.w / t.n) : 0;
   const stats = document.getElementById("scoreStats");
-  if (stats) stats.innerHTML = `
-    <div class="stat"><b>${t.w}-${t.l}${t.psh ? "-" + t.psh : ""}</b><span>all picks, incl. leans</span></div>
-    <div class="stat"><b>${t.n ? pct + "%" : "—"}</b><span>hit rate</span></div>
-    <div class="stat"><b>${t.pending}</b><span>still live / upcoming</span></div>
-    <div class="stat"><b>${t.clvAvg ? (t.clvAvg > 0 ? "+" : "") + t.clvAvg.toFixed(1) : "—"}</b><span>avg vs close</span></div>
-    ${realPlaysStat(t.rows, kind)}`;
+  if (stats) stats.innerHTML = playsStatsHtml(t.rows, kind, t.pending);
   const wrap = document.getElementById("scoreWrap");
   let rows = scorecardRows(league);
   if (week && week !== "all") rows = rows.filter((r) => String(r.week || "") === String(week));
@@ -17338,7 +17355,7 @@ function renderScorecard() {
       const showT = kind !== "spread";
       return `<tr data-id="${r.id}">
         <td><b>${r.short || (r.away + " @ " + r.home)}</b><div class="subn">${r.final || fmt.when(r.date)}</div></td>
-        <td>${(r.pick && r.pick !== "NO PLAY") ? (r.pick_line || r.pick) + playTag(r.side_play) : "No side"}<div class="subn">${r.total_pick && r.total_pick !== "NO PLAY" ? r.total_pick + playTag(r.total_play) : ""}</div></td>
+        <td>${(r.pick && r.pick !== "NO PLAY") ? (r.pick_line || r.pick) + playTag(r.side_play, r.not_split) : "No side"}<div class="subn">${r.total_pick && r.total_pick !== "NO PLAY" ? r.total_pick + playTag(r.total_play) : ""}</div></td>
         <td data-lbl="Spread">${showS ? ats : "—"}</td>
         <td data-lbl="Total">${showT ? ou : "—"}</td>
         <td data-lbl="vs close">${r.clv == null ? "—" : ((r.clv > 0 ? "+" : "") + r.clv)}</td>
@@ -17622,12 +17639,7 @@ function renderHistory() {
   const pct = n ? Math.round(100 * w / n) : 0;
   const pending = rows.filter((r) => !r.graded).length;
   const stats = document.getElementById("historyStats");
-  if (stats) stats.innerHTML = `
-    <div class="stat"><b>${w}-${l}${psh ? "-" + psh : ""}</b><span>all picks, incl. leans</span></div>
-    <div class="stat"><b>${n ? pct + "%" : "—"}</b><span>hit rate</span></div>
-    <div class="stat"><b>${pending}</b><span>still live / upcoming</span></div>
-    <div class="stat"><b>${(() => { const c = rows.filter((r) => r.clv != null); if (!c.length) return "—"; const a = c.reduce((s, r) => s + Number(r.clv), 0) / c.length; return (a > 0 ? "+" : "") + a.toFixed(1); })()}</b><span>avg vs close</span></div>
-    ${realPlaysStat(rows, kind)}`;
+  if (stats) stats.innerHTML = playsStatsHtml(rows, kind, pending);
   const wrap = document.getElementById("historyWrap");
   const stamp = document.getElementById("historyStamp");
   const leagueName = league === "nfl" ? "NFL" : "College";
@@ -17666,7 +17678,7 @@ function renderHistory() {
       const showT = kind !== "spread";
       return `<tr data-id="${r.id}">
         <td><b>${r.short || (r.away + " @ " + r.home)}</b><div class="subn">${group.label} · ${r.final || fmt.when(r.date)}</div></td>
-        <td>${(r.pick && r.pick !== "NO PLAY") ? (r.pick_line || r.pick) + playTag(r.side_play) : "No side"}<div class="subn">${r.total_pick && r.total_pick !== "NO PLAY" ? r.total_pick + playTag(r.total_play) : ""}</div></td>
+        <td>${(r.pick && r.pick !== "NO PLAY") ? (r.pick_line || r.pick) + playTag(r.side_play, r.not_split) : "No side"}<div class="subn">${r.total_pick && r.total_pick !== "NO PLAY" ? r.total_pick + playTag(r.total_play) : ""}</div></td>
         <td data-lbl="Spread">${showS ? ats : "—"}</td>
         <td data-lbl="Total">${showT ? ou : "—"}</td>
         <td data-lbl="vs close">${r.clv == null ? "—" : ((r.clv > 0 ? "+" : "") + r.clv)}</td>
