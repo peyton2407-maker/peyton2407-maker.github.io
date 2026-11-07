@@ -2042,6 +2042,7 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .ph-svg .ph-lbl { fill: var(--muted); font: 500 9.5px var(--body); }
 .ph-svg .ph-dnp { fill: var(--muted); font: 700 9px var(--body); letter-spacing: .02em; }
 .ph-svg .ph-dnpbox { fill: var(--card); stroke: var(--muted); stroke-dasharray: 3 3; stroke-opacity: .55; }
+.inj-stale { margin: 8px 0 12px; padding: 10px 12px; border: 1px solid var(--line); border-left: 3px solid var(--sun, #f5b800); border-radius: 10px; background: var(--card); color: var(--muted); font-size: 13px; line-height: 1.45; }
 .ph-note { margin: 6px 0 0; color: var(--muted); font-size: .82rem; line-height: 1.45; }
 .tdl { grid-column: 1 / -1; border: 1px solid var(--line); border-radius: 16px; background: var(--card); overflow: hidden; }
 .tdl-head, .tdl-row summary { display: grid; grid-template-columns: 34px minmax(0, 1fr) 132px 92px 84px; gap: 12px; align-items: center; padding: 10px 16px; }
@@ -10744,6 +10745,21 @@ function renderInjuries(league){
         });
       }
     }
+    // Covers' college list stopped adding new reports in late October 2026. Say how old it is
+    // rather than show a weeks-old list as today's news. (Our numbers already ignore college
+    // reports more than 6 days old: cfbInjuryIsOld.)
+    try {
+      let note = document.getElementById("cfbInjStale");
+      if (!note) { note = document.createElement("p"); note.id = "cfbInjStale"; note.className = "inj-stale"; box.parentNode.insertBefore(note, box); }
+      const now = { date: new Date().toISOString() };
+      const times = all.filter((r) => /covers/i.test(String(r.source || "") + String((r.reporter || {}).outlet || ""))).map((r) => cfbInjuryTime(r, now)).filter(Number.isFinite);
+      const newest = times.length ? Math.max(...times) : NaN;
+      const days = Number.isFinite(newest) ? Math.floor((Date.now() - newest) / 864e5) : 0;
+      if (days > 7) {
+        note.style.display = "";
+        note.textContent = `Heads up: the college injury list we pull from (Covers) hasn't added a new report since ${new Date(newest).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" })}, ${days} days ago. Treat it as a season-long list, not this week's news. Our college numbers don't move for reports more than 6 days old; the betting line already has them.`;
+      } else note.style.display = "none";
+    } catch (e) {}
   } else if (league === "nfl") {
     const reports = loadNflInjReports();
     const days = nflVisibleDays();
