@@ -16418,7 +16418,7 @@ function ggModelReport(past) {
     g.avg_vs_close = mean(R.map((r) => r.clv_side != null ? r.clv_side : r.clv_total).filter((x) => x != null));
     const buckets = {};
     R.forEach((r) => {
-      if (r.side_play !== true || r.confidence == null) return;
+      if (r.side_play !== true || r.not_split || r.confidence == null) return;
       const hit = gradeHistoryRow(Object.assign({}, r), { hs: Number(r.hs), as: Number(r.as), homeAbbr: r.home, awayAbbr: r.away }).ats;
       if (!hit || hit === "PUSH") return;
       const b = r.confidence >= 58 ? "58%+" : r.confidence >= 54 ? "54-57%" : "under 54%";
@@ -17480,6 +17480,7 @@ function savedPastRows(league) {
         pick: src.pick || null, pick_line: src.pick_line || null, total_pick: src.total_pick || null,
         hs: src.hs, as: src.as, homeAbbr: src.homeAbbr || src.home, awayAbbr: src.awayAbbr || src.away,
         side_play: src.side_play, total_play: src.total_play,
+        not_split: src.not_split || undefined,
         ats: null, ou: null,
         clv: src.clv_side != null ? src.clv_side : (src.clv_total != null ? src.clv_total : null),
         graded: false
