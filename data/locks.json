@@ -44,7 +44,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 45.5,
-   "lockedAt": "2026-11-07T20:46:44.653Z",
+   "lockedAt": "2026-11-07T20:48:34.708Z",
    "provisional": true
   },
   "401856740": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 56.5,
-   "lockedAt": "2026-11-07T20:46:44.653Z",
+   "lockedAt": "2026-11-07T20:48:34.708Z",
    "provisional": true
   },
   "401856742": {
@@ -186,7 +186,7 @@
    "total_play": false,
    "spread": -6,
    "total": 49.5,
-   "lockedAt": "2026-11-07T20:46:44.653Z",
+   "lockedAt": "2026-11-07T20:48:34.708Z",
    "provisional": true
   },
   "401856849": {
@@ -282,7 +282,7 @@
    "total_play": false,
    "spread": -3,
    "total": 47.5,
-   "lockedAt": "2026-11-07T20:46:44.653Z",
+   "lockedAt": "2026-11-07T20:48:34.708Z",
    "provisional": true
   },
   "401856853": {
@@ -378,7 +378,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 66.5,
-   "lockedAt": "2026-11-07T20:46:44.653Z",
+   "lockedAt": "2026-11-07T20:48:34.708Z",
    "provisional": true
   },
   "401858285": {
@@ -450,7 +450,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 62.5,
-   "lockedAt": "2026-11-07T20:46:44.653Z",
+   "lockedAt": "2026-11-07T20:48:34.708Z",
    "provisional": true
   },
   "401858288": {
@@ -546,7 +546,7 @@
    "total_play": false,
    "spread": -7,
    "total": 54.5,
-   "lockedAt": "2026-11-07T20:46:44.653Z",
+   "lockedAt": "2026-11-07T20:48:34.708Z",
    "provisional": true
   },
   "401858292": {
@@ -617,7 +617,7 @@
    "total_play": false,
    "spread": -14,
    "total": 39.5,
-   "lockedAt": "2026-11-07T20:46:44.653Z",
+   "lockedAt": "2026-11-07T20:48:34.708Z",
    "provisional": true
   },
   "401858512": {
@@ -663,7 +663,7 @@
    "total_play": false,
    "spread": 3,
    "total": 42.5,
-   "lockedAt": "2026-11-07T20:46:44.653Z",
+   "lockedAt": "2026-11-07T20:48:34.708Z",
    "provisional": true
   },
   "401858514": {
@@ -784,7 +784,7 @@
    "total_play": false,
    "spread": 16.5,
    "total": 69.5,
-   "lockedAt": "2026-11-07T20:46:44.653Z",
+   "lockedAt": "2026-11-07T20:48:34.708Z",
    "provisional": true
   },
   "401860912": {
@@ -797,15 +797,15 @@
    "date": "2026-11-08T03:30Z",
    "pick": "ORST",
    "pick_line": "ORST -5.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "UNDER 71.5",
    "side_play": false,
    "our_margin": 7,
-   "our_total": 71.5,
+   "our_total": 70.6,
    "confidence": null,
    "total_play": false,
    "spread": -5.5,
    "total": 71.5,
-   "lockedAt": "2026-11-07T20:46:44.653Z",
+   "lockedAt": "2026-11-07T20:48:34.708Z",
    "provisional": true
   },
   "401860913": {
@@ -826,7 +826,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 43.5,
-   "lockedAt": "2026-11-07T20:46:44.653Z",
+   "lockedAt": "2026-11-07T20:48:34.708Z",
    "provisional": true
   },
   "401862817": {
@@ -997,7 +997,7 @@
    "total_play": false,
    "spread": -4,
    "total": 43.5,
-   "lockedAt": "2026-11-07T20:46:44.653Z",
+   "lockedAt": "2026-11-07T20:48:34.708Z",
    "provisional": true
   },
   "401864532": {
@@ -1018,7 +1018,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 48.5,
-   "lockedAt": "2026-11-07T20:46:44.653Z",
+   "lockedAt": "2026-11-07T20:48:34.708Z",
    "provisional": true
   },
   "401864533": {
@@ -1089,7 +1089,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-07T20:46:44.653Z",
+   "lockedAt": "2026-11-07T20:48:34.708Z",
    "provisional": true
   },
   "401866453": {
@@ -1382,7 +1382,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 46.5,
-   "lockedAt": "2026-11-07T20:46:44.653Z",
+   "lockedAt": "2026-11-07T20:48:34.708Z",
    "provisional": true
   },
   "401871073": {
@@ -1453,7 +1453,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 45.5,
-   "lockedAt": "2026-11-07T20:46:44.653Z",
+   "lockedAt": "2026-11-07T20:48:34.708Z",
    "provisional": true
   },
   "401871076": {
@@ -2424,7 +2424,7 @@
    }
   ]
  },
- "updated": "2026-11-07T20:46:44.653Z",
+ "updated": "2026-11-07T20:48:34.708Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3306,6 +3306,28 @@
    "mwin": 0.2699,
    "ev": 0.0301,
    "mev": 0.0177,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401860912|tot|under",
+   "gid": "401860912",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 68.5",
+   "game": "TXST @ ORST",
+   "kick": "2026-11-08T03:30Z",
+   "line": 68.5,
+   "mainLine": 71.5,
+   "price": 130,
+   "book": "ESPN BET",
+   "win": 0.4484,
+   "mwin": 0.4426,
+   "ev": 0.0313,
+   "mev": 0.0181,
    "src": "mkt",
    "result": null,
    "final": null,
