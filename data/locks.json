@@ -9,17 +9,17 @@
    "home": "ARIZ",
    "away": "TCU",
    "date": "2026-11-07T03:15Z",
-   "pick": "ARIZ",
-   "pick_line": "ARIZ -7.0",
+   "pick": "TCU",
+   "pick_line": "TCU +6.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 7.1,
+   "our_margin": 6.77,
    "our_total": 46.5,
    "confidence": null,
    "total_play": false,
-   "spread": -7,
+   "spread": -6.5,
    "total": 46.5,
-   "lockedAt": "2026-11-07T01:16:43.306Z",
+   "lockedAt": "2026-11-07T01:31:18.415Z",
    "provisional": true
   },
   "401858288": {
@@ -1182,7 +1182,7 @@
    }
   ]
  },
- "updated": "2026-11-07T01:16:43.306Z",
+ "updated": "2026-11-07T01:31:18.415Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
