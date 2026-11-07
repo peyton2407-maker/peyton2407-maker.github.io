@@ -2,7 +2,10 @@
 """Wind and rain at kickoff vs the closing total, FBS vs FBS college games 2021-2025, split 2021-23 | 2024-25.
 Runs on GitHub (.github/workflows/backtest-wind.yml). No Odds API calls: lines are data/backtests/cfb-hist-lines.csv
 (CollegeFootballData closing consensus), stadiums from ESPN's team pages, weather from Open-Meteo's free archive.
-Neutral-site games and domes are left out (the stadium isn't the home team's, or the weather doesn't reach the field)."""
+Neutral-site games and domes are left out (the stadium isn't the home team's, or the weather doesn't reach the field).
+Result (Nov 7, 2026, 3,465 games): no wind angle holds. Wind 15+ mph dry, unders 47.6% | 46.4%; 8-10+ mph held in 2021-23
+(55%) and failed in 2024-25 (47-50%); gusts 35+ 57.1% | 70.6% on only 45 games. Heavy rain (0.25+ in) went 45.8% | 31.6%
+for unders: the closing total already has it. Calm and dry: overs 53.4% | 51.7%, too thin. Nothing added."""
 import csv, json, time, urllib.request, urllib.parse, collections, sys
 from datetime import datetime, timedelta, timezone
 
