@@ -1,0 +1,16 @@
+name: Backtest college wind
+# One-off: wind and rain at kickoff vs the closing total (scripts/backtest_cfb_wind.py). No Odds API calls.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [scripts/backtest_cfb_wind.py, .github/workflows/backtest-wind.yml]
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/backtest_cfb_wind.py
