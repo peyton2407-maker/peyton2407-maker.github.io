@@ -22,7 +22,15 @@ print("games (not neutral):", len(G))
 venue = {}
 for tid in sorted({r["home_id"] for r in G}):
     j = get(f"https://site.api.espn.com/apis/site/v2/sports/football/college-football/teams/{tid}")
-    v = (((j or {}).get("team") or {}).get("franchise") or {}).get("venue") or {}
+    t = (j or {}).get("team") or {}
+    v = t.get("venue") or (t.get("franchise") or {}).get("venue") or {}
+    if not (v.get("address") or {}).get("city"):
+        # the core API: the team's venue is a link
+        c = get(f"https://sports.core.api.espn.com/v2/sports/football/leagues/college-football/seasons/2025/teams/{tid}?lang=en&region=us")
+        ref = ((c or {}).get("venue") or {}).get("$ref")
+        if ref: v = get(ref.replace("http://", "https://")) or v
+    if not venue and not (v.get("address") or {}).get("city"):
+        print("debug team keys", tid, list(t)[:30], json.dumps(v)[:300])
     a = v.get("address") or {}
     city, state = a.get("city"), a.get("state")
     if not city: continue
