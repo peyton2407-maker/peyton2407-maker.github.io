@@ -1,14 +1,11 @@
 async () => {
-  await new Promise((r) => setTimeout(r, 6000));
-  try { await loadGamelogs(); } catch (e) {}
-  const R = await propRecordPicks();
-  const plays = R.picks.filter((x) => x.value > 0.005);
-  return {
-    picks: R.picks.length, withLast8: R.picks.filter((x) => x.last8).length, plays: plays.length,
-    thin: R.picks.filter((x) => x.thin && x.value > 0.005).map((x) => `${x.name} ${x.take} ${x.line} ${x.stat} played ${x.played}`),
-    cold: R.picks.filter((x) => x.cold).map((x) => `${x.name} ${x.take} ${x.line} ${x.stat} ${x.last8} value ${x.value}`),
-    ladderLegs: collectPropParlayLegs().map((l) => l.label),
-    ticket: [...document.querySelectorAll(".parlay-legs li b, .parlay-legs .leg-label, .parlay-legs strong")].slice(0, 8).map((e) => e.innerText),
-    charts: [...document.querySelectorAll(".pick-hist .ph-head")].map((e) => e.innerText.replace(/\s+/g, " ").slice(0, 90)),
-  };
+  await new Promise((r) => setTimeout(r, 9000));
+  const now = Date.now();
+  const games = (DATA.games || []).filter((g) => g.league === "cfb" && !g.completed && Date.parse(g.date) > now - 4 * 3600e3 && g.proj && g.proj.split_locked);
+  const moved = games.map((g) => ({ g: g.short_name, split: +(-g.proj.split_margin).toFixed(1), ours: g.proj.hashmark_home_spread, line: g.odds && g.odds.home_spread,
+      diff: +(g.proj.blended_margin - g.proj.split_margin).toFixed(1), notes: (cfbLineMove(g, g._lockedSpread, g._lockedTotal).notes || []).join(" | ").slice(0, 260) }))
+    .filter((x) => Math.abs(x.diff) >= 2).sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff));
+  const bad = (DATA.games || []).filter((g) => g.proj && ["blended_margin", "hashmark_total"].some((k) => g.proj[k] != null && !Number.isFinite(Number(g.proj[k])))).map((g) => g.short_name);
+  return { cfbUpcoming: games.length, movedOver2: moved.length, moved: moved.slice(0, 15), nonNumeric: bad,
+    picksPage: (document.querySelector("#view-cfbpicks, main") || document.body).innerText.replace(/\s+/g, " ").slice(0, 1500) };
 }
