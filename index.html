@@ -2043,6 +2043,10 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .ph-svg .ph-dnp { fill: var(--muted); font: 700 9px var(--body); letter-spacing: .02em; }
 .ph-svg .ph-dnpbox { fill: var(--card); stroke: var(--muted); stroke-dasharray: 3 3; stroke-opacity: .55; }
 .inj-stale { margin: 8px 0 12px; padding: 10px 12px; border: 1px solid var(--line); border-left: 3px solid var(--sun, #f5b800); border-radius: 10px; background: var(--card); color: var(--muted); font-size: 13px; line-height: 1.45; }
+.potd-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 560px), 1fr)); gap: 14px; align-items: start; }
+.potd-pair > * { min-width: 0; }
+.potd-recbar-hit { margin-top: 10px; }
+.potd-sub { margin: 22px 0 8px; font-size: 15px; }
 .ph-note { margin: 6px 0 0; color: var(--muted); font-size: .82rem; line-height: 1.45; }
 .tdl { grid-column: 1 / -1; border: 1px solid var(--line); border-radius: 16px; background: var(--card); overflow: hidden; }
 .tdl-head, .tdl-row summary { display: grid; grid-template-columns: 34px minmax(0, 1fr) 132px 92px 84px; gap: 12px; align-items: center; padding: 10px 16px; }
@@ -13452,6 +13456,37 @@ function cfbPotdGameOk(g) {
 function cfbPotd() {
   return potdPick("cfb");
 }
+// The second college play, next to the play of the day (from Nov 7, 2026): the play with the
+// best chance to hit among the same day's games, leaving out the play of the day's game. Value
+// at the best price only breaks a tie, and it still has to beat its price. Saved, locked and
+// graded on its own (locks.potd.cfbHit) so the play of the day record is unchanged.
+function cfbPotdGameIdsToday(day) {
+  const ids = new Set();
+  (potdStore().cfb || []).forEach((r) => { if (r && r.day === day && (r.locked || r.provisional)) ids.add(String(r.id)); });
+  return ids;
+}
+function potdHitPick() {
+  const w = potdWindow("cfb");
+  if (!w.games.length) return null;
+  const locked = potdLockedBet("cfbHit", w);
+  if (locked) { locked.label = "Best chance to hit · " + potdDayName(locked.g.date); return locked; }
+  const skip = cfbPotdGameIdsToday(w.day);
+  // no play of the day saved for this day yet: leave out the game it would pick now
+  if (!skip.size) {
+    let main = null;
+    try { main = potdPick("cfb"); } catch (e) { main = null; }
+    if (main && main.g) skip.add(String(main.g.id));
+  }
+  const wx = (g, b) => b.kind === "Under" && Number((g.proj || {}).weather_adj_total) <= -1.5;
+  let bets = [];
+  w.games.forEach((g) => { if (!skip.has(String(g.id))) bets = bets.concat(potdCfbCandidates(g, wx)); });
+  if (!bets.length) return null;
+  bets.sort((a, b) => (Number(b.hit) || 0) - (Number(a.hit) || 0) || b.ev - a.ev);
+  const best = bets[0];
+  best.window = w;
+  best.label = "Best chance to hit · " + potdDayName(best.g.date);
+  return best;
+}
 function nflPotd() {
   return potdPick("nfl");
 }
@@ -14388,13 +14423,14 @@ function potdStore() {
   window.POTD_LOG = window.POTD_LOG || { nfl: [], cfb: [] };
   window.POTD_LOG.nfl = window.POTD_LOG.nfl || [];
   window.POTD_LOG.cfb = window.POTD_LOG.cfb || [];
+  window.POTD_LOG.cfbHit = window.POTD_LOG.cfbHit || [];
   return window.POTD_LOG;
 }
 function mergePotdLog() {
   const published = window.POTD_LOG || { nfl: [], cfb: [] };
   let local = {};
   try { local = JSON.parse(localStorage.getItem("gg-potd-log") || "{}"); } catch (e) { local = {}; }
-  ["nfl", "cfb"].forEach((league) => {
+  ["nfl", "cfb", "cfbHit"].forEach((league) => {
     const map = new Map();
     (published[league] || []).forEach((r) => { if (r) map.set(r.key || ("legacy:" + r.week + ":" + r.id), r); });
     ((local && local[league]) || []).forEach((r) => {
@@ -14904,10 +14940,25 @@ function renderPotd() {
   if (!board) return;
   pickLogsFor(() => { if (view === "potd") renderPotd(); });
   gradeSavedPotd("cfb");
-  const bet = cfbPotd();
+  gradeSavedPotd("cfbHit");
+  let bet = cfbPotd();
   rememberPotd("cfb", bet);
+  // once today's play of the day has kicked off, keep showing it (it's locked) instead of a
+  // fresh pick from the games still to come
+  const today = potdDayKey(Date.now());
+  const lockedRow = (potdStore().cfb || []).find((r) => r && r.locked && !r.result && r.day === today);
+  if (lockedRow && (!bet || String(bet.g.id) !== String(lockedRow.id))) {
+    const lg = (DATA.games || []).find((x) => String(x.id) === String(lockedRow.id));
+    if (lg) bet = { g: lg, kind: lockedRow.kind, line: lockedRow.line, hit: Number(lockedRow.hitPct || 0) / 100, ev: lockedRow.ev != null ? lockedRow.ev : null,
+      price: lockedRow.price, book: lockedRow.book, why: lockedRow.why, label: lockedRow.label, locked: true, legId: potdLegId(lg, lockedRow.line) };
+  }
+  const hitBet = potdHitPick();
+  rememberPotd("cfbHit", hitBet);
   const current = bet ? potdCard(bet, "College play of the day") : `<div class="potd-none"><b>No college play right now.</b> No game coming up qualifies: the play is an under on a total of ${CFB_HIGH_TOTAL} or more, or where the forecast takes 1.5+ points off the total, and only when the best price beats the rate. Passing is part of the rule.</div>`;
-  board.innerHTML = current + potdRecordCard("cfb") + potdHistoryHtml("cfb") + (typeof alertsHtml === "function" ? alertsHtml() : "");
+  const second = hitBet ? potdCard(hitBet, "Best chance to hit") : `<div class="potd-none"><b>No second play right now.</b> None of the other games coming up today has an under that beats its price.</div>`;
+  const hitRows = potdPublished("cfbHit");
+  const hitRec = (() => { const T = potdTally(hitRows); return `<section class="potd-recbar potd-recbar-hit"><div class="rb-main"><span class="rb-lbl">Best chance to hit record</span><b class="rb-rec">${T.n ? `${T.hit}-${T.miss}${T.push ? "-" + T.push : ""}` : "—"}</b><span class="rb-sub">${T.n ? `<b class="${T.units >= 0 ? "up" : "down"}">${T.units >= 0 ? "+" : "−"}${Math.abs(T.units).toFixed(2)}u</b> · ${Math.round(T.pct * 100)}% hit` : "Started Nov 7. The first one is still to finish."}</span></div><details class="rb-how"><summary>How it's picked</summary><p>The second college play each day: of the same day's games, leaving out the play of the day's game, the under with the best chance to hit. Value at the best price only breaks a tie, and it still has to beat its price. It locks 90 minutes before kickoff and is graded on its own, so the play of the day record above isn't changed.</p></details></section>`; })();
+  board.innerHTML = `<div class="potd-pair">${current}${second}</div>` + potdRecordCard("cfb") + hitRec + potdHistoryHtml("cfb") + (hitRows.length ? `<h3 class="potd-sub">Best chance to hit, every play</h3>` + potdHistoryHtml("cfbHit") : "") + (typeof alertsHtml === "function" ? alertsHtml() : "");
   potdWire(board, renderPotd);
 }
 
@@ -16137,7 +16188,7 @@ function applyPublishedLocks(locks) {
     window.LOCKED_CARD = L.card;
   }
   const log = window.POTD_LOG || (window.POTD_LOG = { nfl: [], cfb: [] });
-  ["nfl", "cfb"].forEach((lg) => {
+  ["nfl", "cfb", "cfbHit"].forEach((lg) => {
     const map = new Map();
     (log[lg] || []).forEach((r) => { if (r) map.set(r.key || ("legacy:" + r.week + ":" + r.id), r); });
     ((L.potd && L.potd[lg]) || []).forEach((r) => { if (r && r.key) map.set(r.key, Object.assign({}, r, { published: true })); });
@@ -16300,7 +16351,7 @@ function ggLockRun(prev) {
   });
   // play of the day: the same closing line (spreads, totals and player props by line); a play
   // locked before this with no saved close gets the hourly line history's last line before kickoff
-  ["nfl", "cfb"].forEach((lg) => (out.potd[lg] || []).forEach((row) => {
+  ["nfl", "cfb", "cfbHit"].forEach((lg) => (out.potd[lg] || []).forEach((row) => {
     if (!row || !row.locked || !row.id) return;
     const k = kickOf(row.id);
     const kick = k && Number.isFinite(k.kick) ? k.kick : Date.parse(row.kick);
@@ -16327,12 +16378,13 @@ function ggLockRun(prev) {
       changes.push("locked card " + key);
     }
   }
-  ["nfl", "cfb"].forEach((lg) => {
+  out.potd.cfbHit = out.potd.cfbHit || [];
+  ["nfl", "cfb", "cfbHit"].forEach((lg) => {
     gradeSavedPotd(lg);
     // the lock run re-picks from the live board; it never just repeats its own provisional play
     window.__potdRepick = true;
     let bet = null;
-    try { bet = potdPick(lg); } finally { window.__potdRepick = false; }
+    try { bet = lg === "cfbHit" ? potdHitPick() : potdPick(lg); } finally { window.__potdRepick = false; }
     if (bet && !bet.locked && bet.g && due(Date.parse(bet.g.date))) rememberPotd(lg, bet);
     gradeSavedPotd(lg);
     const mine = new Map((out.potd[lg] || []).map((r) => [r.key, r]));
@@ -19642,7 +19694,7 @@ async function loadDeskData() {
     window.PAST_CARDS = { nfl: (past && past.nfl) || {}, cfb: (past && past.cfb) || {} };
     window.PAST_COVERAGE = (past && past.coverage) || {};
     window.POTD_LOG = (past && past.potd) || { nfl: [], cfb: [] };
-    ["nfl", "cfb"].forEach((lg) => { (window.POTD_LOG[lg] || []).forEach((r) => { if (r) r.published = true; }); });
+    ["nfl", "cfb", "cfbHit"].forEach((lg) => { (window.POTD_LOG[lg] || []).forEach((r) => { if (r) r.published = true; }); });
     if (typeof applyPublishedLocks === "function") applyPublishedLocks(locks);
     if (typeof mergePotdLog === "function") mergePotdLog();
     try { if (view === "potd" && typeof renderPotd === "function") renderPotd(); if (view === "nflpotd" && typeof renderNflPotd === "function") renderNflPotd(); } catch (e) {}
