@@ -76,3 +76,11 @@ Monday mornings by itself:
 
 `scripts/sync_split.py` then copies the picks, leading passers and matchup notes to the
 main site.
+
+On the main site, every college side goes through one rule (`cfbFinalSide` in `index.html`):
+The Split decides whether there is a play and on which side. The board's own adjustments
+(rest, travel, weather, line moves) can move the projected score and can take a play away,
+but they never create a play or flip its side. The edge is measured against the line you can
+bet now, and the pick shows that number. A play needs an edge of 1.6 to 7.5 points.
+A 2016-2025 backtest of betting this model at the opening line found no edge either
+(about +0.15 points of closing line value), so the rule above stays on the current line.

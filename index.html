@@ -6460,19 +6460,8 @@ function syncCfbListedLine(g) {
       book: "DraftKings"
     });
     if (total != null) g.odds.total = total;
-    p.market_margin = +(-spread).toFixed(2);
-    p.edge_spread = +(Number(p.blended_margin) - (-spread)).toFixed(2);
-    if (fcs || Math.abs(p.edge_spread) > 7.5 || Math.abs(p.edge_spread) < 1.6) {
-      p.pick = "NO PLAY";
-      p.pick_line = null;
-    } else if (p.edge_spread > 0) {
-      p.pick = g.home.abbr;
-      p.pick_line = g.home.abbr + " " + (spread >= 0 ? "+" : "") + spread.toFixed(1);
-    } else {
-      const a = -spread;
-      p.pick = g.away.abbr;
-      p.pick_line = g.away.abbr + " " + (a >= 0 ? "+" : "") + a.toFixed(1);
-    }
+    if (fcs) { p.pick = "NO PLAY"; p.pick_line = null; }
+    cfbFinalSide(g, spread);
   }
   if (total != null && p.hashmark_total != null) {
     p.edge_total = +(Number(p.hashmark_total) - Number(total)).toFixed(2);
@@ -6541,6 +6530,47 @@ async function pullNflCloseLines() {
   })().catch((e) => { console.warn("nfl close", e); });
   return window.__nflClosePull;
 }
+// The Split's side for this game ("home", "away" or null), from its pick text, e.g. "GAST +12.5".
+function cfbSplitSide(row, g) {
+  const raw = String((row && row.pick) || "").trim();
+  if (!raw || raw === "NO PLAY" || !g) return null;
+  const team = raw.split(" ")[0];
+  const home = g.home && g.home.abbr;
+  const away = g.away && g.away.abbr;
+  const hit = (abbr) => abbr && (team === abbr || abbr.startsWith(team) || team.startsWith(abbr));
+  if (hit(home) && !hit(away)) return "home";
+  if (hit(away) && !hit(home)) return "away";
+  return null;
+}
+// The last word on a college side, used everywhere a side is picked.
+// - The Split decides whether there is a play and on which side. Our own moves (rest, travel,
+//   weather, line moves) can take a play away but never create one or flip it.
+// - The edge is measured against the line you can bet now, and the pick shows that number,
+//   so a pick can't keep a line that is gone (GAST +12.5 when the line was 8.5).
+const CFB_PLAY_MIN = 1.6;   // smallest edge, in points, against the current line
+const CFB_PLAY_MAX = 7.5;
+const CFB_FCS_RE = /Sacramento State|Citadel|Charleston Southern|Elon|Tarleton|Abilene|Incarnate|Stephen F|North Dakota|Montana|Weber|UC Davis|Northern Arizona|Eastern Washington|Portland State/;   // bigger gaps than this are usually the model missing news
+function cfbFinalSide(g, homeSpread) {
+  const p = g && g.proj;
+  if (!p) return;
+  const pass = () => { p.pick = "NO PLAY"; p.pick_line = null; };
+  const sp = homeSpread != null && homeSpread !== "" ? Number(homeSpread) : NaN;
+  const margin = Number(p.blended_margin);
+  if (!Number.isFinite(sp) || !Number.isFinite(margin)) return pass();
+  p.market_margin = +(-sp).toFixed(2);
+  p.edge_spread = +(margin + sp).toFixed(2);
+  // Whether there is a play at all comes from The Split, not from whatever an earlier pass
+  // left in p.pick, so a pick that was dropped against a stale line can come back.
+  const names = [(g.away && g.away.name) || "", (g.home && g.home.name) || ""].join(" ");
+  if (CFB_FCS_RE.test(names) || p.qb_pass || !p.split_side) return pass();
+  if (typeof cfbPotdGameOk === "function" && !cfbPotdGameOk(g)) return pass();
+  const side = p.edge_spread > 0 ? "home" : "away";
+  const gap = Math.abs(p.edge_spread);
+  if (side !== p.split_side || gap < CFB_PLAY_MIN || gap > CFB_PLAY_MAX) return pass();
+  const n = side === "home" ? sp : -sp;
+  p.pick = g[side].abbr;
+  p.pick_line = g[side].abbr + " " + (n > 0 ? "+" : "") + n.toFixed(1);
+}
 function applySplitDesk() {
   if (window.__splitDeskRunning) {
     window.__splitDeskAgain = true;
@@ -6573,6 +6603,7 @@ function applySplitDesk() {
       p.pick_line = row.pick;
       p.pick = String(row.pick).split(" ")[0];
     }
+    p.split_side = cfbSplitSide(row, g);
     p.total_pick = row.total || "NO PLAY";
     const fileSpread = row.spread ? deskHomeSpread(row, g) : null;
     saveCfbLock(g.id, fileSpread, row.totalLine);
@@ -6635,22 +6666,6 @@ function applySplitDesk() {
         const at = Math.abs(moveM) >= 0.2 ? 1 : 0;
         moved.notes.splice(at, 0, "Our total moved from " + p.split_total + " to " + dgTotal + ".");
       }
-      if (hs != null) {
-        p.market_margin = +(-Number(hs)).toFixed(2);
-        p.edge_spread = +(p.blended_margin - p.market_margin).toFixed(2);
-        if (Math.abs(p.edge_spread) < 1.6) {
-          p.pick = "NO PLAY";
-          p.pick_line = null;
-        } else if (p.edge_spread > 0) {
-          const n = Number(hs);
-          p.pick = g.home.abbr;
-          p.pick_line = g.home.abbr + " " + (n > 0 ? "+" : "") + n.toFixed(1);
-        } else {
-          const n = -Number(hs);
-          p.pick = g.away.abbr;
-          p.pick_line = g.away.abbr + " " + (n > 0 ? "+" : "") + n.toFixed(1);
-        }
-      }
       if (lockedTotal != null) {
         p.edge_total = +(p.hashmark_total - Number(lockedTotal)).toFixed(2);
         p.total_pick = Math.abs(p.edge_total) < 1.5 ? "NO PLAY" : ((p.edge_total > 0 ? "OVER " : "UNDER ") + lockedTotal);
@@ -6661,6 +6676,7 @@ function applySplitDesk() {
       p.pick_line = null;
       p.total_pick = "NO PLAY";
     }
+    cfbFinalSide(g, g._dkSpread != null ? g._dkSpread : hs);
     p.gg_injury = null;
     p.gg_weather = null;
     p.weather_adj_total = moved.weather || 0;
