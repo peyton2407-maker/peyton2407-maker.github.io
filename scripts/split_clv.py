@@ -228,26 +228,35 @@ def main():
     grade(log)
 
     picks = sorted(log.values(), key=lambda e: (e["date"], e["id"]))
-    weeks = {}
     for e in picks:
+        e["counts"] = not e["dropped"] and not e["flipped"]
+    # Only picks The Split still had at kickoff count toward the record. A pick it dropped
+    # (or switched to the other side) before the game was never taken, so it stays in the
+    # log for reference but doesn't count for or against it.
+    kept = [e for e in picks if e["counts"]]
+    not_taken = [e for e in picks if not e["counts"]]
+    weeks = {}
+    for e in kept:
         weeks.setdefault(week_of(e), []).append(e)
-    kept = [e for e in picks if not e["dropped"] and not e["flipped"]]
     data = {
         "updated": iso(now_utc()),
-        "about": "Every side The Split picked: the line when first picked, the closing line, and "
-                 "how many points the line moved toward our side (clv). Positive average CLV over "
-                 "a season is the sign of a real edge; win-loss needs far more games.",
+        "about": "Every side The Split took: the line when first picked, the closing line, and how "
+                 "many points the line moved toward our side (clv). Only picks still standing at "
+                 "kickoff count (counts: true); ones The Split dropped before the game are listed "
+                 "but not counted. Positive average CLV over a season is the sign of a real edge; "
+                 "win-loss needs far more games.",
         "summary": {
-            "all": summarize(picks),
-            "kept_to_kickoff": summarize(kept),
+            "record": summarize(kept),
             "by_week": {wk: summarize(rows) for wk, rows in sorted(weeks.items())},
+            "not_taken": summarize(not_taken),
         },
         "picks": picks,
     }
     OUT.write_text(json.dumps(data, indent=1) + "\n")
-    s = data["summary"]["all"]
-    print(f"split-clv: {len(picks)} picks tracked, {s['n']} graded, avg CLV {s['avg_clv']}, "
-          f"beat close {s['beat_close']}/{s['n']}, at first number {s['at_first']}")
+    s = data["summary"]["record"]
+    print(f"split-clv: {s['picks']} picks counted ({len(not_taken)} dropped before kickoff, not counted), "
+          f"{s['n']} with a closing line, avg CLV {s['avg_clv']}, beat close {s['beat_close']}/{s['n']}, "
+          f"at first number {s['at_first']}")
 
 
 if __name__ == "__main__":

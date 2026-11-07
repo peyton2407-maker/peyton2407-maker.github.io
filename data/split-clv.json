@@ -1,28 +1,8 @@
 {
- "updated": "2026-11-07T17:39:09Z",
- "about": "Every side The Split picked: the line when first picked, the closing line, and how many points the line moved toward our side (clv). Positive average CLV over a season is the sign of a real edge; win-loss needs far more games.",
+ "updated": "2026-11-07T17:42:02Z",
+ "about": "Every side The Split took: the line when first picked, the closing line, and how many points the line moved toward our side (clv). Only picks still standing at kickoff count (counts: true); ones The Split dropped before the game are listed but not counted. Positive average CLV over a season is the sign of a real edge; win-loss needs far more games.",
  "summary": {
-  "all": {
-   "picks": 138,
-   "n": 49,
-   "avg_clv": 0.16,
-   "beat_close": 18,
-   "even": 13,
-   "lost_close": 18,
-   "at_first": {
-    "w": 59,
-    "l": 70,
-    "p": 3,
-    "pct": 0.457
-   },
-   "at_close": {
-    "w": 21,
-    "l": 26,
-    "p": 2,
-    "pct": 0.447
-   }
-  },
-  "kept_to_kickoff": {
+  "record": {
    "picks": 129,
    "n": 43,
    "avg_clv": -0.1,
@@ -64,17 +44,17 @@
     }
    },
    "2026-09-28": {
-    "picks": 39,
+    "picks": 37,
     "n": 0,
     "avg_clv": null,
     "beat_close": 0,
     "even": 0,
     "lost_close": 0,
     "at_first": {
-     "w": 18,
+     "w": 16,
      "l": 20,
      "p": 1,
-     "pct": 0.474
+     "pct": 0.444
     },
     "at_close": {
      "w": 0,
@@ -104,47 +84,47 @@
     }
    },
    "2026-10-19": {
-    "picks": 9,
-    "n": 9,
-    "avg_clv": 0.72,
-    "beat_close": 3,
+    "picks": 6,
+    "n": 6,
+    "avg_clv": -0.25,
+    "beat_close": 0,
     "even": 4,
     "lost_close": 2,
     "at_first": {
      "w": 3,
-     "l": 6,
+     "l": 3,
      "p": 0,
-     "pct": 0.333
+     "pct": 0.5
     },
     "at_close": {
      "w": 3,
-     "l": 6,
+     "l": 3,
      "p": 0,
-     "pct": 0.333
+     "pct": 0.5
     }
    },
    "2026-10-26": {
-    "picks": 6,
-    "n": 6,
-    "avg_clv": -0.17,
-    "beat_close": 2,
-    "even": 1,
+    "picks": 3,
+    "n": 3,
+    "avg_clv": -1.83,
+    "beat_close": 0,
+    "even": 0,
     "lost_close": 3,
     "at_first": {
-     "w": 1,
-     "l": 5,
+     "w": 0,
+     "l": 3,
      "p": 0,
-     "pct": 0.167
+     "pct": 0.0
     },
     "at_close": {
-     "w": 1,
-     "l": 4,
+     "w": 0,
+     "l": 2,
      "p": 1,
-     "pct": 0.2
+     "pct": 0.0
     }
    },
    "2026-11-02": {
-    "picks": 7,
+    "picks": 6,
     "n": 1,
     "avg_clv": -1.0,
     "beat_close": 0,
@@ -162,6 +142,26 @@
      "p": 0,
      "pct": 0.0
     }
+   }
+  },
+  "not_taken": {
+   "picks": 9,
+   "n": 6,
+   "avg_clv": 2.08,
+   "beat_close": 5,
+   "even": 1,
+   "lost_close": 0,
+   "at_first": {
+    "w": 3,
+    "l": 5,
+    "p": 0,
+    "pct": 0.375
+   },
+   "at_close": {
+    "w": 1,
+    "l": 5,
+    "p": 0,
+    "pct": 0.167
    }
   }
  },
@@ -187,7 +187,8 @@
    "clv": 0.0,
    "final": "ARMY 21 - TEM 17",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401858461",
@@ -210,7 +211,8 @@
    "clv": null,
    "final": "NU 23 - IU 29",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858234",
@@ -233,7 +235,8 @@
    "clv": null,
    "final": "CLEM 24 - CAL 10",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856704",
@@ -256,7 +259,8 @@
    "clv": null,
    "final": "TEX 20 - TENN 17",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856805",
@@ -279,7 +283,8 @@
    "clv": null,
    "final": "SHSU 14 - TTU 49",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856813",
@@ -302,7 +307,8 @@
    "clv": null,
    "final": "COLO 13 - BAY 23",
    "ats_first": "P",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858465",
@@ -325,7 +331,8 @@
    "clv": null,
    "final": "ILL 19 - OSU 42",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401860893",
@@ -348,7 +355,8 @@
    "clv": null,
    "final": "SDSU 16 - TOL 41",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401860896",
@@ -371,7 +379,8 @@
    "clv": null,
    "final": "CSU 45 - UTSA 59",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401864512",
@@ -394,7 +403,8 @@
    "clv": null,
    "final": "UNLV 38 - AKR 10",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401866425",
@@ -417,7 +427,8 @@
    "clv": null,
    "final": "BALL 13 - KENT 26",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401864576",
@@ -440,7 +451,8 @@
    "clv": null,
    "final": "USA 21 - UK 45",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858462",
@@ -463,7 +475,8 @@
    "clv": null,
    "final": "UCLA 54 - MD 3",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858467",
@@ -486,7 +499,8 @@
    "clv": null,
    "final": "ND 49 - PUR 10",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401864511",
@@ -509,7 +523,8 @@
    "clv": null,
    "final": "NIU 14 - GAST 35",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401864510",
@@ -532,7 +547,8 @@
    "clv": null,
    "final": "HAW 10 - WYO 27",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856699",
@@ -555,7 +571,8 @@
    "clv": null,
    "final": "MISS 28 - FLA 52",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856815",
@@ -578,7 +595,8 @@
    "clv": null,
    "final": "TCU 13 - UCF 21",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856816",
@@ -601,7 +619,8 @@
    "clv": null,
    "final": "UTAH 31 - ISU 17",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401860897",
@@ -624,7 +643,8 @@
    "clv": null,
    "final": "BOIS 32 - WMU 7",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401861970",
@@ -647,7 +667,8 @@
    "clv": null,
    "final": "CONN 21 - M-OH 24",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401864579",
@@ -670,7 +691,8 @@
    "clv": null,
    "final": "UNM 42 - NMSU 18",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856806",
@@ -693,7 +715,8 @@
    "clv": null,
    "final": "HOU 42 - GASO 28",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858464",
@@ -716,7 +739,8 @@
    "clv": null,
    "final": "NEB 31 - MSU 13",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858466",
@@ -739,7 +763,8 @@
    "clv": null,
    "final": "WIS 24 - PSU 20",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401862785",
@@ -762,7 +787,8 @@
    "clv": null,
    "final": "USF 14 - BGSU 6",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858239",
@@ -785,7 +811,8 @@
    "clv": null,
    "final": "DEL 3 - UVA 42",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401869961",
@@ -808,7 +835,8 @@
    "clv": null,
    "final": "JMU 46 - ODU 20",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858238",
@@ -831,7 +859,8 @@
    "clv": null,
    "final": "CMU 3 - MIA 52",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401862780",
@@ -854,7 +883,8 @@
    "clv": null,
    "final": "UL 34 - CLT 7",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856814",
@@ -877,7 +907,8 @@
    "clv": null,
    "final": "KSU 26 - CIN 31",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856881",
@@ -900,7 +931,8 @@
    "clv": null,
    "final": "OKST 41 - WVU 24",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401862784",
@@ -923,7 +955,8 @@
    "clv": null,
    "final": "USM 21 - TULN 24",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401871048",
@@ -946,7 +979,8 @@
    "clv": null,
    "final": "MTSU 13 - JXST 23",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856702",
@@ -969,7 +1003,8 @@
    "clv": null,
    "final": "TA&M 6 - LSU 35",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858469",
@@ -992,7 +1027,8 @@
    "clv": null,
    "final": "ORE 41 - USC 27",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401860894",
@@ -1015,7 +1051,8 @@
    "clv": null,
    "final": "TROY 10 - USU 21",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401864572",
@@ -1038,7 +1075,8 @@
    "clv": null,
    "final": "APP 31 - NCSU 41",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856697",
@@ -1061,7 +1099,8 @@
    "clv": null,
    "final": "TLSA 6 - ARK 34",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401862782",
@@ -1084,7 +1123,8 @@
    "clv": null,
    "final": "FAU 45 - ULM 17",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858241",
@@ -1107,7 +1147,8 @@
    "clv": null,
    "final": "MOST 24 - SMU 34",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401860895",
@@ -1130,7 +1171,8 @@
    "clv": null,
    "final": "ORST 33 - UTEP 7",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401866429",
@@ -1153,7 +1195,8 @@
    "clv": null,
    "final": "MASS 35 - SAC 6",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858240",
@@ -1176,7 +1219,8 @@
    "clv": null,
    "final": "GT 27 - STAN 34",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401864509",
@@ -1199,7 +1243,8 @@
    "clv": null,
    "final": "AFA 36 - NEV 33",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401862786",
@@ -1222,7 +1267,8 @@
    "clv": null,
    "final": "UNT 45 - TLSA 44",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401871050",
@@ -1245,7 +1291,8 @@
    "clv": null,
    "final": "LIB 30 - DEL 14",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858476",
@@ -1268,7 +1315,8 @@
    "clv": null,
    "final": "PSU 13 - NU 34",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856708",
@@ -1291,7 +1339,8 @@
    "clv": null,
    "final": "FLA 17 - MIZ 45",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856709",
@@ -1314,7 +1363,8 @@
    "clv": null,
    "final": "UK 35 - SC 34",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856711",
@@ -1337,7 +1387,8 @@
    "clv": null,
    "final": "ARK 7 - TA&M 34",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856807",
@@ -1360,7 +1411,8 @@
    "clv": null,
    "final": "MTSU 0 - KU 55",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856817",
@@ -1383,7 +1435,8 @@
    "clv": null,
    "final": "BAY 55 - ASU 19",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856819",
@@ -1406,7 +1459,8 @@
    "clv": null,
    "final": "UCF 17 - HOU 27",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856820",
@@ -1429,7 +1483,8 @@
    "clv": null,
    "final": "CIN 7 - ARIZ 34",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856822",
@@ -1452,7 +1507,8 @@
    "clv": null,
    "final": "WVU 42 - ISU 45",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858248",
@@ -1475,7 +1531,8 @@
    "clv": null,
    "final": "LOU 28 - NCSU 31",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858249",
@@ -1498,7 +1555,8 @@
    "clv": null,
    "final": "MIA 41 - CLEM 13",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": false
   },
   {
    "id": "401858250",
@@ -1521,7 +1579,8 @@
    "clv": null,
    "final": "ND 37 - UNC 26",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": false
   },
   {
    "id": "401858251",
@@ -1544,7 +1603,8 @@
    "clv": null,
    "final": "STAN 3 - WAKE 57",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858253",
@@ -1567,7 +1627,8 @@
    "clv": null,
    "final": "UVA 7 - FSU 38",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858474",
@@ -1590,7 +1651,8 @@
    "clv": null,
    "final": "MICH 14 - MINN 20",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858475",
@@ -1613,7 +1675,8 @@
    "clv": null,
    "final": "MD 23 - NEB 48",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858478",
@@ -1636,7 +1699,8 @@
    "clv": null,
    "final": "WASH 21 - USC 25",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858479",
@@ -1659,7 +1723,8 @@
    "clv": null,
    "final": "MSU 3 - WIS 31",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401862787",
@@ -1682,7 +1747,8 @@
    "clv": null,
    "final": "MEM 59 - CLT 8",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401862788",
@@ -1705,7 +1771,8 @@
    "clv": null,
    "final": "UTSA 16 - RICE 14",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401862792",
@@ -1728,7 +1795,8 @@
    "clv": null,
    "final": "TEM 17 - USF 13",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401864514",
@@ -1751,7 +1819,8 @@
    "clv": null,
    "final": "UTEP 7 - UNM 61",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401866430",
@@ -1774,7 +1843,8 @@
    "clv": null,
    "final": "AKR 17 - CMU 41",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401866431",
@@ -1797,7 +1867,8 @@
    "clv": null,
    "final": "TOL 39 - BALL 24",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401866433",
@@ -1820,7 +1891,8 @@
    "clv": null,
    "final": "EMU 38 - MASS 14",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401866434",
@@ -1843,7 +1915,8 @@
    "clv": null,
    "final": "OHIO 13 - KENT 10",
    "ats_first": "P",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401866477",
@@ -1866,7 +1939,8 @@
    "clv": null,
    "final": "BGSU 24 - M-OH 20",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401869942",
@@ -1889,7 +1963,8 @@
    "clv": null,
    "final": "GASO 31 - CCU 24",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401871089",
@@ -1912,7 +1987,8 @@
    "clv": null,
    "final": "ULM 35 - USA 52",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858252",
@@ -1935,7 +2011,8 @@
    "clv": null,
    "final": "SYR 42 - CONN 41",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858247",
@@ -1958,7 +2035,8 @@
    "clv": null,
    "final": "CAL 31 - UNLV 39",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401864515",
@@ -1981,7 +2059,8 @@
    "clv": null,
    "final": "WYO 0 - NDSU 28",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401860899",
@@ -2004,7 +2083,8 @@
    "clv": null,
    "final": "ORST 56 - CSU 26",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858477",
@@ -2027,7 +2107,8 @@
    "clv": null,
    "final": "IU 47 - RUTG 15",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401860921",
@@ -2050,7 +2131,8 @@
    "clv": null,
    "final": "FRES 26 - WSU 6",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401860900",
@@ -2073,7 +2155,8 @@
    "clv": null,
    "final": "TXST 29 - SDSU 31",
    "ats_first": "W",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401864513",
@@ -2096,7 +2179,8 @@
    "clv": null,
    "final": "SJSU 20 - HAW 16",
    "ats_first": "L",
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856720",
@@ -2119,7 +2203,8 @@
    "clv": -5.0,
    "final": "MSST 0 - LSU 31",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401856724",
@@ -2142,7 +2227,8 @@
    "clv": 3.0,
    "final": "FLA 27 - TEX 24",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401856830",
@@ -2165,7 +2251,8 @@
    "clv": -1.5,
    "final": "KU 24 - KSU 35",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401858267",
@@ -2188,7 +2275,8 @@
    "clv": -0.0,
    "final": "PITT 21 - BC 27",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401858268",
@@ -2211,7 +2299,8 @@
    "clv": -0.5,
    "final": "UVA 13 - SMU 23",
    "ats_first": "L",
-   "ats_close": "P"
+   "ats_close": "P",
+   "counts": true
   },
   {
    "id": "401858491",
@@ -2234,7 +2323,8 @@
    "clv": 0.5,
    "final": "NU 24 - MSU 21",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401862802",
@@ -2257,7 +2347,8 @@
    "clv": 0.0,
    "final": "FAU 24 - ARMY 56",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401866441",
@@ -2280,7 +2371,8 @@
    "clv": 0.5,
    "final": "BALL 32 - BGSU 31",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401858489",
@@ -2303,7 +2395,8 @@
    "clv": -0.5,
    "final": "RUTG 37 - MD 30",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401862803",
@@ -2326,7 +2419,8 @@
    "clv": 4.0,
    "final": "CLT 38 - TEM 31",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401866442",
@@ -2349,7 +2443,8 @@
    "clv": -0.0,
    "final": "MASS 18 - BUFF 25",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401866443",
@@ -2372,7 +2467,8 @@
    "clv": 0.5,
    "final": "WMU 21 - CMU 14",
    "ats_first": "P",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401856719",
@@ -2395,7 +2491,8 @@
    "clv": -1.0,
    "final": "AUB 27 - UGA 24",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401856721",
@@ -2418,7 +2515,8 @@
    "clv": -2.0,
    "final": "MIZ 3 - MISS 31",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401856723",
@@ -2441,7 +2539,8 @@
    "clv": 1.0,
    "final": "ALA 10 - TENN 26",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401856828",
@@ -2464,7 +2563,8 @@
    "clv": 2.0,
    "final": "ASU 25 - TTU 53",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401858266",
@@ -2487,7 +2587,8 @@
    "clv": -0.5,
    "final": "UNC 24 - DUKE 20",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401858490",
@@ -2510,7 +2611,8 @@
    "clv": -0.0,
    "final": "PSU 18 - MICH 21",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401864522",
@@ -2533,7 +2635,8 @@
    "clv": -0.0,
    "final": "NIU 23 - WYO 41",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401866444",
@@ -2556,7 +2659,8 @@
    "clv": 1.0,
    "final": "TOL 34 - EMU 14",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401862805",
@@ -2579,7 +2683,8 @@
    "clv": 0.5,
    "final": "TLSA 38 - RICE 17",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401860903",
@@ -2602,7 +2707,8 @@
    "clv": -1.0,
    "final": "WSU 30 - ORST 48",
    "ats_first": "L",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401862806",
@@ -2625,7 +2731,8 @@
    "clv": 0.0,
    "final": "KENT 2 - USF 29",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401869934",
@@ -2648,7 +2755,8 @@
    "clv": 1.5,
    "final": "ARST 23 - USM 13",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401856722",
@@ -2671,7 +2779,8 @@
    "clv": 0.0,
    "final": "UK 21 - OU 13",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401856831",
@@ -2694,7 +2803,8 @@
    "clv": -0.5,
    "final": "OKST 32 - HOU 35",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401858265",
@@ -2717,7 +2827,8 @@
    "clv": 1.0,
    "final": "LOU 34 - SYR 26",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401858494",
@@ -2740,7 +2851,8 @@
    "clv": 1.5,
    "final": "WIS 7 - UCLA 17",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401864523",
@@ -2763,7 +2875,8 @@
    "clv": -1.0,
    "final": "SJSU 24 - UTEP 11",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401858269",
@@ -2786,7 +2899,8 @@
    "clv": -0.5,
    "final": "WAKE 41 - CAL 7",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401860904",
@@ -2809,7 +2923,8 @@
    "clv": 1.0,
    "final": "FRES 23 - SDSU 26",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401864521",
@@ -2832,7 +2947,8 @@
    "clv": -0.5,
    "final": "UNM 21 - HAW 10",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401861965",
@@ -2855,7 +2971,8 @@
    "clv": 3.0,
    "final": "MASS 16 - CONN 35",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": false
   },
   {
    "id": "401858270",
@@ -2878,7 +2995,8 @@
    "clv": 1.0,
    "final": "CAL 20 - SMU 59",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": false
   },
   {
    "id": "401856730",
@@ -2901,7 +3019,8 @@
    "clv": 4.0,
    "final": "OU 23 - MSST 15",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": false
   },
   {
    "id": "401856731",
@@ -2924,7 +3043,8 @@
    "clv": -0.0,
    "final": "TENN 24 - SC 27",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401866448",
@@ -2947,7 +3067,8 @@
    "clv": 0.0,
    "final": "BGSU 24 - BUFF 31",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401856839",
@@ -2970,7 +3091,8 @@
    "clv": -1.0,
    "final": "KSU 17 - ASU 28",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401856838",
@@ -2993,7 +3115,8 @@
    "clv": -0.0,
    "final": "ISU 3 - ARIZ 39",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401860906",
@@ -3016,7 +3139,8 @@
    "clv": -0.5,
    "final": "USU 17 - TXST 20",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401864527",
@@ -3039,7 +3163,8 @@
    "clv": 0.0,
    "final": "NDSU 16 - UNM 21",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": true
   },
   {
    "id": "401858507",
@@ -3062,7 +3187,8 @@
    "clv": 0.0,
    "final": "MICH 28 - RUTG 21",
    "ats_first": "W",
-   "ats_close": "W"
+   "ats_close": "W",
+   "counts": false
   },
   {
    "id": "401856735",
@@ -3085,7 +3211,8 @@
    "clv": 3.0,
    "final": "AUB 15 - MISS 45",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": false
   },
   {
    "id": "401871096",
@@ -3108,7 +3235,8 @@
    "clv": -0.5,
    "final": "MRSH 36 - ODU 23",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401856846",
@@ -3131,7 +3259,8 @@
    "clv": -4.5,
    "final": "KSU 24 - COLO 27",
    "ats_first": "L",
-   "ats_close": "P"
+   "ats_close": "P",
+   "counts": true
   },
   {
    "id": "401869944",
@@ -3154,7 +3283,8 @@
    "clv": -0.5,
    "final": "CCU 31 - GAST 20",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401856737",
@@ -3177,7 +3307,8 @@
    "clv": 1.5,
    "final": "MSST 3 - TEX 31",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": false
   },
   {
    "id": "401866455",
@@ -3200,7 +3331,8 @@
    "clv": -1.0,
    "final": "BALL 30 - MASS 31",
    "ats_first": "L",
-   "ats_close": "L"
+   "ats_close": "L",
+   "counts": true
   },
   {
    "id": "401856854",
@@ -3215,7 +3347,7 @@
    "first_at": "2026-11-06T12:58:26Z",
    "hours_before": 29.0,
    "last": 6.5,
-   "last_at": "2026-11-07T17:39:09Z",
+   "last_at": "2026-11-07T17:42:02Z",
    "dropped": false,
    "flipped": false,
    "close": 6.5,
@@ -3223,7 +3355,8 @@
    "clv": 0.0,
    "final": null,
    "ats_first": null,
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401869927",
@@ -3238,7 +3371,7 @@
    "first_at": "2026-11-06T18:06:43Z",
    "hours_before": 25.4,
    "last": -6.5,
-   "last_at": "2026-11-07T17:39:09Z",
+   "last_at": "2026-11-07T17:42:02Z",
    "dropped": false,
    "flipped": false,
    "close": -6.5,
@@ -3246,7 +3379,8 @@
    "clv": -0.0,
    "final": null,
    "ats_first": null,
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401856744",
@@ -3261,7 +3395,7 @@
    "first_at": "2026-11-02T13:30:53Z",
    "hours_before": 126.5,
    "last": -6.5,
-   "last_at": "2026-11-07T17:39:09Z",
+   "last_at": "2026-11-07T17:42:02Z",
    "dropped": true,
    "flipped": false,
    "close": -6.5,
@@ -3269,7 +3403,8 @@
    "clv": 1.0,
    "final": null,
    "ats_first": null,
-   "ats_close": null
+   "ats_close": null,
+   "counts": false
   },
   {
    "id": "401858517",
@@ -3284,7 +3419,7 @@
    "first_at": "2026-11-06T03:36:50Z",
    "hours_before": 41.6,
    "last": -19.5,
-   "last_at": "2026-11-07T17:39:09Z",
+   "last_at": "2026-11-07T17:42:02Z",
    "dropped": false,
    "flipped": false,
    "close": -19.5,
@@ -3292,7 +3427,8 @@
    "clv": -1.0,
    "final": null,
    "ats_first": null,
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858291",
@@ -3307,7 +3443,7 @@
    "first_at": "2026-11-04T22:38:59Z",
    "hours_before": 73.9,
    "last": -7.0,
-   "last_at": "2026-11-07T17:39:09Z",
+   "last_at": "2026-11-07T17:42:02Z",
    "dropped": false,
    "flipped": false,
    "close": null,
@@ -3315,7 +3451,8 @@
    "clv": null,
    "final": null,
    "ats_first": null,
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   },
   {
    "id": "401858513",
@@ -3330,7 +3467,7 @@
    "first_at": "2026-11-06T18:06:43Z",
    "hours_before": 30.4,
    "last": 3.0,
-   "last_at": "2026-11-07T17:39:09Z",
+   "last_at": "2026-11-07T17:42:02Z",
    "dropped": false,
    "flipped": false,
    "close": null,
@@ -3338,7 +3475,8 @@
    "clv": null,
    "final": null,
    "ats_first": null,
-   "ats_close": null
+   "ats_close": null,
+   "counts": true
   }
  ]
 }
