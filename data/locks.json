@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -7,
    "total": 46.5,
-   "lockedAt": "2026-11-07T01:01:35.677Z",
+   "lockedAt": "2026-11-07T01:16:43.306Z",
    "provisional": true
   },
   "401858288": {
@@ -1182,7 +1182,7 @@
    }
   ]
  },
- "updated": "2026-11-07T01:01:35.677Z",
+ "updated": "2026-11-07T01:16:43.306Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1340,7 +1340,7 @@
    "kick": "2026-11-08T18:00Z",
    "from": 2.5,
    "to": 8.5,
-   "book": "DraftKings",
+   "book": "FanDuel",
    "win": 0.729,
    "bookWin": 0.7161,
    "total": 44.5,
