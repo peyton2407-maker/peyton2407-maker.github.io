@@ -44,7 +44,7 @@
    "total_play": false,
    "spread": -4,
    "total": 45.5,
-   "lockedAt": "2026-11-07T21:34:59.714Z",
+   "lockedAt": "2026-11-07T21:46:32.346Z",
    "provisional": true
   },
   "401856740": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 56.5,
-   "lockedAt": "2026-11-07T21:34:59.714Z",
+   "lockedAt": "2026-11-07T21:46:32.346Z",
    "provisional": true
   },
   "401856742": {
@@ -186,8 +186,7 @@
    "total_play": false,
    "spread": -6,
    "total": 49.5,
-   "lockedAt": "2026-11-07T21:34:59.714Z",
-   "provisional": true
+   "lockedAt": "2026-11-07T21:46:32.346Z"
   },
   "401856849": {
    "id": "401856849",
@@ -282,7 +281,7 @@
    "total_play": false,
    "spread": -3,
    "total": 47.5,
-   "lockedAt": "2026-11-07T21:34:59.714Z",
+   "lockedAt": "2026-11-07T21:46:32.346Z",
    "provisional": true
   },
   "401856853": {
@@ -378,7 +377,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 66.5,
-   "lockedAt": "2026-11-07T21:34:59.714Z",
+   "lockedAt": "2026-11-07T21:46:32.346Z",
    "provisional": true
   },
   "401858285": {
@@ -450,7 +449,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 62.5,
-   "lockedAt": "2026-11-07T21:34:59.714Z",
+   "lockedAt": "2026-11-07T21:46:32.346Z",
    "provisional": true
   },
   "401858288": {
@@ -546,7 +545,7 @@
    "total_play": false,
    "spread": -7,
    "total": 54.5,
-   "lockedAt": "2026-11-07T21:34:59.714Z",
+   "lockedAt": "2026-11-07T21:46:32.346Z",
    "provisional": true
   },
   "401858292": {
@@ -617,7 +616,7 @@
    "total_play": false,
    "spread": -14,
    "total": 39.5,
-   "lockedAt": "2026-11-07T21:34:59.714Z",
+   "lockedAt": "2026-11-07T21:46:32.346Z",
    "provisional": true
   },
   "401858512": {
@@ -663,7 +662,7 @@
    "total_play": false,
    "spread": 3,
    "total": 42.5,
-   "lockedAt": "2026-11-07T21:34:59.714Z",
+   "lockedAt": "2026-11-07T21:46:32.346Z",
    "provisional": true
   },
   "401858514": {
@@ -804,7 +803,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 71.5,
-   "lockedAt": "2026-11-07T21:34:59.714Z",
+   "lockedAt": "2026-11-07T21:46:32.346Z",
    "provisional": true
   },
   "401860913": {
@@ -816,16 +815,16 @@
    "away": "FRES",
    "date": "2026-11-08T02:30Z",
    "pick": "FRES",
-   "pick_line": "FRES -1.5",
+   "pick_line": "FRES +1.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": -2.5,
+   "our_margin": -0.55,
    "our_total": 43.5,
    "confidence": null,
    "total_play": false,
-   "spread": 1.5,
+   "spread": -1.5,
    "total": 43.5,
-   "lockedAt": "2026-11-07T21:34:59.714Z",
+   "lockedAt": "2026-11-07T21:46:32.346Z",
    "provisional": true
   },
   "401862817": {
@@ -996,7 +995,7 @@
    "total_play": false,
    "spread": -4,
    "total": 43.5,
-   "lockedAt": "2026-11-07T21:34:59.714Z",
+   "lockedAt": "2026-11-07T21:46:32.346Z",
    "provisional": true
   },
   "401864532": {
@@ -1017,7 +1016,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 48.5,
-   "lockedAt": "2026-11-07T21:34:59.714Z",
+   "lockedAt": "2026-11-07T21:46:32.346Z",
    "provisional": true
   },
   "401864533": {
@@ -1088,7 +1087,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-07T21:34:59.714Z",
+   "lockedAt": "2026-11-07T21:46:32.346Z",
    "provisional": true
   },
   "401866453": {
@@ -1386,7 +1385,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 46.5,
-   "lockedAt": "2026-11-07T21:34:59.714Z",
+   "lockedAt": "2026-11-07T21:46:32.346Z",
    "provisional": true
   },
   "401871073": {
@@ -1457,7 +1456,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 45.5,
-   "lockedAt": "2026-11-07T21:34:59.714Z",
+   "lockedAt": "2026-11-07T21:46:32.346Z",
    "provisional": true
   },
   "401871076": {
@@ -2334,30 +2333,29 @@
     "week": 10,
     "day": "2026-11-07",
     "league": "cfbHit",
-    "id": "401856856",
-    "game": "WVU @ TTU",
+    "id": "401860911",
+    "game": "BOIS @ CSU",
     "kind": "Under",
-    "line": "UNDER 66.5",
+    "line": "UNDER 68.5",
     "hitPct": 55,
-    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 66.5. At -110 (DraftKings) the price needs 52%; we count it at 55%, so it's 4.0% better than the price.",
+    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 68.5. At -105 (FanDuel) the price needs 51%; we count it at 55%, so it's 6.4% better than the price.",
     "label": "Best chance to hit · Saturday",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 1,
-    "price": -110,
-    "book": "DraftKings",
+    "units": 1.75,
+    "price": -105,
+    "book": "FanDuel",
     "bookPct": 50,
-    "ev": 0.04,
-    "ours": "TTU -16.4 · total 66.5",
-    "score": "WVU 25.1 – TTU 41.5",
-    "market": "TTU -16.5 · total 66.5",
-    "lockedAt": "2026-11-07T21:34:59.788Z",
-    "locked": false,
-    "provisional": true,
-    "kick": "2026-11-08T02:30Z",
+    "ev": 0.064,
+    "ours": "BOIS -15.7 · total 68.8",
+    "score": "BOIS 42.3 – CSU 26.5",
+    "market": "BOIS -16.5 · total 68.5",
+    "lockedAt": "2026-11-07T21:46:32.413Z",
+    "locked": true,
+    "kick": "2026-11-07T23:00Z",
     "big": true,
-    "savedAt": 1794087299788
+    "savedAt": 1794087992413
    }
   ]
  },
@@ -2460,7 +2458,7 @@
    }
   ]
  },
- "updated": "2026-11-07T21:34:59.714Z",
+ "updated": "2026-11-07T21:46:32.346Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3247,13 +3245,13 @@
    "game": "FRES @ USU",
    "kick": "2026-11-08T02:30Z",
    "line": -8,
-   "mainLine": 1.5,
+   "mainLine": -1.5,
    "price": 300,
    "book": "BetRivers",
-   "win": 0.261,
-   "mwin": 0.2638,
-   "ev": 0.0621,
-   "mev": 0.0733,
+   "win": 0.2609,
+   "mwin": 0.2635,
+   "ev": 0.0627,
+   "mev": 0.0732,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -3269,13 +3267,13 @@
    "game": "FRES @ USU",
    "kick": "2026-11-08T02:30Z",
    "line": -7,
-   "mainLine": -1.5,
+   "mainLine": 1.5,
    "price": 255,
    "book": "BetRivers",
-   "win": 0.2807,
-   "mwin": 0.2775,
-   "ev": 0.0532,
-   "mev": 0.0416,
+   "win": 0.2809,
+   "mwin": 0.2783,
+   "ev": 0.0512,
+   "mev": 0.0417,
    "src": "mkt",
    "result": null,
    "final": null,
