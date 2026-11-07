@@ -1186,7 +1186,7 @@
    }
   ]
  },
- "updated": "2026-11-07T03:04:28.103Z",
+ "updated": "2026-11-07T03:16:34.400Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1334,6 +1334,22 @@
    "total": 40.5,
    "result": "HIT",
    "final": "JAX 33, BAL 10"
+  },
+  {
+   "id": "401873041|sp|home",
+   "gid": "401873041",
+   "team": "CAR",
+   "side": "home",
+   "game": "DEN @ CAR",
+   "kick": "2026-11-08T18:00Z",
+   "from": 2.5,
+   "to": 8.5,
+   "book": "FanDuel",
+   "win": 0.729,
+   "bookWin": 0.7161,
+   "total": 44.5,
+   "result": null,
+   "final": null
   },
   {
    "id": "401873048|sp|home",
