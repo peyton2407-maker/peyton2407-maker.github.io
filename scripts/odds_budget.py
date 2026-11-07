@@ -160,7 +160,7 @@ CORE_WEEK = 95   # one core prop pull per NFL game a week (15 games x 5 markets)
 
 
 def can_spend(b, cost, priority="core"):
-    """The one limit is this site's own spending: never past monthly_target (13,000) in a billing
+    """The one limit is this site's own spending: never past monthly_target (16,000) in a billing
     month, counted from its own jobs only, so another project on the same key never slows it
     down or stops it. Within that: core (the first prop pull for a game) always comes first;
     extra (anything else) only from what's left after keeping the rest of the month's core
