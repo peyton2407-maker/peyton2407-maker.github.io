@@ -13657,10 +13657,12 @@ function potdPick(league) {
     if (held) return held;
     bets = cands(next);
   }
-  // both rank on value at the best price (college candidates are all unders, so the kind's
-  // record doesn't reorder them)
+  // NFL ranks on value at the best price. College ranks on the chance to hit (from Nov 7,
+  // 2026): the play with the best hit rate wins, and value at the best price only breaks a tie.
+  // Every college candidate already beats its price (potdCfbCandidates needs 1%+ value).
   bets.forEach((b) => { b.score = (league === "nfl" ? b.ev * potdKindWeight(league, b.kind) : b.ev); });
-  bets.sort((a, b) => b.score - a.score || b.hit - a.hit);
+  if (league === "cfb") bets.sort((a, b) => (Number(b.hit) || 0) - (Number(a.hit) || 0) || b.score - a.score);
+  else bets.sort((a, b) => b.score - a.score || b.hit - a.hit);
   const best = bets[0];
   if (!best) return null;
   const rec = potdKindRecord(league, best.kind);
