@@ -1186,7 +1186,7 @@
    }
   ]
  },
- "updated": "2026-11-07T04:31:23.889Z",
+ "updated": "2026-11-07T04:46:21.481Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1453,9 +1453,9 @@
    "ev": 0.0401,
    "mev": 0.0401,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "NEB 13, ILL 24",
+   "units": 2.65
   },
   {
    "id": "401864533|tot|over",
