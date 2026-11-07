@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-11-06T01:46:43Z",
+ "checked_at": "2026-11-07T01:09:52Z",
  "errors": [],
  "console": [],
  "failed_requests": {},
@@ -7,38 +7,38 @@
  "screens": {
   "home": {
    "visible": true,
-   "count": 18,
+   "count": 30,
    "summary": [],
    "empty": [],
-   "chars": 1469,
-   "images": 48,
+   "chars": 2107,
+   "images": 72,
    "broken_images": []
   },
   "nfl": {
    "visible": true,
-   "count": 15,
+   "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 5299,
-   "images": 36,
+   "chars": 5052,
+   "images": 35,
    "broken_images": []
   },
   "cfb": {
    "visible": true,
-   "count": 58,
+   "count": 56,
    "summary": [],
    "empty": [],
-   "chars": 9518,
-   "images": 96,
+   "chars": 9135,
+   "images": 113,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 15,
+   "count": 26,
    "summary": [],
    "empty": [],
-   "chars": 2421,
-   "images": 13,
+   "chars": 2408,
+   "images": 23,
    "broken_images": []
   },
   "season": {
@@ -46,7 +46,7 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3233,
+   "chars": 3235,
    "images": 42,
    "broken_images": []
   },
@@ -55,7 +55,7 @@
    "count": 389,
    "summary": [],
    "empty": [],
-   "chars": 26054,
+   "chars": 26183,
    "images": 0,
    "broken_images": []
   },
@@ -64,7 +64,7 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3359,
+   "chars": 3398,
    "images": 35,
    "broken_images": []
   },
@@ -73,7 +73,7 @@
    "count": 7,
    "summary": [],
    "empty": [],
-   "chars": 1009,
+   "chars": 965,
    "images": 14,
    "broken_images": []
   },
@@ -82,7 +82,7 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 5613,
+   "chars": 5250,
    "images": 12,
    "broken_images": []
   },
@@ -91,16 +91,16 @@
    "count": 1,
    "summary": [],
    "empty": [],
-   "chars": 3715,
+   "chars": 3720,
    "images": 28,
    "broken_images": []
   },
   "charts": {
    "visible": true,
-   "count": 29,
+   "count": 28,
    "summary": [],
    "empty": [],
-   "chars": 3926,
+   "chars": 3948,
    "images": 4,
    "broken_images": []
   },
@@ -108,19 +108,19 @@
    "visible": true,
    "count": 72,
    "summary": [
-    "346 value tickets in this filter 140 TD plus-money 5 spread / dog sides 66% b"
+    "350 value tickets in this filter 134 TD plus-money 9 spread / dog sides 83% b"
    ],
    "empty": [],
-   "chars": 3445,
-   "images": 40,
+   "chars": 3447,
+   "images": 44,
    "broken_images": []
   },
   "parlay": {
    "visible": true,
-   "count": 4,
+   "count": 5,
    "summary": [],
    "empty": [],
-   "chars": 2580,
+   "chars": 3111,
    "images": 0,
    "broken_images": []
   },
@@ -129,20 +129,20 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2948,
-   "images": 11,
+   "chars": 2844,
+   "images": 13,
    "broken_images": []
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "524 listed THU \u00b7 8:39 PM ET 527 listed FRI Not posted SAT Not posted S",
+    "524 listed THU \u00b7 11:31 PM ET 529 listed FRI \u00b7 8:01 PM ET 480 listed SA",
     "33 listed CIN VS ATL 90 min before kick DAL @ IND 90 min before kick ",
-    "527 listed 0 probable \u00b7 75% 179 questionable / GTD \u00b7 50% 2 doubtful \u00b7 "
+    "480 listed 0 probable \u00b7 75% 75 questionable / GTD \u00b7 50% 4 doubtful \u00b7 2"
    ],
    "empty": [],
-   "chars": 4686,
+   "chars": 4709,
    "images": 5,
    "broken_images": []
   },
@@ -151,7 +151,7 @@
    "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 3991,
+   "chars": 3989,
    "images": 30,
    "broken_images": []
   },
@@ -160,7 +160,7 @@
    "count": 4,
    "summary": [],
    "empty": [],
-   "chars": 2103,
+   "chars": 2172,
    "images": 2,
    "broken_images": []
   },
@@ -169,7 +169,7 @@
    "count": 18,
    "summary": [],
    "empty": [],
-   "chars": 6862,
+   "chars": 6902,
    "images": 36,
    "broken_images": []
   }
@@ -178,7 +178,7 @@
   "open": true,
   "hero": true,
   "shown_twice": false,
-  "logos_ok": 18
+  "logos_ok": 15
  },
  "split": {
   "games": 16,
@@ -187,6 +187,6 @@
   "errors": []
  },
  "dk_lines_loaded": null,
- "games_with_props": 29,
- "nfl_games_upcoming": 29
+ "games_with_props": 28,
+ "nfl_games_upcoming": 28
 }
