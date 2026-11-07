@@ -44,7 +44,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 45.5,
-   "lockedAt": "2026-11-07T20:48:34.708Z",
+   "lockedAt": "2026-11-07T21:01:29.639Z",
    "provisional": true
   },
   "401856740": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 56.5,
-   "lockedAt": "2026-11-07T20:48:34.708Z",
+   "lockedAt": "2026-11-07T21:01:29.639Z",
    "provisional": true
   },
   "401856742": {
@@ -186,7 +186,7 @@
    "total_play": false,
    "spread": -6,
    "total": 49.5,
-   "lockedAt": "2026-11-07T20:48:34.708Z",
+   "lockedAt": "2026-11-07T21:01:29.639Z",
    "provisional": true
   },
   "401856849": {
@@ -282,7 +282,7 @@
    "total_play": false,
    "spread": -3,
    "total": 47.5,
-   "lockedAt": "2026-11-07T20:48:34.708Z",
+   "lockedAt": "2026-11-07T21:01:29.639Z",
    "provisional": true
   },
   "401856853": {
@@ -378,7 +378,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 66.5,
-   "lockedAt": "2026-11-07T20:48:34.708Z",
+   "lockedAt": "2026-11-07T21:01:29.639Z",
    "provisional": true
   },
   "401858285": {
@@ -450,7 +450,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 62.5,
-   "lockedAt": "2026-11-07T20:48:34.708Z",
+   "lockedAt": "2026-11-07T21:01:29.639Z",
    "provisional": true
   },
   "401858288": {
@@ -546,7 +546,7 @@
    "total_play": false,
    "spread": -7,
    "total": 54.5,
-   "lockedAt": "2026-11-07T20:48:34.708Z",
+   "lockedAt": "2026-11-07T21:01:29.639Z",
    "provisional": true
   },
   "401858292": {
@@ -617,7 +617,7 @@
    "total_play": false,
    "spread": -14,
    "total": 39.5,
-   "lockedAt": "2026-11-07T20:48:34.708Z",
+   "lockedAt": "2026-11-07T21:01:29.639Z",
    "provisional": true
   },
   "401858512": {
@@ -663,7 +663,7 @@
    "total_play": false,
    "spread": 3,
    "total": 42.5,
-   "lockedAt": "2026-11-07T20:48:34.708Z",
+   "lockedAt": "2026-11-07T21:01:29.639Z",
    "provisional": true
   },
   "401858514": {
@@ -776,15 +776,15 @@
    "date": "2026-11-07T23:00Z",
    "pick": "CSU",
    "pick_line": "CSU +16.5",
-   "total_pick": "OVER 69.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
    "our_margin": -15.7,
-   "our_total": 69.2,
+   "our_total": 69.5,
    "confidence": null,
    "total_play": false,
    "spread": 16.5,
    "total": 69.5,
-   "lockedAt": "2026-11-07T20:48:34.708Z",
+   "lockedAt": "2026-11-07T21:01:29.639Z",
    "provisional": true
   },
   "401860912": {
@@ -805,7 +805,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 71.5,
-   "lockedAt": "2026-11-07T20:48:34.708Z",
+   "lockedAt": "2026-11-07T21:01:29.639Z",
    "provisional": true
   },
   "401860913": {
@@ -826,7 +826,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 43.5,
-   "lockedAt": "2026-11-07T20:48:34.708Z",
+   "lockedAt": "2026-11-07T21:01:29.639Z",
    "provisional": true
   },
   "401862817": {
@@ -997,7 +997,7 @@
    "total_play": false,
    "spread": -4,
    "total": 43.5,
-   "lockedAt": "2026-11-07T20:48:34.708Z",
+   "lockedAt": "2026-11-07T21:01:29.639Z",
    "provisional": true
   },
   "401864532": {
@@ -1018,7 +1018,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 48.5,
-   "lockedAt": "2026-11-07T20:48:34.708Z",
+   "lockedAt": "2026-11-07T21:01:29.639Z",
    "provisional": true
   },
   "401864533": {
@@ -1089,7 +1089,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-07T20:48:34.708Z",
+   "lockedAt": "2026-11-07T21:01:29.639Z",
    "provisional": true
   },
   "401866453": {
@@ -1362,7 +1362,12 @@
    "total_play": false,
    "spread": -7,
    "total": 56.5,
-   "lockedAt": "2026-11-07T20:31:36.016Z"
+   "lockedAt": "2026-11-07T20:31:36.016Z",
+   "close_spread": -7,
+   "close_total": 57.5,
+   "closeAt": "2026-11-07T21:01:29.639Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401870795": {
    "id": "401870795",
@@ -1376,13 +1381,13 @@
    "pick_line": "NMSU +14.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": -14.25,
+   "our_margin": -13.2,
    "our_total": 46.5,
    "confidence": null,
    "total_play": false,
    "spread": 14.5,
    "total": 46.5,
-   "lockedAt": "2026-11-07T20:48:34.708Z",
+   "lockedAt": "2026-11-07T21:01:29.639Z",
    "provisional": true
   },
   "401871073": {
@@ -1453,7 +1458,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 45.5,
-   "lockedAt": "2026-11-07T20:48:34.708Z",
+   "lockedAt": "2026-11-07T21:01:29.639Z",
    "provisional": true
   },
   "401871076": {
@@ -2424,7 +2429,7 @@
    }
   ]
  },
- "updated": "2026-11-07T20:48:34.708Z",
+ "updated": "2026-11-07T21:01:29.639Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2735,9 +2740,9 @@
    "ev": 0.0415,
    "mev": 0.0415,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "UCLA 34, MINN 20",
+   "units": 3
   },
   {
    "id": "401858292|sp|home",
@@ -2889,9 +2894,9 @@
    "ev": 0.0501,
    "mev": 0.0501,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "MD 34, PUR 29",
+   "units": -1
   },
   {
    "id": "401856854|sp|home",
@@ -3202,6 +3207,28 @@
    "units": null
   },
   {
+   "id": "401870795|sp|home",
+   "gid": "401870795",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "home",
+   "label": "NMSU +6.5",
+   "game": "LIB @ NMSU",
+   "kick": "2026-11-08T01:00Z",
+   "line": 6.5,
+   "mainLine": 14.5,
+   "price": 255,
+   "book": "FanDuel",
+   "win": 0.2927,
+   "mwin": 0.2874,
+   "ev": 0.0389,
+   "mev": 0.0204,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401860913|sp|home",
    "gid": "401860913",
    "league": "cfb",
@@ -3339,17 +3366,17 @@
    "league": "nfl",
    "kind": "sp",
    "side": "away",
-   "label": "CIN -7.5",
+   "label": "CIN -10.5",
    "game": "CIN VS ATL",
    "kick": "2026-11-08T14:30Z",
-   "line": -7.5,
+   "line": -10.5,
    "mainLine": -3,
-   "price": 200,
+   "price": 285,
    "book": "FanDuel",
-   "win": 0.3622,
-   "mwin": 0.3388,
-   "ev": 0.0866,
-   "mev": 0.0165,
+   "win": 0.2857,
+   "mwin": 0.264,
+   "ev": 0.1,
+   "mev": 0.0166,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -3368,10 +3395,10 @@
    "mainLine": 52.5,
    "price": 210,
    "book": "ESPN BET",
-   "win": 0.3426,
-   "mwin": 0.3328,
-   "ev": 0.0621,
-   "mev": 0.0317,
+   "win": 0.3378,
+   "mwin": 0.3279,
+   "ev": 0.0471,
+   "mev": 0.0166,
    "src": "mkt",
    "result": null,
    "final": null,
