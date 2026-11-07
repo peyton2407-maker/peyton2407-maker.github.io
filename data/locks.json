@@ -19,8 +19,7 @@
    "total_play": false,
    "spread": -6.5,
    "total": 46.5,
-   "lockedAt": "2026-11-07T01:31:18.415Z",
-   "provisional": true
+   "lockedAt": "2026-11-07T01:46:24.184Z"
   },
   "401858288": {
    "id": "401858288",
@@ -141,10 +140,10 @@
    "spread": 10,
    "total": 38.5,
    "lockedAt": "2026-11-07T00:36:55.138Z",
-   "close_spread": 10,
+   "close_spread": 10.5,
    "close_total": 38.5,
-   "closeAt": "2026-11-07T01:01:35.677Z",
-   "clv_side": 0,
+   "closeAt": "2026-11-07T01:46:24.184Z",
+   "clv_side": 0.5,
    "clv_total": null
   },
   "401866453": {
@@ -1182,7 +1181,7 @@
    }
   ]
  },
- "updated": "2026-11-07T01:31:18.415Z",
+ "updated": "2026-11-07T01:46:24.184Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1448,28 +1447,6 @@
    "mwin": 0.285,
    "ev": 0.0401,
    "mev": 0.0401,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401864533|sp|away",
-   "gid": "401864533",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "away",
-   "label": "UNM -15.5",
-   "game": "UNM @ NEV",
-   "kick": "2026-11-07T02:00Z",
-   "line": -15.5,
-   "mainLine": -10,
-   "price": 175,
-   "book": "ESPN BET",
-   "win": 0.3749,
-   "mwin": 0.3724,
-   "ev": 0.031,
-   "mev": 0.024,
    "src": "mkt",
    "result": null,
    "final": null,
