@@ -44,7 +44,7 @@
    "total_play": false,
    "spread": -4,
    "total": 45.5,
-   "lockedAt": "2026-11-07T21:31:28.814Z",
+   "lockedAt": "2026-11-07T21:34:59.714Z",
    "provisional": true
   },
   "401856740": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 56.5,
-   "lockedAt": "2026-11-07T21:31:28.814Z",
+   "lockedAt": "2026-11-07T21:34:59.714Z",
    "provisional": true
   },
   "401856742": {
@@ -186,7 +186,7 @@
    "total_play": false,
    "spread": -6,
    "total": 49.5,
-   "lockedAt": "2026-11-07T21:31:28.814Z",
+   "lockedAt": "2026-11-07T21:34:59.714Z",
    "provisional": true
   },
   "401856849": {
@@ -282,7 +282,7 @@
    "total_play": false,
    "spread": -3,
    "total": 47.5,
-   "lockedAt": "2026-11-07T21:31:28.814Z",
+   "lockedAt": "2026-11-07T21:34:59.714Z",
    "provisional": true
   },
   "401856853": {
@@ -378,7 +378,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 66.5,
-   "lockedAt": "2026-11-07T21:31:28.814Z",
+   "lockedAt": "2026-11-07T21:34:59.714Z",
    "provisional": true
   },
   "401858285": {
@@ -450,7 +450,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 62.5,
-   "lockedAt": "2026-11-07T21:31:28.814Z",
+   "lockedAt": "2026-11-07T21:34:59.714Z",
    "provisional": true
   },
   "401858288": {
@@ -546,7 +546,7 @@
    "total_play": false,
    "spread": -7,
    "total": 54.5,
-   "lockedAt": "2026-11-07T21:31:28.814Z",
+   "lockedAt": "2026-11-07T21:34:59.714Z",
    "provisional": true
   },
   "401858292": {
@@ -617,7 +617,7 @@
    "total_play": false,
    "spread": -14,
    "total": 39.5,
-   "lockedAt": "2026-11-07T21:31:28.814Z",
+   "lockedAt": "2026-11-07T21:34:59.714Z",
    "provisional": true
   },
   "401858512": {
@@ -663,7 +663,7 @@
    "total_play": false,
    "spread": 3,
    "total": 42.5,
-   "lockedAt": "2026-11-07T21:31:28.814Z",
+   "lockedAt": "2026-11-07T21:34:59.714Z",
    "provisional": true
   },
   "401858514": {
@@ -804,7 +804,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 71.5,
-   "lockedAt": "2026-11-07T21:31:28.814Z",
+   "lockedAt": "2026-11-07T21:34:59.714Z",
    "provisional": true
   },
   "401860913": {
@@ -825,7 +825,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 43.5,
-   "lockedAt": "2026-11-07T21:31:28.814Z",
+   "lockedAt": "2026-11-07T21:34:59.714Z",
    "provisional": true
   },
   "401862817": {
@@ -996,7 +996,7 @@
    "total_play": false,
    "spread": -4,
    "total": 43.5,
-   "lockedAt": "2026-11-07T21:31:28.814Z",
+   "lockedAt": "2026-11-07T21:34:59.714Z",
    "provisional": true
   },
   "401864532": {
@@ -1017,7 +1017,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 48.5,
-   "lockedAt": "2026-11-07T21:31:28.814Z",
+   "lockedAt": "2026-11-07T21:34:59.714Z",
    "provisional": true
   },
   "401864533": {
@@ -1088,7 +1088,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-07T21:31:28.814Z",
+   "lockedAt": "2026-11-07T21:34:59.714Z",
    "provisional": true
   },
   "401866453": {
@@ -1386,7 +1386,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 46.5,
-   "lockedAt": "2026-11-07T21:31:28.814Z",
+   "lockedAt": "2026-11-07T21:34:59.714Z",
    "provisional": true
   },
   "401871073": {
@@ -1457,7 +1457,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 45.5,
-   "lockedAt": "2026-11-07T21:31:28.814Z",
+   "lockedAt": "2026-11-07T21:34:59.714Z",
    "provisional": true
   },
   "401871076": {
@@ -2327,6 +2327,38 @@
     "close_src": "board",
     "clv": -1
    }
+  ],
+  "cfbHit": [
+   {
+    "key": "slate:2026-11-07",
+    "week": 10,
+    "day": "2026-11-07",
+    "league": "cfbHit",
+    "id": "401856856",
+    "game": "WVU @ TTU",
+    "kind": "Under",
+    "line": "UNDER 66.5",
+    "hitPct": 55,
+    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 66.5. At -110 (DraftKings) the price needs 52%; we count it at 55%, so it's 4.0% better than the price.",
+    "label": "Best chance to hit · Saturday",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 1,
+    "price": -110,
+    "book": "DraftKings",
+    "bookPct": 50,
+    "ev": 0.04,
+    "ours": "TTU -16.4 · total 66.5",
+    "score": "WVU 25.1 – TTU 41.5",
+    "market": "TTU -16.5 · total 66.5",
+    "lockedAt": "2026-11-07T21:34:59.788Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-08T02:30Z",
+    "big": true,
+    "savedAt": 1794087299788
+   }
   ]
  },
  "card": {
@@ -2428,7 +2460,7 @@
    }
   ]
  },
- "updated": "2026-11-07T21:31:28.814Z",
+ "updated": "2026-11-07T21:34:59.714Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
