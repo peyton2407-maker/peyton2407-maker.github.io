@@ -2047,6 +2047,8 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .potd-pair > * { min-width: 0; }
 .potd-recbar-hit { margin-top: 10px; }
 .potd-sub { margin: 22px 0 8px; font-size: 15px; }
+.pp-def { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; line-height: 1.4; }
+.pp-proven { display: block; margin-top: 4px; color: var(--good, #3ccf7a); font-size: 12px; font-weight: 600; line-height: 1.4; }
 .ph-note { margin: 6px 0 0; color: var(--muted); font-size: .82rem; line-height: 1.45; }
 .tdl { grid-column: 1 / -1; border: 1px solid var(--line); border-radius: 16px; background: var(--card); overflow: hidden; }
 .tdl-head, .tdl-row summary { display: grid; grid-template-columns: 34px minmax(0, 1fr) 132px 92px 84px; gap: 12px; align-items: center; padding: 10px 16px; }
@@ -9039,7 +9041,7 @@ function collectPropParlayLegs() {
   nextPropRows().forEach((p) => {
     if (!readyThisWeek({ game_id: p.game_id })) return;
     const L = postedLean(p);
-    if (!L || L.take !== "Under" || L.price == null || L.fair == null || !(L.value > 0.005) || L.skip) return;
+    if (!L || L.take !== "Under" || L.price == null || L.fair == null || !(L.value > 0.005) || L.skip || !L.proven) return;
     const stat = L.m.key;
     if (!VAL_LBL[stat] || !["pass_yds", "pass_td", "rush_yds", "rec_yds", "rec"].includes(stat)) return;
     const mean = L.m.mean >= 10 ? Math.round(L.m.mean) : Number(L.m.mean).toFixed(1);
@@ -9049,7 +9051,7 @@ function collectPropParlayLegs() {
       game_id: p.game_id, player: p.name, id: p.id, game: p.game, date: p.date,
       hit: L.chance, odds: L.price, source: L.book,
       key: p.name + "|" + stat + "|under", score: L.value * 1000 + L.chance,
-      why: `We project ${mean} ${VAL_LBL[stat]} against ${L.line}; our checked chance on the under is ${Math.round(L.chance * 100)}%, the books' ${Math.round(L.fair * 100)}%.`
+      why: `We project ${mean} ${VAL_LBL[stat]} against ${L.line}; our checked chance on the under is ${Math.round(L.chance * 100)}%, the books' ${Math.round(L.fair * 100)}%.${L.def ? " " + L.def.text : ""}`
     });
   });
   return out.sort((a, b) => b.score - a.score).slice(0, 80);
@@ -12965,6 +12967,10 @@ function postedLean(p) {
     // rookie): shown and graded, not played. Only once the game logs are loaded.
     pick.thin = !!window.GAMELOGS && (!pick.hist || pick.hist.n < PROP_MIN_PLAYED);
     pick.skip = pick.cold || pick.thin;
+    pick.def = propDefense(p, pick.m.key, pick.take);
+    pick.defAgainst = !!(pick.def && pick.def.against);
+    pick.gap = pick.fair != null ? pick.chance - pick.fair : null;
+    pick.proven = propProven(pick);
   }
   return pick;
 }
@@ -12974,6 +12980,42 @@ function postedLean(p) {
 // sides won 40.8% against our 52.9% (20-29, -11.2u); every other group was even or better.
 // The record keeps grading cold sides on their own so this can be undone if it was luck.
 const PROP_COLD_MAX = 0.25;
+// The NFL play of the day and the Ladder take only "proven" props (from Nov 8, 2026). Graded
+// props through week 9: unders where our checked chance is 0-4 points over the books' own
+// chance, that beat their price and don't run into the wrong defense, went 35-17 (67%,
+// +15.8u), 72% then 63% in the two halves. Bigger edges (4+ points) went 52-48: when we
+// disagree with every book by a lot, the books are usually right. Overs went 62-69.
+// Picked this way, the play of the day would have gone 6-2 on past slates (it went 3-4).
+const PROP_EDGE_MAX = 0.04, PROP_PICK_MIN = 0.52;
+function propProven(L) {
+  return !!L && L.take === "Under" && !L.skip && !L.defAgainst && L.gap != null && L.gap >= 0 && L.gap <= PROP_EDGE_MAX
+    && L.value > 0.005 && L.chance >= PROP_PICK_MIN && L.price != null;
+}
+// Defense tiers (data/def-tiers.json, scripts/def_tiers.py from nflverse): what the opponent
+// allows per game to this position in this stat, ranked 1 (fewest) to 32. Top 8 is a tough
+// defense, bottom 8 a soft one. An under into a soft defense or an over into a tough one is
+// "against" the pick; the play of the day and the Ladder skip those.
+const DEF_TIER_N = 8;
+function propOrd(n) { const s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
+function propDefense(p, key, take) {
+  const T = window.DEF_TIERS;
+  if (!T || !p || !p.opp || !p.pos) return null;
+  const r = T.ranks[`${p.opp}|${p.pos}|${key}`];
+  if (!r) return null;
+  const [rank, n, per, lg] = r;
+  const tier = rank <= DEF_TIER_N ? "tough" : rank > n - DEF_TIER_N ? "soft" : "mid";
+  const under = /under/i.test(String(take));
+  const lbl = (typeof PROP_LBL !== "undefined" && PROP_LBL[key]) || key;
+  const fmt = (x) => (x >= 10 ? Math.round(x) : Number(x).toFixed(1));
+  const against = (under && tier === "soft") || (!under && tier === "tough");
+  const helps = (under && tier === "tough") || (!under && tier === "soft");
+  const text = tier === "tough"
+    ? `${p.opp} is a tough defense here: it allows the ${propOrd(rank)}-fewest ${lbl} to ${p.pos}s (${fmt(per)} a game; league average ${fmt(lg)}).`
+    : tier === "soft"
+      ? `${p.opp} is a soft defense here: it allows the ${propOrd(n - rank + 1)}-most ${lbl} to ${p.pos}s (${fmt(per)} a game; league average ${fmt(lg)}).`
+      : `${p.opp} is middle of the pack here: ${propOrd(rank)} of ${n} in ${lbl} allowed to ${p.pos}s (${fmt(per)} a game; league average ${fmt(lg)}).`;
+  return { rank, n, per, lg, tier, against, helps, text };
+}
 const PROP_MIN_PLAYED = 5;   // games played in his team's last 8 before a side can be played
 function propColdHist(p, key, line, take) {
   try {
@@ -13239,7 +13281,7 @@ function renderProps() {
     const pick = L
       ? `<div class="pp-pick ${L.score > 0 ? "plus" : ""}">
           <div><span class="lbl">Our side</span><b>${L.take} ${L.line} ${PROP_LBL[L.m.key] || L.m.label}</b>
-          <small>${Math.round(L.chance * 100)}% checked${L.fair != null ? ` (our model ${Math.round(L.raw * 100)}%, books ${Math.round(L.fair * 100)}%)` : " (no prices yet)"}${L.price != null ? ` · best ${pbAm(L.price)} ${pbEsc(L.book || "")}` : ""}</small>${L.price != null && L.fair != null ? `<small class="bet-size-s">Bet size: <b>${unitsText(kellyUnits(L.chance, L.price))}</b></small>` : ""}${p.injury && p.injury !== "ACTIVE" && L.take === "Over" ? `<small class="pp-warn">He's ${pbEsc(String(p.injury).toLowerCase())}. A line well under our number often means the books expect a smaller role.</small>` : ""}${L.cold && L.score > 0 ? `<small class="pp-warn">Not played: this side hit only ${L.hist.hits} of his last ${L.hist.n} at this line. Sides that cold have lost more often than our numbers said, so the Ladder, play of the day and tickets pass on it. It's still graded below as a skip.</small>` : ""}${L.thin && !L.cold && L.score > 0 ? `<small class="pp-warn">Not played: he's played ${L.hist ? L.hist.n : 0} of his team's last 8 games, too few to check his history (we need ${PROP_MIN_PLAYED}). The Ladder, play of the day and tickets pass on it; it's still graded below as a skip.</small>` : ""}</div>
+          <small>${Math.round(L.chance * 100)}% checked${L.fair != null ? ` (our model ${Math.round(L.raw * 100)}%, books ${Math.round(L.fair * 100)}%)` : " (no prices yet)"}${L.price != null ? ` · best ${pbAm(L.price)} ${pbEsc(L.book || "")}` : ""}</small>${L.price != null && L.fair != null ? `<small class="bet-size-s">Bet size: <b>${unitsText(kellyUnits(L.chance, L.price))}</b></small>` : ""}${p.injury && p.injury !== "ACTIVE" && L.take === "Over" ? `<small class="pp-warn">He's ${pbEsc(String(p.injury).toLowerCase())}. A line well under our number often means the books expect a smaller role.</small>` : ""}${L.cold && L.score > 0 ? `<small class="pp-warn">Not played: this side hit only ${L.hist.hits} of his last ${L.hist.n} at this line. Sides that cold have lost more often than our numbers said, so the Ladder, play of the day and tickets pass on it. It's still graded below as a skip.</small>` : ""}${L.thin && !L.cold && L.score > 0 ? `<small class="pp-warn">Not played: he's played ${L.hist ? L.hist.n : 0} of his team's last 8 games, too few to check his history (we need ${PROP_MIN_PLAYED}). The Ladder, play of the day and tickets pass on it; it's still graded below as a skip.</small>` : ""}${L.def ? `<small class="${L.def.against ? "pp-warn" : "pp-def"}">${L.def.against ? "Wrong matchup for this side: " : L.def.helps ? "Matchup helps: " : "Matchup: "}${pbEsc(L.def.text)}${L.def.against ? " The play of the day and the Ladder pass on it." : ""}</small>` : ""}${L.proven ? `<small class="pp-proven">Proven pick: an under 0-4 points over the books, beating its price, with the matchup on its side. Picks like this went 35-17.</small>` : ""}</div>
           ${L.value != null ? `<span class="pp-val ${L.value > 0 ? "plus" : "minus"}">${L.value > 0 ? "+" : ""}${Math.round(L.value * 100)}%</span>` : ""}
           ${tid ? `<button type="button" class="pp-add" data-addprop="${tid}" aria-pressed="${!!inTicket}">${inTicket ? "On ticket" : "Add to ticket"}</button>` : ""}
         </div>`
@@ -13291,8 +13333,10 @@ function renderProps() {
 // data/gamelogs.json (scripts/gamelogs.py, refreshed every few hours), with a bar per game.
 function loadGamelogs() {
   if (typeof pbFetchOnce !== "function") return Promise.resolve();
-  return pbFetchOnce("gamelogs", "/data/gamelogs.json?t=" + Math.floor(Date.now() / 3600000), (d) => { window.GAMELOGS = (d && d.players) || {}; })
-    .then(() => { if (window.GAMELOGS && typeof view !== "undefined" && view === "props") renderProps(); });
+  return Promise.all([
+    pbFetchOnce("gamelogs", "/data/gamelogs.json?t=" + Math.floor(Date.now() / 3600000), (d) => { window.GAMELOGS = (d && d.players) || {}; }),
+    pbFetchOnce("deftiers", "/data/def-tiers.json?t=" + Math.floor(Date.now() / 3600000), (d) => { window.DEF_TIERS = d && d.ranks ? d : null; }).catch(() => {}),
+  ]).then(() => { if (window.GAMELOGS && typeof view !== "undefined" && view === "props") renderProps(); });
 }
 function propHistoryHtml(p) {
   const lean = p && p._lean;
@@ -13615,15 +13659,16 @@ function potdNflCandidates(g) {
     nextPropRows().filter((p) => String(p.game_id) === String(g.id)).forEach((p) => {
       const L = postedLean(p);
       if (!L || L.price == null || L.value == null || !(L.value > 0.005) || L.fair == null || L.skip) return;
-      // unders only: graded prop unders are 42-20 where the market is priced both ways; overs
-      // are about break-even (15-13)
-      if (L.take !== "Under") return;
+      // proven props only (propProven): an under, 0-4 points over the books, beating its price,
+      // a 52%+ chance, and not into a soft defense
+      if (L.take !== "Under" || !L.proven) return;
       const lbl = PROP_LBL[L.m.key] || L.m.label;
       out.push({
         g, kind: "Player prop", line: `${p.name} ${L.take.toLowerCase()} ${L.line} ${lbl}`,
         hit: L.chance, ev: L.value, value: L.value * 10, price: L.price, book: L.book,
         prop: { pid: String(p.id), name: p.name, stat: L.m.key, side: L.take.toLowerCase(), line: Number(L.line) },
-        why: `We project ${p.name} for ${L.m.key === "td" ? Math.round((1 - Math.exp(-L.m.mean)) * 100) + "%" : (L.m.mean >= 10 ? Math.round(L.m.mean) : Number(L.m.mean).toFixed(1)) + " " + lbl} against a line of ${L.line}. Our checked chance on the ${L.take.toLowerCase()} is ${Math.round(L.chance * 100)}%; the books' own chance is ${Math.round(L.fair * 100)}%. At ${pbAm(L.price)} (${L.book}) that is ${Math.round(L.value * 1000) / 10}% better than the price.`
+        why: `We project ${p.name} for ${L.m.key === "td" ? Math.round((1 - Math.exp(-L.m.mean)) * 100) + "%" : (L.m.mean >= 10 ? Math.round(L.m.mean) : Number(L.m.mean).toFixed(1)) + " " + lbl} against a line of ${L.line}. Our checked chance on the ${L.take.toLowerCase()} is ${Math.round(L.chance * 100)}%; the books' own chance is ${Math.round(L.fair * 100)}%. At ${pbAm(L.price)} (${L.book}) that is ${Math.round(L.value * 1000) / 10}% better than the price.${L.def ? " " + L.def.text : ""}${L.hist && L.hist.hits != null ? ` The under hit in ${L.hist.hits} of his last ${L.hist.n} games at this line.` : ""}`,
+        proven: true,
       });
     });
   }
@@ -13697,12 +13742,18 @@ function potdPick(league) {
   // Every college candidate already beats its price (potdCfbCandidates needs 1%+ value).
   bets.forEach((b) => { b.score = (league === "nfl" ? b.ev * potdKindWeight(league, b.kind) : b.ev); });
   if (league === "cfb") bets.sort((a, b) => (Number(b.hit) || 0) - (Number(a.hit) || 0) || b.score - a.score);
-  else bets.sort((a, b) => b.score - a.score || b.hit - a.hit);
+  // NFL (from Nov 8, 2026): a proven prop (propProven) always comes first, the one most likely
+  // to hit; a side, total or moneyline only when no proven prop is left, and then it needs a
+  // 52%+ chance too
+  else {
+    bets = bets.filter((b) => b.proven || (Number(b.hit) || 0) >= PROP_PICK_MIN);
+    bets.sort((a, b) => (b.proven ? 1 : 0) - (a.proven ? 1 : 0) || (a.proven && b.proven ? (b.hit - a.hit) || (b.ev - a.ev) : (b.score - a.score || b.hit - a.hit)));
+  }
   const best = bets[0];
   if (!best) return null;
   const rec = potdKindRecord(league, best.kind);
   const weight = potdKindWeight(league, best.kind);
-  if (rec && Math.abs(weight - 1) >= 0.04) {
+  if (rec && Math.abs(weight - 1) >= 0.04 && !best.proven) {
     best.why += " " + best.kind + " plays are " + rec.hit + "-" + (rec.n - rec.hit) + " on the play of the day, so that record is in the pick.";
   }
   best.window = window;
@@ -13873,7 +13924,26 @@ function ladderLegPool(day, minLeg, light) {
   // College spreads stay off, on every day: picks off a power rating against the line went
   // 458-503 (47.7%) on 2020-2025 college games, worse as the gap grew. College totals and
   // moneylines stay on.
-  ["nfl", "cfb"].forEach((lg) => {
+  // From Nov 8, 2026 a real ticket takes only legs from groups that have won: proven NFL prop
+  // unders (propProven, 35-17) and college unders that pass the play of the day's angles (58+
+  // totals 55%+ over 1,000 games; forecast weather). NFL sides, totals and moneylines off our
+  // number, and college moneylines, have no tested edge, so they're left out. (Pass days still
+  // show their closest ticket from everything, for information.)
+  if (!light) {
+    const wx = (g, b) => b.kind === "Under" && Number((g.proj || {}).weather_adj_total) <= -1.5;
+    add(safe(() => collectParlayLegs().filter((l) => {
+      if (l.league !== "cfb") return false;
+      const id = readyLegId(l) || "";
+      const g = pbGame(l.game_id);
+      return /\|tot\|under$/.test(id) && g && potdCfbCandidates(g, wx).length > 0;
+    })), "total");
+    add(safe(() => leanTotalLegs("cfb", 0.3).filter((l) => {
+      const id = readyLegId(l) || "";
+      const g = pbGame(l.game_id);
+      return /\|tot\|under$/.test(id) && g && potdCfbCandidates(g, wx).length > 0;
+    })), "total");
+    add(safe(() => collectPropParlayLegs()), "prop");
+  } else ["nfl", "cfb"].forEach((lg) => {
     add(safe(() => collectParlayLegs().filter((l) => l.league === lg && !(lg === "cfb" && l.kind === "spread"))), "play");
     add(safe(() => moneylineLegs(lg, !!light)), "ml");
     if (lg === "nfl") {
@@ -13884,7 +13954,7 @@ function ladderLegPool(day, minLeg, light) {
     // light days: both sides of every total, the price decides
     if (light) add(safe(() => bothTotalLegs(lg)), "total");
   });
-  add(safe(() => collectPropParlayLegs()), "prop");
+  if (light) add(safe(() => collectPropParlayLegs()), "prop");
   // up to three choices a game (the ticket itself never takes two legs from one game: legs in
   // one game move together, and books price that against you)
   const byGame = new Map(), seen = new Set();

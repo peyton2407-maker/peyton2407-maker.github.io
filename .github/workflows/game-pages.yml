@@ -29,6 +29,9 @@ jobs:
       - name: Red-zone usage for the touchdown page (nflverse play-by-play)
         continue-on-error: true
         run: python3 scripts/red_zone.py
+      - name: Defense tiers by stat for prop matchups (nflverse weekly stats)
+        continue-on-error: true
+        run: python3 scripts/def_tiers.py
       - name: Plays per game for the totals model's pace
         continue-on-error: true
         run: python3 scripts/team_pace.py
@@ -42,6 +45,7 @@ jobs:
           if [ -f data/gamelogs.json ]; then git add data/gamelogs.json; fi
           if [ -f data/team-pace.json ]; then git add data/team-pace.json; fi
           if [ -f data/red-zone.json ]; then git add data/red-zone.json; fi
+          if [ -f data/def-tiers.json ]; then git add data/def-tiers.json; fi
           if git diff --cached --quiet; then
             echo "Nothing new."
             exit 0
