@@ -394,7 +394,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 67.5,
-   "lockedAt": "2026-11-08T00:16:20.478Z",
+   "lockedAt": "2026-11-08T00:31:25.593Z",
    "provisional": true
   },
   "401858285": {
@@ -841,7 +841,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 71.5,
-   "lockedAt": "2026-11-08T00:16:20.478Z",
+   "lockedAt": "2026-11-08T00:31:25.593Z",
    "provisional": true
   },
   "401860913": {
@@ -862,7 +862,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 43.5,
-   "lockedAt": "2026-11-08T00:16:20.478Z",
+   "lockedAt": "2026-11-08T00:31:25.593Z",
    "provisional": true
   },
   "401862817": {
@@ -1058,7 +1058,7 @@
    "total_play": false,
    "spread": 7,
    "total": 48.5,
-   "lockedAt": "2026-11-08T00:16:20.478Z",
+   "lockedAt": "2026-11-08T00:31:25.593Z",
    "provisional": true
   },
   "401864533": {
@@ -1129,7 +1129,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-08T00:16:20.478Z",
+   "lockedAt": "2026-11-08T00:31:25.593Z",
    "provisional": true
   },
   "401866453": {
@@ -2512,7 +2512,7 @@
    }
   ]
  },
- "updated": "2026-11-08T00:16:20.478Z",
+ "updated": "2026-11-08T00:31:25.593Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2687,8 +2687,8 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.7351,
-   "bookWin": 0.743,
+   "win": 0.735,
+   "bookWin": 0.7428,
    "total": 39.5,
    "result": null,
    "final": null
@@ -3065,9 +3065,9 @@
    "ev": 0.0457,
    "mev": 0.0356,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "WKU 42, MTSU 51",
+   "units": 2.6
   },
   {
    "id": "401862819|tot|over",
@@ -3390,9 +3390,9 @@
    "mainLine": -3,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2824,
+   "win": 0.2825,
    "mwin": 0.2607,
-   "ev": 0.0871,
+   "ev": 0.0875,
    "mev": 0.0037,
    "src": "proj",
    "result": null,
