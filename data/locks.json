@@ -1822,7 +1822,7 @@
    "total_play": false,
    "spread": 5.5,
    "total": 40.5,
-   "lockedAt": "2026-11-08T18:01:37.911Z",
+   "lockedAt": "2026-11-08T18:26:59.781Z",
    "provisional": true
   },
   "401873047": {
@@ -1834,16 +1834,16 @@
    "away": "LV",
    "date": "2026-11-08T21:25Z",
    "pick": "SF",
-   "pick_line": "SF -9.5",
+   "pick_line": "SF -8.5",
    "total_pick": "UNDER 51.5",
    "side_play": false,
-   "our_margin": 9.56,
+   "our_margin": 8.86,
    "our_total": 51.4,
    "confidence": null,
    "total_play": false,
-   "spread": -9.5,
+   "spread": -8.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T18:01:37.911Z",
+   "lockedAt": "2026-11-08T18:26:59.781Z",
    "provisional": true
   },
   "401873048": {
@@ -1864,7 +1864,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 39.5,
-   "lockedAt": "2026-11-08T18:01:37.911Z",
+   "lockedAt": "2026-11-08T18:26:59.781Z",
    "provisional": true
   },
   "401873049": {
@@ -1885,7 +1885,7 @@
    "total_play": false,
    "spread": -3,
    "total": 44.5,
-   "lockedAt": "2026-11-08T18:01:37.911Z",
+   "lockedAt": "2026-11-08T18:26:59.781Z",
    "provisional": true
   },
   "401873050": {
@@ -1906,7 +1906,7 @@
    "total_play": false,
    "spread": -6,
    "total": 47.5,
-   "lockedAt": "2026-11-08T18:01:37.911Z",
+   "lockedAt": "2026-11-08T18:26:59.781Z",
    "provisional": true
   }
  },
@@ -2912,7 +2912,7 @@
    }
   ]
  },
- "updated": "2026-11-08T18:01:37.911Z",
+ "updated": "2026-11-08T18:26:59.781Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3067,7 +3067,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-08T18:01:37.911Z",
+      "at": "2026-11-08T18:26:59.781Z",
       "line": 22.5,
       "price": -112,
       "book": "DraftKings",
@@ -3101,11 +3101,11 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-08T18:01:37.911Z",
+      "at": "2026-11-08T18:26:59.781Z",
       "line": 41.5,
       "price": -111,
       "book": "DraftKings",
-      "fair": 0.5141,
+      "fair": 0.514,
       "push": 0,
       "src": "books"
      }
@@ -3243,9 +3243,25 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.735,
-   "bookWin": 0.7428,
+   "win": 0.7352,
+   "bookWin": 0.7432,
    "total": 39.5,
+   "result": null,
+   "final": null
+  },
+  {
+   "id": "401873047|sp|home",
+   "gid": "401873047",
+   "team": "SF",
+   "side": "home",
+   "game": "LV @ SF",
+   "kick": "2026-11-08T21:25Z",
+   "from": -8.5,
+   "to": -2.5,
+   "book": null,
+   "win": 0.7433,
+   "bookWin": 0.7434,
+   "total": 51.5,
    "result": null,
    "final": null
   }
@@ -4552,6 +4568,27 @@
    "units": null
   },
   {
+   "key": "401873047|4382466",
+   "gid": "401873047",
+   "pid": "4382466",
+   "name": "Jalen Nailor",
+   "pos": "WR",
+   "team": "LV",
+   "opp": "SF",
+   "game": "LV @ SF",
+   "kick": "2026-11-08T21:25Z",
+   "price": 525,
+   "book": "Fanatics",
+   "books": 6,
+   "ours": 0.2149,
+   "mkt": 0.1497,
+   "win": 0.166,
+   "ev": 0.0372,
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "key": "401873050|4608810",
    "gid": "401873050",
    "pid": "4608810",
@@ -4635,5 +4672,6 @@
    "final": null,
    "units": null
   }
- ]
+ ],
+ "sides": []
 }
