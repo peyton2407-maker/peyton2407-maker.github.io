@@ -1822,7 +1822,7 @@
    "total_play": false,
    "spread": 5.5,
    "total": 40.5,
-   "lockedAt": "2026-11-08T19:01:28.190Z",
+   "lockedAt": "2026-11-08T19:16:32.033Z",
    "provisional": true
   },
   "401873047": {
@@ -1843,7 +1843,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T19:01:28.190Z",
+   "lockedAt": "2026-11-08T19:16:32.033Z",
    "provisional": true
   },
   "401873048": {
@@ -1864,7 +1864,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 39.5,
-   "lockedAt": "2026-11-08T19:01:28.190Z",
+   "lockedAt": "2026-11-08T19:16:32.033Z",
    "provisional": true
   },
   "401873049": {
@@ -1885,7 +1885,7 @@
    "total_play": false,
    "spread": -3,
    "total": 44.5,
-   "lockedAt": "2026-11-08T19:01:28.190Z",
+   "lockedAt": "2026-11-08T19:16:32.033Z",
    "provisional": true
   },
   "401873050": {
@@ -1906,7 +1906,7 @@
    "total_play": false,
    "spread": -6,
    "total": 47.5,
-   "lockedAt": "2026-11-08T19:01:28.190Z",
+   "lockedAt": "2026-11-08T19:16:32.033Z",
    "provisional": true
   }
  },
@@ -2912,7 +2912,7 @@
    }
   ]
  },
- "updated": "2026-11-08T19:01:28.190Z",
+ "updated": "2026-11-08T19:16:32.033Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3067,7 +3067,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-08T19:01:28.190Z",
+      "at": "2026-11-08T19:16:32.033Z",
       "line": 22.5,
       "price": -112,
       "book": "DraftKings",
@@ -3101,7 +3101,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-08T19:01:28.190Z",
+      "at": "2026-11-08T19:16:32.033Z",
       "line": 41.5,
       "price": -111,
       "book": "DraftKings",
@@ -3243,8 +3243,8 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.735,
-   "bookWin": 0.7428,
+   "win": 0.7351,
+   "bookWin": 0.743,
    "total": 39.5,
    "result": null,
    "final": null
@@ -3259,8 +3259,8 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.7429,
-   "bookWin": 0.7428,
+   "win": 0.743,
+   "bookWin": 0.743,
    "total": 51.5,
    "result": null,
    "final": null
