@@ -394,7 +394,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 67.5,
-   "lockedAt": "2026-11-08T00:31:25.593Z",
+   "lockedAt": "2026-11-08T00:46:27.048Z",
    "provisional": true
   },
   "401858285": {
@@ -841,7 +841,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 71.5,
-   "lockedAt": "2026-11-08T00:31:25.593Z",
+   "lockedAt": "2026-11-08T00:46:27.048Z",
    "provisional": true
   },
   "401860913": {
@@ -862,7 +862,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 43.5,
-   "lockedAt": "2026-11-08T00:31:25.593Z",
+   "lockedAt": "2026-11-08T00:46:27.048Z",
    "provisional": true
   },
   "401862817": {
@@ -1058,7 +1058,7 @@
    "total_play": false,
    "spread": 7,
    "total": 48.5,
-   "lockedAt": "2026-11-08T00:31:25.593Z",
+   "lockedAt": "2026-11-08T00:46:27.048Z",
    "provisional": true
   },
   "401864533": {
@@ -1129,7 +1129,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-08T00:31:25.593Z",
+   "lockedAt": "2026-11-08T00:46:27.048Z",
    "provisional": true
   },
   "401866453": {
@@ -2355,9 +2355,9 @@
     "hitPct": 55,
     "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 64.5. At -104 (FanDuel) the price needs 51%; we count it at 55%, so it's 6.9% better than the price.",
     "label": "Best of Saturday's 37 games",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "RICE 23 – UNT 52",
+    "resultWhy": "It missed. UNDER 64.5 did not cash. Final was RICE 23 – UNT 52.",
     "units": 1.75,
     "price": -104,
     "book": "FanDuel",
@@ -2374,7 +2374,8 @@
     "close_line": 65.5,
     "closeAt": "2026-11-07T20:02:34.877Z",
     "close_src": "board",
-    "clv": -1
+    "clv": -1,
+    "by": "Final total 75, 10.5 over 64.5"
    }
   ],
   "cfbHit": [
@@ -2512,7 +2513,7 @@
    }
   ]
  },
- "updated": "2026-11-08T00:31:25.593Z",
+ "updated": "2026-11-08T00:46:27.048Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3175,9 +3176,9 @@
    "ev": 0.0359,
    "mev": 0.0359,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "VAN 25, MSST 23",
+   "units": -1
   },
   {
    "id": "401856742|sp|home",
@@ -3197,9 +3198,9 @@
    "ev": 0.0521,
    "mev": 0.021,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "VAN 25, MSST 23",
+   "units": -1
   },
   {
    "id": "401858513|tot|under",
