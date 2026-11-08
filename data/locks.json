@@ -1822,7 +1822,12 @@
    "total_play": false,
    "spread": 5.5,
    "total": 40.5,
-   "lockedAt": "2026-11-08T19:46:27.246Z"
+   "lockedAt": "2026-11-08T19:46:27.246Z",
+   "close_spread": 5.5,
+   "close_total": 40.5,
+   "closeAt": "2026-11-08T20:16:38.250Z",
+   "clv_side": 0,
+   "clv_total": 0
   },
   "401873047": {
    "id": "401873047",
@@ -1902,7 +1907,7 @@
    "total_play": false,
    "spread": -6,
    "total": 47.5,
-   "lockedAt": "2026-11-08T20:01:27.396Z",
+   "lockedAt": "2026-11-08T20:16:38.250Z",
    "provisional": true
   }
  },
@@ -2908,7 +2913,7 @@
    }
   ]
  },
- "updated": "2026-11-08T20:01:27.396Z",
+ "updated": "2026-11-08T20:16:38.250Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3063,7 +3068,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-08T20:01:27.396Z",
+      "at": "2026-11-08T20:16:38.250Z",
       "line": 22.5,
       "price": -116,
       "book": "DraftKings",
@@ -3097,7 +3102,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-08T20:01:27.396Z",
+      "at": "2026-11-08T20:16:38.250Z",
       "line": 42.5,
       "price": -115,
       "book": "DraftKings",
