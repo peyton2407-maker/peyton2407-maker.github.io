@@ -1,25 +1,25 @@
 {
- "updated": "2026-11-08T00:27:27Z",
+ "updated": "2026-11-08T01:01:36Z",
  "about": "Every side The Split took: the line when first picked, the closing line, and how many points the line moved toward our side (clv). Only picks still standing at kickoff count (counts: true); ones The Split dropped before the game are listed but not counted. Positive average CLV over a season is the sign of a real edge; win-loss needs far more games.",
  "summary": {
   "record": {
    "picks": 129,
-   "n": 46,
-   "avg_clv": -0.12,
+   "n": 48,
+   "avg_clv": -0.15,
    "beat_close": 13,
-   "even": 14,
-   "lost_close": 19,
+   "even": 15,
+   "lost_close": 20,
    "at_first": {
     "w": 57,
-    "l": 66,
+    "l": 67,
     "p": 3,
-    "pct": 0.463
+    "pct": 0.46
    },
    "at_close": {
     "w": 21,
-    "l": 22,
+    "l": 23,
     "p": 2,
-    "pct": 0.488
+    "pct": 0.477
    }
   },
   "by_week": {
@@ -125,22 +125,22 @@
    },
    "2026-11-02": {
     "picks": 6,
-    "n": 4,
-    "avg_clv": -0.5,
+    "n": 6,
+    "avg_clv": -0.58,
     "beat_close": 0,
-    "even": 2,
-    "lost_close": 2,
+    "even": 3,
+    "lost_close": 3,
     "at_first": {
      "w": 1,
-     "l": 2,
+     "l": 3,
      "p": 0,
-     "pct": 0.333
+     "pct": 0.25
     },
     "at_close": {
      "w": 1,
-     "l": 2,
+     "l": 3,
      "p": 0,
-     "pct": 0.333
+     "pct": 0.25
     }
    }
   },
@@ -3425,9 +3425,9 @@
    "close": -19.5,
    "close_src": "last look",
    "clv": -1.0,
-   "final": null,
-   "ats_first": null,
-   "ats_close": null,
+   "final": "RUTG 10 - WIS 31",
+   "ats_first": "L",
+   "ats_close": "L",
    "counts": true
   },
   {
