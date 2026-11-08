@@ -394,7 +394,12 @@
    "total_play": false,
    "spread": -16.5,
    "total": 67.5,
-   "lockedAt": "2026-11-08T01:01:23.383Z"
+   "lockedAt": "2026-11-08T01:01:23.383Z",
+   "close_spread": -16.5,
+   "close_total": 67.5,
+   "closeAt": "2026-11-08T01:31:40.400Z",
+   "clv_side": 0,
+   "clv_total": 0
   },
   "401858285": {
    "id": "401858285",
@@ -840,7 +845,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 71.5,
-   "lockedAt": "2026-11-08T01:16:36.042Z",
+   "lockedAt": "2026-11-08T01:31:40.400Z",
    "provisional": true
   },
   "401860913": {
@@ -861,7 +866,12 @@
    "total_play": false,
    "spread": -1.5,
    "total": 43.5,
-   "lockedAt": "2026-11-08T01:01:23.383Z"
+   "lockedAt": "2026-11-08T01:01:23.383Z",
+   "close_spread": -1.5,
+   "close_total": 43.5,
+   "closeAt": "2026-11-08T01:31:40.400Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401862817": {
    "id": "401862817",
@@ -1056,7 +1066,12 @@
    "total_play": false,
    "spread": 7,
    "total": 48.5,
-   "lockedAt": "2026-11-08T01:01:23.383Z"
+   "lockedAt": "2026-11-08T01:01:23.383Z",
+   "close_spread": 7,
+   "close_total": 48.5,
+   "closeAt": "2026-11-08T01:31:40.400Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401864533": {
    "id": "401864533",
@@ -1118,15 +1133,15 @@
    "date": "2026-11-08T03:30Z",
    "pick": "UNLV",
    "pick_line": "UNLV -3.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "OVER 50.5",
    "side_play": false,
    "our_margin": 4.9,
-   "our_total": 49.5,
+   "our_total": 50.1,
    "confidence": null,
    "total_play": false,
    "spread": -3.5,
-   "total": 49.5,
-   "lockedAt": "2026-11-08T01:16:36.042Z",
+   "total": 50.5,
+   "lockedAt": "2026-11-08T01:31:40.400Z",
    "provisional": true
   },
   "401866453": {
@@ -2510,7 +2525,7 @@
    }
   ]
  },
- "updated": "2026-11-08T01:16:36.042Z",
+ "updated": "2026-11-08T01:31:40.400Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3341,12 +3356,12 @@
    "game": "WYO @ UNLV",
    "kick": "2026-11-08T03:30Z",
    "line": 59.5,
-   "mainLine": 49.5,
+   "mainLine": 50.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2756,
+   "win": 0.2734,
    "mwin": 0.2756,
-   "ev": 0.0474,
+   "ev": 0.039,
    "mev": 0.0474,
    "src": "mkt",
    "result": null,
