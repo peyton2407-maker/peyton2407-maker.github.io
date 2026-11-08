@@ -1647,8 +1647,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 42.5,
-   "lockedAt": "2026-11-08T16:16:30.844Z",
-   "provisional": true
+   "lockedAt": "2026-11-08T16:31:43.396Z"
   },
   "401873040": {
    "id": "401873040",
@@ -1668,8 +1667,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T16:16:30.844Z",
-   "provisional": true
+   "lockedAt": "2026-11-08T16:31:43.396Z"
   },
   "401873041": {
    "id": "401873041",
@@ -1689,8 +1687,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-08T16:16:30.844Z",
-   "provisional": true
+   "lockedAt": "2026-11-08T16:31:43.396Z"
   },
   "401873042": {
    "id": "401873042",
@@ -1710,8 +1707,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 50.5,
-   "lockedAt": "2026-11-08T16:16:30.844Z",
-   "provisional": true
+   "lockedAt": "2026-11-08T16:31:43.396Z"
   },
   "401873043": {
    "id": "401873043",
@@ -1731,8 +1727,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 47.5,
-   "lockedAt": "2026-11-08T16:16:30.844Z",
-   "provisional": true
+   "lockedAt": "2026-11-08T16:31:43.396Z"
   },
   "401873044": {
    "id": "401873044",
@@ -1752,8 +1747,7 @@
    "total_play": false,
    "spread": 3,
    "total": 38.5,
-   "lockedAt": "2026-11-08T16:16:30.844Z",
-   "provisional": true
+   "lockedAt": "2026-11-08T16:31:43.396Z"
   },
   "401873045": {
    "id": "401873045",
@@ -1773,8 +1767,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 47.5,
-   "lockedAt": "2026-11-08T16:16:30.844Z",
-   "provisional": true
+   "lockedAt": "2026-11-08T16:31:43.396Z"
   },
   "401873046": {
    "id": "401873046",
@@ -1794,7 +1787,7 @@
    "total_play": false,
    "spread": 5.5,
    "total": 40.5,
-   "lockedAt": "2026-11-08T16:16:30.844Z",
+   "lockedAt": "2026-11-08T16:31:43.396Z",
    "provisional": true
   },
   "401873047": {
@@ -1815,7 +1808,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T16:16:30.844Z",
+   "lockedAt": "2026-11-08T16:31:43.396Z",
    "provisional": true
   },
   "401873048": {
@@ -1830,13 +1823,13 @@
    "pick_line": "ARI +8.5",
    "total_pick": "UNDER 39.5",
    "side_play": false,
-   "our_margin": 7.46,
+   "our_margin": 7.03,
    "our_total": 38.9,
    "confidence": null,
    "total_play": false,
    "spread": -8.5,
    "total": 39.5,
-   "lockedAt": "2026-11-08T16:16:30.844Z",
+   "lockedAt": "2026-11-08T16:31:43.396Z",
    "provisional": true
   },
   "401873049": {
@@ -1857,7 +1850,7 @@
    "total_play": false,
    "spread": -3,
    "total": 44.5,
-   "lockedAt": "2026-11-08T16:16:30.844Z",
+   "lockedAt": "2026-11-08T16:31:43.396Z",
    "provisional": true
   },
   "401873050": {
@@ -1878,7 +1871,7 @@
    "total_play": false,
    "spread": -6,
    "total": 47.5,
-   "lockedAt": "2026-11-08T16:16:30.844Z",
+   "lockedAt": "2026-11-08T16:31:43.396Z",
    "provisional": true
   }
  },
@@ -2213,12 +2206,12 @@
     "ours": "HOU -4.4 · total 40.0",
     "score": "HOU 22.2 – LAC 17.8",
     "market": "HOU -5.5 · total 40.5",
-    "lockedAt": "2026-11-08T16:16:30.880Z",
+    "lockedAt": "2026-11-08T16:31:43.449Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-08T21:05Z",
     "big": true,
-    "savedAt": 1794154590880
+    "savedAt": 1794155503449
    }
   ],
   "cfb": [
@@ -2881,7 +2874,7 @@
    }
   ]
  },
- "updated": "2026-11-08T16:16:30.844Z",
+ "updated": "2026-11-08T16:31:43.396Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3000,7 +2993,16 @@
       "line": 52.5,
       "name": "Sam LaPorta"
      },
-     "result": null
+     "result": null,
+     "close": {
+      "at": "2026-11-08T16:31:43.396Z",
+      "line": 52.5,
+      "price": -114,
+      "book": "DraftKings",
+      "fair": 0.5426,
+      "push": 0,
+      "src": "books"
+     }
     },
     {
      "id": "401873046|pp|4038941|rush_yds|under",
@@ -3025,7 +3027,16 @@
       "line": 22.5,
       "name": "Justin Herbert"
      },
-     "result": null
+     "result": null,
+     "close": {
+      "at": "2026-11-08T16:31:43.396Z",
+      "line": 22.5,
+      "price": -112,
+      "book": "DraftKings",
+      "fair": 0.5163,
+      "push": 0,
+      "src": "books"
+     }
     },
     {
      "id": "401873047|pp|3117251|rec_yds|under",
@@ -3050,14 +3061,23 @@
       "line": 41.5,
       "name": "Christian McCaffrey"
      },
-     "result": null
+     "result": null,
+     "close": {
+      "at": "2026-11-08T16:31:43.396Z",
+      "line": 41.5,
+      "price": -111,
+      "book": "DraftKings",
+      "fair": 0.5141,
+      "push": 0,
+      "src": "books"
+     }
     }
    ],
    "result": null,
    "units": null,
-   "locked": false,
-   "provisional": true,
-   "lockedAt": "2026-11-08T16:16:30.844Z"
+   "locked": true,
+   "provisional": false,
+   "lockedAt": "2026-11-08T16:31:43.396Z"
   }
  ],
  "teasers": [
@@ -3169,7 +3189,7 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.735,
+   "win": 0.727,
    "bookWin": 0.7428,
    "total": 39.5,
    "result": null,
@@ -3948,6 +3968,28 @@
    "units": null
   },
   {
+   "id": "401873048|sp|away",
+   "gid": "401873048",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "away",
+   "label": "ARI +3",
+   "game": "ARI @ SEA",
+   "kick": "2026-11-08T21:25Z",
+   "line": 3,
+   "mainLine": 8.5,
+   "price": 240,
+   "book": "BetRivers",
+   "win": 0.2871,
+   "mwin": 0.2713,
+   "ev": 0.0504,
+   "mev": -0.0051,
+   "src": "proj",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873051|tot|under",
    "gid": "401873051",
    "league": "nfl",
@@ -4341,10 +4383,10 @@
    "price": 300,
    "book": "Fanatics",
    "books": 6,
-   "ours": 0.3708,
+   "ours": 0.3745,
    "mkt": 0.2928,
-   "win": 0.3123,
-   "ev": 0.2491,
+   "win": 0.3132,
+   "ev": 0.2529,
    "result": null,
    "final": null,
    "units": null
@@ -4383,10 +4425,10 @@
    "price": 175,
    "book": "FanDuel",
    "books": 6,
-   "ours": 0.37,
+   "ours": 0.3737,
    "mkt": 0.4223,
-   "win": 0.4092,
-   "ev": 0.1254,
+   "win": 0.4102,
+   "ev": 0.128,
    "result": null,
    "final": null,
    "units": null
