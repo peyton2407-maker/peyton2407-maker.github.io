@@ -1622,7 +1622,7 @@
    "total_play": false,
    "spread": 3,
    "total": 52.5,
-   "lockedAt": "2026-11-08T07:16:26.192Z",
+   "lockedAt": "2026-11-08T09:16:19.080Z",
    "provisional": true
   },
   "401873039": {
@@ -1643,7 +1643,7 @@
    "total_play": false,
    "spread": -3,
    "total": 42.5,
-   "lockedAt": "2026-11-08T07:16:26.192Z",
+   "lockedAt": "2026-11-08T09:16:19.080Z",
    "provisional": true
   },
   "401873040": {
@@ -1664,7 +1664,7 @@
    "total_play": false,
    "spread": 5.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T07:16:26.192Z",
+   "lockedAt": "2026-11-08T09:16:19.080Z",
    "provisional": true
   },
   "401873041": {
@@ -1685,7 +1685,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-08T07:16:26.192Z",
+   "lockedAt": "2026-11-08T09:16:19.080Z",
    "provisional": true
   },
   "401873042": {
@@ -1706,7 +1706,7 @@
    "total_play": false,
    "spread": 6,
    "total": 49.5,
-   "lockedAt": "2026-11-08T07:16:26.192Z",
+   "lockedAt": "2026-11-08T09:16:19.080Z",
    "provisional": true
   },
   "401873043": {
@@ -1727,7 +1727,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 47.5,
-   "lockedAt": "2026-11-08T07:16:26.192Z",
+   "lockedAt": "2026-11-08T09:16:19.080Z",
    "provisional": true
   },
   "401873044": {
@@ -1748,7 +1748,7 @@
    "total_play": false,
    "spread": 3,
    "total": 38.5,
-   "lockedAt": "2026-11-08T07:16:26.192Z",
+   "lockedAt": "2026-11-08T09:16:19.080Z",
    "provisional": true
   },
   "401873045": {
@@ -1769,7 +1769,28 @@
    "total_play": false,
    "spread": -9.5,
    "total": 48.5,
-   "lockedAt": "2026-11-08T07:16:26.192Z",
+   "lockedAt": "2026-11-08T09:16:19.080Z",
+   "provisional": true
+  },
+  "401873046": {
+   "id": "401873046",
+   "league": "nfl",
+   "week": 9,
+   "short": "HOU @ LAC",
+   "home": "LAC",
+   "away": "HOU",
+   "date": "2026-11-08T21:05Z",
+   "pick": "LAC",
+   "pick_line": "LAC +6.0",
+   "total_pick": "UNDER 40.5",
+   "side_play": false,
+   "our_margin": -4.71,
+   "our_total": 40,
+   "confidence": null,
+   "total_play": false,
+   "spread": 6,
+   "total": 40.5,
+   "lockedAt": "2026-11-08T09:16:19.080Z",
    "provisional": true
   }
  },
@@ -2074,6 +2095,42 @@
     "close_src": "board",
     "clv": 0,
     "by": "0.5 over 2.5"
+   },
+   {
+    "key": "slate:2026-11-08",
+    "week": 9,
+    "day": "2026-11-08",
+    "league": "nfl",
+    "id": "401873046",
+    "game": "HOU @ LAC",
+    "kind": "Player prop",
+    "line": "Justin Herbert under 22.5 rush yds",
+    "hitPct": 58,
+    "why": "We project Justin Herbert for 16 rush yds against a line of 22.5. Our checked chance on the under is 58%; the books' own chance is 52%. At -112 (DraftKings) that is 9.4% better than the price. Player prop plays are 3-4 on the play of the day, so that record is in the pick.",
+    "label": "Best of Sunday's 12 games",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 2,
+    "prop": {
+     "pid": "4038941",
+     "name": "Justin Herbert",
+     "stat": "rush_yds",
+     "side": "under",
+     "line": 22.5
+    },
+    "price": -112,
+    "book": "DraftKings",
+    "ev": 0.094,
+    "ours": "HOU -4.7 · total 40.0",
+    "score": "HOU 22.4 – LAC 17.6",
+    "market": "HOU -6.0 · total 40.5",
+    "lockedAt": "2026-11-08T09:16:19.147Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-08T21:05Z",
+    "big": true,
+    "savedAt": 1794129379147
    }
   ],
   "cfb": [
@@ -2736,7 +2793,7 @@
    }
   ]
  },
- "updated": "2026-11-08T07:16:26.192Z",
+ "updated": "2026-11-08T09:16:19.080Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2827,9 +2884,9 @@
    "size": 1,
    "american": 576,
    "dec": 6.7559,
-   "chance": 0.1863,
+   "chance": 0.185,
    "breakEven": 0.148,
-   "ev": 0.2585,
+   "ev": 0.2498,
    "firstKick": "2026-11-08T18:00:00.000Z",
    "legs": [
     {
@@ -2883,27 +2940,27 @@
      "result": null
     },
     {
-     "id": "401873040|pp|4686468|rush_yds|under",
-     "label": "Seth McGowan under 27.5 rush yds",
+     "id": "401873039|pp|4685702|rush_yds|under",
+     "label": "Quinshon Judkins under 68.5 rush yds",
      "kind": "pp",
-     "game_id": "401873040",
-     "game": "DAL @ IND",
+     "game_id": "401873039",
+     "game": "CLE @ NO",
      "league": "nfl",
      "kick": "2026-11-08T18:00Z",
      "price": -110,
-     "line": 27.5,
-     "win": 0.5609,
-     "bookWin": 0.5067,
-     "value": 0.0708,
+     "line": 68.5,
+     "win": 0.557,
+     "bookWin": 0.5006,
+     "value": 0.0634,
      "cat": "prop",
-     "why": "We project 23 rush yds against 27.5; our checked chance on the under is 55%, the books' 51%.",
+     "why": "We project 60 rush yds against 68.5; our checked chance on the under is 54%, the books' 50%.",
      "alt": null,
      "prop": {
-      "pid": "4686468",
+      "pid": "4685702",
       "stat": "rush_yds",
       "side": "under",
-      "line": 27.5,
-      "name": "Seth McGowan"
+      "line": 68.5,
+      "name": "Quinshon Judkins"
      },
      "result": null
     }
@@ -2912,7 +2969,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-08T07:16:26.192Z"
+   "lockedAt": "2026-11-08T09:16:19.080Z"
   }
  ],
  "teasers": [
@@ -3792,40 +3849,40 @@
    "league": "nfl",
    "kind": "tot",
    "side": "under",
-   "label": "Under 43.5",
+   "label": "Under 46.5",
    "game": "TB @ CHI",
    "kick": "2026-11-09T01:20Z",
-   "line": 43.5,
+   "line": 46.5,
    "mainLine": 47.5,
-   "price": 170,
+   "price": 120,
    "book": "ESPN BET",
-   "win": 0.3969,
-   "mwin": 0.3838,
-   "ev": 0.0716,
-   "mev": 0.0361,
+   "win": 0.4788,
+   "mwin": 0.4653,
+   "ev": 0.0534,
+   "mev": 0.0238,
    "src": "mkt",
    "result": null,
    "final": null,
    "units": null
   },
   {
-   "id": "401873051|sp|away",
+   "id": "401873051|tot|under",
    "gid": "401873051",
    "league": "nfl",
-   "kind": "sp",
-   "side": "away",
-   "label": "BUF -9",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 35.5",
    "game": "BUF @ MIN",
    "kick": "2026-11-10T01:15Z",
-   "line": -9,
-   "mainLine": -3,
-   "price": 240,
-   "book": "BetRivers",
-   "win": 0.3015,
-   "mwin": 0.288,
-   "ev": 0.0356,
-   "mev": -0.0108,
-   "src": "proj",
+   "line": 35.5,
+   "mainLine": 43.5,
+   "price": 300,
+   "book": "FanDuel",
+   "win": 0.2608,
+   "mwin": 0.2596,
+   "ev": 0.0433,
+   "mev": 0.0386,
+   "src": "mkt",
    "result": null,
    "final": null,
    "units": null
@@ -4241,13 +4298,13 @@
    "opp": "CHI",
    "game": "TB @ CHI",
    "kick": "2026-11-09T01:20Z",
-   "price": 750,
-   "book": "FanDuel",
-   "books": 5,
+   "price": 800,
+   "book": "Fanatics",
+   "books": 4,
    "ours": 0.1464,
-   "mkt": 0.1252,
-   "win": 0.1305,
-   "ev": 0.1095,
+   "mkt": 0.1176,
+   "win": 0.1248,
+   "ev": 0.123,
    "result": null,
    "final": null,
    "units": null
@@ -4266,9 +4323,9 @@
    "book": "DraftKings",
    "books": 6,
    "ours": 0.2319,
-   "mkt": 0.2174,
-   "win": 0.2211,
-   "ev": 0.039,
+   "mkt": 0.217,
+   "win": 0.2207,
+   "ev": 0.0374,
    "result": null,
    "final": null,
    "units": null
@@ -4287,9 +4344,9 @@
    "book": "BetRivers",
    "books": 6,
    "ours": 0.2743,
-   "mkt": 0.2095,
-   "win": 0.2257,
-   "ev": 0.0383,
+   "mkt": 0.2138,
+   "win": 0.2289,
+   "ev": 0.0529,
    "result": null,
    "final": null,
    "units": null
