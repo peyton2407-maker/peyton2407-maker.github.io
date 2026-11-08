@@ -1922,7 +1922,7 @@
    "total_play": false,
    "spread": -6,
    "total": 47.5,
-   "lockedAt": "2026-11-08T22:16:44.155Z",
+   "lockedAt": "2026-11-08T23:46:27.811Z",
    "provisional": true
   }
  },
@@ -2315,33 +2315,33 @@
     "id": "401873050",
     "game": "TB @ CHI",
     "kind": "Player prop",
-    "line": "Colston Loveland under 54.5 rec yds",
-    "hitPct": 56,
-    "why": "We project Colston Loveland for 48 rec yds against a line of 54.5. Our checked chance on the under is 56%; the books' own chance is 51%. At -114 (DraftKings) that is 5% better than the price. TB is middle of the pack here: 20th of 32 in rec yds allowed to TEs (56 a game; league average 55). The under hit in 4 of his last 8 games at this line.",
+    "line": "Cade Otton under 3.5 receptions",
+    "hitPct": 64,
+    "why": "We project Cade Otton for 2.7 receptions against a line of 3.5. Our checked chance on the under is 64%; the books' own chance is 59%. At -163 (DraftKings) that is 3.3% better than the price. CHI is a tough defense here: it allows the 6th-fewest receptions to TEs (4.5 a game; league average 5.5). The under hit in 5 of his last 7 games at this line.",
     "label": "Sunday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 1.5,
+    "units": 1.25,
     "prop": {
-     "pid": "4723086",
-     "name": "Colston Loveland",
-     "stat": "rec_yds",
+     "pid": "4243331",
+     "name": "Cade Otton",
+     "stat": "rec",
      "side": "under",
-     "line": 54.5
+     "line": 3.5
     },
-    "price": -114,
+    "price": -163,
     "book": "DraftKings",
-    "ev": 0.05,
+    "ev": 0.033,
     "ours": "CHI -5.6 · total 46.5",
     "score": "TB 20.5 – CHI 26.0",
     "market": "CHI -6.0 · total 47.5",
-    "lockedAt": "2026-11-08T22:16:44.180Z",
+    "lockedAt": "2026-11-08T23:46:27.829Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-09T01:20Z",
     "big": false,
-    "savedAt": 1794176204180
+    "savedAt": 1794181587829
    }
   ],
   "cfb": [
@@ -3004,7 +3004,7 @@
    }
   ]
  },
- "updated": "2026-11-08T22:16:44.155Z",
+ "updated": "2026-11-08T23:46:27.811Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
