@@ -1622,7 +1622,7 @@
    "total_play": false,
    "spread": 3,
    "total": 52.5,
-   "lockedAt": "2026-11-08T03:46:42.249Z",
+   "lockedAt": "2026-11-08T04:01:20.374Z",
    "provisional": true
   }
  },
@@ -2588,7 +2588,7 @@
    }
   ]
  },
- "updated": "2026-11-08T03:46:42.249Z",
+ "updated": "2026-11-08T04:01:20.374Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3295,9 +3295,9 @@
    "ev": 0.0313,
    "mev": 0.0313,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "IOWA 24, NU 10",
+   "units": 2.3
   },
   {
    "id": "401856852|sp|home",
