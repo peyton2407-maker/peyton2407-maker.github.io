@@ -1822,7 +1822,7 @@
    "total_play": false,
    "spread": 5.5,
    "total": 40.5,
-   "lockedAt": "2026-11-08T17:46:37.257Z",
+   "lockedAt": "2026-11-08T17:52:12.524Z",
    "provisional": true
   },
   "401873047": {
@@ -1843,7 +1843,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T17:46:37.257Z",
+   "lockedAt": "2026-11-08T17:52:12.524Z",
    "provisional": true
   },
   "401873048": {
@@ -1864,7 +1864,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 39.5,
-   "lockedAt": "2026-11-08T17:46:37.257Z",
+   "lockedAt": "2026-11-08T17:52:12.524Z",
    "provisional": true
   },
   "401873049": {
@@ -1885,7 +1885,7 @@
    "total_play": false,
    "spread": -3,
    "total": 44.5,
-   "lockedAt": "2026-11-08T17:46:37.257Z",
+   "lockedAt": "2026-11-08T17:52:12.524Z",
    "provisional": true
   },
   "401873050": {
@@ -1906,7 +1906,7 @@
    "total_play": false,
    "spread": -6,
    "total": 47.5,
-   "lockedAt": "2026-11-08T17:46:37.257Z",
+   "lockedAt": "2026-11-08T17:52:12.524Z",
    "provisional": true
   }
  },
@@ -2217,36 +2217,35 @@
     "week": 9,
     "day": "2026-11-08",
     "league": "nfl",
-    "id": "401873046",
-    "game": "HOU @ LAC",
+    "id": "401873045",
+    "game": "NYJ @ KC",
     "kind": "Player prop",
-    "line": "Justin Herbert under 22.5 rush yds",
-    "hitPct": 58,
-    "why": "We project Justin Herbert for 16 rush yds against a line of 22.5. Our checked chance on the under is 58%; the books' own chance is 52%. At -112 (DraftKings) that is 9.4% better than the price. Player prop plays are 3-4 on the play of the day, so that record is in the pick.",
+    "line": "Patrick Mahomes under 2.5 pass TDs",
+    "hitPct": 67,
+    "why": "We project Patrick Mahomes for 1.8 pass TDs against a line of 2.5. Our checked chance on the under is 67%; the books' own chance is 64%. At -194 (DraftKings) that is 2.1% better than the price. NYJ is middle of the pack here: 24th of 32 in pass TDs allowed to QBs (1.8 a game; league average 1.5). The under hit in 5 of his last 7 games at this line.",
     "label": "Best of Sunday's 11 games",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 2,
+    "units": 1,
     "prop": {
-     "pid": "4038941",
-     "name": "Justin Herbert",
-     "stat": "rush_yds",
+     "pid": "3139477",
+     "name": "Patrick Mahomes",
+     "stat": "pass_td",
      "side": "under",
-     "line": 22.5
+     "line": 2.5
     },
-    "price": -112,
+    "price": -194,
     "book": "DraftKings",
-    "ev": 0.094,
-    "ours": "HOU -4.4 · total 40.0",
-    "score": "HOU 22.2 – LAC 17.8",
-    "market": "HOU -5.5 · total 40.5",
-    "lockedAt": "2026-11-08T17:46:37.321Z",
-    "locked": false,
-    "provisional": true,
-    "kick": "2026-11-08T21:05Z",
+    "ev": 0.021,
+    "ours": "KC -9.8 · total 47.5",
+    "score": "NYJ 18.9 – KC 28.6",
+    "market": "KC -9.5 · total 47.5",
+    "lockedAt": "2026-11-08T17:52:12.568Z",
+    "locked": true,
+    "kick": "2026-11-08T18:00Z",
     "big": true,
-    "savedAt": 1794159997321
+    "savedAt": 1794160332568
    }
   ],
   "cfb": [
@@ -2909,7 +2908,7 @@
    }
   ]
  },
- "updated": "2026-11-08T17:46:37.257Z",
+ "updated": "2026-11-08T17:52:12.524Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3030,7 +3029,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-08T17:46:37.257Z",
+      "at": "2026-11-08T17:52:12.524Z",
       "line": 52.5,
       "price": -114,
       "book": "DraftKings",
@@ -3064,7 +3063,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-08T17:46:37.257Z",
+      "at": "2026-11-08T17:52:12.524Z",
       "line": 22.5,
       "price": -112,
       "book": "DraftKings",
@@ -3098,7 +3097,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-08T17:46:37.257Z",
+      "at": "2026-11-08T17:52:12.524Z",
       "line": 41.5,
       "price": -111,
       "book": "DraftKings",
@@ -3240,8 +3239,8 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.7351,
-   "bookWin": 0.743,
+   "win": 0.735,
+   "bookWin": 0.7428,
    "total": 39.5,
    "result": null,
    "final": null
