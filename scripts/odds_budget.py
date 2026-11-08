@@ -187,14 +187,21 @@ def can_spend(b, cost, priority="core"):
         # one-off pulls of past seasons, run by hand: the month's pool only, never the daily
         # pace the site's live pulls run on
         return cost <= pool
-    day = _now().strftime("%Y-%m-%d")
+    # the day is the Eastern day (Nov 8, 2026: it was UTC, so Saturday night's college pulls
+    # counted against Sunday and the NFL props stopped refreshing by early afternoon)
+    day = _et_day(_now())
     spent = b.setdefault("extra_by_day", {}).get(day, 0)
     # game days get more (props move most on Saturday and Sunday); what a quiet day leaves
     # unspent rolls into the days after, since the pace is worked out again every run
-    mult = 2.2 if _now().weekday() in (5, 6) else 1.3
+    et_wd = datetime.strptime(day, "%Y-%m-%d").weekday()
+    mult = 2.2 if et_wd in (5, 6) else 1.3
+    # "near": a refresh in a game's last 6 hours (injury news and inactives move props most
+    # then) may go 60% past the day's pace, so the hours before kickoff are never the ones cut
+    if priority == "near":
+        mult *= 1.6
     return cost <= pool and spent + cost <= pool / days_left() * mult
 
 
 def spent_extra(b, cost):
-    day = _now().strftime("%Y-%m-%d")
+    day = _et_day(_now())
     b.setdefault("extra_by_day", {})[day] = b["extra_by_day"].get(day, 0) + int(cost or 0)

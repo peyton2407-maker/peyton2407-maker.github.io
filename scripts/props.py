@@ -205,9 +205,9 @@ def due_fresh(kick, fetched, now, tier):
         return age >= 1
     if hours <= 24:
         return age >= 2
-    if hours <= 72:
-        return age >= 6
-    return hours <= 120 and age >= 12
+    # games 1-3 days out move little: twice a day (was every 6 hours, and every 12 out to 5
+    # days), so the credits go to the last day before kickoff
+    return hours <= 72 and age >= 12
 
 
 def parse_odds_api(payload):
@@ -287,7 +287,8 @@ def odds_api_main(key, nfl, fx):
         if tier != "free" and odds_budget.can_spend(budget, len(ODDS_MARKETS) + len(EXTRA_MARKETS), "extra" if fresh else "core") and odds_budget.can_spend(budget, len(EXTRA_MARKETS), "extra"):
             markets.update(EXTRA_MARKETS)
         cost = len(markets)
-        if not odds_budget.can_spend(budget, cost, "extra" if fresh else "core"):
+        pri = "core" if core else ("near" if (kick - now) / 3600 <= 6 else "extra")
+        if not odds_budget.can_spend(budget, cost, pri):
             if core and len(status["errors"]) < 5:
                 status["errors"].append("stopped to keep the last credits")
             if core:

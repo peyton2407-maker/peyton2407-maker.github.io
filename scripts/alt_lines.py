@@ -40,7 +40,7 @@ def due(league, kick, fetched, now, tier):
     if hours <= 3:
         return age >= 1
     if league == "nfl":
-        return (hours <= 24 and age >= 3) or (hours <= 96 and age >= 6) or (hours <= 168 and age >= 12)
+        return (hours <= 24 and age >= 3) or (hours <= 96 and age >= 6) or (hours <= 168 and age >= 24)
     return (hours <= 24 and age >= 6) or (hours <= 48 and age >= 12)
 
 
