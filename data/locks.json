@@ -847,8 +847,8 @@
    "total": 71.5,
    "lockedAt": "2026-11-08T02:01:17.225Z",
    "close_spread": -5.5,
-   "close_total": 71.5,
-   "closeAt": "2026-11-08T02:31:21.484Z",
+   "close_total": 72.5,
+   "closeAt": "2026-11-08T03:01:31.217Z",
    "clv_side": 0,
    "clv_total": null
   },
@@ -1146,10 +1146,10 @@
    "spread": -3.5,
    "total": 50.5,
    "lockedAt": "2026-11-08T02:01:17.225Z",
-   "close_spread": -3.5,
+   "close_spread": -3,
    "close_total": 50.5,
-   "closeAt": "2026-11-08T02:31:21.484Z",
-   "clv_side": 0,
+   "closeAt": "2026-11-08T03:01:31.217Z",
+   "clv_side": -0.5,
    "clv_total": 0
   },
   "401866453": {
@@ -1622,7 +1622,7 @@
    "total_play": false,
    "spread": 3,
    "total": 52.5,
-   "lockedAt": "2026-11-08T02:46:29.286Z",
+   "lockedAt": "2026-11-08T03:01:31.217Z",
    "provisional": true
   }
  },
@@ -2446,10 +2446,10 @@
     "kick": "2026-11-08T03:30Z",
     "big": false,
     "savedAt": 1794105081547,
-    "close_line": 71.5,
-    "closeAt": "2026-11-08T02:46:29.286Z",
+    "close_line": 72.5,
+    "closeAt": "2026-11-08T03:01:31.217Z",
     "close_src": "board",
-    "clv": 0
+    "clv": -1
    }
   ],
   "cfbHit": [
@@ -2588,7 +2588,7 @@
    }
   ]
  },
- "updated": "2026-11-08T02:46:29.286Z",
+ "updated": "2026-11-08T03:01:31.217Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
