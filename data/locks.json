@@ -1647,7 +1647,7 @@
    "total_play": false,
    "spread": -3,
    "total": 42.5,
-   "lockedAt": "2026-11-08T14:01:22.678Z",
+   "lockedAt": "2026-11-08T14:31:32.957Z",
    "provisional": true
   },
   "401873040": {
@@ -1668,7 +1668,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T14:01:22.678Z",
+   "lockedAt": "2026-11-08T14:31:32.957Z",
    "provisional": true
   },
   "401873041": {
@@ -1689,7 +1689,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-08T14:01:22.678Z",
+   "lockedAt": "2026-11-08T14:31:32.957Z",
    "provisional": true
   },
   "401873042": {
@@ -1710,7 +1710,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 49.5,
-   "lockedAt": "2026-11-08T14:01:22.678Z",
+   "lockedAt": "2026-11-08T14:31:32.957Z",
    "provisional": true
   },
   "401873043": {
@@ -1731,7 +1731,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 47.5,
-   "lockedAt": "2026-11-08T14:01:22.678Z",
+   "lockedAt": "2026-11-08T14:31:32.957Z",
    "provisional": true
   },
   "401873044": {
@@ -1752,7 +1752,7 @@
    "total_play": false,
    "spread": 3,
    "total": 38.5,
-   "lockedAt": "2026-11-08T14:01:22.678Z",
+   "lockedAt": "2026-11-08T14:31:32.957Z",
    "provisional": true
   },
   "401873045": {
@@ -1773,7 +1773,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 48.5,
-   "lockedAt": "2026-11-08T14:01:22.678Z",
+   "lockedAt": "2026-11-08T14:31:32.957Z",
    "provisional": true
   },
   "401873046": {
@@ -1794,7 +1794,7 @@
    "total_play": false,
    "spread": 5.5,
    "total": 40.5,
-   "lockedAt": "2026-11-08T14:01:22.678Z",
+   "lockedAt": "2026-11-08T14:31:32.957Z",
    "provisional": true
   },
   "401873047": {
@@ -1815,7 +1815,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T14:01:22.678Z",
+   "lockedAt": "2026-11-08T14:31:32.957Z",
    "provisional": true
   },
   "401873048": {
@@ -1836,7 +1836,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 39.5,
-   "lockedAt": "2026-11-08T14:01:22.678Z",
+   "lockedAt": "2026-11-08T14:31:32.957Z",
    "provisional": true
   },
   "401873049": {
@@ -1857,7 +1857,7 @@
    "total_play": false,
    "spread": -3,
    "total": 44.5,
-   "lockedAt": "2026-11-08T14:01:22.678Z",
+   "lockedAt": "2026-11-08T14:31:32.957Z",
    "provisional": true
   },
   "401873050": {
@@ -1878,7 +1878,7 @@
    "total_play": false,
    "spread": -6,
    "total": 47.5,
-   "lockedAt": "2026-11-08T14:01:22.678Z",
+   "lockedAt": "2026-11-08T14:31:32.957Z",
    "provisional": true
   }
  },
@@ -2189,36 +2189,36 @@
     "week": 9,
     "day": "2026-11-08",
     "league": "nfl",
-    "id": "401873046",
-    "game": "HOU @ LAC",
+    "id": "401873040",
+    "game": "DAL @ IND",
     "kind": "Player prop",
-    "line": "Justin Herbert under 22.5 rush yds",
-    "hitPct": 58,
-    "why": "We project Justin Herbert for 16 rush yds against a line of 22.5. Our checked chance on the under is 58%; the books' own chance is 52%. At -112 (DraftKings) that is 9.4% better than the price. Player prop plays are 3-4 on the play of the day, so that record is in the pick.",
-    "label": "Best of Sunday's 12 games",
+    "line": "Ryan Flournoy under 47.5 rec yds",
+    "hitPct": 57,
+    "why": "We project Ryan Flournoy for 34 rec yds against a line of 47.5. Our checked chance on the under is 57%; the books' own chance is 51%. At -110 (DraftKings) that is 9.4% better than the price. Player prop plays are 3-4 on the play of the day, so that record is in the pick.",
+    "label": "Best of Sunday's 11 games",
     "result": null,
     "final": null,
     "resultWhy": "",
     "units": 2,
     "prop": {
-     "pid": "4038941",
-     "name": "Justin Herbert",
-     "stat": "rush_yds",
+     "pid": "5083754",
+     "name": "Ryan Flournoy",
+     "stat": "rec_yds",
      "side": "under",
-     "line": 22.5
+     "line": 47.5
     },
-    "price": -112,
+    "price": -110,
     "book": "DraftKings",
     "ev": 0.094,
-    "ours": "HOU -4.4 · total 40.0",
-    "score": "HOU 22.2 – LAC 17.8",
-    "market": "HOU -5.5 · total 40.5",
-    "lockedAt": "2026-11-08T14:01:22.748Z",
+    "ours": "DAL -3.7 · total 51.4",
+    "score": "DAL 27.6 – IND 23.8",
+    "market": "DAL -4.5 · total 51.5",
+    "lockedAt": "2026-11-08T14:31:33.024Z",
     "locked": false,
     "provisional": true,
-    "kick": "2026-11-08T21:05Z",
+    "kick": "2026-11-08T18:00Z",
     "big": true,
-    "savedAt": 1794146482748
+    "savedAt": 1794148293024
    }
   ],
   "cfb": [
@@ -2881,7 +2881,7 @@
    }
   ]
  },
- "updated": "2026-11-08T14:01:22.678Z",
+ "updated": "2026-11-08T14:31:32.957Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2970,11 +2970,11 @@
    "tier": "value",
    "stake": 1,
    "size": 1,
-   "american": 567,
-   "dec": 6.6702,
-   "chance": 0.1887,
-   "breakEven": 0.1499,
-   "ev": 0.2589,
+   "american": 578,
+   "dec": 6.7835,
+   "chance": 0.1874,
+   "breakEven": 0.1474,
+   "ev": 0.2715,
    "firstKick": "2026-11-08T18:00:00.000Z",
    "legs": [
     {
@@ -3003,6 +3003,31 @@
      "result": null
     },
     {
+     "id": "401873040|pp|5083754|rec_yds|under",
+     "label": "Ryan Flournoy under 47.5 rec yds",
+     "kind": "pp",
+     "game_id": "401873040",
+     "game": "DAL @ IND",
+     "league": "nfl",
+     "kick": "2026-11-08T18:00Z",
+     "price": -110,
+     "line": 47.5,
+     "win": 0.5646,
+     "bookWin": 0.5124,
+     "value": 0.0778,
+     "cat": "prop",
+     "why": "We project 34 rec yds against 47.5; our checked chance on the under is 57%, the books' 51%.",
+     "alt": null,
+     "prop": {
+      "pid": "5083754",
+      "stat": "rec_yds",
+      "side": "under",
+      "line": 47.5,
+      "name": "Ryan Flournoy"
+     },
+     "result": null
+    },
+    {
      "id": "401873046|pp|4038941|rush_yds|under",
      "label": "Justin Herbert under 22.5 rush yds",
      "kind": "pp",
@@ -3026,38 +3051,13 @@
       "name": "Justin Herbert"
      },
      "result": null
-    },
-    {
-     "id": "401873040|pp|4686468|rush_yds|under",
-     "label": "Seth McGowan under 28.5 rush yds",
-     "kind": "pp",
-     "game_id": "401873040",
-     "game": "DAL @ IND",
-     "league": "nfl",
-     "kick": "2026-11-08T18:00Z",
-     "price": -114,
-     "line": 28.5,
-     "win": 0.5685,
-     "bookWin": 0.5126,
-     "value": 0.0671,
-     "cat": "prop",
-     "why": "We project 23 rush yds against 28.5; our checked chance on the under is 56%, the books' 51%.",
-     "alt": null,
-     "prop": {
-      "pid": "4686468",
-      "stat": "rush_yds",
-      "side": "under",
-      "line": 28.5,
-      "name": "Seth McGowan"
-     },
-     "result": null
     }
    ],
    "result": null,
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-08T14:01:22.678Z"
+   "lockedAt": "2026-11-08T14:31:32.957Z"
   }
  ],
  "teasers": [
