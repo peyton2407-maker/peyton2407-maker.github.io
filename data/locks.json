@@ -1642,7 +1642,7 @@
    "total_play": false,
    "spread": -3,
    "total": 42.5,
-   "lockedAt": "2026-11-08T13:16:30.274Z",
+   "lockedAt": "2026-11-08T13:23:46.052Z",
    "provisional": true
   },
   "401873040": {
@@ -1663,7 +1663,7 @@
    "total_play": false,
    "spread": 5.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T13:16:30.274Z",
+   "lockedAt": "2026-11-08T13:23:46.052Z",
    "provisional": true
   },
   "401873041": {
@@ -1684,7 +1684,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-08T13:16:30.274Z",
+   "lockedAt": "2026-11-08T13:23:46.052Z",
    "provisional": true
   },
   "401873042": {
@@ -1705,7 +1705,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 49.5,
-   "lockedAt": "2026-11-08T13:16:30.274Z",
+   "lockedAt": "2026-11-08T13:23:46.052Z",
    "provisional": true
   },
   "401873043": {
@@ -1726,7 +1726,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 47.5,
-   "lockedAt": "2026-11-08T13:16:30.274Z",
+   "lockedAt": "2026-11-08T13:23:46.052Z",
    "provisional": true
   },
   "401873044": {
@@ -1747,7 +1747,7 @@
    "total_play": false,
    "spread": 3,
    "total": 38.5,
-   "lockedAt": "2026-11-08T13:16:30.274Z",
+   "lockedAt": "2026-11-08T13:23:46.052Z",
    "provisional": true
   },
   "401873045": {
@@ -1768,7 +1768,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 48.5,
-   "lockedAt": "2026-11-08T13:16:30.274Z",
+   "lockedAt": "2026-11-08T13:23:46.052Z",
    "provisional": true
   },
   "401873046": {
@@ -1789,7 +1789,7 @@
    "total_play": false,
    "spread": 5.5,
    "total": 40.5,
-   "lockedAt": "2026-11-08T13:16:30.274Z",
+   "lockedAt": "2026-11-08T13:23:46.052Z",
    "provisional": true
   },
   "401873047": {
@@ -1810,7 +1810,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T13:16:30.274Z",
+   "lockedAt": "2026-11-08T13:23:46.052Z",
    "provisional": true
   },
   "401873048": {
@@ -1831,7 +1831,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 39.5,
-   "lockedAt": "2026-11-08T13:16:30.274Z",
+   "lockedAt": "2026-11-08T13:23:46.052Z",
    "provisional": true
   },
   "401873049": {
@@ -1852,7 +1852,28 @@
    "total_play": false,
    "spread": -3,
    "total": 44.5,
-   "lockedAt": "2026-11-08T13:16:30.274Z",
+   "lockedAt": "2026-11-08T13:23:46.052Z",
+   "provisional": true
+  },
+  "401873050": {
+   "id": "401873050",
+   "league": "nfl",
+   "week": 9,
+   "short": "TB @ CHI",
+   "home": "CHI",
+   "away": "TB",
+   "date": "2026-11-09T01:20Z",
+   "pick": "TB",
+   "pick_line": "TB +6.0",
+   "total_pick": "UNDER 47.5",
+   "side_play": false,
+   "our_margin": 5.57,
+   "our_total": 45.6,
+   "confidence": 51,
+   "total_play": true,
+   "spread": -6,
+   "total": 47.5,
+   "lockedAt": "2026-11-08T13:23:46.052Z",
    "provisional": true
   }
  },
@@ -2187,12 +2208,12 @@
     "ours": "HOU -4.4 · total 40.0",
     "score": "HOU 22.2 – LAC 17.8",
     "market": "HOU -5.5 · total 40.5",
-    "lockedAt": "2026-11-08T13:16:30.335Z",
+    "lockedAt": "2026-11-08T13:23:46.109Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-08T21:05Z",
     "big": true,
-    "savedAt": 1794143790335
+    "savedAt": 1794144226109
    }
   ],
   "cfb": [
@@ -2855,7 +2876,7 @@
    }
   ]
  },
- "updated": "2026-11-08T13:16:30.274Z",
+ "updated": "2026-11-08T13:23:46.052Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3031,7 +3052,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-08T13:16:30.274Z"
+   "lockedAt": "2026-11-08T13:23:46.052Z"
   }
  ],
  "teasers": [
