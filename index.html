@@ -20110,11 +20110,16 @@ function pbKeep(league, market) {
 // morning from the graded prop record): the stat's own side first, then the side, then all props.
 function pbPropKeep(side, stat) {
   const L = (window.PB_CAL && window.PB_CAL.leagues && window.PB_CAL.leagues.nfl) || {};
-  for (const name of [`props_${side}_${stat}`, `props_${side}`]) {
-    const c = L[name];
-    if (c && c.n >= 40 && c.keep != null) return pbKeep("nfl", name);
-  }
-  return pbKeep("nfl", "props");
+  const sc = L[`props_${side}`];
+  const base = sc && sc.n >= 40 && sc.keep != null ? pbKeep("nfl", `props_${side}`) : pbKeep("nfl", "props");
+  // a stat's own record is pulled toward its side's (not toward the 25% start), so 100 graded
+  // catches can't swing far from what 230 unders say; it takes over as its own sample grows
+  const c = L[`props_${side}_${stat}`];
+  if (!c || !(c.n >= 40) || c.keep == null) return base;
+  const se = c.keep_se && c.keep_se > 0 ? c.keep_se : 0.5;
+  const w1 = 1 / (se * se), w0 = 1 / (PB_PRIOR_SD * PB_PRIOR_SD);
+  const k = Math.max(0, Math.min(1, (c.keep * w1 + base.k * w0) / (w1 + w0)));
+  return { k, checked: true, n: c.n, raw: c.keep, se, base: base.k };
 }
 // ---- legs ------------------------------------------------------------------------------
 // stored leg: { id, price?, line?, book? }   id: gid|sp|home  gid|tot|over  gid|ml|away  gid|pp|pid|stat|over
