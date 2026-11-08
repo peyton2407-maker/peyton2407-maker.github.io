@@ -1922,7 +1922,7 @@
    "total_play": false,
    "spread": -6,
    "total": 47.5,
-   "lockedAt": "2026-11-08T21:16:15.556Z",
+   "lockedAt": "2026-11-08T21:31:37.138Z",
    "provisional": true
   }
  },
@@ -2300,7 +2300,47 @@
     "locked": true,
     "kick": "2026-11-08T21:25Z",
     "big": false,
-    "savedAt": 1794172575573
+    "savedAt": 1794172575573,
+    "close_line": 45.5,
+    "closeAt": "2026-11-08T21:31:37.138Z",
+    "close_src": "board",
+    "clv": 0
+   },
+   {
+    "key": "game:401873050",
+    "week": 9,
+    "day": "2026-11-08",
+    "league": "nfl",
+    "id": "401873050",
+    "game": "TB @ CHI",
+    "kind": "Player prop",
+    "line": "Colston Loveland under 54.5 rec yds",
+    "hitPct": 56,
+    "why": "We project Colston Loveland for 48 rec yds against a line of 54.5. Our checked chance on the under is 56%; the books' own chance is 52%. At -114 (DraftKings) that is 5.7% better than the price. TB is middle of the pack here: 20th of 32 in rec yds allowed to TEs (56 a game; league average 55). The under hit in 4 of his last 8 games at this line.",
+    "label": "Sunday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 1.75,
+    "prop": {
+     "pid": "4723086",
+     "name": "Colston Loveland",
+     "stat": "rec_yds",
+     "side": "under",
+     "line": 54.5
+    },
+    "price": -114,
+    "book": "DraftKings",
+    "ev": 0.057,
+    "ours": "CHI -5.6 · total 46.5",
+    "score": "TB 20.5 – CHI 26.0",
+    "market": "CHI -6.0 · total 47.5",
+    "lockedAt": "2026-11-08T21:31:37.173Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-09T01:20Z",
+    "big": false,
+    "savedAt": 1794173497173
    }
   ],
   "cfb": [
@@ -2963,7 +3003,7 @@
    }
   ]
  },
- "updated": "2026-11-08T21:16:15.556Z",
+ "updated": "2026-11-08T21:31:37.138Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3267,8 +3307,8 @@
    "win": 0.729,
    "bookWin": 0.7161,
    "total": 38.5,
-   "result": null,
-   "final": null
+   "result": "HIT",
+   "final": "NYG 19, PHI 11"
   },
   {
    "id": "401873045|sp|home",
@@ -3976,9 +4016,9 @@
    "ev": 0.0525,
    "mev": 0.0104,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "NYG 19, PHI 11",
+   "units": -1
   },
   {
    "id": "401873041|tot|under",
