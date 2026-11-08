@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-11-07T01:09:52Z",
+ "checked_at": "2026-11-08T00:53:27Z",
  "errors": [],
  "console": [],
  "failed_requests": {},
@@ -7,11 +7,11 @@
  "screens": {
   "home": {
    "visible": true,
-   "count": 30,
+   "count": 44,
    "summary": [],
    "empty": [],
-   "chars": 2107,
-   "images": 72,
+   "chars": 2563,
+   "images": 100,
    "broken_images": []
   },
   "nfl": {
@@ -20,25 +20,25 @@
    "summary": [],
    "empty": [],
    "chars": 5052,
-   "images": 35,
+   "images": 38,
    "broken_images": []
   },
   "cfb": {
    "visible": true,
-   "count": 56,
+   "count": 19,
    "summary": [],
    "empty": [],
-   "chars": 9135,
-   "images": 113,
+   "chars": 5280,
+   "images": 48,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 26,
+   "count": 27,
    "summary": [],
    "empty": [],
-   "chars": 2408,
-   "images": 23,
+   "chars": 2404,
+   "images": 31,
    "broken_images": []
   },
   "season": {
@@ -46,16 +46,16 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3235,
+   "chars": 3216,
    "images": 42,
    "broken_images": []
   },
   "score": {
    "visible": true,
-   "count": 389,
+   "count": 394,
    "summary": [],
    "empty": [],
-   "chars": 26183,
+   "chars": 26843,
    "images": 0,
    "broken_images": []
   },
@@ -64,7 +64,7 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3398,
+   "chars": 3445,
    "images": 35,
    "broken_images": []
   },
@@ -73,7 +73,7 @@
    "count": 7,
    "summary": [],
    "empty": [],
-   "chars": 965,
+   "chars": 859,
    "images": 14,
    "broken_images": []
   },
@@ -82,7 +82,7 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 5250,
+   "chars": 6053,
    "images": 12,
    "broken_images": []
   },
@@ -91,7 +91,7 @@
    "count": 1,
    "summary": [],
    "empty": [],
-   "chars": 3720,
+   "chars": 3713,
    "images": 28,
    "broken_images": []
   },
@@ -108,11 +108,11 @@
    "visible": true,
    "count": 72,
    "summary": [
-    "350 value tickets in this filter 134 TD plus-money 9 spread / dog sides 83% b"
+    "360 value tickets in this filter 136 TD plus-money 11 spread / dog sides 83% "
    ],
    "empty": [],
-   "chars": 3447,
-   "images": 44,
+   "chars": 3452,
+   "images": 36,
    "broken_images": []
   },
   "parlay": {
@@ -120,7 +120,7 @@
    "count": 5,
    "summary": [],
    "empty": [],
-   "chars": 3111,
+   "chars": 3511,
    "images": 0,
    "broken_images": []
   },
@@ -129,21 +129,21 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2844,
-   "images": 13,
+   "chars": 4561,
+   "images": 27,
    "broken_images": []
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "524 listed THU \u00b7 11:31 PM ET 529 listed FRI \u00b7 8:01 PM ET 480 listed SA",
-    "33 listed CIN VS ATL 90 min before kick DAL @ IND 90 min before kick ",
-    "480 listed 0 probable \u00b7 75% 75 questionable / GTD \u00b7 50% 4 doubtful \u00b7 2"
+    "524 listed THU \u00b7 11:31 PM ET 529 listed FRI \u00b7 11:30 PM ET 479 listed S",
+    "473 listed SUN Not posted JAX @ BAL 33 listed CIN VS ATL 90 min before",
+    "473 listed 0 probable \u00b7 75% 70 questionable / GTD \u00b7 50% 4 doubtful \u00b7 2"
    ],
    "empty": [],
-   "chars": 4709,
-   "images": 5,
+   "chars": 4399,
+   "images": 2,
    "broken_images": []
   },
   "nflwx": {
@@ -151,7 +151,7 @@
    "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 3989,
+   "chars": 3931,
    "images": 30,
    "broken_images": []
   },
@@ -160,7 +160,7 @@
    "count": 4,
    "summary": [],
    "empty": [],
-   "chars": 2172,
+   "chars": 2211,
    "images": 2,
    "broken_images": []
   },
@@ -169,7 +169,7 @@
    "count": 18,
    "summary": [],
    "empty": [],
-   "chars": 6902,
+   "chars": 6823,
    "images": 36,
    "broken_images": []
   }
