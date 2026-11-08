@@ -1922,7 +1922,7 @@
    "total_play": false,
    "spread": -6,
    "total": 47.5,
-   "lockedAt": "2026-11-08T20:31:50.087Z",
+   "lockedAt": "2026-11-08T21:16:15.556Z",
    "provisional": true
   }
  },
@@ -2266,6 +2266,41 @@
     "closeAt": "2026-11-08T18:01:37.911Z",
     "close_src": "board",
     "clv": 0
+   },
+   {
+    "key": "game:401873049",
+    "week": 9,
+    "day": "2026-11-08",
+    "league": "nfl",
+    "id": "401873049",
+    "game": "GB @ NE",
+    "kind": "Player prop",
+    "line": "Tucker Kraft under 45.5 rec yds",
+    "hitPct": 54,
+    "why": "We project Tucker Kraft for 43 rec yds against a line of 45.5. Our checked chance on the under is 54%; the books' own chance is 50%. At -111 (DraftKings) that is 2.8% better than the price. NE is middle of the pack here: 16th of 32 in rec yds allowed to TEs (52 a game; league average 55). The under hit in 4 of his last 8 games at this line.",
+    "label": "Sunday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 0.75,
+    "prop": {
+     "pid": "4572680",
+     "name": "Tucker Kraft",
+     "stat": "rec_yds",
+     "side": "under",
+     "line": 45.5
+    },
+    "price": -111,
+    "book": "DraftKings",
+    "ev": 0.028,
+    "ours": "NE -2.7 · total 45.1",
+    "score": "GB 21.2 – NE 23.9",
+    "market": "NE -3.0 · total 44.5",
+    "lockedAt": "2026-11-08T21:16:15.573Z",
+    "locked": true,
+    "kick": "2026-11-08T21:25Z",
+    "big": false,
+    "savedAt": 1794172575573
    }
   ],
   "cfb": [
@@ -2928,7 +2963,7 @@
    }
   ]
  },
- "updated": "2026-11-08T20:31:50.087Z",
+ "updated": "2026-11-08T21:16:15.556Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3047,7 +3082,7 @@
       "line": 52.5,
       "name": "Sam LaPorta"
      },
-     "result": null,
+     "result": "HIT",
      "close": {
       "at": "2026-11-08T17:52:12.524Z",
       "line": 52.5,
@@ -3056,7 +3091,9 @@
       "fair": 0.5423,
       "push": 0,
       "src": "books"
-     }
+     },
+     "actual": 32,
+     "final": "Sam LaPorta: 32 rec yds"
     },
     {
      "id": "401873046|pp|4038941|rush_yds|under",
@@ -3117,9 +3154,9 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-08T20:31:50.087Z",
-      "line": 42.5,
-      "price": -115,
+      "at": "2026-11-08T21:16:15.556Z",
+      "line": 40.5,
+      "price": -112,
       "book": "DraftKings",
       "fair": null,
       "push": 0,
@@ -3157,8 +3194,8 @@
      "win": 0.7524,
      "bookWin": 0.7524,
      "total": 44.5,
-     "result": null,
-     "final": null
+     "result": "HIT",
+     "final": "DEN 26, CAR 21"
     },
     {
      "id": "401873037|sp|away",
@@ -3177,8 +3214,8 @@
      "final": "JAX 33, BAL 10"
     }
    ],
-   "result": null,
-   "units": null,
+   "result": "HIT",
+   "units": 0.8333,
    "locked": true,
    "provisional": false,
    "lockedAt": "2026-11-06T00:39:23.014Z"
@@ -3214,8 +3251,8 @@
    "win": 0.729,
    "bookWin": 0.7161,
    "total": 44.5,
-   "result": null,
-   "final": null
+   "result": "HIT",
+   "final": "DEN 26, CAR 21"
   },
   {
    "id": "401873044|sp|home",
@@ -3246,8 +3283,8 @@
    "win": 0.7517,
    "bookWin": 0.7517,
    "total": 47.5,
-   "result": null,
-   "final": null
+   "result": "HIT",
+   "final": "NYJ 12, KC 35"
   },
   {
    "id": "401873048|sp|home",
@@ -3259,8 +3296,8 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.7351,
-   "bookWin": 0.743,
+   "win": 0.7353,
+   "bookWin": 0.7434,
    "total": 39.5,
    "result": null,
    "final": null
@@ -3275,8 +3312,8 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.743,
-   "bookWin": 0.743,
+   "win": 0.7433,
+   "bookWin": 0.7434,
    "total": 51.5,
    "result": null,
    "final": null
@@ -3961,9 +3998,9 @@
    "ev": 0.0594,
    "mev": 0.0478,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "DEN 26, CAR 21",
+   "units": -1
   },
   {
    "id": "401873041|sp|home",
@@ -3983,9 +4020,9 @@
    "ev": 0.105,
    "mev": 0.0605,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "DEN 26, CAR 21",
+   "units": -1
   },
   {
    "id": "401873039|sp|away",
@@ -4027,9 +4064,9 @@
    "ev": 0.0301,
    "mev": 0.0205,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "LAR 20, WSH 13",
+   "units": 2.1
   },
   {
    "id": "401873039|tot|under",
