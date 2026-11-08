@@ -1922,7 +1922,7 @@
    "total_play": false,
    "spread": -6,
    "total": 47.5,
-   "lockedAt": "2026-11-08T21:46:22.625Z",
+   "lockedAt": "2026-11-08T22:16:44.155Z",
    "provisional": true
   }
  },
@@ -2240,9 +2240,9 @@
     "hitPct": 67,
     "why": "We project Patrick Mahomes for 1.8 pass TDs against a line of 2.5. Our checked chance on the under is 67%; the books' own chance is 64%. At -194 (DraftKings) that is 2.1% better than the price. NYJ is middle of the pack here: 24th of 32 in pass TDs allowed to QBs (1.8 a game; league average 1.5). The under hit in 5 of his last 7 games at this line.",
     "label": "Best of Sunday's 11 games",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "Patrick Mahomes: 2 pass TDs",
+    "resultWhy": "It hit. Patrick Mahomes under 2.5 pass TDs cashed.",
     "units": 1,
     "prop": {
      "pid": "3139477",
@@ -2265,7 +2265,8 @@
     "close_line": 2.5,
     "closeAt": "2026-11-08T18:01:37.911Z",
     "close_src": "board",
-    "clv": 0
+    "clv": 0,
+    "by": "0.5 under 2.5"
    },
    {
     "key": "game:401873049",
@@ -2316,12 +2317,12 @@
     "kind": "Player prop",
     "line": "Colston Loveland under 54.5 rec yds",
     "hitPct": 56,
-    "why": "We project Colston Loveland for 48 rec yds against a line of 54.5. Our checked chance on the under is 56%; the books' own chance is 52%. At -114 (DraftKings) that is 5.7% better than the price. TB is middle of the pack here: 20th of 32 in rec yds allowed to TEs (56 a game; league average 55). The under hit in 4 of his last 8 games at this line.",
+    "why": "We project Colston Loveland for 48 rec yds against a line of 54.5. Our checked chance on the under is 56%; the books' own chance is 51%. At -114 (DraftKings) that is 5% better than the price. TB is middle of the pack here: 20th of 32 in rec yds allowed to TEs (56 a game; league average 55). The under hit in 4 of his last 8 games at this line.",
     "label": "Sunday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 1.75,
+    "units": 1.5,
     "prop": {
      "pid": "4723086",
      "name": "Colston Loveland",
@@ -2331,16 +2332,16 @@
     },
     "price": -114,
     "book": "DraftKings",
-    "ev": 0.057,
+    "ev": 0.05,
     "ours": "CHI -5.6 · total 46.5",
     "score": "TB 20.5 – CHI 26.0",
     "market": "CHI -6.0 · total 47.5",
-    "lockedAt": "2026-11-08T21:46:22.646Z",
+    "lockedAt": "2026-11-08T22:16:44.180Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-09T01:20Z",
     "big": false,
-    "savedAt": 1794174382646
+    "savedAt": 1794176204180
    }
   ],
   "cfb": [
@@ -3003,7 +3004,7 @@
    }
   ]
  },
- "updated": "2026-11-08T21:46:22.625Z",
+ "updated": "2026-11-08T22:16:44.155Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
