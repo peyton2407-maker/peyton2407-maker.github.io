@@ -1842,8 +1842,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T19:46:27.246Z",
-   "provisional": true
+   "lockedAt": "2026-11-08T20:01:27.396Z"
   },
   "401873048": {
    "id": "401873048",
@@ -1857,14 +1856,13 @@
    "pick_line": "ARI +8.5",
    "total_pick": "UNDER 39.5",
    "side_play": false,
-   "our_margin": 7.03,
+   "our_margin": 7.46,
    "our_total": 38.9,
    "confidence": null,
    "total_play": false,
    "spread": -8.5,
    "total": 39.5,
-   "lockedAt": "2026-11-08T19:46:27.246Z",
-   "provisional": true
+   "lockedAt": "2026-11-08T20:01:27.396Z"
   },
   "401873049": {
    "id": "401873049",
@@ -1884,8 +1882,7 @@
    "total_play": false,
    "spread": -3,
    "total": 44.5,
-   "lockedAt": "2026-11-08T19:46:27.246Z",
-   "provisional": true
+   "lockedAt": "2026-11-08T20:01:27.396Z"
   },
   "401873050": {
    "id": "401873050",
@@ -1905,7 +1902,7 @@
    "total_play": false,
    "spread": -6,
    "total": 47.5,
-   "lockedAt": "2026-11-08T19:46:27.246Z",
+   "lockedAt": "2026-11-08T20:01:27.396Z",
    "provisional": true
   }
  },
@@ -2911,7 +2908,7 @@
    }
   ]
  },
- "updated": "2026-11-08T19:46:27.246Z",
+ "updated": "2026-11-08T20:01:27.396Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3066,7 +3063,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-08T19:46:27.246Z",
+      "at": "2026-11-08T20:01:27.396Z",
       "line": 22.5,
       "price": -116,
       "book": "DraftKings",
@@ -3100,7 +3097,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-08T19:46:27.246Z",
+      "at": "2026-11-08T20:01:27.396Z",
       "line": 42.5,
       "price": -115,
       "book": "DraftKings",
@@ -3242,8 +3239,8 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.7272,
-   "bookWin": 0.7432,
+   "win": 0.7351,
+   "bookWin": 0.743,
    "total": 39.5,
    "result": null,
    "final": null
@@ -3258,8 +3255,8 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.7432,
-   "bookWin": 0.7432,
+   "win": 0.743,
+   "bookWin": 0.743,
    "total": 51.5,
    "result": null,
    "final": null
@@ -4081,28 +4078,6 @@
    "units": null
   },
   {
-   "id": "401873048|sp|away",
-   "gid": "401873048",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "away",
-   "label": "ARI +3",
-   "game": "ARI @ SEA",
-   "kick": "2026-11-08T21:25Z",
-   "line": 3,
-   "mainLine": 8.5,
-   "price": 240,
-   "book": "BetRivers",
-   "win": 0.2873,
-   "mwin": 0.2713,
-   "ev": 0.0511,
-   "mev": -0.0051,
-   "src": "proj",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401873051|tot|under",
    "gid": "401873051",
    "league": "nfl",
@@ -4479,6 +4454,54 @@
    "market": 5.5,
    "label": "LAC +5",
    "lockedAt": "2026-11-08T19:46:27.246Z"
+  },
+  {
+   "id": "401873049",
+   "league": "nfl",
+   "gid": "401873049",
+   "side": "away",
+   "team": "GB",
+   "game": "GB @ NE",
+   "kick": "2026-11-08T21:25Z",
+   "line": 3,
+   "price": -102,
+   "book": "BetMGM",
+   "ours": 2.7,
+   "market": 3,
+   "label": "GB +3",
+   "lockedAt": "2026-11-08T20:01:27.396Z"
+  },
+  {
+   "id": "401873047",
+   "league": "nfl",
+   "gid": "401873047",
+   "side": "home",
+   "team": "SF",
+   "game": "LV @ SF",
+   "kick": "2026-11-08T21:25Z",
+   "line": -9,
+   "price": -105,
+   "book": "BetMGM",
+   "ours": -8.9,
+   "market": -8.5,
+   "label": "SF -9",
+   "lockedAt": "2026-11-08T20:01:27.396Z"
+  },
+  {
+   "id": "401873048",
+   "league": "nfl",
+   "gid": "401873048",
+   "side": "away",
+   "team": "ARI",
+   "game": "ARI @ SEA",
+   "kick": "2026-11-08T21:25Z",
+   "line": 8.5,
+   "price": -105,
+   "book": "FanDuel",
+   "ours": 7.5,
+   "market": 8.5,
+   "label": "ARI +8.5",
+   "lockedAt": "2026-11-08T20:01:27.396Z"
   }
  ]
 }
