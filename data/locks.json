@@ -1622,7 +1622,7 @@
    "total_play": false,
    "spread": 3,
    "total": 52.5,
-   "lockedAt": "2026-11-08T06:01:15.658Z",
+   "lockedAt": "2026-11-08T06:16:32.079Z",
    "provisional": true
   },
   "401873039": {
@@ -1643,7 +1643,7 @@
    "total_play": false,
    "spread": -3,
    "total": 42.5,
-   "lockedAt": "2026-11-08T06:01:15.658Z",
+   "lockedAt": "2026-11-08T06:16:32.079Z",
    "provisional": true
   },
   "401873040": {
@@ -1664,7 +1664,7 @@
    "total_play": false,
    "spread": 5.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T06:01:15.658Z",
+   "lockedAt": "2026-11-08T06:16:32.079Z",
    "provisional": true
   },
   "401873041": {
@@ -1685,7 +1685,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-08T06:01:15.658Z",
+   "lockedAt": "2026-11-08T06:16:32.079Z",
    "provisional": true
   },
   "401873042": {
@@ -1706,7 +1706,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 49.5,
-   "lockedAt": "2026-11-08T06:01:15.658Z",
+   "lockedAt": "2026-11-08T06:16:32.079Z",
    "provisional": true
   },
   "401873043": {
@@ -1727,7 +1727,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 47.5,
-   "lockedAt": "2026-11-08T06:01:15.658Z",
+   "lockedAt": "2026-11-08T06:16:32.079Z",
    "provisional": true
   },
   "401873044": {
@@ -1748,7 +1748,7 @@
    "total_play": false,
    "spread": 3,
    "total": 38.5,
-   "lockedAt": "2026-11-08T06:01:15.658Z",
+   "lockedAt": "2026-11-08T06:16:32.079Z",
    "provisional": true
   },
   "401873045": {
@@ -1769,7 +1769,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 48.5,
-   "lockedAt": "2026-11-08T06:01:15.658Z",
+   "lockedAt": "2026-11-08T06:16:32.079Z",
    "provisional": true
   }
  },
@@ -2735,7 +2735,7 @@
    }
   ]
  },
- "updated": "2026-11-08T06:01:15.658Z",
+ "updated": "2026-11-08T06:16:32.079Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2911,7 +2911,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-08T06:01:15.658Z"
+   "lockedAt": "2026-11-08T06:16:32.079Z"
   }
  ],
  "teasers": [
@@ -2991,8 +2991,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7528,
-   "bookWin": 0.7528,
+   "win": 0.7524,
+   "bookWin": 0.7524,
    "total": 44.5,
    "result": null,
    "final": null
@@ -3007,7 +3007,7 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.7349,
+   "win": 0.735,
    "bookWin": 0.7428,
    "total": 39.5,
    "result": null,
@@ -3622,11 +3622,11 @@
    "mainLine": -3,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2825,
-   "mwin": 0.2607,
-   "ev": 0.0875,
-   "mev": 0.0037,
-   "src": "proj",
+   "win": 0.2867,
+   "mwin": 0.2649,
+   "ev": 0.1037,
+   "mev": 0.0198,
+   "src": "mkt",
    "result": null,
    "final": null,
    "units": null
@@ -3666,11 +3666,11 @@
    "mainLine": -3,
    "price": 200,
    "book": "FanDuel",
-   "win": 0.355,
-   "mwin": 0.3409,
-   "ev": 0.0649,
-   "mev": 0.0226,
-   "src": "mkt",
+   "win": 0.3462,
+   "mwin": 0.3321,
+   "ev": 0.0386,
+   "mev": -0.0037,
+   "src": "proj",
    "result": null,
    "final": null,
    "units": null
@@ -3720,28 +3720,6 @@
    "units": null
   },
   {
-   "id": "401873048|sp|away",
-   "gid": "401873048",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "away",
-   "label": "ARI +3.5",
-   "game": "ARI @ SEA",
-   "kick": "2026-11-08T21:25Z",
-   "line": 3.5,
-   "mainLine": 8.5,
-   "price": 200,
-   "book": "FanDuel",
-   "win": 0.3438,
-   "mwin": 0.335,
-   "ev": 0.0313,
-   "mev": 0.0049,
-   "src": "proj",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401873048|tot|under",
    "gid": "401873048",
    "league": "nfl",
@@ -3752,34 +3730,12 @@
    "kick": "2026-11-08T21:25Z",
    "line": 31.5,
    "mainLine": 39.5,
-   "price": 285,
+   "price": 280,
    "book": "FanDuel",
-   "win": 0.2745,
-   "mwin": 0.2709,
-   "ev": 0.0569,
-   "mev": 0.0431,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873047|sp|home",
-   "gid": "401873047",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "home",
-   "label": "SF -18",
-   "game": "LV @ SF",
-   "kick": "2026-11-08T21:25Z",
-   "line": -18,
-   "mainLine": -9.5,
-   "price": 275,
-   "book": "BetRivers",
-   "win": 0.2702,
-   "mwin": 0.2703,
-   "ev": 0.0378,
-   "mev": 0.038,
+   "win": 0.273,
+   "mwin": 0.2694,
+   "ev": 0.0374,
+   "mev": 0.0238,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -3798,10 +3754,10 @@
    "mainLine": 51.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2725,
-   "mwin": 0.2719,
-   "ev": 0.0354,
-   "mev": 0.0331,
+   "win": 0.2736,
+   "mwin": 0.273,
+   "ev": 0.0396,
+   "mev": 0.0374,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -4286,11 +4242,11 @@
    "kick": "2026-11-09T01:20Z",
    "price": 750,
    "book": "FanDuel",
-   "books": 4,
+   "books": 5,
    "ours": 0.1464,
-   "mkt": 0.1183,
-   "win": 0.1253,
-   "ev": 0.0652,
+   "mkt": 0.1252,
+   "win": 0.1305,
+   "ev": 0.1095,
    "result": null,
    "final": null,
    "units": null
@@ -4305,13 +4261,34 @@
    "opp": "CHI",
    "game": "TB @ CHI",
    "kick": "2026-11-09T01:20Z",
-   "price": 390,
+   "price": 370,
    "book": "DraftKings",
    "books": 6,
    "ours": 0.2319,
-   "mkt": 0.2182,
-   "win": 0.2216,
-   "ev": 0.0861,
+   "mkt": 0.2174,
+   "win": 0.2211,
+   "ev": 0.039,
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "key": "401873050|4243331",
+   "gid": "401873050",
+   "pid": "4243331",
+   "name": "Cade Otton",
+   "pos": "TE",
+   "team": "TB",
+   "opp": "CHI",
+   "game": "TB @ CHI",
+   "kick": "2026-11-09T01:20Z",
+   "price": 360,
+   "book": "BetRivers",
+   "books": 6,
+   "ours": 0.2743,
+   "mkt": 0.2095,
+   "win": 0.2257,
+   "ev": 0.0383,
    "result": null,
    "final": null,
    "units": null
