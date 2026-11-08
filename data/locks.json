@@ -1622,7 +1622,7 @@
    "total_play": false,
    "spread": 3,
    "total": 52.5,
-   "lockedAt": "2026-11-08T09:16:19.080Z",
+   "lockedAt": "2026-11-08T09:31:19.407Z",
    "provisional": true
   },
   "401873039": {
@@ -1643,7 +1643,7 @@
    "total_play": false,
    "spread": -3,
    "total": 42.5,
-   "lockedAt": "2026-11-08T09:16:19.080Z",
+   "lockedAt": "2026-11-08T09:31:19.407Z",
    "provisional": true
   },
   "401873040": {
@@ -1655,16 +1655,16 @@
    "away": "DAL",
    "date": "2026-11-08T18:00Z",
    "pick": "IND",
-   "pick_line": "IND +5.5",
+   "pick_line": "IND +4.5",
    "total_pick": "UNDER 51.5",
    "side_play": false,
-   "our_margin": -4.42,
+   "our_margin": -3.72,
    "our_total": 51.4,
    "confidence": null,
    "total_play": false,
-   "spread": 5.5,
+   "spread": 4.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T09:16:19.080Z",
+   "lockedAt": "2026-11-08T09:31:19.407Z",
    "provisional": true
   },
   "401873041": {
@@ -1685,7 +1685,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-08T09:16:19.080Z",
+   "lockedAt": "2026-11-08T09:31:19.407Z",
    "provisional": true
   },
   "401873042": {
@@ -1706,7 +1706,7 @@
    "total_play": false,
    "spread": 6,
    "total": 49.5,
-   "lockedAt": "2026-11-08T09:16:19.080Z",
+   "lockedAt": "2026-11-08T09:31:19.407Z",
    "provisional": true
   },
   "401873043": {
@@ -1727,7 +1727,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 47.5,
-   "lockedAt": "2026-11-08T09:16:19.080Z",
+   "lockedAt": "2026-11-08T09:31:19.407Z",
    "provisional": true
   },
   "401873044": {
@@ -1748,7 +1748,7 @@
    "total_play": false,
    "spread": 3,
    "total": 38.5,
-   "lockedAt": "2026-11-08T09:16:19.080Z",
+   "lockedAt": "2026-11-08T09:31:19.407Z",
    "provisional": true
   },
   "401873045": {
@@ -1769,7 +1769,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 48.5,
-   "lockedAt": "2026-11-08T09:16:19.080Z",
+   "lockedAt": "2026-11-08T09:31:19.407Z",
    "provisional": true
   },
   "401873046": {
@@ -1790,7 +1790,70 @@
    "total_play": false,
    "spread": 6,
    "total": 40.5,
-   "lockedAt": "2026-11-08T09:16:19.080Z",
+   "lockedAt": "2026-11-08T09:31:19.407Z",
+   "provisional": true
+  },
+  "401873047": {
+   "id": "401873047",
+   "league": "nfl",
+   "week": 9,
+   "short": "LV @ SF",
+   "home": "SF",
+   "away": "LV",
+   "date": "2026-11-08T21:25Z",
+   "pick": "SF",
+   "pick_line": "SF -9.5",
+   "total_pick": "UNDER 51.5",
+   "side_play": false,
+   "our_margin": 9.56,
+   "our_total": 51.4,
+   "confidence": null,
+   "total_play": false,
+   "spread": -9.5,
+   "total": 51.5,
+   "lockedAt": "2026-11-08T09:31:19.407Z",
+   "provisional": true
+  },
+  "401873048": {
+   "id": "401873048",
+   "league": "nfl",
+   "week": 9,
+   "short": "ARI @ SEA",
+   "home": "SEA",
+   "away": "ARI",
+   "date": "2026-11-08T21:25Z",
+   "pick": "ARI",
+   "pick_line": "ARI +8.5",
+   "total_pick": "UNDER 39.5",
+   "side_play": false,
+   "our_margin": 7.46,
+   "our_total": 38.9,
+   "confidence": null,
+   "total_play": false,
+   "spread": -8.5,
+   "total": 39.5,
+   "lockedAt": "2026-11-08T09:31:19.407Z",
+   "provisional": true
+  },
+  "401873049": {
+   "id": "401873049",
+   "league": "nfl",
+   "week": 9,
+   "short": "GB @ NE",
+   "home": "NE",
+   "away": "GB",
+   "date": "2026-11-08T21:25Z",
+   "pick": "GB",
+   "pick_line": "GB +3.5",
+   "total_pick": "UNDER 44.5",
+   "side_play": false,
+   "our_margin": 3.05,
+   "our_total": 44.2,
+   "confidence": null,
+   "total_play": false,
+   "spread": -3.5,
+   "total": 44.5,
+   "lockedAt": "2026-11-08T09:31:19.407Z",
    "provisional": true
   }
  },
@@ -2125,12 +2188,12 @@
     "ours": "HOU -4.7 · total 40.0",
     "score": "HOU 22.4 – LAC 17.6",
     "market": "HOU -6.0 · total 40.5",
-    "lockedAt": "2026-11-08T09:16:19.147Z",
+    "lockedAt": "2026-11-08T09:31:19.457Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-08T21:05Z",
     "big": true,
-    "savedAt": 1794129379147
+    "savedAt": 1794130279457
    }
   ],
   "cfb": [
@@ -2793,7 +2856,7 @@
    }
   ]
  },
- "updated": "2026-11-08T09:16:19.080Z",
+ "updated": "2026-11-08T09:31:19.407Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2969,7 +3032,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-08T09:16:19.080Z"
+   "lockedAt": "2026-11-08T09:31:19.407Z"
   }
  ],
  "teasers": [
