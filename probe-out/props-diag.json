@@ -1,0 +1,2317 @@
+{
+ "now": "2026-11-08T20:38:26.787Z",
+ "view": "props",
+ "games": [
+  {
+   "id": "401873040",
+   "short": "DAL @ IND",
+   "date": "2026-11-08T18:00Z",
+   "week": 9,
+   "props": 14,
+   "dk": false
+  },
+  {
+   "id": "401873045",
+   "short": "NYJ @ KC",
+   "date": "2026-11-08T18:00Z",
+   "week": 9,
+   "props": 14,
+   "dk": false
+  },
+  {
+   "id": "401873042",
+   "short": "DET @ MIA",
+   "date": "2026-11-08T18:00Z",
+   "week": 9,
+   "props": 15,
+   "dk": false
+  },
+  {
+   "id": "401873039",
+   "short": "CLE @ NO",
+   "date": "2026-11-08T18:00Z",
+   "week": 9,
+   "props": 14,
+   "dk": false
+  },
+  {
+   "id": "401873044",
+   "short": "NYG @ PHI",
+   "date": "2026-11-08T18:00Z",
+   "week": 9,
+   "props": 14,
+   "dk": false
+  },
+  {
+   "id": "401873043",
+   "short": "LAR @ WSH",
+   "date": "2026-11-08T18:00Z",
+   "week": 9,
+   "props": 13,
+   "dk": false
+  },
+  {
+   "id": "401873041",
+   "short": "DEN @ CAR",
+   "date": "2026-11-08T18:00Z",
+   "week": 9,
+   "props": 14,
+   "dk": false
+  },
+  {
+   "id": "401873046",
+   "short": "HOU @ LAC",
+   "date": "2026-11-08T21:05Z",
+   "week": 9,
+   "props": 14,
+   "dk": false
+  },
+  {
+   "id": "401873049",
+   "short": "GB @ NE",
+   "date": "2026-11-08T21:25Z",
+   "week": 9,
+   "props": 15,
+   "dk": false
+  },
+  {
+   "id": "401873047",
+   "short": "LV @ SF",
+   "date": "2026-11-08T21:25Z",
+   "week": 9,
+   "props": 15,
+   "dk": false
+  },
+  {
+   "id": "401873048",
+   "short": "ARI @ SEA",
+   "date": "2026-11-08T21:25Z",
+   "week": 9,
+   "props": 14,
+   "dk": false
+  },
+  {
+   "id": "401873050",
+   "short": "TB @ CHI",
+   "date": "2026-11-09T01:20Z",
+   "week": 9,
+   "props": 15,
+   "dk": false
+  },
+  {
+   "id": "401873051",
+   "short": "BUF @ MIN",
+   "date": "2026-11-10T01:15Z",
+   "week": 9,
+   "props": 15,
+   "dk": false
+  },
+  {
+   "id": "401873052",
+   "short": "WSH @ NYG",
+   "date": "2026-11-13T01:15Z",
+   "week": 10,
+   "props": 14,
+   "dk": false
+  },
+  {
+   "id": "401873053",
+   "short": "NE VS DET",
+   "date": "2026-11-15T14:30Z",
+   "week": 10,
+   "props": 15,
+   "dk": false
+  },
+  {
+   "id": "401873058",
+   "short": "KC @ ATL",
+   "date": "2026-11-15T18:00Z",
+   "week": 10,
+   "props": 13,
+   "dk": false
+  },
+  {
+   "id": "401873056",
+   "short": "HOU @ CLE",
+   "date": "2026-11-15T18:00Z",
+   "week": 10,
+   "props": 14,
+   "dk": false
+  },
+  {
+   "id": "401873060",
+   "short": "MIN @ GB",
+   "date": "2026-11-15T18:00Z",
+   "week": 10,
+   "props": 15,
+   "dk": false
+  },
+  {
+   "id": "401873057",
+   "short": "JAX @ TEN",
+   "date": "2026-11-15T18:00Z",
+   "week": 10,
+   "props": 15,
+   "dk": false
+  },
+  {
+   "id": "401873059",
+   "short": "MIA @ IND",
+   "date": "2026-11-15T18:00Z",
+   "week": 10,
+   "props": 14,
+   "dk": false
+  },
+  {
+   "id": "401873055",
+   "short": "CAR @ NO",
+   "date": "2026-11-15T18:00Z",
+   "week": 10,
+   "props": 14,
+   "dk": false
+  },
+  {
+   "id": "401873054",
+   "short": "BUF @ NYJ",
+   "date": "2026-11-15T18:00Z",
+   "week": 10,
+   "props": 15,
+   "dk": false
+  },
+  {
+   "id": "401873062",
+   "short": "SEA @ LV",
+   "date": "2026-11-15T21:05Z",
+   "week": 10,
+   "props": 15,
+   "dk": false
+  },
+  {
+   "id": "401873061",
+   "short": "LAR @ ARI",
+   "date": "2026-11-15T21:05Z",
+   "week": 10,
+   "props": 14,
+   "dk": false
+  },
+  {
+   "id": "401873063",
+   "short": "SF @ DAL",
+   "date": "2026-11-15T21:25Z",
+   "week": 10,
+   "props": 16,
+   "dk": false
+  },
+  {
+   "id": "401873064",
+   "short": "PIT @ CIN",
+   "date": "2026-11-16T01:20Z",
+   "week": 10,
+   "props": 15,
+   "dk": false
+  },
+  {
+   "id": "401873065",
+   "short": "LAC @ BAL",
+   "date": "2026-11-17T01:15Z",
+   "week": 10,
+   "props": 16,
+   "dk": false
+  }
+ ],
+ "total_props": 1369,
+ "controls": [
+  {
+   "id": "propDay",
+   "value": "best",
+   "options": [
+    "best=Best picks",
+    "week=Every player",
+    "thu=Thursday / Friday",
+    "sun=Sunday slate",
+    "night=Sunday / Monday night"
+   ]
+  },
+  {
+   "id": "propPos",
+   "value": "ALL",
+   "options": [
+    "ALL=All skill positions",
+    "QB=Quarterbacks",
+    "RB=Running backs",
+    "WR=Wide receivers",
+    "TE=Tight ends",
+    "PASS=Pass-yard leans",
+    "RUSH=Rush-yard leans",
+    "REC=Receiving-yard leans"
+   ]
+  },
+  {
+   "id": "propSort",
+   "value": "best",
+   "options": [
+    "best=Sort: best picks",
+    "fp=Sort: fantasy points",
+    "pass=Sort: pass yards",
+    "rush=Sort: rush yards",
+    "rec=Sort: rec yards",
+    "td=Sort: touchdowns",
+    "kick=Sort: kickoff"
+   ]
+  },
+  {
+   "id": "propHit",
+   "value": "all",
+   "options": [
+    "all=All players",
+    "lines=Lines posted",
+    "value=Our side beats the price",
+    "v3=Beats the price by 3%+",
+    "v5=Beats the price by 5%+"
+   ]
+  }
+ ],
+ "stats": "203 players with a game coming \u00b7 70 with sportsbook lines \u00b7 44 where our side beats the price. WSH @ NYG lines post about a day before its Thu, Nov 12, 8:15 PM kickoff.\n\nProp record 139-124 \u00b7 +4.8u \u00b7 +1.8% a bet on sides that beat the price",
+ "cards": [
+  {
+   "text": "C Caleb Williams QB \u00b7 CHI vs TB \u00b7 Sun, Nov 8, 8:20 PM 53% Our projection 232 pass yds \u00b7 1.3 TD \u00b7 30 rush CHI expected 26.8 pts TB is average against QB pass TDs (20th of 32) Our side Under 1.5 pass TDs 53% checked (our model 69%, books 44%) \u00b7 best +123 DraftKings Bet size: 2u Matchup: TB is middle of the pack here: 10th of 32 in pass TDs allowed to QBs (1.3 a game; league average 1.5). +18% Add to",
+   "name": "Caleb Williams",
+   "pos": "QB",
+   "team": "CHI",
+   "opp": "TB",
+   "game": "TB @ CHI",
+   "date": "2026-11-09T01:20Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 231.5,
+    "pass_td": 1.25,
+    "rush_yds": 30.4,
+    "rush_att": 5,
+    "rec": 0,
+    "rec_yds": 0,
+    "rec_td": 0,
+    "rush_td": 0.24,
+    "fp": null
+   },
+   "lean": {
+    "stat": "pass_td",
+    "line": 1.5,
+    "take": "Under",
+    "chance": 0.531,
+    "mean": 1.2440797187245234
+   },
+   "recent": [
+    {
+     "d": "2026-11-03",
+     "o": "SEA",
+     "pass_yds": 247,
+     "pass_td": 1,
+     "rush_yds": 1,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-10-23",
+     "o": "NE",
+     "pass_yds": 308,
+     "pass_td": 2,
+     "rush_yds": 18,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-10-18",
+     "o": "ATL",
+     "pass_yds": 305,
+     "pass_td": 1,
+     "rush_yds": 3,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-09-20",
+     "o": "MIN",
+     "pass_yds": 138,
+     "pass_td": 0,
+     "rush_yds": 42,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-09-13",
+     "o": "CAR",
+     "pass_yds": 269,
+     "pass_td": 2,
+     "rush_yds": 65,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-01-18",
+     "o": "LAR",
+     "pass_yds": 257,
+     "pass_td": 2,
+     "rush_yds": 40,
+     "rec": null,
+     "rec_yds": null
+    }
+   ]
+  },
+  {
+   "text": "J Justin Herbert QB \u00b7 LAC vs HOU \u00b7 Sun, Nov 8, 4:05 PM 61% Our projection 214 pass yds \u00b7 0.9 TD \u00b7 18 rush LAC expected 17.5 pts Indoors HOU allows the 4th-fewest rush yds to QBs Our side Under 22.5 rush yds 61% checked (our model 76%, books 52%) \u00b7 best -116 DraftKings Bet size: 2u Matchup helps: HOU is a tough defense here: it allows the 3rd-fewest rush yds to QBs (7.4 a game; league average 16). ",
+   "name": "Justin Herbert",
+   "pos": "QB",
+   "team": "LAC",
+   "opp": "HOU",
+   "game": "HOU @ LAC",
+   "date": "2026-11-08T21:05Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 213.5,
+    "pass_td": 0.92,
+    "rush_yds": 17.7,
+    "rush_att": 4.4,
+    "rec": 0,
+    "rec_yds": 0,
+    "rec_td": 0,
+    "rush_td": 0.08,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rush_yds",
+    "line": 22.5,
+    "take": "Under",
+    "chance": 0.609,
+    "mean": 15.575999999999999
+   },
+   "recent": [
+    {
+     "d": "2026-11-01",
+     "o": "LAR",
+     "pass_yds": 257,
+     "pass_td": 0,
+     "rush_yds": 15,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-10-18",
+     "o": "KC",
+     "pass_yds": 204,
+     "pass_td": 0,
+     "rush_yds": 26,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-10-11",
+     "o": "DEN",
+     "pass_yds": 121,
+     "pass_td": 1,
+     "rush_yds": 54,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-10-04",
+     "o": "SEA",
+     "pass_yds": 189,
+     "pass_td": 1,
+     "rush_yds": 40,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-09-27",
+     "o": "BUF",
+     "pass_yds": 226,
+     "pass_td": 1,
+     "rush_yds": 17,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-09-20",
+     "o": "LV",
+     "pass_yds": 192,
+     "pass_td": 1,
+     "rush_yds": 2,
+     "rec": null,
+     "rec_yds": null
+    }
+   ]
+  },
+  {
+   "text": "B Baker Mayfield QB \u00b7 TB vs CHI \u00b7 Sun, Nov 8, 8:20 PM 58% Our projection 221 pass yds \u00b7 0.8 TD \u00b7 15 rush TB expected 20.8 pts CHI allows the 8th-fewest rush yds to QBs Our side Under 16.5 rush yds 58% checked (our model 71%, books 50%) \u00b7 best -105 ESPN BET Bet size: 2u Matchup: CHI is middle of the pack here: 16th of 32 in rush yds allowed to QBs (15 a game; league average 16). +13% Add to ticket ",
+   "name": "Baker Mayfield",
+   "pos": "QB",
+   "team": "TB",
+   "opp": "CHI",
+   "game": "TB @ CHI",
+   "date": "2026-11-09T01:20Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 221.1,
+    "pass_td": 0.84,
+    "rush_yds": 15,
+    "rush_att": 3.3,
+    "rec": 0,
+    "rec_yds": 0,
+    "rec_td": 0,
+    "rush_td": 0.11,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rush_yds",
+    "line": 16.5,
+    "take": "Under",
+    "chance": 0.58,
+    "mean": 13.239550812179285
+   },
+   "recent": [
+    {
+     "d": "2026-11-01",
+     "o": "ATL",
+     "pass_yds": 0,
+     "pass_td": 0,
+     "rush_yds": 14,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-10-25",
+     "o": "CAR",
+     "pass_yds": 64,
+     "pass_td": 1,
+     "rush_yds": 1,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-09-27",
+     "o": "MIN",
+     "pass_yds": 217,
+     "pass_td": 1,
+     "rush_yds": 6,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-09-20",
+     "o": "CLE",
+     "pass_yds": 182,
+     "pass_td": 1,
+     "rush_yds": 29,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-09-13",
+     "o": "CIN",
+     "pass_yds": 216,
+     "pass_td": 0,
+     "rush_yds": 30,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-01-03",
+     "o": "CAR",
+     "pass_yds": 203,
+     "pass_td": 1,
+     "rush_yds": 31,
+     "rec": null,
+     "rec_yds": null
+    }
+   ]
+  },
+  {
+   "text": "J Jadarian Price RB \u00b7 SEA vs ARI \u00b7 Sun, Nov 8, 4:25 PM 55% Our projection 54 rush yds \u00b7 1.2 rec \u00b7 11 rec yds SEA expected 24.0 pts ARI allows the 2nd-fewest catches to RBs Our side Under 1.5 receptions 55% checked (our model 72%, books 47%) \u00b7 best +105 DraftKings Bet size: 2u Not played: he's played 4 of his team's last 8 games, too few to check his history (we need 5). The Ladder, play of the day",
+   "name": "Jadarian Price",
+   "pos": "RB",
+   "team": "SEA",
+   "opp": "ARI",
+   "game": "ARI @ SEA",
+   "date": "2026-11-08T21:25Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 0,
+    "pass_td": 0,
+    "rush_yds": 53.5,
+    "rush_att": 13.2,
+    "rec": 1.2,
+    "rec_yds": 10.5,
+    "rec_td": 0.07,
+    "rush_td": 0.4,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rec",
+    "line": 1.5,
+    "take": "Under",
+    "chance": 0.551,
+    "mean": 1.162652599991229
+   },
+   "recent": [
+    {
+     "d": "2026-11-03",
+     "o": "CHI",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 29,
+     "rec": 2,
+     "rec_yds": 8
+    },
+    {
+     "d": "2026-10-04",
+     "o": "LAC",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 0,
+     "rec_yds": 0
+    },
+    {
+     "d": "2026-09-27",
+     "o": "WSH",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 15,
+     "rec": 1,
+     "rec_yds": 7
+    },
+    {
+     "d": "2026-09-20",
+     "o": "ARI",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 52,
+     "rec": 1,
+     "rec_yds": 8
+    },
+    {
+     "d": "2026-09-10",
+     "o": "NE",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 52,
+     "rec": 2,
+     "rec_yds": 6
+    }
+   ]
+  },
+  {
+   "text": "C Christian McCaffrey RB \u00b7 SF vs LV \u00b7 Sun, Nov 8, 4:25 PM 59% Our projection 67 rush yds \u00b7 4.7 rec \u00b7 34 rec yds SF expected 30.0 pts LV is average against RB rec yds (16th of 32) Our side Under 42.5 rec yds 59% checked (our model 74%, books 52%) \u00b7 best -115 DraftKings Bet size: 2u Matchup: LV is middle of the pack here: 20th of 32 in rec yds allowed to RBs (34 a game; league average 32). +11% Add ",
+   "name": "Christian McCaffrey",
+   "pos": "RB",
+   "team": "SF",
+   "opp": "LV",
+   "game": "LV @ SF",
+   "date": "2026-11-08T21:25Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 0,
+    "pass_td": 0,
+    "rush_yds": 67.3,
+    "rush_att": 13.5,
+    "rec": 4.7,
+    "rec_yds": 34.4,
+    "rec_td": 0.15,
+    "rush_td": 0.96,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rec_yds",
+    "line": 42.5,
+    "take": "Under",
+    "chance": 0.592,
+    "mean": 31.951252670267294
+   },
+   "recent": [
+    {
+     "d": "2026-10-25",
+     "o": "ATL",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 39,
+     "rec": 6,
+     "rec_yds": 61
+    },
+    {
+     "d": "2026-10-20",
+     "o": "WSH",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 64,
+     "rec": 9,
+     "rec_yds": 53
+    },
+    {
+     "d": "2026-10-11",
+     "o": "SEA",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 68,
+     "rec": 3,
+     "rec_yds": 15
+    },
+    {
+     "d": "2026-10-04",
+     "o": "DEN",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 52,
+     "rec": 3,
+     "rec_yds": 18
+    },
+    {
+     "d": "2026-09-27",
+     "o": "ARI",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 75,
+     "rec": 4,
+     "rec_yds": 41
+    },
+    {
+     "d": "2026-09-20",
+     "o": "MIA",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 23,
+     "rec": 4,
+     "rec_yds": 43
+    }
+   ]
+  },
+  {
+   "text": "N Nico Collins WR \u00b7 HOU vs LAC \u00b7 Sun, Nov 8, 4:05 PM 58% Our projection 4.8 rec \u00b7 59 yds \u00b7 0.5 TD HOU expected 23.0 pts Indoors LAC is average against WR rec yds (21st of 32) Our side Under 69.5 rec yds 58% checked (our model 71%, books 52%) \u00b7 best -114 DraftKings Bet size: 2u Matchup: LAC is middle of the pack here: 12th of 32 in rec yds allowed to WRs (133 a game; league average 146). +9% Add to",
+   "name": "Nico Collins",
+   "pos": "WR",
+   "team": "HOU",
+   "opp": "LAC",
+   "game": "HOU @ LAC",
+   "date": "2026-11-08T21:05Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 0,
+    "pass_td": 0,
+    "rush_yds": 1.7,
+    "rush_att": 0.3,
+    "rec": 4.8,
+    "rec_yds": 58.6,
+    "rec_td": 0.45,
+    "rush_td": 0.01,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rec_yds",
+    "line": 69.5,
+    "take": "Under",
+    "chance": 0.582,
+    "mean": 56.06566972104034
+   },
+   "recent": [
+    {
+     "d": "2026-10-25",
+     "o": "NYG",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 2,
+     "rec_yds": 6
+    },
+    {
+     "d": "2026-10-18",
+     "o": "JAX",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 5,
+     "rec": 3,
+     "rec_yds": 74
+    },
+    {
+     "d": "2026-10-11",
+     "o": "TEN",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 5,
+     "rec_yds": 56
+    },
+    {
+     "d": "2026-10-04",
+     "o": "DAL",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 7,
+     "rec_yds": 118
+    },
+    {
+     "d": "2026-09-13",
+     "o": "BUF",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 7,
+     "rec": 7,
+     "rec_yds": 75
+    },
+    {
+     "d": "2026-01-13",
+     "o": "PIT",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 3,
+     "rec_yds": 21
+    }
+   ]
+  },
+  {
+   "text": "",
+   "name": "Kirk Cousins",
+   "pos": "QB",
+   "team": "LV",
+   "opp": "SF",
+   "game": "LV @ SF",
+   "date": "2026-11-08T21:25Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 254.7,
+    "pass_td": 1.44,
+    "rush_yds": 1.4,
+    "rush_att": 1.8,
+    "rec": 0,
+    "rec_yds": 0,
+    "rec_td": 0,
+    "rush_td": 0.06,
+    "fp": null
+   },
+   "lean": {
+    "stat": "pass_td",
+    "line": 1.5,
+    "take": "Under",
+    "chance": 0.548,
+    "mean": 1.417175306353738
+   },
+   "recent": [
+    {
+     "d": "2026-11-01",
+     "o": "NYJ",
+     "pass_yds": 247,
+     "pass_td": 3,
+     "rush_yds": 3,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-10-25",
+     "o": "LAR",
+     "pass_yds": 295,
+     "pass_td": 2,
+     "rush_yds": 6,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-10-18",
+     "o": "BUF",
+     "pass_yds": 313,
+     "pass_td": 2,
+     "rush_yds": 0,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-10-11",
+     "o": "NE",
+     "pass_yds": 243,
+     "pass_td": 1,
+     "rush_yds": 0,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-10-04",
+     "o": "KC",
+     "pass_yds": 365,
+     "pass_td": 2,
+     "rush_yds": 0,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-09-27",
+     "o": "NO",
+     "pass_yds": 248,
+     "pass_td": 3,
+     "rush_yds": 3,
+     "rec": null,
+     "rec_yds": null
+    }
+   ]
+  },
+  {
+   "text": "",
+   "name": "Hunter Henry",
+   "pos": "TE",
+   "team": "NE",
+   "opp": "GB",
+   "game": "GB @ NE",
+   "date": "2026-11-08T21:25Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 0,
+    "pass_td": 0,
+    "rush_yds": 0,
+    "rush_att": 0,
+    "rec": 3.6,
+    "rec_yds": 32.5,
+    "rec_td": 0.33,
+    "rush_td": 0,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rec_yds",
+    "line": 36.5,
+    "take": "Under",
+    "chance": 0.572,
+    "mean": 28.6
+   },
+   "recent": [
+    {
+     "d": "2026-11-01",
+     "o": "MIA",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 3,
+     "rec_yds": 30
+    },
+    {
+     "d": "2026-10-23",
+     "o": "CHI",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 7,
+     "rec_yds": 71
+    },
+    {
+     "d": "2026-10-18",
+     "o": "NYJ",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 4,
+     "rec_yds": 48
+    },
+    {
+     "d": "2026-10-11",
+     "o": "LV",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 3,
+     "rec_yds": 44
+    },
+    {
+     "d": "2026-10-04",
+     "o": "BUF",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 5,
+     "rec_yds": 62
+    },
+    {
+     "d": "2026-09-27",
+     "o": "JAX",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 1,
+     "rec_yds": 5
+    }
+   ]
+  },
+  {
+   "text": "",
+   "name": "Keon Coleman",
+   "pos": "WR",
+   "team": "BUF",
+   "opp": "MIN",
+   "game": "BUF @ MIN",
+   "date": "2026-11-10T01:15Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 0,
+    "pass_td": 0,
+    "rush_yds": 0,
+    "rush_att": 0,
+    "rec": 1.9,
+    "rec_yds": 25.4,
+    "rec_td": 0.19,
+    "rush_td": 0,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rec",
+    "line": 2.5,
+    "take": "Under",
+    "chance": 0.606,
+    "mean": 1.8428614530152214
+   },
+   "recent": [
+    {
+     "d": "2026-11-01",
+     "o": "BAL",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 1,
+     "rec_yds": 4
+    },
+    {
+     "d": "2026-10-18",
+     "o": "LV",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 4,
+     "rec_yds": 59
+    },
+    {
+     "d": "2026-10-13",
+     "o": "LAR",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 1,
+     "rec_yds": 7
+    },
+    {
+     "d": "2026-10-04",
+     "o": "NE",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 6,
+     "rec_yds": 116
+    },
+    {
+     "d": "2026-09-27",
+     "o": "LAC",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 1,
+     "rec_yds": 37
+    },
+    {
+     "d": "2026-09-18",
+     "o": "DET",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 6,
+     "rec_yds": 63
+    }
+   ]
+  },
+  {
+   "text": "",
+   "name": "Zach Charbonnet",
+   "pos": "RB",
+   "team": "SEA",
+   "opp": "ARI",
+   "game": "ARI @ SEA",
+   "date": "2026-11-08T21:25Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 0,
+    "pass_td": 0,
+    "rush_yds": 49.9,
+    "rush_att": 12.6,
+    "rec": 1.1,
+    "rec_yds": 7.2,
+    "rec_td": 0.03,
+    "rush_td": 0.57,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rec",
+    "line": 1.5,
+    "take": "Under",
+    "chance": 0.615,
+    "mean": 1.0304801283753442
+   },
+   "recent": [
+    {
+     "d": "2026-11-03",
+     "o": "CHI",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 23,
+     "rec": 3,
+     "rec_yds": 6
+    },
+    {
+     "d": "2026-01-18",
+     "o": "SF",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 20,
+     "rec": 0,
+     "rec_yds": 0
+    },
+    {
+     "d": "2026-01-04",
+     "o": "SF",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 74,
+     "rec": 3,
+     "rec_yds": 23
+    },
+    {
+     "d": "2025-12-28",
+     "o": "CAR",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 110,
+     "rec": 2,
+     "rec_yds": 12
+    },
+    {
+     "d": "2025-12-19",
+     "o": "LAR",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 32,
+     "rec": 4,
+     "rec_yds": 22
+    },
+    {
+     "d": "2025-12-14",
+     "o": "IND",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 31,
+     "rec": 0,
+     "rec_yds": 0
+    }
+   ]
+  },
+  {
+   "text": "",
+   "name": "Josh Allen",
+   "pos": "QB",
+   "team": "BUF",
+   "opp": "MIN",
+   "game": "BUF @ MIN",
+   "date": "2026-11-10T01:15Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 230.7,
+    "pass_td": 1.22,
+    "rush_yds": 32.4,
+    "rush_att": 7,
+    "rec": 0,
+    "rec_yds": 0,
+    "rec_td": 0,
+    "rush_td": 0.65,
+    "fp": null
+   },
+   "lean": {
+    "stat": "pass_td",
+    "line": 1.5,
+    "take": "Under",
+    "chance": 0.667,
+    "mean": 1.0735999999999999
+   },
+   "recent": [
+    {
+     "d": "2026-11-01",
+     "o": "BAL",
+     "pass_yds": 289,
+     "pass_td": 2,
+     "rush_yds": 30,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-10-18",
+     "o": "LV",
+     "pass_yds": 255,
+     "pass_td": 2,
+     "rush_yds": 1,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-10-13",
+     "o": "LAR",
+     "pass_yds": 210,
+     "pass_td": 1,
+     "rush_yds": 121,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-10-04",
+     "o": "NE",
+     "pass_yds": 253,
+     "pass_td": 1,
+     "rush_yds": 4,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-09-27",
+     "o": "LAC",
+     "pass_yds": 204,
+     "pass_td": 0,
+     "rush_yds": 22,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-09-18",
+     "o": "DET",
+     "pass_yds": 248,
+     "pass_td": 3,
+     "rush_yds": 69,
+     "rec": null,
+     "rec_yds": null
+    }
+   ]
+  },
+  {
+   "text": "",
+   "name": "Dalton Schultz",
+   "pos": "TE",
+   "team": "HOU",
+   "opp": "LAC",
+   "game": "HOU @ LAC",
+   "date": "2026-11-08T21:05Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 0,
+    "pass_td": 0,
+    "rush_yds": 0,
+    "rush_att": 0,
+    "rec": 4,
+    "rec_yds": 33.5,
+    "rec_td": 0.16,
+    "rush_td": 0,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rec_yds",
+    "line": 35.5,
+    "take": "Under",
+    "chance": 0.557,
+    "mean": 32.429789988610224
+   },
+   "recent": [
+    {
+     "d": "2026-10-25",
+     "o": "NYG",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 5,
+     "rec_yds": 45
+    },
+    {
+     "d": "2026-10-18",
+     "o": "JAX",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 4,
+     "rec_yds": 33
+    },
+    {
+     "d": "2026-10-11",
+     "o": "TEN",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 3,
+     "rec_yds": 30
+    },
+    {
+     "d": "2026-10-04",
+     "o": "DAL",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 2,
+     "rec_yds": 9
+    },
+    {
+     "d": "2026-09-27",
+     "o": "IND",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 3,
+     "rec_yds": 30
+    },
+    {
+     "d": "2026-09-20",
+     "o": "CIN",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 12,
+     "rec_yds": 140
+    }
+   ]
+  },
+  {
+   "text": "",
+   "name": "Colston Loveland",
+   "pos": "TE",
+   "team": "CHI",
+   "opp": "TB",
+   "game": "TB @ CHI",
+   "date": "2026-11-09T01:20Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 0,
+    "pass_td": 0,
+    "rush_yds": 0,
+    "rush_att": 0,
+    "rec": 4.6,
+    "rec_yds": 47.1,
+    "rec_td": 0.4,
+    "rush_td": 0,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rec_yds",
+    "line": 54.5,
+    "take": "Under",
+    "chance": 0.564,
+    "mean": 47.850875603294625
+   },
+   "recent": [
+    {
+     "d": "2026-11-03",
+     "o": "SEA",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 7,
+     "rec_yds": 65
+    },
+    {
+     "d": "2026-10-23",
+     "o": "NE",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 7,
+     "rec_yds": 69
+    },
+    {
+     "d": "2026-10-18",
+     "o": "ATL",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 6,
+     "rec_yds": 65
+    },
+    {
+     "d": "2026-10-11",
+     "o": "GB",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 2,
+     "rec_yds": 19
+    },
+    {
+     "d": "2026-10-04",
+     "o": "NYJ",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 6,
+     "rec_yds": 57
+    },
+    {
+     "d": "2026-09-29",
+     "o": "PHI",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 4,
+     "rec_yds": 31
+    }
+   ]
+  },
+  {
+   "text": "",
+   "name": "George Kittle",
+   "pos": "TE",
+   "team": "SF",
+   "opp": "LV",
+   "game": "LV @ SF",
+   "date": "2026-11-08T21:25Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 0,
+    "pass_td": 0,
+    "rush_yds": 0,
+    "rush_att": 0,
+    "rec": 5.4,
+    "rec_yds": 61.9,
+    "rec_td": 0.64,
+    "rush_td": 0,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rec_yds",
+    "line": 70.5,
+    "take": "Under",
+    "chance": 0.557,
+    "mean": 62.470896726098196
+   },
+   "recent": [
+    {
+     "d": "2026-10-25",
+     "o": "ATL",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 8,
+     "rec_yds": 88
+    },
+    {
+     "d": "2026-10-20",
+     "o": "WSH",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 5,
+     "rec_yds": 69
+    },
+    {
+     "d": "2026-10-11",
+     "o": "SEA",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 5,
+     "rec_yds": 24
+    },
+    {
+     "d": "2026-10-04",
+     "o": "DEN",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 4,
+     "rec_yds": 70
+    },
+    {
+     "d": "2026-09-27",
+     "o": "ARI",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 6,
+     "rec_yds": 82
+    },
+    {
+     "d": "2026-09-20",
+     "o": "MIA",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 4,
+     "rec_yds": 80
+    }
+   ]
+  },
+  {
+   "text": "",
+   "name": "D'Andre Swift",
+   "pos": "RB",
+   "team": "CHI",
+   "opp": "TB",
+   "game": "TB @ CHI",
+   "date": "2026-11-09T01:20Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 0,
+    "pass_td": 0,
+    "rush_yds": 90.3,
+    "rush_att": 19.2,
+    "rec": 2.8,
+    "rec_yds": 19.1,
+    "rec_td": 0.06,
+    "rush_td": 1,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rec_yds",
+    "line": 21.5,
+    "take": "Under",
+    "chance": 0.556,
+    "mean": 20.12061481572738
+   },
+   "recent": [
+    {
+     "d": "2026-11-03",
+     "o": "SEA",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 69,
+     "rec": 2,
+     "rec_yds": 10
+    },
+    {
+     "d": "2026-10-23",
+     "o": "NE",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 78,
+     "rec": 4,
+     "rec_yds": 12
+    },
+    {
+     "d": "2026-10-18",
+     "o": "ATL",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 44,
+     "rec": 4,
+     "rec_yds": 26
+    },
+    {
+     "d": "2026-10-11",
+     "o": "GB",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 43,
+     "rec": 4,
+     "rec_yds": 30
+    },
+    {
+     "d": "2026-10-04",
+     "o": "NYJ",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 58,
+     "rec": 2,
+     "rec_yds": 16
+    },
+    {
+     "d": "2026-09-29",
+     "o": "PHI",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 84,
+     "rec": 2,
+     "rec_yds": 4
+    }
+   ]
+  },
+  {
+   "text": "",
+   "name": "Bucky Irving",
+   "pos": "RB",
+   "team": "TB",
+   "opp": "CHI",
+   "game": "TB @ CHI",
+   "date": "2026-11-09T01:20Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 0,
+    "pass_td": 0,
+    "rush_yds": 67.2,
+    "rush_att": 16.6,
+    "rec": 2.6,
+    "rec_yds": 16.5,
+    "rec_td": 0.11,
+    "rush_td": 0.49,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rec_yds",
+    "line": 14.5,
+    "take": "Under",
+    "chance": 0.544,
+    "mean": 15.619523344506785
+   },
+   "recent": [
+    {
+     "d": "2026-11-01",
+     "o": "ATL",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 170,
+     "rec": 0,
+     "rec_yds": 0
+    },
+    {
+     "d": "2026-10-25",
+     "o": "CAR",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 106,
+     "rec": 1,
+     "rec_yds": 4
+    },
+    {
+     "d": "2026-10-18",
+     "o": "PIT",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 46,
+     "rec": 2,
+     "rec_yds": 3
+    },
+    {
+     "d": "2026-10-09",
+     "o": "DAL",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 165,
+     "rec": 2,
+     "rec_yds": 10
+    },
+    {
+     "d": "2026-10-04",
+     "o": "GB",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 61,
+     "rec": 0,
+     "rec_yds": 0
+    },
+    {
+     "d": "2026-09-27",
+     "o": "MIN",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 46,
+     "rec": 2,
+     "rec_yds": 12
+    }
+   ]
+  },
+  {
+   "text": "",
+   "name": "Omarion Hampton",
+   "pos": "RB",
+   "team": "LAC",
+   "opp": "HOU",
+   "game": "HOU @ LAC",
+   "date": "2026-11-08T21:05Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 0,
+    "pass_td": 0,
+    "rush_yds": 33.5,
+    "rush_att": 10.7,
+    "rec": 1.6,
+    "rec_yds": 11.8,
+    "rec_td": 0.02,
+    "rush_td": 0.3,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rush_yds",
+    "line": 36.5,
+    "take": "Under",
+    "chance": 0.56,
+    "mean": 33.688604375262656
+   },
+   "recent": [
+    {
+     "d": "2026-11-01",
+     "o": "LAR",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 20,
+     "rec": 2,
+     "rec_yds": 7
+    },
+    {
+     "d": "2026-10-18",
+     "o": "KC",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 18,
+     "rec": 4,
+     "rec_yds": 21
+    },
+    {
+     "d": "2026-10-11",
+     "o": "DEN",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 33,
+     "rec": 1,
+     "rec_yds": 6
+    },
+    {
+     "d": "2026-10-04",
+     "o": "SEA",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 45,
+     "rec": 2,
+     "rec_yds": 8
+    },
+    {
+     "d": "2026-09-27",
+     "o": "BUF",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 56,
+     "rec": 0,
+     "rec_yds": 0
+    },
+    {
+     "d": "2026-09-20",
+     "o": "LV",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 94,
+     "rec": 2,
+     "rec_yds": 21
+    }
+   ]
+  },
+  {
+   "text": "",
+   "name": "C.J. Stroud",
+   "pos": "QB",
+   "team": "HOU",
+   "opp": "LAC",
+   "game": "HOU @ LAC",
+   "date": "2026-11-08T21:05Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 241.6,
+    "pass_td": 1.59,
+    "rush_yds": 15.1,
+    "rush_att": 3,
+    "rec": 0,
+    "rec_yds": 0,
+    "rec_td": 0,
+    "rush_td": 0.11,
+    "fp": null
+   },
+   "lean": {
+    "stat": "pass_td",
+    "line": 1.5,
+    "take": "Under",
+    "chance": 0.541,
+    "mean": 1.5018527893354878
+   },
+   "recent": [
+    {
+     "d": "2026-10-25",
+     "o": "NYG",
+     "pass_yds": 153,
+     "pass_td": 2,
+     "rush_yds": 4,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-10-18",
+     "o": "JAX",
+     "pass_yds": 312,
+     "pass_td": 3,
+     "rush_yds": 5,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-10-11",
+     "o": "TEN",
+     "pass_yds": 261,
+     "pass_td": 1,
+     "rush_yds": 5,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-10-04",
+     "o": "DAL",
+     "pass_yds": 347,
+     "pass_td": 2,
+     "rush_yds": 12,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-09-27",
+     "o": "IND",
+     "pass_yds": 167,
+     "pass_td": 1,
+     "rush_yds": 10,
+     "rec": null,
+     "rec_yds": null
+    },
+    {
+     "d": "2026-09-20",
+     "o": "CIN",
+     "pass_yds": 353,
+     "pass_td": 0,
+     "rush_yds": 29,
+     "rec": null,
+     "rec_yds": null
+    }
+   ]
+  },
+  {
+   "text": "",
+   "name": "Cade Otton",
+   "pos": "TE",
+   "team": "TB",
+   "opp": "CHI",
+   "game": "TB @ CHI",
+   "date": "2026-11-09T01:20Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 0,
+    "pass_td": 0,
+    "rush_yds": 0,
+    "rush_att": 0,
+    "rec": 2.7,
+    "rec_yds": 27.7,
+    "rec_td": 0.03,
+    "rush_td": 0,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rec_yds",
+    "line": 29.5,
+    "take": "Under",
+    "chance": 0.545,
+    "mean": 27.666061818348634
+   },
+   "recent": [
+    {
+     "d": "2026-11-01",
+     "o": "ATL",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 0,
+     "rec_yds": 0
+    },
+    {
+     "d": "2026-10-25",
+     "o": "CAR",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 0,
+     "rec_yds": 0
+    },
+    {
+     "d": "2026-10-18",
+     "o": "PIT",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 1,
+     "rec_yds": 4
+    },
+    {
+     "d": "2026-10-09",
+     "o": "DAL",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 3,
+     "rec_yds": 25
+    },
+    {
+     "d": "2026-10-04",
+     "o": "GB",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 4,
+     "rec_yds": 37
+    },
+    {
+     "d": "2026-09-27",
+     "o": "MIN",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 3,
+     "rec_yds": 56
+    }
+   ]
+  },
+  {
+   "text": "",
+   "name": "Woody Marks",
+   "pos": "RB",
+   "team": "HOU",
+   "opp": "LAC",
+   "game": "HOU @ LAC",
+   "date": "2026-11-08T21:05Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 0,
+    "pass_td": 0,
+    "rush_yds": 81.5,
+    "rush_att": 18.2,
+    "rec": 2.1,
+    "rec_yds": 16.1,
+    "rec_td": 0.08,
+    "rush_td": 0.49,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rec_yds",
+    "line": 14.5,
+    "take": "Under",
+    "chance": 0.551,
+    "mean": 15.112080336977076
+   },
+   "recent": [
+    {
+     "d": "2026-10-25",
+     "o": "NYG",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 66,
+     "rec": 1,
+     "rec_yds": 15
+    },
+    {
+     "d": "2026-10-18",
+     "o": "JAX",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 56,
+     "rec": 2,
+     "rec_yds": 25
+    },
+    {
+     "d": "2026-10-11",
+     "o": "TEN",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 62,
+     "rec": 4,
+     "rec_yds": 23
+    },
+    {
+     "d": "2026-10-04",
+     "o": "DAL",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 22,
+     "rec": 0,
+     "rec_yds": 0
+    },
+    {
+     "d": "2026-09-27",
+     "o": "IND",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 15,
+     "rec": 1,
+     "rec_yds": 6
+    },
+    {
+     "d": "2026-09-20",
+     "o": "CIN",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 8,
+     "rec": 5,
+     "rec_yds": 27
+    }
+   ]
+  },
+  {
+   "text": "",
+   "name": "Dalton Kincaid",
+   "pos": "TE",
+   "team": "BUF",
+   "opp": "MIN",
+   "game": "BUF @ MIN",
+   "date": "2026-11-10T01:15Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 0,
+    "pass_td": 0,
+    "rush_yds": 0,
+    "rush_att": 0,
+    "rec": 3.4,
+    "rec_yds": 37.6,
+    "rec_td": 0.18,
+    "rush_td": 0,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rec_yds",
+    "line": 36.5,
+    "take": "Under",
+    "chance": 0.54,
+    "mean": 33.822309777405316
+   },
+   "recent": [
+    {
+     "d": "2026-11-01",
+     "o": "BAL",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 4,
+     "rec_yds": 86
+    },
+    {
+     "d": "2026-10-18",
+     "o": "LV",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 7,
+     "rec_yds": 38
+    },
+    {
+     "d": "2026-10-13",
+     "o": "LAR",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 1,
+     "rec_yds": 7
+    },
+    {
+     "d": "2026-10-04",
+     "o": "NE",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 1,
+     "rec_yds": 7
+    },
+    {
+     "d": "2026-09-27",
+     "o": "LAC",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 2,
+     "rec_yds": 38
+    },
+    {
+     "d": "2026-09-18",
+     "o": "DET",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 7,
+     "rec_yds": 95
+    }
+   ]
+  },
+  {
+   "text": "",
+   "name": "Kalif Raymond",
+   "pos": "WR",
+   "team": "CHI",
+   "opp": "TB",
+   "game": "TB @ CHI",
+   "date": "2026-11-09T01:20Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 0,
+    "pass_td": 0,
+    "rush_yds": 2,
+    "rush_att": 0.3,
+    "rec": 2,
+    "rec_yds": 18,
+    "rec_td": 0.07,
+    "rush_td": 0.01,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rec",
+    "line": 1.5,
+    "take": "Under",
+    "chance": 0.416,
+    "mean": 1.9942105013821978
+   },
+   "recent": [
+    {
+     "d": "2026-11-03",
+     "o": "SEA",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 39,
+     "rec": 2,
+     "rec_yds": 14
+    },
+    {
+     "d": "2026-10-23",
+     "o": "NE",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 0,
+     "rec_yds": 0
+    },
+    {
+     "d": "2026-10-18",
+     "o": "ATL",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 2,
+     "rec_yds": 18
+    },
+    {
+     "d": "2026-10-11",
+     "o": "GB",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": -2,
+     "rec": 3,
+     "rec_yds": 6
+    },
+    {
+     "d": "2026-10-04",
+     "o": "NYJ",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 2,
+     "rec_yds": 6
+    },
+    {
+     "d": "2026-09-29",
+     "o": "PHI",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 6,
+     "rec_yds": 90
+    }
+   ]
+  },
+  {
+   "text": "",
+   "name": "Tucker Kraft",
+   "pos": "TE",
+   "team": "GB",
+   "opp": "NE",
+   "game": "GB @ NE",
+   "date": "2026-11-08T21:25Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 0,
+    "pass_td": 0,
+    "rush_yds": 0.7,
+    "rush_att": 0.2,
+    "rec": 4.8,
+    "rec_yds": 41.8,
+    "rec_td": 0.26,
+    "rush_td": 0.01,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rec_yds",
+    "line": 45.5,
+    "take": "Under",
+    "chance": 0.542,
+    "mean": 42.30770803476407
+   },
+   "recent": [
+    {
+     "d": "2026-10-30",
+     "o": "CAR",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 6,
+     "rec_yds": 53
+    },
+    {
+     "d": "2026-10-25",
+     "o": "DET",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 4,
+     "rec_yds": 48
+    },
+    {
+     "d": "2026-10-19",
+     "o": "DAL",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 5,
+     "rec_yds": 37
+    },
+    {
+     "d": "2026-10-11",
+     "o": "CHI",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 2,
+     "rec": 5,
+     "rec_yds": 64
+    },
+    {
+     "d": "2026-10-04",
+     "o": "TB",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 3,
+     "rec": 6,
+     "rec_yds": 42
+    },
+    {
+     "d": "2026-09-25",
+     "o": "ATL",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 4,
+     "rec_yds": 26
+    }
+   ]
+  },
+  {
+   "text": "",
+   "name": "Khalil Shakir",
+   "pos": "WR",
+   "team": "BUF",
+   "opp": "MIN",
+   "game": "BUF @ MIN",
+   "date": "2026-11-10T01:15Z",
+   "injury": "",
+   "proj": {
+    "pass_yds": 0,
+    "pass_td": 0,
+    "rush_yds": 0,
+    "rush_att": 0,
+    "rec": 3.7,
+    "rec_yds": 39.4,
+    "rec_td": 0.2,
+    "rush_td": 0,
+    "fp": null
+   },
+   "lean": {
+    "stat": "rec_yds",
+    "line": 39.5,
+    "take": "Under",
+    "chance": 0.547,
+    "mean": 37.97526165547291
+   },
+   "recent": [
+    {
+     "d": "2026-11-01",
+     "o": "BAL",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 5,
+     "rec_yds": 64
+    },
+    {
+     "d": "2026-10-18",
+     "o": "LV",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 4,
+     "rec_yds": 34
+    },
+    {
+     "d": "2026-10-13",
+     "o": "LAR",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 3,
+     "rec_yds": 80
+    },
+    {
+     "d": "2026-10-04",
+     "o": "NE",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 7,
+     "rec_yds": 82
+    },
+    {
+     "d": "2026-09-27",
+     "o": "LAC",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 1,
+     "rec_yds": 6
+    },
+    {
+     "d": "2026-09-18",
+     "o": "DET",
+     "pass_yds": null,
+     "pass_td": null,
+     "rush_yds": 0,
+     "rec": 3,
+     "rec_yds": 38
+    }
+   ]
+  }
+ ],
+ "eval": {
+  "keepOver": "0.112",
+  "keepUnder": "0.316",
+  "keepNflTot": "0.240",
+  "posted": 70,
+  "overPlays": 6,
+  "underPlays": 36,
+  "proven": 16,
+  "nflBoard": [
+   "HOU @ LAC side NO PLAY total NO PLAY",
+   "GB @ NE side NO PLAY total NO PLAY",
+   "LV @ SF side NO PLAY total NO PLAY",
+   "ARI @ SEA side NO PLAY total NO PLAY",
+   "TB @ CHI side NO PLAY total NO PLAY",
+   "BUF @ MIN side NO PLAY total NO PLAY",
+   "WSH @ NYG side NO PLAY total NO PLAY",
+   "NE VS DET side NO PLAY total NO PLAY",
+   "KC @ ATL side NO PLAY total NO PLAY",
+   "HOU @ CLE side NO PLAY total NO PLAY",
+   "MIN @ GB side NO PLAY total NO PLAY",
+   "JAX @ TEN side NO PLAY total NO PLAY",
+   "MIA @ IND side NO PLAY total NO PLAY",
+   "CAR @ NO side NO PLAY total NO PLAY",
+   "BUF @ NYJ side NO PLAY total NO PLAY",
+   "SEA @ LV side LV total NO PLAY",
+   "LAR @ ARI side NO PLAY total NO PLAY",
+   "SF @ DAL side NO PLAY total NO PLAY",
+   "PIT @ CIN side NO PLAY total NO PLAY",
+   "LAC @ BAL side NO PLAY total NO PLAY"
+  ],
+  "cfbRate": "0.5433"
+ },
+ "errors": []
+}
