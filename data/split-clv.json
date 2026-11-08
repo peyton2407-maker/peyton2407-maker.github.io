@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-07T23:01:21Z",
+ "updated": "2026-11-08T00:01:23Z",
  "about": "Every side The Split took: the line when first picked, the closing line, and how many points the line moved toward our side (clv). Only picks still standing at kickoff count (counts: true); ones The Split dropped before the game are listed but not counted. Positive average CLV over a season is the sign of a real edge; win-loss needs far more games.",
  "summary": {
   "record": {
@@ -153,15 +153,15 @@
    "lost_close": 0,
    "at_first": {
     "w": 3,
-    "l": 5,
+    "l": 6,
     "p": 0,
-    "pct": 0.375
+    "pct": 0.333
    },
    "at_close": {
     "w": 1,
-    "l": 5,
+    "l": 6,
     "p": 0,
-    "pct": 0.167
+    "pct": 0.143
    }
   }
  },
@@ -3401,9 +3401,9 @@
    "close": -6.5,
    "close_src": "last look",
    "clv": 1.0,
-   "final": null,
-   "ats_first": null,
-   "ats_close": null,
+   "final": "TA&M 9 - SC 17",
+   "ats_first": "L",
+   "ats_close": "L",
    "counts": false
   },
   {
@@ -3443,7 +3443,7 @@
    "first_at": "2026-11-04T22:38:59Z",
    "hours_before": 73.9,
    "last": -7.0,
-   "last_at": "2026-11-07T23:01:21Z",
+   "last_at": "2026-11-08T00:01:23Z",
    "dropped": false,
    "flipped": false,
    "close": -7.0,
@@ -3467,7 +3467,7 @@
    "first_at": "2026-11-06T18:06:43Z",
    "hours_before": 30.4,
    "last": 3.0,
-   "last_at": "2026-11-07T23:01:21Z",
+   "last_at": "2026-11-08T00:01:23Z",
    "dropped": false,
    "flipped": false,
    "close": 3.0,
