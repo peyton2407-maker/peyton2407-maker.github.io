@@ -1622,8 +1622,7 @@
    "total_play": false,
    "spread": 3,
    "total": 52.5,
-   "lockedAt": "2026-11-08T12:31:13.543Z",
-   "provisional": true
+   "lockedAt": "2026-11-08T13:01:24.433Z"
   },
   "401873039": {
    "id": "401873039",
@@ -1643,7 +1642,7 @@
    "total_play": false,
    "spread": -3,
    "total": 42.5,
-   "lockedAt": "2026-11-08T12:31:13.543Z",
+   "lockedAt": "2026-11-08T13:01:24.433Z",
    "provisional": true
   },
   "401873040": {
@@ -1655,16 +1654,16 @@
    "away": "DAL",
    "date": "2026-11-08T18:00Z",
    "pick": "IND",
-   "pick_line": "IND +5.5",
+   "pick_line": "IND +4.5",
    "total_pick": "UNDER 51.5",
    "side_play": false,
-   "our_margin": -4.42,
+   "our_margin": -3.72,
    "our_total": 51.4,
    "confidence": null,
    "total_play": false,
-   "spread": 5.5,
+   "spread": 4.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T12:31:13.543Z",
+   "lockedAt": "2026-11-08T13:01:24.433Z",
    "provisional": true
   },
   "401873041": {
@@ -1685,7 +1684,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-08T12:31:13.543Z",
+   "lockedAt": "2026-11-08T13:01:24.433Z",
    "provisional": true
   },
   "401873042": {
@@ -1706,7 +1705,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 50.5,
-   "lockedAt": "2026-11-08T12:31:13.543Z",
+   "lockedAt": "2026-11-08T13:01:24.433Z",
    "provisional": true
   },
   "401873043": {
@@ -1727,7 +1726,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 47.5,
-   "lockedAt": "2026-11-08T12:31:13.543Z",
+   "lockedAt": "2026-11-08T13:01:24.433Z",
    "provisional": true
   },
   "401873044": {
@@ -1748,7 +1747,7 @@
    "total_play": false,
    "spread": 3,
    "total": 38.5,
-   "lockedAt": "2026-11-08T12:31:13.543Z",
+   "lockedAt": "2026-11-08T13:01:24.433Z",
    "provisional": true
   },
   "401873045": {
@@ -1769,7 +1768,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 48.5,
-   "lockedAt": "2026-11-08T12:31:13.543Z",
+   "lockedAt": "2026-11-08T13:01:24.433Z",
    "provisional": true
   },
   "401873046": {
@@ -1790,7 +1789,7 @@
    "total_play": false,
    "spread": 6,
    "total": 40.5,
-   "lockedAt": "2026-11-08T12:31:13.543Z",
+   "lockedAt": "2026-11-08T13:01:24.433Z",
    "provisional": true
   },
   "401873047": {
@@ -1811,7 +1810,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T12:31:13.543Z",
+   "lockedAt": "2026-11-08T13:01:24.433Z",
    "provisional": true
   },
   "401873048": {
@@ -1826,13 +1825,13 @@
    "pick_line": "ARI +8.5",
    "total_pick": "UNDER 39.5",
    "side_play": false,
-   "our_margin": 7.46,
+   "our_margin": 7.03,
    "our_total": 38.9,
    "confidence": null,
    "total_play": false,
    "spread": -8.5,
    "total": 39.5,
-   "lockedAt": "2026-11-08T12:31:13.543Z",
+   "lockedAt": "2026-11-08T13:01:24.433Z",
    "provisional": true
   },
   "401873049": {
@@ -1853,7 +1852,7 @@
    "total_play": false,
    "spread": -3,
    "total": 44.5,
-   "lockedAt": "2026-11-08T12:31:13.543Z",
+   "lockedAt": "2026-11-08T13:01:24.433Z",
    "provisional": true
   }
  },
@@ -2188,12 +2187,12 @@
     "ours": "HOU -4.7 · total 40.0",
     "score": "HOU 22.4 – LAC 17.6",
     "market": "HOU -6.0 · total 40.5",
-    "lockedAt": "2026-11-08T12:31:13.599Z",
+    "lockedAt": "2026-11-08T13:01:24.494Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-08T21:05Z",
     "big": true,
-    "savedAt": 1794141073599
+    "savedAt": 1794142884494
    }
   ],
   "cfb": [
@@ -2856,7 +2855,7 @@
    }
   ]
  },
- "updated": "2026-11-08T12:31:13.543Z",
+ "updated": "2026-11-08T13:01:24.433Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3032,7 +3031,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-08T12:31:13.543Z"
+   "lockedAt": "2026-11-08T13:01:24.433Z"
   }
  ],
  "teasers": [
@@ -3128,7 +3127,7 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.735,
+   "win": 0.727,
    "bookWin": 0.7428,
    "total": 39.5,
    "result": null,
@@ -3907,6 +3906,28 @@
    "units": null
   },
   {
+   "id": "401873048|sp|away",
+   "gid": "401873048",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "away",
+   "label": "ARI +3",
+   "game": "ARI @ SEA",
+   "kick": "2026-11-08T21:25Z",
+   "line": 3,
+   "mainLine": 8.5,
+   "price": 240,
+   "book": "BetRivers",
+   "win": 0.2886,
+   "mwin": 0.2728,
+   "ev": 0.0554,
+   "mev": 0,
+   "src": "proj",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873050|tot|under",
    "gid": "401873050",
    "league": "nfl",
@@ -4301,10 +4322,10 @@
    "price": 650,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.1758,
-   "mkt": 0.1275,
-   "win": 0.1395,
-   "ev": 0.0466,
+   "ours": 0.1778,
+   "mkt": 0.1301,
+   "win": 0.142,
+   "ev": 0.065,
    "result": null,
    "final": null,
    "units": null
@@ -4406,10 +4427,10 @@
    "price": 290,
    "book": "BetMGM",
    "books": 6,
-   "ours": 0.3708,
+   "ours": 0.3745,
    "mkt": 0.2977,
-   "win": 0.3159,
-   "ev": 0.2322,
+   "win": 0.3169,
+   "ev": 0.2358,
    "result": null,
    "final": null,
    "units": null
