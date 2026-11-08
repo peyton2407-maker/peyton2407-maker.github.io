@@ -1,29 +1,26 @@
 async () => {
   await new Promise((r) => setTimeout(r, 12000));
+  try { await loadGamelogs(); } catch (e) {}
   const now = Date.now();
-  const desk = window.SPLIT_DESK || [];
-  const ids = new Set((DATA.games || []).filter((g) => g.league === "cfb").map((g) => String(g.id)));
-  const out = { deskRows: desk.length, deskUnmatched: desk.filter((r) => !ids.has(String(r.id))).map((r) => `${r.away} @ ${r.home} (${r.id})`).slice(0, 15) };
-  const week = (DATA.games || []).filter((g) => g.league === "cfb" && Math.abs(Date.parse(g.date) - now) < 4 * 864e5);
-  const up = week.filter((g) => !g.completed && Date.parse(g.date) > now);
-  out.weekGames = week.length; out.upcoming = up.length; out.final = week.filter((g) => g.completed).length;
-  const flags = [];
-  up.forEach((g) => {
+  const games = (DATA.games || []).filter((g) => g.league === "nfl" && !g.completed && Date.parse(g.date) > now - 3600e3 && Date.parse(g.date) < now + 3 * 864e5);
+  const keys = games[0] && games[0].proj ? Object.keys(games[0].proj) : [];
+  const rows = games.map((g) => {
     const p = g.proj || {}, o = g.odds || {};
+    let mv = {}; try { mv = nflLineMove(g, g._lockedSpread, g._lockedTotal) || {}; } catch (e) { mv = { notes: ["ERR " + e] }; }
+    const ours = -Number(p.blended_margin), tot = Number(p.blended_total != null ? p.blended_total : p.hashmark_total != null ? p.hashmark_total : p.total);
     const f = [];
-    if (!p.split_locked) f.push("no Split row");
-    ["hashmark_total", "blended_margin", "home_points", "away_points"].forEach((k) => { if (!Number.isFinite(Number(p[k]))) f.push(k + "=" + p[k]); });
+    if (!Number.isFinite(ours)) f.push("margin " + p.blended_margin); if (!Number.isFinite(tot)) f.push("total missing");
     if (o.home_spread == null) f.push("no spread"); if (o.total == null) f.push("no total");
-    if (Number.isFinite(+p.blended_margin) && o.home_spread != null && Math.abs(-p.blended_margin - o.home_spread) > 10) f.push(`ours ${(-p.blended_margin).toFixed(1)} vs line ${o.home_spread}`);
-    if (Number.isFinite(+p.hashmark_total) && o.total != null && Math.abs(p.hashmark_total - o.total) > 8) f.push(`total ours ${p.hashmark_total} vs ${o.total}`);
-    if (Math.abs((+p.home_points + +p.away_points) - p.hashmark_total) > 0.6) f.push("points don't add up to total");
-    if (p.edge_total != null && p.total_pick && (Math.abs(p.edge_total) < 1.5) !== (p.total_pick === "NO PLAY")) f.push(`total pick ${p.total_pick} vs edge ${p.edge_total}`);
-    if (f.length) flags.push(`${g.short_name}: ${f.join("; ")}`);
+    if (Number.isFinite(ours) && o.home_spread != null && Math.abs(ours - o.home_spread) >= 3) f.push(`ours ${ours.toFixed(1)} vs line ${o.home_spread}`);
+    if (Number.isFinite(tot) && o.total != null && Math.abs(tot - o.total) >= 4) f.push(`total ${tot.toFixed(1)} vs ${o.total}`);
+    return `${g.short_name} ${new Date(g.date).toLocaleString("en-US", { weekday: "short", hour: "numeric", minute: "2-digit", timeZone: "America/New_York" })} | line ${o.home_spread}/${o.total} | ours ${ours.toFixed(1)}/${tot.toFixed(1)} | move ${(+mv.margin || 0).toFixed(1)} ${f.length ? "| FLAG " + f.join("; ") : ""}${(mv.notes || []).length ? "\n    notes: " + mv.notes.join(" / ").slice(0, 400) : ""}`;
   });
-  out.flags = flags;
-  out.plays = up.map((g) => ({ g, a: cfbAngleFor(g) })).filter((x) => x.a && x.a.play).map(({ g, a }) => `${g.short_name} ${a.play.line} ${pbAm(a.play.price)} ${a.play.book || ""} hit ${Math.round(a.play.hit * 100)}% ev ${(a.play.ev * 100).toFixed(1)}% [${a.play.angle}] mkt total ${(g.odds || {}).total}`);
-  out.potd = (() => { try { const b = potdPick("cfb"); return b ? `${b.game || (b.g && b.g.short_name)} ${b.line} ${b.price} locked=${!!b.locked}` : null; } catch (e) { return "error " + e; } })();
-  out.liveOdd = week.filter((g) => !g.completed && Date.parse(g.date) < now - 5 * 3600e3).map((g) => g.short_name + " still not final " + g.date);
-  out.scoreCfb = (() => { try { view = "score"; renderScorecard(); return (document.querySelector("main") || document.body).innerText.replace(/\s+/g, " ").match(/College[^.]{0,300}/g)?.slice(0, 4); } catch (e) { return "error " + e; } })();
-  return out;
+  const potd = (() => { try { const b = potdPick("nfl"); return b && `${b.g.short_name} ${b.line} ${b.price} ${b.book} hit ${Math.round(b.hit * 100)}% locked=${!!b.locked}`; } catch (e) { return "ERR " + e; } })();
+  const L = window.GG_LOCKS || {};
+  const lad = (L.ladder && (L.ladder.tickets || L.ladder.days || L.ladder)) || null;
+  const ladTxt = (() => { try { view = "ladder"; renderLadder(); return (document.querySelector("#ladderBoard, main") || document.body).innerText.replace(/\s+/g, " ").match(/(Today's ladder|Next ladder|Ladder ticket)[^]{0,600}/)?.[0]; } catch (e) { return "ERR " + e; } })();
+  const R = await propRecordPicks();
+  const plays = R.picks.filter((x) => x.value > 0.005 && !x.cold && !x.thin);
+  const weird = R.picks.filter((x) => !(x.chance > 0 && x.chance < 1) || !(x.books > 0 && x.books < 1) || Math.abs(x.chance - x.books) > 0.25).map((x) => `${x.name} ${x.take} ${x.line} ${x.stat} ours ${x.chance} books ${x.books}`);
+  return { keys, n: games.length, rows, potd, ladTxt, props: { posted: R.picks.length, plays: plays.length, cold: R.picks.filter((x) => x.cold).length, thin: R.picks.filter((x) => x.thin).length, weird: weird.slice(0, 10) } };
 }
