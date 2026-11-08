@@ -1,10 +1,10 @@
 name: Check chances
-# Every Tuesday after the NFL week ends: compare the chances the board posted before each
+# Every morning (Nov 8, 2026: was every Tuesday), so the site learns from each day's games: compare the chances the board posted before each
 # kickoff with the final scores, and save how much of the board's lean to keep
 # (data/calibration.json, read by the parlay builder). Needs the full history.
 on:
   schedule:
-    - cron: "37 12 * * 2"
+    - cron: "37 12 * * *"
   workflow_dispatch:
 permissions:
   contents: write

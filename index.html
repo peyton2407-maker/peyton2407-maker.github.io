@@ -4979,6 +4979,14 @@ function applySituationalToGame(g) {
     p.edge_total = +(Number(p.hashmark_total) - Number(boardTot)).toFixed(2);
     p.total_pick = Math.abs(p.edge_total) < 1.6 ? "NO PLAY" : (p.edge_total > 0 ? "OVER " + boardTot : "UNDER " + boardTot);
   }
+  // Learned from results (from Nov 8, 2026): a board play has to beat -110 on its CHECKED
+  // chance, the part of our lean that this season's graded games back (data/calibration.json,
+  // refit every morning). A market that keeps losing keeps less of our lean, so it needs a
+  // bigger edge to post; one that keeps winning posts more. Nothing is switched off by hand.
+  try {
+    if (p.pick && p.pick !== "NO PLAY" && p.edge_spread != null && normCdf(checkedEdge("nfl", "spread", p.edge_spread) / LIVE.NFL_SIGMA) < NFL_PLAY_MIN) { p.pick = "NO PLAY"; p.pick_line = null; }
+    if (p.total_pick && p.total_pick !== "NO PLAY" && p.edge_total != null && normCdf(checkedEdge("nfl", "total", p.edge_total) / 13.2) < NFL_PLAY_MIN) p.total_pick = "NO PLAY";
+  } catch (e) {}
   // Confidence = estimated chance the best play hits (NFL edges are already 70% market).
   {
     // the checked edge (only the part of the lean our record backs), same as "% to hit"
@@ -5616,6 +5624,7 @@ function cfbSlateLean() {
 // Both edges are already shrunk toward the market (model trusted at 25%).
 // Confidence keeps only as much of the lean as held up against this season's results
 // (data/calibration.json; half until a market has enough games).
+const NFL_PLAY_MIN = 0.524;   // break-even at -110
 function checkedEdge(league, market, edge) {
   let k = 0.25;
   try { if (typeof pbKeep === "function") k = pbKeep(league, market).k; } catch (e) {}
@@ -13041,7 +13050,7 @@ function postedLean(p) {
       // how much of our lean the graded prop record backs (data/calibration.json, refit every
       // Tuesday from data/prop-record.json); a quarter until 40 picks are graded
       let keep = 0.25;
-      try { keep = pbKeep("nfl", "props").k; } catch (e) {}
+      try { keep = pbPropKeep(side, m.key).k; } catch (e) {}
       const ours = fair != null ? fair + keep * (raw - fair) : raw;
       const price = mk.best[side] ? mk.best[side].odds : null;
       // value per dollar at the best price when there is one; otherwise our chance vs a coin flip
@@ -13077,9 +13086,12 @@ const PROP_COLD_MAX = 0.25;
 // +15.8u), 72% then 63% in the two halves. Bigger edges (4+ points) went 52-48: when we
 // disagree with every book by a lot, the books are usually right. Overs went 62-69.
 // Picked this way, the play of the day would have gone 6-2 on past slates (it went 3-4).
-const PROP_EDGE_MAX = 0.04, PROP_PICK_MIN = 0.52;
+const PROP_EDGE_MAX = 0.04, PROP_PICK_MIN = 0.52, PROP_EDGE_KEEP = 0.26;
 function propProven(L) {
-  return !!L && L.take === "Under" && !L.skip && !L.defAgainst && L.gap != null && L.gap >= 0 && L.gap <= PROP_EDGE_MAX
+  // the 0-4 point band was measured with a quarter of our lean kept (keep 0.26 at the time);
+  // it's held on that scale, so the band means the same thing as the keep learns and moves
+  const gap0 = L.raw != null && L.fair != null ? (L.raw - L.fair) * PROP_EDGE_KEEP : L.gap;
+  return !!L && L.take === "Under" && !L.skip && !L.defAgainst && gap0 != null && gap0 >= 0 && gap0 <= PROP_EDGE_MAX
     && L.value > 0.005 && L.chance >= PROP_PICK_MIN && L.price != null;
 }
 // Defense tiers (data/def-tiers.json, scripts/def_tiers.py from nflverse): what the opponent
@@ -13485,7 +13497,7 @@ function cfbAngleFor(g) {
   let bp = null;
   try { bp = bestPriceFor(g.id + "|tot|under"); } catch (e) { bp = null; }
   const b = bp && bp.best;
-  if (b && b.line != null && Number(b.line) >= CFB_HIGH_TOTAL) return { near: `The total is ${pbTot(Number(b.line))}, but the best under price (${pbAm(b.price)}${b.book ? " at " + b.book : ""}) needs more than the ${Math.round(CFB_HIGH_RATE * 100)}% the angle has hit.` };
+  if (b && b.line != null && Number(b.line) >= CFB_HIGH_TOTAL) return { near: `The total is ${pbTot(Number(b.line))}, but the best under price (${pbAm(b.price)}${b.book ? " at " + b.book : ""}) needs more than the ${(cfbHighRate() * 100).toFixed(1)}% the angle has hit.` };
   return null;
 }
 function renderCfbPicks() {
@@ -13775,7 +13787,20 @@ function potdNflCandidates(g) {
 //    so it needs about -118 or better to be a play.
 // Power-rating spreads (47.7% over 2020-25) and home underdogs (strong 2021-23, gone at
 // true home games in 2024-25) are left out.
-const CFB_HIGH_TOTAL = 58, CFB_HIGH_RATE = 0.545, CFB_RULE_START = "2026-11-04";
+const CFB_HIGH_TOTAL = 58, CFB_HIGH_PRIOR = 0.545, CFB_HIGH_PRIOR_N = 1000, CFB_RULE_START = "2026-11-04";
+// The angle's chance learns from its own results (from Nov 8, 2026): the 1,000-game record
+// counts as 1,000 games at 54.5%, and every graded high-total under the site plays since Nov 4
+// (play of the day and best chance to hit) is added on top, so each week's results move it a
+// little and a long losing run moves it a lot.
+function cfbHighRate() {
+  try {
+    const rows = ["cfb", "cfbHit"].flatMap((lg) => (typeof potdPublished === "function" ? potdPublished(lg) : []) || [])
+      .filter((r) => r && String(r.kick || r.day || "") >= CFB_RULE_START && /under/i.test(String(r.line || r.kind || "")) && r.result);
+    const seen = new Set(), done = rows.filter((r) => { const k = r.id + "|" + r.line; if (seen.has(k)) return false; seen.add(k); return true; });
+    const w = done.filter((r) => /^(HIT|WIN)/i.test(String(r.result))).length, l = done.filter((r) => /^(MISS|LOSS)/i.test(String(r.result))).length;
+    return (CFB_HIGH_PRIOR * CFB_HIGH_PRIOR_N + w) / (CFB_HIGH_PRIOR_N + w + l);
+  } catch (e) { return CFB_HIGH_PRIOR; }
+}
 function potdCfbCandidates(g, wxTest) {
   const out = [];
   const o = g.odds || {};
@@ -13791,7 +13816,7 @@ function potdCfbCandidates(g, wxTest) {
   const wxBet = potdBets(g, "cfb", false).find((b) => wxTest(g, b));
   const high = line != null && line >= CFB_HIGH_TOTAL;
   if (!wxBet && !high) return out;
-  let hit = high ? CFB_HIGH_RATE : 0;
+  let hit = high ? cfbHighRate() : 0;
   if (wxBet) hit = Math.max(hit, Number(wxBet.hit) || 0);
   if (wxBet && high) hit = Math.min(0.62, hit + 0.02);   // both angles on the same game
   const ev = hit * pbDec(price) - 1;
@@ -17517,6 +17542,7 @@ function proofWorkHtml() {
       <td class="work-vc"><span class="work-v ${r.verdict.k}">${pbEsc(r.verdict.t)}</span></td>
     </tr>`).join("");
   return `<article class="proof-card work-card"><h3>What's working</h3>
+    <p class="subn"><b>The site learns from these every morning.</b> Each day it checks every pick it posted before kickoff against the final, and works out how much of our lean over the books' price held up, for each kind of bet on its own (prop overs and unders apart, NFL sides and totals apart). A kind that keeps losing keeps less of our lean, so it needs a bigger edge before it's posted; one that keeps winning posts more. Nothing is switched off by hand.</p>
     <p class="subn">Every record the site tracks, in one place. Units are 1 unit a bet at the price saved (the Ladder's retired light days at ½u); "beat the close" is how often the pick got a better number than the closing line, where that's measured.</p>
     ${head}
     <div class="proof-tbl-wrap"><table class="proof-tbl work-tbl"><thead><tr><th>Record</th><th>W-L</th><th>Units</th><th>Per bet</th><th>Beat the close</th><th>Verdict</th></tr></thead><tbody>${body}</tbody></table></div>
@@ -20072,7 +20098,7 @@ function pbViews(g) {
 function pbKeep(league, market) {
   const c = window.PB_CAL && window.PB_CAL.leagues && window.PB_CAL.leagues[league] && window.PB_CAL.leagues[league][market];
   // player props wait for 40 graded picks (they come one per player, many per game)
-  const minN = market === "props" ? 40 : 20;
+  const minN = String(market).startsWith("props") ? 40 : 20;
   if (!c || c.keep == null || !(c.n >= minN)) return { k: PB_PRIOR_KEEP, checked: false, n: c ? c.n : 0 };
   const se = c.keep_se && c.keep_se > 0 ? c.keep_se : 0.5;
   const w1 = 1 / (se * se), w0 = 1 / (PB_PRIOR_SD * PB_PRIOR_SD);
@@ -20080,6 +20106,16 @@ function pbKeep(league, market) {
   return { k, checked: true, n: c.n, raw: c.keep, se };
 }
 
+// Props learn by side, and by stat once a stat has enough (data/calibration.json, refit every
+// morning from the graded prop record): the stat's own side first, then the side, then all props.
+function pbPropKeep(side, stat) {
+  const L = (window.PB_CAL && window.PB_CAL.leagues && window.PB_CAL.leagues.nfl) || {};
+  for (const name of [`props_${side}_${stat}`, `props_${side}`]) {
+    const c = L[name];
+    if (c && c.n >= 40 && c.keep != null) return pbKeep("nfl", name);
+  }
+  return pbKeep("nfl", "props");
+}
 // ---- legs ------------------------------------------------------------------------------
 // stored leg: { id, price?, line?, book? }   id: gid|sp|home  gid|tot|over  gid|ml|away  gid|pp|pid|stat|over
 function pbGame(gid) {
@@ -20295,7 +20331,7 @@ function pbLeg(stored, opts) {
       mkt = { win: over ? f : 1 - f, push: 0 };
     }
     board = { win: over ? po : 1 - po, push: 0 };
-    keepInfo = pbKeep("nfl", "props");
+    keepInfo = pbPropKeep(over ? "over" : "under", stat);
     market = "Player prop";
     label = `${pl.name} ${over ? "over" : "under"} ${line} ${VAL_LBL[stat]}`;
     return pbFinish({ st, g, kind, side, game, label, line, mainLine: line, market, bookPrice, priceSource, board, mkt, keepInfo, cond: null, pid, stat, player: pl.name });

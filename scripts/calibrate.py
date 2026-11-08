@@ -316,9 +316,19 @@ def main():
         prec = json.loads((repo / "data" / "prop-record.json").read_text()).get("picks") or []
     except Exception:
         prec = []
-    data["nfl"]["props"] = [(float(x["model"]), float(x["books"]), x["result"]["out"] == "win")
-                            for x in prec if (x.get("result") or {}).get("out") in ("win", "loss")
-                            and x.get("model") is not None and x.get("books") is not None]
+    graded = [x for x in prec if (x.get("result") or {}).get("out") in ("win", "loss")
+              and x.get("model") is not None and x.get("books") is not None]
+    row = lambda x: (float(x["model"]), float(x["books"]), x["result"]["out"] == "win")
+    data["nfl"]["props"] = [row(x) for x in graded]
+    # overs and unders learn apart (Nov 8, 2026): graded unders won and overs lost, and one
+    # number for both hid that; the props page uses each side's own keep once it has 40
+    data["nfl"]["props_over"] = [row(x) for x in graded if x.get("take") == "over"]
+    data["nfl"]["props_under"] = [row(x) for x in graded if x.get("take") == "under"]
+    for stat in ("rec", "rec_yds", "rush_yds", "pass_yds", "pass_td"):
+        for side in ("over", "under"):
+            rs = [row(x) for x in graded if x.get("take") == side and x.get("stat") == stat]
+            if len(rs) >= 40:
+                data["nfl"][f"props_{side}_{stat}"] = rs
     out = {"updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "method": (
         "Every game since Sept 21: the last board posted before kickoff, the chance it gave each side, "
         "and the final score. keep = how much of the board's lean over the market's price held up."), "leagues": {}}
@@ -330,7 +340,7 @@ def main():
             out["leagues"][lg][name] = {
                 "n": len(rows), "lean_hits": hits, "lean_rate": round(hits / len(rows), 3) if rows else None,
                 "keep": keep, "keep_se": round(se, 2) if se else None,
-                "buckets": buckets(rows) if name not in ("ml", "props") else [],
+                "buckets": buckets(rows) if name != "ml" and not name.startswith("props") else [],
             }
     Path(args.out).write_text(json.dumps(out, indent=1) + "\n")
     for lg, mk in out["leagues"].items():
