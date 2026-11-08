@@ -2049,6 +2049,11 @@ body[data-section="record"] .mainnav a[data-section="record"] { color: var(--sun
 .potd-sub { margin: 22px 0 8px; font-size: 15px; }
 .pp-def { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; line-height: 1.4; }
 .pp-proven { display: block; margin-top: 4px; color: var(--good, #3ccf7a); font-size: 12px; font-weight: 600; line-height: 1.4; }
+.es-chip { display: inline-block; margin-top: 4px; padding: 2px 8px; border: 1px dashed var(--line); border-radius: 999px; color: var(--muted); font-size: 12px; font-weight: 600; white-space: nowrap; }
+.es-chip b { margin-left: 4px; }
+.es-chip .es-hit { color: var(--good, #6fd08c); }
+.es-chip .es-miss { color: var(--bad, #ff7a7a); }
+.gr-pick .es-chip, .sl-pick .es-chip, .gm-pick .es-chip { display: table; }
 .ph-note { margin: 6px 0 0; color: var(--muted); font-size: .82rem; line-height: 1.45; }
 .tdl { grid-column: 1 / -1; border: 1px solid var(--line); border-radius: 16px; background: var(--card); overflow: hidden; }
 .tdl-head, .tdl-row summary { display: grid; grid-template-columns: 34px minmax(0, 1fr) 132px 92px 84px; gap: 12px; align-items: center; padding: 10px 16px; }
@@ -8881,6 +8886,90 @@ function altGradeRow(x) {
   x.final = `${f.away} ${f.as}, ${f.home} ${f.hs}`;
   return true;
 }
+// Every-game sides (from Nov 8, 2026): every NFL and college game picks the side our number
+// leans to against the current spread, saved 90 minutes before kickoff at the best book for
+// that side and graded on the final, 1 unit each, in its own record. Close to a coin flip on
+// purpose: our NFL number is 70% the line and college sides off our rating went 47.7% over five
+// seasons, so the board, the play of the day and the Ladder don't use these. A game where our
+// number sits exactly on the line takes the underdog.
+const SIDES_START = "2026-11-08";
+function everySideNow(g) {
+  if (!g || !g.home || !g.away || (g.league !== "nfl" && g.league !== "cfb")) return null;
+  const p = g.proj || {}, o = g.odds || {};
+  const ours = Number(p.hashmark_home_spread), line = Number(o.home_spread);
+  if (!Number.isFinite(ours) || !Number.isFinite(line) || o.home_spread == null || p.hashmark_home_spread == null) return null;
+  const home = ours < line - 0.01 ? true : ours > line + 0.01 ? false : line > 0;
+  const side = home ? "home" : "away";
+  const bp = typeof bestPriceFor === "function" ? bestPriceFor(`${g.id}|sp|${side}`) : null;
+  const best = bp && bp.best ? bp.best : null;
+  const tl = best && Number.isFinite(best.line) ? best.line : (home ? line : -line);
+  const team = g[side].abbr;
+  return { id: String(g.id), league: g.league, gid: String(g.id), side, team, game: g.short_name || `${g.away.abbr} @ ${g.home.abbr}`, kick: g.date,
+    line: tl, price: best ? best.price : -110, book: best ? best.book : "standard", ours: +(home ? ours : -ours).toFixed(1), market: home ? line : -line,
+    label: `${team} ${tl > 0 ? "+" : tl === 0 ? "" : ""}${tl === 0 ? "PK" : tl}` };
+}
+function everySideRows() { return (((window.GG_LOCKS || {}).sides) || []).filter(Boolean); }
+function everySideFor(g) {
+  const row = everySideRows().find((x) => String(x.id) === String(g.id));
+  if (row) return Object.assign({ locked: true }, row);
+  if (g.completed || Date.parse(g.date) <= Date.now()) return null;
+  return everySideNow(g);
+}
+function everySideChip(g) {
+  try {
+    const x = everySideFor(g);
+    if (!x) return "";
+    const res = x.result ? ` <b class="es-${x.result.toLowerCase()}">${x.result === "HIT" ? "Hit" : x.result === "MISS" ? "Miss" : "Push"}</b>` : "";
+    return `<span class="es-chip" title="Every-game side: the side our number leans to (${x.team} by our number ${x.ours > 0 ? "+" : ""}${x.ours}, market ${x.market > 0 ? "+" : ""}${x.market}). Tracked in its own record, not a board play.">Side ${pbEsc(x.label)}${res}</span>`;
+  } catch (e) { return ""; }
+}
+function everySideLockRun(out, changes, now) {
+  out.sides = out.sides || [];
+  const have = new Map(out.sides.map((x) => [String(x.id), x]));
+  (DATA.games || []).forEach((g) => {
+    if (!g || g.completed || (g.league !== "nfl" && g.league !== "cfb")) return;
+    const kick = Date.parse(g.date);
+    if (!(kick > now && kick - now <= LOCK_WINDOW_MS) || have.has(String(g.id))) return;
+    const x = everySideNow(g);
+    if (!x) return;
+    x.lockedAt = new Date(now).toISOString();
+    have.set(x.id, x);
+    changes.push(`every-game side ${x.game} ${x.label} ${pbAm(x.price)} ${x.book}`);
+  });
+  have.forEach((x) => {
+    if (x.result || Date.parse(x.kick) > now) return;
+    const f = typeof ladderFinal === "function" ? ladderFinal(x.gid) : null;
+    if (!f || !Number.isFinite(f.hs) || !Number.isFinite(f.as)) return;
+    const c = (x.side === "home" ? f.hs - f.as : f.as - f.hs) + Number(x.line);
+    x.result = c > 0 ? "HIT" : c < 0 ? "MISS" : "PUSH";
+    x.units = x.result === "HIT" ? +(pbDec(x.price) - 1).toFixed(4) : x.result === "MISS" ? -1 : 0;
+    x.final = `${f.away} ${f.as}, ${f.home} ${f.hs}`;
+    changes.push(`every-game side ${x.game} ${x.label} ${x.result}`);
+  });
+  out.sides = [...have.values()].sort((a, b) => String(a.kick).localeCompare(String(b.kick))).slice(-3000);
+}
+function everySideTally(rows) {
+  const w = rows.filter((x) => x.result === "HIT").length, l = rows.filter((x) => x.result === "MISS").length, p = rows.filter((x) => x.result === "PUSH").length;
+  return { w, l, p, n: w + l + p, u: rows.reduce((a, x) => a + Number(x.units || 0), 0) };
+}
+function everySideRecordHtml() {
+  const done = everySideRows().filter((x) => x.result);
+  const rec = (t) => t.n ? `${t.w}-${t.l}${t.p ? "-" + t.p : ""}` : "—";
+  const un = (t) => t.n ? `${t.u >= 0 ? "+" : "−"}${Math.abs(t.u).toFixed(2)}u · ${Math.round(t.w / Math.max(1, t.w + t.l) * 100)}%` : "None finished yet";
+  const A = everySideTally(done), N = everySideTally(done.filter((x) => x.league === "nfl")), C = everySideTally(done.filter((x) => x.league === "cfb"));
+  const fav = everySideTally(done.filter((x) => Number(x.line) < 0)), dog = everySideTally(done.filter((x) => Number(x.line) > 0));
+  const recent = done.slice().reverse().slice(0, 12).map((x) => `<li class="${x.result === "HIT" ? "hit" : x.result === "MISS" ? "miss" : ""}"><b>${pbEsc(x.game)}: ${pbEsc(x.label)} ${pbEsc(pbAm(x.price))}</b> <span>${x.result === "HIT" ? "Hit" : x.result === "MISS" ? "Miss" : "Push"} · ${pbEsc(x.final || "")}</span></li>`).join("");
+  return `<article class="proof-card es-rec"><h3>Every-game sides</h3>
+    <div class="alt-rec-stats">
+      <div><b>${rec(A)}</b><span>${un(A)}</span></div>
+      <div><b>${rec(N)}</b><span>NFL${N.n ? " · " + un(N) : ""}</span></div>
+      <div><b>${rec(C)}</b><span>College${C.n ? " · " + un(C) : ""}</span></div>
+      <div><b>${rec(fav)} / ${rec(dog)}</b><span>Favorites / underdogs</span></div>
+    </div>
+    <p class="subn">Since Nov 8, every NFL and college game picks the side our number leans to against the spread, saved 90 minutes before kickoff at the best book for that side and graded on the final, 1 unit each. It's kept apart from the board's plays: our number is mostly the betting line, so these start near a coin flip, and this record shows whether that changes. At −110 a side needs 52.4% to break even.</p>
+    ${recent ? `<details><summary>Recent sides</summary><ul class="tz-rec-list">${recent}</ul></details>` : ""}
+  </article>`;
+}
 function altLockRun(out, changes, now) {
   out.altLines = out.altLines || [];
   if (!window.PB_ALT) return;
@@ -11512,6 +11601,7 @@ function slateRowHtml(g) {
   const pick = parts.length
     ? parts.map((t) => ticketHtml(g, t)).join("") + (!live && !done ? (sp.lock ? `<span class="gr-sub">Locked</span>` : chance ? `<span class="gr-sub">${chance}% to hit</span>` : "") : "")
     : lean ? `<span class="sl-lean">Lean ${pbEsc(lean)}</span>` : `<span class="gr-none">No play</span>`;
+  const pickSide = everySideChip(g);
   // what to know: weather that matters, a starter out, a line that moved
   const flags = [];
   const wx = g.weather;
@@ -11533,7 +11623,7 @@ function slateRowHtml(g) {
     <div class="sl-teams">${team("away")}${team("home")}</div>
     <div class="sl-num"><span>Vegas</span><b>${pbEsc(o.details || "—")}</b><small>${o.total != null ? "O/U " + pbTot(o.total) : ""}</small></div>
     <div class="sl-num"><span>Ours</span><b>${pbEsc(ourLine || "—")}</b><small>${ourTot ? "Total " + ourTot : ""}</small></div>
-    <div class="sl-pick">${pick}${flags.length ? `<div class="sl-flags">${flags.join("")}</div>` : ""}</div>
+    <div class="sl-pick">${pick}${pickSide}${flags.length ? `<div class="sl-flags">${flags.join("")}</div>` : ""}</div>
   </article>`;
 }
 function boardSlateHtml(games) {
@@ -12781,6 +12871,7 @@ function gameHeroHtml(g) {
     <div class="gm-pick">
       <span class="gm-lbl">Our pick</span>
       ${parts.length ? `<div class="gm-tix">${parts.map((t) => ticketHtml(g, t)).join("")}</div>${sp.lock ? `<small>Locked before kickoff</small>` : chance ? `<small>${chance}% to hit</small>` : ""}` : `<b class="gm-none">No play</b><small>Too close to the line to call</small>`}
+      ${everySideChip(g)}
     </div>
     <dl class="gm-lines">
       <div><dt>Vegas</dt><dd>${pbEsc(o.details || "—")}</dd><dd class="sub">${o.total != null ? "O/U " + pbTot(o.total) : ""}</dd></div>
@@ -16498,6 +16589,7 @@ function ggLockRun(prev) {
   try { ladderLockRun(out, changes, now, iso, due, early); } catch (e) { console.warn("ladder", e); }
   try { teaserLockRun(out, changes, now, iso, due, early); } catch (e) { console.warn("teaser", e); }
   try { altLockRun(out, changes, now); } catch (e) { console.warn("alt lines", e); }
+  try { everySideLockRun(out, changes, now); } catch (e) { console.warn("every-game sides", e); }
   try { tdLockRun(out, changes, now); } catch (e) { console.warn("td picks", e); }
   if (changes.length) out.updated = iso;
   return { locks: out, changes };
@@ -16786,6 +16878,7 @@ function gameRowHtml(g, opts) {
     pick = parts.length
       ? parts.map((t) => ticketHtml(g, t)).join("") + (started ? "" : sp.lock ? `<span class="gr-sub">Locked</span>` : chance ? `<span class="gr-sub">${chance}% to hit</span>` : "")
       : `<span class="gr-none">No play</span>`;
+    pick += everySideChip(g);
   }
   return `<article class="game-row${live ? " is-live" : ""}${done ? " is-final" : ""}" data-id="${g.id}">
     <div class="gr-when">${when}</div>
@@ -17364,6 +17457,11 @@ function workRows() {
     const A = ((window.GG_LOCKS || {}).altLines || []).filter((x) => x.result);
     add({ key: "alt", name: "Alt lines", view: "parlay", sub: "alts", w: A.filter((x) => x.result === "HIT").length, l: A.filter((x) => x.result === "MISS").length, p: A.filter((x) => x.result === "PUSH").length, units: A.reduce((a, x) => a + Number(x.units || 0), 0), staked: A.length });
   } catch (e) {}
+  // every-game sides
+  try {
+    const S = everySideTally(everySideRows().filter((x) => x.result));
+    add({ key: "sides", name: "Every-game sides", view: "score", w: S.w, l: S.l, p: S.p, units: S.u, staked: S.n });
+  } catch (e) {}
   // anytime touchdowns
   try {
     const D = ((window.GG_LOCKS || {}).tdPicks || []).filter((x) => x.result === "HIT" || x.result === "MISS");
@@ -17432,7 +17530,9 @@ function renderProof() {
   const f = box.__pcf || "all", wk = box.__wk || null;
   let work = "";
   try { work = proofWorkHtml(); } catch (e) { console.error(e); work = ""; }
-  try { box.innerHTML = work + proofRecapHtml(wk) + proofClvHtml() + proofCalHtml(f); } catch (e) { box.innerHTML = work; return; }
+  let sides = "";
+  try { sides = everySideRecordHtml(); } catch (e) { sides = ""; }
+  try { box.innerHTML = work + sides + proofRecapHtml(wk) + proofClvHtml() + proofCalHtml(f); } catch (e) { box.innerHTML = work + sides; return; }
   if (!box.__wired) {
     box.__wired = true;
     box.addEventListener("click", (e) => {
