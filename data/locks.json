@@ -1647,7 +1647,7 @@
    "total_play": false,
    "spread": -3,
    "total": 42.5,
-   "lockedAt": "2026-11-08T14:31:32.957Z",
+   "lockedAt": "2026-11-08T15:01:43.705Z",
    "provisional": true
   },
   "401873040": {
@@ -1668,7 +1668,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T14:31:32.957Z",
+   "lockedAt": "2026-11-08T15:01:43.705Z",
    "provisional": true
   },
   "401873041": {
@@ -1689,7 +1689,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-08T14:31:32.957Z",
+   "lockedAt": "2026-11-08T15:01:43.705Z",
    "provisional": true
   },
   "401873042": {
@@ -1702,15 +1702,15 @@
    "date": "2026-11-08T18:00Z",
    "pick": "DET",
    "pick_line": "DET -6.5",
-   "total_pick": "OVER 49.5",
+   "total_pick": "OVER 50.5",
    "side_play": false,
    "our_margin": -6.72,
-   "our_total": 49.9,
+   "our_total": 50.6,
    "confidence": null,
    "total_play": false,
    "spread": 6.5,
-   "total": 49.5,
-   "lockedAt": "2026-11-08T14:31:32.957Z",
+   "total": 50.5,
+   "lockedAt": "2026-11-08T15:01:43.705Z",
    "provisional": true
   },
   "401873043": {
@@ -1731,7 +1731,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 47.5,
-   "lockedAt": "2026-11-08T14:31:32.957Z",
+   "lockedAt": "2026-11-08T15:01:43.705Z",
    "provisional": true
   },
   "401873044": {
@@ -1752,7 +1752,7 @@
    "total_play": false,
    "spread": 3,
    "total": 38.5,
-   "lockedAt": "2026-11-08T14:31:32.957Z",
+   "lockedAt": "2026-11-08T15:01:43.705Z",
    "provisional": true
   },
   "401873045": {
@@ -1773,7 +1773,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 48.5,
-   "lockedAt": "2026-11-08T14:31:32.957Z",
+   "lockedAt": "2026-11-08T15:01:43.705Z",
    "provisional": true
   },
   "401873046": {
@@ -1794,7 +1794,7 @@
    "total_play": false,
    "spread": 5.5,
    "total": 40.5,
-   "lockedAt": "2026-11-08T14:31:32.957Z",
+   "lockedAt": "2026-11-08T15:01:43.705Z",
    "provisional": true
   },
   "401873047": {
@@ -1815,7 +1815,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T14:31:32.957Z",
+   "lockedAt": "2026-11-08T15:01:43.705Z",
    "provisional": true
   },
   "401873048": {
@@ -1836,7 +1836,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 39.5,
-   "lockedAt": "2026-11-08T14:31:32.957Z",
+   "lockedAt": "2026-11-08T15:01:43.705Z",
    "provisional": true
   },
   "401873049": {
@@ -1857,7 +1857,7 @@
    "total_play": false,
    "spread": -3,
    "total": 44.5,
-   "lockedAt": "2026-11-08T14:31:32.957Z",
+   "lockedAt": "2026-11-08T15:01:43.705Z",
    "provisional": true
   },
   "401873050": {
@@ -1878,7 +1878,7 @@
    "total_play": false,
    "spread": -6,
    "total": 47.5,
-   "lockedAt": "2026-11-08T14:31:32.957Z",
+   "lockedAt": "2026-11-08T15:01:43.705Z",
    "provisional": true
   }
  },
@@ -2213,12 +2213,12 @@
     "ours": "DAL -3.7 · total 51.4",
     "score": "DAL 27.6 – IND 23.8",
     "market": "DAL -4.5 · total 51.5",
-    "lockedAt": "2026-11-08T14:31:33.024Z",
+    "lockedAt": "2026-11-08T15:01:43.763Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-08T18:00Z",
     "big": true,
-    "savedAt": 1794148293024
+    "savedAt": 1794150103763
    }
   ],
   "cfb": [
@@ -2881,7 +2881,7 @@
    }
   ]
  },
- "updated": "2026-11-08T14:31:32.957Z",
+ "updated": "2026-11-08T15:01:43.705Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2972,9 +2972,9 @@
    "size": 1,
    "american": 578,
    "dec": 6.7835,
-   "chance": 0.1874,
+   "chance": 0.1872,
    "breakEven": 0.1474,
-   "ev": 0.2715,
+   "ev": 0.2699,
    "firstKick": "2026-11-08T18:00:00.000Z",
    "legs": [
     {
@@ -2987,9 +2987,9 @@
      "kick": "2026-11-08T18:00Z",
      "price": -114,
      "line": 52.5,
-     "win": 0.5854,
-     "bookWin": 0.5423,
-     "value": 0.0989,
+     "win": 0.5847,
+     "bookWin": 0.5426,
+     "value": 0.0976,
      "cat": "prop",
      "why": "We project 44 rec yds against 52.5; our checked chance on the under is 58%, the books' 54%.",
      "alt": null,
@@ -3057,7 +3057,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-08T14:31:32.957Z"
+   "lockedAt": "2026-11-08T15:01:43.705Z"
   }
  ],
  "teasers": [
