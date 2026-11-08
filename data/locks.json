@@ -1649,10 +1649,10 @@
    "total": 42.5,
    "lockedAt": "2026-11-08T16:31:43.396Z",
    "close_spread": -4.5,
-   "close_total": 42.5,
-   "closeAt": "2026-11-08T17:31:25.781Z",
+   "close_total": 43.5,
+   "closeAt": "2026-11-08T17:46:37.257Z",
    "clv_side": 1,
-   "clv_total": 0
+   "clv_total": -1
   },
   "401873040": {
    "id": "401873040",
@@ -1822,7 +1822,7 @@
    "total_play": false,
    "spread": 5.5,
    "total": 40.5,
-   "lockedAt": "2026-11-08T17:31:25.781Z",
+   "lockedAt": "2026-11-08T17:46:37.257Z",
    "provisional": true
   },
   "401873047": {
@@ -1843,7 +1843,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T17:31:25.781Z",
+   "lockedAt": "2026-11-08T17:46:37.257Z",
    "provisional": true
   },
   "401873048": {
@@ -1864,7 +1864,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 39.5,
-   "lockedAt": "2026-11-08T17:31:25.781Z",
+   "lockedAt": "2026-11-08T17:46:37.257Z",
    "provisional": true
   },
   "401873049": {
@@ -1885,7 +1885,7 @@
    "total_play": false,
    "spread": -3,
    "total": 44.5,
-   "lockedAt": "2026-11-08T17:31:25.781Z",
+   "lockedAt": "2026-11-08T17:46:37.257Z",
    "provisional": true
   },
   "401873050": {
@@ -1906,7 +1906,7 @@
    "total_play": false,
    "spread": -6,
    "total": 47.5,
-   "lockedAt": "2026-11-08T17:31:25.781Z",
+   "lockedAt": "2026-11-08T17:46:37.257Z",
    "provisional": true
   }
  },
@@ -2241,12 +2241,12 @@
     "ours": "HOU -4.4 · total 40.0",
     "score": "HOU 22.2 – LAC 17.8",
     "market": "HOU -5.5 · total 40.5",
-    "lockedAt": "2026-11-08T17:31:25.822Z",
+    "lockedAt": "2026-11-08T17:46:37.321Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-08T21:05Z",
     "big": true,
-    "savedAt": 1794159085822
+    "savedAt": 1794159997321
    }
   ],
   "cfb": [
@@ -2909,7 +2909,7 @@
    }
   ]
  },
- "updated": "2026-11-08T17:31:25.781Z",
+ "updated": "2026-11-08T17:46:37.257Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3030,7 +3030,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-08T17:31:25.781Z",
+      "at": "2026-11-08T17:46:37.257Z",
       "line": 52.5,
       "price": -114,
       "book": "DraftKings",
@@ -3064,7 +3064,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-08T17:31:25.781Z",
+      "at": "2026-11-08T17:46:37.257Z",
       "line": 22.5,
       "price": -112,
       "book": "DraftKings",
@@ -3098,7 +3098,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-08T17:31:25.781Z",
+      "at": "2026-11-08T17:46:37.257Z",
       "line": 41.5,
       "price": -111,
       "book": "DraftKings",
@@ -3860,9 +3860,9 @@
    "ev": 0.1036,
    "mev": 0.0198,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "CIN 34, ATL 17",
+   "units": 2.85
   },
   {
    "id": "401873038|tot|under",
@@ -3882,9 +3882,9 @@
    "ev": 0.0534,
    "mev": 0.0197,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "CIN 34, ATL 17",
+   "units": -1
   },
   {
    "id": "401873044|sp|home",
@@ -3991,6 +3991,28 @@
    "mwin": 0.3292,
    "ev": 0.0301,
    "mev": 0.0205,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873039|tot|under",
+   "gid": "401873039",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 33.5",
+   "game": "CLE @ NO",
+   "kick": "2026-11-08T18:00Z",
+   "line": 33.5,
+   "mainLine": 43.5,
+   "price": 280,
+   "book": "ESPN BET",
+   "win": 0.2719,
+   "mwin": 0.2659,
+   "ev": 0.0333,
+   "mev": 0.0103,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -4140,10 +4162,10 @@
    "price": 700,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0.1785,
-   "mkt": 0.1338,
-   "win": 0.145,
-   "ev": 0.1598,
+   "ours": 0.1828,
+   "mkt": 0.1371,
+   "win": 0.1485,
+   "ev": 0.1882,
    "result": null,
    "final": null,
    "units": null
@@ -4182,10 +4204,10 @@
    "price": 310,
    "book": "FanDuel",
    "books": 5,
-   "ours": 0.3999,
-   "mkt": 0.2311,
-   "win": 0.2733,
-   "ev": 0.1204,
+   "ours": 0.4038,
+   "mkt": 0.2354,
+   "win": 0.2775,
+   "ev": 0.1376,
    "result": null,
    "final": null,
    "units": null
