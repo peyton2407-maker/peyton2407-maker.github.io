@@ -1822,7 +1822,7 @@
    "total_play": false,
    "spread": 5.5,
    "total": 40.5,
-   "lockedAt": "2026-11-08T17:01:23.399Z",
+   "lockedAt": "2026-11-08T17:16:27.188Z",
    "provisional": true
   },
   "401873047": {
@@ -1843,7 +1843,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 51.5,
-   "lockedAt": "2026-11-08T17:01:23.399Z",
+   "lockedAt": "2026-11-08T17:16:27.188Z",
    "provisional": true
   },
   "401873048": {
@@ -1864,7 +1864,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 39.5,
-   "lockedAt": "2026-11-08T17:01:23.399Z",
+   "lockedAt": "2026-11-08T17:16:27.188Z",
    "provisional": true
   },
   "401873049": {
@@ -1885,7 +1885,7 @@
    "total_play": false,
    "spread": -3,
    "total": 44.5,
-   "lockedAt": "2026-11-08T17:01:23.399Z",
+   "lockedAt": "2026-11-08T17:16:27.188Z",
    "provisional": true
   },
   "401873050": {
@@ -1906,7 +1906,7 @@
    "total_play": false,
    "spread": -6,
    "total": 47.5,
-   "lockedAt": "2026-11-08T17:01:23.399Z",
+   "lockedAt": "2026-11-08T17:16:27.188Z",
    "provisional": true
   }
  },
@@ -2241,12 +2241,12 @@
     "ours": "HOU -4.4 · total 40.0",
     "score": "HOU 22.2 – LAC 17.8",
     "market": "HOU -5.5 · total 40.5",
-    "lockedAt": "2026-11-08T17:01:23.461Z",
+    "lockedAt": "2026-11-08T17:16:27.248Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-08T21:05Z",
     "big": true,
-    "savedAt": 1794157283461
+    "savedAt": 1794158187248
    }
   ],
   "cfb": [
@@ -2909,7 +2909,7 @@
    }
   ]
  },
- "updated": "2026-11-08T17:01:23.399Z",
+ "updated": "2026-11-08T17:16:27.188Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3030,7 +3030,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-08T17:01:23.399Z",
+      "at": "2026-11-08T17:16:27.188Z",
       "line": 52.5,
       "price": -114,
       "book": "DraftKings",
@@ -3064,7 +3064,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-08T17:01:23.399Z",
+      "at": "2026-11-08T17:16:27.188Z",
       "line": 22.5,
       "price": -112,
       "book": "DraftKings",
@@ -3098,7 +3098,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-08T17:01:23.399Z",
+      "at": "2026-11-08T17:16:27.188Z",
       "line": 41.5,
       "price": -111,
       "book": "DraftKings",
@@ -3191,7 +3191,7 @@
    "kick": "2026-11-08T18:00Z",
    "from": 2.5,
    "to": 8.5,
-   "book": "DraftKings",
+   "book": "bet365",
    "win": 0.729,
    "bookWin": 0.7161,
    "total": 44.5,
@@ -3207,10 +3207,26 @@
    "kick": "2026-11-08T18:00Z",
    "from": 2.5,
    "to": 8.5,
-   "book": "FanDuel",
+   "book": "bet365",
    "win": 0.729,
    "bookWin": 0.7161,
    "total": 38.5,
+   "result": null,
+   "final": null
+  },
+  {
+   "id": "401873045|sp|home",
+   "gid": "401873045",
+   "team": "KC",
+   "side": "home",
+   "game": "NYJ @ KC",
+   "kick": "2026-11-08T18:00Z",
+   "from": -8.5,
+   "to": -2.5,
+   "book": "BetMGM",
+   "win": 0.7517,
+   "bookWin": 0.7517,
+   "total": 47.5,
    "result": null,
    "final": null
   },
@@ -4316,6 +4332,27 @@
    "mkt": 0.2499,
    "win": 0.2677,
    "ev": 0.0308,
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "key": "401873042|4685246",
+   "gid": "401873042",
+   "pid": "4685246",
+   "name": "Kaytron Allen",
+   "pos": "RB",
+   "team": "MIA",
+   "opp": "DET",
+   "game": "DET @ MIA",
+   "kick": "2026-11-08T18:00Z",
+   "price": 850,
+   "book": "BetRivers",
+   "books": 5,
+   "ours": 0.1352,
+   "mkt": 0.1059,
+   "win": 0.1133,
+   "ev": 0.076,
    "result": null,
    "final": null,
    "units": null
