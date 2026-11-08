@@ -1622,7 +1622,7 @@
    "total_play": false,
    "spread": 3,
    "total": 52.5,
-   "lockedAt": "2026-11-08T03:16:38.212Z",
+   "lockedAt": "2026-11-08T03:46:42.249Z",
    "provisional": true
   }
  },
@@ -2588,7 +2588,7 @@
    }
   ]
  },
- "updated": "2026-11-08T03:16:38.212Z",
+ "updated": "2026-11-08T03:46:42.249Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3317,9 +3317,9 @@
    "ev": 0.0431,
    "mev": 0.0251,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "COLO 10, ASU 20",
+   "units": -1
   },
   {
    "id": "401860913|sp|away",
