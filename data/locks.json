@@ -394,8 +394,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 67.5,
-   "lockedAt": "2026-11-08T00:46:27.048Z",
-   "provisional": true
+   "lockedAt": "2026-11-08T01:01:23.383Z"
   },
   "401858285": {
    "id": "401858285",
@@ -841,7 +840,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 71.5,
-   "lockedAt": "2026-11-08T00:46:27.048Z",
+   "lockedAt": "2026-11-08T01:01:23.383Z",
    "provisional": true
   },
   "401860913": {
@@ -862,8 +861,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 43.5,
-   "lockedAt": "2026-11-08T00:46:27.048Z",
-   "provisional": true
+   "lockedAt": "2026-11-08T01:01:23.383Z"
   },
   "401862817": {
    "id": "401862817",
@@ -1058,8 +1056,7 @@
    "total_play": false,
    "spread": 7,
    "total": 48.5,
-   "lockedAt": "2026-11-08T00:46:27.048Z",
-   "provisional": true
+   "lockedAt": "2026-11-08T01:01:23.383Z"
   },
   "401864533": {
    "id": "401864533",
@@ -1129,7 +1126,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-08T00:46:27.048Z",
+   "lockedAt": "2026-11-08T01:01:23.383Z",
    "provisional": true
   },
   "401866453": {
@@ -2513,7 +2510,7 @@
    }
   ]
  },
- "updated": "2026-11-08T00:46:27.048Z",
+ "updated": "2026-11-08T01:01:23.383Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
