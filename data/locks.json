@@ -369,8 +369,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 45.5,
-   "lockedAt": "2026-11-09T23:16:39.279Z",
-   "provisional": true
+   "lockedAt": "2026-11-09T23:46:22.588Z"
   }
  },
  "potd": {
@@ -824,12 +823,11 @@
     "ours": "BUF -3.4 · total 44.9",
     "score": "BUF 24.1 – MIN 20.8",
     "market": "BUF -3.5 · total 45.5",
-    "lockedAt": "2026-11-09T23:16:39.297Z",
-    "locked": false,
-    "provisional": true,
+    "lockedAt": "2026-11-09T23:46:22.610Z",
+    "locked": true,
     "kick": "2026-11-10T01:15Z",
     "big": false,
-    "savedAt": 1794266199297
+    "savedAt": 1794267982610
    }
   ],
   "cfb": [
@@ -1531,7 +1529,7 @@
    }
   ]
  },
- "updated": "2026-11-09T23:16:39.279Z",
+ "updated": "2026-11-09T23:46:22.588Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2805,12 +2803,12 @@
    "game": "WSH @ NYG",
    "kick": "2026-11-13T01:15Z",
    "line": -6,
-   "mainLine": 1.5,
+   "mainLine": 2.5,
    "price": 275,
    "book": "ESPN BET",
-   "win": 0.2668,
-   "mwin": 0.2668,
-   "ev": 0.0373,
+   "win": 0.2744,
+   "mwin": 0.2672,
+   "ev": 0.0649,
    "mev": 0.0373,
    "src": "mkt",
    "result": null,
@@ -3230,6 +3228,22 @@
    "result": "HIT",
    "units": 0.9434,
    "final": "TB 24, CHI 27"
+  },
+  {
+   "id": "401873051",
+   "league": "nfl",
+   "gid": "401873051",
+   "side": "home",
+   "team": "MIN",
+   "game": "BUF @ MIN",
+   "kick": "2026-11-10T01:15Z",
+   "line": 3.5,
+   "price": -115,
+   "book": "DraftKings",
+   "ours": 3.4,
+   "market": 3.5,
+   "label": "MIN +3.5",
+   "lockedAt": "2026-11-09T23:46:22.588Z"
   }
  ]
 }
