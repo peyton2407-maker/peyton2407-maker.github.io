@@ -1922,7 +1922,12 @@
    "total_play": false,
    "spread": -6,
    "total": 47.5,
-   "lockedAt": "2026-11-09T00:01:38.869Z"
+   "lockedAt": "2026-11-09T00:01:38.869Z",
+   "close_spread": -6,
+   "close_total": 47.5,
+   "closeAt": "2026-11-09T00:31:22.645Z",
+   "clv_side": 0,
+   "clv_total": 0
   }
  },
  "potd": {
@@ -2339,7 +2344,11 @@
     "locked": true,
     "kick": "2026-11-09T01:20Z",
     "big": false,
-    "savedAt": 1794182498892
+    "savedAt": 1794182498892,
+    "close_line": 3.5,
+    "closeAt": "2026-11-09T00:31:22.645Z",
+    "close_src": "board",
+    "clv": 0
    }
   ],
   "cfb": [
@@ -3002,7 +3011,7 @@
    }
   ]
  },
- "updated": "2026-11-09T00:16:42.155Z",
+ "updated": "2026-11-09T00:31:22.645Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3338,8 +3347,8 @@
    "win": 0.7353,
    "bookWin": 0.7434,
    "total": 39.5,
-   "result": null,
-   "final": null
+   "result": "HIT",
+   "final": "ARI 3, SEA 17"
   },
   {
    "id": "401873047|sp|home",
@@ -4549,7 +4558,10 @@
    "ours": 4.4,
    "market": 5.5,
    "label": "LAC +5",
-   "lockedAt": "2026-11-08T19:46:27.246Z"
+   "lockedAt": "2026-11-08T19:46:27.246Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "HOU 44, LAC 22"
   },
   {
    "id": "401873049",
@@ -4600,7 +4612,10 @@
    "ours": 7.5,
    "market": 8.5,
    "label": "ARI +8.5",
-   "lockedAt": "2026-11-08T20:01:27.396Z"
+   "lockedAt": "2026-11-08T20:01:27.396Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "ARI 3, SEA 17"
   },
   {
    "id": "401873050",
