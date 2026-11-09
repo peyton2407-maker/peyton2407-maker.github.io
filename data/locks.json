@@ -369,7 +369,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 45.5,
-   "lockedAt": "2026-11-09T21:16:23.873Z",
+   "lockedAt": "2026-11-09T22:16:21.875Z",
    "provisional": true
   }
  },
@@ -824,12 +824,12 @@
     "ours": "BUF -3.4 · total 44.9",
     "score": "BUF 24.1 – MIN 20.8",
     "market": "BUF -3.5 · total 45.5",
-    "lockedAt": "2026-11-09T21:16:23.897Z",
+    "lockedAt": "2026-11-09T22:16:21.902Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-10T01:15Z",
     "big": false,
-    "savedAt": 1794258983897
+    "savedAt": 1794262581902
    }
   ],
   "cfb": [
@@ -1531,7 +1531,7 @@
    }
   ]
  },
- "updated": "2026-11-09T21:16:23.873Z",
+ "updated": "2026-11-09T22:16:21.875Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3170,9 +3170,9 @@
    "book": "FanDuel",
    "books": 6,
    "ours": 0.1079,
-   "mkt": 0.0673,
-   "win": 0.0775,
-   "ev": 0.0849,
+   "mkt": 0.0678,
+   "win": 0.0778,
+   "ev": 0.0893,
    "result": null,
    "final": null,
    "units": null
