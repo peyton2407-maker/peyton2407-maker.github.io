@@ -2324,9 +2324,9 @@
     "hitPct": 64,
     "why": "We project Cade Otton for 2.7 receptions against a line of 3.5. Our checked chance on the under is 64%; the books' own chance is 59%. At -163 (DraftKings) that is 3.3% better than the price. CHI is a tough defense here: it allows the 6th-fewest receptions to TEs (4.5 a game; league average 5.5). The under hit in 5 of his last 7 games at this line.",
     "label": "Sunday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "Cade Otton: 4 receptions",
+    "resultWhy": "It missed. Cade Otton under 3.5 receptions did not cash.",
     "units": 1.25,
     "prop": {
      "pid": "4243331",
@@ -2349,7 +2349,8 @@
     "close_line": 3.5,
     "closeAt": "2026-11-09T00:31:22.645Z",
     "close_src": "board",
-    "clv": 0
+    "clv": 0,
+    "by": "0.5 over 3.5"
    }
   ],
   "cfb": [
@@ -3012,7 +3013,7 @@
    }
   ]
  },
- "updated": "2026-11-09T04:46:32.460Z",
+ "updated": "2026-11-09T05:16:33.568Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4209,28 +4210,6 @@
    "result": "HIT",
    "final": "TB 24, CHI 27",
    "units": 1.3
-  },
-  {
-   "id": "401873051|tot|under",
-   "gid": "401873051",
-   "league": "nfl",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 35.5",
-   "game": "BUF @ MIN",
-   "kick": "2026-11-10T01:15Z",
-   "line": 35.5,
-   "mainLine": 43.5,
-   "price": 300,
-   "book": "FanDuel",
-   "win": 0.2608,
-   "mwin": 0.2596,
-   "ev": 0.0433,
-   "mev": 0.0386,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
   }
  ],
  "tdPicks": [
@@ -4566,6 +4545,27 @@
    "mkt": 0.2775,
    "win": 0.3081,
    "ev": 0.0474,
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "key": "401873051|2573079",
+   "gid": "401873051",
+   "pid": "2573079",
+   "name": "Carson Wentz",
+   "pos": "QB",
+   "team": "MIN",
+   "opp": "BUF",
+   "game": "BUF @ MIN",
+   "kick": "2026-11-10T01:15Z",
+   "price": 1300,
+   "book": "FanDuel",
+   "books": 6,
+   "ours": 0.1045,
+   "mkt": 0.0696,
+   "win": 0.0784,
+   "ev": 0.097,
    "result": null,
    "final": null,
    "units": null
