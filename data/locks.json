@@ -350,6 +350,27 @@
    "closeAt": "2026-11-09T01:07:38.333Z",
    "clv_side": -0.5,
    "clv_total": 0
+  },
+  "401873051": {
+   "id": "401873051",
+   "league": "nfl",
+   "week": 9,
+   "short": "BUF @ MIN",
+   "home": "MIN",
+   "away": "BUF",
+   "date": "2026-11-10T01:15Z",
+   "pick": "NO PLAY",
+   "pick_line": null,
+   "total_pick": "UNDER 44.5",
+   "side_play": false,
+   "our_margin": -3.02,
+   "our_total": 44.2,
+   "confidence": null,
+   "total_play": false,
+   "spread": 3,
+   "total": 44.5,
+   "lockedAt": "2026-11-09T13:16:49.588Z",
+   "provisional": true
   }
  },
  "potd": {
@@ -773,6 +794,42 @@
     "close_src": "board",
     "clv": 0,
     "by": "0.5 over 3.5"
+   },
+   {
+    "key": "game:401873051",
+    "week": 9,
+    "day": "2026-11-09",
+    "league": "nfl",
+    "id": "401873051",
+    "game": "BUF @ MIN",
+    "kind": "Player prop",
+    "line": "Dalton Kincaid under 3.5 receptions",
+    "hitPct": 59,
+    "why": "We project Dalton Kincaid for 3.0 receptions against a line of 3.5. Our checked chance on the under is 59%; the books' own chance is 55%. At -132 (DraftKings) that is 3.2% better than the price. MIN is a tough defense here: it allows the 1st-fewest receptions to TEs (3.1 a game; league average 5.4). The under hit in 3 of his last 7 games at this line.",
+    "label": "Monday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 1,
+    "prop": {
+     "pid": "4385690",
+     "name": "Dalton Kincaid",
+     "stat": "rec",
+     "side": "under",
+     "line": 3.5
+    },
+    "price": -132,
+    "book": "DraftKings",
+    "ev": 0.032,
+    "ours": "BUF -3.0 · total 44.2",
+    "score": "BUF 23.6 – MIN 20.6",
+    "market": "BUF -3.0 · total 44.5",
+    "lockedAt": "2026-11-09T13:16:49.611Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-10T01:15Z",
+    "big": false,
+    "savedAt": 1794230209611
    }
   ],
   "cfb": [
@@ -1474,7 +1531,7 @@
    }
   ]
  },
- "updated": "2026-11-09T13:01:45.817Z",
+ "updated": "2026-11-09T13:16:49.588Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
