@@ -3002,7 +3002,7 @@
    }
   ]
  },
- "updated": "2026-11-09T00:01:38.869Z",
+ "updated": "2026-11-09T00:16:42.155Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3354,8 +3354,8 @@
    "win": 0.7433,
    "bookWin": 0.7434,
    "total": 51.5,
-   "result": null,
-   "final": null
+   "result": "HIT",
+   "final": "LV 17, SF 38"
   }
  ],
  "altLines": [
@@ -4147,9 +4147,9 @@
    "ev": 0.0324,
    "mev": 0.0304,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "LV 17, SF 38",
+   "units": -1
   },
   {
    "id": "401873049|sp|away",
@@ -4581,7 +4581,10 @@
    "ours": -8.9,
    "market": -8.5,
    "label": "SF -9",
-   "lockedAt": "2026-11-08T20:01:27.396Z"
+   "lockedAt": "2026-11-08T20:01:27.396Z",
+   "result": "HIT",
+   "units": 0.9524,
+   "final": "LV 17, SF 38"
   },
   {
    "id": "401873048",
