@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-09T13:01:36Z",
+ "updated": "2026-11-09T13:55:12Z",
  "about": "Every side The Split took: the line when first picked, the closing line, and how many points the line moved toward our side (clv). Only picks still standing at kickoff count (counts: true); ones The Split dropped before the game are listed but not counted. Positive average CLV over a season is the sign of a real edge; win-loss needs far more games.",
  "summary": {
   "record": {
-   "picks": 129,
+   "picks": 132,
    "n": 48,
    "avg_clv": -0.17,
    "beat_close": 13,
@@ -141,6 +141,26 @@
      "l": 4,
      "p": 0,
      "pct": 0.333
+    }
+   },
+   "2026-11-09": {
+    "picks": 3,
+    "n": 0,
+    "avg_clv": null,
+    "beat_close": 0,
+    "even": 0,
+    "lost_close": 0,
+    "at_first": {
+     "w": 0,
+     "l": 0,
+     "p": 0,
+     "pct": null
+    },
+    "at_close": {
+     "w": 0,
+     "l": 0,
+     "p": 0,
+     "pct": null
     }
    }
   },
@@ -3476,6 +3496,78 @@
    "final": "IOWA 24 - NU 10",
    "ats_first": "L",
    "ats_close": "L",
+   "counts": true
+  },
+  {
+   "id": "401856886",
+   "short": "AUB @ MSST",
+   "date": "2026-11-14T17:00Z",
+   "home": "MSST",
+   "away": "AUB",
+   "side": "home",
+   "team": "MSST",
+   "first": 3.0,
+   "first_pick": "MSST +3.0",
+   "first_at": "2026-11-09T13:55:12Z",
+   "hours_before": 123.1,
+   "last": 3.0,
+   "last_at": "2026-11-09T13:55:12Z",
+   "dropped": false,
+   "flipped": false,
+   "close": null,
+   "close_src": null,
+   "clv": null,
+   "final": null,
+   "ats_first": null,
+   "ats_close": null,
+   "counts": true
+  },
+  {
+   "id": "401860916",
+   "short": "FRES @ TXST",
+   "date": "2026-11-14T21:00Z",
+   "home": "TXST",
+   "away": "FRES",
+   "side": "away",
+   "team": "FRES",
+   "first": -9.5,
+   "first_pick": "FRES +9.5",
+   "first_at": "2026-11-09T13:55:12Z",
+   "hours_before": 127.1,
+   "last": -9.5,
+   "last_at": "2026-11-09T13:55:12Z",
+   "dropped": false,
+   "flipped": false,
+   "close": null,
+   "close_src": null,
+   "clv": null,
+   "final": null,
+   "ats_first": null,
+   "ats_close": null,
+   "counts": true
+  },
+  {
+   "id": "401860917",
+   "short": "CSU @ WSU",
+   "date": "2026-11-15T03:30Z",
+   "home": "WSU",
+   "away": "CSU",
+   "side": "away",
+   "team": "CSU",
+   "first": -9.5,
+   "first_pick": "CSU +9.5",
+   "first_at": "2026-11-09T13:55:12Z",
+   "hours_before": 133.6,
+   "last": -9.5,
+   "last_at": "2026-11-09T13:55:12Z",
+   "dropped": false,
+   "flipped": false,
+   "close": null,
+   "close_src": null,
+   "clv": null,
+   "final": null,
+   "ats_first": null,
+   "ats_close": null,
    "counts": true
   }
  ]
