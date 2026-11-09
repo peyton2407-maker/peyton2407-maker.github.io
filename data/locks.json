@@ -369,7 +369,7 @@
    "total_play": false,
    "spread": 3,
    "total": 44.5,
-   "lockedAt": "2026-11-09T16:16:20.052Z",
+   "lockedAt": "2026-11-09T17:16:52.671Z",
    "provisional": true
   }
  },
@@ -824,12 +824,12 @@
     "ours": "BUF -3.0 · total 44.2",
     "score": "BUF 23.6 – MIN 20.6",
     "market": "BUF -3.0 · total 44.5",
-    "lockedAt": "2026-11-09T16:16:20.073Z",
+    "lockedAt": "2026-11-09T17:16:52.694Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-10T01:15Z",
     "big": false,
-    "savedAt": 1794240980073
+    "savedAt": 1794244612694
    }
   ],
   "cfb": [
@@ -1531,7 +1531,7 @@
    }
   ]
  },
- "updated": "2026-11-09T16:16:20.052Z",
+ "updated": "2026-11-09T17:16:52.671Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2728,6 +2728,50 @@
    "result": "HIT",
    "final": "TB 24, CHI 27",
    "units": 1.3
+  },
+  {
+   "id": "401866458|sp|away",
+   "gid": "401866458",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "away",
+   "label": "WMU -21.5",
+   "game": "WMU @ AKR",
+   "kick": "2026-11-11T00:00Z",
+   "line": -21.5,
+   "mainLine": -14,
+   "price": 220,
+   "book": "FanDuel",
+   "win": 0.3299,
+   "mwin": 0.332,
+   "ev": 0.0557,
+   "mev": 0.0625,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401866460|sp|home",
+   "gid": "401866460",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "home",
+   "label": "M-OH -7.5",
+   "game": "OHIO @ M-OH",
+   "kick": "2026-11-11T01:00Z",
+   "line": -7.5,
+   "mainLine": 1.5,
+   "price": 280,
+   "book": "FanDuel",
+   "win": 0.2771,
+   "mwin": 0.2771,
+   "ev": 0.0528,
+   "mev": 0.0528,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
   },
   {
    "id": "401873052|tot|under",
