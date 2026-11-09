@@ -3013,7 +3013,7 @@
    }
   ]
  },
- "updated": "2026-11-09T07:16:33.026Z",
+ "updated": "2026-11-09T08:16:27.074Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4210,6 +4210,28 @@
    "result": "HIT",
    "final": "TB 24, CHI 27",
    "units": 1.3
+  },
+  {
+   "id": "401873051|sp|away",
+   "gid": "401873051",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "away",
+   "label": "BUF -8.5",
+   "game": "BUF @ MIN",
+   "kick": "2026-11-10T01:15Z",
+   "line": -8.5,
+   "mainLine": -3,
+   "price": 230,
+   "book": "FanDuel",
+   "win": 0.3132,
+   "mwin": 0.2993,
+   "ev": 0.0334,
+   "mev": -0.0125,
+   "src": "proj",
+   "result": null,
+   "final": null,
+   "units": null
   }
  ],
  "tdPicks": [
@@ -4562,10 +4584,10 @@
    "price": 1300,
    "book": "FanDuel",
    "books": 6,
-   "ours": 0.1045,
-   "mkt": 0.0696,
-   "win": 0.0784,
-   "ev": 0.097,
+   "ours": 0.1051,
+   "mkt": 0.0699,
+   "win": 0.0787,
+   "ev": 0.1014,
    "result": null,
    "final": null,
    "units": null
