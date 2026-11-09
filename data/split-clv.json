@@ -1,14 +1,14 @@
 {
- "updated": "2026-11-09T11:02:34Z",
+ "updated": "2026-11-09T12:01:22Z",
  "about": "Every side The Split took: the line when first picked, the closing line, and how many points the line moved toward our side (clv). Only picks still standing at kickoff count (counts: true); ones The Split dropped before the game are listed but not counted. Positive average CLV over a season is the sign of a real edge; win-loss needs far more games.",
  "summary": {
   "record": {
    "picks": 129,
    "n": 48,
-   "avg_clv": -0.15,
+   "avg_clv": -0.17,
    "beat_close": 13,
-   "even": 15,
-   "lost_close": 20,
+   "even": 13,
+   "lost_close": 22,
    "at_first": {
     "w": 57,
     "l": 68,
@@ -16,10 +16,10 @@
     "pct": 0.456
    },
    "at_close": {
-    "w": 21,
+    "w": 22,
     "l": 24,
-    "p": 3,
-    "pct": 0.467
+    "p": 2,
+    "pct": 0.478
    }
   },
   "by_week": {
@@ -126,10 +126,10 @@
    "2026-11-02": {
     "picks": 6,
     "n": 6,
-    "avg_clv": -0.58,
+    "avg_clv": -0.75,
     "beat_close": 0,
-    "even": 3,
-    "lost_close": 3,
+    "even": 1,
+    "lost_close": 5,
     "at_first": {
      "w": 1,
      "l": 4,
@@ -137,10 +137,10 @@
      "pct": 0.2
     },
     "at_close": {
-     "w": 1,
+     "w": 2,
      "l": 4,
-     "p": 1,
-     "pct": 0.2
+     "p": 0,
+     "pct": 0.333
     }
    }
   },
@@ -3327,7 +3327,7 @@
    "dropped": false,
    "flipped": false,
    "close": -2.5,
-   "close_src": "last look",
+   "close_src": "lock",
    "clv": -1.0,
    "final": "BALL 30 - MASS 31",
    "ats_first": "L",
@@ -3350,9 +3350,9 @@
    "last_at": "2026-11-07T17:42:02Z",
    "dropped": false,
    "flipped": false,
-   "close": 6.5,
-   "close_src": "last look",
-   "clv": 0.0,
+   "close": 7.0,
+   "close_src": "lock",
+   "clv": -0.5,
    "final": "OKST 66 - KSU 28",
    "ats_first": "L",
    "ats_close": "L",
@@ -3375,7 +3375,7 @@
    "dropped": false,
    "flipped": false,
    "close": -6.5,
-   "close_src": "last look",
+   "close_src": "lock",
    "clv": -0.0,
    "final": "GAST 39 - APP 23",
    "ats_first": "W",
@@ -3399,7 +3399,7 @@
    "dropped": true,
    "flipped": false,
    "close": -6.5,
-   "close_src": "last look",
+   "close_src": "lock",
    "clv": 1.0,
    "final": "TA&M 9 - SC 17",
    "ats_first": "L",
@@ -3423,7 +3423,7 @@
    "dropped": false,
    "flipped": false,
    "close": -19.5,
-   "close_src": "last look",
+   "close_src": "lock",
    "clv": -1.0,
    "final": "RUTG 10 - WIS 31",
    "ats_first": "L",
@@ -3446,12 +3446,12 @@
    "last_at": "2026-11-08T00:27:27Z",
    "dropped": false,
    "flipped": false,
-   "close": -7.0,
-   "close_src": "last look",
-   "clv": -0.0,
+   "close": -7.5,
+   "close_src": "lock",
+   "clv": -0.5,
    "final": "MIA 24 - ND 31",
    "ats_first": "P",
-   "ats_close": "P",
+   "ats_close": "W",
    "counts": true
   },
   {
@@ -3471,7 +3471,7 @@
    "dropped": false,
    "flipped": false,
    "close": 3.0,
-   "close_src": "last look",
+   "close_src": "lock",
    "clv": -1.5,
    "final": "IOWA 24 - NU 10",
    "ats_first": "L",
