@@ -369,7 +369,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 45.5,
-   "lockedAt": "2026-11-09T18:01:31.191Z",
+   "lockedAt": "2026-11-09T19:48:28.034Z",
    "provisional": true
   }
  },
@@ -805,7 +805,7 @@
     "kind": "Player prop",
     "line": "Keon Coleman under 2.5 receptions",
     "hitPct": 64,
-    "why": "We project Keon Coleman for 1.8 receptions against a line of 2.5. Our checked chance on the under is 64%; the books' own chance is 59%. At -153 (DraftKings) that is 6.1% better than the price. MIN is a tough defense here: it allows the 7th-fewest receptions to WRs (10 a game; league average 11). The under hit in 4 of his last 7 games at this line.",
+    "why": "We project Keon Coleman for 1.8 receptions against a line of 2.5. Our checked chance on the under is 64%; the books' own chance is 59%. At -153 (DraftKings) that is 6% better than the price. MIN is a tough defense here: it allows the 7th-fewest receptions to WRs (10 a game; league average 11). The under hit in 4 of his last 7 games at this line.",
     "label": "Monday · next game",
     "result": null,
     "final": null,
@@ -820,16 +820,16 @@
     },
     "price": -153,
     "book": "DraftKings",
-    "ev": 0.061,
+    "ev": 0.06,
     "ours": "BUF -3.4 · total 44.9",
     "score": "BUF 24.1 – MIN 20.8",
     "market": "BUF -3.5 · total 45.5",
-    "lockedAt": "2026-11-09T18:01:31.212Z",
+    "lockedAt": "2026-11-09T19:48:28.066Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-10T01:15Z",
     "big": false,
-    "savedAt": 1794247291212
+    "savedAt": 1794253708066
    }
   ],
   "cfb": [
@@ -1531,7 +1531,7 @@
    }
   ]
  },
- "updated": "2026-11-09T18:01:31.191Z",
+ "updated": "2026-11-09T19:48:28.034Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2779,17 +2779,39 @@
    "league": "nfl",
    "kind": "tot",
    "side": "under",
-   "label": "Under 34.5",
+   "label": "Under 36.5",
    "game": "WSH @ NYG",
    "kick": "2026-11-13T01:15Z",
-   "line": 34.5,
-   "mainLine": 43.5,
-   "price": 290,
-   "book": "FanDuel",
-   "win": 0.268,
-   "mwin": 0.2621,
-   "ev": 0.0452,
-   "mev": 0.0222,
+   "line": 36.5,
+   "mainLine": 42.5,
+   "price": 210,
+   "book": "ESPN BET",
+   "win": 0.3336,
+   "mwin": 0.3289,
+   "ev": 0.0341,
+   "mev": 0.0197,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873052|sp|away",
+   "gid": "401873052",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "away",
+   "label": "WSH -6",
+   "game": "WSH @ NYG",
+   "kick": "2026-11-13T01:15Z",
+   "line": -6,
+   "mainLine": 1.5,
+   "price": 275,
+   "book": "ESPN BET",
+   "win": 0.267,
+   "mwin": 0.2668,
+   "ev": 0.0378,
+   "mev": 0.0373,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -2877,9 +2899,9 @@
    "mkt": 0.1371,
    "win": 0.1485,
    "ev": 0.1882,
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "No TD",
+   "units": -1
   },
   {
    "key": "401873044|4682648",
@@ -2898,9 +2920,9 @@
    "mkt": 0.1613,
    "win": 0.1755,
    "ev": 0.1406,
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "No TD",
+   "units": -1
   },
   {
    "key": "401873039|4569682",
@@ -2961,9 +2983,9 @@
    "mkt": 0.1119,
    "win": 0.1148,
    "ev": 0.062,
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "No TD",
+   "units": -1
   },
   {
    "key": "401873041|4685350",
@@ -2982,9 +3004,9 @@
    "mkt": 0.0554,
    "win": 0.0635,
    "ev": 0.1427,
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "No TD",
+   "units": -1
   },
   {
    "key": "401873044|4595348",
@@ -3003,9 +3025,9 @@
    "mkt": 0.3379,
    "win": 0.3451,
    "ev": 0.0352,
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "No TD",
+   "units": -1
   },
   {
    "key": "401873044|4361050",
@@ -3024,9 +3046,9 @@
    "mkt": 0.2785,
    "win": 0.2814,
    "ev": 0.0412,
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "1 TD",
+   "units": 2.7
   },
   {
    "key": "401873040|3917792",
@@ -3045,9 +3067,9 @@
    "mkt": 0.1262,
    "win": 0.1392,
    "ev": 0.0443,
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "No TD",
+   "units": -1
   },
   {
    "key": "401873043|2976212",
@@ -3066,9 +3088,9 @@
    "mkt": 0.3019,
    "win": 0.3224,
    "ev": 0.0477,
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "No TD",
+   "units": -1
   },
   {
    "key": "401873041|4241985",
