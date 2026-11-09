@@ -3011,7 +3011,7 @@
    }
   ]
  },
- "updated": "2026-11-09T00:31:22.645Z",
+ "updated": "2026-11-09T00:46:13.561Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4178,9 +4178,9 @@
    "ev": 0.0421,
    "mev": -0.0053,
    "src": "proj",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "GB 45, NE 27",
+   "units": 2.8
   },
   {
    "id": "401873051|tot|under",
@@ -4577,7 +4577,10 @@
    "ours": 2.7,
    "market": 3,
    "label": "GB +3",
-   "lockedAt": "2026-11-08T20:01:27.396Z"
+   "lockedAt": "2026-11-08T20:01:27.396Z",
+   "result": "HIT",
+   "units": 0.9804,
+   "final": "GB 45, NE 27"
   },
   {
    "id": "401873047",
