@@ -359,17 +359,17 @@
    "home": "MIN",
    "away": "BUF",
    "date": "2026-11-10T01:15Z",
-   "pick": "NO PLAY",
-   "pick_line": null,
+   "pick": "MIN",
+   "pick_line": "MIN +3.5",
    "total_pick": "UNDER 44.5",
    "side_play": false,
-   "our_margin": -3.02,
+   "our_margin": -3.37,
    "our_total": 44.2,
    "confidence": null,
    "total_play": false,
-   "spread": 3,
+   "spread": 3.5,
    "total": 44.5,
-   "lockedAt": "2026-11-09T17:16:52.671Z",
+   "lockedAt": "2026-11-09T17:46:15.608Z",
    "provisional": true
   }
  },
@@ -821,15 +821,15 @@
     "price": -153,
     "book": "DraftKings",
     "ev": 0.061,
-    "ours": "BUF -3.0 · total 44.2",
-    "score": "BUF 23.6 – MIN 20.6",
-    "market": "BUF -3.0 · total 44.5",
-    "lockedAt": "2026-11-09T17:16:52.694Z",
+    "ours": "BUF -3.4 · total 44.2",
+    "score": "BUF 23.8 – MIN 20.4",
+    "market": "BUF -3.5 · total 44.5",
+    "lockedAt": "2026-11-09T17:46:15.628Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-10T01:15Z",
     "big": false,
-    "savedAt": 1794244612694
+    "savedAt": 1794246375628
    }
   ],
   "cfb": [
@@ -1531,7 +1531,7 @@
    }
   ]
  },
- "updated": "2026-11-09T17:16:52.671Z",
+ "updated": "2026-11-09T17:46:15.608Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3125,31 +3125,10 @@
    "price": 245,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.4074,
-   "mkt": 0.28,
-   "win": 0.3119,
-   "ev": 0.076,
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "key": "401873051|2573079",
-   "gid": "401873051",
-   "pid": "2573079",
-   "name": "Carson Wentz",
-   "pos": "QB",
-   "team": "MIN",
-   "opp": "BUF",
-   "game": "BUF @ MIN",
-   "kick": "2026-11-10T01:15Z",
-   "price": 1300,
-   "book": "DraftKings",
-   "books": 5,
-   "ours": 0.1069,
-   "mkt": 0.0635,
-   "win": 0.0743,
-   "ev": 0.0409,
+   "ours": 0.4044,
+   "mkt": 0.2772,
+   "win": 0.309,
+   "ev": 0.0659,
    "result": null,
    "final": null,
    "units": null
