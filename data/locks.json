@@ -369,7 +369,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 45.5,
-   "lockedAt": "2026-11-09T22:16:21.875Z",
+   "lockedAt": "2026-11-09T22:46:34.187Z",
    "provisional": true
   }
  },
@@ -803,9 +803,9 @@
     "id": "401873051",
     "game": "BUF @ MIN",
     "kind": "Player prop",
-    "line": "Josh Allen under 1.5 pass TDs",
-    "hitPct": 66,
-    "why": "We project Josh Allen for 1.1 pass TDs against a line of 1.5. Our checked chance on the under is 66%; the books' own chance is 60%. At -160 (ESPN BET) that is 6.8% better than the price. MIN is a tough defense here: it allows the 1st-fewest pass TDs to QBs (0.6 a game; league average 1.5). The under hit in 3 of his last 7 games at this line.",
+    "line": "Josh Allen under 31.5 rush yds",
+    "hitPct": 57,
+    "why": "We project Josh Allen for 30 rush yds against a line of 31.5. Our checked chance on the under is 57%; the books' own chance is 51%. At -111 (DraftKings) that is 7.8% better than the price. MIN is a tough defense here: it allows the 8th-fewest rush yds to QBs (12 a game; league average 16). The under hit in 5 of his last 7 games at this line.",
     "label": "Monday · next game",
     "result": null,
     "final": null,
@@ -814,22 +814,22 @@
     "prop": {
      "pid": "3918298",
      "name": "Josh Allen",
-     "stat": "pass_td",
+     "stat": "rush_yds",
      "side": "under",
-     "line": 1.5
+     "line": 31.5
     },
-    "price": -160,
-    "book": "ESPN BET",
-    "ev": 0.068,
+    "price": -111,
+    "book": "DraftKings",
+    "ev": 0.078,
     "ours": "BUF -3.4 · total 44.9",
     "score": "BUF 24.1 – MIN 20.8",
     "market": "BUF -3.5 · total 45.5",
-    "lockedAt": "2026-11-09T22:16:21.902Z",
+    "lockedAt": "2026-11-09T22:46:34.215Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-10T01:15Z",
     "big": false,
-    "savedAt": 1794262581902
+    "savedAt": 1794264394215
    }
   ],
   "cfb": [
@@ -1531,7 +1531,7 @@
    }
   ]
  },
- "updated": "2026-11-09T22:16:21.875Z",
+ "updated": "2026-11-09T22:46:34.187Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
