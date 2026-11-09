@@ -3012,7 +3012,7 @@
    }
   ]
  },
- "updated": "2026-11-09T01:07:38.333Z",
+ "updated": "2026-11-09T04:46:32.460Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4206,9 +4206,9 @@
    "ev": 0.0355,
    "mev": 0.0017,
    "src": "proj",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "TB 24, CHI 27",
+   "units": 1.3
   },
   {
    "id": "401873051|tot|under",
@@ -4662,7 +4662,10 @@
    "ours": 5.6,
    "market": 6,
    "label": "TB +6",
-   "lockedAt": "2026-11-09T00:01:38.869Z"
+   "lockedAt": "2026-11-09T00:01:38.869Z",
+   "result": "HIT",
+   "units": 0.9434,
+   "final": "TB 24, CHI 27"
   }
  ]
 }
