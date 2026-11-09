@@ -369,7 +369,7 @@
    "total_play": false,
    "spread": 3,
    "total": 44.5,
-   "lockedAt": "2026-11-09T14:16:42.883Z",
+   "lockedAt": "2026-11-09T16:16:20.052Z",
    "provisional": true
   }
  },
@@ -803,33 +803,33 @@
     "id": "401873051",
     "game": "BUF @ MIN",
     "kind": "Player prop",
-    "line": "Khalil Shakir under 4.5 receptions",
-    "hitPct": 63,
-    "why": "We project Khalil Shakir for 3.6 receptions against a line of 4.5. Our checked chance on the under is 63%; the books' own chance is 59%. At -154 (DraftKings) that is 4.7% better than the price. MIN is a tough defense here: it allows the 7th-fewest receptions to WRs (10 a game; league average 11). The under hit in 5 of his last 7 games at this line.",
+    "line": "Keon Coleman under 2.5 receptions",
+    "hitPct": 64,
+    "why": "We project Keon Coleman for 1.8 receptions against a line of 2.5. Our checked chance on the under is 64%; the books' own chance is 59%. At -153 (DraftKings) that is 6.1% better than the price. MIN is a tough defense here: it allows the 7th-fewest receptions to WRs (10 a game; league average 11). The under hit in 4 of his last 7 games at this line.",
     "label": "Monday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 1.75,
+    "units": 2,
     "prop": {
-     "pid": "4373678",
-     "name": "Khalil Shakir",
+     "pid": "4635008",
+     "name": "Keon Coleman",
      "stat": "rec",
      "side": "under",
-     "line": 4.5
+     "line": 2.5
     },
-    "price": -154,
+    "price": -153,
     "book": "DraftKings",
-    "ev": 0.047,
+    "ev": 0.061,
     "ours": "BUF -3.0 · total 44.2",
     "score": "BUF 23.6 – MIN 20.6",
     "market": "BUF -3.0 · total 44.5",
-    "lockedAt": "2026-11-09T14:16:42.904Z",
+    "lockedAt": "2026-11-09T16:16:20.073Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-10T01:15Z",
     "big": false,
-    "savedAt": 1794233802904
+    "savedAt": 1794240980073
    }
   ],
   "cfb": [
@@ -1531,7 +1531,7 @@
    }
   ]
  },
- "updated": "2026-11-09T14:16:42.883Z",
+ "updated": "2026-11-09T16:16:20.052Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3078,13 +3078,13 @@
    "opp": "BUF",
    "game": "BUF @ MIN",
    "kick": "2026-11-10T01:15Z",
-   "price": 250,
-   "book": "BetMGM",
+   "price": 245,
+   "book": "DraftKings",
    "books": 6,
    "ours": 0.4074,
-   "mkt": 0.2812,
-   "win": 0.3127,
-   "ev": 0.0946,
+   "mkt": 0.28,
+   "win": 0.3119,
+   "ev": 0.076,
    "result": null,
    "final": null,
    "units": null
@@ -3103,9 +3103,9 @@
    "book": "DraftKings",
    "books": 5,
    "ours": 0.1069,
-   "mkt": 0.0679,
-   "win": 0.0777,
-   "ev": 0.0876,
+   "mkt": 0.0635,
+   "win": 0.0743,
+   "ev": 0.0409,
    "result": null,
    "final": null,
    "units": null
