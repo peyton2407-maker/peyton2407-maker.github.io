@@ -1922,8 +1922,7 @@
    "total_play": false,
    "spread": -6,
    "total": 47.5,
-   "lockedAt": "2026-11-08T23:46:27.811Z",
-   "provisional": true
+   "lockedAt": "2026-11-09T00:01:38.869Z"
   }
  },
  "potd": {
@@ -2336,12 +2335,11 @@
     "ours": "CHI -5.6 · total 46.5",
     "score": "TB 20.5 – CHI 26.0",
     "market": "CHI -6.0 · total 47.5",
-    "lockedAt": "2026-11-08T23:46:27.829Z",
-    "locked": false,
-    "provisional": true,
+    "lockedAt": "2026-11-09T00:01:38.892Z",
+    "locked": true,
     "kick": "2026-11-09T01:20Z",
     "big": false,
-    "savedAt": 1794181587829
+    "savedAt": 1794182498892
    }
   ],
   "cfb": [
@@ -3004,7 +3002,7 @@
    }
   ]
  },
- "updated": "2026-11-08T23:46:27.811Z",
+ "updated": "2026-11-09T00:01:38.869Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4600,6 +4598,22 @@
    "market": 8.5,
    "label": "ARI +8.5",
    "lockedAt": "2026-11-08T20:01:27.396Z"
+  },
+  {
+   "id": "401873050",
+   "league": "nfl",
+   "gid": "401873050",
+   "side": "away",
+   "team": "TB",
+   "game": "TB @ CHI",
+   "kick": "2026-11-09T01:20Z",
+   "line": 6,
+   "price": -106,
+   "book": "Caesars",
+   "ours": 5.6,
+   "market": 6,
+   "label": "TB +6",
+   "lockedAt": "2026-11-09T00:01:38.869Z"
   }
  ]
 }
