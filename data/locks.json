@@ -1474,7 +1474,7 @@
    }
   ]
  },
- "updated": "2026-11-09T11:16:17.392Z",
+ "updated": "2026-11-09T12:16:37.526Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2671,28 +2671,6 @@
    "result": "HIT",
    "final": "TB 24, CHI 27",
    "units": 1.3
-  },
-  {
-   "id": "401873051|sp|away",
-   "gid": "401873051",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "away",
-   "label": "BUF -11",
-   "game": "BUF @ MIN",
-   "kick": "2026-11-10T01:15Z",
-   "line": -11,
-   "mainLine": -3,
-   "price": 300,
-   "book": "BetRivers",
-   "win": 0.2571,
-   "mwin": 0.2443,
-   "ev": 0.0419,
-   "mev": -0.0098,
-   "src": "proj",
-   "result": null,
-   "final": null,
-   "units": null
   },
   {
    "id": "401873052|tot|under",
