@@ -1923,10 +1923,10 @@
    "spread": -6,
    "total": 47.5,
    "lockedAt": "2026-11-09T00:01:38.869Z",
-   "close_spread": -6,
+   "close_spread": -6.5,
    "close_total": 47.5,
-   "closeAt": "2026-11-09T00:31:22.645Z",
-   "clv_side": 0,
+   "closeAt": "2026-11-09T01:07:38.333Z",
+   "clv_side": -0.5,
    "clv_total": 0
   }
  },
@@ -2284,9 +2284,9 @@
     "hitPct": 54,
     "why": "We project Tucker Kraft for 43 rec yds against a line of 45.5. Our checked chance on the under is 54%; the books' own chance is 50%. At -111 (DraftKings) that is 2.8% better than the price. NE is middle of the pack here: 16th of 32 in rec yds allowed to TEs (52 a game; league average 55). The under hit in 4 of his last 8 games at this line.",
     "label": "Sunday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "Tucker Kraft: 1 rec yds",
+    "resultWhy": "It hit. Tucker Kraft under 45.5 rec yds cashed.",
     "units": 0.75,
     "prop": {
      "pid": "4572680",
@@ -2309,7 +2309,8 @@
     "close_line": 45.5,
     "closeAt": "2026-11-08T21:31:37.138Z",
     "close_src": "board",
-    "clv": 0
+    "clv": 0,
+    "by": "44.5 under 45.5"
    },
    {
     "key": "game:401873050",
@@ -3011,7 +3012,7 @@
    }
   ]
  },
- "updated": "2026-11-09T00:46:13.561Z",
+ "updated": "2026-11-09T01:07:38.333Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3166,7 +3167,7 @@
       "line": 22.5,
       "name": "Justin Herbert"
      },
-     "result": null,
+     "result": "HIT",
      "close": {
       "at": "2026-11-08T20:31:50.087Z",
       "line": 22.5,
@@ -3175,7 +3176,9 @@
       "fair": 0.5184,
       "push": 0,
       "src": "books"
-     }
+     },
+     "actual": 7,
+     "final": "Justin Herbert: 7 rush yds"
     },
     {
      "id": "401873047|pp|3117251|rec_yds|under",
@@ -3200,7 +3203,7 @@
       "line": 41.5,
       "name": "Christian McCaffrey"
      },
-     "result": null,
+     "result": "HIT",
      "close": {
       "at": "2026-11-08T21:16:15.556Z",
       "line": 40.5,
@@ -3209,14 +3212,17 @@
       "fair": null,
       "push": 0,
       "src": "books"
-     }
+     },
+     "actual": 19,
+     "final": "Christian McCaffrey: 19 rec yds"
     }
    ],
-   "result": null,
-   "units": null,
+   "result": "HIT",
+   "units": 5.754,
    "locked": true,
    "provisional": false,
-   "lockedAt": "2026-11-08T16:31:43.396Z"
+   "lockedAt": "2026-11-08T16:31:43.396Z",
+   "paidDec": 6.7544
   }
  ],
  "teasers": [
@@ -4181,6 +4187,28 @@
    "result": "HIT",
    "final": "GB 45, NE 27",
    "units": 2.8
+  },
+  {
+   "id": "401873050|sp|away",
+   "gid": "401873050",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "away",
+   "label": "TB +3.5",
+   "game": "TB @ CHI",
+   "kick": "2026-11-09T01:20Z",
+   "line": 3.5,
+   "mainLine": 6.5,
+   "price": 130,
+   "book": "FanDuel",
+   "win": 0.4502,
+   "mwin": 0.4355,
+   "ev": 0.0355,
+   "mev": 0.0017,
+   "src": "proj",
+   "result": null,
+   "final": null,
+   "units": null
   },
   {
    "id": "401873051|tot|under",
