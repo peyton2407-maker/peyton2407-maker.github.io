@@ -1163,7 +1163,7 @@
    }
   ]
  },
- "updated": "2026-11-10T09:17:45.344Z",
+ "updated": "2026-11-10T10:46:37.895Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1581,8 +1581,8 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.7432,
-   "bookWin": 0.7433,
+   "win": 0.735,
+   "bookWin": 0.7428,
    "total": 50.5,
    "result": null,
    "final": null
@@ -1613,7 +1613,7 @@
    "from": -8.5,
    "to": -2.5,
    "book": "FanDuel",
-   "win": 0.7518,
+   "win": 0.7486,
    "bookWin": 0.7518,
    "total": 40.5,
    "result": null,
@@ -2739,28 +2739,6 @@
    "ev": 0.0592,
    "mev": 0.0746,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873062|sp|home",
-   "gid": "401873062",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "home",
-   "label": "LV -3",
-   "game": "SEA @ LV",
-   "kick": "2026-11-15T21:05Z",
-   "line": -3,
-   "mainLine": 3.5,
-   "price": 235,
-   "book": "Fanatics",
-   "win": 0.2946,
-   "mwin": 0.2693,
-   "ev": 0.0609,
-   "mev": -0.0268,
-   "src": "proj",
    "result": null,
    "final": null,
    "units": null
