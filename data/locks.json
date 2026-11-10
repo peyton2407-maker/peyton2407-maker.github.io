@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 15.5,
    "total": 49.5,
-   "lockedAt": "2026-11-10T16:16:43.004Z",
+   "lockedAt": "2026-11-10T16:18:29.738Z",
    "provisional": true
   },
   "401866459": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 43.5,
-   "lockedAt": "2026-11-10T16:16:43.004Z",
+   "lockedAt": "2026-11-10T16:18:29.738Z",
    "provisional": true
   },
   "401866460": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 47.5,
-   "lockedAt": "2026-11-10T16:16:43.004Z",
+   "lockedAt": "2026-11-10T16:18:29.738Z",
    "provisional": true
   }
  },
@@ -1227,7 +1227,7 @@
    }
   ]
  },
- "updated": "2026-11-10T16:16:43.004Z",
+ "updated": "2026-11-10T16:18:29.738Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1597,8 +1597,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7524,
-   "bookWin": 0.7524,
+   "win": 0.7527,
+   "bookWin": 0.7528,
    "total": 41.5,
    "result": null,
    "final": null
@@ -1613,8 +1613,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7525,
-   "bookWin": 0.7524,
+   "win": 0.7528,
+   "bookWin": 0.7528,
    "total": 51.5,
    "result": null,
    "final": null
@@ -1661,8 +1661,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.721,
-   "bookWin": 0.7524,
+   "win": 0.7213,
+   "bookWin": 0.7528,
    "total": 40.5,
    "result": null,
    "final": null
