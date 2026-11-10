@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 15.5,
    "total": 49.5,
-   "lockedAt": "2026-11-10T21:01:43.859Z",
+   "lockedAt": "2026-11-10T21:16:15.893Z",
    "provisional": true
   },
   "401866459": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 43.5,
-   "lockedAt": "2026-11-10T21:01:43.859Z",
+   "lockedAt": "2026-11-10T21:16:15.893Z",
    "provisional": true
   },
   "401866460": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 47.5,
-   "lockedAt": "2026-11-10T21:01:43.859Z",
+   "lockedAt": "2026-11-10T21:16:15.893Z",
    "provisional": true
   }
  },
@@ -1227,7 +1227,7 @@
    }
   ]
  },
- "updated": "2026-11-10T21:01:43.859Z",
+ "updated": "2026-11-10T21:16:15.893Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1597,8 +1597,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7524,
-   "bookWin": 0.7524,
+   "win": 0.7527,
+   "bookWin": 0.7528,
    "total": 41.5,
    "result": null,
    "final": null
@@ -1613,8 +1613,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7525,
-   "bookWin": 0.7524,
+   "win": 0.7528,
+   "bookWin": 0.7528,
    "total": 51.5,
    "result": null,
    "final": null
@@ -2526,28 +2526,6 @@
    "result": "MISS",
    "final": "BUF 23, MIN 6",
    "units": -1
-  },
-  {
-   "id": "401866458|sp|away",
-   "gid": "401866458",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "away",
-   "label": "WMU -23.5",
-   "game": "WMU @ AKR",
-   "kick": "2026-11-11T00:00Z",
-   "line": -23.5,
-   "mainLine": -15.5,
-   "price": 230,
-   "book": "FanDuel",
-   "win": 0.3208,
-   "mwin": 0.3225,
-   "ev": 0.0586,
-   "mev": 0.0641,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
   },
   {
    "id": "401866460|sp|home",
