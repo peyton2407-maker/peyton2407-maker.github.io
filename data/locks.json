@@ -11,15 +11,15 @@
    "date": "2026-11-11T00:00Z",
    "pick": "AKR",
    "pick_line": "AKR +14.0",
-   "total_pick": "NO PLAY",
+   "total_pick": "OVER 49.5",
    "side_play": false,
    "our_margin": -13.3,
-   "our_total": 48.5,
+   "our_total": 49.1,
    "confidence": null,
    "total_play": false,
    "spread": 14,
-   "total": 48.5,
-   "lockedAt": "2026-11-10T14:31:28.315Z",
+   "total": 49.5,
+   "lockedAt": "2026-11-10T14:46:44.680Z",
    "provisional": true
   },
   "401866459": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 43.5,
-   "lockedAt": "2026-11-10T14:31:28.315Z",
+   "lockedAt": "2026-11-10T14:46:44.680Z",
    "provisional": true
   },
   "401866460": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 46.5,
-   "lockedAt": "2026-11-10T14:31:28.315Z",
+   "lockedAt": "2026-11-10T14:46:44.680Z",
    "provisional": true
   }
  },
@@ -1227,7 +1227,7 @@
    }
   ]
  },
- "updated": "2026-11-10T14:31:28.315Z",
+ "updated": "2026-11-10T14:46:44.680Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2566,28 +2566,6 @@
    "mwin": 0.2635,
    "ev": 0.0452,
    "mev": 0.0538,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401866458|tot|over",
-   "gid": "401866458",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "over",
-   "label": "Over 56.5",
-   "game": "WMU @ AKR",
-   "kick": "2026-11-11T00:00Z",
-   "line": 56.5,
-   "mainLine": 48.5,
-   "price": 235,
-   "book": "FanDuel",
-   "win": 0.3075,
-   "mwin": 0.3075,
-   "ev": 0.0301,
-   "mev": 0.0301,
    "src": "mkt",
    "result": null,
    "final": null,
