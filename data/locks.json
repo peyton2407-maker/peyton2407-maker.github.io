@@ -69,8 +69,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 47.5,
-   "lockedAt": "2026-11-10T23:16:18.170Z",
-   "provisional": true
+   "lockedAt": "2026-11-10T23:31:12.894Z"
   }
  },
  "potd": {
@@ -1235,7 +1234,7 @@
    }
   ]
  },
- "updated": "2026-11-10T23:16:18.170Z",
+ "updated": "2026-11-10T23:31:12.894Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3392,6 +3391,22 @@
    "market": -4.5,
    "label": "BGSU -5",
    "lockedAt": "2026-11-10T22:31:29.455Z"
+  },
+  {
+   "id": "401866460",
+   "league": "cfb",
+   "gid": "401866460",
+   "side": "home",
+   "team": "M-OH",
+   "game": "OHIO @ M-OH",
+   "kick": "2026-11-11T01:00Z",
+   "line": 1,
+   "price": -108,
+   "book": "BetMGM",
+   "ours": 1.1,
+   "market": 1.5,
+   "label": "M-OH +1",
+   "lockedAt": "2026-11-10T23:31:12.894Z"
   }
  ]
 }
