@@ -45,10 +45,10 @@
    "spread": -4.5,
    "total": 43.5,
    "lockedAt": "2026-11-10T22:31:29.455Z",
-   "close_spread": -4.5,
+   "close_spread": -3.5,
    "close_total": 42.5,
-   "closeAt": "2026-11-10T23:01:39.262Z",
-   "clv_side": 0,
+   "closeAt": "2026-11-10T23:16:18.170Z",
+   "clv_side": -1,
    "clv_total": null
   },
   "401866460": {
@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 47.5,
-   "lockedAt": "2026-11-10T23:01:39.262Z",
+   "lockedAt": "2026-11-10T23:16:18.170Z",
    "provisional": true
   }
  },
@@ -1235,7 +1235,7 @@
    }
   ]
  },
- "updated": "2026-11-10T23:01:39.262Z",
+ "updated": "2026-11-10T23:16:18.170Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2592,10 +2592,32 @@
    "mainLine": -1.5,
    "price": 295,
    "book": "BetRivers",
-   "win": 0.2647,
-   "mwin": 0.2647,
-   "ev": 0.0455,
-   "mev": 0.0455,
+   "win": 0.2687,
+   "mwin": 0.2687,
+   "ev": 0.0612,
+   "mev": 0.0612,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401866460|tot|under",
+   "gid": "401866460",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 37.5",
+   "game": "OHIO @ M-OH",
+   "kick": "2026-11-11T01:00Z",
+   "line": 37.5,
+   "mainLine": 47.5,
+   "price": 280,
+   "book": "FanDuel",
+   "win": 0.2751,
+   "mwin": 0.2751,
+   "ev": 0.0456,
+   "mev": 0.0456,
    "src": "mkt",
    "result": null,
    "final": null,
