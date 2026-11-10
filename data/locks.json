@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 14,
    "total": 48.5,
-   "lockedAt": "2026-11-10T12:18:32.521Z",
+   "lockedAt": "2026-11-10T13:01:55.113Z",
    "provisional": true
   },
   "401866459": {
@@ -40,7 +40,28 @@
    "total_play": false,
    "spread": -5.5,
    "total": 44.5,
-   "lockedAt": "2026-11-10T12:18:32.521Z",
+   "lockedAt": "2026-11-10T13:01:55.113Z",
+   "provisional": true
+  },
+  "401866460": {
+   "id": "401866460",
+   "league": "cfb",
+   "week": 11,
+   "short": "OHIO @ M-OH",
+   "home": "M-OH",
+   "away": "OHIO",
+   "date": "2026-11-11T01:00Z",
+   "pick": "M-OH",
+   "pick_line": "M-OH +1.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -1.1,
+   "our_total": 46.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 1.5,
+   "total": 46.5,
+   "lockedAt": "2026-11-10T13:01:55.113Z",
    "provisional": true
   }
  },
@@ -1206,7 +1227,7 @@
    }
   ]
  },
- "updated": "2026-11-10T12:18:32.521Z",
+ "updated": "2026-11-10T13:01:55.113Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1576,9 +1597,9 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7524,
-   "bookWin": 0.7524,
-   "total": 42.5,
+   "win": 0.7527,
+   "bookWin": 0.7528,
+   "total": 41.5,
    "result": null,
    "final": null
   },
@@ -1592,8 +1613,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7525,
-   "bookWin": 0.7524,
+   "win": 0.7528,
+   "bookWin": 0.7528,
    "total": 51.5,
    "result": null,
    "final": null
@@ -1640,8 +1661,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.721,
-   "bookWin": 0.7524,
+   "win": 0.7213,
+   "bookWin": 0.7528,
    "total": 40.5,
    "result": null,
    "final": null
