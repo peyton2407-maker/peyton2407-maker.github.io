@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 14,
    "total": 48.5,
-   "lockedAt": "2026-11-10T13:16:24.748Z",
+   "lockedAt": "2026-11-10T14:05:31.490Z",
    "provisional": true
   },
   "401866459": {
@@ -32,15 +32,15 @@
    "date": "2026-11-11T00:00Z",
    "pick": "BGSU",
    "pick_line": "BGSU -5.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "UNDER 43.5",
    "side_play": false,
    "our_margin": 5.9,
-   "our_total": 44.5,
+   "our_total": 43.9,
    "confidence": null,
    "total_play": false,
    "spread": -5.5,
-   "total": 44.5,
-   "lockedAt": "2026-11-10T13:16:24.748Z",
+   "total": 43.5,
+   "lockedAt": "2026-11-10T14:05:31.490Z",
    "provisional": true
   },
   "401866460": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 46.5,
-   "lockedAt": "2026-11-10T13:16:24.748Z",
+   "lockedAt": "2026-11-10T14:05:31.490Z",
    "provisional": true
   }
  },
@@ -1227,7 +1227,7 @@
    }
   ]
  },
- "updated": "2026-11-10T13:16:24.748Z",
+ "updated": "2026-11-10T14:05:31.490Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2559,12 +2559,12 @@
    "game": "KENT @ BGSU",
    "kick": "2026-11-11T00:00Z",
    "line": 34.5,
-   "mainLine": 44.5,
+   "mainLine": 43.5,
    "price": 300,
    "book": "FanDuel",
-   "win": 0.2635,
+   "win": 0.2613,
    "mwin": 0.2635,
-   "ev": 0.0538,
+   "ev": 0.0452,
    "mev": 0.0538,
    "src": "mkt",
    "result": null,
@@ -3234,6 +3234,27 @@
    "mkt": 0.2803,
    "win": 0.3147,
    "ev": 0.0385,
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "key": "401873052|4682648",
+   "gid": "401873052",
+   "pid": "4682648",
+   "name": "Malachi Fields",
+   "pos": "WR",
+   "team": "NYG",
+   "opp": "WSH",
+   "game": "WSH @ NYG",
+   "kick": "2026-11-13T01:15Z",
+   "price": 475,
+   "book": "DraftKings",
+   "books": 6,
+   "ours": 0.2704,
+   "mkt": 0.1596,
+   "win": 0.1873,
+   "ev": 0.0769,
    "result": null,
    "final": null,
    "units": null
