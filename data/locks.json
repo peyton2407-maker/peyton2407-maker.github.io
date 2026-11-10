@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 15.5,
    "total": 49.5,
-   "lockedAt": "2026-11-10T20:16:19.733Z",
+   "lockedAt": "2026-11-10T21:01:43.859Z",
    "provisional": true
   },
   "401866459": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 43.5,
-   "lockedAt": "2026-11-10T20:16:19.733Z",
+   "lockedAt": "2026-11-10T21:01:43.859Z",
    "provisional": true
   },
   "401866460": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 47.5,
-   "lockedAt": "2026-11-10T20:16:19.733Z",
+   "lockedAt": "2026-11-10T21:01:43.859Z",
    "provisional": true
   }
  },
@@ -1227,7 +1227,7 @@
    }
   ]
  },
- "updated": "2026-11-10T20:16:19.733Z",
+ "updated": "2026-11-10T21:01:43.859Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1660,10 +1660,10 @@
    "kick": "2026-11-15T18:00Z",
    "from": 2.5,
    "to": 8.5,
-   "book": null,
-   "win": 0.721,
-   "bookWin": 0.7524,
-   "total": 40.5,
+   "book": "DraftKings",
+   "win": 0.6682,
+   "bookWin": 0.6776,
+   "total": 38.5,
    "result": null,
    "final": null
   }
@@ -2599,17 +2599,17 @@
    "league": "nfl",
    "kind": "sp",
    "side": "home",
-   "label": "IND -8",
+   "label": "IND -9",
    "game": "MIA @ IND",
    "kick": "2026-11-15T18:00Z",
-   "line": -8,
-   "mainLine": -2.5,
-   "price": 270,
+   "line": -9,
+   "mainLine": -3.5,
+   "price": 290,
    "book": "BetRivers",
-   "win": 0.2932,
-   "mwin": 0.2619,
-   "ev": 0.1109,
-   "mev": -0.0058,
+   "win": 0.2616,
+   "mwin": 0.2523,
+   "ev": 0.031,
+   "mev": -0.0053,
    "src": "proj",
    "result": null,
    "final": null,
@@ -2698,28 +2698,6 @@
    "mwin": 0.3954,
    "ev": 0.0346,
    "mev": 0.011,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873059|tot|under",
-   "gid": "401873059",
-   "league": "nfl",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 34.5",
-   "game": "MIA @ IND",
-   "kick": "2026-11-15T18:00Z",
-   "line": 34.5,
-   "mainLine": 40.5,
-   "price": 210,
-   "book": "FanDuel",
-   "win": 0.3329,
-   "mwin": 0.3374,
-   "ev": 0.0321,
-   "mev": 0.0458,
    "src": "mkt",
    "result": null,
    "final": null,
