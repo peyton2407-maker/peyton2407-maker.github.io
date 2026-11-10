@@ -10,16 +10,16 @@
    "away": "WMU",
    "date": "2026-11-11T00:00Z",
    "pick": "AKR",
-   "pick_line": "AKR +14.0",
+   "pick_line": "AKR +14.5",
    "total_pick": "OVER 49.5",
    "side_play": false,
-   "our_margin": -13.3,
+   "our_margin": -13.63,
    "our_total": 49.1,
    "confidence": null,
    "total_play": false,
-   "spread": 14,
+   "spread": 14.5,
    "total": 49.5,
-   "lockedAt": "2026-11-10T14:46:44.680Z",
+   "lockedAt": "2026-11-10T15:31:17.053Z",
    "provisional": true
   },
   "401866459": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 43.5,
-   "lockedAt": "2026-11-10T14:46:44.680Z",
+   "lockedAt": "2026-11-10T15:31:17.053Z",
    "provisional": true
   },
   "401866460": {
@@ -53,15 +53,15 @@
    "date": "2026-11-11T01:00Z",
    "pick": "M-OH",
    "pick_line": "M-OH +1.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "OVER 47.5",
    "side_play": false,
    "our_margin": -1.1,
-   "our_total": 46.5,
+   "our_total": 47.1,
    "confidence": null,
    "total_play": false,
    "spread": 1.5,
-   "total": 46.5,
-   "lockedAt": "2026-11-10T14:46:44.680Z",
+   "total": 47.5,
+   "lockedAt": "2026-11-10T15:31:17.053Z",
    "provisional": true
   }
  },
@@ -1227,7 +1227,7 @@
    }
   ]
  },
- "updated": "2026-11-10T14:46:44.680Z",
+ "updated": "2026-11-10T15:31:17.053Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1597,8 +1597,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7527,
-   "bookWin": 0.7528,
+   "win": 0.7524,
+   "bookWin": 0.7524,
    "total": 41.5,
    "result": null,
    "final": null
@@ -1613,8 +1613,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7528,
-   "bookWin": 0.7528,
+   "win": 0.7524,
+   "bookWin": 0.7524,
    "total": 51.5,
    "result": null,
    "final": null
@@ -1661,8 +1661,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7213,
-   "bookWin": 0.7528,
+   "win": 0.7211,
+   "bookWin": 0.7524,
    "total": 40.5,
    "result": null,
    "final": null
@@ -2537,12 +2537,12 @@
    "game": "WMU @ AKR",
    "kick": "2026-11-11T00:00Z",
    "line": 4.5,
-   "mainLine": 14,
+   "mainLine": 14.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2686,
+   "win": 0.2705,
    "mwin": 0.2667,
-   "ev": 0.0343,
+   "ev": 0.0414,
    "mev": 0.0267,
    "src": "mkt",
    "result": null,
