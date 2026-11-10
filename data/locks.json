@@ -1,6 +1,49 @@
 {
  "v": 1,
- "plays": {},
+ "plays": {
+  "401866458": {
+   "id": "401866458",
+   "league": "cfb",
+   "week": 11,
+   "short": "WMU @ AKR",
+   "home": "AKR",
+   "away": "WMU",
+   "date": "2026-11-11T00:00Z",
+   "pick": "AKR",
+   "pick_line": "AKR +14.0",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -13.3,
+   "our_total": 48.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 14,
+   "total": 48.5,
+   "lockedAt": "2026-11-10T12:01:21.560Z",
+   "provisional": true
+  },
+  "401866459": {
+   "id": "401866459",
+   "league": "cfb",
+   "week": 11,
+   "short": "KENT @ BGSU",
+   "home": "BGSU",
+   "away": "KENT",
+   "date": "2026-11-11T00:00Z",
+   "pick": "BGSU",
+   "pick_line": "BGSU -5.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 5.9,
+   "our_total": 44.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -5.5,
+   "total": 44.5,
+   "lockedAt": "2026-11-10T12:01:21.560Z",
+   "provisional": true
+  }
+ },
  "potd": {
   "nfl": [
    {
@@ -1163,7 +1206,7 @@
    }
   ]
  },
- "updated": "2026-11-10T11:16:28.058Z",
+ "updated": "2026-11-10T12:01:21.560Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
