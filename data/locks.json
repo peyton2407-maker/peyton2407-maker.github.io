@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 15.5,
    "total": 49.5,
-   "lockedAt": "2026-11-10T21:31:23.706Z",
+   "lockedAt": "2026-11-10T22:01:29.355Z",
    "provisional": true
   },
   "401866459": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 43.5,
-   "lockedAt": "2026-11-10T21:31:23.706Z",
+   "lockedAt": "2026-11-10T22:01:29.355Z",
    "provisional": true
   },
   "401866460": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 47.5,
-   "lockedAt": "2026-11-10T21:31:23.706Z",
+   "lockedAt": "2026-11-10T22:01:29.355Z",
    "provisional": true
   }
  },
@@ -1227,7 +1227,7 @@
    }
   ]
  },
- "updated": "2026-11-10T21:31:23.706Z",
+ "updated": "2026-11-10T22:01:29.355Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1626,12 +1626,12 @@
    "side": "away",
    "game": "CAR @ NO",
    "kick": "2026-11-15T18:00Z",
-   "from": 1.5,
-   "to": 7.5,
+   "from": 2.5,
+   "to": 8.5,
    "book": null,
-   "win": 0.749,
-   "bookWin": 0.749,
-   "total": 47.5,
+   "win": 0.7566,
+   "bookWin": 0.7528,
+   "total": 48.5,
    "result": null,
    "final": null
   },
@@ -3102,9 +3102,9 @@
    "mkt": 0.2803,
    "win": 0.3147,
    "ev": 0.0385,
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "No TD",
+   "units": -1
   },
   {
    "key": "401873052|4682648",
