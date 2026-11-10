@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 14,
    "total": 48.5,
-   "lockedAt": "2026-11-10T12:01:21.560Z",
+   "lockedAt": "2026-11-10T12:18:32.521Z",
    "provisional": true
   },
   "401866459": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 44.5,
-   "lockedAt": "2026-11-10T12:01:21.560Z",
+   "lockedAt": "2026-11-10T12:18:32.521Z",
    "provisional": true
   }
  },
@@ -1206,7 +1206,7 @@
    }
   ]
  },
- "updated": "2026-11-10T12:01:21.560Z",
+ "updated": "2026-11-10T12:18:32.521Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1592,7 +1592,7 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7524,
+   "win": 0.7525,
    "bookWin": 0.7524,
    "total": 51.5,
    "result": null,
@@ -1640,7 +1640,7 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7211,
+   "win": 0.721,
    "bookWin": 0.7524,
    "total": 40.5,
    "result": null,
