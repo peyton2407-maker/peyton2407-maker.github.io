@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-11-10T03:47:17Z",
+ "checked_at": "2026-11-11T01:28:01Z",
  "errors": [],
  "console": [],
  "failed_requests": {},
@@ -7,20 +7,20 @@
  "screens": {
   "home": {
    "visible": true,
-   "count": 21,
+   "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 1555,
-   "images": 54,
+   "chars": 1343,
+   "images": 38,
    "broken_images": []
   },
   "nfl": {
    "visible": true,
-   "count": 1,
+   "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 2513,
-   "images": 11,
+   "chars": 5730,
+   "images": 38,
    "broken_images": []
   },
   "cfb": {
@@ -28,17 +28,17 @@
    "count": 67,
    "summary": [],
    "empty": [],
-   "chars": 11210,
-   "images": 100,
+   "chars": 11314,
+   "images": 96,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 14,
+   "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 2531,
-   "images": 22,
+   "chars": 2483,
+   "images": 16,
    "broken_images": []
   },
   "season": {
@@ -46,7 +46,7 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3203,
+   "chars": 3224,
    "images": 42,
    "broken_images": []
   },
@@ -55,7 +55,7 @@
    "count": 452,
    "summary": [],
    "empty": [],
-   "chars": 30929,
+   "chars": 31100,
    "images": 0,
    "broken_images": []
   },
@@ -64,17 +64,17 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3334,
+   "chars": 3313,
    "images": 35,
    "broken_images": []
   },
   "card": {
    "visible": true,
-   "count": 10,
+   "count": 3,
    "summary": [],
    "empty": [],
-   "chars": 1250,
-   "images": 20,
+   "chars": 685,
+   "images": 6,
    "broken_images": []
   },
   "props": {
@@ -82,49 +82,45 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 6918,
-   "images": 13,
+   "chars": 6541,
+   "images": 12,
    "broken_images": []
   },
   "tds": {
    "visible": true,
    "count": 1,
    "summary": [],
-   "empty": [
-    "No players in this filter. Try another market, position or game."
-   ],
-   "chars": 911,
-   "images": 0,
+   "empty": [],
+   "chars": 3783,
+   "images": 26,
    "broken_images": []
   },
   "charts": {
    "visible": true,
-   "count": 15,
+   "count": 27,
    "summary": [],
    "empty": [],
-   "chars": 3914,
+   "chars": 3676,
    "images": 6,
    "broken_images": []
   },
   "value": {
    "visible": true,
-   "count": 39,
+   "count": 72,
    "summary": [
-    "39 value tickets in this filter 0 TD plus-money 4 spread / dog sides 97% bes"
+    "159 value tickets in this filter 130 TD plus-money 7 spread / dog sides 70% b"
    ],
    "empty": [],
-   "chars": 3439,
-   "images": 30,
+   "chars": 3616,
+   "images": 28,
    "broken_images": []
   },
   "parlay": {
    "visible": true,
-   "count": 3,
+   "count": 5,
    "summary": [],
-   "empty": [
-    "No NFL parlay this week. No two plays are far enough off the number to make a ticket priced fair or better."
-   ],
-   "chars": 1659,
+   "empty": [],
+   "chars": 3135,
    "images": 0,
    "broken_images": []
   },
@@ -133,8 +129,8 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2513,
-   "images": 11,
+   "chars": 2790,
+   "images": 14,
    "broken_images": []
   },
   "nflinj": {
@@ -142,22 +138,22 @@
    "count": 61,
    "summary": [
     "524 listed THU \u00b7 11:31 PM ET 529 listed FRI \u00b7 11:30 PM ET 479 listed S",
-    "473 listed SUN \u00b7 11:46 PM ET 564 listed MON \u00b7 10:32 PM ET 578 listed J",
+    "473 listed SUN \u00b7 11:46 PM ET 564 listed TUE \u00b7 8:16 PM ET 581 listed JA",
     "33 listed CIN VS ATL 30 listed DAL @ IND 29 listed NYJ @ KC 33 listed",
     "33 listed CLE @ NO 29 listed NYG @ PHI 32 listed LAR @ WSH 34 listed "
    ],
    "empty": [],
-   "chars": 5470,
-   "images": 7,
+   "chars": 4539,
+   "images": 8,
    "broken_images": []
   },
   "nflwx": {
    "visible": true,
-   "count": 15,
+   "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 5084,
-   "images": 30,
+   "chars": 5245,
+   "images": 28,
    "broken_images": []
   },
   "nflpotd": {
@@ -165,8 +161,8 @@
    "count": 4,
    "summary": [],
    "empty": [],
-   "chars": 1805,
-   "images": 0,
+   "chars": 2649,
+   "images": 2,
    "broken_images": []
   },
   "cfbpicks": {
@@ -174,7 +170,7 @@
    "count": 18,
    "summary": [],
    "empty": [],
-   "chars": 7473,
+   "chars": 7416,
    "images": 36,
    "broken_images": []
   }
@@ -183,7 +179,7 @@
   "open": true,
   "hero": true,
   "shown_twice": false,
-  "logos_ok": 17
+  "logos_ok": 16
  },
  "split": {
   "games": 20,
@@ -192,6 +188,6 @@
   "errors": []
  },
  "dk_lines_loaded": null,
- "games_with_props": 15,
- "nfl_games_upcoming": 15
+ "games_with_props": 27,
+ "nfl_games_upcoming": 27
 }
