@@ -75,6 +75,69 @@
    "closeAt": "2026-11-11T00:01:31.720Z",
    "clv_side": 0,
    "clv_total": null
+  },
+  "401866461": {
+   "id": "401866461",
+   "league": "cfb",
+   "week": 11,
+   "short": "BUFF @ BALL",
+   "home": "BALL",
+   "away": "BUFF",
+   "date": "2026-11-12T00:30Z",
+   "pick": "BUFF",
+   "pick_line": "BUFF -1.5",
+   "total_pick": "OVER 51.5",
+   "side_play": false,
+   "our_margin": -2.3,
+   "our_total": 51.1,
+   "confidence": null,
+   "total_play": false,
+   "spread": 1.5,
+   "total": 51.5,
+   "lockedAt": "2026-11-11T12:31:23.676Z",
+   "provisional": true
+  },
+  "401866462": {
+   "id": "401866462",
+   "league": "cfb",
+   "week": 11,
+   "short": "SAC @ CMU",
+   "home": "CMU",
+   "away": "SAC",
+   "date": "2026-11-12T00:30Z",
+   "pick": "SAC",
+   "pick_line": "SAC +18.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 17.6,
+   "our_total": 43.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -18.5,
+   "total": 43.5,
+   "lockedAt": "2026-11-11T12:31:23.676Z",
+   "provisional": true
+  },
+  "401866463": {
+   "id": "401866463",
+   "league": "cfb",
+   "week": 11,
+   "short": "MASS @ TOL",
+   "home": "TOL",
+   "away": "MASS",
+   "date": "2026-11-12T00:30Z",
+   "pick": "MASS",
+   "pick_line": "MASS +14.0",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 12.37,
+   "our_total": 51.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -14,
+   "total": 51.5,
+   "lockedAt": "2026-11-11T12:31:23.676Z",
+   "provisional": true
   }
  },
  "potd": {
@@ -1239,7 +1302,7 @@
    }
   ]
  },
- "updated": "2026-11-11T09:16:31.969Z",
+ "updated": "2026-11-11T12:31:23.676Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
