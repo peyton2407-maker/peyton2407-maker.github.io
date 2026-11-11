@@ -94,8 +94,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 51.5,
-   "lockedAt": "2026-11-11T22:16:26.832Z",
-   "provisional": true
+   "lockedAt": "2026-11-11T23:01:46.488Z"
   },
   "401866462": {
    "id": "401866462",
@@ -115,8 +114,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 42.5,
-   "lockedAt": "2026-11-11T22:16:26.832Z",
-   "provisional": true
+   "lockedAt": "2026-11-11T23:01:46.488Z"
   },
   "401866463": {
    "id": "401866463",
@@ -136,8 +134,7 @@
    "total_play": false,
    "spread": -14,
    "total": 52.5,
-   "lockedAt": "2026-11-11T22:16:26.832Z",
-   "provisional": true
+   "lockedAt": "2026-11-11T23:01:46.488Z"
   }
  },
  "potd": {
@@ -1302,7 +1299,7 @@
    }
   ]
  },
- "updated": "2026-11-11T22:16:26.832Z",
+ "updated": "2026-11-11T23:01:46.488Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3440,6 +3437,54 @@
    "result": "HIT",
    "units": 0.9259,
    "final": "OHIO 17, M-OH 34"
+  },
+  {
+   "id": "401866461",
+   "league": "cfb",
+   "gid": "401866461",
+   "side": "away",
+   "team": "BUFF",
+   "game": "BUFF @ BALL",
+   "kick": "2026-11-12T00:30Z",
+   "line": -2.5,
+   "price": -110,
+   "book": "FanDuel",
+   "ours": -2.3,
+   "market": -1.5,
+   "label": "BUFF -2.5",
+   "lockedAt": "2026-11-11T23:01:46.488Z"
+  },
+  {
+   "id": "401866463",
+   "league": "cfb",
+   "gid": "401866463",
+   "side": "away",
+   "team": "MASS",
+   "game": "MASS @ TOL",
+   "kick": "2026-11-12T00:30Z",
+   "line": 14.5,
+   "price": -112,
+   "book": "DraftKings",
+   "ours": 12.5,
+   "market": 14,
+   "label": "MASS +14.5",
+   "lockedAt": "2026-11-11T23:01:46.488Z"
+  },
+  {
+   "id": "401866462",
+   "league": "cfb",
+   "gid": "401866462",
+   "side": "away",
+   "team": "SAC",
+   "game": "SAC @ CMU",
+   "kick": "2026-11-12T00:30Z",
+   "line": 18.5,
+   "price": -114,
+   "book": "BetRivers",
+   "ours": 17,
+   "market": 17.5,
+   "label": "SAC +18.5",
+   "lockedAt": "2026-11-11T23:01:46.488Z"
   }
  ]
 }
