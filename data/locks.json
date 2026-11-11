@@ -1239,7 +1239,7 @@
    }
   ]
  },
- "updated": "2026-11-11T07:16:14.786Z",
+ "updated": "2026-11-11T08:01:26.977Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2644,28 +2644,6 @@
    "mwin": 0.3213,
    "ev": 0.0531,
    "mev": 0.0603,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401866461|tot|under",
-   "gid": "401866461",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 43.5",
-   "game": "BUFF @ BALL",
-   "kick": "2026-11-12T00:30Z",
-   "line": 43.5,
-   "mainLine": 50.5,
-   "price": 220,
-   "book": "FanDuel",
-   "win": 0.3248,
-   "mwin": 0.3183,
-   "ev": 0.0392,
-   "mev": 0.0185,
    "src": "mkt",
    "result": null,
    "final": null,
