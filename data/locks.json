@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 51.5,
-   "lockedAt": "2026-11-11T19:31:16.865Z",
+   "lockedAt": "2026-11-11T19:46:28.281Z",
    "provisional": true
   },
   "401866462": {
@@ -106,16 +106,16 @@
    "away": "SAC",
    "date": "2026-11-12T00:30Z",
    "pick": "SAC",
-   "pick_line": "SAC +17.5",
+   "pick_line": "SAC +16.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 17,
+   "our_margin": 15.25,
    "our_total": 42.5,
    "confidence": null,
    "total_play": false,
-   "spread": -17.5,
+   "spread": -16.5,
    "total": 42.5,
-   "lockedAt": "2026-11-11T19:31:16.865Z",
+   "lockedAt": "2026-11-11T19:46:28.281Z",
    "provisional": true
   },
   "401866463": {
@@ -136,7 +136,7 @@
    "total_play": false,
    "spread": -14,
    "total": 51.5,
-   "lockedAt": "2026-11-11T19:31:16.865Z",
+   "lockedAt": "2026-11-11T19:46:28.281Z",
    "provisional": true
   }
  },
@@ -1302,7 +1302,7 @@
    }
   ]
  },
- "updated": "2026-11-11T19:31:16.865Z",
+ "updated": "2026-11-11T19:46:28.281Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
