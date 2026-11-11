@@ -86,15 +86,15 @@
    "date": "2026-11-12T00:30Z",
    "pick": "BUFF",
    "pick_line": "BUFF -1.5",
-   "total_pick": "OVER 51.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
    "our_margin": -2.3,
-   "our_total": 51.1,
+   "our_total": 51.5,
    "confidence": null,
    "total_play": false,
    "spread": 1.5,
    "total": 51.5,
-   "lockedAt": "2026-11-11T18:16:19.433Z",
+   "lockedAt": "2026-11-11T19:01:31.286Z",
    "provisional": true
   },
   "401866462": {
@@ -107,15 +107,15 @@
    "date": "2026-11-12T00:30Z",
    "pick": "SAC",
    "pick_line": "SAC +17.5",
-   "total_pick": "UNDER 42.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 15.85,
-   "our_total": 42.9,
+   "our_margin": 17,
+   "our_total": 42.5,
    "confidence": null,
    "total_play": false,
    "spread": -17.5,
    "total": 42.5,
-   "lockedAt": "2026-11-11T18:16:19.433Z",
+   "lockedAt": "2026-11-11T19:01:31.286Z",
    "provisional": true
   },
   "401866463": {
@@ -136,7 +136,7 @@
    "total_play": false,
    "spread": -14,
    "total": 51.5,
-   "lockedAt": "2026-11-11T18:16:19.433Z",
+   "lockedAt": "2026-11-11T19:01:31.286Z",
    "provisional": true
   }
  },
@@ -1302,7 +1302,7 @@
    }
   ]
  },
- "updated": "2026-11-11T18:16:19.433Z",
+ "updated": "2026-11-11T19:01:31.286Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
