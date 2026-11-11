@@ -1239,7 +1239,7 @@
    }
   ]
  },
- "updated": "2026-11-11T03:46:15.351Z",
+ "updated": "2026-11-11T05:01:29.913Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1625,7 +1625,7 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7524,
+   "win": 0.7562,
    "bookWin": 0.7524,
    "total": 51.5,
    "result": null,
@@ -1641,7 +1641,7 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7563,
+   "win": 0.7562,
    "bookWin": 0.7524,
    "total": 48.5,
    "result": null,
@@ -1657,8 +1657,8 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.7432,
-   "bookWin": 0.7433,
+   "win": 0.743,
+   "bookWin": 0.743,
    "total": 50.5,
    "result": null,
    "final": null
@@ -1673,8 +1673,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": "DraftKings",
-   "win": 0.6592,
-   "bookWin": 0.6774,
+   "win": 0.6593,
+   "bookWin": 0.6776,
    "total": 38.5,
    "result": null,
    "final": null
@@ -2579,9 +2579,9 @@
    "ev": 0.0305,
    "mev": 0.0305,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "OHIO 17, M-OH 34",
+   "units": 3
   },
   {
    "id": "401866460|sp|away",
@@ -2601,9 +2601,9 @@
    "ev": 0.0612,
    "mev": 0.0612,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "OHIO 17, M-OH 34",
+   "units": -1
   },
   {
    "id": "401866460|tot|under",
@@ -2623,9 +2623,9 @@
    "ev": 0.0456,
    "mev": 0.0456,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "OHIO 17, M-OH 34",
+   "units": -1
   },
   {
    "id": "401866462|sp|home",
@@ -2706,9 +2706,9 @@
    "mainLine": 2.5,
    "price": 300,
    "book": "BetRivers",
-   "win": 0.2618,
+   "win": 0.2657,
    "mwin": 0.2618,
-   "ev": 0.047,
+   "ev": 0.0627,
    "mev": 0.047,
    "src": "mkt",
    "result": null,
@@ -2843,28 +2843,6 @@
    "ev": 0.0395,
    "mev": 0.0458,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873060|sp|away",
-   "gid": "401873060",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "away",
-   "label": "MIN +1.5",
-   "game": "MIN @ GB",
-   "kick": "2026-11-15T18:00Z",
-   "line": 1.5,
-   "mainLine": 3.5,
-   "price": 155,
-   "book": "BetRivers",
-   "win": 0.4113,
-   "mwin": 0.3814,
-   "ev": 0.0489,
-   "mev": -0.0274,
-   "src": "proj",
    "result": null,
    "final": null,
    "units": null
@@ -3329,10 +3307,10 @@
    "price": 475,
    "book": "Fanatics",
    "books": 6,
-   "ours": 0.2704,
+   "ours": 0.2655,
    "mkt": 0.1614,
-   "win": 0.1887,
-   "ev": 0.085,
+   "win": 0.1875,
+   "ev": 0.0779,
    "result": null,
    "final": null,
    "units": null
@@ -3350,10 +3328,10 @@
    "price": 850,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.1427,
+   "ours": 0.1757,
    "mkt": 0.1015,
-   "win": 0.1118,
-   "ev": 0.062,
+   "win": 0.12,
+   "ev": 0.1402,
    "result": null,
    "final": null,
    "units": null
@@ -3526,7 +3504,10 @@
    "ours": 1.1,
    "market": 1.5,
    "label": "M-OH +1",
-   "lockedAt": "2026-11-10T23:31:12.894Z"
+   "lockedAt": "2026-11-10T23:31:12.894Z",
+   "result": "HIT",
+   "units": 0.9259,
+   "final": "OHIO 17, M-OH 34"
   }
  ]
 }
