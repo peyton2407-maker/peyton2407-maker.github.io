@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 51.5,
-   "lockedAt": "2026-11-11T19:46:28.281Z",
+   "lockedAt": "2026-11-11T20:16:32.607Z",
    "provisional": true
   },
   "401866462": {
@@ -106,16 +106,16 @@
    "away": "SAC",
    "date": "2026-11-12T00:30Z",
    "pick": "SAC",
-   "pick_line": "SAC +16.5",
+   "pick_line": "SAC +17.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 15.25,
+   "our_margin": 17,
    "our_total": 42.5,
    "confidence": null,
    "total_play": false,
-   "spread": -16.5,
+   "spread": -17.5,
    "total": 42.5,
-   "lockedAt": "2026-11-11T19:46:28.281Z",
+   "lockedAt": "2026-11-11T20:16:32.607Z",
    "provisional": true
   },
   "401866463": {
@@ -128,15 +128,15 @@
    "date": "2026-11-12T00:30Z",
    "pick": "MASS",
    "pick_line": "MASS +14.0",
-   "total_pick": "NO PLAY",
+   "total_pick": "OVER 52.5",
    "side_play": false,
    "our_margin": 12.5,
-   "our_total": 51.5,
+   "our_total": 52.1,
    "confidence": null,
    "total_play": false,
    "spread": -14,
-   "total": 51.5,
-   "lockedAt": "2026-11-11T19:46:28.281Z",
+   "total": 52.5,
+   "lockedAt": "2026-11-11T20:16:32.607Z",
    "provisional": true
   }
  },
@@ -1302,7 +1302,7 @@
    }
   ]
  },
- "updated": "2026-11-11T19:46:28.281Z",
+ "updated": "2026-11-11T20:16:32.607Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3304,10 +3304,10 @@
    "price": 850,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.172,
-   "mkt": 0.1022,
-   "win": 0.1196,
-   "ev": 0.1366,
+   "ours": 0.1698,
+   "mkt": 0.1,
+   "win": 0.1175,
+   "ev": 0.1158,
    "result": null,
    "final": null,
    "units": null
@@ -3325,10 +3325,10 @@
    "price": 500,
    "book": "BetMGM",
    "books": 6,
-   "ours": 0.2251,
-   "mkt": 0.1912,
-   "win": 0.1996,
-   "ev": 0.1979,
+   "ours": 0.2209,
+   "mkt": 0.1868,
+   "win": 0.1953,
+   "ev": 0.1717,
    "result": null,
    "final": null,
    "units": null
