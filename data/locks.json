@@ -1239,7 +1239,7 @@
    }
   ]
  },
- "updated": "2026-11-11T02:16:20.355Z",
+ "updated": "2026-11-11T02:31:26.435Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2659,12 +2659,12 @@
    "game": "BUFF @ BALL",
    "kick": "2026-11-12T00:30Z",
    "line": -10.5,
-   "mainLine": -2.5,
+   "mainLine": -1.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2679,
+   "win": 0.2701,
    "mwin": 0.2679,
-   "ev": 0.0313,
+   "ev": 0.0399,
    "mev": 0.0313,
    "src": "mkt",
    "result": null,
