@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 51.5,
-   "lockedAt": "2026-11-11T17:16:27.807Z",
+   "lockedAt": "2026-11-11T17:31:49.084Z",
    "provisional": true
   },
   "401866462": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 42.5,
-   "lockedAt": "2026-11-11T17:16:27.807Z",
+   "lockedAt": "2026-11-11T17:31:49.084Z",
    "provisional": true
   },
   "401866463": {
@@ -136,7 +136,7 @@
    "total_play": false,
    "spread": -14,
    "total": 51.5,
-   "lockedAt": "2026-11-11T17:16:27.807Z",
+   "lockedAt": "2026-11-11T17:31:49.084Z",
    "provisional": true
   }
  },
@@ -1302,7 +1302,7 @@
    }
   ]
  },
- "updated": "2026-11-11T17:16:27.807Z",
+ "updated": "2026-11-11T17:31:49.084Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2839,28 +2839,6 @@
    "mwin": 0.2838,
    "ev": 0.0424,
    "mev": 0.0359,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873056|tot|over",
-   "gid": "401873056",
-   "league": "nfl",
-   "kind": "tot",
-   "side": "over",
-   "label": "Over 49.5",
-   "game": "HOU @ CLE",
-   "kick": "2026-11-15T18:00Z",
-   "line": 49.5,
-   "mainLine": 39.5,
-   "price": 300,
-   "book": "FanDuel",
-   "win": 0.2589,
-   "mwin": 0.255,
-   "ev": 0.0354,
-   "mev": 0.0201,
    "src": "mkt",
    "result": null,
    "final": null,
