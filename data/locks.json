@@ -86,15 +86,15 @@
    "date": "2026-11-12T00:30Z",
    "pick": "BUFF",
    "pick_line": "BUFF -1.5",
-   "total_pick": "OVER 51.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
    "our_margin": -2.3,
-   "our_total": 51.1,
+   "our_total": 50.5,
    "confidence": null,
    "total_play": false,
    "spread": 1.5,
-   "total": 51.5,
-   "lockedAt": "2026-11-11T12:31:23.676Z",
+   "total": 50.5,
+   "lockedAt": "2026-11-11T12:46:24.984Z",
    "provisional": true
   },
   "401866462": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -18.5,
    "total": 43.5,
-   "lockedAt": "2026-11-11T12:31:23.676Z",
+   "lockedAt": "2026-11-11T12:46:24.984Z",
    "provisional": true
   },
   "401866463": {
@@ -130,13 +130,13 @@
    "pick_line": "MASS +14.0",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 12.37,
+   "our_margin": 12.5,
    "our_total": 51.5,
    "confidence": null,
    "total_play": false,
    "spread": -14,
    "total": 51.5,
-   "lockedAt": "2026-11-11T12:31:23.676Z",
+   "lockedAt": "2026-11-11T12:46:24.984Z",
    "provisional": true
   }
  },
@@ -1302,7 +1302,7 @@
    }
   ]
  },
- "updated": "2026-11-11T12:31:23.676Z",
+ "updated": "2026-11-11T12:46:24.984Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
