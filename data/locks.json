@@ -1239,7 +1239,7 @@
    }
   ]
  },
- "updated": "2026-11-11T02:55:26.594Z",
+ "updated": "2026-11-11T03:16:41.507Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2557,9 +2557,9 @@
    "ev": 0.0517,
    "mev": 0.0576,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "WMU 42, AKR 14",
+   "units": 2.85
   },
   {
    "id": "401866460|sp|home",
@@ -3488,7 +3488,10 @@
    "ours": 14.3,
    "market": 15.5,
    "label": "AKR +15.5",
-   "lockedAt": "2026-11-10T22:31:29.455Z"
+   "lockedAt": "2026-11-10T22:31:29.455Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "WMU 42, AKR 14"
   },
   {
    "id": "401866459",
