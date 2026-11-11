@@ -1299,7 +1299,7 @@
    }
   ]
  },
- "updated": "2026-11-11T23:01:46.488Z",
+ "updated": "2026-11-11T23:16:15.907Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2732,6 +2732,28 @@
    "units": null
   },
   {
+   "id": "401873053|sp|away",
+   "gid": "401873053",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "away",
+   "label": "NE -5.5",
+   "game": "NE VS DET",
+   "kick": "2026-11-15T14:30Z",
+   "line": -5.5,
+   "mainLine": 2.5,
+   "price": 295,
+   "book": "BetRivers",
+   "win": 0.2615,
+   "mwin": 0.2576,
+   "ev": 0.0331,
+   "mev": 0.0176,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873059|sp|home",
    "gid": "401873059",
    "league": "nfl",
@@ -2815,6 +2837,28 @@
    "ev": 0.0376,
    "mev": 0.0376,
    "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873058|sp|away",
+   "gid": "401873058",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "away",
+   "label": "KC -9.5",
+   "game": "KC @ ATL",
+   "kick": "2026-11-15T18:00Z",
+   "line": -9.5,
+   "mainLine": -3,
+   "price": 230,
+   "book": "FanDuel",
+   "win": 0.3168,
+   "mwin": 0.2941,
+   "ev": 0.0455,
+   "mev": -0.0294,
+   "src": "proj",
    "result": null,
    "final": null,
    "units": null
