@@ -1314,7 +1314,7 @@
    }
   ]
  },
- "updated": "2026-11-12T04:01:35.641Z",
+ "updated": "2026-11-12T04:16:23.900Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2813,50 +2813,6 @@
    "units": null
   },
   {
-   "id": "401873062|sp|home",
-   "gid": "401873062",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "home",
-   "label": "LV -1.5",
-   "game": "SEA @ LV",
-   "kick": "2026-11-15T21:05Z",
-   "line": -1.5,
-   "mainLine": 6.5,
-   "price": 280,
-   "book": "FanDuel",
-   "win": 0.2715,
-   "mwin": 0.2653,
-   "ev": 0.0317,
-   "mev": 0.0081,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873063|sp|away",
-   "gid": "401873063",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "away",
-   "label": "SF -12",
-   "game": "SF @ DAL",
-   "kick": "2026-11-15T21:25Z",
-   "line": -12,
-   "mainLine": -3.5,
-   "price": 285,
-   "book": "BetRivers",
-   "win": 0.2653,
-   "mwin": 0.2651,
-   "ev": 0.0344,
-   "mev": 0.0339,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401873064|sp|home",
    "gid": "401873064",
    "league": "nfl",
@@ -3489,7 +3445,10 @@
    "ours": -2.3,
    "market": -1.5,
    "label": "BUFF -2.5",
-   "lockedAt": "2026-11-11T23:01:46.488Z"
+   "lockedAt": "2026-11-11T23:01:46.488Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "BUFF 28, BALL 7"
   },
   {
    "id": "401866463",
