@@ -1314,7 +1314,7 @@
    }
   ]
  },
- "updated": "2026-11-12T08:46:14.067Z",
+ "updated": "2026-11-12T09:01:16.339Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3294,10 +3294,10 @@
    "price": 900,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.1735,
+   "ours": 0.1698,
    "mkt": 0.0971,
-   "win": 0.1162,
-   "ev": 0.1621,
+   "win": 0.1153,
+   "ev": 0.153,
    "result": null,
    "final": null,
    "units": null
@@ -3315,10 +3315,10 @@
    "price": 475,
    "book": "Fanatics",
    "books": 6,
-   "ours": 0.2624,
+   "ours": 0.2571,
    "mkt": 0.1591,
-   "win": 0.1849,
-   "ev": 0.0632,
+   "win": 0.1836,
+   "ev": 0.0556,
    "result": null,
    "final": null,
    "units": null
