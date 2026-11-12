@@ -1314,7 +1314,7 @@
    }
   ]
  },
- "updated": "2026-11-12T12:01:26.675Z",
+ "updated": "2026-11-12T12:31:49.906Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2701,6 +2701,28 @@
    "result": "MISS",
    "final": "OHIO 17, M-OH 34",
    "units": -1
+  },
+  {
+   "id": "401869969|tot|under",
+   "gid": "401869969",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 39.5",
+   "game": "UL @ ULM",
+   "kick": "2026-11-13T02:00Z",
+   "line": 39.5,
+   "mainLine": 49.5,
+   "price": 285,
+   "book": "FanDuel",
+   "win": 0.2685,
+   "mwin": 0.2664,
+   "ev": 0.0336,
+   "mev": 0.0255,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
   },
   {
    "id": "401873053|sp|away",
