@@ -9,17 +9,17 @@
    "home": "USF",
    "away": "MEM",
    "date": "2026-11-13T01:00Z",
-   "pick": "MEM",
-   "pick_line": "MEM -3.5",
+   "pick": "USF",
+   "pick_line": "USF +4.0",
    "total_pick": "UNDER 49.5",
    "side_play": false,
-   "our_margin": -4.2,
+   "our_margin": -3.03,
    "our_total": 49.9,
    "confidence": null,
    "total_play": false,
-   "spread": 3.5,
+   "spread": 4,
    "total": 49.5,
-   "lockedAt": "2026-11-12T18:16:57.239Z",
+   "lockedAt": "2026-11-12T18:31:22.232Z",
    "provisional": true
   },
   "401866458": {
@@ -190,7 +190,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 47.5,
-   "lockedAt": "2026-11-12T18:16:57.239Z",
+   "lockedAt": "2026-11-12T18:31:22.232Z",
    "provisional": true
   },
   "401873052": {
@@ -211,7 +211,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 40.5,
-   "lockedAt": "2026-11-12T18:16:57.239Z",
+   "lockedAt": "2026-11-12T18:31:22.232Z",
    "provisional": true
   }
  },
@@ -706,12 +706,12 @@
     "ours": "NYG -2.2 · total 39.5",
     "score": "WSH 18.6 – NYG 20.9",
     "market": "NYG -2.5 · total 40.5",
-    "lockedAt": "2026-11-12T18:16:57.257Z",
+    "lockedAt": "2026-11-12T18:31:22.255Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-13T01:15Z",
     "big": false,
-    "savedAt": 1794507417257
+    "savedAt": 1794508282255
    }
   ],
   "cfb": [
@@ -1348,7 +1348,7 @@
    }
   ]
  },
- "updated": "2026-11-12T18:16:57.239Z",
+ "updated": "2026-11-12T18:31:22.232Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
