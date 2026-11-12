@@ -1314,7 +1314,7 @@
    }
   ]
  },
- "updated": "2026-11-12T03:46:38.884Z",
+ "updated": "2026-11-12T04:01:35.641Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1716,8 +1716,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7561,
-   "bookWin": 0.7522,
+   "win": 0.7562,
+   "bookWin": 0.7524,
    "total": 48.5,
    "result": null,
    "final": null
@@ -3505,7 +3505,10 @@
    "ours": 12.5,
    "market": 14,
    "label": "MASS +14.5",
-   "lockedAt": "2026-11-11T23:01:46.488Z"
+   "lockedAt": "2026-11-11T23:01:46.488Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "MASS 0, TOL 24"
   },
   {
    "id": "401866462",
