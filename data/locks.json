@@ -1314,7 +1314,7 @@
    }
   ]
  },
- "updated": "2026-11-12T11:16:43.101Z",
+ "updated": "2026-11-12T12:01:26.675Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1716,8 +1716,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7562,
-   "bookWin": 0.7524,
+   "win": 0.7561,
+   "bookWin": 0.7522,
    "total": 48.5,
    "result": null,
    "final": null
@@ -2715,9 +2715,9 @@
    "mainLine": 2.5,
    "price": 270,
    "book": "BetRivers",
-   "win": 0.279,
+   "win": 0.2791,
    "mwin": 0.2749,
-   "ev": 0.0323,
+   "ev": 0.0325,
    "mev": 0.0172,
    "src": "mkt",
    "result": null,
@@ -3338,10 +3338,10 @@
    "price": 800,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.1698,
+   "ours": 0.1735,
    "mkt": 0.0969,
-   "win": 0.1151,
-   "ev": 0.0363,
+   "win": 0.1161,
+   "ev": 0.0445,
    "result": null,
    "final": null,
    "units": null
