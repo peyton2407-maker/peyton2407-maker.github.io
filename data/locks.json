@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 50.5,
-   "lockedAt": "2026-11-12T16:16:32.372Z",
+   "lockedAt": "2026-11-12T17:01:44.149Z",
    "provisional": true
   },
   "401866458": {
@@ -190,7 +190,7 @@
    "total_play": false,
    "spread": 10,
    "total": 47.5,
-   "lockedAt": "2026-11-12T16:16:32.372Z",
+   "lockedAt": "2026-11-12T17:01:44.149Z",
    "provisional": true
   },
   "401873052": {
@@ -211,7 +211,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 40.5,
-   "lockedAt": "2026-11-12T16:16:32.372Z",
+   "lockedAt": "2026-11-12T17:01:44.149Z",
    "provisional": true
   }
  },
@@ -706,12 +706,12 @@
     "ours": "NYG -2.2 · total 40.6",
     "score": "WSH 19.2 – NYG 21.4",
     "market": "NYG -2.5 · total 40.5",
-    "lockedAt": "2026-11-12T16:16:32.395Z",
+    "lockedAt": "2026-11-12T17:01:44.171Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-13T01:15Z",
     "big": false,
-    "savedAt": 1794500192395
+    "savedAt": 1794502904171
    }
   ],
   "cfb": [
@@ -1276,144 +1276,79 @@
   ]
  },
  "card": {
-  "weekKey": "nfl-9|cfb-11",
+  "weekKey": "nfl-10|cfb-11",
   "frozen": true,
-  "lockedAt": "2026-11-09T11:02:52.830Z",
+  "lockedAt": "2026-11-12T17:01:44.149Z",
   "title": "Double Gs weekly card",
   "legs": [
    {
-    "id": "401858522",
+    "id": "401860914",
     "league": "cfb",
-    "short": "NU @ OSU",
+    "short": "ORST @ BOIS",
+    "date": "2026-11-14T23:00Z",
+    "home": "BOIS",
+    "away": "ORST",
+    "text": "ORST +14.5",
+    "pick": "ORST +14.5",
+    "total": "NO PLAY",
+    "proj": "ORST 26.3 – BOIS 38.5",
+    "edge": -2.25
+   },
+   {
+    "id": "401873059",
+    "league": "nfl",
+    "short": "MIA @ IND",
+    "date": "2026-11-15T18:00Z",
+    "home": "IND",
+    "away": "MIA",
+    "text": "IND -3.5",
+    "pick": "IND -3.5",
+    "total": "NO PLAY",
+    "proj": "MIA 16.5 – IND 22.3",
+    "edge": 2.2
+   },
+   {
+    "id": "401858301",
+    "league": "cfb",
+    "short": "WAKE @ SMU",
     "date": "2026-11-14T17:00Z",
-    "home": "OSU",
-    "away": "NU",
-    "text": "OVER 47.5",
-    "pick": "NO PLAY",
-    "total": "OVER 47.5",
-    "proj": "NU 19.1 – OSU 31.4",
-    "edge": 0.85
+    "home": "SMU",
+    "away": "WAKE",
+    "text": "WAKE +1.5",
+    "pick": "WAKE +1.5",
+    "total": "NO PLAY",
+    "proj": "WAKE 30.4 – SMU 30.1",
+    "edge": -1.8
    },
    {
-    "id": "401862826",
+    "id": "401860917",
     "league": "cfb",
-    "short": "FAU @ TLSA",
-    "date": "2026-11-14T20:30Z",
-    "home": "TLSA",
-    "away": "FAU",
-    "text": "UNDER 74.5",
-    "pick": "NO PLAY",
-    "total": "UNDER 74.5",
-    "proj": "FAU 32.8 – TLSA 39.3",
-    "edge": 1.02
+    "short": "CSU @ WSU",
+    "date": "2026-11-15T03:30Z",
+    "home": "WSU",
+    "away": "CSU",
+    "text": "CSU +9.5",
+    "pick": "CSU +9.5",
+    "total": "NO PLAY",
+    "proj": "CSU 29.4 – WSU 37.1",
+    "edge": -1.8
    },
    {
-    "id": "401858526",
+    "id": "401864539",
     "league": "cfb",
-    "short": "ILL @ UCLA",
-    "date": "2026-11-14T02:00Z",
-    "home": "UCLA",
-    "away": "ILL",
-    "text": "OVER 46.5",
+    "short": "UNLV @ UNM",
+    "date": "2026-11-15T00:30Z",
+    "home": "UNM",
+    "away": "UNLV",
+    "text": "UNDER 46.5",
     "pick": "NO PLAY",
-    "total": "OVER 46.5",
-    "proj": "ILL 20.1 – UCLA 29.5",
-    "edge": -0.6
-   },
-   {
-    "id": "401862827",
-    "league": "cfb",
-    "short": "UNT @ UTSA",
-    "date": "2026-11-15T02:00Z",
-    "home": "UTSA",
-    "away": "UNT",
-    "text": "UNDER 77.5",
-    "pick": "NO PLAY",
-    "total": "UNDER 77.5",
-    "proj": "UNT 38.4 – UTSA 36.2",
-    "edge": -0.65
-   },
-   {
-    "id": "401858524",
-    "league": "cfb",
-    "short": "MINN @ PSU",
-    "date": "2026-11-15T00:00Z",
-    "home": "PSU",
-    "away": "MINN",
-    "text": "UNDER 43.5",
-    "pick": "NO PLAY",
-    "total": "UNDER 43.5",
-    "proj": "MINN 15.5 – PSU 25.9",
-    "edge": 0.85
-   },
-   {
-    "id": "401871060",
-    "league": "cfb",
-    "short": "FIU @ DEL",
-    "date": "2026-11-14T20:00Z",
-    "home": "DEL",
-    "away": "FIU",
-    "text": "UNDER 54.5",
-    "pick": "NO PLAY",
-    "total": "UNDER 54.5",
-    "proj": "FIU 22.3 – DEL 27.9",
-    "edge": 0.1
-   },
-   {
-    "id": "401866460",
-    "league": "cfb",
-    "short": "OHIO @ M-OH",
-    "date": "2026-11-11T01:00Z",
-    "home": "M-OH",
-    "away": "OHIO",
-    "text": "OVER 48.5",
-    "pick": "NO PLAY",
-    "total": "OVER 48.5",
-    "proj": "OHIO 25.8 – M-OH 24.9",
-    "edge": 0.6
-   },
-   {
-    "id": "401858518",
-    "league": "cfb",
-    "short": "USC @ IU",
-    "date": "2026-11-14T20:30Z",
-    "home": "IU",
-    "away": "USC",
-    "text": "OVER 49.5",
-    "pick": "NO PLAY",
-    "total": "OVER 49.5",
-    "proj": "USC 22.1 – IU 30.1",
-    "edge": 0.44
-   },
-   {
-    "id": "401866459",
-    "league": "cfb",
-    "short": "KENT @ BGSU",
-    "date": "2026-11-11T00:00Z",
-    "home": "BGSU",
-    "away": "KENT",
-    "text": "UNDER 45.5",
-    "pick": "NO PLAY",
-    "total": "UNDER 45.5",
-    "proj": "KENT 18.5 – BGSU 25.3",
-    "edge": 0.73
-   },
-   {
-    "id": "401862824",
-    "league": "cfb",
-    "short": "MEM @ USF",
-    "date": "2026-11-13T01:00Z",
-    "home": "USF",
-    "away": "MEM",
-    "text": "OVER 48.5",
-    "pick": "NO PLAY",
-    "total": "OVER 48.5",
-    "proj": "MEM 27.8 – USF 22.8",
-    "edge": 0.57
+    "total": "UNDER 46.5",
+    "proj": "UNLV 15.1 – UNM 29.4",
+    "edge": 0.3
    }
   ]
  },
- "updated": "2026-11-12T16:16:32.372Z",
+ "updated": "2026-11-12T17:01:44.149Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
