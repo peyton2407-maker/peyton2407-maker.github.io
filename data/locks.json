@@ -96,8 +96,8 @@
    "total": 51.5,
    "lockedAt": "2026-11-11T23:01:46.488Z",
    "close_spread": 1.5,
-   "close_total": 52.5,
-   "closeAt": "2026-11-11T23:46:38.806Z",
+   "close_total": 53.5,
+   "closeAt": "2026-11-12T00:16:39.982Z",
    "clv_side": 0,
    "clv_total": null
   },
@@ -1314,7 +1314,7 @@
    }
   ]
  },
- "updated": "2026-11-12T00:01:37.837Z",
+ "updated": "2026-11-12T00:16:39.982Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1716,8 +1716,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7563,
-   "bookWin": 0.7524,
+   "win": 0.7561,
+   "bookWin": 0.7522,
    "total": 48.5,
    "result": null,
    "final": null
@@ -2701,28 +2701,6 @@
    "result": "MISS",
    "final": "OHIO 17, M-OH 34",
    "units": -1
-  },
-  {
-   "id": "401866461|sp|away",
-   "gid": "401866461",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "away",
-   "label": "BUFF -9.5",
-   "game": "BUFF @ BALL",
-   "kick": "2026-11-12T00:30Z",
-   "line": -9.5,
-   "mainLine": -1.5,
-   "price": 290,
-   "book": "DraftKings",
-   "win": 0.2723,
-   "mwin": 0.2699,
-   "ev": 0.0619,
-   "mev": 0.0528,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
   },
   {
    "id": "401869969|sp|away",
