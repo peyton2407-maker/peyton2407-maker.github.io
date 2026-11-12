@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 4,
    "total": 49.5,
-   "lockedAt": "2026-11-12T20:46:17.989Z",
+   "lockedAt": "2026-11-12T21:01:26.410Z",
    "provisional": true
   },
   "401866458": {
@@ -190,7 +190,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 47.5,
-   "lockedAt": "2026-11-12T20:46:17.989Z",
+   "lockedAt": "2026-11-12T21:01:26.410Z",
    "provisional": true
   },
   "401873052": {
@@ -201,17 +201,17 @@
    "home": "NYG",
    "away": "WSH",
    "date": "2026-11-13T01:15Z",
-   "pick": "WSH",
-   "pick_line": "WSH +2.5",
+   "pick": "NO PLAY",
+   "pick_line": null,
    "total_pick": "UNDER 40.5",
    "side_play": false,
-   "our_margin": 2.2,
+   "our_margin": 1.5,
    "our_total": 39.5,
    "confidence": null,
    "total_play": false,
-   "spread": -2.5,
+   "spread": -1.5,
    "total": 40.5,
-   "lockedAt": "2026-11-12T20:46:17.989Z",
+   "lockedAt": "2026-11-12T21:01:26.410Z",
    "provisional": true
   }
  },
@@ -703,15 +703,15 @@
     "price": -157,
     "book": "DraftKings",
     "ev": 0.012,
-    "ours": "NYG -2.2 · total 39.5",
-    "score": "WSH 18.6 – NYG 20.9",
-    "market": "NYG -2.5 · total 40.5",
-    "lockedAt": "2026-11-12T20:46:18.006Z",
+    "ours": "NYG -1.5 · total 39.5",
+    "score": "WSH 19.0 – NYG 20.5",
+    "market": "NYG -1.5 · total 40.5",
+    "lockedAt": "2026-11-12T21:01:26.428Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-13T01:15Z",
     "big": false,
-    "savedAt": 1794516378006
+    "savedAt": 1794517286428
    }
   ],
   "cfb": [
@@ -1348,7 +1348,7 @@
    }
   ]
  },
- "updated": "2026-11-12T20:46:17.989Z",
+ "updated": "2026-11-12T21:01:26.410Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1715,11 +1715,11 @@
    "side": "away",
    "game": "WSH @ NYG",
    "kick": "2026-11-13T01:15Z",
-   "from": 2.5,
-   "to": 8.5,
+   "from": 1.5,
+   "to": 7.5,
    "book": null,
-   "win": 0.7524,
-   "bookWin": 0.7524,
+   "win": 0.7491,
+   "bookWin": 0.7491,
    "total": 40.5,
    "result": null,
    "final": null
@@ -1734,8 +1734,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7563,
-   "bookWin": 0.7524,
+   "win": 0.7565,
+   "bookWin": 0.7528,
    "total": 51.5,
    "result": null,
    "final": null
@@ -1750,8 +1750,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7563,
-   "bookWin": 0.7524,
+   "win": 0.7565,
+   "bookWin": 0.7528,
    "total": 48.5,
    "result": null,
    "final": null
@@ -3624,27 +3624,6 @@
    "units": -1
   },
   {
-   "key": "401873052|4040655",
-   "gid": "401873052",
-   "pid": "4040655",
-   "name": "Darnell Mooney",
-   "pos": "WR",
-   "team": "NYG",
-   "opp": "WSH",
-   "game": "WSH @ NYG",
-   "kick": "2026-11-13T01:15Z",
-   "price": 800,
-   "book": "DraftKings",
-   "books": 6,
-   "ours": 0.1698,
-   "mkt": 0.0975,
-   "win": 0.1156,
-   "ev": 0.0405,
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "key": "401873052|4682648",
    "gid": "401873052",
    "pid": "4682648",
@@ -3657,10 +3636,10 @@
    "price": 475,
    "book": "BetMGM",
    "books": 6,
-   "ours": 0.2571,
-   "mkt": 0.1582,
-   "win": 0.183,
-   "ev": 0.052,
+   "ours": 0.2529,
+   "mkt": 0.1549,
+   "win": 0.1794,
+   "ev": 0.0313,
    "result": null,
    "final": null,
    "units": null
