@@ -1314,7 +1314,7 @@
    }
   ]
  },
- "updated": "2026-11-12T09:01:16.339Z",
+ "updated": "2026-11-12T09:46:34.904Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3291,34 +3291,13 @@
    "opp": "WSH",
    "game": "WSH @ NYG",
    "kick": "2026-11-13T01:15Z",
-   "price": 900,
+   "price": 800,
    "book": "DraftKings",
    "books": 6,
    "ours": 0.1698,
-   "mkt": 0.0971,
-   "win": 0.1153,
-   "ev": 0.153,
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "key": "401873052|4682648",
-   "gid": "401873052",
-   "pid": "4682648",
-   "name": "Malachi Fields",
-   "pos": "WR",
-   "team": "NYG",
-   "opp": "WSH",
-   "game": "WSH @ NYG",
-   "kick": "2026-11-13T01:15Z",
-   "price": 475,
-   "book": "Fanatics",
-   "books": 6,
-   "ours": 0.2571,
-   "mkt": 0.1591,
-   "win": 0.1836,
-   "ev": 0.0556,
+   "mkt": 0.0969,
+   "win": 0.1151,
+   "ev": 0.0363,
    "result": null,
    "final": null,
    "units": null
