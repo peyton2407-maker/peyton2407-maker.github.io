@@ -1314,7 +1314,7 @@
    }
   ]
  },
- "updated": "2026-11-12T05:16:40.449Z",
+ "updated": "2026-11-12T05:31:11.250Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2808,28 +2808,6 @@
    "ev": 0.0627,
    "mev": -0.0068,
    "src": "proj",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873062|sp|away",
-   "gid": "401873062",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "away",
-   "label": "SEA -14.5",
-   "game": "SEA @ LV",
-   "kick": "2026-11-15T21:05Z",
-   "line": -14.5,
-   "mainLine": -6.5,
-   "price": 300,
-   "book": "ESPN BET",
-   "win": 0.2631,
-   "mwin": 0.2631,
-   "ev": 0.0523,
-   "mev": 0.0523,
-   "src": "mkt",
    "result": null,
    "final": null,
    "units": null
