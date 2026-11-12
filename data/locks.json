@@ -1314,7 +1314,7 @@
    }
   ]
  },
- "updated": "2026-11-12T01:31:36.846Z",
+ "updated": "2026-11-12T02:16:27.702Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2701,28 +2701,6 @@
    "result": "MISS",
    "final": "OHIO 17, M-OH 34",
    "units": -1
-  },
-  {
-   "id": "401869969|sp|away",
-   "gid": "401869969",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "away",
-   "label": "UL -20.5",
-   "game": "UL @ ULM",
-   "kick": "2026-11-13T02:00Z",
-   "line": -20.5,
-   "mainLine": -10.5,
-   "price": 270,
-   "book": "ESPN BET",
-   "win": 0.2832,
-   "mwin": 0.2815,
-   "ev": 0.0477,
-   "mev": 0.0416,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
   },
   {
    "id": "401873053|sp|away",
