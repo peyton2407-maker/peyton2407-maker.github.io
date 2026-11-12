@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 50.5,
-   "lockedAt": "2026-11-12T13:31:35.372Z",
+   "lockedAt": "2026-11-12T14:01:53.687Z",
    "provisional": true
   },
   "401866458": {
@@ -172,6 +172,27 @@
    "clv_side": 0,
    "clv_total": -1
   },
+  "401869969": {
+   "id": "401869969",
+   "league": "cfb",
+   "week": 11,
+   "short": "UL @ ULM",
+   "home": "ULM",
+   "away": "UL",
+   "date": "2026-11-13T02:00Z",
+   "pick": "UL",
+   "pick_line": "UL -10.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -11.5,
+   "our_total": 48.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 10.5,
+   "total": 48.5,
+   "lockedAt": "2026-11-12T14:01:53.687Z",
+   "provisional": true
+  },
   "401873052": {
    "id": "401873052",
    "league": "nfl",
@@ -190,7 +211,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 40.5,
-   "lockedAt": "2026-11-12T13:31:35.372Z",
+   "lockedAt": "2026-11-12T14:01:53.687Z",
    "provisional": true
   }
  },
@@ -685,12 +706,12 @@
     "ours": "NYG -2.2 · total 40.6",
     "score": "WSH 19.2 – NYG 21.4",
     "market": "NYG -2.5 · total 40.5",
-    "lockedAt": "2026-11-12T13:31:35.397Z",
+    "lockedAt": "2026-11-12T14:01:53.715Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-13T01:15Z",
     "big": false,
-    "savedAt": 1794490295397
+    "savedAt": 1794492113715
    }
   ],
   "cfb": [
@@ -1392,7 +1413,7 @@
    }
   ]
  },
- "updated": "2026-11-12T13:31:35.372Z",
+ "updated": "2026-11-12T14:01:53.687Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
