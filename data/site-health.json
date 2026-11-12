@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-11-11T01:28:01Z",
+ "checked_at": "2026-11-12T02:29:42Z",
  "errors": [],
  "console": [],
  "failed_requests": {},
@@ -7,11 +7,11 @@
  "screens": {
   "home": {
    "visible": true,
-   "count": 15,
+   "count": 18,
    "summary": [],
    "empty": [],
-   "chars": 1343,
-   "images": 38,
+   "chars": 1509,
+   "images": 44,
    "broken_images": []
   },
   "nfl": {
@@ -19,16 +19,16 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 5730,
-   "images": 38,
+   "chars": 5520,
+   "images": 36,
    "broken_images": []
   },
   "cfb": {
    "visible": true,
-   "count": 67,
+   "count": 64,
    "summary": [],
    "empty": [],
-   "chars": 11314,
+   "chars": 10818,
    "images": 96,
    "broken_images": []
   },
@@ -37,7 +37,7 @@
    "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 2483,
+   "chars": 2475,
    "images": 16,
    "broken_images": []
   },
@@ -46,16 +46,16 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3224,
+   "chars": 3236,
    "images": 42,
    "broken_images": []
   },
   "score": {
    "visible": true,
-   "count": 452,
+   "count": 456,
    "summary": [],
    "empty": [],
-   "chars": 31100,
+   "chars": 31424,
    "images": 0,
    "broken_images": []
   },
@@ -64,7 +64,7 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3313,
+   "chars": 3270,
    "images": 35,
    "broken_images": []
   },
@@ -73,7 +73,7 @@
    "count": 3,
    "summary": [],
    "empty": [],
-   "chars": 685,
+   "chars": 682,
    "images": 6,
    "broken_images": []
   },
@@ -82,7 +82,7 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 6541,
+   "chars": 6470,
    "images": 12,
    "broken_images": []
   },
@@ -91,7 +91,7 @@
    "count": 1,
    "summary": [],
    "empty": [],
-   "chars": 3783,
+   "chars": 3787,
    "images": 26,
    "broken_images": []
   },
@@ -108,11 +108,11 @@
    "visible": true,
    "count": 72,
    "summary": [
-    "159 value tickets in this filter 130 TD plus-money 7 spread / dog sides 70% b"
+    "154 value tickets in this filter 128 TD plus-money 6 spread / dog sides 69% b"
    ],
    "empty": [],
    "chars": 3616,
-   "images": 28,
+   "images": 26,
    "broken_images": []
   },
   "parlay": {
@@ -120,7 +120,7 @@
    "count": 5,
    "summary": [],
    "empty": [],
-   "chars": 3135,
+   "chars": 3199,
    "images": 0,
    "broken_images": []
   },
@@ -129,22 +129,20 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2790,
-   "images": 14,
+   "chars": 2819,
+   "images": 13,
    "broken_images": []
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "524 listed THU \u00b7 11:31 PM ET 529 listed FRI \u00b7 11:30 PM ET 479 listed S",
-    "473 listed SUN \u00b7 11:46 PM ET 564 listed TUE \u00b7 8:16 PM ET 581 listed JA",
-    "33 listed CIN VS ATL 30 listed DAL @ IND 29 listed NYJ @ KC 33 listed",
-    "33 listed CLE @ NO 29 listed NYG @ PHI 32 listed LAR @ WSH 34 listed "
+    "561 listed THU Not posted FRI Not posted SAT Not posted SUN Not posted",
+    "561 listed 0 probable \u00b7 75% 173 questionable / GTD \u00b7 50% 8 doubtful \u00b7 "
    ],
    "empty": [],
-   "chars": 4539,
-   "images": 8,
+   "chars": 4672,
+   "images": 5,
    "broken_images": []
   },
   "nflwx": {
@@ -152,7 +150,7 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 5245,
+   "chars": 4102,
    "images": 28,
    "broken_images": []
   },
@@ -161,7 +159,7 @@
    "count": 4,
    "summary": [],
    "empty": [],
-   "chars": 2649,
+   "chars": 2643,
    "images": 2,
    "broken_images": []
   },
@@ -170,7 +168,7 @@
    "count": 18,
    "summary": [],
    "empty": [],
-   "chars": 7416,
+   "chars": 7414,
    "images": 36,
    "broken_images": []
   }
