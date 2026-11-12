@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 50.5,
-   "lockedAt": "2026-11-12T14:21:33.478Z",
+   "lockedAt": "2026-11-12T14:32:25.582Z",
    "provisional": true
   },
   "401866458": {
@@ -190,7 +190,7 @@
    "total_play": false,
    "spread": 10,
    "total": 47.5,
-   "lockedAt": "2026-11-12T14:21:33.478Z",
+   "lockedAt": "2026-11-12T14:32:25.582Z",
    "provisional": true
   },
   "401873052": {
@@ -211,7 +211,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 40.5,
-   "lockedAt": "2026-11-12T14:21:33.478Z",
+   "lockedAt": "2026-11-12T14:32:25.582Z",
    "provisional": true
   }
  },
@@ -706,12 +706,12 @@
     "ours": "NYG -2.2 · total 40.6",
     "score": "WSH 19.2 – NYG 21.4",
     "market": "NYG -2.5 · total 40.5",
-    "lockedAt": "2026-11-12T14:21:33.501Z",
+    "lockedAt": "2026-11-12T14:32:25.610Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-13T01:15Z",
     "big": false,
-    "savedAt": 1794493293501
+    "savedAt": 1794493945610
    }
   ],
   "cfb": [
@@ -1413,7 +1413,7 @@
    }
   ]
  },
- "updated": "2026-11-12T14:21:33.478Z",
+ "updated": "2026-11-12T14:32:25.582Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3105,28 +3105,6 @@
    "ev": 0.054,
    "mev": 0.0286,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873065|sp|away",
-   "gid": "401873065",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "away",
-   "label": "LAC -1.5",
-   "game": "LAC @ BAL",
-   "kick": "2026-11-17T01:15Z",
-   "line": -1.5,
-   "mainLine": 4.5,
-   "price": 200,
-   "book": "ESPN BET",
-   "win": 0.3485,
-   "mwin": 0.3256,
-   "ev": 0.0456,
-   "mev": -0.0233,
-   "src": "proj",
    "result": null,
    "final": null,
    "units": null
