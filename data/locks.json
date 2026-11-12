@@ -1,6 +1,27 @@
 {
  "v": 1,
  "plays": {
+  "401862824": {
+   "id": "401862824",
+   "league": "cfb",
+   "week": 11,
+   "short": "MEM @ USF",
+   "home": "USF",
+   "away": "MEM",
+   "date": "2026-11-13T01:00Z",
+   "pick": "MEM",
+   "pick_line": "MEM -3.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -4.2,
+   "our_total": 50.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 3.5,
+   "total": 50.5,
+   "lockedAt": "2026-11-12T13:01:23.000Z",
+   "provisional": true
+  },
   "401866458": {
    "id": "401866458",
    "league": "cfb",
@@ -1314,7 +1335,7 @@
    }
   ]
  },
- "updated": "2026-11-12T12:31:49.906Z",
+ "updated": "2026-11-12T13:01:23.000Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
