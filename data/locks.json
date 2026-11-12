@@ -1314,7 +1314,7 @@
    }
   ]
  },
- "updated": "2026-11-12T06:16:31.113Z",
+ "updated": "2026-11-12T07:01:24.783Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3250,10 +3250,10 @@
    "price": 800,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.1698,
+   "ours": 0.1735,
    "mkt": 0.0967,
-   "win": 0.1149,
-   "ev": 0.0345,
+   "win": 0.1159,
+   "ev": 0.0427,
    "result": null,
    "final": null,
    "units": null
