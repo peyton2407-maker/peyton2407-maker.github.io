@@ -38,12 +38,10 @@
    "teams": 32
   }
  ],
- "ran_at": "2026-11-12T10:00:57Z",
+ "ran_at": "2026-11-12T11:00:49Z",
  "nfl_week": 10,
  "cfb_week": 11,
- "changes": [
-  "0 new games, 132 updated, 0 new finals"
- ],
+ "changes": [],
  "parse": {
   "cfb_efficiency_names": [
    "totefficiency",
