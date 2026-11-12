@@ -11,15 +11,15 @@
    "date": "2026-11-13T01:00Z",
    "pick": "MEM",
    "pick_line": "MEM -4.0",
-   "total_pick": "OVER 50.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
    "our_margin": -4.6,
-   "our_total": 50.1,
+   "our_total": 50.5,
    "confidence": null,
    "total_play": false,
    "spread": 4,
    "total": 50.5,
-   "lockedAt": "2026-11-12T22:23:42.229Z",
+   "lockedAt": "2026-11-12T22:46:40.338Z",
    "provisional": true
   },
   "401866458": {
@@ -190,7 +190,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 47.5,
-   "lockedAt": "2026-11-12T22:23:42.229Z",
+   "lockedAt": "2026-11-12T22:46:40.338Z",
    "provisional": true
   },
   "401873052": {
@@ -211,7 +211,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 40.5,
-   "lockedAt": "2026-11-12T22:23:42.229Z",
+   "lockedAt": "2026-11-12T22:46:40.338Z",
    "provisional": true
   }
  },
@@ -706,12 +706,12 @@
     "ours": "NYG -1.5 · total 39.5",
     "score": "WSH 19.0 – NYG 20.5",
     "market": "NYG -1.5 · total 40.5",
-    "lockedAt": "2026-11-12T22:23:42.249Z",
+    "lockedAt": "2026-11-12T22:46:40.356Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-13T01:15Z",
     "big": false,
-    "savedAt": 1794522222249
+    "savedAt": 1794523600356
    }
   ],
   "cfb": [
@@ -1348,7 +1348,7 @@
    }
   ]
  },
- "updated": "2026-11-12T22:23:42.229Z",
+ "updated": "2026-11-12T22:46:40.338Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1734,8 +1734,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7566,
-   "bookWin": 0.7528,
+   "win": 0.7564,
+   "bookWin": 0.7527,
    "total": 51.5,
    "result": null,
    "final": null
@@ -1750,8 +1750,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7566,
-   "bookWin": 0.7528,
+   "win": 0.7564,
+   "bookWin": 0.7527,
    "total": 48.5,
    "result": null,
    "final": null
@@ -1782,8 +1782,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": "DraftKings",
-   "win": 0.6592,
-   "bookWin": 0.6774,
+   "win": 0.6593,
+   "bookWin": 0.6776,
    "total": 38.5,
    "result": null,
    "final": null
@@ -2749,9 +2749,9 @@
    "mainLine": 50.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.281,
+   "win": 0.2789,
    "mwin": 0.2789,
-   "ev": 0.0677,
+   "ev": 0.0597,
    "mev": 0.0597,
    "src": "mkt",
    "result": null,
@@ -2944,12 +2944,12 @@
    "game": "GT @ CLEM",
    "kick": "2026-11-14T17:30Z",
    "line": 3.5,
-   "mainLine": 13.5,
+   "mainLine": 14,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2718,
+   "win": 0.2736,
    "mwin": 0.2702,
-   "ev": 0.033,
+   "ev": 0.0398,
    "mev": 0.0269,
    "src": "mkt",
    "result": null,
@@ -3017,28 +3017,6 @@
    "mwin": 0.3221,
    "ev": 0.0792,
    "mev": 0.0792,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401862825|sp|home",
-   "gid": "401862825",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "home",
-   "label": "CLT +5.5",
-   "game": "ECU @ CLT",
-   "kick": "2026-11-14T18:00Z",
-   "line": 5.5,
-   "mainLine": 12.5,
-   "price": 200,
-   "book": "FanDuel",
-   "win": 0.3445,
-   "mwin": 0.3433,
-   "ev": 0.0336,
-   "mev": 0.0299,
    "src": "mkt",
    "result": null,
    "final": null,
