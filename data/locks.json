@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 4,
    "total": 49.5,
-   "lockedAt": "2026-11-12T20:16:36.257Z",
+   "lockedAt": "2026-11-12T20:31:44.666Z",
    "provisional": true
   },
   "401866458": {
@@ -190,7 +190,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 47.5,
-   "lockedAt": "2026-11-12T20:16:36.257Z",
+   "lockedAt": "2026-11-12T20:31:44.666Z",
    "provisional": true
   },
   "401873052": {
@@ -211,7 +211,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 40.5,
-   "lockedAt": "2026-11-12T20:16:36.257Z",
+   "lockedAt": "2026-11-12T20:31:44.666Z",
    "provisional": true
   }
  },
@@ -706,12 +706,12 @@
     "ours": "NYG -2.2 · total 39.5",
     "score": "WSH 18.6 – NYG 20.9",
     "market": "NYG -2.5 · total 40.5",
-    "lockedAt": "2026-11-12T20:16:36.274Z",
+    "lockedAt": "2026-11-12T20:31:44.689Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-13T01:15Z",
     "big": false,
-    "savedAt": 1794514596274
+    "savedAt": 1794515504689
    }
   ],
   "cfb": [
@@ -1348,7 +1348,7 @@
    }
   ]
  },
- "updated": "2026-11-12T20:16:36.257Z",
+ "updated": "2026-11-12T20:31:44.666Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1734,7 +1734,7 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7562,
+   "win": 0.7563,
    "bookWin": 0.7524,
    "total": 51.5,
    "result": null,
@@ -1750,7 +1750,7 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7562,
+   "win": 0.7563,
    "bookWin": 0.7524,
    "total": 48.5,
    "result": null,
@@ -2837,9 +2837,9 @@
    "mainLine": -3,
    "price": 275,
    "book": "BetRivers",
-   "win": 0.278,
+   "win": 0.2781,
    "mwin": 0.2815,
-   "ev": 0.0423,
+   "ev": 0.0429,
    "mev": 0.0556,
    "src": "mkt",
    "result": null,
@@ -2900,12 +2900,12 @@
    "game": "NEB @ RUTG",
    "kick": "2026-11-14T17:30Z",
    "line": 6.5,
-   "mainLine": 15.5,
+   "mainLine": 14.5,
    "price": 250,
    "book": "FanDuel",
-   "win": 0.2982,
+   "win": 0.3005,
    "mwin": 0.2966,
-   "ev": 0.0435,
+   "ev": 0.0517,
    "mev": 0.0381,
    "src": "mkt",
    "result": null,
