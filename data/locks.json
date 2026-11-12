@@ -1314,7 +1314,7 @@
    }
   ]
  },
- "updated": "2026-11-12T06:01:35.848Z",
+ "updated": "2026-11-12T06:16:31.113Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2708,17 +2708,17 @@
    "league": "nfl",
    "kind": "sp",
    "side": "away",
-   "label": "NE -5.5",
+   "label": "NE -4.5",
    "game": "NE VS DET",
    "kick": "2026-11-15T14:30Z",
-   "line": -5.5,
+   "line": -4.5,
    "mainLine": 2.5,
-   "price": 295,
+   "price": 270,
    "book": "BetRivers",
-   "win": 0.2615,
-   "mwin": 0.2576,
-   "ev": 0.0331,
-   "mev": 0.0176,
+   "win": 0.279,
+   "mwin": 0.2749,
+   "ev": 0.0323,
+   "mev": 0.0172,
    "src": "mkt",
    "result": null,
    "final": null,
