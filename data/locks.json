@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 4,
    "total": 49.5,
-   "lockedAt": "2026-11-12T20:31:44.666Z",
+   "lockedAt": "2026-11-12T20:46:17.989Z",
    "provisional": true
   },
   "401866458": {
@@ -190,7 +190,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 47.5,
-   "lockedAt": "2026-11-12T20:31:44.666Z",
+   "lockedAt": "2026-11-12T20:46:17.989Z",
    "provisional": true
   },
   "401873052": {
@@ -211,7 +211,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 40.5,
-   "lockedAt": "2026-11-12T20:31:44.666Z",
+   "lockedAt": "2026-11-12T20:46:17.989Z",
    "provisional": true
   }
  },
@@ -706,12 +706,12 @@
     "ours": "NYG -2.2 · total 39.5",
     "score": "WSH 18.6 – NYG 20.9",
     "market": "NYG -2.5 · total 40.5",
-    "lockedAt": "2026-11-12T20:31:44.689Z",
+    "lockedAt": "2026-11-12T20:46:18.006Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-13T01:15Z",
     "big": false,
-    "savedAt": 1794515504689
+    "savedAt": 1794516378006
    }
   ],
   "cfb": [
@@ -1348,7 +1348,7 @@
    }
   ]
  },
- "updated": "2026-11-12T20:31:44.666Z",
+ "updated": "2026-11-12T20:46:17.989Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2900,12 +2900,12 @@
    "game": "NEB @ RUTG",
    "kick": "2026-11-14T17:30Z",
    "line": 6.5,
-   "mainLine": 14.5,
+   "mainLine": 15.5,
    "price": 250,
    "book": "FanDuel",
-   "win": 0.3005,
+   "win": 0.2981,
    "mwin": 0.2966,
-   "ev": 0.0517,
+   "ev": 0.0433,
    "mev": 0.0381,
    "src": "mkt",
    "result": null,
