@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 4,
    "total": 50.5,
-   "lockedAt": "2026-11-12T22:46:40.338Z",
+   "lockedAt": "2026-11-12T23:02:18.453Z",
    "provisional": true
   },
   "401866458": {
@@ -190,7 +190,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 47.5,
-   "lockedAt": "2026-11-12T22:46:40.338Z",
+   "lockedAt": "2026-11-12T23:02:18.453Z",
    "provisional": true
   },
   "401873052": {
@@ -211,7 +211,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 40.5,
-   "lockedAt": "2026-11-12T22:46:40.338Z",
+   "lockedAt": "2026-11-12T23:02:18.453Z",
    "provisional": true
   }
  },
@@ -706,12 +706,12 @@
     "ours": "NYG -1.5 · total 39.5",
     "score": "WSH 19.0 – NYG 20.5",
     "market": "NYG -1.5 · total 40.5",
-    "lockedAt": "2026-11-12T22:46:40.356Z",
+    "lockedAt": "2026-11-12T23:02:18.472Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-13T01:15Z",
     "big": false,
-    "savedAt": 1794523600356
+    "savedAt": 1794524538472
    }
   ],
   "cfb": [
@@ -1348,7 +1348,7 @@
    }
   ]
  },
- "updated": "2026-11-12T22:46:40.338Z",
+ "updated": "2026-11-12T23:02:18.453Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3800,27 +3800,6 @@
    "units": -1
   },
   {
-   "key": "401873052|4682648",
-   "gid": "401873052",
-   "pid": "4682648",
-   "name": "Malachi Fields",
-   "pos": "WR",
-   "team": "NYG",
-   "opp": "WSH",
-   "game": "WSH @ NYG",
-   "kick": "2026-11-13T01:15Z",
-   "price": 475,
-   "book": "BetMGM",
-   "books": 6,
-   "ours": 0.2568,
-   "mkt": 0.1542,
-   "win": 0.1799,
-   "ev": 0.0343,
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "key": "401873053|4374302",
    "gid": "401873053",
    "pid": "4374302",
@@ -3917,10 +3896,10 @@
    "price": 430,
    "book": "FanDuel",
    "books": 6,
-   "ours": 0.2814,
+   "ours": 0.2731,
    "mkt": 0.2042,
-   "win": 0.2235,
-   "ev": 0.1848,
+   "win": 0.2215,
+   "ev": 0.1738,
    "result": null,
    "final": null,
    "units": null
@@ -3980,10 +3959,10 @@
    "price": 370,
    "book": "FanDuel",
    "books": 6,
-   "ours": 0.2346,
+   "ours": 0.2817,
    "mkt": 0.2395,
-   "win": 0.2383,
-   "ev": 0.1198,
+   "win": 0.25,
+   "ev": 0.1751,
    "result": null,
    "final": null,
    "units": null
@@ -4001,10 +3980,10 @@
    "price": 180,
    "book": "FanDuel",
    "books": 6,
-   "ours": 0.4577,
+   "ours": 0.4461,
    "mkt": 0.3782,
-   "win": 0.3981,
-   "ev": 0.1146,
+   "win": 0.3952,
+   "ev": 0.1065,
    "result": null,
    "final": null,
    "units": null
@@ -4022,10 +4001,10 @@
    "price": 155,
    "book": "FanDuel",
    "books": 5,
-   "ours": 0.4235,
+   "ours": 0.4123,
    "mkt": 0.44,
-   "win": 0.4359,
-   "ev": 0.1115,
+   "win": 0.4331,
+   "ev": 0.1045,
    "result": null,
    "final": null,
    "units": null
@@ -4043,10 +4022,10 @@
    "price": 650,
    "book": "Fanatics",
    "books": 6,
-   "ours": 0.1152,
+   "ours": 0.1114,
    "mkt": 0.153,
-   "win": 0.1436,
-   "ev": 0.0768,
+   "win": 0.1426,
+   "ev": 0.0696,
    "result": null,
    "final": null,
    "units": null
@@ -4110,27 +4089,6 @@
    "mkt": 0.2311,
    "win": 0.2181,
    "ev": 0.0688,
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "key": "401873056|3117256",
-   "gid": "401873056",
-   "pid": "3117256",
-   "name": "Dalton Schultz",
-   "pos": "TE",
-   "team": "HOU",
-   "opp": "CLE",
-   "game": "HOU @ CLE",
-   "kick": "2026-11-15T18:00Z",
-   "price": 300,
-   "book": "Fanatics",
-   "books": 6,
-   "ours": 0.1879,
-   "mkt": 0.2819,
-   "win": 0.2584,
-   "ev": 0.0337,
    "result": null,
    "final": null,
    "units": null
