@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 4,
    "total": 49.5,
-   "lockedAt": "2026-11-12T19:16:46.473Z",
+   "lockedAt": "2026-11-12T20:07:04.296Z",
    "provisional": true
   },
   "401866458": {
@@ -190,7 +190,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 47.5,
-   "lockedAt": "2026-11-12T19:16:46.473Z",
+   "lockedAt": "2026-11-12T20:07:04.296Z",
    "provisional": true
   },
   "401873052": {
@@ -211,7 +211,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 40.5,
-   "lockedAt": "2026-11-12T19:16:46.473Z",
+   "lockedAt": "2026-11-12T20:07:04.296Z",
    "provisional": true
   }
  },
@@ -685,33 +685,33 @@
     "id": "401873052",
     "game": "WSH @ NYG",
     "kind": "Player prop",
-    "line": "Devin Singletary under 24.5 rush yds",
-    "hitPct": 58,
-    "why": "We project Devin Singletary for 24 rush yds against a line of 24.5. Our checked chance on the under is 58%; the books' own chance is 51%. At -105 (ESPN BET) that is 12.6% better than the price. WSH is middle of the pack here: 11th of 32 in rush yds allowed to RBs (79 a game; league average 93). The under hit in 3 of his last 5 games at this line.",
+    "line": "Stefon Diggs under 4.5 receptions",
+    "hitPct": 62,
+    "why": "We project Stefon Diggs for 4.0 receptions against a line of 4.5. Our checked chance on the under is 62%; the books' own chance is 60%. At -157 (DraftKings) that is 1.2% better than the price. NYG is middle of the pack here: 12th of 32 in receptions allowed to WRs (11 a game; league average 11). The under hit in 4 of his last 7 games at this line.",
     "label": "Thursday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 2,
+    "units": 0.5,
     "prop": {
-     "pid": "4040761",
-     "name": "Devin Singletary",
-     "stat": "rush_yds",
+     "pid": "2976212",
+     "name": "Stefon Diggs",
+     "stat": "rec",
      "side": "under",
-     "line": 24.5
+     "line": 4.5
     },
-    "price": -105,
-    "book": "ESPN BET",
-    "ev": 0.126,
+    "price": -157,
+    "book": "DraftKings",
+    "ev": 0.012,
     "ours": "NYG -2.2 · total 39.5",
     "score": "WSH 18.6 – NYG 20.9",
     "market": "NYG -2.5 · total 40.5",
-    "lockedAt": "2026-11-12T19:16:46.500Z",
+    "lockedAt": "2026-11-12T20:07:04.326Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-13T01:15Z",
     "big": false,
-    "savedAt": 1794511006500
+    "savedAt": 1794514024326
    }
   ],
   "cfb": [
@@ -1348,7 +1348,7 @@
    }
   ]
  },
- "updated": "2026-11-12T19:16:46.473Z",
+ "updated": "2026-11-12T20:07:04.296Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3067,6 +3067,28 @@
    "units": null
   },
   {
+   "id": "401870796|sp|away",
+   "gid": "401870796",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "away",
+   "label": "NMSU -6",
+   "game": "NMSU @ MOST",
+   "kick": "2026-11-14T20:00Z",
+   "line": -6,
+   "mainLine": 1.5,
+   "price": 245,
+   "book": "BetRivers",
+   "win": 0.3054,
+   "mwin": 0.3054,
+   "ev": 0.0764,
+   "mev": 0.0764,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873059|sp|home",
    "gid": "401873059",
    "league": "nfl",
@@ -3678,12 +3700,33 @@
    "game": "WSH @ NYG",
    "kick": "2026-11-13T01:15Z",
    "price": 800,
-   "book": "FanDuel",
+   "book": "DraftKings",
    "books": 6,
    "ours": 0.1698,
-   "mkt": 0.1005,
-   "win": 0.1179,
-   "ev": 0.0607,
+   "mkt": 0.0975,
+   "win": 0.1156,
+   "ev": 0.0405,
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "key": "401873052|4682648",
+   "gid": "401873052",
+   "pid": "4682648",
+   "name": "Malachi Fields",
+   "pos": "WR",
+   "team": "NYG",
+   "opp": "WSH",
+   "game": "WSH @ NYG",
+   "kick": "2026-11-13T01:15Z",
+   "price": 475,
+   "book": "BetMGM",
+   "books": 6,
+   "ours": 0.2571,
+   "mkt": 0.1582,
+   "win": 0.183,
+   "ev": 0.052,
    "result": null,
    "final": null,
    "units": null
