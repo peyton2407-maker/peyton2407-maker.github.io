@@ -189,7 +189,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 47.5,
-   "lockedAt": "2026-11-12T23:31:22.167Z",
+   "lockedAt": "2026-11-12T23:46:40.794Z",
    "provisional": true
   },
   "401873052": {
@@ -205,13 +205,12 @@
    "total_pick": "UNDER 40.5",
    "side_play": false,
    "our_margin": 1.5,
-   "our_total": 39.5,
+   "our_total": 40.4,
    "confidence": null,
    "total_play": false,
    "spread": -1.5,
    "total": 40.5,
-   "lockedAt": "2026-11-12T23:31:22.167Z",
-   "provisional": true
+   "lockedAt": "2026-11-12T23:46:40.794Z"
   }
  },
  "potd": {
@@ -702,15 +701,14 @@
     "price": -156,
     "book": "DraftKings",
     "ev": 0.019,
-    "ours": "NYG -1.5 · total 39.5",
-    "score": "WSH 19.0 – NYG 20.5",
+    "ours": "NYG -1.5 · total 40.4",
+    "score": "WSH 19.4 – NYG 20.9",
     "market": "NYG -1.5 · total 40.5",
-    "lockedAt": "2026-11-12T23:31:22.183Z",
-    "locked": false,
-    "provisional": true,
+    "lockedAt": "2026-11-12T23:46:40.819Z",
+    "locked": true,
     "kick": "2026-11-13T01:15Z",
     "big": false,
-    "savedAt": 1794526282183
+    "savedAt": 1794527200819
    }
   ],
   "cfb": [
@@ -1347,7 +1345,7 @@
    }
   ]
  },
- "updated": "2026-11-12T23:31:22.167Z",
+ "updated": "2026-11-12T23:46:40.794Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3188,9 +3186,9 @@
    "mainLine": 49.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2748,
+   "win": 0.2796,
    "mwin": 0.2748,
-   "ev": 0.0579,
+   "ev": 0.0764,
    "mev": 0.0579,
    "src": "mkt",
    "result": null,
@@ -3320,9 +3318,9 @@
    "mainLine": -3,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2839,
+   "win": 0.2837,
    "mwin": 0.2619,
-   "ev": 0.0928,
+   "ev": 0.0924,
    "mev": 0.0085,
    "src": "mkt",
    "result": null,
@@ -3386,9 +3384,9 @@
    "mainLine": -6.5,
    "price": 300,
    "book": "ESPN BET",
-   "win": 0.2551,
+   "win": 0.2618,
    "mwin": 0.2618,
-   "ev": 0.0618,
+   "ev": 0.0892,
    "mev": 0.0892,
    "src": "mkt",
    "result": null,
@@ -3821,6 +3819,27 @@
    "units": -1
   },
   {
+   "key": "401873052|4567156",
+   "gid": "401873052",
+   "pid": "4567156",
+   "name": "Treylon Burks",
+   "pos": "WR",
+   "team": "WSH",
+   "opp": "NYG",
+   "game": "WSH @ NYG",
+   "kick": "2026-11-13T01:15Z",
+   "price": 390,
+   "book": "BetMGM",
+   "books": 6,
+   "ours": 0.284,
+   "mkt": 0.1906,
+   "win": 0.214,
+   "ev": 0.0485,
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "key": "401873053|4374302",
    "gid": "401873053",
    "pid": "4374302",
@@ -3875,10 +3894,10 @@
    "price": 850,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.2276,
-   "mkt": 0.1143,
-   "win": 0.1426,
-   "ev": 0.3552,
+   "ours": 0.2099,
+   "mkt": 0.1154,
+   "win": 0.139,
+   "ev": 0.3206,
    "result": null,
    "final": null,
    "units": null
@@ -4464,6 +4483,22 @@
    "market": -4,
    "label": "MEM -3.5",
    "lockedAt": "2026-11-12T23:31:22.167Z"
+  },
+  {
+   "id": "401873052",
+   "league": "nfl",
+   "gid": "401873052",
+   "side": "away",
+   "team": "WSH",
+   "game": "WSH @ NYG",
+   "kick": "2026-11-13T01:15Z",
+   "line": 2.5,
+   "price": -110,
+   "book": "DraftKings",
+   "ours": 1.5,
+   "market": 1.5,
+   "label": "WSH +2.5",
+   "lockedAt": "2026-11-12T23:46:40.794Z"
   }
  ]
 }
