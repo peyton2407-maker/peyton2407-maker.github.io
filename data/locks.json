@@ -1364,7 +1364,7 @@
    }
   ]
  },
- "updated": "2026-11-13T08:31:41.215Z",
+ "updated": "2026-11-13T08:46:59.440Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4091,10 +4091,10 @@
    "price": 200,
    "book": "Fanatics",
    "books": 11,
-   "ours": 0.3048,
-   "mkt": 0.3931,
-   "win": 0.371,
-   "ev": 0.113,
+   "ours": 0.3087,
+   "mkt": 0.3989,
+   "win": 0.3763,
+   "ev": 0.129,
    "result": null,
    "final": null,
    "units": null
