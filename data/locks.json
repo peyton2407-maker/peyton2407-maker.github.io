@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 8.5,
    "total": 51.5,
-   "lockedAt": "2026-11-13T15:46:40.266Z",
+   "lockedAt": "2026-11-13T16:16:48.147Z",
    "provisional": true
   },
   "401858293": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 52.5,
-   "lockedAt": "2026-11-13T15:46:40.266Z",
+   "lockedAt": "2026-11-13T16:16:48.147Z",
    "provisional": true
   },
   "401858526": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": -10,
    "total": 48.5,
-   "lockedAt": "2026-11-13T15:46:40.266Z",
+   "lockedAt": "2026-11-13T16:16:48.147Z",
    "provisional": true
   },
   "401862824": {
@@ -1427,7 +1427,7 @@
    }
   ]
  },
- "updated": "2026-11-13T15:46:40.266Z",
+ "updated": "2026-11-13T16:16:48.147Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3652,6 +3652,28 @@
    "units": null
   },
   {
+   "id": "401860917|sp|home",
+   "gid": "401860917",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "home",
+   "label": "WSU -20.5",
+   "game": "CSU @ WSU",
+   "kick": "2026-11-15T03:30Z",
+   "line": -20.5,
+   "mainLine": -8.5,
+   "price": 291,
+   "book": "DraftKings",
+   "win": 0.2639,
+   "mwin": 0.2659,
+   "ev": 0.0319,
+   "mev": 0.0396,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873059|sp|home",
    "gid": "401873059",
    "league": "nfl",
@@ -4243,9 +4265,9 @@
    "book": "Fanatics",
    "books": 11,
    "ours": 0.3048,
-   "mkt": 0.3931,
-   "win": 0.371,
-   "ev": 0.113,
+   "mkt": 0.3876,
+   "win": 0.3669,
+   "ev": 0.1008,
    "result": null,
    "final": null,
    "units": null
@@ -4494,10 +4516,10 @@
    "price": 1300,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0.1238,
-   "mkt": 0.0646,
-   "win": 0.0794,
-   "ev": 0.1116,
+   "ours": 0.1255,
+   "mkt": 0.0636,
+   "win": 0.0791,
+   "ev": 0.1074,
    "result": null,
    "final": null,
    "units": null
