@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 52.5,
-   "lockedAt": "2026-11-13T21:17:12.029Z",
+   "lockedAt": "2026-11-13T21:31:41.800Z",
    "provisional": true
   },
   "401858293": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -3,
    "total": 52.5,
-   "lockedAt": "2026-11-13T21:17:12.029Z",
+   "lockedAt": "2026-11-13T21:31:41.800Z",
    "provisional": true
   },
   "401858526": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 48.5,
-   "lockedAt": "2026-11-13T21:17:12.029Z",
+   "lockedAt": "2026-11-13T21:31:41.800Z",
    "provisional": true
   },
   "401862824": {
@@ -1427,7 +1427,7 @@
    }
   ]
  },
- "updated": "2026-11-13T21:17:12.029Z",
+ "updated": "2026-11-13T21:31:41.800Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3217,17 +3217,17 @@
    "league": "cfb",
    "kind": "tot",
    "side": "under",
-   "label": "Under 43.5",
+   "label": "Under 45.5",
    "game": "BC @ ND",
    "kick": "2026-11-14T20:30Z",
-   "line": 43.5,
-   "mainLine": 52.5,
-   "price": 290,
+   "line": 45.5,
+   "mainLine": 51.5,
+   "price": 215,
    "book": "FanDuel",
-   "win": 0.2695,
-   "mwin": 0.2695,
-   "ev": 0.051,
-   "mev": 0.051,
+   "win": 0.3297,
+   "mwin": 0.332,
+   "ev": 0.0384,
+   "mev": 0.0459,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -3268,9 +3268,9 @@
    "mainLine": 46.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.282,
+   "win": 0.2842,
    "mwin": 0.277,
-   "ev": 0.0715,
+   "ev": 0.0801,
    "mev": 0.0526,
    "src": "mkt",
    "result": null,
