@@ -194,8 +194,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 47.5,
-   "lockedAt": "2026-11-13T00:17:14.500Z",
-   "provisional": true
+   "lockedAt": "2026-11-13T00:31:25.861Z"
   },
   "401873052": {
    "id": "401873052",
@@ -1359,7 +1358,7 @@
    }
   ]
  },
- "updated": "2026-11-13T00:17:14.500Z",
+ "updated": "2026-11-13T00:31:25.861Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4644,6 +4643,22 @@
    "market": 1.5,
    "label": "WSH +2.5",
    "lockedAt": "2026-11-12T23:46:40.794Z"
+  },
+  {
+   "id": "401869969",
+   "league": "cfb",
+   "gid": "401869969",
+   "side": "away",
+   "team": "UL",
+   "game": "UL @ ULM",
+   "kick": "2026-11-13T02:00Z",
+   "line": -10,
+   "price": -115,
+   "book": "BetRivers",
+   "ours": -11.5,
+   "market": -10.5,
+   "label": "UL -10",
+   "lockedAt": "2026-11-13T00:31:25.861Z"
   }
  ]
 }
