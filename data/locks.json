@@ -1364,7 +1364,7 @@
    }
   ]
  },
- "updated": "2026-11-13T08:46:59.440Z",
+ "updated": "2026-11-13T09:16:25.269Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1766,8 +1766,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7564,
-   "bookWin": 0.7526,
+   "win": 0.7526,
+   "bookWin": 0.7527,
    "total": 48.5,
    "result": null,
    "final": null
@@ -2797,6 +2797,28 @@
    "units": null
   },
   {
+   "id": "401858526|sp|home",
+   "gid": "401858526",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "home",
+   "label": "UCLA -20.5",
+   "game": "ILL @ UCLA",
+   "kick": "2026-11-14T02:00Z",
+   "line": -20.5,
+   "mainLine": -10,
+   "price": 285,
+   "book": "FanDuel",
+   "win": 0.277,
+   "mwin": 0.2787,
+   "ev": 0.0666,
+   "mev": 0.0729,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401858522|sp|away",
    "gid": "401858522",
    "league": "cfb",
@@ -3633,6 +3655,28 @@
    "units": null
   },
   {
+   "id": "401873060|sp|away",
+   "gid": "401873060",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "away",
+   "label": "MIN -2.5",
+   "game": "MIN @ GB",
+   "kick": "2026-11-15T18:00Z",
+   "line": -2.5,
+   "mainLine": 3,
+   "price": 170,
+   "book": "ESPN BET",
+   "win": 0.383,
+   "mwin": 0.3685,
+   "ev": 0.034,
+   "mev": -0.005,
+   "src": "proj",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873062|sp|away",
    "gid": "401873062",
    "league": "nfl",
@@ -3650,6 +3694,28 @@
    "ev": 0.0577,
    "mev": 0.0577,
    "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873064|sp|home",
+   "gid": "401873064",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "home",
+   "label": "CIN -11.5",
+   "game": "PIT @ CIN",
+   "kick": "2026-11-16T01:20Z",
+   "line": -11.5,
+   "mainLine": -3.5,
+   "price": 280,
+   "book": "FanDuel",
+   "win": 0.2713,
+   "mwin": 0.2626,
+   "ev": 0.0308,
+   "mev": -0.0021,
+   "src": "proj",
    "result": null,
    "final": null,
    "units": null
