@@ -1363,7 +1363,7 @@
    }
   ]
  },
- "updated": "2026-11-13T03:16:29.727Z",
+ "updated": "2026-11-13T04:16:27.678Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4087,13 +4087,13 @@
    "opp": "NE",
    "game": "NE VS DET",
    "kick": "2026-11-15T14:30Z",
-   "price": 190,
+   "price": 200,
    "book": "Fanatics",
-   "books": 10,
+   "books": 11,
    "ours": 0.3087,
-   "mkt": 0.4015,
-   "win": 0.3783,
-   "ev": 0.0971,
+   "mkt": 0.3989,
+   "win": 0.3763,
+   "ev": 0.129,
    "result": null,
    "final": null,
    "units": null
