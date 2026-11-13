@@ -21,8 +21,8 @@
    "total": 50.5,
    "lockedAt": "2026-11-12T23:31:22.167Z",
    "close_spread": 4.5,
-   "close_total": 50.5,
-   "closeAt": "2026-11-13T00:01:57.360Z",
+   "close_total": 51.5,
+   "closeAt": "2026-11-13T00:46:16.962Z",
    "clv_side": 0.5,
    "clv_total": null
   },
@@ -1358,7 +1358,7 @@
    }
   ]
  },
- "updated": "2026-11-13T00:31:25.861Z",
+ "updated": "2026-11-13T00:46:16.962Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2756,12 +2756,12 @@
    "game": "MEM @ USF",
    "kick": "2026-11-13T01:00Z",
    "line": 58.5,
-   "mainLine": 50.5,
+   "mainLine": 51.5,
    "price": 220,
    "book": "FanDuel",
-   "win": 0.327,
+   "win": 0.3247,
    "mwin": 0.327,
-   "ev": 0.0465,
+   "ev": 0.0392,
    "mev": 0.0465,
    "src": "mkt",
    "result": null,
