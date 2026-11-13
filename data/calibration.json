@@ -1,21 +1,21 @@
 {
- "updated": "2026-11-12T20:23:43Z",
+ "updated": "2026-11-13T20:00:18Z",
  "method": "Every game since Sept 21: the last board posted before kickoff, the chance it gave each side, and the final score. keep = how much of the board's lean over the market's price held up.",
  "leagues": {
   "nfl": {
    "spread": {
-    "n": 101,
+    "n": 102,
     "lean_hits": 56,
-    "lean_rate": 0.554,
+    "lean_rate": 0.549,
     "keep": 1.2,
     "keep_se": 0.84,
     "buckets": [
      {
       "from": 0.5,
       "to": 0.55,
-      "n": 72,
+      "n": 73,
       "board": 0.52,
-      "actual": 0.528
+      "actual": 0.521
      },
      {
       "from": 0.55,
@@ -48,18 +48,18 @@
     ]
    },
    "total": {
-    "n": 103,
+    "n": 104,
     "lean_hits": 51,
-    "lean_rate": 0.495,
+    "lean_rate": 0.49,
     "keep": 0.0,
-    "keep_se": 1.24,
+    "keep_se": 1.23,
     "buckets": [
      {
       "from": 0.5,
       "to": 0.55,
-      "n": 99,
-      "board": 0.517,
-      "actual": 0.505
+      "n": 100,
+      "board": 0.516,
+      "actual": 0.5
      },
      {
       "from": 0.55,
@@ -78,66 +78,66 @@
     ]
    },
    "ml": {
-    "n": 86,
+    "n": 87,
     "lean_hits": 43,
-    "lean_rate": 0.5,
+    "lean_rate": 0.494,
     "keep": 1.2,
     "keep_se": 0.91,
     "buckets": []
    },
    "props": {
-    "n": 523,
-    "lean_hits": 291,
-    "lean_rate": 0.556,
-    "keep": 0.29,
-    "keep_se": 0.17,
+    "n": 537,
+    "lean_hits": 297,
+    "lean_rate": 0.553,
+    "keep": 0.26,
+    "keep_se": 0.16,
     "buckets": []
    },
    "props_over": {
-    "n": 193,
-    "lean_hits": 97,
+    "n": 197,
+    "lean_hits": 99,
     "lean_rate": 0.503,
-    "keep": 0.04,
+    "keep": 0.03,
     "keep_se": 0.27,
     "buckets": []
    },
    "props_under": {
-    "n": 330,
-    "lean_hits": 194,
-    "lean_rate": 0.588,
-    "keep": 0.44,
+    "n": 340,
+    "lean_hits": 198,
+    "lean_rate": 0.582,
+    "keep": 0.4,
     "keep_se": 0.21,
     "buckets": []
    },
    "props_over_rec": {
-    "n": 48,
-    "lean_hits": 23,
-    "lean_rate": 0.479,
-    "keep": 1.2,
-    "keep_se": 1.06,
+    "n": 50,
+    "lean_hits": 24,
+    "lean_rate": 0.48,
+    "keep": 1.04,
+    "keep_se": 0.84,
     "buckets": []
    },
    "props_under_rec": {
-    "n": 136,
-    "lean_hits": 78,
-    "lean_rate": 0.574,
-    "keep": 0.3,
-    "keep_se": 0.36,
+    "n": 139,
+    "lean_hits": 79,
+    "lean_rate": 0.568,
+    "keep": 0.26,
+    "keep_se": 0.35,
     "buckets": []
    },
    "props_over_rec_yds": {
-    "n": 66,
-    "lean_hits": 36,
-    "lean_rate": 0.545,
-    "keep": 0.15,
+    "n": 68,
+    "lean_hits": 37,
+    "lean_rate": 0.544,
+    "keep": 0.16,
     "keep_se": 0.41,
     "buckets": []
    },
    "props_under_rec_yds": {
-    "n": 111,
-    "lean_hits": 63,
-    "lean_rate": 0.568,
-    "keep": 0.26,
+    "n": 115,
+    "lean_hits": 65,
+    "lean_rate": 0.565,
+    "keep": 0.23,
     "keep_se": 0.37,
     "buckets": []
    },
@@ -150,28 +150,28 @@
     "buckets": []
    },
    "props_under_rush_yds": {
-    "n": 50,
-    "lean_hits": 32,
-    "lean_rate": 0.64,
-    "keep": 0.79,
+    "n": 53,
+    "lean_hits": 33,
+    "lean_rate": 0.623,
+    "keep": 0.7,
     "keep_se": 0.42,
     "buckets": []
    }
   },
   "cfb": {
    "spread": {
-    "n": 346,
-    "lean_hits": 177,
-    "lean_rate": 0.512,
+    "n": 348,
+    "lean_hits": 179,
+    "lean_rate": 0.514,
     "keep": 0.0,
-    "keep_se": 0.27,
+    "keep_se": 0.28,
     "buckets": [
      {
       "from": 0.5,
       "to": 0.55,
-      "n": 207,
+      "n": 209,
       "board": 0.521,
-      "actual": 0.531
+      "actual": 0.536
      },
      {
       "from": 0.55,
@@ -204,18 +204,18 @@
     ]
    },
    "total": {
-    "n": 356,
-    "lean_hits": 166,
-    "lean_rate": 0.466,
+    "n": 358,
+    "lean_hits": 168,
+    "lean_rate": 0.469,
     "keep": 0.26,
     "keep_se": 0.36,
     "buckets": [
      {
       "from": 0.5,
       "to": 0.55,
-      "n": 246,
+      "n": 248,
       "board": 0.511,
-      "actual": 0.439
+      "actual": 0.444
      },
      {
       "from": 0.55,
@@ -248,8 +248,8 @@
     ]
    },
    "ml": {
-    "n": 351,
-    "lean_hits": 162,
+    "n": 353,
+    "lean_hits": 163,
     "lean_rate": 0.462,
     "keep": 0.0,
     "keep_se": 0.19,
