@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 52.5,
-   "lockedAt": "2026-11-13T14:16:55.229Z",
+   "lockedAt": "2026-11-13T15:02:00.105Z",
    "provisional": true
   },
   "401858526": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -10,
    "total": 47.5,
-   "lockedAt": "2026-11-13T14:16:55.229Z",
+   "lockedAt": "2026-11-13T15:02:00.105Z",
    "provisional": true
   },
   "401862824": {
@@ -1406,7 +1406,7 @@
    }
   ]
  },
- "updated": "2026-11-13T14:16:55.229Z",
+ "updated": "2026-11-13T15:02:00.105Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2980,12 +2980,12 @@
    "game": "NEB @ RUTG",
    "kick": "2026-11-14T17:30Z",
    "line": 4.5,
-   "mainLine": 15.5,
+   "mainLine": 14.5,
    "price": 300,
    "book": "FanDuel",
-   "win": 0.2625,
+   "win": 0.2648,
    "mwin": 0.2611,
-   "ev": 0.0502,
+   "ev": 0.0592,
    "mev": 0.0445,
    "src": "mkt",
    "result": null,
