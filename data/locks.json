@@ -1364,7 +1364,7 @@
    }
   ]
  },
- "updated": "2026-11-13T10:16:52.156Z",
+ "updated": "2026-11-13T10:31:16.603Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4542,27 +4542,6 @@
    "mkt": 0.3577,
    "win": 0.3758,
    "ev": 0.0334,
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "key": "401873060|14880",
-   "gid": "401873060",
-   "pid": "14880",
-   "name": "Kirk Cousins",
-   "pos": "QB",
-   "team": "MIN",
-   "opp": "GB",
-   "game": "MIN @ GB",
-   "kick": "2026-11-15T18:00Z",
-   "price": 1700,
-   "book": "DraftKings",
-   "books": 6,
-   "ours": 0.0696,
-   "mkt": 0.0538,
-   "win": 0.0577,
-   "ev": 0.0394,
    "result": null,
    "final": null,
    "units": null
