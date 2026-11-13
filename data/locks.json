@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 51.5,
-   "lockedAt": "2026-11-13T19:46:41.993Z",
+   "lockedAt": "2026-11-13T20:01:57.217Z",
    "provisional": true
   },
   "401858293": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 52.5,
-   "lockedAt": "2026-11-13T19:46:41.993Z",
+   "lockedAt": "2026-11-13T20:01:57.217Z",
    "provisional": true
   },
   "401858526": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 47.5,
-   "lockedAt": "2026-11-13T19:46:41.993Z",
+   "lockedAt": "2026-11-13T20:01:57.217Z",
    "provisional": true
   },
   "401862824": {
@@ -1427,7 +1427,7 @@
    }
   ]
  },
- "updated": "2026-11-13T19:46:41.993Z",
+ "updated": "2026-11-13T20:01:57.217Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3202,9 +3202,9 @@
    "mainLine": -3,
    "price": 270,
    "book": "BetRivers",
-   "win": 0.2792,
+   "win": 0.2794,
    "mwin": 0.2732,
-   "ev": 0.0471,
+   "ev": 0.048,
    "mev": 0.0248,
    "src": "mkt",
    "result": null,
@@ -4644,10 +4644,10 @@
    "price": 500,
    "book": "DraftKings",
    "books": 5,
-   "ours": 0.2376,
-   "mkt": 0.1567,
-   "win": 0.177,
-   "ev": 0.0617,
+   "ours": 0.2404,
+   "mkt": 0.16,
+   "win": 0.1801,
+   "ev": 0.0805,
    "result": null,
    "final": null,
    "units": null
