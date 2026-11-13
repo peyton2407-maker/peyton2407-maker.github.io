@@ -194,7 +194,12 @@
    "total_play": false,
    "spread": 10.5,
    "total": 47.5,
-   "lockedAt": "2026-11-13T00:31:25.861Z"
+   "lockedAt": "2026-11-13T00:31:25.861Z",
+   "close_spread": 10,
+   "close_total": 47.5,
+   "closeAt": "2026-11-13T01:01:21.962Z",
+   "clv_side": -0.5,
+   "clv_total": null
   },
   "401873052": {
    "id": "401873052",
@@ -1358,7 +1363,7 @@
    }
   ]
  },
- "updated": "2026-11-13T00:46:16.962Z",
+ "updated": "2026-11-13T01:01:21.962Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1744,7 +1749,7 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7566,
+   "win": 0.7565,
    "bookWin": 0.7528,
    "total": 51.5,
    "result": null,
@@ -1760,7 +1765,7 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7566,
+   "win": 0.7565,
    "bookWin": 0.7528,
    "total": 48.5,
    "result": null,
