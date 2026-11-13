@@ -1363,7 +1363,7 @@
    }
   ]
  },
- "updated": "2026-11-13T02:16:36.556Z",
+ "updated": "2026-11-13T02:31:30.837Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1749,9 +1749,9 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7564,
-   "bookWin": 0.7527,
-   "total": 51.5,
+   "win": 0.7565,
+   "bookWin": 0.7528,
+   "total": 50.5,
    "result": null,
    "final": null
   },
@@ -1765,8 +1765,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7564,
-   "bookWin": 0.7527,
+   "win": 0.7565,
+   "bookWin": 0.7528,
    "total": 48.5,
    "result": null,
    "final": null
@@ -2852,9 +2852,9 @@
    "mainLine": 42.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2703,
+   "win": 0.2753,
    "mwin": 0.2703,
-   "ev": 0.0408,
+   "ev": 0.0599,
    "mev": 0.0408,
    "src": "mkt",
    "result": null,
@@ -3204,9 +3204,9 @@
    "mainLine": 49.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2796,
+   "win": 0.2748,
    "mwin": 0.2748,
-   "ev": 0.0764,
+   "ev": 0.0579,
    "mev": 0.0579,
    "src": "mkt",
    "result": null,
