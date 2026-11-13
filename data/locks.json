@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 51.5,
-   "lockedAt": "2026-11-13T17:46:46.585Z",
+   "lockedAt": "2026-11-13T18:00:53.452Z",
    "provisional": true
   },
   "401858293": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 52.5,
-   "lockedAt": "2026-11-13T17:46:46.585Z",
+   "lockedAt": "2026-11-13T18:00:53.452Z",
    "provisional": true
   },
   "401858526": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": -10,
    "total": 47.5,
-   "lockedAt": "2026-11-13T17:46:46.585Z",
+   "lockedAt": "2026-11-13T18:00:53.452Z",
    "provisional": true
   },
   "401862824": {
@@ -1427,7 +1427,7 @@
    }
   ]
  },
- "updated": "2026-11-13T17:46:46.585Z",
+ "updated": "2026-11-13T18:00:53.452Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3463,12 +3463,12 @@
    "game": "MINN @ PSU",
    "kick": "2026-11-15T00:00Z",
    "line": 33.5,
-   "mainLine": 41.5,
+   "mainLine": 42.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.276,
+   "win": 0.2782,
    "mwin": 0.276,
-   "ev": 0.0487,
+   "ev": 0.057,
    "mev": 0.0487,
    "src": "mkt",
    "result": null,
