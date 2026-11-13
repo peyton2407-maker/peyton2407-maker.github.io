@@ -1364,7 +1364,7 @@
    }
   ]
  },
- "updated": "2026-11-13T07:46:30.465Z",
+ "updated": "2026-11-13T08:01:33.423Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3466,12 +3466,12 @@
    "game": "UNT @ UTSA",
    "kick": "2026-11-15T02:00Z",
    "line": 88.5,
-   "mainLine": 75.5,
+   "mainLine": 76.5,
    "price": 290,
    "book": "DraftKings",
-   "win": 0.2687,
+   "win": 0.2672,
    "mwin": 0.2687,
-   "ev": 0.0478,
+   "ev": 0.0422,
    "mev": 0.0478,
    "src": "mkt",
    "result": null,
