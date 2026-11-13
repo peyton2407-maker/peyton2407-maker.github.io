@@ -1363,7 +1363,7 @@
    }
   ]
  },
- "updated": "2026-11-13T01:01:21.962Z",
+ "updated": "2026-11-13T01:16:30.981Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1749,8 +1749,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7565,
-   "bookWin": 0.7528,
+   "win": 0.7564,
+   "bookWin": 0.7527,
    "total": 51.5,
    "result": null,
    "final": null
@@ -1765,8 +1765,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7565,
-   "bookWin": 0.7528,
+   "win": 0.7564,
+   "bookWin": 0.7527,
    "total": 48.5,
    "result": null,
    "final": null
@@ -3390,6 +3390,28 @@
    "units": null
   },
   {
+   "id": "401858299|sp|home",
+   "gid": "401858299",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "home",
+   "label": "VT -26.5",
+   "game": "STAN @ VT",
+   "kick": "2026-11-15T00:30Z",
+   "line": -26.5,
+   "mainLine": -15.5,
+   "price": 280,
+   "book": "FanDuel",
+   "win": 0.273,
+   "mwin": 0.2687,
+   "ev": 0.0375,
+   "mev": 0.0209,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873059|sp|home",
    "gid": "401873059",
    "league": "nfl",
@@ -4316,10 +4338,10 @@
    "price": 1000,
    "book": "FanDuel",
    "books": 5,
-   "ours": 0.386,
+   "ours": 0.3822,
    "mkt": 0.1067,
-   "win": 0.1765,
-   "ev": 0.9417,
+   "win": 0.1756,
+   "ev": 0.9312,
    "result": null,
    "final": null,
    "units": null
@@ -4337,10 +4359,10 @@
    "price": 1100,
    "book": "FanDuel",
    "books": 6,
-   "ours": 0.1676,
+   "ours": 0.1656,
    "mkt": 0.1013,
-   "win": 0.1179,
-   "ev": 0.4151,
+   "win": 0.1174,
+   "ev": 0.4091,
    "result": null,
    "final": null,
    "units": null
@@ -4379,10 +4401,10 @@
    "price": 700,
    "book": "Fanatics",
    "books": 6,
-   "ours": 0.11,
+   "ours": 0.1086,
    "mkt": 0.1374,
-   "win": 0.1306,
-   "ev": 0.0445,
+   "win": 0.1302,
+   "ev": 0.0418,
    "result": null,
    "final": null,
    "units": null
