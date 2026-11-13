@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 51.5,
-   "lockedAt": "2026-11-13T18:46:27.143Z",
+   "lockedAt": "2026-11-13T19:01:29.586Z",
    "provisional": true
   },
   "401858293": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 52.5,
-   "lockedAt": "2026-11-13T18:46:27.143Z",
+   "lockedAt": "2026-11-13T19:01:29.586Z",
    "provisional": true
   },
   "401858526": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 47.5,
-   "lockedAt": "2026-11-13T18:46:27.143Z",
+   "lockedAt": "2026-11-13T19:01:29.586Z",
    "provisional": true
   },
   "401862824": {
@@ -1427,7 +1427,7 @@
    }
   ]
  },
- "updated": "2026-11-13T18:46:27.143Z",
+ "updated": "2026-11-13T19:01:29.586Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1813,8 +1813,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": "DraftKings",
-   "win": 0.7292,
-   "bookWin": 0.7161,
+   "win": 0.7293,
+   "bookWin": 0.7163,
    "total": 49.5,
    "result": null,
    "final": null
@@ -1829,7 +1829,7 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7527,
+   "win": 0.7526,
    "bookWin": 0.7527,
    "total": 48.5,
    "result": null,
@@ -3485,12 +3485,12 @@
    "game": "MINN @ PSU",
    "kick": "2026-11-15T00:00Z",
    "line": 33.5,
-   "mainLine": 41.5,
+   "mainLine": 42.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.276,
+   "win": 0.2782,
    "mwin": 0.276,
-   "ev": 0.0487,
+   "ev": 0.057,
    "mev": 0.0487,
    "src": "mkt",
    "result": null,
@@ -4584,27 +4584,6 @@
    "mkt": 0.1559,
    "win": 0.1836,
    "ev": 0.0555,
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "key": "401873060|14880",
-   "gid": "401873060",
-   "pid": "14880",
-   "name": "Kirk Cousins",
-   "pos": "QB",
-   "team": "MIN",
-   "opp": "GB",
-   "game": "MIN @ GB",
-   "kick": "2026-11-15T18:00Z",
-   "price": 1700,
-   "book": "DraftKings",
-   "books": 6,
-   "ours": 0.0696,
-   "mkt": 0.0538,
-   "win": 0.0577,
-   "ev": 0.0394,
    "result": null,
    "final": null,
    "units": null
