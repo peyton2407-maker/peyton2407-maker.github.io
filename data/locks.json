@@ -11,15 +11,15 @@
    "date": "2026-11-14T03:15Z",
    "pick": "HOU",
    "pick_line": "HOU -7.5",
-   "total_pick": "OVER 52.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
    "our_margin": -8.7,
-   "our_total": 52.1,
+   "our_total": 51.5,
    "confidence": null,
    "total_play": false,
    "spread": 7.5,
-   "total": 52.5,
-   "lockedAt": "2026-11-13T22:16:32.372Z",
+   "total": 51.5,
+   "lockedAt": "2026-11-13T22:31:38.542Z",
    "provisional": true
   },
   "401858293": {
@@ -40,8 +40,7 @@
    "total_play": false,
    "spread": -3,
    "total": 52.5,
-   "lockedAt": "2026-11-13T22:16:32.372Z",
-   "provisional": true
+   "lockedAt": "2026-11-13T22:31:38.542Z"
   },
   "401858526": {
    "id": "401858526",
@@ -61,7 +60,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 48.5,
-   "lockedAt": "2026-11-13T22:16:32.372Z",
+   "lockedAt": "2026-11-13T22:31:38.542Z",
    "provisional": true
   },
   "401862824": {
@@ -1427,7 +1426,7 @@
    }
   ]
  },
- "updated": "2026-11-13T22:16:32.372Z",
+ "updated": "2026-11-13T22:31:38.542Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5018,6 +5017,22 @@
    "result": "HIT",
    "units": 0.8696,
    "final": "UL 42, ULM 21"
+  },
+  {
+   "id": "401858293",
+   "league": "cfb",
+   "gid": "401858293",
+   "side": "home",
+   "team": "PITT",
+   "game": "FSU @ PITT",
+   "kick": "2026-11-14T00:00Z",
+   "line": -3.5,
+   "price": -105,
+   "book": "FanDuel",
+   "ours": -3.8,
+   "market": -3,
+   "label": "PITT -3.5",
+   "lockedAt": "2026-11-13T22:31:38.542Z"
   }
  ]
 }
