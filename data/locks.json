@@ -1363,7 +1363,7 @@
    }
   ]
  },
- "updated": "2026-11-13T01:16:30.981Z",
+ "updated": "2026-11-13T01:31:40.370Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4002,31 +4002,10 @@
    "price": 190,
    "book": "Fanatics",
    "books": 10,
-   "ours": 0.3116,
-   "mkt": 0.4073,
-   "win": 0.3834,
-   "ev": 0.1118,
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "key": "401873053|4047646",
-   "gid": "401873053",
-   "pid": "4047646",
-   "name": "A.J. Brown",
-   "pos": "WR",
-   "team": "NE",
-   "opp": "DET",
-   "game": "NE VS DET",
-   "kick": "2026-11-15T14:30Z",
-   "price": 190,
-   "book": "Fanatics",
-   "books": 10,
-   "ours": 0.2976,
-   "mkt": 0.3771,
-   "win": 0.3572,
-   "ev": 0.036,
+   "ours": 0.3048,
+   "mkt": 0.3957,
+   "win": 0.373,
+   "ev": 0.0816,
    "result": null,
    "final": null,
    "units": null
