@@ -11,15 +11,15 @@
    "date": "2026-11-14T03:15Z",
    "pick": "HOU",
    "pick_line": "HOU -7.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "OVER 52.5",
    "side_play": false,
    "our_margin": -8.7,
-   "our_total": 51.5,
+   "our_total": 52.1,
    "confidence": null,
    "total_play": false,
    "spread": 7.5,
-   "total": 51.5,
-   "lockedAt": "2026-11-13T20:17:17.306Z",
+   "total": 52.5,
+   "lockedAt": "2026-11-13T20:46:26.846Z",
    "provisional": true
   },
   "401858293": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 52.5,
-   "lockedAt": "2026-11-13T20:17:17.306Z",
+   "lockedAt": "2026-11-13T20:46:26.846Z",
    "provisional": true
   },
   "401858526": {
@@ -53,15 +53,15 @@
    "date": "2026-11-14T02:00Z",
    "pick": "ILL",
    "pick_line": "ILL +10.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "OVER 48.5",
    "side_play": false,
    "our_margin": 9.83,
-   "our_total": 47.5,
+   "our_total": 48.1,
    "confidence": null,
    "total_play": false,
    "spread": -10.5,
-   "total": 47.5,
-   "lockedAt": "2026-11-13T20:17:17.306Z",
+   "total": 48.5,
+   "lockedAt": "2026-11-13T20:46:26.846Z",
    "provisional": true
   },
   "401862824": {
@@ -1427,7 +1427,7 @@
    }
   ]
  },
- "updated": "2026-11-13T20:17:17.306Z",
+ "updated": "2026-11-13T20:46:26.846Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2964,28 +2964,6 @@
    "mwin": 0.3441,
    "ev": 0.0308,
    "mev": 0.0184,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401858297|sp|away",
-   "gid": "401858297",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "away",
-   "label": "GT +5.5",
-   "game": "GT @ CLEM",
-   "kick": "2026-11-14T17:30Z",
-   "line": 5.5,
-   "mainLine": 15.5,
-   "price": 235,
-   "book": "FanDuel",
-   "win": 0.3082,
-   "mwin": 0.303,
-   "ev": 0.0325,
-   "mev": 0.015,
    "src": "mkt",
    "result": null,
    "final": null,
