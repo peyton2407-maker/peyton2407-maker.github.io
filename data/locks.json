@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 51.5,
-   "lockedAt": "2026-11-13T18:16:24.004Z",
+   "lockedAt": "2026-11-13T18:31:43.008Z",
    "provisional": true
   },
   "401858293": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 52.5,
-   "lockedAt": "2026-11-13T18:16:24.004Z",
+   "lockedAt": "2026-11-13T18:31:43.008Z",
    "provisional": true
   },
   "401858526": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": -10,
    "total": 47.5,
-   "lockedAt": "2026-11-13T18:16:24.004Z",
+   "lockedAt": "2026-11-13T18:31:43.008Z",
    "provisional": true
   },
   "401862824": {
@@ -1427,7 +1427,7 @@
    }
   ]
  },
- "updated": "2026-11-13T18:16:24.004Z",
+ "updated": "2026-11-13T18:31:43.008Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4306,10 +4306,10 @@
    "price": 700,
    "book": "FanDuel",
    "books": 6,
-   "ours": 0.2057,
-   "mkt": 0.124,
-   "win": 0.1444,
-   "ev": 0.1554,
+   "ours": 0.2107,
+   "mkt": 0.1228,
+   "win": 0.1447,
+   "ev": 0.1579,
    "result": null,
    "final": null,
    "units": null
@@ -4495,10 +4495,10 @@
    "price": 390,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0.1597,
+   "ours": 0.1567,
    "mkt": 0.2491,
-   "win": 0.2267,
-   "ev": 0.111,
+   "win": 0.226,
+   "ev": 0.1073,
    "result": null,
    "final": null,
    "units": null
@@ -4516,10 +4516,10 @@
    "price": 650,
    "book": "Fanatics",
    "books": 6,
-   "ours": 0.1987,
+   "ours": 0.195,
    "mkt": 0.1394,
-   "win": 0.1542,
-   "ev": 0.1568,
+   "win": 0.1533,
+   "ev": 0.1498,
    "result": null,
    "final": null,
    "units": null
@@ -4600,10 +4600,10 @@
    "price": 850,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0.1463,
+   "ours": 0.1567,
    "mkt": 0.1502,
-   "win": 0.1492,
-   "ev": 0.4174,
+   "win": 0.1518,
+   "ev": 0.442,
    "result": null,
    "final": null,
    "units": null
