@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 52.5,
-   "lockedAt": "2026-11-13T20:46:26.846Z",
+   "lockedAt": "2026-11-13T21:01:31.498Z",
    "provisional": true
   },
   "401858293": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 52.5,
-   "lockedAt": "2026-11-13T20:46:26.846Z",
+   "lockedAt": "2026-11-13T21:01:31.498Z",
    "provisional": true
   },
   "401858526": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 48.5,
-   "lockedAt": "2026-11-13T20:46:26.846Z",
+   "lockedAt": "2026-11-13T21:01:31.498Z",
    "provisional": true
   },
   "401862824": {
@@ -1427,7 +1427,7 @@
    }
   ]
  },
- "updated": "2026-11-13T20:46:26.846Z",
+ "updated": "2026-11-13T21:01:31.498Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2935,12 +2935,12 @@
    "game": "WIS @ MD",
    "kick": "2026-11-14T17:00Z",
    "line": 2,
-   "mainLine": 8.5,
+   "mainLine": 9.5,
    "price": 265,
    "book": "BetRivers",
-   "win": 0.2776,
-   "mwin": 0.2756,
-   "ev": 0.0341,
+   "win": 0.2767,
+   "mwin": 0.2757,
+   "ev": 0.0305,
    "mev": 0.0269,
    "src": "mkt",
    "result": null,
@@ -3278,28 +3278,6 @@
    "units": null
   },
   {
-   "id": "401856857|tot|under",
-   "gid": "401856857",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 38.5",
-   "game": "ASU @ UCF",
-   "kick": "2026-11-14T20:30Z",
-   "line": 38.5,
-   "mainLine": 48.5,
-   "price": 280,
-   "book": "FanDuel",
-   "win": 0.2725,
-   "mwin": 0.2725,
-   "ev": 0.0354,
-   "mev": 0.0354,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401870752|tot|over",
    "gid": "401870752",
    "league": "cfb",
@@ -3507,12 +3485,12 @@
    "game": "MINN @ PSU",
    "kick": "2026-11-15T00:00Z",
    "line": 33.5,
-   "mainLine": 42.5,
+   "mainLine": 41.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2782,
+   "win": 0.276,
    "mwin": 0.276,
-   "ev": 0.057,
+   "ev": 0.0487,
    "mev": 0.0487,
    "src": "mkt",
    "result": null,
