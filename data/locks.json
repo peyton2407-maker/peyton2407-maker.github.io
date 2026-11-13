@@ -10,16 +10,16 @@
    "away": "HOU",
    "date": "2026-11-14T03:15Z",
    "pick": "HOU",
-   "pick_line": "HOU -8.5",
+   "pick_line": "HOU -7.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": -9.3,
+   "our_margin": -8.65,
    "our_total": 51.5,
    "confidence": null,
    "total_play": false,
-   "spread": 8.5,
+   "spread": 7.5,
    "total": 51.5,
-   "lockedAt": "2026-11-13T17:16:37.618Z",
+   "lockedAt": "2026-11-13T17:31:38.735Z",
    "provisional": true
   },
   "401858293": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 52.5,
-   "lockedAt": "2026-11-13T17:16:37.618Z",
+   "lockedAt": "2026-11-13T17:31:38.735Z",
    "provisional": true
   },
   "401858526": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": -10,
    "total": 47.5,
-   "lockedAt": "2026-11-13T17:16:37.618Z",
+   "lockedAt": "2026-11-13T17:31:38.735Z",
    "provisional": true
   },
   "401862824": {
@@ -1427,7 +1427,7 @@
    }
   ]
  },
- "updated": "2026-11-13T17:16:37.618Z",
+ "updated": "2026-11-13T17:31:38.735Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -1812,10 +1812,10 @@
    "kick": "2026-11-15T14:30Z",
    "from": 2.5,
    "to": 8.5,
-   "book": null,
-   "win": 0.7564,
-   "bookWin": 0.7526,
-   "total": 50.5,
+   "book": "DraftKings",
+   "win": 0.7292,
+   "bookWin": 0.7161,
+   "total": 49.5,
    "result": null,
    "final": null
   },
@@ -1829,7 +1829,7 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7527,
+   "win": 0.7526,
    "bookWin": 0.7527,
    "total": 48.5,
    "result": null,
@@ -3652,6 +3652,28 @@
    "units": null
   },
   {
+   "id": "401873053|sp|away",
+   "gid": "401873053",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "away",
+   "label": "NE -4.5",
+   "game": "NE VS DET",
+   "kick": "2026-11-15T14:30Z",
+   "line": -4.5,
+   "mainLine": 3,
+   "price": 265,
+   "book": "BetRivers",
+   "win": 0.2899,
+   "mwin": 0.2771,
+   "ev": 0.0581,
+   "mev": 0.0116,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873059|sp|home",
    "gid": "401873059",
    "league": "nfl",
@@ -4242,10 +4264,10 @@
    "price": 200,
    "book": "Fanatics",
    "books": 11,
-   "ours": 0.3048,
-   "mkt": 0.3876,
-   "win": 0.3669,
-   "ev": 0.1008,
+   "ours": 0.3068,
+   "mkt": 0.3905,
+   "win": 0.3696,
+   "ev": 0.1087,
    "result": null,
    "final": null,
    "units": null
@@ -4263,10 +4285,10 @@
    "price": 200,
    "book": "Fanatics",
    "books": 11,
-   "ours": 0.2897,
-   "mkt": 0.4031,
-   "win": 0.3748,
-   "ev": 0.1243,
+   "ours": 0.2877,
+   "mkt": 0.3998,
+   "win": 0.3718,
+   "ev": 0.1154,
    "result": null,
    "final": null,
    "units": null
