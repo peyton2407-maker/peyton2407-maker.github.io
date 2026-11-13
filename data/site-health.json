@@ -1,8 +1,29 @@
 {
- "checked_at": "2026-11-12T02:29:42Z",
+ "checked_at": "2026-11-13T02:06:22Z",
  "errors": [],
- "console": [],
- "failed_requests": {},
+ "console": [
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT"
+ ],
+ "failed_requests": {
+  "api.open-meteo.com": {
+   "count": 24,
+   "example": "https://api.open-meteo.com/v1/forecast?latitude=27.9759&longitude=-82.5033&hourly=temperature_2m,precipitation_probability,precipitation,weathercode,windspeed_10m,windgusts_10m,relativehumidity_2m&dai",
+   "reason": "net::ERR_ABORTED"
+  }
+ },
  "bad_status": {},
  "screens": {
   "home": {
@@ -10,8 +31,8 @@
    "count": 18,
    "summary": [],
    "empty": [],
-   "chars": 1509,
-   "images": 44,
+   "chars": 1683,
+   "images": 48,
    "broken_images": []
   },
   "nfl": {
@@ -19,26 +40,26 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 5520,
-   "images": 36,
+   "chars": 5226,
+   "images": 37,
    "broken_images": []
   },
   "cfb": {
    "visible": true,
-   "count": 64,
+   "count": 61,
    "summary": [],
    "empty": [],
-   "chars": 10818,
-   "images": 96,
+   "chars": 10309,
+   "images": 102,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 15,
+   "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 2475,
-   "images": 16,
+   "chars": 2408,
+   "images": 14,
    "broken_images": []
   },
   "season": {
@@ -46,7 +67,7 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3236,
+   "chars": 3247,
    "images": 42,
    "broken_images": []
   },
@@ -55,7 +76,7 @@
    "count": 456,
    "summary": [],
    "empty": [],
-   "chars": 31424,
+   "chars": 31268,
    "images": 0,
    "broken_images": []
   },
@@ -64,17 +85,17 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3270,
+   "chars": 3249,
    "images": 35,
    "broken_images": []
   },
   "card": {
    "visible": true,
-   "count": 3,
+   "count": 5,
    "summary": [],
    "empty": [],
-   "chars": 682,
-   "images": 6,
+   "chars": 825,
+   "images": 10,
    "broken_images": []
   },
   "props": {
@@ -82,8 +103,8 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 6470,
-   "images": 12,
+   "chars": 6173,
+   "images": 13,
    "broken_images": []
   },
   "tds": {
@@ -91,8 +112,8 @@
    "count": 1,
    "summary": [],
    "empty": [],
-   "chars": 3787,
-   "images": 26,
+   "chars": 3884,
+   "images": 28,
    "broken_images": []
   },
   "charts": {
@@ -100,19 +121,19 @@
    "count": 27,
    "summary": [],
    "empty": [],
-   "chars": 3676,
-   "images": 6,
+   "chars": 3828,
+   "images": 4,
    "broken_images": []
   },
   "value": {
    "visible": true,
    "count": 72,
    "summary": [
-    "154 value tickets in this filter 128 TD plus-money 6 spread / dog sides 69% b"
+    "338 value tickets in this filter 121 TD plus-money 7 spread / dog sides 96% b"
    ],
    "empty": [],
-   "chars": 3616,
-   "images": 26,
+   "chars": 3394,
+   "images": 36,
    "broken_images": []
   },
   "parlay": {
@@ -120,7 +141,7 @@
    "count": 5,
    "summary": [],
    "empty": [],
-   "chars": 3199,
+   "chars": 3762,
    "images": 0,
    "broken_images": []
   },
@@ -129,29 +150,30 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2819,
-   "images": 13,
+   "chars": 2783,
+   "images": 15,
    "broken_images": []
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "561 listed THU Not posted FRI Not posted SAT Not posted SUN Not posted",
-    "561 listed 0 probable \u00b7 75% 173 questionable / GTD \u00b7 50% 8 doubtful \u00b7 "
+    "565 listed THU \u00b7 9:01 PM ET 555 listed FRI Not posted SAT Not posted S",
+    "35 listed NE VS DET 90 min before kick KC @ ATL 90 min before kick HO",
+    "555 listed 0 probable \u00b7 75% 175 questionable / GTD \u00b7 50% 7 doubtful \u00b7 "
    ],
    "empty": [],
-   "chars": 4672,
+   "chars": 4614,
    "images": 5,
    "broken_images": []
   },
   "nflwx": {
    "visible": true,
-   "count": 14,
+   "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 4102,
-   "images": 28,
+   "chars": 4128,
+   "images": 30,
    "broken_images": []
   },
   "nflpotd": {
@@ -159,7 +181,7 @@
    "count": 4,
    "summary": [],
    "empty": [],
-   "chars": 2643,
+   "chars": 2689,
    "images": 2,
    "broken_images": []
   },
@@ -168,7 +190,7 @@
    "count": 18,
    "summary": [],
    "empty": [],
-   "chars": 7414,
+   "chars": 7409,
    "images": 36,
    "broken_images": []
   }
