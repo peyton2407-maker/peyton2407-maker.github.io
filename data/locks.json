@@ -19,7 +19,28 @@
    "total_play": false,
    "spread": -3.5,
    "total": 52.5,
-   "lockedAt": "2026-11-13T13:31:47.334Z",
+   "lockedAt": "2026-11-13T14:01:43.343Z",
+   "provisional": true
+  },
+  "401858526": {
+   "id": "401858526",
+   "league": "cfb",
+   "week": 11,
+   "short": "ILL @ UCLA",
+   "home": "UCLA",
+   "away": "ILL",
+   "date": "2026-11-14T02:00Z",
+   "pick": "ILL",
+   "pick_line": "ILL +10.0",
+   "total_pick": "UNDER 47.5",
+   "side_play": false,
+   "our_margin": 9.1,
+   "our_total": 46.4,
+   "confidence": null,
+   "total_play": false,
+   "spread": -10,
+   "total": 47.5,
+   "lockedAt": "2026-11-13T14:01:43.343Z",
    "provisional": true
   },
   "401862824": {
@@ -1385,7 +1406,7 @@
    }
   ]
  },
- "updated": "2026-11-13T13:31:47.334Z",
+ "updated": "2026-11-13T14:01:43.343Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
