@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 8.5,
    "total": 51.5,
-   "lockedAt": "2026-11-13T16:31:14.805Z",
+   "lockedAt": "2026-11-13T16:46:21.748Z",
    "provisional": true
   },
   "401858293": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 52.5,
-   "lockedAt": "2026-11-13T16:31:14.805Z",
+   "lockedAt": "2026-11-13T16:46:21.748Z",
    "provisional": true
   },
   "401858526": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": -10,
    "total": 47.5,
-   "lockedAt": "2026-11-13T16:31:14.805Z",
+   "lockedAt": "2026-11-13T16:46:21.748Z",
    "provisional": true
   },
   "401862824": {
@@ -1427,7 +1427,7 @@
    }
   ]
  },
- "updated": "2026-11-13T16:31:14.805Z",
+ "updated": "2026-11-13T16:46:21.748Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3595,12 +3595,12 @@
    "game": "UNT @ UTSA",
    "kick": "2026-11-15T02:00Z",
    "line": 88.5,
-   "mainLine": 76.5,
+   "mainLine": 75.5,
    "price": 284,
    "book": "DraftKings",
-   "win": 0.2687,
+   "win": 0.27,
    "mwin": 0.2687,
-   "ev": 0.0316,
+   "ev": 0.0369,
    "mev": 0.0316,
    "src": "mkt",
    "result": null,
@@ -4541,6 +4541,27 @@
    "mkt": 0.1559,
    "win": 0.1836,
    "ev": 0.0555,
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "key": "401873060|14880",
+   "gid": "401873060",
+   "pid": "14880",
+   "name": "Kirk Cousins",
+   "pos": "QB",
+   "team": "MIN",
+   "opp": "GB",
+   "game": "MIN @ GB",
+   "kick": "2026-11-15T18:00Z",
+   "price": 1700,
+   "book": "DraftKings",
+   "books": 6,
+   "ours": 0.0696,
+   "mkt": 0.0538,
+   "win": 0.0577,
+   "ev": 0.0394,
    "result": null,
    "final": null,
    "units": null
