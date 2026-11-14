@@ -1439,7 +1439,7 @@
    }
   ]
  },
- "updated": "2026-11-14T03:29:35.922Z",
+ "updated": "2026-11-14T03:31:24.198Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2883,9 +2883,9 @@
    "ev": 0.0411,
    "mev": 0.0269,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "FSU 16, PITT 10",
+   "units": -1
   },
   {
    "id": "401858522|sp|away",
@@ -4906,7 +4906,10 @@
    "ours": -3.8,
    "market": -3,
    "label": "PITT -3.5",
-   "lockedAt": "2026-11-13T22:31:38.542Z"
+   "lockedAt": "2026-11-13T22:31:38.542Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "FSU 16, PITT 10"
   },
   {
    "id": "401858526",
