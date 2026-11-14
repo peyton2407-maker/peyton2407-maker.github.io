@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -3,
    "total": 58.5,
-   "lockedAt": "2026-11-14T05:46:53.042Z",
+   "lockedAt": "2026-11-14T06:01:40.344Z",
    "provisional": true
   },
   "401856860": {
@@ -65,7 +65,7 @@
    "total_play": false,
    "spread": 14,
    "total": 47.5,
-   "lockedAt": "2026-11-14T05:46:53.042Z",
+   "lockedAt": "2026-11-14T06:01:40.344Z",
    "provisional": true
   },
   "401858293": {
@@ -102,16 +102,16 @@
    "away": "DUKE",
    "date": "2026-11-14T17:00Z",
    "pick": "DUKE",
-   "pick_line": "DUKE +13.5",
+   "pick_line": "DUKE +14.0",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 12.5,
+   "our_margin": 12.83,
    "our_total": 54.5,
    "confidence": null,
    "total_play": false,
-   "spread": -13.5,
+   "spread": -14,
    "total": 54.5,
-   "lockedAt": "2026-11-14T05:46:53.042Z",
+   "lockedAt": "2026-11-14T06:01:40.344Z",
    "provisional": true
   },
   "401858297": {
@@ -132,7 +132,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 47.5,
-   "lockedAt": "2026-11-14T05:46:53.042Z",
+   "lockedAt": "2026-11-14T06:01:40.344Z",
    "provisional": true
   },
   "401858300": {
@@ -153,7 +153,7 @@
    "total_play": false,
    "spread": 3,
    "total": 53.5,
-   "lockedAt": "2026-11-14T05:46:53.042Z",
+   "lockedAt": "2026-11-14T06:01:40.344Z",
    "provisional": true
   },
   "401858301": {
@@ -174,7 +174,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 60.5,
-   "lockedAt": "2026-11-14T05:46:53.042Z",
+   "lockedAt": "2026-11-14T06:01:40.344Z",
    "provisional": true
   },
   "401858520": {
@@ -195,7 +195,7 @@
    "total_play": false,
    "spread": 8.5,
    "total": 42.5,
-   "lockedAt": "2026-11-14T05:46:53.042Z",
+   "lockedAt": "2026-11-14T06:01:40.344Z",
    "provisional": true
   },
   "401858522": {
@@ -216,7 +216,7 @@
    "total_play": false,
    "spread": -14,
    "total": 44.5,
-   "lockedAt": "2026-11-14T05:46:53.042Z",
+   "lockedAt": "2026-11-14T06:01:40.344Z",
    "provisional": true
   },
   "401858525": {
@@ -237,7 +237,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 51.5,
-   "lockedAt": "2026-11-14T05:46:53.042Z",
+   "lockedAt": "2026-11-14T06:01:40.344Z",
    "provisional": true
   },
   "401858526": {
@@ -283,7 +283,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 57.5,
-   "lockedAt": "2026-11-14T05:46:53.042Z",
+   "lockedAt": "2026-11-14T06:01:40.344Z",
    "provisional": true
   },
   "401862824": {
@@ -310,6 +310,48 @@
    "closeAt": "2026-11-13T00:46:16.962Z",
    "clv_side": 0.5,
    "clv_total": null
+  },
+  "401862825": {
+   "id": "401862825",
+   "league": "cfb",
+   "week": 11,
+   "short": "ECU @ CLT",
+   "home": "CLT",
+   "away": "ECU",
+   "date": "2026-11-14T18:00Z",
+   "pick": "CLT",
+   "pick_line": "CLT +11.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -11.3,
+   "our_total": 45.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 11.5,
+   "total": 45.5,
+   "lockedAt": "2026-11-14T06:01:40.344Z",
+   "provisional": true
+  },
+  "401862829": {
+   "id": "401862829",
+   "league": "cfb",
+   "week": 11,
+   "short": "UAB @ TEM",
+   "home": "TEM",
+   "away": "UAB",
+   "date": "2026-11-14T18:00Z",
+   "pick": "TEM",
+   "pick_line": "TEM -2.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 2.9,
+   "our_total": 47.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -2.5,
+   "total": 47.5,
+   "lockedAt": "2026-11-14T06:01:40.344Z",
+   "provisional": true
   },
   "401866458": {
    "id": "401866458",
@@ -1649,7 +1691,7 @@
    }
   ]
  },
- "updated": "2026-11-14T05:46:53.042Z",
+ "updated": "2026-11-14T06:01:40.344Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2035,8 +2077,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7566,
-   "bookWin": 0.7528,
+   "win": 0.7564,
+   "bookWin": 0.7527,
    "total": 49.5,
    "result": null,
    "final": null
@@ -2067,8 +2109,8 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.743,
-   "bookWin": 0.743,
+   "win": 0.7428,
+   "bookWin": 0.7428,
    "total": 50.5,
    "result": null,
    "final": null
