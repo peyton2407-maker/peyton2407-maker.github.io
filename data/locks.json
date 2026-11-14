@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 51.5,
-   "lockedAt": "2026-11-14T00:46:38.553Z",
+   "lockedAt": "2026-11-14T01:01:41.899Z",
    "provisional": true
   },
   "401858293": {
@@ -65,7 +65,12 @@
    "total_play": false,
    "spread": -10.5,
    "total": 48.5,
-   "lockedAt": "2026-11-14T00:31:59.182Z"
+   "lockedAt": "2026-11-14T00:31:59.182Z",
+   "close_spread": -10,
+   "close_total": 48.5,
+   "closeAt": "2026-11-14T01:01:41.899Z",
+   "clv_side": 0.5,
+   "clv_total": null
   },
   "401862824": {
    "id": "401862824",
@@ -1430,7 +1435,7 @@
    }
   ]
  },
- "updated": "2026-11-14T00:46:38.553Z",
+ "updated": "2026-11-14T01:01:41.899Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3391,44 +3396,22 @@
    "units": null
   },
   {
-   "id": "401858299|sp|home",
-   "gid": "401858299",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "home",
-   "label": "VT -26.5",
-   "game": "STAN @ VT",
-   "kick": "2026-11-15T00:30Z",
-   "line": -26.5,
-   "mainLine": -15.5,
-   "price": 280,
-   "book": "FanDuel",
-   "win": 0.2783,
-   "mwin": 0.2739,
-   "ev": 0.0577,
-   "mev": 0.0409,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401856882|tot|over",
    "gid": "401856882",
    "league": "cfb",
    "kind": "tot",
    "side": "over",
-   "label": "Over 59.5",
+   "label": "Over 58.5",
    "game": "SC @ ARK",
    "kick": "2026-11-15T00:45Z",
-   "line": 59.5,
+   "line": 58.5,
    "mainLine": 51.5,
-   "price": 220,
+   "price": 200,
    "book": "FanDuel",
-   "win": 0.3238,
-   "mwin": 0.3238,
-   "ev": 0.0361,
-   "mev": 0.0361,
+   "win": 0.3485,
+   "mwin": 0.3485,
+   "ev": 0.0456,
+   "mev": 0.0456,
    "src": "mkt",
    "result": null,
    "final": null,
