@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -3,
    "total": 58.5,
-   "lockedAt": "2026-11-14T07:46:20.772Z",
+   "lockedAt": "2026-11-14T08:01:26.700Z",
    "provisional": true
   },
   "401856860": {
@@ -65,7 +65,28 @@
    "total_play": false,
    "spread": -13.5,
    "total": 44.5,
-   "lockedAt": "2026-11-14T07:46:20.772Z",
+   "lockedAt": "2026-11-14T08:01:26.700Z",
+   "provisional": true
+  },
+  "401856888": {
+   "id": "401856888",
+   "league": "cfb",
+   "week": 11,
+   "short": "TENN @ TA&M",
+   "home": "TA&M",
+   "away": "TENN",
+   "date": "2026-11-14T20:00Z",
+   "pick": "TENN",
+   "pick_line": "TENN -1.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -1.9,
+   "our_total": 43.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 1.5,
+   "total": 43.5,
+   "lockedAt": "2026-11-14T08:01:26.700Z",
    "provisional": true
   },
   "401856889": {
@@ -86,7 +107,7 @@
    "total_play": false,
    "spread": 14,
    "total": 47.5,
-   "lockedAt": "2026-11-14T07:46:20.772Z",
+   "lockedAt": "2026-11-14T08:01:26.700Z",
    "provisional": true
   },
   "401858293": {
@@ -132,7 +153,7 @@
    "total_play": false,
    "spread": -14,
    "total": 54.5,
-   "lockedAt": "2026-11-14T07:46:20.772Z",
+   "lockedAt": "2026-11-14T08:01:26.700Z",
    "provisional": true
   },
   "401858297": {
@@ -153,7 +174,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 47.5,
-   "lockedAt": "2026-11-14T07:46:20.772Z",
+   "lockedAt": "2026-11-14T08:01:26.700Z",
    "provisional": true
   },
   "401858300": {
@@ -174,7 +195,7 @@
    "total_play": false,
    "spread": 3,
    "total": 53.5,
-   "lockedAt": "2026-11-14T07:46:20.772Z",
+   "lockedAt": "2026-11-14T08:01:26.700Z",
    "provisional": true
   },
   "401858301": {
@@ -195,7 +216,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 60.5,
-   "lockedAt": "2026-11-14T07:46:20.772Z",
+   "lockedAt": "2026-11-14T08:01:26.700Z",
    "provisional": true
   },
   "401858520": {
@@ -216,7 +237,7 @@
    "total_play": false,
    "spread": 8.5,
    "total": 42.5,
-   "lockedAt": "2026-11-14T07:46:20.772Z",
+   "lockedAt": "2026-11-14T08:01:26.700Z",
    "provisional": true
   },
   "401858522": {
@@ -237,7 +258,7 @@
    "total_play": false,
    "spread": -14,
    "total": 44.5,
-   "lockedAt": "2026-11-14T07:46:20.772Z",
+   "lockedAt": "2026-11-14T08:01:26.700Z",
    "provisional": true
   },
   "401858525": {
@@ -258,7 +279,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 51.5,
-   "lockedAt": "2026-11-14T07:46:20.772Z",
+   "lockedAt": "2026-11-14T08:01:26.700Z",
    "provisional": true
   },
   "401858526": {
@@ -304,7 +325,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 57.5,
-   "lockedAt": "2026-11-14T07:46:20.772Z",
+   "lockedAt": "2026-11-14T08:01:26.700Z",
    "provisional": true
   },
   "401862824": {
@@ -350,7 +371,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 45.5,
-   "lockedAt": "2026-11-14T07:46:20.772Z",
+   "lockedAt": "2026-11-14T08:01:26.700Z",
    "provisional": true
   },
   "401862829": {
@@ -371,7 +392,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 47.5,
-   "lockedAt": "2026-11-14T07:46:20.772Z",
+   "lockedAt": "2026-11-14T08:01:26.700Z",
    "provisional": true
   },
   "401866458": {
@@ -567,7 +588,49 @@
    "total_play": false,
    "spread": 7,
    "total": 46.5,
-   "lockedAt": "2026-11-14T07:46:20.772Z",
+   "lockedAt": "2026-11-14T08:01:26.700Z",
+   "provisional": true
+  },
+  "401870796": {
+   "id": "401870796",
+   "league": "cfb",
+   "week": 11,
+   "short": "NMSU @ MOST",
+   "home": "MOST",
+   "away": "NMSU",
+   "date": "2026-11-14T20:00Z",
+   "pick": "MOST",
+   "pick_line": "MOST -1.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 1.7,
+   "our_total": 49.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -1.5,
+   "total": 49.5,
+   "lockedAt": "2026-11-14T08:01:26.700Z",
+   "provisional": true
+  },
+  "401871060": {
+   "id": "401871060",
+   "league": "cfb",
+   "week": 11,
+   "short": "FIU @ DEL",
+   "home": "DEL",
+   "away": "FIU",
+   "date": "2026-11-14T20:00Z",
+   "pick": "DEL",
+   "pick_line": "DEL -3.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 3.9,
+   "our_total": 54.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -3.5,
+   "total": 54.5,
+   "lockedAt": "2026-11-14T08:01:26.700Z",
    "provisional": true
   },
   "401873052": {
@@ -1733,7 +1796,7 @@
    }
   ]
  },
- "updated": "2026-11-14T07:46:20.772Z",
+ "updated": "2026-11-14T08:01:26.700Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
