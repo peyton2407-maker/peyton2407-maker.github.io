@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-14T17:01:25Z",
+ "updated": "2026-11-14T17:12:58Z",
  "about": "Every side The Split took: the line when first picked, the closing line, and how many points the line moved toward our side (clv). Only picks still standing at kickoff count (counts: true); ones The Split dropped before the game are listed but not counted. Positive average CLV over a season is the sign of a real edge; win-loss needs far more games.",
  "summary": {
   "record": {
-   "picks": 135,
+   "picks": 134,
    "n": 50,
    "avg_clv": -0.15,
    "beat_close": 14,
@@ -144,7 +144,7 @@
     }
    },
    "2026-11-09": {
-    "picks": 6,
+    "picks": 5,
     "n": 2,
     "avg_clv": 0.25,
     "beat_close": 1,
@@ -165,7 +165,7 @@
    }
   },
   "not_taken": {
-   "picks": 9,
+   "picks": 10,
    "n": 7,
    "avg_clv": 1.93,
    "beat_close": 6,
@@ -3511,7 +3511,7 @@
    "first_at": "2026-11-09T13:55:12Z",
    "hours_before": 123.1,
    "last": 2.5,
-   "last_at": "2026-11-14T17:01:25Z",
+   "last_at": "2026-11-14T17:12:58Z",
    "dropped": false,
    "flipped": false,
    "close": 2.5,
@@ -3559,7 +3559,7 @@
    "first_at": "2026-11-14T03:22:14Z",
    "hours_before": 15.6,
    "last": -13.5,
-   "last_at": "2026-11-14T17:01:25Z",
+   "last_at": "2026-11-14T17:12:58Z",
    "dropped": false,
    "flipped": false,
    "close": -13.5,
@@ -3582,13 +3582,13 @@
    "first_pick": "FRES +9.5",
    "first_at": "2026-11-09T13:55:12Z",
    "hours_before": 127.1,
-   "last": -9.5,
-   "last_at": "2026-11-14T17:01:25Z",
+   "last": -10.0,
+   "last_at": "2026-11-14T17:12:58Z",
    "dropped": false,
    "flipped": false,
-   "close": -9.5,
+   "close": -10.0,
    "close_src": "last look",
-   "clv": -0.0,
+   "clv": -0.5,
    "final": null,
    "ats_first": null,
    "ats_close": null,
@@ -3607,7 +3607,7 @@
    "first_at": "2026-11-12T03:52:16Z",
    "hours_before": 67.1,
    "last": -16.5,
-   "last_at": "2026-11-14T17:01:25Z",
+   "last_at": "2026-11-14T17:12:58Z",
    "dropped": false,
    "flipped": false,
    "close": -16.5,
@@ -3630,9 +3630,9 @@
    "first_pick": "CSU +9.5",
    "first_at": "2026-11-09T13:55:12Z",
    "hours_before": 133.6,
-   "last": -9.5,
-   "last_at": "2026-11-14T17:01:25Z",
-   "dropped": false,
+   "last": -8.5,
+   "last_at": "2026-11-14T17:12:58Z",
+   "dropped": true,
    "flipped": false,
    "close": null,
    "close_src": null,
@@ -3640,7 +3640,7 @@
    "final": null,
    "ats_first": null,
    "ats_close": null,
-   "counts": true
+   "counts": false
   }
  ]
 }
