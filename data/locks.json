@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -3,
    "total": 58.5,
-   "lockedAt": "2026-11-14T06:47:03.052Z",
+   "lockedAt": "2026-11-14T07:01:39.873Z",
    "provisional": true
   },
   "401856860": {
@@ -47,6 +47,27 @@
    "clv_side": 0,
    "clv_total": 0
   },
+  "401856862": {
+   "id": "401856862",
+   "league": "cfb",
+   "week": 11,
+   "short": "KSU @ TCU",
+   "home": "TCU",
+   "away": "KSU",
+   "date": "2026-11-14T19:00Z",
+   "pick": "KSU",
+   "pick_line": "KSU +13.5",
+   "total_pick": "NO PLAY",
+   "side_play": true,
+   "our_margin": 11.1,
+   "our_total": 44.5,
+   "confidence": 51,
+   "total_play": false,
+   "spread": -13.5,
+   "total": 44.5,
+   "lockedAt": "2026-11-14T07:01:39.873Z",
+   "provisional": true
+  },
   "401856889": {
    "id": "401856889",
    "league": "cfb",
@@ -65,7 +86,7 @@
    "total_play": false,
    "spread": 14,
    "total": 47.5,
-   "lockedAt": "2026-11-14T06:47:03.052Z",
+   "lockedAt": "2026-11-14T07:01:39.873Z",
    "provisional": true
   },
   "401858293": {
@@ -111,7 +132,7 @@
    "total_play": false,
    "spread": -14,
    "total": 54.5,
-   "lockedAt": "2026-11-14T06:47:03.052Z",
+   "lockedAt": "2026-11-14T07:01:39.873Z",
    "provisional": true
   },
   "401858297": {
@@ -132,7 +153,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 47.5,
-   "lockedAt": "2026-11-14T06:47:03.052Z",
+   "lockedAt": "2026-11-14T07:01:39.873Z",
    "provisional": true
   },
   "401858300": {
@@ -153,7 +174,7 @@
    "total_play": false,
    "spread": 3,
    "total": 53.5,
-   "lockedAt": "2026-11-14T06:47:03.052Z",
+   "lockedAt": "2026-11-14T07:01:39.873Z",
    "provisional": true
   },
   "401858301": {
@@ -174,7 +195,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 60.5,
-   "lockedAt": "2026-11-14T06:47:03.052Z",
+   "lockedAt": "2026-11-14T07:01:39.873Z",
    "provisional": true
   },
   "401858520": {
@@ -195,7 +216,7 @@
    "total_play": false,
    "spread": 8.5,
    "total": 42.5,
-   "lockedAt": "2026-11-14T06:47:03.052Z",
+   "lockedAt": "2026-11-14T07:01:39.873Z",
    "provisional": true
   },
   "401858522": {
@@ -216,7 +237,7 @@
    "total_play": false,
    "spread": -14,
    "total": 44.5,
-   "lockedAt": "2026-11-14T06:47:03.052Z",
+   "lockedAt": "2026-11-14T07:01:39.873Z",
    "provisional": true
   },
   "401858525": {
@@ -237,7 +258,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 51.5,
-   "lockedAt": "2026-11-14T06:47:03.052Z",
+   "lockedAt": "2026-11-14T07:01:39.873Z",
    "provisional": true
   },
   "401858526": {
@@ -283,7 +304,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 57.5,
-   "lockedAt": "2026-11-14T06:47:03.052Z",
+   "lockedAt": "2026-11-14T07:01:39.873Z",
    "provisional": true
   },
   "401862824": {
@@ -319,17 +340,17 @@
    "home": "CLT",
    "away": "ECU",
    "date": "2026-11-14T18:00Z",
-   "pick": "CLT",
-   "pick_line": "CLT +11.5",
+   "pick": "ECU",
+   "pick_line": "ECU -10.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": -11.3,
+   "our_margin": -10.65,
    "our_total": 45.5,
    "confidence": null,
    "total_play": false,
-   "spread": 11.5,
+   "spread": 10.5,
    "total": 45.5,
-   "lockedAt": "2026-11-14T06:47:03.052Z",
+   "lockedAt": "2026-11-14T07:01:39.873Z",
    "provisional": true
   },
   "401862829": {
@@ -350,7 +371,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 47.5,
-   "lockedAt": "2026-11-14T06:47:03.052Z",
+   "lockedAt": "2026-11-14T07:01:39.873Z",
    "provisional": true
   },
   "401866458": {
@@ -527,6 +548,27 @@
    "closeAt": "2026-11-13T01:01:21.962Z",
    "clv_side": -0.5,
    "clv_total": null
+  },
+  "401870769": {
+   "id": "401870769",
+   "league": "cfb",
+   "week": 11,
+   "short": "KENN @ SHSU",
+   "home": "SHSU",
+   "away": "KENN",
+   "date": "2026-11-14T19:00Z",
+   "pick": "SHSU",
+   "pick_line": "SHSU +7.0",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -5.9,
+   "our_total": 46.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 7,
+   "total": 46.5,
+   "lockedAt": "2026-11-14T07:01:39.873Z",
+   "provisional": true
   },
   "401873052": {
    "id": "401873052",
@@ -1691,7 +1733,7 @@
    }
   ]
  },
- "updated": "2026-11-14T06:47:03.052Z",
+ "updated": "2026-11-14T07:01:39.873Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5284,7 +5326,10 @@
    "ours": -8.7,
    "market": -7.5,
    "label": "HOU -10.5",
-   "lockedAt": "2026-11-14T01:46:28.841Z"
+   "lockedAt": "2026-11-14T01:46:28.841Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "HOU 32, COLO 42"
   }
  ]
 }
