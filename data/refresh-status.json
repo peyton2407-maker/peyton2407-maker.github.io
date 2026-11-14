@@ -22,11 +22,11 @@
   },
   {
    "feed": "cfb scoreboard week 11",
-   "events": 66
+   "events": 67
   },
   {
    "feed": "cfb scoreboard week 12",
-   "events": 71
+   "events": 70
   },
   {
    "feed": "https://site.web.api.espn.com/apis/fitt/v3/sports/football/college-football/powerindex?limit=150",
@@ -38,11 +38,11 @@
    "teams": 32
   }
  ],
- "ran_at": "2026-11-14T12:23:45Z",
+ "ran_at": "2026-11-14T13:00:40Z",
  "nfl_week": 10,
  "cfb_week": 11,
  "changes": [
-  "0 new games, 126 updated, 0 new finals"
+  "0 new games, 1 updated, 0 new finals"
  ],
  "parse": {
   "cfb_efficiency_names": [
