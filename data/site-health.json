@@ -1,65 +1,44 @@
 {
- "checked_at": "2026-11-13T02:06:22Z",
+ "checked_at": "2026-11-14T01:43:31Z",
  "errors": [],
- "console": [
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT"
- ],
- "failed_requests": {
-  "api.open-meteo.com": {
-   "count": 24,
-   "example": "https://api.open-meteo.com/v1/forecast?latitude=27.9759&longitude=-82.5033&hourly=temperature_2m,precipitation_probability,precipitation,weathercode,windspeed_10m,windgusts_10m,relativehumidity_2m&dai",
-   "reason": "net::ERR_ABORTED"
-  }
- },
+ "console": [],
+ "failed_requests": {},
  "bad_status": {},
  "screens": {
   "home": {
    "visible": true,
-   "count": 18,
+   "count": 28,
    "summary": [],
    "empty": [],
-   "chars": 1683,
-   "images": 48,
+   "chars": 2274,
+   "images": 68,
    "broken_images": []
   },
   "nfl": {
    "visible": true,
-   "count": 14,
+   "count": 13,
    "summary": [],
    "empty": [],
-   "chars": 5226,
-   "images": 37,
+   "chars": 5176,
+   "images": 36,
    "broken_images": []
   },
   "cfb": {
    "visible": true,
-   "count": 61,
+   "count": 59,
    "summary": [],
    "empty": [],
-   "chars": 10309,
-   "images": 102,
+   "chars": 10159,
+   "images": 122,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 14,
+   "count": 25,
    "summary": [],
    "empty": [],
    "chars": 2408,
-   "images": 14,
+   "images": 21,
    "broken_images": []
   },
   "season": {
@@ -67,7 +46,7 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3247,
+   "chars": 3239,
    "images": 42,
    "broken_images": []
   },
@@ -76,7 +55,7 @@
    "count": 456,
    "summary": [],
    "empty": [],
-   "chars": 31268,
+   "chars": 31270,
    "images": 0,
    "broken_images": []
   },
@@ -85,7 +64,7 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3249,
+   "chars": 3268,
    "images": 35,
    "broken_images": []
   },
@@ -94,7 +73,7 @@
    "count": 5,
    "summary": [],
    "empty": [],
-   "chars": 825,
+   "chars": 822,
    "images": 10,
    "broken_images": []
   },
@@ -103,8 +82,8 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 6173,
-   "images": 13,
+   "chars": 6740,
+   "images": 14,
    "broken_images": []
   },
   "tds": {
@@ -112,16 +91,16 @@
    "count": 1,
    "summary": [],
    "empty": [],
-   "chars": 3884,
+   "chars": 3910,
    "images": 28,
    "broken_images": []
   },
   "charts": {
    "visible": true,
-   "count": 27,
+   "count": 26,
    "summary": [],
    "empty": [],
-   "chars": 3828,
+   "chars": 3644,
    "images": 4,
    "broken_images": []
   },
@@ -129,11 +108,11 @@
    "visible": true,
    "count": 72,
    "summary": [
-    "338 value tickets in this filter 121 TD plus-money 7 spread / dog sides 96% b"
+    "315 value tickets in this filter 123 TD plus-money 7 spread / dog sides 91% b"
    ],
    "empty": [],
-   "chars": 3394,
-   "images": 36,
+   "chars": 3402,
+   "images": 37,
    "broken_images": []
   },
   "parlay": {
@@ -141,7 +120,7 @@
    "count": 5,
    "summary": [],
    "empty": [],
-   "chars": 3762,
+   "chars": 3568,
    "images": 0,
    "broken_images": []
   },
@@ -150,30 +129,30 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2783,
-   "images": 15,
+   "chars": 2423,
+   "images": 11,
    "broken_images": []
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "565 listed THU \u00b7 9:01 PM ET 555 listed FRI Not posted SAT Not posted S",
+    "565 listed THU \u00b7 11:16 PM ET 557 listed FRI \u00b7 8:37 PM ET 512 listed SA",
     "35 listed NE VS DET 90 min before kick KC @ ATL 90 min before kick HO",
-    "555 listed 0 probable \u00b7 75% 175 questionable / GTD \u00b7 50% 7 doubtful \u00b7 "
+    "512 listed 0 probable \u00b7 75% 87 questionable / GTD \u00b7 50% 5 doubtful \u00b7 2"
    ],
    "empty": [],
-   "chars": 4614,
+   "chars": 4667,
    "images": 5,
    "broken_images": []
   },
   "nflwx": {
    "visible": true,
-   "count": 15,
+   "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 4128,
-   "images": 30,
+   "chars": 4264,
+   "images": 28,
    "broken_images": []
   },
   "nflpotd": {
@@ -181,7 +160,7 @@
    "count": 4,
    "summary": [],
    "empty": [],
-   "chars": 2689,
+   "chars": 2737,
    "images": 2,
    "broken_images": []
   },
@@ -190,7 +169,7 @@
    "count": 18,
    "summary": [],
    "empty": [],
-   "chars": 7409,
+   "chars": 7455,
    "images": 36,
    "broken_images": []
   }
@@ -199,7 +178,7 @@
   "open": true,
   "hero": true,
   "shown_twice": false,
-  "logos_ok": 16
+  "logos_ok": 17
  },
  "split": {
   "games": 20,
@@ -208,6 +187,6 @@
   "errors": []
  },
  "dk_lines_loaded": null,
- "games_with_props": 27,
- "nfl_games_upcoming": 27
+ "games_with_props": 26,
+ "nfl_games_upcoming": 26
 }
