@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 73.5,
-   "lockedAt": "2026-11-14T22:32:08.912Z",
+   "lockedAt": "2026-11-14T22:46:21.346Z",
    "provisional": true
   },
   "401856864": {
@@ -186,7 +186,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-14T22:32:08.912Z",
+   "lockedAt": "2026-11-14T22:46:21.346Z",
    "provisional": true
   },
   "401856882": {
@@ -207,7 +207,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 51.5,
-   "lockedAt": "2026-11-14T22:32:08.912Z",
+   "lockedAt": "2026-11-14T22:46:21.346Z",
    "provisional": true
   },
   "401856883": {
@@ -278,7 +278,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 47.5,
-   "lockedAt": "2026-11-14T22:32:08.912Z",
+   "lockedAt": "2026-11-14T22:46:21.346Z",
    "provisional": true
   },
   "401856886": {
@@ -519,7 +519,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 57.5,
-   "lockedAt": "2026-11-14T22:32:08.912Z",
+   "lockedAt": "2026-11-14T22:46:21.346Z",
    "provisional": true
   },
   "401858300": {
@@ -615,7 +615,7 @@
    "total_play": false,
    "spread": -18.5,
    "total": 47.5,
-   "lockedAt": "2026-11-14T22:32:08.912Z",
+   "lockedAt": "2026-11-14T22:46:21.346Z",
    "provisional": true
   },
   "401858520": {
@@ -831,7 +831,7 @@
    "total_play": false,
    "spread": 3,
    "total": 43.5,
-   "lockedAt": "2026-11-14T22:32:08.912Z",
+   "lockedAt": "2026-11-14T22:46:21.346Z",
    "provisional": true
   },
   "401860916": {
@@ -877,7 +877,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 64.5,
-   "lockedAt": "2026-11-14T22:32:08.912Z",
+   "lockedAt": "2026-11-14T22:46:21.346Z",
    "provisional": true
   },
   "401861967": {
@@ -973,8 +973,7 @@
    "total_play": false,
    "spread": -6.5,
    "total": 73.5,
-   "lockedAt": "2026-11-14T22:32:08.912Z",
-   "provisional": true
+   "lockedAt": "2026-11-14T22:46:21.346Z"
   },
   "401862827": {
    "id": "401862827",
@@ -994,7 +993,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 75.5,
-   "lockedAt": "2026-11-14T22:32:08.912Z",
+   "lockedAt": "2026-11-14T22:46:21.346Z",
    "provisional": true
   },
   "401862828": {
@@ -1090,7 +1089,7 @@
    "total_play": false,
    "spread": 7,
    "total": 39.5,
-   "lockedAt": "2026-11-14T22:32:08.912Z",
+   "lockedAt": "2026-11-14T22:46:21.346Z",
    "provisional": true
   },
   "401864538": {
@@ -1131,7 +1130,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 46.5,
-   "lockedAt": "2026-11-14T22:32:08.912Z",
+   "lockedAt": "2026-11-14T22:46:21.346Z",
    "provisional": true
   },
   "401864540": {
@@ -1152,7 +1151,7 @@
    "total_play": false,
    "spread": 7,
    "total": 40.5,
-   "lockedAt": "2026-11-14T22:32:08.912Z",
+   "lockedAt": "2026-11-14T22:46:21.346Z",
    "provisional": true
   },
   "401866458": {
@@ -2650,12 +2649,12 @@
     "ours": "UNT -2.9 · total 75.5",
     "score": "UNT 39.2 – UTSA 36.3",
     "market": "UNT -2.5 · total 75.5",
-    "lockedAt": "2026-11-14T22:32:08.962Z",
+    "lockedAt": "2026-11-14T22:46:21.413Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T02:00Z",
     "big": true,
-    "savedAt": 1794695528962
+    "savedAt": 1794696381413
    }
   ],
   "cfbHit": [
@@ -2802,7 +2801,7 @@
    }
   ]
  },
- "updated": "2026-11-14T22:32:08.912Z",
+ "updated": "2026-11-14T22:46:21.346Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7182,6 +7181,22 @@
    "market": -3,
    "label": "USA -3",
    "lockedAt": "2026-11-14T22:32:08.912Z"
+  },
+  {
+   "id": "401862826",
+   "league": "cfb",
+   "gid": "401862826",
+   "side": "home",
+   "team": "TLSA",
+   "game": "FAU @ TLSA",
+   "kick": "2026-11-15T00:15Z",
+   "line": -5.5,
+   "price": -108,
+   "book": "DraftKings",
+   "ours": -6.7,
+   "market": -6.5,
+   "label": "TLSA -5.5",
+   "lockedAt": "2026-11-14T22:46:21.346Z"
   }
  ]
 }
