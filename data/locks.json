@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401856858": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 50.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401856859": {
@@ -162,7 +162,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 73.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401856864": {
@@ -183,7 +183,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401856882": {
@@ -204,7 +204,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 51.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401856883": {
@@ -250,7 +250,7 @@
    "total_play": false,
    "spread": -3,
    "total": 52.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401856885": {
@@ -262,16 +262,16 @@
    "away": "TEX",
    "date": "2026-11-15T00:30Z",
    "pick": "TEX",
-   "pick_line": "TEX +4.5",
+   "pick_line": "TEX +5.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 4.1,
+   "our_margin": 4.75,
    "our_total": 46.5,
    "confidence": null,
    "total_play": false,
-   "spread": -4.5,
+   "spread": -5.5,
    "total": 46.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401856886": {
@@ -492,7 +492,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 57.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401858299": {
@@ -513,7 +513,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 57.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401858300": {
@@ -609,7 +609,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 47.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401858520": {
@@ -655,7 +655,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401858522": {
@@ -726,7 +726,7 @@
    "total_play": false,
    "spread": -12.5,
    "total": 42.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401858525": {
@@ -797,7 +797,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 64.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401860915": {
@@ -818,7 +818,7 @@
    "total_play": false,
    "spread": 3,
    "total": 43.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401860916": {
@@ -840,10 +840,10 @@
    "spread": -10,
    "total": 60.5,
    "lockedAt": "2026-11-14T19:31:39.693Z",
-   "close_spread": -10,
+   "close_spread": -11.5,
    "close_total": 60.5,
-   "closeAt": "2026-11-14T20:01:18.431Z",
-   "clv_side": 0,
+   "closeAt": "2026-11-14T20:46:58.289Z",
+   "clv_side": -1.5,
    "clv_total": null
   },
   "401860917": {
@@ -864,7 +864,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 64.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401861967": {
@@ -960,7 +960,7 @@
    "total_play": false,
    "spread": -6.5,
    "total": 73.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401862827": {
@@ -981,7 +981,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 76.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401862828": {
@@ -1077,7 +1077,7 @@
    "total_play": false,
    "spread": 7,
    "total": 39.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401864538": {
@@ -1098,7 +1098,7 @@
    "total_play": false,
    "spread": -14,
    "total": 48.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401864539": {
@@ -1119,7 +1119,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 46.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401864540": {
@@ -1140,7 +1140,7 @@
    "total_play": false,
    "spread": 7,
    "total": 40.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401866458": {
@@ -1311,7 +1311,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 54.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401869937": {
@@ -1552,7 +1552,7 @@
    "total_play": false,
    "spread": -3,
    "total": 55.5,
-   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "lockedAt": "2026-11-14T20:46:58.289Z",
    "provisional": true
   },
   "401873052": {
@@ -2617,7 +2617,7 @@
     "kind": "Under",
     "line": "UNDER 76.5",
     "hitPct": 54,
-    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 76.5. At -105 (DraftKings) the price needs 51%; we count it at 54%, so it's 6.1% better than the price. Under plays are 2-3 on the play of the day, so that record is in the pick.",
+    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 76.5. At -105 (DraftKings) the price needs 51%; we count it at 54%, so it's 6.2% better than the price. Under plays are 2-3 on the play of the day, so that record is in the pick.",
     "label": "Best of Saturday's 26 games",
     "result": null,
     "final": null,
@@ -2626,16 +2626,16 @@
     "price": -105,
     "book": "DraftKings",
     "bookPct": 49,
-    "ev": 0.061,
+    "ev": 0.062,
     "ours": "UNT -2.9 · total 76.5",
     "score": "UNT 39.7 – UTSA 36.8",
     "market": "UNT -2.5 · total 76.5",
-    "lockedAt": "2026-11-14T20:31:27.857Z",
+    "lockedAt": "2026-11-14T20:46:58.340Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T02:00Z",
     "big": true,
-    "savedAt": 1794688287857
+    "savedAt": 1794689218340
    }
   ],
   "cfbHit": [
@@ -2782,7 +2782,7 @@
    }
   ]
  },
- "updated": "2026-11-14T20:31:27.804Z",
+ "updated": "2026-11-14T20:46:58.289Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4292,9 +4292,9 @@
    "ev": 0.0482,
    "mev": 0.0404,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "DUKE 25, MIA 36",
+   "units": -1
   },
   {
    "id": "401858297|tot|under",
@@ -4336,9 +4336,9 @@
    "ev": 0.0363,
    "mev": 0.0305,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "NEB 31, RUTG 0",
+   "units": -1
   },
   {
    "id": "401869937|sp|home",
@@ -6410,7 +6410,10 @@
    "ours": 12.9,
    "market": 14,
    "label": "DUKE +13.5",
-   "lockedAt": "2026-11-14T15:31:35.726Z"
+   "lockedAt": "2026-11-14T15:31:35.726Z",
+   "result": "HIT",
+   "units": 0.9174,
+   "final": "DUKE 25, MIA 36"
   },
   {
    "id": "401858522",
@@ -6537,7 +6540,10 @@
    "ours": 14.2,
    "market": 15.5,
    "label": "RUTG +13.5",
-   "lockedAt": "2026-11-14T16:01:41.084Z"
+   "lockedAt": "2026-11-14T16:01:41.084Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "NEB 31, RUTG 0"
   },
   {
    "id": "401856889",
