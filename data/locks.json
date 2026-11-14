@@ -170,7 +170,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 73.5,
-   "lockedAt": "2026-11-14T23:31:58.667Z",
+   "lockedAt": "2026-11-14T23:46:37.846Z",
    "provisional": true
   },
   "401856864": {
@@ -191,7 +191,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-14T23:31:58.667Z",
+   "lockedAt": "2026-11-14T23:46:37.846Z",
    "provisional": true
   },
   "401856882": {
@@ -212,7 +212,12 @@
    "total_play": false,
    "spread": 7.5,
    "total": 51.5,
-   "lockedAt": "2026-11-14T23:16:31.315Z"
+   "lockedAt": "2026-11-14T23:16:31.315Z",
+   "close_spread": 7.5,
+   "close_total": 51.5,
+   "closeAt": "2026-11-14T23:46:37.846Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401856883": {
    "id": "401856883",
@@ -857,7 +862,7 @@
    "total_play": false,
    "spread": 3,
    "total": 43.5,
-   "lockedAt": "2026-11-14T23:31:58.667Z",
+   "lockedAt": "2026-11-14T23:46:37.846Z",
    "provisional": true
   },
   "401860916": {
@@ -903,7 +908,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 64.5,
-   "lockedAt": "2026-11-14T23:31:58.667Z",
+   "lockedAt": "2026-11-14T23:46:37.846Z",
    "provisional": true
   },
   "401861967": {
@@ -1024,7 +1029,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 76.5,
-   "lockedAt": "2026-11-14T23:31:58.667Z",
+   "lockedAt": "2026-11-14T23:46:37.846Z",
    "provisional": true
   },
   "401862828": {
@@ -1120,7 +1125,7 @@
    "total_play": false,
    "spread": 7,
    "total": 39.5,
-   "lockedAt": "2026-11-14T23:31:58.667Z",
+   "lockedAt": "2026-11-14T23:46:37.846Z",
    "provisional": true
   },
   "401864538": {
@@ -1191,7 +1196,7 @@
    "total_play": false,
    "spread": 7,
    "total": 40.5,
-   "lockedAt": "2026-11-14T23:31:58.667Z",
+   "lockedAt": "2026-11-14T23:46:37.846Z",
    "provisional": true
   },
   "401866458": {
@@ -2694,12 +2699,12 @@
     "ours": "UNT -2.9 · total 76.2",
     "score": "UNT 39.6 – UTSA 36.6",
     "market": "UNT -2.5 · total 76.5",
-    "lockedAt": "2026-11-14T23:31:58.720Z",
+    "lockedAt": "2026-11-14T23:46:37.917Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T02:00Z",
     "big": true,
-    "savedAt": 1794699118720
+    "savedAt": 1794699997917
    }
   ],
   "cfbHit": [
@@ -2846,7 +2851,7 @@
    }
   ]
  },
- "updated": "2026-11-14T23:31:58.667Z",
+ "updated": "2026-11-14T23:46:37.846Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4488,9 +4493,9 @@
    "ev": 0.0654,
    "mev": 0.0654,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "NMSU 21, MOST 27",
+   "units": -1
   },
   {
    "id": "401858294|sp|away",
@@ -4554,9 +4559,9 @@
    "ev": 0.0361,
    "mev": 0.0316,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "CAL 7, UVA 36",
+   "units": 2.8
   },
   {
    "id": "401856883|sp|away",
@@ -6828,7 +6833,10 @@
    "ours": -1.7,
    "market": -1.5,
    "label": "MOST -1.5",
-   "lockedAt": "2026-11-14T18:31:20.536Z"
+   "lockedAt": "2026-11-14T18:31:20.536Z",
+   "result": "HIT",
+   "units": 0.9259,
+   "final": "NMSU 21, MOST 27"
   },
   {
    "id": "401871060",
@@ -6927,7 +6935,10 @@
    "ours": -12.9,
    "market": -11.5,
    "label": "UVA -10.5",
-   "lockedAt": "2026-11-14T19:01:25.635Z"
+   "lockedAt": "2026-11-14T19:01:25.635Z",
+   "result": "HIT",
+   "units": 1,
+   "final": "CAL 7, UVA 36"
   },
   {
    "id": "401858523",
@@ -6959,7 +6970,10 @@
    "ours": 5.6,
    "market": 6,
    "label": "NIU +7.5",
-   "lockedAt": "2026-11-14T19:01:25.635Z"
+   "lockedAt": "2026-11-14T19:01:25.635Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "NEV 28, NIU 7"
   },
   {
    "id": "401869952",
@@ -6975,7 +6989,10 @@
    "ours": 3.9,
    "market": 6,
    "label": "GAST +5.5",
-   "lockedAt": "2026-11-14T19:01:25.635Z"
+   "lockedAt": "2026-11-14T19:01:25.635Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "GASO 34, GAST 17"
   },
   {
    "id": "401870752",
