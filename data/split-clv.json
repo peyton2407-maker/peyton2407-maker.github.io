@@ -1,25 +1,25 @@
 {
- "updated": "2026-11-14T22:06:39Z",
+ "updated": "2026-11-14T23:01:25Z",
  "about": "Every side The Split took: the line when first picked, the closing line, and how many points the line moved toward our side (clv). Only picks still standing at kickoff count (counts: true); ones The Split dropped before the game are listed but not counted. Positive average CLV over a season is the sign of a real edge; win-loss needs far more games.",
  "summary": {
   "record": {
    "picks": 134,
-   "n": 52,
-   "avg_clv": -0.15,
+   "n": 53,
+   "avg_clv": -0.17,
    "beat_close": 14,
    "even": 15,
-   "lost_close": 23,
+   "lost_close": 24,
    "at_first": {
-    "w": 58,
+    "w": 59,
     "l": 68,
     "p": 4,
-    "pct": 0.46
+    "pct": 0.465
    },
    "at_close": {
-    "w": 23,
+    "w": 24,
     "l": 24,
     "p": 2,
-    "pct": 0.489
+    "pct": 0.5
    }
   },
   "by_week": {
@@ -145,19 +145,19 @@
    },
    "2026-11-09": {
     "picks": 5,
-    "n": 4,
-    "avg_clv": 0.0,
+    "n": 5,
+    "avg_clv": -0.2,
     "beat_close": 1,
     "even": 2,
-    "lost_close": 1,
+    "lost_close": 2,
     "at_first": {
-     "w": 1,
+     "w": 2,
      "l": 0,
      "p": 0,
      "pct": 1.0
     },
     "at_close": {
-     "w": 1,
+     "w": 2,
      "l": 0,
      "p": 0,
      "pct": 1.0
@@ -3565,9 +3565,9 @@
    "close": -13.5,
    "close_src": "last look",
    "clv": -0.0,
-   "final": null,
-   "ats_first": null,
-   "ats_close": null,
+   "final": "KSU 10 - TCU 20",
+   "ats_first": "W",
+   "ats_close": "W",
    "counts": true
   },
   {
@@ -3631,7 +3631,7 @@
    "first_at": "2026-11-09T13:55:12Z",
    "hours_before": 133.6,
    "last": -8.5,
-   "last_at": "2026-11-14T22:06:39Z",
+   "last_at": "2026-11-14T23:01:25Z",
    "dropped": true,
    "flipped": false,
    "close": -8.5,
