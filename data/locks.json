@@ -44,7 +44,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 49.5,
-   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "lockedAt": "2026-11-14T22:01:27.126Z",
    "provisional": true
   },
   "401856859": {
@@ -166,7 +166,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 73.5,
-   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "lockedAt": "2026-11-14T22:01:27.126Z",
    "provisional": true
   },
   "401856864": {
@@ -187,7 +187,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "lockedAt": "2026-11-14T22:01:27.126Z",
    "provisional": true
   },
   "401856882": {
@@ -208,7 +208,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 51.5,
-   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "lockedAt": "2026-11-14T22:01:27.126Z",
    "provisional": true
   },
   "401856883": {
@@ -266,15 +266,15 @@
    "date": "2026-11-15T00:30Z",
    "pick": "TEX",
    "pick_line": "TEX +4.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "OVER 47.5",
    "side_play": false,
    "our_margin": 4.1,
-   "our_total": 46.5,
+   "our_total": 47.1,
    "confidence": null,
    "total_play": false,
    "spread": -4.5,
-   "total": 46.5,
-   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "total": 47.5,
+   "lockedAt": "2026-11-14T22:01:27.126Z",
    "provisional": true
   },
   "401856886": {
@@ -495,7 +495,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 57.5,
-   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "lockedAt": "2026-11-14T22:01:27.126Z",
    "provisional": true
   },
   "401858299": {
@@ -516,7 +516,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 57.5,
-   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "lockedAt": "2026-11-14T22:01:27.126Z",
    "provisional": true
   },
   "401858300": {
@@ -603,16 +603,16 @@
    "away": "PUR",
    "date": "2026-11-15T00:30Z",
    "pick": "PUR",
-   "pick_line": "PUR +17.5",
+   "pick_line": "PUR +18.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 16.3,
+   "our_margin": 16.95,
    "our_total": 47.5,
    "confidence": null,
    "total_play": false,
-   "spread": -17.5,
+   "spread": -18.5,
    "total": 47.5,
-   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "lockedAt": "2026-11-14T22:01:27.126Z",
    "provisional": true
   },
   "401858520": {
@@ -733,7 +733,7 @@
    "total_play": false,
    "spread": -12.5,
    "total": 42.5,
-   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "lockedAt": "2026-11-14T22:01:27.126Z",
    "provisional": true
   },
   "401858525": {
@@ -804,7 +804,12 @@
    "total_play": false,
    "spread": -16.5,
    "total": 65.5,
-   "lockedAt": "2026-11-14T21:31:21.747Z"
+   "lockedAt": "2026-11-14T21:31:21.747Z",
+   "close_spread": -16.5,
+   "close_total": 65.5,
+   "closeAt": "2026-11-14T22:01:27.126Z",
+   "clv_side": 0,
+   "clv_total": 0
   },
   "401860915": {
    "id": "401860915",
@@ -824,7 +829,7 @@
    "total_play": false,
    "spread": 3,
    "total": 43.5,
-   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "lockedAt": "2026-11-14T22:01:27.126Z",
    "provisional": true
   },
   "401860916": {
@@ -870,7 +875,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 64.5,
-   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "lockedAt": "2026-11-14T22:01:27.126Z",
    "provisional": true
   },
   "401861967": {
@@ -966,7 +971,7 @@
    "total_play": false,
    "spread": -6.5,
    "total": 73.5,
-   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "lockedAt": "2026-11-14T22:01:27.126Z",
    "provisional": true
   },
   "401862827": {
@@ -987,7 +992,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 75.5,
-   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "lockedAt": "2026-11-14T22:01:27.126Z",
    "provisional": true
   },
   "401862828": {
@@ -1083,7 +1088,7 @@
    "total_play": false,
    "spread": 7,
    "total": 39.5,
-   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "lockedAt": "2026-11-14T22:01:27.126Z",
    "provisional": true
   },
   "401864538": {
@@ -1096,15 +1101,15 @@
    "date": "2026-11-15T00:00Z",
    "pick": "SJSU",
    "pick_line": "SJSU +14.0",
-   "total_pick": "NO PLAY",
+   "total_pick": "OVER 50.5",
    "side_play": false,
    "our_margin": 12.3,
-   "our_total": 48.5,
+   "our_total": 49.8,
    "confidence": null,
    "total_play": false,
    "spread": -14,
-   "total": 48.5,
-   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "total": 50.5,
+   "lockedAt": "2026-11-14T22:01:27.126Z",
    "provisional": true
   },
   "401864539": {
@@ -1125,7 +1130,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 46.5,
-   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "lockedAt": "2026-11-14T22:01:27.126Z",
    "provisional": true
   },
   "401864540": {
@@ -1146,7 +1151,7 @@
    "total_play": false,
    "spread": 7,
    "total": 40.5,
-   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "lockedAt": "2026-11-14T22:01:27.126Z",
    "provisional": true
   },
   "401866458": {
@@ -1317,7 +1322,12 @@
    "total_play": false,
    "spread": 1.5,
    "total": 54.5,
-   "lockedAt": "2026-11-14T21:31:21.747Z"
+   "lockedAt": "2026-11-14T21:31:21.747Z",
+   "close_spread": -1.5,
+   "close_total": 54.5,
+   "closeAt": "2026-11-14T22:01:27.126Z",
+   "clv_side": -3,
+   "clv_total": null
   },
   "401869937": {
    "id": "401869937",
@@ -1562,7 +1572,7 @@
    "total_play": false,
    "spread": -3,
    "total": 55.5,
-   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "lockedAt": "2026-11-14T22:01:27.126Z",
    "provisional": true
   },
   "401873052": {
@@ -2628,7 +2638,7 @@
     "line": "UNDER 76.5",
     "hitPct": 54,
     "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 76.5. At -105 (DraftKings) the price needs 51%; we count it at 54%, so it's 6.2% better than the price. Under plays are 2-3 on the play of the day, so that record is in the pick.",
-    "label": "Best of Saturday's 23 games",
+    "label": "Best of Saturday's 22 games",
     "result": null,
     "final": null,
     "resultWhy": "",
@@ -2640,12 +2650,12 @@
     "ours": "UNT -2.9 · total 75.5",
     "score": "UNT 39.2 – UTSA 36.3",
     "market": "UNT -2.5 · total 75.5",
-    "lockedAt": "2026-11-14T21:46:53.175Z",
+    "lockedAt": "2026-11-14T22:01:27.198Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T02:00Z",
     "big": true,
-    "savedAt": 1794692813175
+    "savedAt": 1794693687198
    }
   ],
   "cfbHit": [
@@ -2792,7 +2802,7 @@
    }
   ]
  },
- "updated": "2026-11-14T21:46:53.127Z",
+ "updated": "2026-11-14T22:01:27.126Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
