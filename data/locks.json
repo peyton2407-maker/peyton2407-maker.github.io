@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 51.5,
-   "lockedAt": "2026-11-14T00:31:59.182Z",
+   "lockedAt": "2026-11-14T00:46:38.553Z",
    "provisional": true
   },
   "401858293": {
@@ -1430,7 +1430,7 @@
    }
   ]
  },
- "updated": "2026-11-14T00:31:59.182Z",
+ "updated": "2026-11-14T00:46:38.553Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3391,28 +3391,6 @@
    "units": null
   },
   {
-   "id": "401858524|sp|home",
-   "gid": "401858524",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "home",
-   "label": "PSU -18.5",
-   "game": "MINN @ PSU",
-   "kick": "2026-11-15T00:00Z",
-   "line": -18.5,
-   "mainLine": -10.5,
-   "price": 230,
-   "book": "FanDuel",
-   "win": 0.3126,
-   "mwin": 0.3126,
-   "ev": 0.0317,
-   "mev": 0.0316,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401858299|sp|home",
    "gid": "401858299",
    "league": "cfb",
@@ -3561,28 +3539,6 @@
    "mwin": 0.2946,
    "ev": 0.0751,
    "mev": 0.0751,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401860917|sp|home",
-   "gid": "401860917",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "home",
-   "label": "WSU -20.5",
-   "game": "CSU @ WSU",
-   "kick": "2026-11-15T03:30Z",
-   "line": -20.5,
-   "mainLine": -8.5,
-   "price": 291,
-   "book": "DraftKings",
-   "win": 0.2639,
-   "mwin": 0.2659,
-   "ev": 0.0319,
-   "mev": 0.0396,
    "src": "mkt",
    "result": null,
    "final": null,
