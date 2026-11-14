@@ -170,7 +170,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 73.5,
-   "lockedAt": "2026-11-14T23:16:31.315Z",
+   "lockedAt": "2026-11-14T23:31:58.667Z",
    "provisional": true
   },
   "401856864": {
@@ -191,7 +191,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-14T23:16:31.315Z",
+   "lockedAt": "2026-11-14T23:31:58.667Z",
    "provisional": true
   },
   "401856882": {
@@ -282,7 +282,12 @@
    "total_play": false,
    "spread": -4.5,
    "total": 47.5,
-   "lockedAt": "2026-11-14T23:01:27.518Z"
+   "lockedAt": "2026-11-14T23:01:27.518Z",
+   "close_spread": -4.5,
+   "close_total": 47.5,
+   "closeAt": "2026-11-14T23:31:58.667Z",
+   "clv_side": 0,
+   "clv_total": 0
   },
   "401856886": {
    "id": "401856886",
@@ -527,7 +532,12 @@
    "total_play": false,
    "spread": -17.5,
    "total": 57.5,
-   "lockedAt": "2026-11-14T23:01:27.518Z"
+   "lockedAt": "2026-11-14T23:01:27.518Z",
+   "close_spread": -17.5,
+   "close_total": 57.5,
+   "closeAt": "2026-11-14T23:31:58.667Z",
+   "clv_side": 0,
+   "clv_total": 0
   },
   "401858300": {
    "id": "401858300",
@@ -622,7 +632,12 @@
    "total_play": false,
    "spread": -18.5,
    "total": 47.5,
-   "lockedAt": "2026-11-14T23:01:27.518Z"
+   "lockedAt": "2026-11-14T23:01:27.518Z",
+   "close_spread": -18.5,
+   "close_total": 47.5,
+   "closeAt": "2026-11-14T23:31:58.667Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401858520": {
    "id": "401858520",
@@ -842,7 +857,7 @@
    "total_play": false,
    "spread": 3,
    "total": 43.5,
-   "lockedAt": "2026-11-14T23:16:31.315Z",
+   "lockedAt": "2026-11-14T23:31:58.667Z",
    "provisional": true
   },
   "401860916": {
@@ -888,7 +903,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 64.5,
-   "lockedAt": "2026-11-14T23:16:31.315Z",
+   "lockedAt": "2026-11-14T23:31:58.667Z",
    "provisional": true
   },
   "401861967": {
@@ -986,8 +1001,8 @@
    "total": 73.5,
    "lockedAt": "2026-11-14T22:46:21.346Z",
    "close_spread": -6.5,
-   "close_total": 73.5,
-   "closeAt": "2026-11-14T23:16:31.315Z",
+   "close_total": 72.5,
+   "closeAt": "2026-11-14T23:31:58.667Z",
    "clv_side": 0,
    "clv_total": null
   },
@@ -1001,15 +1016,15 @@
    "date": "2026-11-15T02:00Z",
    "pick": "UNT",
    "pick_line": "UNT -2.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "OVER 76.5",
    "side_play": false,
    "our_margin": -2.9,
-   "our_total": 75.5,
+   "our_total": 76.2,
    "confidence": null,
    "total_play": false,
    "spread": 2.5,
-   "total": 75.5,
-   "lockedAt": "2026-11-14T23:16:31.315Z",
+   "total": 76.5,
+   "lockedAt": "2026-11-14T23:31:58.667Z",
    "provisional": true
   },
   "401862828": {
@@ -1105,7 +1120,7 @@
    "total_play": false,
    "spread": 7,
    "total": 39.5,
-   "lockedAt": "2026-11-14T23:16:31.315Z",
+   "lockedAt": "2026-11-14T23:31:58.667Z",
    "provisional": true
   },
   "401864538": {
@@ -1151,7 +1166,12 @@
    "total_play": false,
    "spread": -17.5,
    "total": 46.5,
-   "lockedAt": "2026-11-14T23:01:27.518Z"
+   "lockedAt": "2026-11-14T23:01:27.518Z",
+   "close_spread": -17.5,
+   "close_total": 46.5,
+   "closeAt": "2026-11-14T23:31:58.667Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401864540": {
    "id": "401864540",
@@ -1171,7 +1191,7 @@
    "total_play": false,
    "spread": 7,
    "total": 40.5,
-   "lockedAt": "2026-11-14T23:16:31.315Z",
+   "lockedAt": "2026-11-14T23:31:58.667Z",
    "provisional": true
   },
   "401866458": {
@@ -2669,17 +2689,17 @@
     "units": 1.5,
     "price": -105,
     "book": "DraftKings",
-    "bookPct": 50,
+    "bookPct": 49,
     "ev": 0.062,
-    "ours": "UNT -2.9 · total 75.5",
-    "score": "UNT 39.2 – UTSA 36.3",
-    "market": "UNT -2.5 · total 75.5",
-    "lockedAt": "2026-11-14T23:16:31.389Z",
+    "ours": "UNT -2.9 · total 76.2",
+    "score": "UNT 39.6 – UTSA 36.6",
+    "market": "UNT -2.5 · total 76.5",
+    "lockedAt": "2026-11-14T23:31:58.720Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T02:00Z",
     "big": true,
-    "savedAt": 1794698191389
+    "savedAt": 1794699118720
    }
   ],
   "cfbHit": [
@@ -2826,7 +2846,7 @@
    }
   ]
  },
- "updated": "2026-11-14T23:16:31.315Z",
+ "updated": "2026-11-14T23:31:58.667Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
