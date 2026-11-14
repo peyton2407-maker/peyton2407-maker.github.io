@@ -1,25 +1,25 @@
 {
- "updated": "2026-11-14T20:01:29Z",
+ "updated": "2026-11-14T21:01:43Z",
  "about": "Every side The Split took: the line when first picked, the closing line, and how many points the line moved toward our side (clv). Only picks still standing at kickoff count (counts: true); ones The Split dropped before the game are listed but not counted. Positive average CLV over a season is the sign of a real edge; win-loss needs far more games.",
  "summary": {
   "record": {
    "picks": 134,
-   "n": 51,
+   "n": 52,
    "avg_clv": -0.15,
    "beat_close": 14,
    "even": 15,
-   "lost_close": 22,
+   "lost_close": 23,
    "at_first": {
-    "w": 57,
+    "w": 58,
     "l": 68,
     "p": 4,
-    "pct": 0.456
+    "pct": 0.46
    },
    "at_close": {
-    "w": 22,
+    "w": 23,
     "l": 24,
     "p": 2,
-    "pct": 0.478
+    "pct": 0.489
    }
   },
   "by_week": {
@@ -145,22 +145,22 @@
    },
    "2026-11-09": {
     "picks": 5,
-    "n": 3,
-    "avg_clv": 0.17,
+    "n": 4,
+    "avg_clv": 0.0,
     "beat_close": 1,
     "even": 2,
-    "lost_close": 0,
+    "lost_close": 1,
     "at_first": {
-     "w": 0,
+     "w": 1,
      "l": 0,
      "p": 0,
-     "pct": null
+     "pct": 1.0
     },
     "at_close": {
-     "w": 0,
+     "w": 1,
      "l": 0,
      "p": 0,
-     "pct": null
+     "pct": 1.0
     }
    }
   },
@@ -3511,7 +3511,7 @@
    "first_at": "2026-11-09T13:55:12Z",
    "hours_before": 123.1,
    "last": 2.5,
-   "last_at": "2026-11-14T20:01:29Z",
+   "last_at": "2026-11-14T21:01:43Z",
    "dropped": false,
    "flipped": false,
    "close": 2.5,
@@ -3541,9 +3541,9 @@
    "close": -1.5,
    "close_src": "last look",
    "clv": -0.0,
-   "final": null,
-   "ats_first": null,
-   "ats_close": null,
+   "final": "WAKE 49 - SMU 7",
+   "ats_first": "W",
+   "ats_close": "W",
    "counts": true
   },
   {
@@ -3607,7 +3607,7 @@
    "first_at": "2026-11-12T03:52:16Z",
    "hours_before": 67.1,
    "last": -16.5,
-   "last_at": "2026-11-14T20:01:29Z",
+   "last_at": "2026-11-14T21:01:43Z",
    "dropped": false,
    "flipped": false,
    "close": -16.5,
@@ -3631,7 +3631,7 @@
    "first_at": "2026-11-09T13:55:12Z",
    "hours_before": 133.6,
    "last": -8.5,
-   "last_at": "2026-11-14T20:01:29Z",
+   "last_at": "2026-11-14T21:01:43Z",
    "dropped": true,
    "flipped": false,
    "close": null,
