@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -3,
    "total": 58.5,
-   "lockedAt": "2026-11-14T05:31:37.924Z",
+   "lockedAt": "2026-11-14T05:46:53.042Z",
    "provisional": true
   },
   "401856860": {
@@ -46,6 +46,27 @@
    "closeAt": "2026-11-14T03:01:19.578Z",
    "clv_side": 0,
    "clv_total": 0
+  },
+  "401856889": {
+   "id": "401856889",
+   "league": "cfb",
+   "week": 11,
+   "short": "ALA @ VAN",
+   "home": "VAN",
+   "away": "ALA",
+   "date": "2026-11-14T17:45Z",
+   "pick": "ALA",
+   "pick_line": "ALA -14.0",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -14.7,
+   "our_total": 47.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 14,
+   "total": 47.5,
+   "lockedAt": "2026-11-14T05:46:53.042Z",
+   "provisional": true
   },
   "401858293": {
    "id": "401858293",
@@ -90,7 +111,7 @@
    "total_play": false,
    "spread": -13.5,
    "total": 54.5,
-   "lockedAt": "2026-11-14T05:31:37.924Z",
+   "lockedAt": "2026-11-14T05:46:53.042Z",
    "provisional": true
   },
   "401858297": {
@@ -111,7 +132,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 47.5,
-   "lockedAt": "2026-11-14T05:31:37.924Z",
+   "lockedAt": "2026-11-14T05:46:53.042Z",
    "provisional": true
   },
   "401858300": {
@@ -132,7 +153,7 @@
    "total_play": false,
    "spread": 3,
    "total": 53.5,
-   "lockedAt": "2026-11-14T05:31:37.924Z",
+   "lockedAt": "2026-11-14T05:46:53.042Z",
    "provisional": true
   },
   "401858301": {
@@ -153,7 +174,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 60.5,
-   "lockedAt": "2026-11-14T05:31:37.924Z",
+   "lockedAt": "2026-11-14T05:46:53.042Z",
    "provisional": true
   },
   "401858520": {
@@ -174,7 +195,7 @@
    "total_play": false,
    "spread": 8.5,
    "total": 42.5,
-   "lockedAt": "2026-11-14T05:31:37.924Z",
+   "lockedAt": "2026-11-14T05:46:53.042Z",
    "provisional": true
   },
   "401858522": {
@@ -195,7 +216,7 @@
    "total_play": false,
    "spread": -14,
    "total": 44.5,
-   "lockedAt": "2026-11-14T05:31:37.924Z",
+   "lockedAt": "2026-11-14T05:46:53.042Z",
    "provisional": true
   },
   "401858525": {
@@ -216,7 +237,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 51.5,
-   "lockedAt": "2026-11-14T05:31:37.924Z",
+   "lockedAt": "2026-11-14T05:46:53.042Z",
    "provisional": true
   },
   "401858526": {
@@ -262,7 +283,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 57.5,
-   "lockedAt": "2026-11-14T05:31:37.924Z",
+   "lockedAt": "2026-11-14T05:46:53.042Z",
    "provisional": true
   },
   "401862824": {
@@ -1628,7 +1649,7 @@
    }
   ]
  },
- "updated": "2026-11-14T05:31:37.924Z",
+ "updated": "2026-11-14T05:46:53.042Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5136,7 +5157,10 @@
    "ours": 9.3,
    "market": 10.5,
    "label": "ILL +10.5",
-   "lockedAt": "2026-11-14T00:31:59.182Z"
+   "lockedAt": "2026-11-14T00:31:59.182Z",
+   "result": "HIT",
+   "units": 0.8929,
+   "final": "ILL 14, UCLA 22"
   },
   {
    "id": "401856860",
