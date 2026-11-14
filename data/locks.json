@@ -19,8 +19,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 52.5,
-   "lockedAt": "2026-11-14T01:16:18.414Z",
-   "provisional": true
+   "lockedAt": "2026-11-14T01:46:28.841Z"
   },
   "401858293": {
    "id": "401858293",
@@ -66,10 +65,10 @@
    "spread": -10.5,
    "total": 48.5,
    "lockedAt": "2026-11-14T00:31:59.182Z",
-   "close_spread": -10,
+   "close_spread": -10.5,
    "close_total": 48.5,
-   "closeAt": "2026-11-14T01:01:41.899Z",
-   "clv_side": 0.5,
+   "closeAt": "2026-11-14T01:46:28.841Z",
+   "clv_side": 0,
    "clv_total": null
   },
   "401862824": {
@@ -1435,7 +1434,7 @@
    }
   ]
  },
- "updated": "2026-11-14T01:16:18.414Z",
+ "updated": "2026-11-14T01:46:28.841Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4905,6 +4904,22 @@
    "market": 10.5,
    "label": "ILL +10.5",
    "lockedAt": "2026-11-14T00:31:59.182Z"
+  },
+  {
+   "id": "401856860",
+   "league": "cfb",
+   "gid": "401856860",
+   "side": "away",
+   "team": "HOU",
+   "game": "HOU @ COLO",
+   "kick": "2026-11-14T03:15Z",
+   "line": -10.5,
+   "price": -105,
+   "book": "BetMGM",
+   "ours": -8.7,
+   "market": -7.5,
+   "label": "HOU -10.5",
+   "lockedAt": "2026-11-14T01:46:28.841Z"
   }
  ]
 }
