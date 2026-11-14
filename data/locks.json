@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 51.5,
-   "lockedAt": "2026-11-14T00:16:36.300Z",
+   "lockedAt": "2026-11-14T00:31:59.182Z",
    "provisional": true
   },
   "401858293": {
@@ -65,8 +65,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 48.5,
-   "lockedAt": "2026-11-14T00:16:36.300Z",
-   "provisional": true
+   "lockedAt": "2026-11-14T00:31:59.182Z"
   },
   "401862824": {
    "id": "401862824",
@@ -1431,7 +1430,7 @@
    }
   ]
  },
- "updated": "2026-11-14T00:16:36.300Z",
+ "updated": "2026-11-14T00:31:59.182Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4973,6 +4972,22 @@
    "market": -3,
    "label": "PITT -3.5",
    "lockedAt": "2026-11-13T22:31:38.542Z"
+  },
+  {
+   "id": "401858526",
+   "league": "cfb",
+   "gid": "401858526",
+   "side": "away",
+   "team": "ILL",
+   "game": "ILL @ UCLA",
+   "kick": "2026-11-14T02:00Z",
+   "line": 10.5,
+   "price": -112,
+   "book": "BetRivers",
+   "ours": 9.3,
+   "market": 10.5,
+   "label": "ILL +10.5",
+   "lockedAt": "2026-11-14T00:31:59.182Z"
   }
  ]
 }
