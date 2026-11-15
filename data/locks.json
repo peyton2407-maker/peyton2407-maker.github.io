@@ -1921,7 +1921,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 38.5,
-   "lockedAt": "2026-11-15T18:01:45.738Z",
+   "lockedAt": "2026-11-15T18:16:22.491Z",
    "provisional": true
   },
   "401873062": {
@@ -1942,7 +1942,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T18:01:45.738Z",
+   "lockedAt": "2026-11-15T18:16:22.491Z",
    "provisional": true
   },
   "401873063": {
@@ -1963,7 +1963,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T18:01:45.738Z",
+   "lockedAt": "2026-11-15T18:16:22.491Z",
    "provisional": true
   },
   "401873064": {
@@ -1984,7 +1984,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T18:01:45.738Z",
+   "lockedAt": "2026-11-15T18:16:22.491Z",
    "provisional": true
   }
  },
@@ -2555,12 +2555,12 @@
     "ours": "SEA -6.2 · total 39.2",
     "score": "SEA 22.7 – LV 16.5",
     "market": "SEA -6.5 · total 40.5",
-    "lockedAt": "2026-11-15T18:01:45.760Z",
+    "lockedAt": "2026-11-15T18:16:22.519Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T21:05Z",
     "big": false,
-    "savedAt": 1794765705760
+    "savedAt": 1794766582519
    }
   ],
   "cfb": [
@@ -3299,7 +3299,7 @@
    }
   ]
  },
- "updated": "2026-11-15T18:01:45.738Z",
+ "updated": "2026-11-15T18:16:22.491Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5741,17 +5741,17 @@
    "league": "nfl",
    "kind": "tot",
    "side": "under",
-   "label": "Under 32.5",
+   "label": "Under 35.5",
    "game": "SEA @ LV",
    "kick": "2026-11-15T21:05Z",
-   "line": 32.5,
+   "line": 35.5,
    "mainLine": 40.5,
-   "price": 300,
+   "price": 200,
    "book": "ESPN BET",
-   "win": 0.2655,
-   "mwin": 0.2575,
-   "ev": 0.0619,
-   "mev": 0.0301,
+   "win": 0.351,
+   "mwin": 0.3422,
+   "ev": 0.0529,
+   "mev": 0.0266,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -5763,17 +5763,17 @@
    "league": "nfl",
    "kind": "sp",
    "side": "home",
-   "label": "CIN -7.5",
+   "label": "CIN -8.5",
    "game": "PIT @ CIN",
    "kick": "2026-11-16T01:20Z",
-   "line": -7.5,
+   "line": -8.5,
    "mainLine": -3.5,
-   "price": 186,
+   "price": 210,
    "book": "FanDuel",
-   "win": 0.3629,
-   "mwin": 0.3536,
-   "ev": 0.0379,
-   "mev": 0.0112,
+   "win": 0.338,
+   "mwin": 0.3288,
+   "ev": 0.0477,
+   "mev": 0.0193,
    "src": "mkt",
    "result": null,
    "final": null,
