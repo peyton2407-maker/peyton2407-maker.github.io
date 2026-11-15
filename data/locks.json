@@ -1686,16 +1686,16 @@
    "away": "NE",
    "date": "2026-11-15T14:30Z",
    "pick": "NE",
-   "pick_line": "NE +3.0",
+   "pick_line": "NE +2.5",
    "total_pick": "OVER 49.5",
    "side_play": false,
-   "our_margin": 2.32,
+   "our_margin": 1.97,
    "our_total": 49.9,
    "confidence": null,
    "total_play": false,
-   "spread": -3,
+   "spread": -2.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T04:31:31.319Z",
+   "lockedAt": "2026-11-15T05:01:27.723Z",
    "provisional": true
   }
  },
@@ -2936,7 +2936,7 @@
    }
   ]
  },
- "updated": "2026-11-15T04:31:31.319Z",
+ "updated": "2026-11-15T05:01:27.723Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3158,9 +3158,9 @@
    "size": 1,
    "american": 564,
    "dec": 6.6438,
-   "chance": 0.1871,
+   "chance": 0.1858,
    "breakEven": 0.1505,
-   "ev": 0.2433,
+   "ev": 0.2346,
    "firstKick": "2026-11-15T14:30:00.000Z",
    "legs": [
     {
@@ -3173,9 +3173,9 @@
      "kick": "2026-11-15T14:30Z",
      "price": -116,
      "line": 28.5,
-     "win": 0.5886,
-     "bookWin": 0.5266,
-     "value": 0.0961,
+     "win": 0.5845,
+     "bookWin": 0.5268,
+     "value": 0.0884,
      "cat": "prop",
      "why": "We project 29 rush yds against 28.5; our checked chance on the under is 56%, the books' 53%. DET is middle of the pack here: 24th of 32 in rush yds allowed to QBs (19 a game; league average 16).",
      "alt": null,
@@ -3243,7 +3243,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T04:31:31.319Z"
+   "lockedAt": "2026-11-15T05:01:27.723Z"
   }
  ],
  "teasers": [
@@ -3294,6 +3294,54 @@
    "locked": true,
    "provisional": false,
    "lockedAt": "2026-11-06T00:39:23.014Z"
+  },
+  {
+   "key": "teaser:nfl-10|cfb-11",
+   "week": "nfl-10|cfb-11",
+   "n": 2,
+   "price": -120,
+   "chance": 0.5696,
+   "ev": 0.0442,
+   "firstKick": "2026-11-15T14:30:00.000Z",
+   "legs": [
+    {
+     "id": "401873053|sp|away",
+     "gid": "401873053",
+     "team": "NE",
+     "side": "away",
+     "game": "NE VS DET",
+     "kick": "2026-11-15T14:30Z",
+     "from": 2.5,
+     "to": 8.5,
+     "book": null,
+     "win": 0.7566,
+     "bookWin": 0.7528,
+     "total": 49.5,
+     "result": null,
+     "final": null
+    },
+    {
+     "id": "401873060|sp|away",
+     "gid": "401873060",
+     "team": "MIN",
+     "side": "away",
+     "game": "MIN @ GB",
+     "kick": "2026-11-15T18:00Z",
+     "from": 2.5,
+     "to": 8.5,
+     "book": null,
+     "win": 0.7528,
+     "bookWin": 0.7528,
+     "total": 42.5,
+     "result": null,
+     "final": null
+    }
+   ],
+   "result": null,
+   "units": null,
+   "locked": false,
+   "provisional": true,
+   "lockedAt": "2026-11-15T05:01:27.723Z"
   }
  ],
  "teaserLegs": [
@@ -3418,9 +3466,9 @@
    "kick": "2026-11-15T14:30Z",
    "from": 2.5,
    "to": 8.5,
-   "book": "DraftKings",
-   "win": 0.7292,
-   "bookWin": 0.7163,
+   "book": null,
+   "win": 0.7566,
+   "bookWin": 0.7528,
    "total": 49.5,
    "result": null,
    "final": null
@@ -3483,8 +3531,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7525,
-   "bookWin": 0.7524,
+   "win": 0.7528,
+   "bookWin": 0.7528,
    "total": 42.5,
    "result": null,
    "final": null
@@ -5173,12 +5221,12 @@
    "game": "NE VS DET",
    "kick": "2026-11-15T14:30Z",
    "line": -4.5,
-   "mainLine": 3,
+   "mainLine": 2.5,
    "price": 275,
    "book": "BetRivers",
-   "win": 0.2953,
+   "win": 0.2867,
    "mwin": 0.2827,
-   "ev": 0.1074,
+   "ev": 0.075,
    "mev": 0.06,
    "src": "mkt",
    "result": null,
@@ -5820,10 +5868,10 @@
    "price": 450,
    "book": "DraftKings",
    "books": 5,
-   "ours": 0.2119,
-   "mkt": 0.1997,
-   "win": 0.2027,
-   "ev": 0.1151,
+   "ours": 0.2135,
+   "mkt": 0.2016,
+   "win": 0.2046,
+   "ev": 0.1252,
    "result": null,
    "final": null,
    "units": null
