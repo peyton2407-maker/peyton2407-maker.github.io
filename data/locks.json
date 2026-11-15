@@ -1695,7 +1695,7 @@
    "total_play": false,
    "spread": -3,
    "total": 49.5,
-   "lockedAt": "2026-11-15T03:16:28.762Z",
+   "lockedAt": "2026-11-15T03:31:31.599Z",
    "provisional": true
   }
  },
@@ -2936,7 +2936,7 @@
    }
   ]
  },
- "updated": "2026-11-15T03:16:28.762Z",
+ "updated": "2026-11-15T03:31:31.599Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3243,7 +3243,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T03:16:28.762Z"
+   "lockedAt": "2026-11-15T03:31:31.599Z"
   }
  ],
  "teasers": [
@@ -4983,9 +4983,9 @@
    "ev": 0.0847,
    "mev": 0.0712,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "TROY 14, USA 27",
+   "units": 2.65
   },
   {
    "id": "401858524|sp|home",
@@ -5005,9 +5005,9 @@
    "ev": 0.0783,
    "mev": 0.0829,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "MINN 14, PSU 42",
+   "units": 3
   },
   {
    "id": "401871100|sp|away",
@@ -5027,9 +5027,9 @@
    "ev": 0.0415,
    "mev": 0.0529,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "TROY 14, USA 27",
+   "units": -1
   },
   {
    "id": "401858299|sp|home",
@@ -7435,7 +7435,10 @@
    "ours": 6.7,
    "market": 8.5,
    "label": "BAY +7.5",
-   "lockedAt": "2026-11-14T22:32:08.912Z"
+   "lockedAt": "2026-11-14T22:32:08.912Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "BAY 7, BYU 28"
   },
   {
    "id": "401858298",
@@ -7451,7 +7454,10 @@
    "ours": 3.3,
    "market": 3.5,
    "label": "UNC +3.5",
-   "lockedAt": "2026-11-14T22:32:08.912Z"
+   "lockedAt": "2026-11-14T22:32:08.912Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "LOU 16, UNC 14"
   },
   {
    "id": "401858524",
@@ -7467,7 +7473,10 @@
    "ours": 11.5,
    "market": 12.5,
    "label": "MINN +9",
-   "lockedAt": "2026-11-14T22:32:08.912Z"
+   "lockedAt": "2026-11-14T22:32:08.912Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "MINN 14, PSU 42"
   },
   {
    "id": "401864538",
@@ -7483,7 +7492,10 @@
    "ours": 12.3,
    "market": 14,
    "label": "SJSU +12.5",
-   "lockedAt": "2026-11-14T22:32:08.912Z"
+   "lockedAt": "2026-11-14T22:32:08.912Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "SJSU 3, AFA 24"
   },
   {
    "id": "401871100",
@@ -7499,7 +7511,10 @@
    "ours": -3.3,
    "market": -3,
    "label": "USA -3",
-   "lockedAt": "2026-11-14T22:32:08.912Z"
+   "lockedAt": "2026-11-14T22:32:08.912Z",
+   "result": "HIT",
+   "units": 0.9259,
+   "final": "TROY 14, USA 27"
   },
   {
    "id": "401862826",
