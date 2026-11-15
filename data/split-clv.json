@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-15T02:01:52Z",
+ "updated": "2026-11-15T02:45:50Z",
  "about": "Every side The Split took: the line when first picked, the closing line, and how many points the line moved toward our side (clv). Only picks still standing at kickoff count (counts: true); ones The Split dropped before the game are listed but not counted. Positive average CLV over a season is the sign of a real edge; win-loss needs far more games.",
  "summary": {
   "record": {
@@ -3631,7 +3631,7 @@
    "first_at": "2026-11-09T13:55:12Z",
    "hours_before": 133.6,
    "last": -8.5,
-   "last_at": "2026-11-15T02:01:52Z",
+   "last_at": "2026-11-15T02:45:50Z",
    "dropped": true,
    "flipped": false,
    "close": -8.5,
