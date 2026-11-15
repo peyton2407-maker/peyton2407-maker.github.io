@@ -195,7 +195,12 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T02:01:27.991Z"
+   "lockedAt": "2026-11-15T02:01:27.991Z",
+   "close_spread": 1.5,
+   "close_total": 55.5,
+   "closeAt": "2026-11-15T02:31:46.564Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401856882": {
    "id": "401856882",
@@ -1135,8 +1140,7 @@
    "total_play": false,
    "spread": 7,
    "total": 39.5,
-   "lockedAt": "2026-11-15T02:17:00.533Z",
-   "provisional": true
+   "lockedAt": "2026-11-15T02:31:46.564Z"
   },
   "401864538": {
    "id": "401864538",
@@ -1662,6 +1666,27 @@
    "closeAt": "2026-11-13T00:17:14.500Z",
    "clv_side": null,
    "clv_total": 0
+  },
+  "401873053": {
+   "id": "401873053",
+   "league": "nfl",
+   "week": 10,
+   "short": "NE VS DET",
+   "home": "DET",
+   "away": "NE",
+   "date": "2026-11-15T14:30Z",
+   "pick": "NE",
+   "pick_line": "NE +3.0",
+   "total_pick": "OVER 49.5",
+   "side_play": false,
+   "our_margin": 2.32,
+   "our_total": 49.9,
+   "confidence": null,
+   "total_play": false,
+   "spread": -3,
+   "total": 49.5,
+   "lockedAt": "2026-11-15T02:31:46.564Z",
+   "provisional": true
   }
  },
  "potd": {
@@ -2722,6 +2747,35 @@
     "closeAt": "2026-11-15T01:01:24.803Z",
     "close_src": "board",
     "clv": 1
+   },
+   {
+    "key": "game:401860917",
+    "week": 11,
+    "day": "2026-11-14",
+    "league": "cfb",
+    "id": "401860917",
+    "game": "CSU @ WSU",
+    "kind": "Under",
+    "line": "UNDER 67.5",
+    "hitPct": 54,
+    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 67.5. At -108 (BetMGM) the price needs 52%; we count it at 54%, so it's 4.7% better than the price. Under plays are 2-3 on the play of the day, so that record is in the pick.",
+    "label": "Saturday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 1.25,
+    "price": -108,
+    "book": "BetMGM",
+    "bookPct": 50,
+    "ev": 0.047,
+    "ours": "WSU -7.1 · total 65.2",
+    "score": "CSU 29.1 – WSU 36.1",
+    "market": "WSU -8.5 · total 65.5",
+    "lockedAt": "2026-11-15T02:31:46.626Z",
+    "locked": true,
+    "kick": "2026-11-15T03:45Z",
+    "big": false,
+    "savedAt": 1794709906626
    }
   ],
   "cfbHit": [
@@ -2868,7 +2922,7 @@
    }
   ]
  },
- "updated": "2026-11-15T02:17:00.533Z",
+ "updated": "2026-11-15T02:31:46.564Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3079,6 +3133,103 @@
    "provisional": false,
    "lockedAt": "2026-11-08T16:31:43.396Z",
    "paidDec": 6.7544
+  },
+  {
+   "key": "ladder:2026-11-15",
+   "day": "2026-11-15",
+   "n": 3,
+   "book": "DraftKings",
+   "tier": "value",
+   "stake": 1,
+   "size": 1,
+   "american": 593,
+   "dec": 6.9297,
+   "chance": 0.1857,
+   "breakEven": 0.1443,
+   "ev": 0.2866,
+   "firstKick": "2026-11-15T14:30:00.000Z",
+   "legs": [
+    {
+     "id": "401873053|pp|4431452|rush_yds|under",
+     "label": "Drake Maye under 27.5 rush yds",
+     "kind": "pp",
+     "game_id": "401873053",
+     "game": "NE VS DET",
+     "league": "nfl",
+     "kick": "2026-11-15T14:30Z",
+     "price": -108,
+     "line": 27.5,
+     "win": 0.5735,
+     "bookWin": 0.5115,
+     "value": 0.1045,
+     "cat": "prop",
+     "why": "We project 29 rush yds against 27.5; our checked chance on the under is 55%, the books' 51%. DET is middle of the pack here: 24th of 32 in rush yds allowed to QBs (19 a game; league average 16).",
+     "alt": null,
+     "prop": {
+      "pid": "4431452",
+      "stat": "rush_yds",
+      "side": "under",
+      "line": 27.5,
+      "name": "Drake Maye"
+     },
+     "result": null
+    },
+    {
+     "id": "401873055|pp|4685720|rush_yds|under",
+     "label": "Bryce Young under 8.5 rush yds",
+     "kind": "pp",
+     "game_id": "401873055",
+     "game": "CAR @ NO",
+     "league": "nfl",
+     "kick": "2026-11-15T18:00Z",
+     "price": -112,
+     "line": 8.5,
+     "win": 0.5735,
+     "bookWin": 0.5101,
+     "value": 0.0855,
+     "cat": "prop",
+     "why": "We project 8.7 rush yds against 8.5; our checked chance on the under is 56%, the books' 51%. NO is middle of the pack here: 23rd of 32 in rush yds allowed to QBs (19 a game; league average 16).",
+     "alt": null,
+     "prop": {
+      "pid": "4685720",
+      "stat": "rush_yds",
+      "side": "under",
+      "line": 8.5,
+      "name": "Bryce Young"
+     },
+     "result": null
+    },
+    {
+     "id": "401873056|pp|4685702|rush_yds|under",
+     "label": "Quinshon Judkins under 45.5 rush yds",
+     "kind": "pp",
+     "game_id": "401873056",
+     "game": "HOU @ CLE",
+     "league": "nfl",
+     "kick": "2026-11-15T18:00Z",
+     "price": -111,
+     "line": 45.5,
+     "win": 0.5645,
+     "bookWin": 0.5269,
+     "value": 0.073,
+     "cat": "prop",
+     "why": "We project 45 rush yds against 45.5; our checked chance on the under is 56%, the books' 53%. HOU is middle of the pack here: 17th of 32 in rush yds allowed to RBs (95 a game; league average 93).",
+     "alt": null,
+     "prop": {
+      "pid": "4685702",
+      "stat": "rush_yds",
+      "side": "under",
+      "line": 45.5,
+      "name": "Quinshon Judkins"
+     },
+     "result": null
+    }
+   ],
+   "result": null,
+   "units": null,
+   "locked": false,
+   "provisional": true,
+   "lockedAt": "2026-11-15T02:31:46.564Z"
   }
  ],
  "teasers": [
@@ -3254,8 +3405,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": "DraftKings",
-   "win": 0.7291,
-   "bookWin": 0.7161,
+   "win": 0.7292,
+   "bookWin": 0.7163,
    "total": 49.5,
    "result": null,
    "final": null
@@ -3270,8 +3421,8 @@
    "from": 1.5,
    "to": 7.5,
    "book": null,
-   "win": 0.7491,
-   "bookWin": 0.7491,
+   "win": 0.749,
+   "bookWin": 0.749,
    "total": 48.5,
    "result": null,
    "final": null
@@ -3286,8 +3437,8 @@
    "from": -7.5,
    "to": -1.5,
    "book": null,
-   "win": 0.7428,
-   "bookWin": 0.7428,
+   "win": 0.7426,
+   "bookWin": 0.7426,
    "total": 50.5,
    "result": null,
    "final": null
@@ -3302,8 +3453,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": "DraftKings",
-   "win": 0.6275,
-   "bookWin": 0.6518,
+   "win": 0.6276,
+   "bookWin": 0.6519,
    "total": 37.5,
    "result": null,
    "final": null
@@ -3318,8 +3469,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7527,
-   "bookWin": 0.7528,
+   "win": 0.7525,
+   "bookWin": 0.7524,
    "total": 42.5,
    "result": null,
    "final": null
@@ -7499,6 +7650,22 @@
    "market": 8.5,
    "label": "CSU +9.5",
    "lockedAt": "2026-11-15T02:17:00.533Z"
+  },
+  {
+   "id": "401864537",
+   "league": "cfb",
+   "gid": "401864537",
+   "side": "away",
+   "team": "NDSU",
+   "game": "NDSU @ HAW",
+   "kick": "2026-11-15T04:00Z",
+   "line": -6,
+   "price": -110,
+   "book": "BetRivers",
+   "ours": -7.3,
+   "market": -7,
+   "label": "NDSU -6",
+   "lockedAt": "2026-11-15T02:31:46.564Z"
   }
  ]
 }
