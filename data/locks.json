@@ -345,7 +345,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T08:16:16.294Z",
+   "lockedAt": "2026-11-15T09:01:33.273Z",
    "provisional": true
   },
   "401856888": {
@@ -1716,7 +1716,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T08:16:16.294Z",
+   "lockedAt": "2026-11-15T09:01:33.273Z",
    "provisional": true
   },
   "401873054": {
@@ -1729,15 +1729,15 @@
    "date": "2026-11-15T18:00Z",
    "pick": "BUF",
    "pick_line": "BUF -7.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "UNDER 51.5",
    "side_play": false,
    "our_margin": -7.8,
-   "our_total": 50.5,
+   "our_total": 51.2,
    "confidence": null,
    "total_play": false,
    "spread": 7.5,
-   "total": 50.5,
-   "lockedAt": "2026-11-15T08:16:16.294Z",
+   "total": 51.5,
+   "lockedAt": "2026-11-15T09:01:33.273Z",
    "provisional": true
   },
   "401873055": {
@@ -1758,7 +1758,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T08:16:16.294Z",
+   "lockedAt": "2026-11-15T09:01:33.273Z",
    "provisional": true
   },
   "401873056": {
@@ -1779,7 +1779,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T08:16:16.294Z",
+   "lockedAt": "2026-11-15T09:01:33.273Z",
    "provisional": true
   },
   "401873057": {
@@ -1800,7 +1800,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 46.5,
-   "lockedAt": "2026-11-15T08:16:16.294Z",
+   "lockedAt": "2026-11-15T09:01:33.273Z",
    "provisional": true
   },
   "401873058": {
@@ -1821,7 +1821,7 @@
    "total_play": false,
    "spread": 3,
    "total": 47.5,
-   "lockedAt": "2026-11-15T08:16:16.294Z",
+   "lockedAt": "2026-11-15T09:01:33.273Z",
    "provisional": true
   },
   "401873059": {
@@ -1842,7 +1842,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-15T08:16:16.294Z",
+   "lockedAt": "2026-11-15T09:01:33.273Z",
    "provisional": true
   },
   "401873060": {
@@ -1863,7 +1863,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 42.5,
-   "lockedAt": "2026-11-15T08:16:16.294Z",
+   "lockedAt": "2026-11-15T09:01:33.273Z",
    "provisional": true
   }
  },
@@ -2398,12 +2398,12 @@
     "ours": "HOU -5.0 · total 40.9",
     "score": "HOU 22.9 – CLE 18.0",
     "market": "HOU -4.5 · total 40.5",
-    "lockedAt": "2026-11-15T08:16:16.361Z",
+    "lockedAt": "2026-11-15T09:01:33.339Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T18:00Z",
     "big": true,
-    "savedAt": 1794730576361
+    "savedAt": 1794733293339
    }
   ],
   "cfb": [
@@ -3142,7 +3142,7 @@
    }
   ]
  },
- "updated": "2026-11-15T08:16:16.294Z",
+ "updated": "2026-11-15T09:01:33.273Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3362,11 +3362,11 @@
    "tier": "value",
    "stake": 1,
    "size": 1,
-   "american": 602,
-   "dec": 7.0231,
-   "chance": 0.1883,
-   "breakEven": 0.1424,
-   "ev": 0.3223,
+   "american": 579,
+   "dec": 6.7871,
+   "chance": 0.1983,
+   "breakEven": 0.1473,
+   "ev": 0.3461,
    "firstKick": "2026-11-15T14:30:00.000Z",
    "legs": [
     {
@@ -3395,6 +3395,31 @@
      "result": null
     },
     {
+     "id": "401873054|pp|4685247|rush_yds|under",
+     "label": "Braelon Allen under 34.5 rush yds",
+     "kind": "pp",
+     "game_id": "401873054",
+     "game": "BUF @ NYJ",
+     "league": "nfl",
+     "kick": "2026-11-15T18:00Z",
+     "price": -115,
+     "line": 34.5,
+     "win": 0.5926,
+     "bookWin": 0.5283,
+     "value": 0.1079,
+     "cat": "prop",
+     "why": "We project 29 rush yds against 34.5; our checked chance on the under is 60%, the books' 53%. BUF is middle of the pack here: 10th of 32 in rush yds allowed to RBs (78 a game; league average 93).",
+     "alt": null,
+     "prop": {
+      "pid": "4685247",
+      "stat": "rush_yds",
+      "side": "under",
+      "line": 34.5,
+      "name": "Braelon Allen"
+     },
+     "result": null
+    },
+    {
      "id": "401873053|pp|4431452|rush_yds|under",
      "label": "Drake Maye under 27.5 rush yds",
      "kind": "pp",
@@ -3418,38 +3443,13 @@
       "name": "Drake Maye"
      },
      "result": null
-    },
-    {
-     "id": "401873055|pp|4685720|rush_yds|under",
-     "label": "Bryce Young under 8.5 rush yds",
-     "kind": "pp",
-     "game_id": "401873055",
-     "game": "CAR @ NO",
-     "league": "nfl",
-     "kick": "2026-11-15T18:00Z",
-     "price": -107,
-     "line": 8.5,
-     "win": 0.5625,
-     "bookWin": 0.4895,
-     "value": 0.0882,
-     "cat": "prop",
-     "why": "We project 8.7 rush yds against 8.5; our checked chance on the under is 55%, the books' 49%. NO is middle of the pack here: 23rd of 32 in rush yds allowed to QBs (19 a game; league average 16).",
-     "alt": null,
-     "prop": {
-      "pid": "4685720",
-      "stat": "rush_yds",
-      "side": "under",
-      "line": 8.5,
-      "name": "Bryce Young"
-     },
-     "result": null
     }
    ],
    "result": null,
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T08:16:16.294Z"
+   "lockedAt": "2026-11-15T09:01:33.273Z"
   }
  ],
  "teasers": [
@@ -3547,7 +3547,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T08:16:16.294Z"
+   "lockedAt": "2026-11-15T09:01:33.273Z"
   }
  ],
  "teaserLegs": [
@@ -6073,10 +6073,10 @@
    "price": 550,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0.2978,
-   "mkt": 0.1459,
-   "win": 0.1839,
-   "ev": 0.1954,
+   "ours": 0.3013,
+   "mkt": 0.1492,
+   "win": 0.1873,
+   "ev": 0.2172,
    "result": null,
    "final": null,
    "units": null
@@ -6115,10 +6115,10 @@
    "price": 420,
    "book": "FanDuel",
    "books": 6,
-   "ours": 0.2932,
-   "mkt": 0.1791,
-   "win": 0.2076,
-   "ev": 0.0798,
+   "ours": 0.2966,
+   "mkt": 0.1831,
+   "win": 0.2115,
+   "ev": 0.0996,
    "result": null,
    "final": null,
    "units": null
