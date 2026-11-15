@@ -1772,10 +1772,10 @@
    "spread": -1.5,
    "total": 48.5,
    "lockedAt": "2026-11-15T16:31:33.780Z",
-   "close_spread": -1.5,
+   "close_spread": 1.5,
    "close_total": 48.5,
-   "closeAt": "2026-11-15T17:01:37.080Z",
-   "clv_side": 0,
+   "closeAt": "2026-11-15T17:46:37.294Z",
+   "clv_side": 3,
    "clv_total": 0
   },
   "401873056": {
@@ -1921,7 +1921,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 38.5,
-   "lockedAt": "2026-11-15T17:11:43.062Z",
+   "lockedAt": "2026-11-15T17:46:37.294Z",
    "provisional": true
   },
   "401873062": {
@@ -1942,7 +1942,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T17:11:43.062Z",
+   "lockedAt": "2026-11-15T17:46:37.294Z",
    "provisional": true
   },
   "401873063": {
@@ -1963,7 +1963,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T17:11:43.062Z",
+   "lockedAt": "2026-11-15T17:46:37.294Z",
    "provisional": true
   },
   "401873064": {
@@ -1984,7 +1984,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T17:11:43.062Z",
+   "lockedAt": "2026-11-15T17:46:37.294Z",
    "provisional": true
   }
  },
@@ -2519,12 +2519,12 @@
     "ours": "LAR -9.6 · total 39.8",
     "score": "LAR 24.7 – ARI 15.1",
     "market": "LAR -9.5 · total 38.5",
-    "lockedAt": "2026-11-15T17:11:43.106Z",
+    "lockedAt": "2026-11-15T17:46:37.349Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T21:05Z",
     "big": true,
-    "savedAt": 1794762703106
+    "savedAt": 1794764797349
    }
   ],
   "cfb": [
@@ -3263,7 +3263,7 @@
    }
   ]
  },
- "updated": "2026-11-15T17:11:43.062Z",
+ "updated": "2026-11-15T17:46:37.294Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3549,7 +3549,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-15T17:11:43.062Z",
+      "at": "2026-11-15T17:46:37.294Z",
       "line": 10.5,
       "price": -108,
       "book": "DraftKings",
@@ -3583,7 +3583,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-15T17:11:43.062Z",
+      "at": "2026-11-15T17:46:37.294Z",
       "line": 9.5,
       "price": -117,
       "book": "DraftKings",
@@ -3671,8 +3671,8 @@
      "win": 0.7566,
      "bookWin": 0.7528,
      "total": 50.5,
-     "result": null,
-     "final": null
+     "result": "MISS",
+     "final": "NE 10, DET 35"
     },
     {
      "id": "401873060|sp|away",
@@ -3824,8 +3824,8 @@
    "win": 0.7566,
    "bookWin": 0.7528,
    "total": 49.5,
-   "result": null,
-   "final": null
+   "result": "MISS",
+   "final": "NE 10, DET 35"
   },
   {
    "id": "401873055|sp|away",
@@ -3836,9 +3836,9 @@
    "kick": "2026-11-15T18:00Z",
    "from": 1.5,
    "to": 7.5,
-   "book": null,
-   "win": 0.7491,
-   "bookWin": 0.7491,
+   "book": "DraftKings",
+   "win": 0.7838,
+   "bookWin": 0.7904,
    "total": 48.5,
    "result": null,
    "final": null
@@ -5583,9 +5583,9 @@
    "ev": 0.0304,
    "mev": 0.0326,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "NE 10, DET 35",
+   "units": -1
   },
   {
    "id": "401873059|sp|home",
@@ -5676,22 +5676,22 @@
    "units": null
   },
   {
-   "id": "401873055|sp|away",
+   "id": "401873055|sp|home",
    "gid": "401873055",
    "league": "nfl",
    "kind": "sp",
-   "side": "away",
-   "label": "CAR -7",
+   "side": "home",
+   "label": "NO -5.5",
    "game": "CAR @ NO",
    "kick": "2026-11-15T18:00Z",
-   "line": -7,
+   "line": -5.5,
    "mainLine": 1.5,
-   "price": 300,
-   "book": "ESPN BET",
-   "win": 0.2496,
-   "mwin": 0.2496,
-   "ev": 0.0436,
-   "mev": 0.0436,
+   "price": 210,
+   "book": "BetRivers",
+   "win": 0.3333,
+   "mwin": 0.3256,
+   "ev": 0.0334,
+   "mev": 0.0093,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -7656,7 +7656,10 @@
    "ours": 2,
    "market": 2.5,
    "label": "NE +3",
-   "lockedAt": "2026-11-15T13:01:23.839Z"
+   "lockedAt": "2026-11-15T13:01:23.839Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "NE 10, DET 35"
   },
   {
    "id": "401873058",
