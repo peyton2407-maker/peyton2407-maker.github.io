@@ -345,7 +345,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T12:16:39.691Z",
+   "lockedAt": "2026-11-15T12:31:25.165Z",
    "provisional": true
   },
   "401856888": {
@@ -1716,7 +1716,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 50.5,
-   "lockedAt": "2026-11-15T12:16:39.691Z",
+   "lockedAt": "2026-11-15T12:31:25.165Z",
    "provisional": true
   },
   "401873054": {
@@ -1758,7 +1758,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T12:16:39.691Z",
+   "lockedAt": "2026-11-15T12:31:25.165Z",
    "provisional": true
   },
   "401873056": {
@@ -1779,7 +1779,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T12:16:39.691Z",
+   "lockedAt": "2026-11-15T12:31:25.165Z",
    "provisional": true
   },
   "401873057": {
@@ -1800,7 +1800,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 46.5,
-   "lockedAt": "2026-11-15T12:16:39.691Z",
+   "lockedAt": "2026-11-15T12:31:25.165Z",
    "provisional": true
   },
   "401873058": {
@@ -1821,7 +1821,7 @@
    "total_play": false,
    "spread": 3,
    "total": 47.5,
-   "lockedAt": "2026-11-15T12:16:39.691Z",
+   "lockedAt": "2026-11-15T12:31:25.165Z",
    "provisional": true
   },
   "401873059": {
@@ -1842,7 +1842,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-15T12:16:39.691Z",
+   "lockedAt": "2026-11-15T12:31:25.165Z",
    "provisional": true
   },
   "401873060": {
@@ -1863,7 +1863,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 42.5,
-   "lockedAt": "2026-11-15T12:16:39.691Z",
+   "lockedAt": "2026-11-15T12:31:25.165Z",
    "provisional": true
   },
   "401873061": {
@@ -1884,7 +1884,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 38.5,
-   "lockedAt": "2026-11-15T12:16:39.691Z",
+   "lockedAt": "2026-11-15T12:31:25.165Z",
    "provisional": true
   },
   "401873062": {
@@ -1905,7 +1905,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T12:16:39.691Z",
+   "lockedAt": "2026-11-15T12:31:25.165Z",
    "provisional": true
   },
   "401873063": {
@@ -1926,7 +1926,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T12:16:39.691Z",
+   "lockedAt": "2026-11-15T12:31:25.165Z",
    "provisional": true
   }
  },
@@ -2461,12 +2461,12 @@
     "ours": "SF -3.5 · total 55.8",
     "score": "SF 29.7 – DAL 26.1",
     "market": "SF -4.5 · total 55.5",
-    "lockedAt": "2026-11-15T12:16:39.728Z",
+    "lockedAt": "2026-11-15T12:31:25.231Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T21:25Z",
     "big": true,
-    "savedAt": 1794744999728
+    "savedAt": 1794745885231
    }
   ],
   "cfb": [
@@ -3205,7 +3205,7 @@
    }
   ]
  },
- "updated": "2026-11-15T12:16:39.691Z",
+ "updated": "2026-11-15T12:31:25.165Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3427,11 +3427,36 @@
    "size": 1,
    "american": 573,
    "dec": 6.7348,
-   "chance": 0.1943,
+   "chance": 0.2008,
    "breakEven": 0.1485,
-   "ev": 0.3087,
+   "ev": 0.3525,
    "firstKick": "2026-11-15T14:30:00.000Z",
    "legs": [
+    {
+     "id": "401873053|pp|4431452|rush_yds|under",
+     "label": "Drake Maye under 28.5 rush yds",
+     "kind": "pp",
+     "game_id": "401873053",
+     "game": "NE VS DET",
+     "league": "nfl",
+     "kick": "2026-11-15T14:30Z",
+     "price": -115,
+     "line": 28.5,
+     "win": 0.6032,
+     "bookWin": 0.5257,
+     "value": 0.1277,
+     "cat": "prop",
+     "why": "We project 27 rush yds against 28.5; our checked chance on the under is 58%, the books' 53%. DET is middle of the pack here: 24th of 32 in rush yds allowed to QBs (19 a game; league average 16).",
+     "alt": null,
+     "prop": {
+      "pid": "4431452",
+      "stat": "rush_yds",
+      "side": "under",
+      "line": 28.5,
+      "name": "Drake Maye"
+     },
+     "result": null
+    },
     {
      "id": "401873057|pp|4428557|rush_yds|under",
      "label": "Tyjae Spears under 12.5 rush yds",
@@ -3454,31 +3479,6 @@
       "side": "under",
       "line": 12.5,
       "name": "Tyjae Spears"
-     },
-     "result": null
-    },
-    {
-     "id": "401873053|pp|4431452|rush_yds|under",
-     "label": "Drake Maye under 28.5 rush yds",
-     "kind": "pp",
-     "game_id": "401873053",
-     "game": "NE VS DET",
-     "league": "nfl",
-     "kick": "2026-11-15T14:30Z",
-     "price": -115,
-     "line": 28.5,
-     "win": 0.5837,
-     "bookWin": 0.5269,
-     "value": 0.0912,
-     "cat": "prop",
-     "why": "We project 30 rush yds against 28.5; our checked chance on the under is 56%, the books' 53%. DET is middle of the pack here: 24th of 32 in rush yds allowed to QBs (19 a game; league average 16).",
-     "alt": null,
-     "prop": {
-      "pid": "4431452",
-      "stat": "rush_yds",
-      "side": "under",
-      "line": 28.5,
-      "name": "Drake Maye"
      },
      "result": null
     },
@@ -3512,7 +3512,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T12:16:39.691Z"
+   "lockedAt": "2026-11-15T12:31:25.165Z"
   }
  ],
  "teasers": [
@@ -3610,7 +3610,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T12:16:39.691Z"
+   "lockedAt": "2026-11-15T12:31:25.165Z"
   }
  ],
  "teaserLegs": [
