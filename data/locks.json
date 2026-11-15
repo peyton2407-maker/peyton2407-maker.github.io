@@ -170,7 +170,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 73.5,
-   "lockedAt": "2026-11-14T23:54:51.750Z",
+   "lockedAt": "2026-11-15T00:01:29.994Z",
    "provisional": true
   },
   "401856864": {
@@ -191,7 +191,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-14T23:54:51.750Z",
+   "lockedAt": "2026-11-15T00:01:29.994Z",
    "provisional": true
   },
   "401856882": {
@@ -862,7 +862,7 @@
    "total_play": false,
    "spread": 3,
    "total": 43.5,
-   "lockedAt": "2026-11-14T23:54:51.750Z",
+   "lockedAt": "2026-11-15T00:01:29.994Z",
    "provisional": true
   },
   "401860916": {
@@ -908,7 +908,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 64.5,
-   "lockedAt": "2026-11-14T23:54:51.750Z",
+   "lockedAt": "2026-11-15T00:01:29.994Z",
    "provisional": true
   },
   "401861967": {
@@ -1029,7 +1029,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 76.5,
-   "lockedAt": "2026-11-14T23:54:51.750Z",
+   "lockedAt": "2026-11-15T00:01:29.994Z",
    "provisional": true
   },
   "401862828": {
@@ -1125,7 +1125,7 @@
    "total_play": false,
    "spread": 7,
    "total": 39.5,
-   "lockedAt": "2026-11-14T23:54:51.750Z",
+   "lockedAt": "2026-11-15T00:01:29.994Z",
    "provisional": true
   },
   "401864538": {
@@ -1196,7 +1196,7 @@
    "total_play": false,
    "spread": 7,
    "total": 40.5,
-   "lockedAt": "2026-11-14T23:54:51.750Z",
+   "lockedAt": "2026-11-15T00:01:29.994Z",
    "provisional": true
   },
   "401866458": {
@@ -2687,7 +2687,7 @@
     "line": "UNDER 76.5",
     "hitPct": 54,
     "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 76.5. At -105 (DraftKings) the price needs 51%; we count it at 54%, so it's 6.2% better than the price. Under plays are 2-3 on the play of the day, so that record is in the pick.",
-    "label": "Best of Saturday's 17 games",
+    "label": "Best of Saturday's 12 games",
     "result": null,
     "final": null,
     "resultWhy": "",
@@ -2699,12 +2699,12 @@
     "ours": "UNT -2.9 · total 76.2",
     "score": "UNT 39.6 – UTSA 36.6",
     "market": "UNT -2.5 · total 76.5",
-    "lockedAt": "2026-11-14T23:54:51.816Z",
+    "lockedAt": "2026-11-15T00:01:30.059Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T02:00Z",
     "big": true,
-    "savedAt": 1794700491816
+    "savedAt": 1794700890060
    }
   ],
   "cfbHit": [
@@ -2851,7 +2851,7 @@
    }
   ]
  },
- "updated": "2026-11-14T23:54:51.750Z",
+ "updated": "2026-11-15T00:01:29.994Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3237,8 +3237,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7565,
-   "bookWin": 0.7527,
+   "win": 0.7564,
+   "bookWin": 0.7528,
    "total": 49.5,
    "result": null,
    "final": null
@@ -3253,8 +3253,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7526,
-   "bookWin": 0.7527,
+   "win": 0.7527,
+   "bookWin": 0.7528,
    "total": 48.5,
    "result": null,
    "final": null
@@ -3269,8 +3269,8 @@
    "from": -7.5,
    "to": -1.5,
    "book": null,
-   "win": 0.7426,
-   "bookWin": 0.7426,
+   "win": 0.7428,
+   "bookWin": 0.7428,
    "total": 50.5,
    "result": null,
    "final": null
@@ -3301,8 +3301,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7526,
-   "bookWin": 0.7527,
+   "win": 0.7527,
+   "bookWin": 0.7528,
    "total": 42.5,
    "result": null,
    "final": null
@@ -4515,9 +4515,9 @@
    "ev": 0.0956,
    "mev": 0.0861,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "BC 7, ND 41",
+   "units": -1
   },
   {
    "id": "401856861|sp|home",
@@ -4537,9 +4537,9 @@
    "ev": 0.0524,
    "mev": 0.0524,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "KU 37, WVU 14",
+   "units": -1
   },
   {
    "id": "401858295|sp|home",
@@ -4625,9 +4625,9 @@
    "ev": 0.036,
    "mev": 0.036,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "BC 7, ND 41",
+   "units": -1
   },
   {
    "id": "401858523|sp|home",
@@ -4647,9 +4647,9 @@
    "ev": 0.03,
    "mev": 0.0209,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "MICH 7, ORE 31",
+   "units": 2.5
   },
   {
    "id": "401858521|tot|over",
@@ -4872,28 +4872,6 @@
    "units": null
   },
   {
-   "id": "401864539|sp|away",
-   "gid": "401864539",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "away",
-   "label": "UNLV +10.5",
-   "game": "UNLV @ UNM",
-   "kick": "2026-11-15T00:30Z",
-   "line": 10.5,
-   "mainLine": 17.5,
-   "price": 196,
-   "book": "FanDuel",
-   "win": 0.3501,
-   "mwin": 0.3461,
-   "ev": 0.0364,
-   "mev": 0.0245,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401858519|sp|home",
    "gid": "401858519",
    "league": "cfb",
@@ -4906,10 +4884,10 @@
    "mainLine": -18.5,
    "price": 230,
    "book": "FanDuel",
-   "win": 0.3179,
-   "mwin": 0.3236,
-   "ev": 0.049,
-   "mev": 0.068,
+   "win": 0.3191,
+   "mwin": 0.3249,
+   "ev": 0.0531,
+   "mev": 0.0721,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -4921,17 +4899,17 @@
    "league": "cfb",
    "kind": "tot",
    "side": "over",
-   "label": "Over 59.5",
+   "label": "Over 58.5",
    "game": "SC @ ARK",
    "kick": "2026-11-15T00:45Z",
-   "line": 59.5,
+   "line": 58.5,
    "mainLine": 51.5,
-   "price": 215,
+   "price": 196,
    "book": "FanDuel",
-   "win": 0.327,
-   "mwin": 0.327,
-   "ev": 0.0301,
-   "mev": 0.0301,
+   "win": 0.352,
+   "mwin": 0.352,
+   "ev": 0.042,
+   "mev": 0.042,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -4972,10 +4950,10 @@
    "mainLine": -3,
    "price": 255,
    "book": "BetRivers",
-   "win": 0.2983,
-   "mwin": 0.3018,
-   "ev": 0.0588,
-   "mev": 0.0715,
+   "win": 0.3049,
+   "mwin": 0.3085,
+   "ev": 0.0824,
+   "mev": 0.0952,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -6059,9 +6037,9 @@
    "book": "BetRivers",
    "books": 6,
    "ours": 0.3735,
-   "mkt": 0.0964,
-   "win": 0.1657,
-   "ev": 1.1535,
+   "mkt": 0.0935,
+   "win": 0.1635,
+   "ev": 1.126,
    "result": null,
    "final": null,
    "units": null
@@ -6077,12 +6055,12 @@
    "game": "LAR @ ARI",
    "kick": "2026-11-15T21:05Z",
    "price": 1100,
-   "book": "FanDuel",
+   "book": "DraftKings",
    "books": 6,
    "ours": 0.1612,
-   "mkt": 0.092,
-   "win": 0.1093,
-   "ev": 0.3116,
+   "mkt": 0.0897,
+   "win": 0.1075,
+   "ev": 0.2906,
    "result": null,
    "final": null,
    "units": null
@@ -6119,12 +6097,12 @@
    "game": "LAR @ ARI",
    "kick": "2026-11-15T21:05Z",
    "price": 750,
-   "book": "DraftKings",
+   "book": "FanDuel",
    "books": 6,
    "ours": 0.1056,
-   "mkt": 0.1349,
-   "win": 0.1276,
-   "ev": 0.0843,
+   "mkt": 0.1306,
+   "win": 0.1244,
+   "ev": 0.0572,
    "result": null,
    "final": null,
    "units": null
@@ -6887,7 +6865,10 @@
    "ours": 1.5,
    "market": 1.5,
    "label": "KU +2.5",
-   "lockedAt": "2026-11-14T19:01:25.635Z"
+   "lockedAt": "2026-11-14T19:01:25.635Z",
+   "result": "HIT",
+   "units": 1,
+   "final": "KU 37, WVU 14"
   },
   {
    "id": "401858294",
@@ -6903,7 +6884,10 @@
    "ours": 28.1,
    "market": 29.5,
    "label": "BC +30",
-   "lockedAt": "2026-11-14T19:01:25.635Z"
+   "lockedAt": "2026-11-14T19:01:25.635Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "BC 7, ND 41"
   },
   {
    "id": "401858518",
@@ -6954,7 +6938,10 @@
    "ours": -11,
    "market": -10,
    "label": "ORE -11.5",
-   "lockedAt": "2026-11-14T19:01:25.635Z"
+   "lockedAt": "2026-11-14T19:01:25.635Z",
+   "result": "HIT",
+   "units": 0.9524,
+   "final": "MICH 7, ORE 31"
   },
   {
    "id": "401864536",
@@ -7008,7 +6995,10 @@
    "ours": 7.5,
    "market": 7.5,
    "label": "WKU +7.5",
-   "lockedAt": "2026-11-14T19:01:25.635Z"
+   "lockedAt": "2026-11-14T19:01:25.635Z",
+   "result": "HIT",
+   "units": 0.8696,
+   "final": "JXST 24, WKU 34"
   },
   {
    "id": "401871061",
