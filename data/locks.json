@@ -1996,7 +1996,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T22:01:53.489Z",
+   "lockedAt": "2026-11-15T23:01:37.409Z",
    "provisional": true
   }
  },
@@ -2627,12 +2627,12 @@
     "kind": "Player prop",
     "line": "Aaron Rodgers under 1.5 pass TDs",
     "hitPct": 56,
-    "why": "We project Aaron Rodgers for 1.4 pass TDs against a line of 1.5. Our checked chance on the under is 56%; the books' own chance is 52%. At -117 (DraftKings) that is 3.6% better than the price. CIN is a tough defense here: it allows the 6th-fewest pass TDs to QBs (1.1 a game; league average 1.5). The under hit in 4 of his last 8 games at this line.",
+    "why": "We project Aaron Rodgers for 1.4 pass TDs against a line of 1.5. Our checked chance on the under is 56%; the books' own chance is 52%. At -117 (DraftKings) that is 4% better than the price. CIN is a tough defense here: it allows the 6th-fewest pass TDs to QBs (1.1 a game; league average 1.5). The under hit in 4 of his last 8 games at this line.",
     "label": "Sunday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 1,
+    "units": 1.25,
     "prop": {
      "pid": "8439",
      "name": "Aaron Rodgers",
@@ -2642,16 +2642,16 @@
     },
     "price": -117,
     "book": "DraftKings",
-    "ev": 0.036,
+    "ev": 0.04,
     "ours": "CIN -4.5 · total 49.7",
     "score": "PIT 22.6 – CIN 27.1",
     "market": "CIN -3.5 · total 49.5",
-    "lockedAt": "2026-11-15T22:01:53.512Z",
+    "lockedAt": "2026-11-15T23:01:37.428Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-16T01:20Z",
     "big": false,
-    "savedAt": 1794780113512
+    "savedAt": 1794783697428
    }
   ],
   "cfb": [
@@ -3390,7 +3390,7 @@
    }
   ]
  },
- "updated": "2026-11-15T22:01:53.489Z",
+ "updated": "2026-11-15T23:01:37.409Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5887,11 +5887,11 @@
    "mainLine": -3.5,
    "price": 210,
    "book": "FanDuel",
-   "win": 0.3329,
-   "mwin": 0.3237,
-   "ev": 0.032,
-   "mev": 0.0035,
-   "src": "proj",
+   "win": 0.3348,
+   "mwin": 0.3256,
+   "ev": 0.0378,
+   "mev": 0.0093,
+   "src": "mkt",
    "result": null,
    "final": null,
    "units": null
