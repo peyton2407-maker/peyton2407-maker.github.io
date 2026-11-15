@@ -1695,7 +1695,7 @@
    "total_play": false,
    "spread": -3,
    "total": 49.5,
-   "lockedAt": "2026-11-15T03:46:41.679Z",
+   "lockedAt": "2026-11-15T04:01:43.931Z",
    "provisional": true
   }
  },
@@ -2936,7 +2936,7 @@
    }
   ]
  },
- "updated": "2026-11-15T03:46:41.679Z",
+ "updated": "2026-11-15T04:01:43.931Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3243,7 +3243,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T03:46:41.679Z"
+   "lockedAt": "2026-11-15T04:01:43.931Z"
   }
  ],
  "teasers": [
@@ -7597,7 +7597,10 @@
    "ours": 16.5,
    "market": 17.5,
    "label": "UNLV +14.5",
-   "lockedAt": "2026-11-14T23:01:27.518Z"
+   "lockedAt": "2026-11-14T23:01:27.518Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "UNLV 21, UNM 17"
   },
   {
    "id": "401856882",
