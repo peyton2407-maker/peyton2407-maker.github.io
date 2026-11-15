@@ -1695,7 +1695,7 @@
    "total_play": false,
    "spread": -3,
    "total": 49.5,
-   "lockedAt": "2026-11-15T04:16:45.245Z",
+   "lockedAt": "2026-11-15T04:31:31.319Z",
    "provisional": true
   }
  },
@@ -2936,7 +2936,7 @@
    }
   ]
  },
- "updated": "2026-11-15T04:16:45.245Z",
+ "updated": "2026-11-15T04:31:31.319Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3243,7 +3243,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T04:16:45.245Z"
+   "lockedAt": "2026-11-15T04:31:31.319Z"
   }
  ],
  "teasers": [
@@ -5093,9 +5093,9 @@
    "ev": 0.042,
    "mev": 0.042,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "SC 6, ARK 34",
+   "units": -1
   },
   {
    "id": "401860915|sp|home",
@@ -7549,7 +7549,10 @@
    "ours": 4.1,
    "market": 4.5,
    "label": "TEX +4.5",
-   "lockedAt": "2026-11-14T23:01:27.518Z"
+   "lockedAt": "2026-11-14T23:01:27.518Z",
+   "result": "HIT",
+   "units": 0.8696,
+   "final": "TEX 22, LSU 21"
   },
   {
    "id": "401858519",
@@ -7622,7 +7625,10 @@
    "ours": -7.9,
    "market": -7.5,
    "label": "SC -7.5",
-   "lockedAt": "2026-11-14T23:16:31.315Z"
+   "lockedAt": "2026-11-14T23:16:31.315Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "SC 6, ARK 34"
   },
   {
    "id": "401862827",
