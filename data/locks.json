@@ -345,7 +345,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T09:31:52.015Z",
+   "lockedAt": "2026-11-15T09:46:43.289Z",
    "provisional": true
   },
   "401856888": {
@@ -1716,7 +1716,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T09:31:52.015Z",
+   "lockedAt": "2026-11-15T09:46:43.289Z",
    "provisional": true
   },
   "401873054": {
@@ -1737,7 +1737,7 @@
    "total_play": false,
    "spread": 8.5,
    "total": 51.5,
-   "lockedAt": "2026-11-15T09:31:52.015Z",
+   "lockedAt": "2026-11-15T09:46:43.289Z",
    "provisional": true
   },
   "401873055": {
@@ -1758,7 +1758,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T09:31:52.015Z",
+   "lockedAt": "2026-11-15T09:46:43.289Z",
    "provisional": true
   },
   "401873056": {
@@ -1779,7 +1779,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T09:31:52.015Z",
+   "lockedAt": "2026-11-15T09:46:43.289Z",
    "provisional": true
   },
   "401873057": {
@@ -1800,7 +1800,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 46.5,
-   "lockedAt": "2026-11-15T09:31:52.015Z",
+   "lockedAt": "2026-11-15T09:46:43.289Z",
    "provisional": true
   },
   "401873058": {
@@ -1821,7 +1821,7 @@
    "total_play": false,
    "spread": 3,
    "total": 47.5,
-   "lockedAt": "2026-11-15T09:31:52.015Z",
+   "lockedAt": "2026-11-15T09:46:43.289Z",
    "provisional": true
   },
   "401873059": {
@@ -1842,7 +1842,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-15T09:31:52.015Z",
+   "lockedAt": "2026-11-15T09:46:43.289Z",
    "provisional": true
   },
   "401873060": {
@@ -1863,7 +1863,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 42.5,
-   "lockedAt": "2026-11-15T09:31:52.015Z",
+   "lockedAt": "2026-11-15T09:46:43.289Z",
    "provisional": true
   },
   "401873061": {
@@ -1884,7 +1884,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 38.5,
-   "lockedAt": "2026-11-15T09:31:52.015Z",
+   "lockedAt": "2026-11-15T09:46:43.289Z",
    "provisional": true
   },
   "401873062": {
@@ -1905,7 +1905,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T09:31:52.015Z",
+   "lockedAt": "2026-11-15T09:46:43.289Z",
    "provisional": true
   },
   "401873063": {
@@ -1917,16 +1917,16 @@
    "away": "SF",
    "date": "2026-11-15T21:25Z",
    "pick": "DAL",
-   "pick_line": "DAL +3.5",
+   "pick_line": "DAL +4.5",
    "total_pick": "OVER 55.5",
    "side_play": false,
-   "our_margin": -2.81,
+   "our_margin": -3.51,
    "our_total": 55.8,
    "confidence": null,
    "total_play": false,
-   "spread": 3.5,
+   "spread": 4.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T09:31:52.015Z",
+   "lockedAt": "2026-11-15T09:46:43.289Z",
    "provisional": true
   }
  },
@@ -2461,12 +2461,12 @@
     "ours": "HOU -5.0 · total 40.9",
     "score": "HOU 22.9 – CLE 18.0",
     "market": "HOU -4.5 · total 40.5",
-    "lockedAt": "2026-11-15T09:31:52.061Z",
+    "lockedAt": "2026-11-15T09:46:43.358Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T18:00Z",
     "big": true,
-    "savedAt": 1794735112061
+    "savedAt": 1794736003358
    }
   ],
   "cfb": [
@@ -3205,7 +3205,7 @@
    }
   ]
  },
- "updated": "2026-11-15T09:31:52.015Z",
+ "updated": "2026-11-15T09:46:43.289Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3512,7 +3512,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T09:31:52.015Z"
+   "lockedAt": "2026-11-15T09:46:43.289Z"
   }
  ],
  "teasers": [
@@ -3610,7 +3610,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T09:31:52.015Z"
+   "lockedAt": "2026-11-15T09:46:43.289Z"
   }
  ],
  "teaserLegs": [
@@ -5630,28 +5630,6 @@
    "ev": 0.0623,
    "mev": 0.032,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873063|sp|home",
-   "gid": "401873063",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "home",
-   "label": "DAL -2.5",
-   "game": "SF @ DAL",
-   "kick": "2026-11-15T21:25Z",
-   "line": -2.5,
-   "mainLine": 3.5,
-   "price": 225,
-   "book": "BetRivers",
-   "win": 0.3313,
-   "mwin": 0.3031,
-   "ev": 0.0768,
-   "mev": -0.015,
-   "src": "proj",
    "result": null,
    "final": null,
    "units": null
