@@ -345,7 +345,7 @@
    "total_play": true,
    "spread": -2.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T06:46:21.932Z",
+   "lockedAt": "2026-11-15T07:01:22.401Z",
    "provisional": true
   },
   "401856888": {
@@ -1716,7 +1716,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T06:46:21.932Z",
+   "lockedAt": "2026-11-15T07:01:22.401Z",
    "provisional": true
   },
   "401873054": {
@@ -1729,15 +1729,15 @@
    "date": "2026-11-15T18:00Z",
    "pick": "BUF",
    "pick_line": "BUF -7.5",
-   "total_pick": "UNDER 51.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
    "our_margin": -7.8,
-   "our_total": 51.2,
+   "our_total": 50.5,
    "confidence": null,
    "total_play": false,
    "spread": 7.5,
-   "total": 51.5,
-   "lockedAt": "2026-11-15T06:46:21.932Z",
+   "total": 50.5,
+   "lockedAt": "2026-11-15T07:01:22.401Z",
    "provisional": true
   },
   "401873055": {
@@ -1758,7 +1758,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T06:46:21.932Z",
+   "lockedAt": "2026-11-15T07:01:22.401Z",
    "provisional": true
   },
   "401873056": {
@@ -1779,7 +1779,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T06:46:21.932Z",
+   "lockedAt": "2026-11-15T07:01:22.401Z",
    "provisional": true
   },
   "401873057": {
@@ -1800,7 +1800,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 46.5,
-   "lockedAt": "2026-11-15T06:46:21.932Z",
+   "lockedAt": "2026-11-15T07:01:22.401Z",
    "provisional": true
   },
   "401873058": {
@@ -1821,7 +1821,7 @@
    "total_play": false,
    "spread": 3,
    "total": 47.5,
-   "lockedAt": "2026-11-15T06:46:21.932Z",
+   "lockedAt": "2026-11-15T07:01:22.401Z",
    "provisional": true
   },
   "401873059": {
@@ -1842,7 +1842,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-15T06:46:21.932Z",
+   "lockedAt": "2026-11-15T07:01:22.401Z",
    "provisional": true
   },
   "401873060": {
@@ -1863,7 +1863,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 42.5,
-   "lockedAt": "2026-11-15T06:46:21.932Z",
+   "lockedAt": "2026-11-15T07:01:22.401Z",
    "provisional": true
   }
  },
@@ -2398,12 +2398,12 @@
     "ours": "JAX -10.5 · total 45.7",
     "score": "JAX 28.1 – TEN 17.6",
     "market": "JAX -10.5 · total 46.5",
-    "lockedAt": "2026-11-15T06:46:21.996Z",
+    "lockedAt": "2026-11-15T07:01:22.465Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T18:00Z",
     "big": true,
-    "savedAt": 1794725181996
+    "savedAt": 1794726082465
    }
   ],
   "cfb": [
@@ -2975,9 +2975,9 @@
     "hitPct": 54,
     "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 67.5. At -108 (BetMGM) the price needs 52%; we count it at 54%, so it's 4.7% better than the price. Under plays are 2-3 on the play of the day, so that record is in the pick.",
     "label": "Saturday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "CSU 7 – WSU 73",
+    "resultWhy": "It missed. UNDER 67.5 did not cash. Final was CSU 7 – WSU 73.",
     "units": 1.25,
     "price": -108,
     "book": "BetMGM",
@@ -2994,7 +2994,8 @@
     "close_line": 64.5,
     "closeAt": "2026-11-15T02:46:14.200Z",
     "close_src": "board",
-    "clv": 3
+    "clv": 3,
+    "by": "Final total 80, 12.5 over 67.5"
    }
   ],
   "cfbHit": [
@@ -3141,7 +3142,7 @@
    }
   ]
  },
- "updated": "2026-11-15T06:46:21.932Z",
+ "updated": "2026-11-15T07:01:22.401Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3361,11 +3362,11 @@
    "tier": "value",
    "stake": 1,
    "size": 1,
-   "american": 579,
-   "dec": 6.7871,
-   "chance": 0.1991,
-   "breakEven": 0.1473,
-   "ev": 0.3515,
+   "american": 587,
+   "dec": 6.8716,
+   "chance": 0.1927,
+   "breakEven": 0.1455,
+   "ev": 0.3242,
    "firstKick": "2026-11-15T14:30:00.000Z",
    "legs": [
     {
@@ -3394,31 +3395,6 @@
      "result": null
     },
     {
-     "id": "401873054|pp|4685247|rush_yds|under",
-     "label": "Braelon Allen under 34.5 rush yds",
-     "kind": "pp",
-     "game_id": "401873054",
-     "game": "BUF @ NYJ",
-     "league": "nfl",
-     "kick": "2026-11-15T18:00Z",
-     "price": -115,
-     "line": 34.5,
-     "win": 0.5926,
-     "bookWin": 0.5283,
-     "value": 0.1079,
-     "cat": "prop",
-     "why": "We project 29 rush yds against 34.5; our checked chance on the under is 60%, the books' 53%. BUF is middle of the pack here: 10th of 32 in rush yds allowed to RBs (78 a game; league average 93).",
-     "alt": null,
-     "prop": {
-      "pid": "4685247",
-      "stat": "rush_yds",
-      "side": "under",
-      "line": 34.5,
-      "name": "Braelon Allen"
-     },
-     "result": null
-    },
-    {
      "id": "401873053|pp|4431452|rush_yds|under",
      "label": "Drake Maye under 27.5 rush yds",
      "kind": "pp",
@@ -3442,13 +3418,38 @@
       "name": "Drake Maye"
      },
      "result": null
+    },
+    {
+     "id": "401873055|pp|4685720|rush_yds|under",
+     "label": "Bryce Young under 8.5 rush yds",
+     "kind": "pp",
+     "game_id": "401873055",
+     "game": "CAR @ NO",
+     "league": "nfl",
+     "kick": "2026-11-15T18:00Z",
+     "price": -112,
+     "line": 8.5,
+     "win": 0.5735,
+     "bookWin": 0.5101,
+     "value": 0.0855,
+     "cat": "prop",
+     "why": "We project 8.7 rush yds against 8.5; our checked chance on the under is 56%, the books' 51%. NO is middle of the pack here: 23rd of 32 in rush yds allowed to QBs (19 a game; league average 16).",
+     "alt": null,
+     "prop": {
+      "pid": "4685720",
+      "stat": "rush_yds",
+      "side": "under",
+      "line": 8.5,
+      "name": "Bryce Young"
+     },
+     "result": null
     }
    ],
    "result": null,
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T06:46:21.932Z"
+   "lockedAt": "2026-11-15T07:01:22.401Z"
   }
  ],
  "teasers": [
@@ -3546,7 +3547,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T06:46:21.932Z"
+   "lockedAt": "2026-11-15T07:01:22.401Z"
   }
  ],
  "teaserLegs": [
@@ -5412,9 +5413,9 @@
    "ev": 0.0355,
    "mev": 0.0144,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "CSU 7, WSU 73",
+   "units": -1
   },
   {
    "id": "401873053|sp|away",
@@ -6137,10 +6138,10 @@
    "price": 550,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0.3013,
-   "mkt": 0.1491,
-   "win": 0.1871,
-   "ev": 0.2163,
+   "ours": 0.2978,
+   "mkt": 0.1459,
+   "win": 0.1839,
+   "ev": 0.1954,
    "result": null,
    "final": null,
    "units": null
@@ -6179,10 +6180,10 @@
    "price": 420,
    "book": "FanDuel",
    "books": 6,
-   "ours": 0.2966,
-   "mkt": 0.1829,
-   "win": 0.2113,
-   "ev": 0.0988,
+   "ours": 0.2932,
+   "mkt": 0.1791,
+   "win": 0.2076,
+   "ev": 0.0798,
    "result": null,
    "final": null,
    "units": null
@@ -8095,7 +8096,10 @@
    "ours": 7.1,
    "market": 8.5,
    "label": "CSU +9.5",
-   "lockedAt": "2026-11-15T02:17:00.533Z"
+   "lockedAt": "2026-11-15T02:17:00.533Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "CSU 7, WSU 73"
   },
   {
    "id": "401864537",
