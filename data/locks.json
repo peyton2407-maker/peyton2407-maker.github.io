@@ -345,7 +345,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T09:01:33.273Z",
+   "lockedAt": "2026-11-15T09:16:55.310Z",
    "provisional": true
   },
   "401856888": {
@@ -1716,7 +1716,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T09:01:33.273Z",
+   "lockedAt": "2026-11-15T09:16:55.310Z",
    "provisional": true
   },
   "401873054": {
@@ -1737,7 +1737,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 51.5,
-   "lockedAt": "2026-11-15T09:01:33.273Z",
+   "lockedAt": "2026-11-15T09:16:55.310Z",
    "provisional": true
   },
   "401873055": {
@@ -1758,7 +1758,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T09:01:33.273Z",
+   "lockedAt": "2026-11-15T09:16:55.310Z",
    "provisional": true
   },
   "401873056": {
@@ -1779,7 +1779,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T09:01:33.273Z",
+   "lockedAt": "2026-11-15T09:16:55.310Z",
    "provisional": true
   },
   "401873057": {
@@ -1800,7 +1800,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 46.5,
-   "lockedAt": "2026-11-15T09:01:33.273Z",
+   "lockedAt": "2026-11-15T09:16:55.310Z",
    "provisional": true
   },
   "401873058": {
@@ -1821,7 +1821,7 @@
    "total_play": false,
    "spread": 3,
    "total": 47.5,
-   "lockedAt": "2026-11-15T09:01:33.273Z",
+   "lockedAt": "2026-11-15T09:16:55.310Z",
    "provisional": true
   },
   "401873059": {
@@ -1842,7 +1842,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-15T09:01:33.273Z",
+   "lockedAt": "2026-11-15T09:16:55.310Z",
    "provisional": true
   },
   "401873060": {
@@ -1863,7 +1863,49 @@
    "total_play": false,
    "spread": -2.5,
    "total": 42.5,
-   "lockedAt": "2026-11-15T09:01:33.273Z",
+   "lockedAt": "2026-11-15T09:16:55.310Z",
+   "provisional": true
+  },
+  "401873061": {
+   "id": "401873061",
+   "league": "nfl",
+   "week": 10,
+   "short": "LAR @ ARI",
+   "home": "ARI",
+   "away": "LAR",
+   "date": "2026-11-15T21:05Z",
+   "pick": "LAR",
+   "pick_line": "LAR -9.5",
+   "total_pick": "OVER 38.5",
+   "side_play": false,
+   "our_margin": -9.63,
+   "our_total": 39.8,
+   "confidence": null,
+   "total_play": false,
+   "spread": 9.5,
+   "total": 38.5,
+   "lockedAt": "2026-11-15T09:16:55.310Z",
+   "provisional": true
+  },
+  "401873062": {
+   "id": "401873062",
+   "league": "nfl",
+   "week": 10,
+   "short": "SEA @ LV",
+   "home": "LV",
+   "away": "SEA",
+   "date": "2026-11-15T21:05Z",
+   "pick": "LV",
+   "pick_line": "LV +6.5",
+   "total_pick": "UNDER 40.5",
+   "side_play": false,
+   "our_margin": -6.16,
+   "our_total": 39.2,
+   "confidence": null,
+   "total_play": false,
+   "spread": 6.5,
+   "total": 40.5,
+   "lockedAt": "2026-11-15T09:16:55.310Z",
    "provisional": true
   }
  },
@@ -2398,12 +2440,12 @@
     "ours": "HOU -5.0 · total 40.9",
     "score": "HOU 22.9 – CLE 18.0",
     "market": "HOU -4.5 · total 40.5",
-    "lockedAt": "2026-11-15T09:01:33.339Z",
+    "lockedAt": "2026-11-15T09:16:55.356Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T18:00Z",
     "big": true,
-    "savedAt": 1794733293339
+    "savedAt": 1794734215356
    }
   ],
   "cfb": [
@@ -3142,7 +3184,7 @@
    }
   ]
  },
- "updated": "2026-11-15T09:01:33.273Z",
+ "updated": "2026-11-15T09:16:55.310Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3364,9 +3406,9 @@
    "size": 1,
    "american": 579,
    "dec": 6.7871,
-   "chance": 0.1983,
+   "chance": 0.1991,
    "breakEven": 0.1473,
-   "ev": 0.3461,
+   "ev": 0.3515,
    "firstKick": "2026-11-15T14:30:00.000Z",
    "legs": [
     {
@@ -3429,9 +3471,9 @@
      "kick": "2026-11-15T14:30Z",
      "price": -108,
      "line": 27.5,
-     "win": 0.5669,
-     "bookWin": 0.5072,
-     "value": 0.0918,
+     "win": 0.5691,
+     "bookWin": 0.5115,
+     "value": 0.0961,
      "cat": "prop",
      "why": "We project 29 rush yds against 27.5; our checked chance on the under is 54%, the books' 51%. DET is middle of the pack here: 24th of 32 in rush yds allowed to QBs (19 a game; league average 16).",
      "alt": null,
@@ -3449,7 +3491,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T09:01:33.273Z"
+   "lockedAt": "2026-11-15T09:16:55.310Z"
   }
  ],
  "teasers": [
@@ -3547,7 +3589,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T09:01:33.273Z"
+   "lockedAt": "2026-11-15T09:16:55.310Z"
   }
  ],
  "teaserLegs": [
@@ -5562,10 +5604,10 @@
    "mainLine": 38.5,
    "price": 300,
    "book": "FanDuel",
-   "win": 0.2682,
-   "mwin": 0.2606,
-   "ev": 0.0729,
-   "mev": 0.0426,
+   "win": 0.2656,
+   "mwin": 0.258,
+   "ev": 0.0623,
+   "mev": 0.032,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -5577,17 +5619,17 @@
    "league": "nfl",
    "kind": "sp",
    "side": "home",
-   "label": "DAL -3",
+   "label": "DAL -2.5",
    "game": "SF @ DAL",
    "kick": "2026-11-15T21:25Z",
-   "line": -3,
+   "line": -2.5,
    "mainLine": 3.5,
-   "price": 280,
+   "price": 225,
    "book": "BetRivers",
-   "win": 0.2612,
-   "mwin": 0.2358,
-   "ev": 0.0666,
-   "mev": -0.033,
+   "win": 0.3313,
+   "mwin": 0.3031,
+   "ev": 0.0768,
+   "mev": -0.015,
    "src": "proj",
    "result": null,
    "final": null,
