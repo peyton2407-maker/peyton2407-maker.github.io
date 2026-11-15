@@ -1972,10 +1972,10 @@
    "spread": 4.5,
    "total": 55.5,
    "lockedAt": "2026-11-15T20:01:25.015Z",
-   "close_spread": 4.5,
+   "close_spread": 3.5,
    "close_total": 55.5,
-   "closeAt": "2026-11-15T20:29:44.977Z",
-   "clv_side": 0,
+   "closeAt": "2026-11-15T21:01:42.909Z",
+   "clv_side": 1,
    "clv_total": 0
   },
   "401873064": {
@@ -1996,7 +1996,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T20:46:58.703Z",
+   "lockedAt": "2026-11-15T21:01:42.909Z",
    "provisional": true
   }
  },
@@ -3314,7 +3314,7 @@
    }
   ]
  },
- "updated": "2026-11-15T20:46:58.703Z",
+ "updated": "2026-11-15T21:01:42.909Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3740,12 +3740,12 @@
      "win": 0.7566,
      "bookWin": 0.7528,
      "total": 42.5,
-     "result": null,
-     "final": null
+     "result": "HIT",
+     "final": "MIN 30, GB 10"
     }
    ],
-   "result": null,
-   "units": null,
+   "result": "MISS",
+   "units": -1,
    "locked": true,
    "provisional": false,
    "lockedAt": "2026-11-15T13:01:23.839Z"
@@ -3941,8 +3941,8 @@
    "win": 0.7524,
    "bookWin": 0.7524,
    "total": 42.5,
-   "result": null,
-   "final": null
+   "result": "HIT",
+   "final": "MIN 30, GB 10"
   }
  ],
  "altLines": [
@@ -5782,12 +5782,12 @@
    "game": "SF @ DAL",
    "kick": "2026-11-15T21:25Z",
    "line": -2,
-   "mainLine": 4.5,
+   "mainLine": 3.5,
    "price": 220,
    "book": "BetRivers",
-   "win": 0.3161,
-   "mwin": 0.3078,
-   "ev": 0.0338,
+   "win": 0.3358,
+   "mwin": 0.3075,
+   "ev": 0.098,
    "mev": 0.0067,
    "src": "mkt",
    "result": null,
@@ -7782,7 +7782,10 @@
    "ours": 2,
    "market": 2.5,
    "label": "MIN +4.5",
-   "lockedAt": "2026-11-15T16:31:33.780Z"
+   "lockedAt": "2026-11-15T16:31:33.780Z",
+   "result": "HIT",
+   "units": 1,
+   "final": "MIN 30, GB 10"
   },
   {
    "id": "401873057",
