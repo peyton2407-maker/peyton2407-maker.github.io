@@ -345,7 +345,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T14:16:25.934Z",
+   "lockedAt": "2026-11-15T14:31:26.625Z",
    "provisional": true
   },
   "401856888": {
@@ -1762,7 +1762,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T14:16:25.934Z",
+   "lockedAt": "2026-11-15T14:31:26.625Z",
    "provisional": true
   },
   "401873056": {
@@ -1775,15 +1775,15 @@
    "date": "2026-11-15T18:00Z",
    "pick": "HOU",
    "pick_line": "HOU -4.5",
-   "total_pick": "UNDER 40.5",
+   "total_pick": "OVER 40.5",
    "side_play": false,
    "our_margin": -4.96,
-   "our_total": 40,
+   "our_total": 40.9,
    "confidence": null,
    "total_play": false,
    "spread": 4.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T14:16:25.934Z",
+   "lockedAt": "2026-11-15T14:31:26.625Z",
    "provisional": true
   },
   "401873057": {
@@ -1804,7 +1804,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 45.5,
-   "lockedAt": "2026-11-15T14:16:25.934Z",
+   "lockedAt": "2026-11-15T14:31:26.625Z",
    "provisional": true
   },
   "401873058": {
@@ -1825,7 +1825,7 @@
    "total_play": false,
    "spread": 3,
    "total": 47.5,
-   "lockedAt": "2026-11-15T14:16:25.934Z",
+   "lockedAt": "2026-11-15T14:31:26.625Z",
    "provisional": true
   },
   "401873059": {
@@ -1846,7 +1846,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-15T14:16:25.934Z",
+   "lockedAt": "2026-11-15T14:31:26.625Z",
    "provisional": true
   },
   "401873060": {
@@ -1858,16 +1858,16 @@
    "away": "MIN",
    "date": "2026-11-15T18:00Z",
    "pick": "MIN",
-   "pick_line": "MIN +3.0",
+   "pick_line": "MIN +2.5",
    "total_pick": "UNDER 42.5",
    "side_play": false,
-   "our_margin": 2.63,
+   "our_margin": 2.28,
    "our_total": 42.1,
    "confidence": null,
    "total_play": false,
-   "spread": -3,
+   "spread": -2.5,
    "total": 42.5,
-   "lockedAt": "2026-11-15T14:16:25.934Z",
+   "lockedAt": "2026-11-15T14:31:26.625Z",
    "provisional": true
   },
   "401873061": {
@@ -1888,7 +1888,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 38.5,
-   "lockedAt": "2026-11-15T14:16:25.934Z",
+   "lockedAt": "2026-11-15T14:31:26.625Z",
    "provisional": true
   },
   "401873062": {
@@ -1909,7 +1909,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T14:16:25.934Z",
+   "lockedAt": "2026-11-15T14:31:26.625Z",
    "provisional": true
   },
   "401873063": {
@@ -1930,7 +1930,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T14:16:25.934Z",
+   "lockedAt": "2026-11-15T14:31:26.625Z",
    "provisional": true
   },
   "401873064": {
@@ -1951,7 +1951,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T14:16:25.934Z",
+   "lockedAt": "2026-11-15T14:31:26.625Z",
    "provisional": true
   }
  },
@@ -2468,7 +2468,7 @@
     "line": "Keon Coleman under 2.5 receptions",
     "hitPct": 60,
     "why": "We project Keon Coleman for 2.1 receptions against a line of 2.5. Our checked chance on the under is 60%; the books' own chance is 57%. At -148 (FanDuel) that is 0.8% better than the price. NYJ is middle of the pack here: 9th of 32 in receptions allowed to WRs (10 a game; league average 11). The under hit in 4 of his last 8 games at this line.",
-    "label": "Best of Sunday's 11 games",
+    "label": "Best of Sunday's 10 games",
     "result": null,
     "final": null,
     "resultWhy": "",
@@ -2486,12 +2486,12 @@
     "ours": "BUF -8.5 · total 50.5",
     "score": "BUF 29.5 – NYJ 21.0",
     "market": "BUF -8.5 · total 50.5",
-    "lockedAt": "2026-11-15T14:16:25.990Z",
+    "lockedAt": "2026-11-15T14:31:26.670Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T18:00Z",
     "big": true,
-    "savedAt": 1794752185990
+    "savedAt": 1794753086670
    }
   ],
   "cfb": [
@@ -3230,7 +3230,7 @@
    }
   ]
  },
- "updated": "2026-11-15T14:16:25.934Z",
+ "updated": "2026-11-15T14:31:26.625Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3516,7 +3516,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-15T14:16:25.934Z",
+      "at": "2026-11-15T14:31:26.625Z",
       "line": 11.5,
       "price": -104,
       "book": "DraftKings",
@@ -3550,7 +3550,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-15T14:16:25.934Z",
+      "at": "2026-11-15T14:31:26.625Z",
       "line": 8.5,
       "price": -107,
       "book": "DraftKings",
@@ -3839,6 +3839,22 @@
    "win": 0.6276,
    "bookWin": 0.6519,
    "total": 37.5,
+   "result": null,
+   "final": null
+  },
+  {
+   "id": "401873060|sp|away",
+   "gid": "401873060",
+   "team": "MIN",
+   "side": "away",
+   "game": "MIN @ GB",
+   "kick": "2026-11-15T18:00Z",
+   "from": 2.5,
+   "to": 8.5,
+   "book": null,
+   "win": 0.7525,
+   "bookWin": 0.7524,
+   "total": 42.5,
    "result": null,
    "final": null
   }
@@ -5617,9 +5633,9 @@
    "mainLine": 40.5,
    "price": 300,
    "book": "ESPN BET",
-   "win": 0.2633,
+   "win": 0.2579,
    "mwin": 0.2603,
-   "ev": 0.0531,
+   "ev": 0.0317,
    "mev": 0.0411,
    "src": "mkt",
    "result": null,
@@ -6173,10 +6189,10 @@
    "price": 750,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0.1996,
+   "ours": 0.2059,
    "mkt": 0.1217,
-   "win": 0.1412,
-   "ev": 0.1999,
+   "win": 0.1427,
+   "ev": 0.2132,
    "result": null,
    "final": null,
    "units": null
@@ -6362,10 +6378,10 @@
    "price": 370,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.2699,
+   "ours": 0.274,
    "mkt": 0.2247,
-   "win": 0.236,
-   "ev": 0.1091,
+   "win": 0.237,
+   "ev": 0.1139,
    "result": null,
    "final": null,
    "units": null
@@ -6383,10 +6399,10 @@
    "price": 380,
    "book": "FanDuel",
    "books": 6,
-   "ours": 0.2567,
+   "ours": 0.2606,
    "mkt": 0.2127,
-   "win": 0.2237,
-   "ev": 0.0737,
+   "win": 0.2247,
+   "ev": 0.0784,
    "result": null,
    "final": null,
    "units": null
@@ -6404,10 +6420,10 @@
    "price": 500,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0.1867,
+   "ours": 0.1897,
    "mkt": 0.1854,
-   "win": 0.1857,
-   "ev": 0.1143,
+   "win": 0.1865,
+   "ev": 0.1188,
    "result": null,
    "final": null,
    "units": null
@@ -6467,10 +6483,10 @@
    "price": 450,
    "book": "BetMGM",
    "books": 6,
-   "ours": 0.207,
-   "mkt": 0.1857,
-   "win": 0.191,
-   "ev": 0.0508,
+   "ours": 0.2088,
+   "mkt": 0.1879,
+   "win": 0.1931,
+   "ev": 0.062,
    "result": null,
    "final": null,
    "units": null
@@ -6488,10 +6504,10 @@
    "price": 1900,
    "book": "Fanatics",
    "books": 6,
-   "ours": 0.0672,
-   "mkt": 0.0554,
-   "win": 0.0583,
-   "ev": 0.1669,
+   "ours": 0.0679,
+   "mkt": 0.0561,
+   "win": 0.059,
+   "ev": 0.1804,
    "result": null,
    "final": null,
    "units": null
@@ -6509,10 +6525,10 @@
    "price": 750,
    "book": "BetRivers",
    "books": 5,
-   "ours": 0.1015,
-   "mkt": 0.133,
-   "win": 0.1251,
-   "ev": 0.0636,
+   "ours": 0.1006,
+   "mkt": 0.1316,
+   "win": 0.1239,
+   "ev": 0.053,
    "result": null,
    "final": null,
    "units": null
@@ -6681,27 +6697,6 @@
    "mkt": 0.1344,
    "win": 0.1404,
    "ev": 0.0529,
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "key": "401873064|4430802",
-   "gid": "401873064",
-   "pid": "4430802",
-   "name": "Darnell Washington",
-   "pos": "TE",
-   "team": "PIT",
-   "opp": "CIN",
-   "game": "PIT @ CIN",
-   "kick": "2026-11-16T01:20Z",
-   "price": 255,
-   "book": "BetRivers",
-   "books": 6,
-   "ours": 0.3591,
-   "mkt": 0.2695,
-   "win": 0.2919,
-   "ev": 0.0362,
    "result": null,
    "final": null,
    "units": null
