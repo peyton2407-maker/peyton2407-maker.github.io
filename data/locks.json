@@ -345,7 +345,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T06:01:33.911Z",
+   "lockedAt": "2026-11-15T06:16:42.502Z",
    "provisional": true
   },
   "401856888": {
@@ -1716,7 +1716,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T06:01:33.911Z",
+   "lockedAt": "2026-11-15T06:16:42.502Z",
    "provisional": true
   },
   "401873054": {
@@ -1737,7 +1737,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 51.5,
-   "lockedAt": "2026-11-15T06:01:33.911Z",
+   "lockedAt": "2026-11-15T06:16:42.502Z",
    "provisional": true
   },
   "401873055": {
@@ -1758,7 +1758,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T06:01:33.911Z",
+   "lockedAt": "2026-11-15T06:16:42.502Z",
    "provisional": true
   },
   "401873056": {
@@ -1779,7 +1779,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T06:01:33.911Z",
+   "lockedAt": "2026-11-15T06:16:42.502Z",
    "provisional": true
   },
   "401873057": {
@@ -1800,7 +1800,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 46.5,
-   "lockedAt": "2026-11-15T06:01:33.911Z",
+   "lockedAt": "2026-11-15T06:16:42.502Z",
    "provisional": true
   },
   "401873058": {
@@ -1821,7 +1821,7 @@
    "total_play": false,
    "spread": 3,
    "total": 47.5,
-   "lockedAt": "2026-11-15T06:01:33.911Z",
+   "lockedAt": "2026-11-15T06:16:42.502Z",
    "provisional": true
   },
   "401873059": {
@@ -1842,7 +1842,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-15T06:01:33.911Z",
+   "lockedAt": "2026-11-15T06:16:42.502Z",
    "provisional": true
   },
   "401873060": {
@@ -1863,7 +1863,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 42.5,
-   "lockedAt": "2026-11-15T06:01:33.911Z",
+   "lockedAt": "2026-11-15T06:16:42.502Z",
    "provisional": true
   }
  },
@@ -2398,12 +2398,12 @@
     "ours": "JAX -10.5 · total 45.7",
     "score": "JAX 28.1 – TEN 17.6",
     "market": "JAX -10.5 · total 46.5",
-    "lockedAt": "2026-11-15T06:01:33.956Z",
+    "lockedAt": "2026-11-15T06:16:42.566Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T18:00Z",
     "big": true,
-    "savedAt": 1794722493956
+    "savedAt": 1794723402566
    }
   ],
   "cfb": [
@@ -3141,7 +3141,7 @@
    }
   ]
  },
- "updated": "2026-11-15T06:01:33.911Z",
+ "updated": "2026-11-15T06:16:42.502Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3448,7 +3448,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T06:01:33.911Z"
+   "lockedAt": "2026-11-15T06:16:42.502Z"
   }
  ],
  "teasers": [
@@ -3546,7 +3546,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T06:01:33.911Z"
+   "lockedAt": "2026-11-15T06:16:42.502Z"
   }
  ],
  "teaserLegs": [
@@ -5368,9 +5368,9 @@
    "ev": 0.0592,
    "mev": 0.0466,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "USU 13, SDSU 30",
+   "units": 2.6
   },
   {
    "id": "401860915|sp|away",
@@ -5390,9 +5390,9 @@
    "ev": 0.0491,
    "mev": 0.0617,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "USU 13, SDSU 30",
+   "units": -1
   },
   {
    "id": "401860917|sp|away",
@@ -8038,7 +8038,10 @@
    "ours": 2.3,
    "market": 3,
    "label": "SDSU +2.5",
-   "lockedAt": "2026-11-15T01:01:24.803Z"
+   "lockedAt": "2026-11-15T01:01:24.803Z",
+   "result": "HIT",
+   "units": 1,
+   "final": "USU 13, SDSU 30"
   },
   {
    "id": "401864540",
