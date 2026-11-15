@@ -1695,7 +1695,7 @@
    "total_play": false,
    "spread": -3,
    "total": 49.5,
-   "lockedAt": "2026-11-15T04:01:43.931Z",
+   "lockedAt": "2026-11-15T04:16:45.245Z",
    "provisional": true
   }
  },
@@ -2936,7 +2936,7 @@
    }
   ]
  },
- "updated": "2026-11-15T04:01:43.931Z",
+ "updated": "2026-11-15T04:16:45.245Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3243,7 +3243,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T04:01:43.931Z"
+   "lockedAt": "2026-11-15T04:16:45.245Z"
   }
  ],
  "teasers": [
@@ -5049,9 +5049,9 @@
    "ev": 0.0379,
    "mev": 0.0305,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "STAN 40, VT 22",
+   "units": -1
   },
   {
    "id": "401858519|sp|home",
@@ -5169,17 +5169,17 @@
    "league": "nfl",
    "kind": "sp",
    "side": "away",
-   "label": "NE -5",
+   "label": "NE -4.5",
    "game": "NE VS DET",
    "kick": "2026-11-15T14:30Z",
-   "line": -5,
+   "line": -4.5,
    "mainLine": 3,
-   "price": 295,
+   "price": 275,
    "book": "BetRivers",
-   "win": 0.2751,
-   "mwin": 0.2629,
-   "ev": 0.1087,
-   "mev": 0.0599,
+   "win": 0.2953,
+   "mwin": 0.2827,
+   "ev": 0.1074,
+   "mev": 0.06,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -7530,7 +7530,10 @@
    "ours": -6.7,
    "market": -6.5,
    "label": "TLSA -5.5",
-   "lockedAt": "2026-11-14T22:46:21.346Z"
+   "lockedAt": "2026-11-14T22:46:21.346Z",
+   "result": "HIT",
+   "units": 0.9259,
+   "final": "FAU 21, TLSA 38"
   },
   {
    "id": "401856885",
@@ -7581,7 +7584,10 @@
    "ours": -18.9,
    "market": -17.5,
    "label": "VT -15",
-   "lockedAt": "2026-11-14T23:01:27.518Z"
+   "lockedAt": "2026-11-14T23:01:27.518Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "STAN 40, VT 22"
   },
   {
    "id": "401864539",
