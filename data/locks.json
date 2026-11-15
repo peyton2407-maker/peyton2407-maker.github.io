@@ -1695,7 +1695,7 @@
    "total_play": false,
    "spread": -3,
    "total": 49.5,
-   "lockedAt": "2026-11-15T03:31:31.599Z",
+   "lockedAt": "2026-11-15T03:46:41.679Z",
    "provisional": true
   }
  },
@@ -2936,7 +2936,7 @@
    }
   ]
  },
- "updated": "2026-11-15T03:31:31.599Z",
+ "updated": "2026-11-15T03:46:41.679Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3243,7 +3243,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T03:31:31.599Z"
+   "lockedAt": "2026-11-15T03:46:41.679Z"
   }
  ],
  "teasers": [
@@ -5071,9 +5071,9 @@
    "ev": 0.061,
    "mev": 0.0721,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "PUR 7, IOWA 28",
+   "units": -1
   },
   {
    "id": "401856882|tot|over",
@@ -7562,7 +7562,10 @@
    "ours": 16.9,
    "market": 18.5,
    "label": "PUR +17.5",
-   "lockedAt": "2026-11-14T23:01:27.518Z"
+   "lockedAt": "2026-11-14T23:01:27.518Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "PUR 7, IOWA 28"
   },
   {
    "id": "401858299",
