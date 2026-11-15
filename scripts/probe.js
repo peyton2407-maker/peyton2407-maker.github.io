@@ -1,10 +1,13 @@
 async () => {
-  await new Promise((r) => setTimeout(r, 12000));
+  await new Promise((r) => setTimeout(r, 15000));
   try { await loadGamelogs(); } catch (e) {}
-  const leans = nextPropRows().map((p) => postedLean(p)).filter(Boolean);
-  const plays = leans.filter((L) => L.value > 0.005);
-  const nfl = (DATA.games || []).filter((g) => g.league === "nfl" && !g.completed && Date.parse(g.date) > Date.now());
-  return { keepOver: pbPropKeep("over", "rec").k.toFixed(3), keepUnder: pbPropKeep("under", "rec").k.toFixed(3), keepNflTot: pbKeep("nfl", "total").k.toFixed(3),
-    posted: leans.length, overPlays: plays.filter((L) => L.take === "Over").length, underPlays: plays.filter((L) => L.take === "Under").length, proven: leans.filter((L) => L.proven).length,
-    nflBoard: nfl.map((g) => `${g.short_name} side ${g.proj.pick} total ${g.proj.total_pick}`), cfbRate: cfbHighRate().toFixed(4) };
+  for (let i = 0; i < 20 && !(window.PB_PROPS && window.TD_MODEL); i++) await new Promise((r) => setTimeout(r, 1000));
+  let picks = [];
+  try { picks = tdValueRows().map(({ r, mk, win, ev }) => `${r.name} ${r.pos} ${r.team} ${pbAm(mk.off.best.odds)} ${mk.off.best.book} ${Math.round(win * 100)}% value ${(ev * 100).toFixed(1)}% ${new Date(r.date).toLocaleString("en-US", { weekday: "short", hour: "numeric", timeZone: "America/New_York" })}`); } catch (e) { picks = ["ERR " + e]; }
+  try { setView("tds"); } catch (e) {}
+  await new Promise((r) => setTimeout(r, 4000));
+  const hero = [...document.querySelectorAll("#tdHero .td-hero-card")].map((e) => e.innerText.replace(/\s+/g, " ").slice(0, 160));
+  const rec = (document.getElementById("tdRecord") || {}).innerText || "";
+  const top = [...document.querySelectorAll(".tdl-row summary")].slice(0, 8).map((e) => e.innerText.replace(/\s+/g, " ").slice(0, 120));
+  return { model: !!window.TD_MODEL, picks, hero, rec: rec.replace(/\s+/g, " ").slice(0, 600), top, bad: ((document.querySelector("main") || document.body).innerText.match(/\bNaN\b|\bundefined\b/g) || []).length };
 }

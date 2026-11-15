@@ -32,6 +32,9 @@ jobs:
       - name: Defense tiers by stat for prop matchups (nflverse weekly stats)
         continue-on-error: true
         run: python3 scripts/def_tiers.py
+      - name: Anytime TD chances for this week (nflverse weekly stats)
+        continue-on-error: true
+        run: python3 scripts/td_model.py
       - name: Plays per game for the totals model's pace
         continue-on-error: true
         run: python3 scripts/team_pace.py
@@ -46,6 +49,7 @@ jobs:
           if [ -f data/team-pace.json ]; then git add data/team-pace.json; fi
           if [ -f data/red-zone.json ]; then git add data/red-zone.json; fi
           if [ -f data/def-tiers.json ]; then git add data/def-tiers.json; fi
+          if [ -f data/td-model.json ]; then git add data/td-model.json; fi
           if git diff --cached --quiet; then
             echo "Nothing new."
             exit 0

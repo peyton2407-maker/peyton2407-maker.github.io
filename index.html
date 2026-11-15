@@ -3061,8 +3061,8 @@ table.props b.down { color: var(--muted); font-weight: 600; }
           <option value="QB">QB rush TDs</option>
         </select>
         <select id="tdSort" class="lg-select">
-          <option value="value">Sort: best value</option>
           <option value="hit">Sort: most likely</option>
+          <option value="value">Sort: best value</option>
           <option value="lambda">Sort: projected TDs</option>
           <option value="kick">Sort: kickoff</option>
         </select>
@@ -7530,6 +7530,24 @@ function tdHit(r, market) {
 // a rushing or receiving touchdown is a hit, a game without one a miss, and a player who didn't
 // play is void, the way the books settle it. 1 unit at the price saved.
 const TD_PICK_MIN = 0.03;
+// From Nov 15, 2026 the picks are players LIKELY to score, not long shots. The old rule took any
+// price our number beat by 3%+, which meant +300 to +1700 players who score 15-25% of the time
+// (2-13). Now: the scoring model (data/td-model.json, scripts/td_model.py) gives him 50%+, his
+// best price is still fair at that chance, and he isn't on the injury report; ranked by chance.
+// Tested on 2026 weeks 1-9 (games the model never saw): players at 50%+ scored 56% of the time
+// (50 of 89), 60%+ 62%; the top 3 a week scored 17 of 21.
+const TD_LIKELY_MIN = 0.5, TD_RULE_START = "2026-11-15";
+function tdModelFor(r) {
+  const m = window.TD_MODEL && window.TD_MODEL.players && window.TD_MODEL.players[String(r.id)];
+  return m && Number.isFinite(Number(m.p)) ? m : null;
+}
+// the chance shown and used: the scoring model's when it has the player (zero if he's listed
+// out), otherwise the old blend of the books and our touchdown split
+function tdChance(r, mk, keep) {
+  const m = tdModelFor(r);
+  if (m) return r.inj >= 1 ? 0 : Number(m.p) * (r.inj > 0 ? 0.6 : 1);
+  return mk ? Math.max(0.005, Math.min(0.99, mk.mkt + keep * (r.anytime - mk.mkt))) : r.anytime;
+}
 // red-zone usage (data/red-zone.json, scripts/red_zone.py from the nflverse play-by-play): a
 // player's carries and targets inside the 10 over his team's last 4 games, against the team's
 function tdRedZone(r) {
@@ -7551,16 +7569,15 @@ function tdRedZone(r) {
 }
 function tdValueRows() {
   const rows = collectTdBoard(), MK = tdMarketMap(rows);
-  const keep = typeof pbKeep === "function" ? pbKeep("nfl", "td").k : 0.25;
   const out = [];
   rows.forEach((r) => {
-    const mk = MK.get(r.game_id + "|" + r.id);
-    if (!mk || !(r.lam > 0) || r.anytime < 0.03) return;
-    const win = Math.max(0.005, Math.min(0.99, mk.mkt + keep * (r.anytime - mk.mkt)));
+    const mk = MK.get(r.game_id + "|" + r.id), m = tdModelFor(r);
+    if (!mk || !m || r.inj > 0) return;
+    const win = Number(m.p);
     const ev = win * pbDec(mk.off.best.odds) - 1;
-    if (ev >= TD_PICK_MIN) out.push({ r, mk, win, ev });
+    if (win >= TD_LIKELY_MIN && ev >= 0) out.push({ r, mk, win, ev, model: m });
   });
-  return out.sort((a, b) => b.ev - a.ev);
+  return out.sort((a, b) => b.win - a.win || b.ev - a.ev);
 }
 function tdGradeRow(x, now) {
   if (x.result) return false;
@@ -7598,7 +7615,7 @@ function tdLockRun(out, changes, now) {
       const was = L.get(key);
       if (was && Date.parse(was.kick) <= now) return;
       const row = { key, gid: String(r.game_id), pid: String(r.id), name: r.name, pos: r.pos, team: r.team, opp: r.opp, game: r.game, kick: r.date,
-        price: Number(mk.off.best.odds), book: mk.off.best.book, books: mk.off.all.length, ours: +r.anytime.toFixed(4), mkt: +mk.mkt.toFixed(4), win: +win.toFixed(4), ev: +ev.toFixed(4), result: null, final: null, units: null };
+        price: Number(mk.off.best.odds), book: mk.off.best.book, books: mk.off.all.length, ours: +r.anytime.toFixed(4), mkt: +mk.mkt.toFixed(4), win: +win.toFixed(4), ev: +ev.toFixed(4), rule: "likely", result: null, final: null, units: null };
       const sig = (x) => x ? [x.price, x.book, Math.round(x.ev * 200)].join("|") : "";
       if (sig(was) !== sig(row)) { L.set(key, row); changes.push("td pick " + r.name + " " + pbAm(row.price) + " " + row.book); }
     });
@@ -7609,21 +7626,22 @@ function tdLockRun(out, changes, now) {
 }
 function tdRecordHtml() {
   const all = ((window.GG_LOCKS || {}).tdPicks || []).filter(Boolean);
-  const done = all.filter((x) => x.result === "HIT" || x.result === "MISS");
+  const isNew = (x) => x.rule === "likely" || String(x.kick || "") >= TD_RULE_START;
+  const done = all.filter((x) => (x.result === "HIT" || x.result === "MISS") && isNew(x));
+  const old = all.filter((x) => (x.result === "HIT" || x.result === "MISS") && !isNew(x));
   const w = done.filter((x) => x.result === "HIT").length, l = done.length - w;
   const u = done.reduce((a, x) => a + Number(x.units || 0), 0);
-  const exp = done.reduce((a, x) => a + Number(x.ev || 0), 0);
   const expHits = done.reduce((a, x) => a + Number(x.win || 0), 0);
-  const open = all.filter((x) => !x.result && Date.parse(x.kick) > Date.now()).length;
+  const ow = old.filter((x) => x.result === "HIT").length, ou = old.reduce((a, x) => a + Number(x.units || 0), 0);
   const um = (x) => `${x >= 0 ? "+" : "−"}${Math.abs(x).toFixed(2)}u`;
-  const recent = done.slice().reverse().slice(0, 12).map((x) => `<li class="${x.result === "HIT" ? "hit" : "miss"}"><b>${pbEsc(x.name)} ${pbEsc(pbAm(x.price))}</b> <span>${x.result === "HIT" ? "Scored" : "No TD"} · ${pbEsc(x.book)} · ${pbEsc(x.game)}${x.final && x.result === "HIT" ? " · " + pbEsc(x.final) : ""}</span></li>`).join("");
+  const recent = done.slice().reverse().slice(0, 12).map((x) => `<li class="${x.result === "HIT" ? "hit" : "miss"}"><b>${pbEsc(x.name)} ${pbEsc(pbAm(x.price))}</b> <span>${x.result === "HIT" ? "Scored" : "No TD"} · ${Math.round(Number(x.win || 0) * 100)}% to score · ${pbEsc(x.book)} · ${pbEsc(x.game)}${x.final ? " · " + pbEsc(x.final) : ""}</span></li>`).join("");
   return `<section class="td-rec">
     <div class="td-rec-main">
       <span class="rb-lbl">The anytime TD record</span>
       ${done.length ? `<b class="rb-rec">${w}-${l}</b>` : ""}
-      <span class="rb-sub">${done.length ? `<b class="${u >= 0 ? "up" : "down"}">${um(u)}</b> · ${(u / done.length >= 0 ? "+" : "−") + Math.abs(u / done.length * 100).toFixed(1)}% a bet · ${w} scored where we expected ${expHits.toFixed(1)}` : "Starts with this week's games"}${open ? ` · ${open} on the list now` : ""}</span>
+      <span class="rb-sub">${done.length ? `<b class="${u >= 0 ? "up" : "down"}">${um(u)}</b> · ${Math.round(w / done.length * 100)}% scored · we expected ${expHits.toFixed(1)} of ${done.length}` : "New rule from Nov 15: the first picks are still to play."}</span>
     </div>
-    <p class="subn">Every anytime pick shown at ${Math.round(TD_PICK_MIN * 100)}%+ value is logged at its last price and book before kickoff and graded from the box score, 1 unit each; a player who doesn't play is void.${done.length && done.length < 100 ? ` ${done.length} graded so far: at long prices a record swings a lot until there are a few hundred.` : ""}${done.length ? ` These were expected to return ${(exp / done.length >= 0 ? "+" : "−") + Math.abs(exp / done.length * 100).toFixed(1)}% a bet.` : ""}</p>
+    <p class="subn">Since Nov 15 the picks are players likely to score: the scoring model gives him 50%+, his best price is still fair at that chance, and he isn't on the injury report. Each is logged at its last price and book before kickoff and graded from the box score, 1 unit each; a player who doesn't play is void.${old.length ? ` The old long-shot picks (any price our number beat by 3%+, mostly +300 to +1700) went ${ow}-${old.length - ow}, ${um(ou)}, and are kept apart.` : ""}</p>
     ${recent ? `<details><summary>Recent picks</summary><ul class="tz-rec-list">${recent}</ul></details>` : ""}
   </section>`;
 }
@@ -7632,8 +7650,9 @@ function renderTdDesk() {
   if (!board) return;
   const market = (document.getElementById("tdMarket") || {}).value || "anytime";
   const pos = (document.getElementById("tdPos") || {}).value || "ALL";
-  const sort = (document.getElementById("tdSort") || {}).value || "value";
+  const sort = (document.getElementById("tdSort") || {}).value || "hit";
   if (!window.GAMELOGS && !renderTdDesk.logs && typeof loadGamelogs === "function") { renderTdDesk.logs = true; loadGamelogs().then(() => { if (view === "tds") renderTdDesk(); }); }
+  if (!window.TD_MODEL && !renderTdDesk.model && typeof pbFetchOnce === "function") { renderTdDesk.model = true; pbFetchOnce("tdmodel", "/data/td-model.json?t=" + Math.floor(Date.now() / 3600000), (d) => { window.TD_MODEL = d && d.players ? d : null; }).then(() => { if (view === "tds") renderTdDesk(); }); }
   if (!window.TD_RZ && typeof pbFetchOnce === "function") pbFetchOnce("rz", "/data/red-zone.json?t=" + Math.floor(Date.now() / 3600000), (d) => { window.TD_RZ = d; }).then(() => { if (window.TD_RZ && view === "tds") renderTdDesk(); });
   if (!window.PB_PROPS && typeof pbFetchOnce === "function" && !renderTdDesk.asked) {
     renderTdDesk.asked = true;
@@ -7653,7 +7672,7 @@ function renderTdDesk() {
       if (m === "two" && hit < 0.04) return;
       const mk = m === "anytime" ? MK.get(r.game_id + "|" + r.id) : null;
       const off = mk ? mk.off : null;
-      const win = mk ? Math.max(0.005, Math.min(0.99, mk.mkt + keep * (hit - mk.mkt))) : null;
+      const win = m === "anytime" ? (mk || tdModelFor(r) ? tdChance(r, mk, keep) : null) : (mk ? Math.max(0.005, Math.min(0.99, mk.mkt + keep * (hit - mk.mkt))) : null);
       expand.push({
         ...r, market: m, hit,
         label: m === "first" ? "First TD of the game" : m === "two" ? "Scores 2+ TDs" : "Scores a TD",
@@ -7677,33 +7696,34 @@ function renderTdDesk() {
     if (sort === "lambda") return b.lam - a.lam;
     if (sort === "kick") return String(a.date).localeCompare(String(b.date)) || b.hit - a.hit;
     if (sort === "value") return (b.ev == null ? -9 : b.ev) - (a.ev == null ? -9 : a.ev) || b.hit - a.hit;
-    return b.hit - a.hit;
+    return (b.win != null ? b.win : b.hit) - (a.win != null ? a.win : a.hit);
   });
   const stamp = document.getElementById("tdStamp");
-  if (stamp) stamp.textContent = "Every NFL player's chance to score a touchdown this week. Value is our checked chance against the best book price.";
+  if (stamp) stamp.textContent = "Every NFL player's chance to score a touchdown this week, from the scoring model. The picks are the players most likely to score whose best price is still fair.";
   // the three picks on top: three different players, each for a different reason
   const anyRows = collectTdBoard().map((r) => {
     const mk = MK.get(r.game_id + "|" + r.id);
     if (!mk || !(r.lam > 0)) return null;
-    const win = Math.max(0.005, Math.min(0.99, mk.mkt + keep * (r.anytime - mk.mkt)));
-    return { ...r, market: "anytime", off: mk.off, mkt: mk.mkt, win, hit: r.anytime, fair: r.fairAny, ev: win * pbDec(mk.off.best.odds) - 1 };
+    const win = tdChance(r, mk, keep);
+    return { ...r, market: "anytime", off: mk.off, mkt: mk.mkt, win, hit: r.anytime, fair: r.fairAny, ev: win * pbDec(mk.off.best.odds) - 1, model: tdModelFor(r) };
   }).filter(Boolean);
   const used = new Set();
   const pick = (list, why) => { const r = list.find((x) => !used.has(x.id)); if (r) used.add(r.id); return r ? Object.assign({}, r, { why: why(r) }) : null; };
-  const byEv = anyRows.slice().sort((a, b) => b.ev - a.ev);
+  // the top three picks: most likely to score among the ones at a fair price (tdValueRows)
+  const likely = anyRows.filter((r) => r.model && !(r.inj > 0) && r.win >= TD_LIKELY_MIN && r.ev >= 0).sort((a, b) => b.win - a.win || b.ev - a.ev);
   const heroes = [
-    pick(byEv.filter((r) => r.ev > 0), () => "Best value"),
-    pick(byEv.filter((r) => r.ev > 0 && r.off.best.odds >= 1000), () => "Best long shot"),
-    pick(byEv.filter((r) => r.ev > 0 && r.off.best.odds <= 200), () => "Best value at +200 or shorter")
+    pick(likely, () => "Most likely to score"),
+    pick(likely, () => "Next most likely"),
+    pick(likely, () => "Third most likely")
   ].filter(Boolean);
   const stats = document.getElementById("tdStats");
   if (stats) {
-    const recs = ((window.GG_LOCKS || {}).tdPicks || []).filter((x) => x.result === "HIT" || x.result === "MISS");
+    const recs = ((window.GG_LOCKS || {}).tdPicks || []).filter((x) => (x.result === "HIT" || x.result === "MISS") && (x.rule === "likely" || String(x.kick || "") >= TD_RULE_START));
     const rw = recs.filter((x) => x.result === "HIT").length;
     const upd = window.PB_PROPS && window.PB_PROPS.updated ? fmt.when(window.PB_PROPS.updated) : "";
     stats.innerHTML = `
       <div class="stat"><b>${anyRows.length}</b><span>of ${collectTdBoard().length} players have a book price</span></div>
-      <div class="stat"><b>${anyRows.filter((r) => r.ev >= TD_PICK_MIN).length}</b><span>value picks (${Math.round(TD_PICK_MIN * 100)}%+), tracked in the record</span></div>
+      <div class="stat"><b>${likely.length}</b><span>picks: ${Math.round(TD_LIKELY_MIN * 100)}%+ to score at a fair price, tracked in the record</span></div>
       <div class="stat"><b>${recs.length ? rw + "-" + (recs.length - rw) : "New"}</b><span>anytime TD record</span></div>
       <div class="stat"><b>${upd ? pbEsc(upd.replace(/^\w+,\s*/, "")) : "—"}</b><span>prices last updated</span></div>`;
   }
@@ -7735,7 +7755,8 @@ function renderTdDesk() {
   const row = (r, i) => {
     const chance = r.win != null ? r.win : r.hit;
     const priced = !!r.off;
-    return `<details class="tdl-row${r.ev != null && r.ev >= TD_PICK_MIN ? " val" : ""}">
+    const isPick = r.market === "anytime" && r.model && !(r.inj > 0) && r.win >= TD_LIKELY_MIN && r.ev != null && r.ev >= 0;
+    return `<details class="tdl-row${isPick ? " val" : ""}">
       <summary>
         <span class="tdl-rank">${i + 1}</span>
         <span class="tdl-who">${faceHtml(r.id, r.name, 34)}<span><b>${pbEsc(r.name)}</b><em>${pbEsc(r.pos)} · ${pbEsc(r.team)} vs ${pbEsc(r.opp)} · ${pbEsc(kick(r))}</em></span></span>
@@ -7746,8 +7767,8 @@ function renderTdDesk() {
       <div class="tdl-body">
         <dl>
           ${r.mkt != null ? `<div><dt>Books' chance</dt><dd>${pct(r.mkt)} <span class="subn">from ${r.off.all.length} book${r.off.all.length === 1 ? "" : "s"}</span></dd></div>` : ""}
-          <div><dt>Our number</dt><dd>${pct(r.hit)} · ${pbEsc(r.fair)}</dd></div>
-          ${r.win != null ? `<div><dt>Checked chance</dt><dd>${pct(r.win)}</dd></div>` : ""}
+          ${r.model ? `<div><dt>Scoring model</dt><dd>${pct(r.model.p)} <span class="subn">${r.model.car} carries and ${r.model.tgt} targets a game lately, ${Math.round(r.model.csh * 100)}% of the team's carries and ${Math.round(r.model.tsh * 100)}% of its targets; scored in ${r.model.scored_in} of ${r.model.games} games; ${pbEsc(r.team)} projected for ${r.model.imp} points</span></dd></div>` : `<div><dt>Our number</dt><dd>${pct(r.hit)} · ${pbEsc(r.fair)}</dd></div>`}
+          ${r.win != null && !r.model ? `<div><dt>Checked chance</dt><dd>${pct(r.win)}</dd></div>` : ""}
           <div><dt>Expected TDs</dt><dd>${r.lam.toFixed(2)}</dd></div>
           <div><dt>Scores 2+</dt><dd>${pct(r.two)}</dd></div>
           <div><dt>First TD of the game</dt><dd>${pct(r.first)}</dd></div>
@@ -13439,6 +13460,7 @@ function loadGamelogs() {
   return Promise.all([
     pbFetchOnce("gamelogs", "/data/gamelogs.json?t=" + Math.floor(Date.now() / 3600000), (d) => { window.GAMELOGS = (d && d.players) || {}; }),
     pbFetchOnce("deftiers", "/data/def-tiers.json?t=" + Math.floor(Date.now() / 3600000), (d) => { window.DEF_TIERS = d && d.ranks ? d : null; }).catch(() => {}),
+    pbFetchOnce("tdmodel", "/data/td-model.json?t=" + Math.floor(Date.now() / 3600000), (d) => { window.TD_MODEL = d && d.players ? d : null; }).catch(() => {}),
   ]).then(() => { if (window.GAMELOGS && typeof view !== "undefined" && view === "props") renderProps(); });
 }
 function propHistoryHtml(p) {
