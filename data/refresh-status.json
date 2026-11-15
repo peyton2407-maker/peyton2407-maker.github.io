@@ -38,7 +38,7 @@
    "teams": 32
   }
  ],
- "ran_at": "2026-11-15T12:00:58Z",
+ "ran_at": "2026-11-15T13:00:46Z",
  "nfl_week": 10,
  "cfb_week": 11,
  "changes": [
@@ -58,16 +58,16 @@
   "cfb_with_offense": 138,
   "sample": [
    {
-    "abbr": "ND",
-    "fpi": 27.245,
-    "off": 86.214,
-    "def": 86.574
+    "abbr": "UGA",
+    "fpi": 28.074,
+    "off": 91.512,
+    "def": 84.457
    },
    {
-    "abbr": "UGA",
-    "fpi": 27.159,
-    "off": 89.522,
-    "def": 85.427
+    "abbr": "ND",
+    "fpi": 27.381,
+    "off": 85.7,
+    "def": 87.134
    }
   ],
   "nfl_depth_teams": 32
