@@ -345,7 +345,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T15:16:47.189Z",
+   "lockedAt": "2026-11-15T15:46:19.869Z",
    "provisional": true
   },
   "401856888": {
@@ -1762,7 +1762,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T15:16:47.189Z",
+   "lockedAt": "2026-11-15T15:46:19.869Z",
    "provisional": true
   },
   "401873056": {
@@ -1775,15 +1775,15 @@
    "date": "2026-11-15T18:00Z",
    "pick": "HOU",
    "pick_line": "HOU -4.5",
-   "total_pick": "OVER 40.5",
+   "total_pick": "OVER 41.5",
    "side_play": false,
    "our_margin": -4.96,
-   "our_total": 40.9,
+   "our_total": 41.6,
    "confidence": null,
    "total_play": false,
    "spread": 4.5,
-   "total": 40.5,
-   "lockedAt": "2026-11-15T15:16:47.189Z",
+   "total": 41.5,
+   "lockedAt": "2026-11-15T15:46:19.869Z",
    "provisional": true
   },
   "401873057": {
@@ -1804,7 +1804,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 45.5,
-   "lockedAt": "2026-11-15T15:16:47.189Z",
+   "lockedAt": "2026-11-15T15:46:19.869Z",
    "provisional": true
   },
   "401873058": {
@@ -1825,7 +1825,7 @@
    "total_play": false,
    "spread": 3,
    "total": 47.5,
-   "lockedAt": "2026-11-15T15:16:47.189Z",
+   "lockedAt": "2026-11-15T15:46:19.869Z",
    "provisional": true
   },
   "401873059": {
@@ -1846,7 +1846,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-15T15:16:47.189Z",
+   "lockedAt": "2026-11-15T15:46:19.869Z",
    "provisional": true
   },
   "401873060": {
@@ -1867,7 +1867,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 42.5,
-   "lockedAt": "2026-11-15T15:16:47.189Z",
+   "lockedAt": "2026-11-15T15:46:19.869Z",
    "provisional": true
   },
   "401873061": {
@@ -1888,7 +1888,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 38.5,
-   "lockedAt": "2026-11-15T15:16:47.189Z",
+   "lockedAt": "2026-11-15T15:46:19.869Z",
    "provisional": true
   },
   "401873062": {
@@ -1909,7 +1909,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T15:16:47.189Z",
+   "lockedAt": "2026-11-15T15:46:19.869Z",
    "provisional": true
   },
   "401873063": {
@@ -1930,7 +1930,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T15:16:47.189Z",
+   "lockedAt": "2026-11-15T15:46:19.869Z",
    "provisional": true
   },
   "401873064": {
@@ -1951,7 +1951,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T15:16:47.189Z",
+   "lockedAt": "2026-11-15T15:46:19.869Z",
    "provisional": true
   }
  },
@@ -2486,12 +2486,12 @@
     "ours": "BUF -8.5 · total 50.5",
     "score": "BUF 29.5 – NYJ 21.0",
     "market": "BUF -8.5 · total 50.5",
-    "lockedAt": "2026-11-15T15:16:47.255Z",
+    "lockedAt": "2026-11-15T15:46:19.941Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T18:00Z",
     "big": true,
-    "savedAt": 1794755807255
+    "savedAt": 1794757579942
    }
   ],
   "cfb": [
@@ -3230,7 +3230,7 @@
    }
   ]
  },
- "updated": "2026-11-15T15:16:47.189Z",
+ "updated": "2026-11-15T15:46:19.869Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3516,7 +3516,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-15T15:16:47.189Z",
+      "at": "2026-11-15T15:46:19.869Z",
       "line": 11.5,
       "price": -104,
       "book": "DraftKings",
@@ -3550,7 +3550,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-15T15:16:47.189Z",
+      "at": "2026-11-15T15:46:19.869Z",
       "line": 8.5,
       "price": -107,
       "book": "DraftKings",
@@ -5630,12 +5630,12 @@
    "game": "HOU @ CLE",
    "kick": "2026-11-15T18:00Z",
    "line": 32.5,
-   "mainLine": 40.5,
+   "mainLine": 41.5,
    "price": 300,
    "book": "ESPN BET",
-   "win": 0.2579,
+   "win": 0.2597,
    "mwin": 0.2603,
-   "ev": 0.0317,
+   "ev": 0.0388,
    "mev": 0.0411,
    "src": "mkt",
    "result": null,
@@ -6167,10 +6167,10 @@
    "price": 750,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0.2059,
-   "mkt": 0.1217,
-   "win": 0.1427,
-   "ev": 0.2132,
+   "ours": 0.2097,
+   "mkt": 0.1248,
+   "win": 0.1461,
+   "ev": 0.2416,
    "result": null,
    "final": null,
    "units": null
@@ -6356,10 +6356,10 @@
    "price": 370,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.274,
-   "mkt": 0.2247,
-   "win": 0.237,
-   "ev": 0.1139,
+   "ours": 0.2781,
+   "mkt": 0.2291,
+   "win": 0.2413,
+   "ev": 0.1341,
    "result": null,
    "final": null,
    "units": null
@@ -6377,10 +6377,10 @@
    "price": 380,
    "book": "FanDuel",
    "books": 6,
-   "ours": 0.2606,
-   "mkt": 0.2127,
-   "win": 0.2247,
-   "ev": 0.0784,
+   "ours": 0.2644,
+   "mkt": 0.2169,
+   "win": 0.2288,
+   "ev": 0.0981,
    "result": null,
    "final": null,
    "units": null
@@ -6398,10 +6398,10 @@
    "price": 500,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0.1897,
-   "mkt": 0.1854,
-   "win": 0.1865,
-   "ev": 0.1188,
+   "ours": 0.1927,
+   "mkt": 0.1891,
+   "win": 0.19,
+   "ev": 0.14,
    "result": null,
    "final": null,
    "units": null
@@ -6419,10 +6419,10 @@
    "price": 175,
    "book": "FanDuel",
    "books": 6,
-   "ours": 0.3789,
-   "mkt": 0.3773,
-   "win": 0.3777,
-   "ev": 0.0386,
+   "ours": 0.3894,
+   "mkt": 0.3838,
+   "win": 0.3852,
+   "ev": 0.0593,
    "result": null,
    "final": null,
    "units": null
