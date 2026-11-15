@@ -195,7 +195,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T01:31:36.576Z",
+   "lockedAt": "2026-11-15T01:46:32.603Z",
    "provisional": true
   },
   "401856882": {
@@ -916,7 +916,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 64.5,
-   "lockedAt": "2026-11-15T01:31:36.576Z",
+   "lockedAt": "2026-11-15T01:46:32.603Z",
    "provisional": true
   },
   "401861967": {
@@ -1137,7 +1137,7 @@
    "total_play": false,
    "spread": 7,
    "total": 39.5,
-   "lockedAt": "2026-11-15T01:31:36.576Z",
+   "lockedAt": "2026-11-15T01:46:32.603Z",
    "provisional": true
   },
   "401864538": {
@@ -2865,7 +2865,7 @@
    }
   ]
  },
- "updated": "2026-11-15T01:31:36.576Z",
+ "updated": "2026-11-15T01:46:32.603Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7132,7 +7132,10 @@
    "ours": 16.7,
    "market": 17.5,
    "label": "USM +17.5",
-   "lockedAt": "2026-11-14T20:31:27.804Z"
+   "lockedAt": "2026-11-14T20:31:27.804Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "USM 31, LT 63"
   },
   {
    "id": "401856857",
