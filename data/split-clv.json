@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-15T02:45:50Z",
+ "updated": "2026-11-15T03:08:57Z",
  "about": "Every side The Split took: the line when first picked, the closing line, and how many points the line moved toward our side (clv). Only picks still standing at kickoff count (counts: true); ones The Split dropped before the game are listed but not counted. Positive average CLV over a season is the sign of a real edge; win-loss needs far more games.",
  "summary": {
   "record": {
@@ -10,16 +10,16 @@
    "even": 15,
    "lost_close": 24,
    "at_first": {
-    "w": 60,
+    "w": 61,
     "l": 69,
     "p": 4,
-    "pct": 0.465
+    "pct": 0.469
    },
    "at_close": {
-    "w": 25,
+    "w": 26,
     "l": 25,
     "p": 2,
-    "pct": 0.5
+    "pct": 0.51
    }
   },
   "by_week": {
@@ -151,16 +151,16 @@
     "even": 2,
     "lost_close": 2,
     "at_first": {
-     "w": 3,
+     "w": 4,
      "l": 1,
      "p": 0,
-     "pct": 0.75
+     "pct": 0.8
     },
     "at_close": {
-     "w": 3,
+     "w": 4,
      "l": 1,
      "p": 0,
-     "pct": 0.75
+     "pct": 0.8
     }
    }
   },
@@ -3613,9 +3613,9 @@
    "close": -16.5,
    "close_src": "last look",
    "clv": -1.0,
-   "final": null,
-   "ats_first": null,
-   "ats_close": null,
+   "final": "ORST 41 - BOIS 46",
+   "ats_first": "W",
+   "ats_close": "W",
    "counts": true
   },
   {
@@ -3631,7 +3631,7 @@
    "first_at": "2026-11-09T13:55:12Z",
    "hours_before": 133.6,
    "last": -8.5,
-   "last_at": "2026-11-15T02:45:50Z",
+   "last_at": "2026-11-15T03:08:57Z",
    "dropped": true,
    "flipped": false,
    "close": -8.5,
