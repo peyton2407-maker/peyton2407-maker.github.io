@@ -1915,14 +1915,13 @@
    "pick_line": "LAR -9.5",
    "total_pick": "OVER 38.5",
    "side_play": false,
-   "our_margin": -9.63,
+   "our_margin": -10.26,
    "our_total": 39.8,
    "confidence": null,
    "total_play": false,
    "spread": 9.5,
    "total": 38.5,
-   "lockedAt": "2026-11-15T19:16:44.254Z",
-   "provisional": true
+   "lockedAt": "2026-11-15T19:46:19.096Z"
   },
   "401873062": {
    "id": "401873062",
@@ -1936,14 +1935,13 @@
    "pick_line": "LV +6.5",
    "total_pick": "UNDER 40.5",
    "side_play": false,
-   "our_margin": -6.16,
+   "our_margin": -5.53,
    "our_total": 39.2,
    "confidence": null,
    "total_play": false,
    "spread": 6.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T19:16:44.254Z",
-   "provisional": true
+   "lockedAt": "2026-11-15T19:46:19.096Z"
   },
   "401873063": {
    "id": "401873063",
@@ -1957,13 +1955,13 @@
    "pick_line": "DAL +4.5",
    "total_pick": "OVER 55.5",
    "side_play": false,
-   "our_margin": -3.51,
+   "our_margin": -3.76,
    "our_total": 55.8,
    "confidence": null,
    "total_play": false,
    "spread": 4.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T19:16:44.254Z",
+   "lockedAt": "2026-11-15T19:46:19.096Z",
    "provisional": true
   },
   "401873064": {
@@ -1984,7 +1982,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T19:16:44.254Z",
+   "lockedAt": "2026-11-15T19:46:19.096Z",
    "provisional": true
   }
  },
@@ -2552,15 +2550,14 @@
     "price": -116,
     "book": "DraftKings",
     "ev": 0.066,
-    "ours": "SEA -6.2 · total 39.2",
-    "score": "SEA 22.7 – LV 16.5",
+    "ours": "SEA -5.5 · total 39.2",
+    "score": "SEA 22.4 – LV 16.8",
     "market": "SEA -6.5 · total 40.5",
-    "lockedAt": "2026-11-15T19:16:44.275Z",
-    "locked": false,
-    "provisional": true,
+    "lockedAt": "2026-11-15T19:46:19.120Z",
+    "locked": true,
     "kick": "2026-11-15T21:05Z",
     "big": false,
-    "savedAt": 1794770204275
+    "savedAt": 1794771979120
    }
   ],
   "cfb": [
@@ -3299,7 +3296,7 @@
    }
   ]
  },
- "updated": "2026-11-15T19:16:44.254Z",
+ "updated": "2026-11-15T19:46:19.096Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7826,6 +7823,38 @@
    "market": 2.5,
    "label": "MISS -1.5",
    "lockedAt": "2026-11-15T16:31:33.780Z"
+  },
+  {
+   "id": "401873062",
+   "league": "nfl",
+   "gid": "401873062",
+   "side": "home",
+   "team": "LV",
+   "game": "SEA @ LV",
+   "kick": "2026-11-15T21:05Z",
+   "line": 3.5,
+   "price": -110,
+   "book": "BetMGM",
+   "ours": 5.5,
+   "market": 6.5,
+   "label": "LV +3.5",
+   "lockedAt": "2026-11-15T19:46:19.096Z"
+  },
+  {
+   "id": "401873061",
+   "league": "nfl",
+   "gid": "401873061",
+   "side": "away",
+   "team": "LAR",
+   "game": "LAR @ ARI",
+   "kick": "2026-11-15T21:05Z",
+   "line": -9,
+   "price": -110,
+   "book": "BetRivers",
+   "ours": -10.3,
+   "market": -9.5,
+   "label": "LAR -9",
+   "lockedAt": "2026-11-15T19:46:19.096Z"
   }
  ]
 }
