@@ -345,7 +345,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T12:01:58.747Z",
+   "lockedAt": "2026-11-15T12:16:39.691Z",
    "provisional": true
   },
   "401856888": {
@@ -1716,7 +1716,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 50.5,
-   "lockedAt": "2026-11-15T12:01:58.747Z",
+   "lockedAt": "2026-11-15T12:16:39.691Z",
    "provisional": true
   },
   "401873054": {
@@ -1758,7 +1758,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T12:01:58.747Z",
+   "lockedAt": "2026-11-15T12:16:39.691Z",
    "provisional": true
   },
   "401873056": {
@@ -1779,7 +1779,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T12:01:58.747Z",
+   "lockedAt": "2026-11-15T12:16:39.691Z",
    "provisional": true
   },
   "401873057": {
@@ -1800,7 +1800,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 46.5,
-   "lockedAt": "2026-11-15T12:01:58.747Z",
+   "lockedAt": "2026-11-15T12:16:39.691Z",
    "provisional": true
   },
   "401873058": {
@@ -1821,7 +1821,7 @@
    "total_play": false,
    "spread": 3,
    "total": 47.5,
-   "lockedAt": "2026-11-15T12:01:58.747Z",
+   "lockedAt": "2026-11-15T12:16:39.691Z",
    "provisional": true
   },
   "401873059": {
@@ -1842,7 +1842,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-15T12:01:58.747Z",
+   "lockedAt": "2026-11-15T12:16:39.691Z",
    "provisional": true
   },
   "401873060": {
@@ -1863,7 +1863,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 42.5,
-   "lockedAt": "2026-11-15T12:01:58.747Z",
+   "lockedAt": "2026-11-15T12:16:39.691Z",
    "provisional": true
   },
   "401873061": {
@@ -1884,7 +1884,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 38.5,
-   "lockedAt": "2026-11-15T12:01:58.747Z",
+   "lockedAt": "2026-11-15T12:16:39.691Z",
    "provisional": true
   },
   "401873062": {
@@ -1905,7 +1905,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T12:01:58.747Z",
+   "lockedAt": "2026-11-15T12:16:39.691Z",
    "provisional": true
   },
   "401873063": {
@@ -1926,7 +1926,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T12:01:58.747Z",
+   "lockedAt": "2026-11-15T12:16:39.691Z",
    "provisional": true
   }
  },
@@ -2461,12 +2461,12 @@
     "ours": "SF -3.5 · total 55.8",
     "score": "SF 29.7 – DAL 26.1",
     "market": "SF -4.5 · total 55.5",
-    "lockedAt": "2026-11-15T12:01:58.795Z",
+    "lockedAt": "2026-11-15T12:16:39.728Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T21:25Z",
     "big": true,
-    "savedAt": 1794744118795
+    "savedAt": 1794744999728
    }
   ],
   "cfb": [
@@ -3205,7 +3205,7 @@
    }
   ]
  },
- "updated": "2026-11-15T12:01:58.747Z",
+ "updated": "2026-11-15T12:16:39.691Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3512,7 +3512,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T12:01:58.747Z"
+   "lockedAt": "2026-11-15T12:16:39.691Z"
   }
  ],
  "teasers": [
@@ -3610,7 +3610,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T12:01:58.747Z"
+   "lockedAt": "2026-11-15T12:16:39.691Z"
   }
  ],
  "teaserLegs": [
@@ -5559,10 +5559,10 @@
    "mainLine": -6.5,
    "price": 300,
    "book": "ESPN BET",
-   "win": 0.2631,
-   "mwin": 0.2631,
-   "ev": 0.0523,
-   "mev": 0.0523,
+   "win": 0.2616,
+   "mwin": 0.2616,
+   "ev": 0.0465,
+   "mev": 0.0465,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -5574,39 +5574,17 @@
    "league": "nfl",
    "kind": "tot",
    "side": "under",
-   "label": "Under 36.5",
+   "label": "Under 33.5",
    "game": "SEA @ LV",
    "kick": "2026-11-15T21:05Z",
-   "line": 36.5,
+   "line": 33.5,
    "mainLine": 40.5,
-   "price": 170,
+   "price": 250,
    "book": "ESPN BET",
-   "win": 0.3887,
-   "mwin": 0.3797,
-   "ev": 0.0495,
-   "mev": 0.0253,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873061|tot|over",
-   "gid": "401873061",
-   "league": "nfl",
-   "kind": "tot",
-   "side": "over",
-   "label": "Over 47.5",
-   "game": "LAR @ ARI",
-   "kick": "2026-11-15T21:05Z",
-   "line": 47.5,
-   "mainLine": 38.5,
-   "price": 300,
-   "book": "FanDuel",
-   "win": 0.2656,
-   "mwin": 0.258,
-   "ev": 0.0623,
-   "mev": 0.032,
+   "win": 0.303,
+   "mwin": 0.2947,
+   "ev": 0.0604,
+   "mev": 0.0315,
    "src": "mkt",
    "result": null,
    "final": null,
