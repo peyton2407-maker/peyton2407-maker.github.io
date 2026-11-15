@@ -3,11 +3,11 @@
  "plan": "paid",
  "tier": "small",
  "monthly": 20000,
- "board_games": 25,
- "fetched_now": 4,
- "fresh_now": 4,
- "extra_markets": 4,
+ "board_games": 18,
+ "fetched_now": 0,
+ "fresh_now": 0,
+ "extra_markets": 0,
  "errors": [],
- "credits_left": "11228",
- "games_with_prices": 12
+ "credits_left": 11222,
+ "games_with_prices": 5
 }
