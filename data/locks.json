@@ -1961,8 +1961,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T19:46:19.096Z",
-   "provisional": true
+   "lockedAt": "2026-11-15T20:01:25.015Z"
   },
   "401873064": {
    "id": "401873064",
@@ -1982,7 +1981,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T19:46:19.096Z",
+   "lockedAt": "2026-11-15T20:01:25.015Z",
    "provisional": true
   }
  },
@@ -3296,7 +3295,7 @@
    }
   ]
  },
- "updated": "2026-11-15T19:46:19.096Z",
+ "updated": "2026-11-15T20:01:25.015Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7855,6 +7854,22 @@
    "market": -9.5,
    "label": "LAR -9",
    "lockedAt": "2026-11-15T19:46:19.096Z"
+  },
+  {
+   "id": "401873063",
+   "league": "nfl",
+   "gid": "401873063",
+   "side": "home",
+   "team": "DAL",
+   "game": "SF @ DAL",
+   "kick": "2026-11-15T21:25Z",
+   "line": 4.5,
+   "price": -118,
+   "book": "DraftKings",
+   "ours": 3.8,
+   "market": 4.5,
+   "label": "DAL +4.5",
+   "lockedAt": "2026-11-15T20:01:25.015Z"
   }
  ]
 }
