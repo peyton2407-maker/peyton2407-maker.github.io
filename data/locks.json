@@ -920,7 +920,12 @@
    "total_play": false,
    "spread": -8.5,
    "total": 64.5,
-   "lockedAt": "2026-11-15T02:17:00.533Z"
+   "lockedAt": "2026-11-15T02:17:00.533Z",
+   "close_spread": -8.5,
+   "close_total": 64.5,
+   "closeAt": "2026-11-15T02:46:14.200Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401861967": {
    "id": "401861967",
@@ -1685,7 +1690,7 @@
    "total_play": false,
    "spread": -3,
    "total": 49.5,
-   "lockedAt": "2026-11-15T02:31:46.564Z",
+   "lockedAt": "2026-11-15T02:46:14.200Z",
    "provisional": true
   }
  },
@@ -2775,7 +2780,11 @@
     "locked": true,
     "kick": "2026-11-15T03:45Z",
     "big": false,
-    "savedAt": 1794709906626
+    "savedAt": 1794709906626,
+    "close_line": 64.5,
+    "closeAt": "2026-11-15T02:46:14.200Z",
+    "close_src": "board",
+    "clv": 3
    }
   ],
   "cfbHit": [
@@ -2922,7 +2931,7 @@
    }
   ]
  },
- "updated": "2026-11-15T02:31:46.564Z",
+ "updated": "2026-11-15T02:46:14.200Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3229,7 +3238,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T02:31:46.564Z"
+   "lockedAt": "2026-11-15T02:46:14.200Z"
   }
  ],
  "teasers": [
@@ -4925,9 +4934,9 @@
    "ev": 0.0461,
    "mev": 0.0227,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "ORST 41, BOIS 46",
+   "units": 2.85
   },
   {
    "id": "401856884|sp|home",
@@ -4947,9 +4956,9 @@
    "ev": 0.0563,
    "mev": 0.0694,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "FLA 21, UK 14",
+   "units": -1
   },
   {
    "id": "401871100|sp|home",
@@ -5826,10 +5835,10 @@
    "price": 575,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0.2978,
-   "mkt": 0.1484,
-   "win": 0.1858,
-   "ev": 0.254,
+   "ours": 0.3013,
+   "mkt": 0.1517,
+   "win": 0.1891,
+   "ev": 0.2766,
    "result": null,
    "final": null,
    "units": null
@@ -5868,10 +5877,10 @@
    "price": 420,
    "book": "FanDuel",
    "books": 6,
-   "ours": 0.2932,
-   "mkt": 0.1787,
-   "win": 0.2073,
-   "ev": 0.0779,
+   "ours": 0.2966,
+   "mkt": 0.1824,
+   "win": 0.2109,
+   "ev": 0.0969,
    "result": null,
    "final": null,
    "units": null
@@ -7342,7 +7351,10 @@
    "ours": 13.7,
    "market": 16.5,
    "label": "ORST +13.5",
-   "lockedAt": "2026-11-14T21:31:21.747Z"
+   "lockedAt": "2026-11-14T21:31:21.747Z",
+   "result": "HIT",
+   "units": 0.9009,
+   "final": "ORST 41, BOIS 46"
   },
   {
    "id": "401869928",
@@ -7377,7 +7389,10 @@
    "ours": 2.5,
    "market": 3,
    "label": "FLA +3.5",
-   "lockedAt": "2026-11-14T21:46:53.127Z"
+   "lockedAt": "2026-11-14T21:46:53.127Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "FLA 21, UK 14"
   },
   {
    "id": "401856858",
