@@ -170,7 +170,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 73.5,
-   "lockedAt": "2026-11-15T00:16:40.232Z",
+   "lockedAt": "2026-11-15T00:31:51.579Z",
    "provisional": true
   },
   "401856864": {
@@ -191,7 +191,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T00:16:40.232Z",
+   "lockedAt": "2026-11-15T00:31:51.579Z",
    "provisional": true
   },
   "401856882": {
@@ -862,7 +862,7 @@
    "total_play": false,
    "spread": 3,
    "total": 43.5,
-   "lockedAt": "2026-11-15T00:16:40.232Z",
+   "lockedAt": "2026-11-15T00:31:51.579Z",
    "provisional": true
   },
   "401860916": {
@@ -908,7 +908,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 64.5,
-   "lockedAt": "2026-11-15T00:16:40.232Z",
+   "lockedAt": "2026-11-15T00:31:51.579Z",
    "provisional": true
   },
   "401861967": {
@@ -1029,8 +1029,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 75.5,
-   "lockedAt": "2026-11-15T00:16:40.232Z",
-   "provisional": true
+   "lockedAt": "2026-11-15T00:31:51.579Z"
   },
   "401862828": {
    "id": "401862828",
@@ -1125,7 +1124,7 @@
    "total_play": false,
    "spread": 7,
    "total": 39.5,
-   "lockedAt": "2026-11-15T00:16:40.232Z",
+   "lockedAt": "2026-11-15T00:31:51.579Z",
    "provisional": true
   },
   "401864538": {
@@ -1196,7 +1195,7 @@
    "total_play": false,
    "spread": 7,
    "total": 40.5,
-   "lockedAt": "2026-11-15T00:16:40.232Z",
+   "lockedAt": "2026-11-15T00:31:51.579Z",
    "provisional": true
   },
   "401866458": {
@@ -2687,7 +2686,7 @@
     "line": "UNDER 76.5",
     "hitPct": 54,
     "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 76.5. At -105 (DraftKings) the price needs 51%; we count it at 54%, so it's 6.2% better than the price. Under plays are 2-3 on the play of the day, so that record is in the pick.",
-    "label": "Best of Saturday's 11 games",
+    "label": "Best of Saturday's 7 games",
     "result": null,
     "final": null,
     "resultWhy": "",
@@ -2699,12 +2698,11 @@
     "ours": "UNT -2.9 · total 75.5",
     "score": "UNT 39.2 – UTSA 36.3",
     "market": "UNT -2.5 · total 75.5",
-    "lockedAt": "2026-11-15T00:16:40.305Z",
-    "locked": false,
-    "provisional": true,
+    "lockedAt": "2026-11-15T00:31:51.627Z",
+    "locked": true,
     "kick": "2026-11-15T02:00Z",
     "big": true,
-    "savedAt": 1794701800305
+    "savedAt": 1794702711627
    }
   ],
   "cfbHit": [
@@ -2851,7 +2849,7 @@
    }
   ]
  },
- "updated": "2026-11-15T00:16:40.232Z",
+ "updated": "2026-11-15T00:31:51.579Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5814,27 +5812,6 @@
    "units": null
   },
   {
-   "key": "401873058|4688813",
-   "gid": "401873058",
-   "pid": "4688813",
-   "name": "Josh Downs",
-   "pos": "WR",
-   "team": "KC",
-   "opp": "ATL",
-   "game": "KC @ ATL",
-   "kick": "2026-11-15T18:00Z",
-   "price": 350,
-   "book": "BetMGM",
-   "books": 6,
-   "ours": 0.3061,
-   "mkt": 0.2108,
-   "win": 0.2346,
-   "ev": 0.0557,
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "key": "401873056|4366031",
    "gid": "401873056",
    "pid": "4366031",
@@ -5956,27 +5933,6 @@
    "mkt": 0.1541,
    "win": 0.1391,
    "ev": 0.1129,
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "key": "401873058|4683062",
-   "gid": "401873058",
-   "pid": "4683062",
-   "name": "Xavier Worthy",
-   "pos": "WR",
-   "team": "KC",
-   "opp": "ATL",
-   "game": "KC @ ATL",
-   "kick": "2026-11-15T18:00Z",
-   "price": 320,
-   "book": "BetMGM",
-   "books": 6,
-   "ours": 0.3129,
-   "mkt": 0.2281,
-   "win": 0.2493,
-   "ev": 0.047,
    "result": null,
    "final": null,
    "units": null
@@ -7039,7 +6995,10 @@
    "ours": 9,
    "market": 10,
    "label": "FRES +10",
-   "lockedAt": "2026-11-14T19:31:39.693Z"
+   "lockedAt": "2026-11-14T19:31:39.693Z",
+   "result": "HIT",
+   "units": 0.8696,
+   "final": "FRES 35, TXST 37"
   },
   {
    "id": "401856886",
@@ -7344,6 +7303,22 @@
    "market": -7.5,
    "label": "SC -7.5",
    "lockedAt": "2026-11-14T23:16:31.315Z"
+  },
+  {
+   "id": "401862827",
+   "league": "cfb",
+   "gid": "401862827",
+   "side": "away",
+   "team": "UNT",
+   "game": "UNT @ UTSA",
+   "kick": "2026-11-15T02:00Z",
+   "line": -2,
+   "price": -112,
+   "book": "BetMGM",
+   "ours": -2.9,
+   "market": -2.5,
+   "label": "UNT -2",
+   "lockedAt": "2026-11-15T00:31:51.579Z"
   }
  ]
 }
