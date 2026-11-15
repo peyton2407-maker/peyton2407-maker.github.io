@@ -1996,7 +1996,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T21:46:29.039Z",
+   "lockedAt": "2026-11-15T22:01:53.489Z",
    "provisional": true
   }
  },
@@ -2646,12 +2646,12 @@
     "ours": "CIN -4.5 · total 49.7",
     "score": "PIT 22.6 – CIN 27.1",
     "market": "CIN -3.5 · total 49.5",
-    "lockedAt": "2026-11-15T21:46:29.062Z",
+    "lockedAt": "2026-11-15T22:01:53.512Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-16T01:20Z",
     "big": false,
-    "savedAt": 1794779189062
+    "savedAt": 1794780113512
    }
   ],
   "cfb": [
@@ -3390,7 +3390,7 @@
    }
   ]
  },
- "updated": "2026-11-15T21:46:29.039Z",
+ "updated": "2026-11-15T22:01:53.489Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3676,7 +3676,7 @@
       "line": 12.5,
       "name": "Tyjae Spears"
      },
-     "result": null,
+     "result": "MISS",
      "close": {
       "at": "2026-11-15T17:46:37.294Z",
       "line": 10.5,
@@ -3685,7 +3685,9 @@
       "fair": null,
       "push": 0,
       "src": "books"
-     }
+     },
+     "actual": 28,
+     "final": "Tyjae Spears: 28 rush yds"
     },
     {
      "id": "401873055|pp|4685720|rush_yds|under",
@@ -3710,7 +3712,7 @@
       "line": 8.5,
       "name": "Bryce Young"
      },
-     "result": null,
+     "result": "HIT",
      "close": {
       "at": "2026-11-15T17:46:37.294Z",
       "line": 9.5,
@@ -3719,11 +3721,13 @@
       "fair": null,
       "push": 0,
       "src": "books"
-     }
+     },
+     "actual": 1,
+     "final": "Bryce Young: 1 rush yds"
     }
    ],
-   "result": null,
-   "units": null,
+   "result": "MISS",
+   "units": -1,
    "locked": true,
    "provisional": false,
    "lockedAt": "2026-11-15T13:01:23.839Z"
