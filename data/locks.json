@@ -1922,10 +1922,10 @@
    "spread": 9.5,
    "total": 38.5,
    "lockedAt": "2026-11-15T19:46:19.096Z",
-   "close_spread": 9.5,
+   "close_spread": 10,
    "close_total": 38.5,
-   "closeAt": "2026-11-15T20:16:47.983Z",
-   "clv_side": 0,
+   "closeAt": "2026-11-15T20:46:58.703Z",
+   "clv_side": 0.5,
    "clv_total": 0
   },
   "401873062": {
@@ -1996,7 +1996,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T20:29:44.977Z",
+   "lockedAt": "2026-11-15T20:46:58.703Z",
    "provisional": true
   }
  },
@@ -3314,7 +3314,7 @@
    }
   ]
  },
- "updated": "2026-11-15T20:29:44.977Z",
+ "updated": "2026-11-15T20:46:58.703Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
