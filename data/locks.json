@@ -1695,7 +1695,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T05:40:26.681Z",
+   "lockedAt": "2026-11-15T05:46:40.980Z",
    "provisional": true
   }
  },
@@ -2937,7 +2937,7 @@
    }
   ]
  },
- "updated": "2026-11-15T05:40:26.681Z",
+ "updated": "2026-11-15T05:46:40.980Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3157,11 +3157,11 @@
    "tier": "value",
    "stake": 1,
    "size": 1,
-   "american": 556,
-   "dec": 6.562,
-   "chance": 0.2045,
-   "breakEven": 0.1524,
-   "ev": 0.3419,
+   "american": 579,
+   "dec": 6.7871,
+   "chance": 0.1991,
+   "breakEven": 0.1473,
+   "ev": 0.3515,
    "firstKick": "2026-11-15T14:30:00.000Z",
    "legs": [
     {
@@ -3216,25 +3216,25 @@
     },
     {
      "id": "401873053|pp|4431452|rush_yds|under",
-     "label": "Drake Maye under 28.5 rush yds",
+     "label": "Drake Maye under 27.5 rush yds",
      "kind": "pp",
      "game_id": "401873053",
      "game": "NE VS DET",
      "league": "nfl",
      "kick": "2026-11-15T14:30Z",
-     "price": -116,
-     "line": 28.5,
-     "win": 0.5845,
-     "bookWin": 0.5268,
-     "value": 0.0884,
+     "price": -108,
+     "line": 27.5,
+     "win": 0.5691,
+     "bookWin": 0.5115,
+     "value": 0.0961,
      "cat": "prop",
-     "why": "We project 29 rush yds against 28.5; our checked chance on the under is 56%, the books' 53%. DET is middle of the pack here: 24th of 32 in rush yds allowed to QBs (19 a game; league average 16).",
+     "why": "We project 29 rush yds against 27.5; our checked chance on the under is 54%, the books' 51%. DET is middle of the pack here: 24th of 32 in rush yds allowed to QBs (19 a game; league average 16).",
      "alt": null,
      "prop": {
       "pid": "4431452",
       "stat": "rush_yds",
       "side": "under",
-      "line": 28.5,
+      "line": 27.5,
       "name": "Drake Maye"
      },
      "result": null
@@ -3244,7 +3244,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T05:40:26.681Z"
+   "lockedAt": "2026-11-15T05:46:40.980Z"
   }
  ],
  "teasers": [
@@ -3342,7 +3342,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T05:40:26.681Z"
+   "lockedAt": "2026-11-15T05:46:40.980Z"
   }
  ],
  "teaserLegs": [
@@ -5892,9 +5892,9 @@
    "book": "DraftKings",
    "books": 5,
    "ours": 0.2135,
-   "mkt": 0.2016,
-   "win": 0.2046,
-   "ev": 0.1252,
+   "mkt": 0.1948,
+   "win": 0.1994,
+   "ev": 0.0969,
    "result": null,
    "final": null,
    "units": null
@@ -5913,9 +5913,9 @@
    "book": "BetRivers",
    "books": 6,
    "ours": 0.2059,
-   "mkt": 0.1259,
-   "win": 0.1459,
-   "ev": 0.1672,
+   "mkt": 0.122,
+   "win": 0.143,
+   "ev": 0.1437,
    "result": null,
    "final": null,
    "units": null
@@ -6099,12 +6099,12 @@
    "game": "HOU @ CLE",
    "kick": "2026-11-15T18:00Z",
    "price": 360,
-   "book": "DraftKings",
+   "book": "FanDuel",
    "books": 6,
    "ours": 0.2924,
-   "mkt": 0.2604,
-   "win": 0.2684,
-   "ev": 0.2345,
+   "mkt": 0.2609,
+   "win": 0.2688,
+   "ev": 0.2363,
    "result": null,
    "final": null,
    "units": null
@@ -6162,12 +6162,12 @@
    "game": "HOU @ CLE",
    "kick": "2026-11-15T18:00Z",
    "price": 500,
-   "book": "Fanatics",
+   "book": "BetRivers",
    "books": 6,
    "ours": 0.2033,
-   "mkt": 0.1883,
-   "win": 0.1921,
-   "ev": 0.1525,
+   "mkt": 0.1887,
+   "win": 0.1924,
+   "ev": 0.1543,
    "result": null,
    "final": null,
    "units": null
@@ -6186,9 +6186,9 @@
    "book": "FanDuel",
    "books": 6,
    "ours": 0.4077,
-   "mkt": 0.3996,
-   "win": 0.4016,
-   "ev": 0.1245,
+   "mkt": 0.3974,
+   "win": 0.4,
+   "ev": 0.1199,
    "result": null,
    "final": null,
    "units": null
@@ -6357,6 +6357,27 @@
    "mkt": 0.0657,
    "win": 0.0796,
    "ev": 0.035,
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "key": "401873058|4361409",
+   "gid": "401873058",
+   "pid": "4361409",
+   "name": "Jahan Dotson",
+   "pos": "WR",
+   "team": "ATL",
+   "opp": "KC",
+   "game": "KC @ ATL",
+   "kick": "2026-11-15T18:00Z",
+   "price": 475,
+   "book": "DraftKings",
+   "books": 6,
+   "ours": 0.2688,
+   "mkt": 0.1534,
+   "win": 0.1822,
+   "ev": 0.0478,
    "result": null,
    "final": null,
    "units": null
