@@ -170,7 +170,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 73.5,
-   "lockedAt": "2026-11-15T00:01:29.994Z",
+   "lockedAt": "2026-11-15T00:16:40.232Z",
    "provisional": true
   },
   "401856864": {
@@ -191,7 +191,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T00:01:29.994Z",
+   "lockedAt": "2026-11-15T00:16:40.232Z",
    "provisional": true
   },
   "401856882": {
@@ -213,10 +213,10 @@
    "spread": 7.5,
    "total": 51.5,
    "lockedAt": "2026-11-14T23:16:31.315Z",
-   "close_spread": 7.5,
+   "close_spread": 7,
    "close_total": 51.5,
-   "closeAt": "2026-11-14T23:46:37.846Z",
-   "clv_side": 0,
+   "closeAt": "2026-11-15T00:16:40.232Z",
+   "clv_side": -0.5,
    "clv_total": null
   },
   "401856883": {
@@ -638,10 +638,10 @@
    "spread": -18.5,
    "total": 47.5,
    "lockedAt": "2026-11-14T23:01:27.518Z",
-   "close_spread": -18.5,
+   "close_spread": -19.5,
    "close_total": 47.5,
-   "closeAt": "2026-11-14T23:31:58.667Z",
-   "clv_side": 0,
+   "closeAt": "2026-11-15T00:16:40.232Z",
+   "clv_side": -1,
    "clv_total": null
   },
   "401858520": {
@@ -862,7 +862,7 @@
    "total_play": false,
    "spread": 3,
    "total": 43.5,
-   "lockedAt": "2026-11-15T00:01:29.994Z",
+   "lockedAt": "2026-11-15T00:16:40.232Z",
    "provisional": true
   },
   "401860916": {
@@ -908,7 +908,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 64.5,
-   "lockedAt": "2026-11-15T00:01:29.994Z",
+   "lockedAt": "2026-11-15T00:16:40.232Z",
    "provisional": true
   },
   "401861967": {
@@ -1021,15 +1021,15 @@
    "date": "2026-11-15T02:00Z",
    "pick": "UNT",
    "pick_line": "UNT -2.5",
-   "total_pick": "OVER 76.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
    "our_margin": -2.9,
-   "our_total": 76.2,
+   "our_total": 75.5,
    "confidence": null,
    "total_play": false,
    "spread": 2.5,
-   "total": 76.5,
-   "lockedAt": "2026-11-15T00:01:29.994Z",
+   "total": 75.5,
+   "lockedAt": "2026-11-15T00:16:40.232Z",
    "provisional": true
   },
   "401862828": {
@@ -1125,7 +1125,7 @@
    "total_play": false,
    "spread": 7,
    "total": 39.5,
-   "lockedAt": "2026-11-15T00:01:29.994Z",
+   "lockedAt": "2026-11-15T00:16:40.232Z",
    "provisional": true
   },
   "401864538": {
@@ -1196,7 +1196,7 @@
    "total_play": false,
    "spread": 7,
    "total": 40.5,
-   "lockedAt": "2026-11-15T00:01:29.994Z",
+   "lockedAt": "2026-11-15T00:16:40.232Z",
    "provisional": true
   },
   "401866458": {
@@ -2687,24 +2687,24 @@
     "line": "UNDER 76.5",
     "hitPct": 54,
     "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 76.5. At -105 (DraftKings) the price needs 51%; we count it at 54%, so it's 6.2% better than the price. Under plays are 2-3 on the play of the day, so that record is in the pick.",
-    "label": "Best of Saturday's 12 games",
+    "label": "Best of Saturday's 11 games",
     "result": null,
     "final": null,
     "resultWhy": "",
     "units": 1.5,
     "price": -105,
     "book": "DraftKings",
-    "bookPct": 49,
+    "bookPct": 50,
     "ev": 0.062,
-    "ours": "UNT -2.9 · total 76.2",
-    "score": "UNT 39.6 – UTSA 36.6",
-    "market": "UNT -2.5 · total 76.5",
-    "lockedAt": "2026-11-15T00:01:30.059Z",
+    "ours": "UNT -2.9 · total 75.5",
+    "score": "UNT 39.2 – UTSA 36.3",
+    "market": "UNT -2.5 · total 75.5",
+    "lockedAt": "2026-11-15T00:16:40.305Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T02:00Z",
     "big": true,
-    "savedAt": 1794700890060
+    "savedAt": 1794701800305
    }
   ],
   "cfbHit": [
@@ -2851,7 +2851,7 @@
    }
   ]
  },
- "updated": "2026-11-15T00:01:29.994Z",
+ "updated": "2026-11-15T00:16:40.232Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4581,9 +4581,9 @@
    "ev": 0.0301,
    "mev": 0.0267,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "MIZ 21, UGA 48",
+   "units": -1
   },
   {
    "id": "401858518|sp|home",
@@ -4603,9 +4603,9 @@
    "ev": 0.0388,
    "mev": 0.0388,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "USC 13, IU 27",
+   "units": -1
   },
   {
    "id": "401858294|tot|over",
@@ -4881,12 +4881,12 @@
    "game": "PUR @ IOWA",
    "kick": "2026-11-15T00:30Z",
    "line": -25.5,
-   "mainLine": -18.5,
+   "mainLine": -19.5,
    "price": 230,
    "book": "FanDuel",
-   "win": 0.3191,
+   "win": 0.3215,
    "mwin": 0.3249,
-   "ev": 0.0531,
+   "ev": 0.061,
    "mev": 0.0721,
    "src": "mkt",
    "result": null,
@@ -5026,28 +5026,6 @@
    "units": null
   },
   {
-   "id": "401856887|tot|over",
-   "gid": "401856887",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "over",
-   "label": "Over 57.5",
-   "game": "MISS @ OU",
-   "kick": "2026-11-15T18:00Z",
-   "line": 57.5,
-   "mainLine": 48.5,
-   "price": 250,
-   "book": "FanDuel",
-   "win": 0.2958,
-   "mwin": 0.3016,
-   "ev": 0.0353,
-   "mev": 0.0557,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401856887|sp|home",
    "gid": "401856887",
    "league": "cfb",
@@ -5060,10 +5038,10 @@
    "mainLine": -2.5,
    "price": 256,
    "book": "DraftKings",
-   "win": 0.2959,
-   "mwin": 0.2983,
-   "ev": 0.0535,
-   "mev": 0.062,
+   "win": 0.2993,
+   "mwin": 0.3016,
+   "ev": 0.0656,
+   "mev": 0.0738,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -5082,10 +5060,32 @@
    "mainLine": 2.5,
    "price": 297,
    "book": "DraftKings",
-   "win": 0.26,
-   "mwin": 0.2576,
-   "ev": 0.0321,
-   "mev": 0.0228,
+   "win": 0.2697,
+   "mwin": 0.2673,
+   "ev": 0.0707,
+   "mev": 0.0614,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401856887|tot|under",
+   "gid": "401856887",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 38.5",
+   "game": "MISS @ OU",
+   "kick": "2026-11-15T18:00Z",
+   "line": 38.5,
+   "mainLine": 48.5,
+   "price": 290,
+   "book": "FanDuel",
+   "win": 0.273,
+   "mwin": 0.2671,
+   "ev": 0.0646,
+   "mev": 0.0416,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -6849,7 +6849,10 @@
    "ours": 15.5,
    "market": 16.5,
    "label": "MIZ +15.5",
-   "lockedAt": "2026-11-14T19:01:25.635Z"
+   "lockedAt": "2026-11-14T19:01:25.635Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "MIZ 21, UGA 48"
   },
   {
    "id": "401856861",
@@ -6903,7 +6906,10 @@
    "ours": -10.4,
    "market": -9.5,
    "label": "IU -7.5",
-   "lockedAt": "2026-11-14T19:01:25.635Z"
+   "lockedAt": "2026-11-14T19:01:25.635Z",
+   "result": "HIT",
+   "units": 0.9615,
+   "final": "USC 13, IU 27"
   },
   {
    "id": "401858295",
