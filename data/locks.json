@@ -1921,7 +1921,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 38.5,
-   "lockedAt": "2026-11-15T18:16:22.491Z",
+   "lockedAt": "2026-11-15T19:16:44.254Z",
    "provisional": true
   },
   "401873062": {
@@ -1942,7 +1942,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T18:16:22.491Z",
+   "lockedAt": "2026-11-15T19:16:44.254Z",
    "provisional": true
   },
   "401873063": {
@@ -1963,7 +1963,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T18:16:22.491Z",
+   "lockedAt": "2026-11-15T19:16:44.254Z",
    "provisional": true
   },
   "401873064": {
@@ -1984,7 +1984,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T18:16:22.491Z",
+   "lockedAt": "2026-11-15T19:16:44.254Z",
    "provisional": true
   }
  },
@@ -2536,12 +2536,12 @@
     "kind": "Player prop",
     "line": "Mike Washington Jr. under 27.5 rush yds",
     "hitPct": 57,
-    "why": "We project Mike Washington Jr. for 27 rush yds against a line of 27.5. Our checked chance on the under is 57%; the books' own chance is 51%. At -116 (DraftKings) that is 5.6% better than the price. SEA is a tough defense here: it allows the 3rd-fewest rush yds to RBs (70 a game; league average 93). The under hit in 5 of his last 8 games at this line.",
+    "why": "We project Mike Washington Jr. for 27 rush yds against a line of 27.5. Our checked chance on the under is 57%; the books' own chance is 51%. At -116 (DraftKings) that is 6.6% better than the price. SEA is a tough defense here: it allows the 3rd-fewest rush yds to RBs (70 a game; league average 93). The under hit in 5 of his last 8 games at this line.",
     "label": "Sunday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 1.75,
+    "units": 2,
     "prop": {
      "pid": "4686658",
      "name": "Mike Washington Jr.",
@@ -2551,16 +2551,16 @@
     },
     "price": -116,
     "book": "DraftKings",
-    "ev": 0.056,
+    "ev": 0.066,
     "ours": "SEA -6.2 · total 39.2",
     "score": "SEA 22.7 – LV 16.5",
     "market": "SEA -6.5 · total 40.5",
-    "lockedAt": "2026-11-15T18:16:22.519Z",
+    "lockedAt": "2026-11-15T19:16:44.275Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T21:05Z",
     "big": false,
-    "savedAt": 1794766582519
+    "savedAt": 1794770204275
    }
   ],
   "cfb": [
@@ -3299,7 +3299,7 @@
    }
   ]
  },
- "updated": "2026-11-15T18:16:22.491Z",
+ "updated": "2026-11-15T19:16:44.254Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6235,13 +6235,13 @@
    "opp": "ARI",
    "game": "LAR @ ARI",
    "kick": "2026-11-15T21:05Z",
-   "price": -130,
-   "book": "DraftKings",
+   "price": -125,
+   "book": "BetRivers",
    "books": 6,
    "ours": 0.5708,
-   "mkt": 0.5124,
+   "mkt": 0.5029,
    "win": 0.5833,
-   "ev": 0.032,
+   "ev": 0.0499,
    "rule": "likely",
    "result": null,
    "final": null,
