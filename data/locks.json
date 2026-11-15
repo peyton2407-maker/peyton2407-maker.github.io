@@ -196,10 +196,10 @@
    "spread": 1.5,
    "total": 55.5,
    "lockedAt": "2026-11-15T02:01:27.991Z",
-   "close_spread": 1.5,
+   "close_spread": 2.5,
    "close_total": 55.5,
-   "closeAt": "2026-11-15T02:31:46.564Z",
-   "clv_side": 0,
+   "closeAt": "2026-11-15T03:01:19.237Z",
+   "clv_side": 1,
    "clv_total": null
   },
   "401856882": {
@@ -921,10 +921,10 @@
    "spread": -8.5,
    "total": 64.5,
    "lockedAt": "2026-11-15T02:17:00.533Z",
-   "close_spread": -8.5,
+   "close_spread": -7.5,
    "close_total": 64.5,
-   "closeAt": "2026-11-15T02:46:14.200Z",
-   "clv_side": 0,
+   "closeAt": "2026-11-15T03:01:19.237Z",
+   "clv_side": 1,
    "clv_total": null
   },
   "401861967": {
@@ -1145,7 +1145,12 @@
    "total_play": false,
    "spread": 7,
    "total": 39.5,
-   "lockedAt": "2026-11-15T02:31:46.564Z"
+   "lockedAt": "2026-11-15T02:31:46.564Z",
+   "close_spread": 7.5,
+   "close_total": 39.5,
+   "closeAt": "2026-11-15T03:01:19.237Z",
+   "clv_side": 0.5,
+   "clv_total": 0
   },
   "401864538": {
    "id": "401864538",
@@ -1690,7 +1695,7 @@
    "total_play": false,
    "spread": -3,
    "total": 49.5,
-   "lockedAt": "2026-11-15T02:46:14.200Z",
+   "lockedAt": "2026-11-15T03:01:19.237Z",
    "provisional": true
   }
  },
@@ -2931,7 +2936,7 @@
    }
   ]
  },
- "updated": "2026-11-15T02:46:14.200Z",
+ "updated": "2026-11-15T03:01:19.237Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3238,7 +3243,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T02:46:14.200Z"
+   "lockedAt": "2026-11-15T03:01:19.237Z"
   }
  ],
  "teasers": [
@@ -5137,6 +5142,28 @@
    "units": null
   },
   {
+   "id": "401860917|sp|away",
+   "gid": "401860917",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "away",
+   "label": "CSU +2",
+   "game": "CSU @ WSU",
+   "kick": "2026-11-15T03:45Z",
+   "line": 2,
+   "mainLine": 7.5,
+   "price": 245,
+   "book": "BetRivers",
+   "win": 0.2939,
+   "mwin": 0.2878,
+   "ev": 0.0355,
+   "mev": 0.0144,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873053|sp|away",
    "gid": "401873053",
    "league": "nfl",
@@ -6192,10 +6219,10 @@
    "price": 1200,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0.3735,
-   "mkt": 0.0913,
-   "win": 0.1618,
-   "ev": 1.1037,
+   "ours": 0.3677,
+   "mkt": 0.0884,
+   "win": 0.1582,
+   "ev": 1.0566,
    "result": null,
    "final": null,
    "units": null
@@ -6213,10 +6240,10 @@
    "price": 1100,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.1612,
-   "mkt": 0.0913,
-   "win": 0.1088,
-   "ev": 0.305,
+   "ours": 0.1584,
+   "mkt": 0.0884,
+   "win": 0.1059,
+   "ev": 0.2703,
    "result": null,
    "final": null,
    "units": null
@@ -6255,10 +6282,10 @@
    "price": 750,
    "book": "FanDuel",
    "books": 6,
-   "ours": 0.1056,
-   "mkt": 0.1329,
-   "win": 0.1261,
-   "ev": 0.0717,
+   "ours": 0.1037,
+   "mkt": 0.1288,
+   "win": 0.1225,
+   "ev": 0.0414,
    "result": null,
    "final": null,
    "units": null
@@ -6297,10 +6324,10 @@
    "price": 285,
    "book": "Fanatics",
    "books": 6,
-   "ours": 0.2575,
-   "mkt": 0.2855,
-   "win": 0.2785,
-   "ev": 0.0723,
+   "ours": 0.2532,
+   "mkt": 0.2775,
+   "win": 0.2714,
+   "ev": 0.0449,
    "result": null,
    "final": null,
    "units": null
