@@ -345,7 +345,7 @@
    "total_play": true,
    "spread": -2.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T06:31:11.769Z",
+   "lockedAt": "2026-11-15T06:46:21.932Z",
    "provisional": true
   },
   "401856888": {
@@ -1716,7 +1716,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T06:31:11.769Z",
+   "lockedAt": "2026-11-15T06:46:21.932Z",
    "provisional": true
   },
   "401873054": {
@@ -1737,7 +1737,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 51.5,
-   "lockedAt": "2026-11-15T06:31:11.769Z",
+   "lockedAt": "2026-11-15T06:46:21.932Z",
    "provisional": true
   },
   "401873055": {
@@ -1758,7 +1758,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T06:31:11.769Z",
+   "lockedAt": "2026-11-15T06:46:21.932Z",
    "provisional": true
   },
   "401873056": {
@@ -1779,7 +1779,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T06:31:11.769Z",
+   "lockedAt": "2026-11-15T06:46:21.932Z",
    "provisional": true
   },
   "401873057": {
@@ -1800,7 +1800,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 46.5,
-   "lockedAt": "2026-11-15T06:31:11.769Z",
+   "lockedAt": "2026-11-15T06:46:21.932Z",
    "provisional": true
   },
   "401873058": {
@@ -1821,7 +1821,7 @@
    "total_play": false,
    "spread": 3,
    "total": 47.5,
-   "lockedAt": "2026-11-15T06:31:11.769Z",
+   "lockedAt": "2026-11-15T06:46:21.932Z",
    "provisional": true
   },
   "401873059": {
@@ -1842,7 +1842,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-15T06:31:11.769Z",
+   "lockedAt": "2026-11-15T06:46:21.932Z",
    "provisional": true
   },
   "401873060": {
@@ -1863,7 +1863,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 42.5,
-   "lockedAt": "2026-11-15T06:31:11.769Z",
+   "lockedAt": "2026-11-15T06:46:21.932Z",
    "provisional": true
   }
  },
@@ -2398,12 +2398,12 @@
     "ours": "JAX -10.5 · total 45.7",
     "score": "JAX 28.1 – TEN 17.6",
     "market": "JAX -10.5 · total 46.5",
-    "lockedAt": "2026-11-15T06:31:11.810Z",
+    "lockedAt": "2026-11-15T06:46:21.996Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T18:00Z",
     "big": true,
-    "savedAt": 1794724271810
+    "savedAt": 1794725181996
    }
   ],
   "cfb": [
@@ -3141,7 +3141,7 @@
    }
   ]
  },
- "updated": "2026-11-15T06:31:11.769Z",
+ "updated": "2026-11-15T06:46:21.932Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3448,7 +3448,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T06:31:11.769Z"
+   "lockedAt": "2026-11-15T06:46:21.932Z"
   }
  ],
  "teasers": [
@@ -3546,7 +3546,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T06:31:11.769Z"
+   "lockedAt": "2026-11-15T06:46:21.932Z"
   }
  ],
  "teaserLegs": [
@@ -8060,7 +8060,10 @@
    "ours": -7.7,
    "market": -7,
    "label": "WYO -7.5",
-   "lockedAt": "2026-11-15T01:31:36.576Z"
+   "lockedAt": "2026-11-15T01:31:36.576Z",
+   "result": "HIT",
+   "units": 0.9259,
+   "final": "WYO 27, UTEP 15"
   },
   {
    "id": "401856864",
