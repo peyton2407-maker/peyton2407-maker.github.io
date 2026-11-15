@@ -1996,7 +1996,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T21:01:42.909Z",
+   "lockedAt": "2026-11-15T21:16:23.324Z",
    "provisional": true
   }
  },
@@ -2532,11 +2532,12 @@
     "score": "LAR 24.7 – ARI 15.1",
     "market": "LAR -9.5 · total 38.5",
     "lockedAt": "2026-11-15T17:46:37.349Z",
-    "locked": false,
-    "provisional": true,
+    "locked": true,
+    "provisional": false,
     "kick": "2026-11-15T21:05Z",
     "big": true,
-    "savedAt": 1794764797349
+    "savedAt": 1794764797349,
+    "note": "No lock run landed in the 90 minutes before kickoff; this is the last play saved before kickoff."
    },
    {
     "key": "game:401873062",
@@ -2576,6 +2577,41 @@
     "closeAt": "2026-11-15T20:16:47.983Z",
     "close_src": "board",
     "clv": 0
+   },
+   {
+    "key": "game:401873063",
+    "week": 10,
+    "day": "2026-11-15",
+    "league": "nfl",
+    "id": "401873063",
+    "game": "SF @ DAL",
+    "kind": "Player prop",
+    "line": "George Kittle under 63.5 rec yds",
+    "hitPct": 55,
+    "why": "We project George Kittle for 60 rec yds against a line of 63.5. Our checked chance on the under is 55%; the books' own chance is 52%. At -114 (DraftKings) that is 3.6% better than the price. DAL is middle of the pack here: 14th of 32 in rec yds allowed to TEs (50 a game; league average 55). The under hit in 3 of his last 8 games at this line.",
+    "label": "Sunday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 1,
+    "prop": {
+     "pid": "3040151",
+     "name": "George Kittle",
+     "stat": "rec_yds",
+     "side": "under",
+     "line": 63.5
+    },
+    "price": -114,
+    "book": "DraftKings",
+    "ev": 0.036,
+    "ours": "SF -2.8 · total 55.8",
+    "score": "SF 29.3 – DAL 26.5",
+    "market": "SF -3.5 · total 55.5",
+    "lockedAt": "2026-11-15T21:16:23.345Z",
+    "locked": true,
+    "kick": "2026-11-15T21:25Z",
+    "big": false,
+    "savedAt": 1794777383345
    }
   ],
   "cfb": [
@@ -3314,7 +3350,7 @@
    }
   ]
  },
- "updated": "2026-11-15T21:01:42.909Z",
+ "updated": "2026-11-15T21:16:23.324Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3893,8 +3929,8 @@
    "win": 0.7838,
    "bookWin": 0.7904,
    "total": 48.5,
-   "result": null,
-   "final": null
+   "result": "HIT",
+   "final": "CAR 20, NO 17"
   },
   {
    "id": "401873054|sp|away",
@@ -3909,8 +3945,8 @@
    "win": 0.7428,
    "bookWin": 0.7428,
    "total": 51.5,
-   "result": null,
-   "final": null
+   "result": "HIT",
+   "final": "BUF 31, NYJ 12"
   },
   {
    "id": "401873059|sp|away",
@@ -5680,9 +5716,9 @@
    "ev": 0.0673,
    "mev": -0.0086,
    "src": "proj",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "KC 35, ATL 13",
+   "units": 2.3
   },
   {
    "id": "401856887|tot|under",
@@ -5702,9 +5738,9 @@
    "ev": 0.079,
    "mev": 0.0564,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "MISS 17, OU 24",
+   "units": -1
   },
   {
    "id": "401873058|tot|under",
@@ -5724,9 +5760,9 @@
    "ev": 0.0398,
    "mev": 0.019,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "KC 35, ATL 13",
+   "units": -1
   },
   {
    "id": "401873055|sp|home",
@@ -5746,9 +5782,9 @@
    "ev": 0.0334,
    "mev": 0.0093,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "CAR 20, NO 17",
+   "units": -1
   },
   {
    "id": "401873062|tot|under",
@@ -5783,13 +5819,13 @@
    "kick": "2026-11-15T21:25Z",
    "line": -2,
    "mainLine": 3.5,
-   "price": 220,
+   "price": 200,
    "book": "BetRivers",
-   "win": 0.3358,
-   "mwin": 0.3075,
-   "ev": 0.098,
-   "mev": 0.0067,
-   "src": "mkt",
+   "win": 0.3528,
+   "mwin": 0.3245,
+   "ev": 0.0818,
+   "mev": -0.0038,
+   "src": "proj",
    "result": null,
    "final": null,
    "units": null
@@ -6316,13 +6352,35 @@
    "opp": "DAL",
    "game": "SF @ DAL",
    "kick": "2026-11-15T21:25Z",
-   "price": -265,
+   "price": -260,
+   "book": "FanDuel",
+   "books": 6,
+   "ours": 0.5636,
+   "mkt": 0.6179,
+   "win": 0.7395,
+   "ev": 0.0239,
+   "rule": "likely",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "key": "401873063|4241389",
+   "gid": "401873063",
+   "pid": "4241389",
+   "name": "CeeDee Lamb",
+   "pos": "WR",
+   "team": "DAL",
+   "opp": "SF",
+   "game": "SF @ DAL",
+   "kick": "2026-11-15T21:25Z",
+   "price": -110,
    "book": "DraftKings",
    "books": 6,
-   "ours": 0.5685,
-   "mkt": 0.6236,
-   "win": 0.747,
-   "ev": 0.0289,
+   "ours": 0.4796,
+   "mkt": 0.4573,
+   "win": 0.5297,
+   "ev": 0.0112,
    "rule": "likely",
    "result": null,
    "final": null,
@@ -7750,7 +7808,10 @@
    "ours": -3.8,
    "market": -3,
    "label": "KC -3.5",
-   "lockedAt": "2026-11-15T16:31:33.780Z"
+   "lockedAt": "2026-11-15T16:31:33.780Z",
+   "result": "HIT",
+   "units": 1,
+   "final": "KC 35, ATL 13"
   },
   {
    "id": "401873056",
@@ -7766,7 +7827,10 @@
    "ours": -5,
    "market": -4.5,
    "label": "HOU -4.5",
-   "lockedAt": "2026-11-15T16:31:33.780Z"
+   "lockedAt": "2026-11-15T16:31:33.780Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "HOU 24, CLE 27"
   },
   {
    "id": "401873060",
@@ -7801,7 +7865,10 @@
    "ours": 10.5,
    "market": 10.5,
    "label": "TEN +10.5",
-   "lockedAt": "2026-11-15T16:31:33.780Z"
+   "lockedAt": "2026-11-15T16:31:33.780Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "JAX 40, TEN 23"
   },
   {
    "id": "401873059",
@@ -7833,7 +7900,10 @@
    "ours": 0.7,
    "market": 1.5,
    "label": "CAR +1",
-   "lockedAt": "2026-11-15T16:31:33.780Z"
+   "lockedAt": "2026-11-15T16:31:33.780Z",
+   "result": "HIT",
+   "units": 0.9259,
+   "final": "CAR 20, NO 17"
   },
   {
    "id": "401873054",
@@ -7849,7 +7919,10 @@
    "ours": 8.5,
    "market": 8.5,
    "label": "NYJ +8.5",
-   "lockedAt": "2026-11-15T16:31:33.780Z"
+   "lockedAt": "2026-11-15T16:31:33.780Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "BUF 31, NYJ 12"
   },
   {
    "id": "401856887",
@@ -7865,7 +7938,10 @@
    "ours": 1.1,
    "market": 2.5,
    "label": "MISS -1.5",
-   "lockedAt": "2026-11-15T16:31:33.780Z"
+   "lockedAt": "2026-11-15T16:31:33.780Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "MISS 17, OU 24"
   },
   {
    "id": "401873062",
