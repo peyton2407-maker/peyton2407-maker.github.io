@@ -1996,7 +1996,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T21:31:45.829Z",
+   "lockedAt": "2026-11-15T21:46:29.039Z",
    "provisional": true
   }
  },
@@ -2646,12 +2646,12 @@
     "ours": "CIN -4.5 · total 49.7",
     "score": "PIT 22.6 – CIN 27.1",
     "market": "CIN -3.5 · total 49.5",
-    "lockedAt": "2026-11-15T21:31:45.851Z",
+    "lockedAt": "2026-11-15T21:46:29.062Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-16T01:20Z",
     "big": false,
-    "savedAt": 1794778305851
+    "savedAt": 1794779189062
    }
   ],
   "cfb": [
@@ -3390,7 +3390,7 @@
    }
   ]
  },
- "updated": "2026-11-15T21:31:45.829Z",
+ "updated": "2026-11-15T21:46:29.039Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5883,11 +5883,11 @@
    "mainLine": -3.5,
    "price": 210,
    "book": "FanDuel",
-   "win": 0.338,
-   "mwin": 0.3288,
-   "ev": 0.0477,
-   "mev": 0.0193,
-   "src": "mkt",
+   "win": 0.3329,
+   "mwin": 0.3237,
+   "ev": 0.032,
+   "mev": 0.0035,
+   "src": "proj",
    "result": null,
    "final": null,
    "units": null
