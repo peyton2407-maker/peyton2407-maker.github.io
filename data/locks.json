@@ -1996,7 +1996,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T21:16:23.324Z",
+   "lockedAt": "2026-11-15T21:31:45.829Z",
    "provisional": true
   }
  },
@@ -2611,7 +2611,47 @@
     "locked": true,
     "kick": "2026-11-15T21:25Z",
     "big": false,
-    "savedAt": 1794777383345
+    "savedAt": 1794777383345,
+    "close_line": 63.5,
+    "closeAt": "2026-11-15T21:31:45.829Z",
+    "close_src": "board",
+    "clv": 0
+   },
+   {
+    "key": "game:401873064",
+    "week": 10,
+    "day": "2026-11-15",
+    "league": "nfl",
+    "id": "401873064",
+    "game": "PIT @ CIN",
+    "kind": "Player prop",
+    "line": "Aaron Rodgers under 1.5 pass TDs",
+    "hitPct": 56,
+    "why": "We project Aaron Rodgers for 1.4 pass TDs against a line of 1.5. Our checked chance on the under is 56%; the books' own chance is 52%. At -117 (DraftKings) that is 3.6% better than the price. CIN is a tough defense here: it allows the 6th-fewest pass TDs to QBs (1.1 a game; league average 1.5). The under hit in 4 of his last 8 games at this line.",
+    "label": "Sunday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 1,
+    "prop": {
+     "pid": "8439",
+     "name": "Aaron Rodgers",
+     "stat": "pass_td",
+     "side": "under",
+     "line": 1.5
+    },
+    "price": -117,
+    "book": "DraftKings",
+    "ev": 0.036,
+    "ours": "CIN -4.5 · total 49.7",
+    "score": "PIT 22.6 – CIN 27.1",
+    "market": "CIN -3.5 · total 49.5",
+    "lockedAt": "2026-11-15T21:31:45.851Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-16T01:20Z",
+    "big": false,
+    "savedAt": 1794778305851
    }
   ],
   "cfb": [
@@ -3350,7 +3390,7 @@
    }
   ]
  },
- "updated": "2026-11-15T21:16:23.324Z",
+ "updated": "2026-11-15T21:31:45.829Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3961,8 +4001,8 @@
    "win": 0.6275,
    "bookWin": 0.6518,
    "total": 37.5,
-   "result": null,
-   "final": null
+   "result": "HIT",
+   "final": "MIA 22, IND 24"
   },
   {
    "id": "401873060|sp|away",
@@ -5694,9 +5734,9 @@
    "ev": 0.0912,
    "mev": 0.0229,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "MIA 22, IND 24",
+   "units": -1
   },
   {
    "id": "401873058|sp|away",
@@ -7884,7 +7924,10 @@
    "ours": -6.4,
    "market": -4.5,
    "label": "IND -2.5",
-   "lockedAt": "2026-11-15T16:31:33.780Z"
+   "lockedAt": "2026-11-15T16:31:33.780Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "MIA 22, IND 24"
   },
   {
    "id": "401873055",
