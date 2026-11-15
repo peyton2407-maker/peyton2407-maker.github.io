@@ -345,7 +345,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T13:16:32.782Z",
+   "lockedAt": "2026-11-15T13:32:00.200Z",
    "provisional": true
   },
   "401856888": {
@@ -1716,7 +1716,12 @@
    "total_play": false,
    "spread": -2.5,
    "total": 50.5,
-   "lockedAt": "2026-11-15T13:01:23.839Z"
+   "lockedAt": "2026-11-15T13:01:23.839Z",
+   "close_spread": -2.5,
+   "close_total": 50.5,
+   "closeAt": "2026-11-15T13:32:00.200Z",
+   "clv_side": 0,
+   "clv_total": 0
   },
   "401873054": {
    "id": "401873054",
@@ -1757,7 +1762,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T13:16:32.782Z",
+   "lockedAt": "2026-11-15T13:32:00.200Z",
    "provisional": true
   },
   "401873056": {
@@ -1778,7 +1783,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T13:16:32.782Z",
+   "lockedAt": "2026-11-15T13:32:00.200Z",
    "provisional": true
   },
   "401873057": {
@@ -1799,7 +1804,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 46.5,
-   "lockedAt": "2026-11-15T13:16:32.782Z",
+   "lockedAt": "2026-11-15T13:32:00.200Z",
    "provisional": true
   },
   "401873058": {
@@ -1820,7 +1825,7 @@
    "total_play": false,
    "spread": 3,
    "total": 47.5,
-   "lockedAt": "2026-11-15T13:16:32.782Z",
+   "lockedAt": "2026-11-15T13:32:00.200Z",
    "provisional": true
   },
   "401873059": {
@@ -1841,7 +1846,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-15T13:16:32.782Z",
+   "lockedAt": "2026-11-15T13:32:00.200Z",
    "provisional": true
   },
   "401873060": {
@@ -1862,7 +1867,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 42.5,
-   "lockedAt": "2026-11-15T13:16:32.782Z",
+   "lockedAt": "2026-11-15T13:32:00.200Z",
    "provisional": true
   },
   "401873061": {
@@ -1883,7 +1888,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 38.5,
-   "lockedAt": "2026-11-15T13:16:32.782Z",
+   "lockedAt": "2026-11-15T13:32:00.200Z",
    "provisional": true
   },
   "401873062": {
@@ -1904,7 +1909,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T13:16:32.782Z",
+   "lockedAt": "2026-11-15T13:32:00.200Z",
    "provisional": true
   },
   "401873063": {
@@ -1925,7 +1930,28 @@
    "total_play": false,
    "spread": 4.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T13:16:32.782Z",
+   "lockedAt": "2026-11-15T13:32:00.200Z",
+   "provisional": true
+  },
+  "401873064": {
+   "id": "401873064",
+   "league": "nfl",
+   "week": 10,
+   "short": "PIT @ CIN",
+   "home": "CIN",
+   "away": "PIT",
+   "date": "2026-11-16T01:20Z",
+   "pick": "CIN",
+   "pick_line": "CIN -3.5",
+   "total_pick": "OVER 49.5",
+   "side_play": false,
+   "our_margin": 4.45,
+   "our_total": 49.7,
+   "confidence": null,
+   "total_play": false,
+   "spread": -3.5,
+   "total": 49.5,
+   "lockedAt": "2026-11-15T13:32:00.200Z",
    "provisional": true
   }
  },
@@ -2460,12 +2486,12 @@
     "ours": "SF -3.5 · total 55.8",
     "score": "SF 29.7 – DAL 26.1",
     "market": "SF -4.5 · total 55.5",
-    "lockedAt": "2026-11-15T13:16:32.848Z",
+    "lockedAt": "2026-11-15T13:32:00.243Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T21:25Z",
     "big": true,
-    "savedAt": 1794748592848
+    "savedAt": 1794749520243
    }
   ],
   "cfb": [
@@ -3204,7 +3230,7 @@
    }
   ]
  },
- "updated": "2026-11-15T13:16:32.782Z",
+ "updated": "2026-11-15T13:32:00.200Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3456,7 +3482,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-15T13:16:32.782Z",
+      "at": "2026-11-15T13:32:00.200Z",
       "line": 28.5,
       "price": -111,
       "book": "DraftKings",
@@ -3490,7 +3516,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-15T13:16:32.782Z",
+      "at": "2026-11-15T13:32:00.200Z",
       "line": 11.5,
       "price": -105,
       "book": "DraftKings",
@@ -3524,7 +3550,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-15T13:16:32.782Z",
+      "at": "2026-11-15T13:32:00.200Z",
       "line": 8.5,
       "price": -107,
       "book": "DraftKings",
