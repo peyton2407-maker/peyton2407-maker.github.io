@@ -345,7 +345,7 @@
    "total_play": true,
    "spread": -2.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T07:01:22.401Z",
+   "lockedAt": "2026-11-15T07:17:23.464Z",
    "provisional": true
   },
   "401856888": {
@@ -1716,7 +1716,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T07:01:22.401Z",
+   "lockedAt": "2026-11-15T07:17:23.464Z",
    "provisional": true
   },
   "401873054": {
@@ -1737,7 +1737,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 50.5,
-   "lockedAt": "2026-11-15T07:01:22.401Z",
+   "lockedAt": "2026-11-15T07:17:23.464Z",
    "provisional": true
   },
   "401873055": {
@@ -1758,7 +1758,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T07:01:22.401Z",
+   "lockedAt": "2026-11-15T07:17:23.464Z",
    "provisional": true
   },
   "401873056": {
@@ -1779,7 +1779,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T07:01:22.401Z",
+   "lockedAt": "2026-11-15T07:17:23.464Z",
    "provisional": true
   },
   "401873057": {
@@ -1800,7 +1800,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 46.5,
-   "lockedAt": "2026-11-15T07:01:22.401Z",
+   "lockedAt": "2026-11-15T07:17:23.464Z",
    "provisional": true
   },
   "401873058": {
@@ -1821,7 +1821,7 @@
    "total_play": false,
    "spread": 3,
    "total": 47.5,
-   "lockedAt": "2026-11-15T07:01:22.401Z",
+   "lockedAt": "2026-11-15T07:17:23.464Z",
    "provisional": true
   },
   "401873059": {
@@ -1842,7 +1842,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-15T07:01:22.401Z",
+   "lockedAt": "2026-11-15T07:17:23.464Z",
    "provisional": true
   },
   "401873060": {
@@ -1863,7 +1863,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 42.5,
-   "lockedAt": "2026-11-15T07:01:22.401Z",
+   "lockedAt": "2026-11-15T07:17:23.464Z",
    "provisional": true
   }
  },
@@ -2398,12 +2398,12 @@
     "ours": "JAX -10.5 · total 45.7",
     "score": "JAX 28.1 – TEN 17.6",
     "market": "JAX -10.5 · total 46.5",
-    "lockedAt": "2026-11-15T07:01:22.465Z",
+    "lockedAt": "2026-11-15T07:17:23.511Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T18:00Z",
     "big": true,
-    "savedAt": 1794726082465
+    "savedAt": 1794727043511
    }
   ],
   "cfb": [
@@ -3142,7 +3142,7 @@
    }
   ]
  },
- "updated": "2026-11-15T07:01:22.401Z",
+ "updated": "2026-11-15T07:17:23.464Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3449,7 +3449,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T07:01:22.401Z"
+   "lockedAt": "2026-11-15T07:17:23.464Z"
   }
  ],
  "teasers": [
@@ -3547,7 +3547,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T07:01:22.401Z"
+   "lockedAt": "2026-11-15T07:17:23.464Z"
   }
  ],
  "teaserLegs": [
@@ -5484,50 +5484,6 @@
    "units": null
   },
   {
-   "id": "401856887|sp|home",
-   "gid": "401856887",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "home",
-   "label": "OU -9.5",
-   "game": "MISS @ OU",
-   "kick": "2026-11-15T18:00Z",
-   "line": -9.5,
-   "mainLine": -2.5,
-   "price": 256,
-   "book": "DraftKings",
-   "win": 0.2993,
-   "mwin": 0.3016,
-   "ev": 0.0656,
-   "mev": 0.0738,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401856887|sp|away",
-   "gid": "401856887",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "away",
-   "label": "MISS -6.5",
-   "game": "MISS @ OU",
-   "kick": "2026-11-15T18:00Z",
-   "line": -6.5,
-   "mainLine": 2.5,
-   "price": 297,
-   "book": "DraftKings",
-   "win": 0.2697,
-   "mwin": 0.2673,
-   "ev": 0.0707,
-   "mev": 0.0614,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401856887|tot|under",
    "gid": "401856887",
    "league": "cfb",
@@ -5540,10 +5496,10 @@
    "mainLine": 48.5,
    "price": 290,
    "book": "FanDuel",
-   "win": 0.2779,
-   "mwin": 0.2671,
-   "ev": 0.084,
-   "mev": 0.0416,
+   "win": 0.2818,
+   "mwin": 0.2709,
+   "ev": 0.099,
+   "mev": 0.0567,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -6079,9 +6035,9 @@
    "mkt": 0.1897,
    "win": 0.2133,
    "ev": 0.0451,
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "No TD",
+   "units": -1
   },
   {
    "key": "401873053|4698253",
