@@ -170,7 +170,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 73.5,
-   "lockedAt": "2026-11-15T00:31:51.579Z",
+   "lockedAt": "2026-11-15T00:46:45.522Z",
    "provisional": true
   },
   "401856864": {
@@ -191,7 +191,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T00:31:51.579Z",
+   "lockedAt": "2026-11-15T00:46:45.522Z",
    "provisional": true
   },
   "401856882": {
@@ -862,7 +862,7 @@
    "total_play": false,
    "spread": 3,
    "total": 43.5,
-   "lockedAt": "2026-11-15T00:31:51.579Z",
+   "lockedAt": "2026-11-15T00:46:45.522Z",
    "provisional": true
   },
   "401860916": {
@@ -908,7 +908,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 64.5,
-   "lockedAt": "2026-11-15T00:31:51.579Z",
+   "lockedAt": "2026-11-15T00:46:45.522Z",
    "provisional": true
   },
   "401861967": {
@@ -1124,7 +1124,7 @@
    "total_play": false,
    "spread": 7,
    "total": 39.5,
-   "lockedAt": "2026-11-15T00:31:51.579Z",
+   "lockedAt": "2026-11-15T00:46:45.522Z",
    "provisional": true
   },
   "401864538": {
@@ -1195,7 +1195,7 @@
    "total_play": false,
    "spread": 7,
    "total": 40.5,
-   "lockedAt": "2026-11-15T00:31:51.579Z",
+   "lockedAt": "2026-11-15T00:46:45.522Z",
    "provisional": true
   },
   "401866458": {
@@ -2849,7 +2849,7 @@
    }
   ]
  },
- "updated": "2026-11-15T00:31:51.579Z",
+ "updated": "2026-11-15T00:46:45.522Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4950,7 +4950,7 @@
    "book": "BetRivers",
    "win": 0.3049,
    "mwin": 0.3085,
-   "ev": 0.0824,
+   "ev": 0.0825,
    "mev": 0.0952,
    "src": "mkt",
    "result": null,
