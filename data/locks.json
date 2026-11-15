@@ -195,8 +195,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T01:46:32.603Z",
-   "provisional": true
+   "lockedAt": "2026-11-15T02:01:27.991Z"
   },
   "401856882": {
    "id": "401856882",
@@ -916,7 +915,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 64.5,
-   "lockedAt": "2026-11-15T01:46:32.603Z",
+   "lockedAt": "2026-11-15T02:01:27.991Z",
    "provisional": true
   },
   "401861967": {
@@ -1137,7 +1136,7 @@
    "total_play": false,
    "spread": 7,
    "total": 39.5,
-   "lockedAt": "2026-11-15T01:46:32.603Z",
+   "lockedAt": "2026-11-15T02:01:27.991Z",
    "provisional": true
   },
   "401864538": {
@@ -1208,7 +1207,12 @@
    "total_play": false,
    "spread": 7,
    "total": 40.5,
-   "lockedAt": "2026-11-15T01:31:36.576Z"
+   "lockedAt": "2026-11-15T01:31:36.576Z",
+   "close_spread": 7,
+   "close_total": 40.5,
+   "closeAt": "2026-11-15T02:01:27.991Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401866458": {
    "id": "401866458",
@@ -2865,7 +2869,7 @@
    }
   ]
  },
- "updated": "2026-11-15T01:46:32.603Z",
+ "updated": "2026-11-15T02:01:27.991Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3251,7 +3255,7 @@
    "from": 2.5,
    "to": 8.5,
    "book": "DraftKings",
-   "win": 0.7292,
+   "win": 0.7291,
    "bookWin": 0.7161,
    "total": 49.5,
    "result": null,
@@ -3264,11 +3268,11 @@
    "side": "away",
    "game": "CAR @ NO",
    "kick": "2026-11-15T18:00Z",
-   "from": 2.5,
-   "to": 8.5,
+   "from": 1.5,
+   "to": 7.5,
    "book": null,
-   "win": 0.7527,
-   "bookWin": 0.7528,
+   "win": 0.7491,
+   "bookWin": 0.7491,
    "total": 48.5,
    "result": null,
    "final": null
@@ -4683,9 +4687,9 @@
    "ev": 0.074,
    "mev": 0.074,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "WASH 21, MSU 14",
+   "units": -1
   },
   {
    "id": "401858521|sp|home",
@@ -4705,9 +4709,9 @@
    "ev": 0.1183,
    "mev": 0.1091,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "WASH 21, MSU 14",
+   "units": -1
   },
   {
    "id": "401858521|sp|away",
@@ -4727,9 +4731,9 @@
    "ev": 0.1098,
    "mev": 0.1184,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "WASH 21, MSU 14",
+   "units": -1
   },
   {
    "id": "401856857|tot|over",
@@ -4749,9 +4753,9 @@
    "ev": 0.0343,
    "mev": 0.0343,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "ASU 26, UCF 13",
+   "units": -1
   },
   {
    "id": "401860914|sp|away",
@@ -6039,27 +6043,6 @@
    "units": null
   },
   {
-   "key": "401873055|4569682",
-   "gid": "401873055",
-   "pid": "4569682",
-   "name": "Audric Estime",
-   "pos": "RB",
-   "team": "NO",
-   "opp": "CAR",
-   "game": "CAR @ NO",
-   "kick": "2026-11-15T18:00Z",
-   "price": 360,
-   "book": "BetRivers",
-   "books": 6,
-   "ours": 0.2567,
-   "mkt": 0.2131,
-   "win": 0.224,
-   "ev": 0.0304,
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "key": "401873061|4039050",
    "gid": "401873061",
    "pid": "4039050",
@@ -7151,7 +7134,10 @@
    "ours": -4.8,
    "market": -3.5,
    "label": "UCF -3",
-   "lockedAt": "2026-11-14T21:01:38.784Z"
+   "lockedAt": "2026-11-14T21:01:38.784Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "ASU 26, UCF 13"
   },
   {
    "id": "401858521",
@@ -7167,7 +7153,10 @@
    "ours": 1.2,
    "market": 2.5,
    "label": "MSU +3.5",
-   "lockedAt": "2026-11-14T21:01:38.784Z"
+   "lockedAt": "2026-11-14T21:01:38.784Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "WASH 21, MSU 14"
   },
   {
    "id": "401860914",
@@ -7456,6 +7445,22 @@
    "market": -7,
    "label": "WYO -7.5",
    "lockedAt": "2026-11-15T01:31:36.576Z"
+  },
+  {
+   "id": "401856864",
+   "league": "cfb",
+   "gid": "401856864",
+   "side": "away",
+   "team": "UTAH",
+   "game": "UTAH @ ARIZ",
+   "kick": "2026-11-15T03:30Z",
+   "line": -2.5,
+   "price": -115,
+   "book": "DraftKings",
+   "ours": -1.7,
+   "market": -1.5,
+   "label": "UTAH -2.5",
+   "lockedAt": "2026-11-15T02:01:27.991Z"
   }
  ]
 }
