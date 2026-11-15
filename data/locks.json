@@ -345,7 +345,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T14:31:26.625Z",
+   "lockedAt": "2026-11-15T15:16:47.189Z",
    "provisional": true
   },
   "401856888": {
@@ -1762,7 +1762,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T14:31:26.625Z",
+   "lockedAt": "2026-11-15T15:16:47.189Z",
    "provisional": true
   },
   "401873056": {
@@ -1783,7 +1783,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T14:31:26.625Z",
+   "lockedAt": "2026-11-15T15:16:47.189Z",
    "provisional": true
   },
   "401873057": {
@@ -1804,7 +1804,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 45.5,
-   "lockedAt": "2026-11-15T14:31:26.625Z",
+   "lockedAt": "2026-11-15T15:16:47.189Z",
    "provisional": true
   },
   "401873058": {
@@ -1825,7 +1825,7 @@
    "total_play": false,
    "spread": 3,
    "total": 47.5,
-   "lockedAt": "2026-11-15T14:31:26.625Z",
+   "lockedAt": "2026-11-15T15:16:47.189Z",
    "provisional": true
   },
   "401873059": {
@@ -1846,7 +1846,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-15T14:31:26.625Z",
+   "lockedAt": "2026-11-15T15:16:47.189Z",
    "provisional": true
   },
   "401873060": {
@@ -1867,7 +1867,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 42.5,
-   "lockedAt": "2026-11-15T14:31:26.625Z",
+   "lockedAt": "2026-11-15T15:16:47.189Z",
    "provisional": true
   },
   "401873061": {
@@ -1888,7 +1888,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 38.5,
-   "lockedAt": "2026-11-15T14:31:26.625Z",
+   "lockedAt": "2026-11-15T15:16:47.189Z",
    "provisional": true
   },
   "401873062": {
@@ -1909,7 +1909,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T14:31:26.625Z",
+   "lockedAt": "2026-11-15T15:16:47.189Z",
    "provisional": true
   },
   "401873063": {
@@ -1930,7 +1930,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T14:31:26.625Z",
+   "lockedAt": "2026-11-15T15:16:47.189Z",
    "provisional": true
   },
   "401873064": {
@@ -1951,7 +1951,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T14:31:26.625Z",
+   "lockedAt": "2026-11-15T15:16:47.189Z",
    "provisional": true
   }
  },
@@ -2486,12 +2486,12 @@
     "ours": "BUF -8.5 · total 50.5",
     "score": "BUF 29.5 – NYJ 21.0",
     "market": "BUF -8.5 · total 50.5",
-    "lockedAt": "2026-11-15T14:31:26.670Z",
+    "lockedAt": "2026-11-15T15:16:47.255Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T18:00Z",
     "big": true,
-    "savedAt": 1794753086670
+    "savedAt": 1794755807255
    }
   ],
   "cfb": [
@@ -3230,7 +3230,7 @@
    }
   ]
  },
- "updated": "2026-11-15T14:31:26.625Z",
+ "updated": "2026-11-15T15:16:47.189Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3516,7 +3516,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-15T14:31:26.625Z",
+      "at": "2026-11-15T15:16:47.189Z",
       "line": 11.5,
       "price": -104,
       "book": "DraftKings",
@@ -3550,7 +3550,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-15T14:31:26.625Z",
+      "at": "2026-11-15T15:16:47.189Z",
       "line": 8.5,
       "price": -107,
       "book": "DraftKings",
@@ -5692,39 +5692,17 @@
    "league": "nfl",
    "kind": "tot",
    "side": "under",
-   "label": "Under 33.5",
+   "label": "Under 32.5",
    "game": "SEA @ LV",
    "kick": "2026-11-15T21:05Z",
-   "line": 33.5,
+   "line": 32.5,
    "mainLine": 40.5,
-   "price": 250,
-   "book": "ESPN BET",
-   "win": 0.303,
-   "mwin": 0.2947,
-   "ev": 0.0604,
-   "mev": 0.0315,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873062|sp|away",
-   "gid": "401873062",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "away",
-   "label": "SEA -14.5",
-   "game": "SEA @ LV",
-   "kick": "2026-11-15T21:05Z",
-   "line": -14.5,
-   "mainLine": -6.5,
    "price": 300,
    "book": "ESPN BET",
-   "win": 0.2616,
-   "mwin": 0.2616,
-   "ev": 0.0465,
-   "mev": 0.0465,
+   "win": 0.2655,
+   "mwin": 0.2575,
+   "ev": 0.0619,
+   "mev": 0.0301,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -5736,17 +5714,17 @@
    "league": "nfl",
    "kind": "sp",
    "side": "home",
-   "label": "CIN -8.5",
+   "label": "CIN -7.5",
    "game": "PIT @ CIN",
    "kick": "2026-11-16T01:20Z",
-   "line": -8.5,
+   "line": -7.5,
    "mainLine": -3.5,
-   "price": 210,
+   "price": 186,
    "book": "FanDuel",
-   "win": 0.338,
-   "mwin": 0.3288,
-   "ev": 0.0477,
-   "mev": 0.0193,
+   "win": 0.3629,
+   "mwin": 0.3536,
+   "ev": 0.0379,
+   "mev": 0.0112,
    "src": "mkt",
    "result": null,
    "final": null,
