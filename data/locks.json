@@ -170,8 +170,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 73.5,
-   "lockedAt": "2026-11-15T00:46:45.522Z",
-   "provisional": true
+   "lockedAt": "2026-11-15T01:01:24.803Z"
   },
   "401856864": {
    "id": "401856864",
@@ -191,7 +190,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T00:46:45.522Z",
+   "lockedAt": "2026-11-15T01:01:24.803Z",
    "provisional": true
   },
   "401856882": {
@@ -862,8 +861,7 @@
    "total_play": false,
    "spread": 3,
    "total": 43.5,
-   "lockedAt": "2026-11-15T00:46:45.522Z",
-   "provisional": true
+   "lockedAt": "2026-11-15T01:01:24.803Z"
   },
   "401860916": {
    "id": "401860916",
@@ -908,7 +906,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 64.5,
-   "lockedAt": "2026-11-15T00:46:45.522Z",
+   "lockedAt": "2026-11-15T01:01:24.803Z",
    "provisional": true
   },
   "401861967": {
@@ -1029,7 +1027,12 @@
    "total_play": false,
    "spread": 2.5,
    "total": 75.5,
-   "lockedAt": "2026-11-15T00:31:51.579Z"
+   "lockedAt": "2026-11-15T00:31:51.579Z",
+   "close_spread": 2.5,
+   "close_total": 75.5,
+   "closeAt": "2026-11-15T01:01:24.803Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401862828": {
    "id": "401862828",
@@ -1124,7 +1127,7 @@
    "total_play": false,
    "spread": 7,
    "total": 39.5,
-   "lockedAt": "2026-11-15T00:46:45.522Z",
+   "lockedAt": "2026-11-15T01:01:24.803Z",
    "provisional": true
   },
   "401864538": {
@@ -1195,7 +1198,7 @@
    "total_play": false,
    "spread": 7,
    "total": 40.5,
-   "lockedAt": "2026-11-15T00:46:45.522Z",
+   "lockedAt": "2026-11-15T01:01:24.803Z",
    "provisional": true
   },
   "401866458": {
@@ -2702,7 +2705,11 @@
     "locked": true,
     "kick": "2026-11-15T02:00Z",
     "big": true,
-    "savedAt": 1794702711627
+    "savedAt": 1794702711627,
+    "close_line": 75.5,
+    "closeAt": "2026-11-15T01:01:24.803Z",
+    "close_src": "board",
+    "clv": 1
    }
   ],
   "cfbHit": [
@@ -2849,7 +2856,7 @@
    }
   ]
  },
- "updated": "2026-11-15T00:46:45.522Z",
+ "updated": "2026-11-15T01:01:24.803Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3234,9 +3241,9 @@
    "kick": "2026-11-15T14:30Z",
    "from": 2.5,
    "to": 8.5,
-   "book": null,
-   "win": 0.7564,
-   "bookWin": 0.7528,
+   "book": "DraftKings",
+   "win": 0.7292,
+   "bookWin": 0.7161,
    "total": 49.5,
    "result": null,
    "final": null
@@ -4952,28 +4959,6 @@
    "mwin": 0.3085,
    "ev": 0.0825,
    "mev": 0.0952,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873053|sp|home",
-   "gid": "401873053",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "home",
-   "label": "DET -8.5",
-   "game": "NE VS DET",
-   "kick": "2026-11-15T14:30Z",
-   "line": -8.5,
-   "mainLine": -2.5,
-   "price": 275,
-   "book": "BetRivers",
-   "win": 0.2752,
-   "mwin": 0.2789,
-   "ev": 0.0319,
-   "mev": 0.0459,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -7014,7 +6999,10 @@
    "ours": 1.1,
    "market": 2.5,
    "label": "MSST +2.5",
-   "lockedAt": "2026-11-14T19:46:46.215Z"
+   "lockedAt": "2026-11-14T19:46:46.215Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "AUB 41, MSST 9"
   },
   {
    "id": "401862828",
@@ -7030,7 +7018,10 @@
    "ours": 2.1,
    "market": 4,
    "label": "TULN +2.5",
-   "lockedAt": "2026-11-14T20:01:18.431Z"
+   "lockedAt": "2026-11-14T20:01:18.431Z",
+   "result": "HIT",
+   "units": 0.9259,
+   "final": "TULN 20, RICE 17"
   },
   {
    "id": "401871099",
@@ -7319,6 +7310,38 @@
    "market": -2.5,
    "label": "UNT -2",
    "lockedAt": "2026-11-15T00:31:51.579Z"
+  },
+  {
+   "id": "401856863",
+   "league": "cfb",
+   "gid": "401856863",
+   "side": "away",
+   "team": "TTU",
+   "game": "TTU @ OKST",
+   "kick": "2026-11-15T02:30Z",
+   "line": 3.5,
+   "price": -112,
+   "book": "BetMGM",
+   "ours": 3.1,
+   "market": 3.5,
+   "label": "TTU +3.5",
+   "lockedAt": "2026-11-15T01:01:24.803Z"
+  },
+  {
+   "id": "401860915",
+   "league": "cfb",
+   "gid": "401860915",
+   "side": "home",
+   "team": "SDSU",
+   "game": "USU @ SDSU",
+   "kick": "2026-11-15T02:30Z",
+   "line": 2.5,
+   "price": -100,
+   "book": "FanDuel",
+   "ours": 2.3,
+   "market": 3,
+   "label": "SDSU +2.5",
+   "lockedAt": "2026-11-15T01:01:24.803Z"
   }
  ]
 }
