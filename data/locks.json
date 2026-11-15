@@ -1921,7 +1921,12 @@
    "total_play": false,
    "spread": 9.5,
    "total": 38.5,
-   "lockedAt": "2026-11-15T19:46:19.096Z"
+   "lockedAt": "2026-11-15T19:46:19.096Z",
+   "close_spread": 9.5,
+   "close_total": 38.5,
+   "closeAt": "2026-11-15T20:16:47.983Z",
+   "clv_side": 0,
+   "clv_total": 0
   },
   "401873062": {
    "id": "401873062",
@@ -1941,7 +1946,12 @@
    "total_play": false,
    "spread": 6.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T19:46:19.096Z"
+   "lockedAt": "2026-11-15T19:46:19.096Z",
+   "close_spread": 6.5,
+   "close_total": 40.5,
+   "closeAt": "2026-11-15T20:16:47.983Z",
+   "clv_side": 0,
+   "clv_total": 0
   },
   "401873063": {
    "id": "401873063",
@@ -1981,7 +1991,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T20:01:25.015Z",
+   "lockedAt": "2026-11-15T20:16:47.983Z",
    "provisional": true
   }
  },
@@ -2556,7 +2566,11 @@
     "locked": true,
     "kick": "2026-11-15T21:05Z",
     "big": false,
-    "savedAt": 1794771979120
+    "savedAt": 1794771979120,
+    "close_line": 27.5,
+    "closeAt": "2026-11-15T20:16:47.983Z",
+    "close_src": "board",
+    "clv": 0
    }
   ],
   "cfb": [
@@ -3295,7 +3309,7 @@
    }
   ]
  },
- "updated": "2026-11-15T20:01:25.015Z",
+ "updated": "2026-11-15T20:16:47.983Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5737,17 +5751,39 @@
    "league": "nfl",
    "kind": "tot",
    "side": "under",
-   "label": "Under 35.5",
+   "label": "Under 32.5",
    "game": "SEA @ LV",
    "kick": "2026-11-15T21:05Z",
-   "line": 35.5,
+   "line": 32.5,
    "mainLine": 40.5,
-   "price": 200,
+   "price": 300,
    "book": "ESPN BET",
-   "win": 0.351,
-   "mwin": 0.3422,
-   "ev": 0.0529,
-   "mev": 0.0266,
+   "win": 0.2705,
+   "mwin": 0.2625,
+   "ev": 0.0819,
+   "mev": 0.0502,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873063|sp|home",
+   "gid": "401873063",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "home",
+   "label": "DAL -2",
+   "game": "SF @ DAL",
+   "kick": "2026-11-15T21:25Z",
+   "line": -2,
+   "mainLine": 4.5,
+   "price": 220,
+   "book": "BetRivers",
+   "win": 0.3161,
+   "mwin": 0.3078,
+   "ev": 0.0338,
+   "mev": 0.0067,
    "src": "mkt",
    "result": null,
    "final": null,
