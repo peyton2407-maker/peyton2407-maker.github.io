@@ -12400,7 +12400,10 @@ function dkFresh(id) {
 }
 
 function oddsKey(name) {
-  const parts = String(name || "").replace(/\./g, " ").trim().split(/\s+/).filter(Boolean);
+  // same key as the price job (scripts/props.py name_key): suffixes dropped, so ESPN's
+  // "Kenneth Walker III" and "Marvin Harrison Jr." match the books' "Kenneth Walker" and
+  // "Marvin Harrison" (before Nov 15, 2026 they didn't, and those players had no prices)
+  const parts = String(name || "").replace(/[.'’]/g, " ").trim().split(/\s+/).filter((w) => w && !/^(jr|sr|ii|iii|iv|v)$/i.test(w));
   if (!parts.length) return "";
   return (parts[0][0] + parts[parts.length - 1]).toLowerCase();
 }
