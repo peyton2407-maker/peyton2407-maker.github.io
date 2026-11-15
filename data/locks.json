@@ -1695,7 +1695,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T05:16:36.840Z",
+   "lockedAt": "2026-11-15T05:40:26.681Z",
    "provisional": true
   }
  },
@@ -2737,9 +2737,9 @@
     "hitPct": 54,
     "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 76.5. At -105 (DraftKings) the price needs 51%; we count it at 54%, so it's 6.2% better than the price. Under plays are 2-3 on the play of the day, so that record is in the pick.",
     "label": "Best of Saturday's 7 games",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "UNT 16 – UTSA 35",
+    "resultWhy": "It hit. UNDER 76.5 cashed. Final was UNT 16 – UTSA 35.",
     "units": 1.5,
     "price": -105,
     "book": "DraftKings",
@@ -2756,7 +2756,8 @@
     "close_line": 75.5,
     "closeAt": "2026-11-15T01:01:24.803Z",
     "close_src": "board",
-    "clv": 1
+    "clv": 1,
+    "by": "Final total 51, 25.5 under 76.5"
    },
    {
     "key": "game:401860917",
@@ -2936,7 +2937,7 @@
    }
   ]
  },
- "updated": "2026-11-15T05:16:36.840Z",
+ "updated": "2026-11-15T05:40:26.681Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3243,7 +3244,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T05:16:36.840Z"
+   "lockedAt": "2026-11-15T05:40:26.681Z"
   }
  ],
  "teasers": [
@@ -3341,7 +3342,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T05:16:36.840Z"
+   "lockedAt": "2026-11-15T05:40:26.681Z"
   }
  ],
  "teaserLegs": [
@@ -7777,7 +7778,10 @@
    "ours": -2.9,
    "market": -2.5,
    "label": "UNT -2",
-   "lockedAt": "2026-11-15T00:31:51.579Z"
+   "lockedAt": "2026-11-15T00:31:51.579Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "UNT 16, UTSA 35"
   },
   {
    "id": "401856863",
