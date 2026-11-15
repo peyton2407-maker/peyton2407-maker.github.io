@@ -1921,7 +1921,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 38.5,
-   "lockedAt": "2026-11-15T17:46:37.294Z",
+   "lockedAt": "2026-11-15T18:01:45.738Z",
    "provisional": true
   },
   "401873062": {
@@ -1942,7 +1942,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T17:46:37.294Z",
+   "lockedAt": "2026-11-15T18:01:45.738Z",
    "provisional": true
   },
   "401873063": {
@@ -1963,7 +1963,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T17:46:37.294Z",
+   "lockedAt": "2026-11-15T18:01:45.738Z",
    "provisional": true
   },
   "401873064": {
@@ -1984,7 +1984,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T17:46:37.294Z",
+   "lockedAt": "2026-11-15T18:01:45.738Z",
    "provisional": true
   }
  },
@@ -2525,6 +2525,42 @@
     "kick": "2026-11-15T21:05Z",
     "big": true,
     "savedAt": 1794764797349
+   },
+   {
+    "key": "game:401873062",
+    "week": 10,
+    "day": "2026-11-15",
+    "league": "nfl",
+    "id": "401873062",
+    "game": "SEA @ LV",
+    "kind": "Player prop",
+    "line": "Mike Washington Jr. under 27.5 rush yds",
+    "hitPct": 57,
+    "why": "We project Mike Washington Jr. for 27 rush yds against a line of 27.5. Our checked chance on the under is 57%; the books' own chance is 51%. At -116 (DraftKings) that is 5.6% better than the price. SEA is a tough defense here: it allows the 3rd-fewest rush yds to RBs (70 a game; league average 93). The under hit in 5 of his last 8 games at this line.",
+    "label": "Sunday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 1.75,
+    "prop": {
+     "pid": "4686658",
+     "name": "Mike Washington Jr.",
+     "stat": "rush_yds",
+     "side": "under",
+     "line": 27.5
+    },
+    "price": -116,
+    "book": "DraftKings",
+    "ev": 0.056,
+    "ours": "SEA -6.2 · total 39.2",
+    "score": "SEA 22.7 – LV 16.5",
+    "market": "SEA -6.5 · total 40.5",
+    "lockedAt": "2026-11-15T18:01:45.760Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-15T21:05Z",
+    "big": false,
+    "savedAt": 1794765705760
    }
   ],
   "cfb": [
@@ -3263,7 +3299,7 @@
    }
   ]
  },
- "updated": "2026-11-15T17:46:37.294Z",
+ "updated": "2026-11-15T18:01:45.738Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3513,7 +3549,7 @@
       "line": 28.5,
       "name": "Drake Maye"
      },
-     "result": null,
+     "result": "HIT",
      "close": {
       "at": "2026-11-15T14:16:25.934Z",
       "line": 27.5,
@@ -3522,7 +3558,9 @@
       "fair": null,
       "push": 0,
       "src": "books"
-     }
+     },
+     "actual": 11,
+     "final": "Drake Maye: 11 rush yds"
     },
     {
      "id": "401873057|pp|4428557|rush_yds|under",
