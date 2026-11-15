@@ -170,7 +170,12 @@
    "total_play": false,
    "spread": -3.5,
    "total": 73.5,
-   "lockedAt": "2026-11-15T01:01:24.803Z"
+   "lockedAt": "2026-11-15T01:01:24.803Z",
+   "close_spread": -4,
+   "close_total": 74.5,
+   "closeAt": "2026-11-15T01:31:36.576Z",
+   "clv_side": -0.5,
+   "clv_total": null
   },
   "401856864": {
    "id": "401856864",
@@ -190,7 +195,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T01:02:42.338Z",
+   "lockedAt": "2026-11-15T01:31:36.576Z",
    "provisional": true
   },
   "401856882": {
@@ -861,7 +866,12 @@
    "total_play": false,
    "spread": 3,
    "total": 43.5,
-   "lockedAt": "2026-11-15T01:01:24.803Z"
+   "lockedAt": "2026-11-15T01:01:24.803Z",
+   "close_spread": 3,
+   "close_total": 43.5,
+   "closeAt": "2026-11-15T01:31:36.576Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401860916": {
    "id": "401860916",
@@ -906,7 +916,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 64.5,
-   "lockedAt": "2026-11-15T01:02:42.338Z",
+   "lockedAt": "2026-11-15T01:31:36.576Z",
    "provisional": true
   },
   "401861967": {
@@ -1028,10 +1038,10 @@
    "spread": 2.5,
    "total": 75.5,
    "lockedAt": "2026-11-15T00:31:51.579Z",
-   "close_spread": 2.5,
+   "close_spread": 3,
    "close_total": 75.5,
-   "closeAt": "2026-11-15T01:01:24.803Z",
-   "clv_side": 0,
+   "closeAt": "2026-11-15T01:31:36.576Z",
+   "clv_side": 0.5,
    "clv_total": null
   },
   "401862828": {
@@ -1127,7 +1137,7 @@
    "total_play": false,
    "spread": 7,
    "total": 39.5,
-   "lockedAt": "2026-11-15T01:02:42.338Z",
+   "lockedAt": "2026-11-15T01:31:36.576Z",
    "provisional": true
   },
   "401864538": {
@@ -1198,8 +1208,7 @@
    "total_play": false,
    "spread": 7,
    "total": 40.5,
-   "lockedAt": "2026-11-15T01:02:42.338Z",
-   "provisional": true
+   "lockedAt": "2026-11-15T01:31:36.576Z"
   },
   "401866458": {
    "id": "401866458",
@@ -2856,7 +2865,7 @@
    }
   ]
  },
- "updated": "2026-11-15T01:02:42.338Z",
+ "updated": "2026-11-15T01:31:36.576Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7428,6 +7437,22 @@
    "market": 3,
    "label": "SDSU +2.5",
    "lockedAt": "2026-11-15T01:01:24.803Z"
+  },
+  {
+   "id": "401864540",
+   "league": "cfb",
+   "gid": "401864540",
+   "side": "away",
+   "team": "WYO",
+   "game": "WYO @ UTEP",
+   "kick": "2026-11-15T03:00Z",
+   "line": -7.5,
+   "price": -108,
+   "book": "DraftKings",
+   "ours": -7.7,
+   "market": -7,
+   "label": "WYO -7.5",
+   "lockedAt": "2026-11-15T01:31:36.576Z"
   }
  ]
 }
