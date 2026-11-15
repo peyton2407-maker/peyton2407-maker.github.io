@@ -345,7 +345,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T11:31:28.951Z",
+   "lockedAt": "2026-11-15T12:01:58.747Z",
    "provisional": true
   },
   "401856888": {
@@ -1716,7 +1716,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 50.5,
-   "lockedAt": "2026-11-15T11:31:28.951Z",
+   "lockedAt": "2026-11-15T12:01:58.747Z",
    "provisional": true
   },
   "401873054": {
@@ -1758,7 +1758,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 48.5,
-   "lockedAt": "2026-11-15T11:31:28.951Z",
+   "lockedAt": "2026-11-15T12:01:58.747Z",
    "provisional": true
   },
   "401873056": {
@@ -1779,7 +1779,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T11:31:28.951Z",
+   "lockedAt": "2026-11-15T12:01:58.747Z",
    "provisional": true
   },
   "401873057": {
@@ -1800,7 +1800,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 46.5,
-   "lockedAt": "2026-11-15T11:31:28.951Z",
+   "lockedAt": "2026-11-15T12:01:58.747Z",
    "provisional": true
   },
   "401873058": {
@@ -1821,7 +1821,7 @@
    "total_play": false,
    "spread": 3,
    "total": 47.5,
-   "lockedAt": "2026-11-15T11:31:28.951Z",
+   "lockedAt": "2026-11-15T12:01:58.747Z",
    "provisional": true
   },
   "401873059": {
@@ -1842,7 +1842,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-15T11:31:28.951Z",
+   "lockedAt": "2026-11-15T12:01:58.747Z",
    "provisional": true
   },
   "401873060": {
@@ -1863,7 +1863,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 42.5,
-   "lockedAt": "2026-11-15T11:31:28.951Z",
+   "lockedAt": "2026-11-15T12:01:58.747Z",
    "provisional": true
   },
   "401873061": {
@@ -1884,7 +1884,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 38.5,
-   "lockedAt": "2026-11-15T11:31:28.951Z",
+   "lockedAt": "2026-11-15T12:01:58.747Z",
    "provisional": true
   },
   "401873062": {
@@ -1905,7 +1905,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 40.5,
-   "lockedAt": "2026-11-15T11:31:28.951Z",
+   "lockedAt": "2026-11-15T12:01:58.747Z",
    "provisional": true
   },
   "401873063": {
@@ -1926,7 +1926,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 55.5,
-   "lockedAt": "2026-11-15T11:31:28.951Z",
+   "lockedAt": "2026-11-15T12:01:58.747Z",
    "provisional": true
   }
  },
@@ -2461,12 +2461,12 @@
     "ours": "SF -3.5 · total 55.8",
     "score": "SF 29.7 – DAL 26.1",
     "market": "SF -4.5 · total 55.5",
-    "lockedAt": "2026-11-15T11:31:29.017Z",
+    "lockedAt": "2026-11-15T12:01:58.795Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-15T21:25Z",
     "big": true,
-    "savedAt": 1794742289017
+    "savedAt": 1794744118795
    }
   ],
   "cfb": [
@@ -3205,7 +3205,7 @@
    }
   ]
  },
- "updated": "2026-11-15T11:31:28.951Z",
+ "updated": "2026-11-15T12:01:58.747Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3425,11 +3425,11 @@
    "tier": "value",
    "stake": 1,
    "size": 1,
-   "american": 559,
-   "dec": 6.5895,
-   "chance": 0.2009,
-   "breakEven": 0.1518,
-   "ev": 0.3238,
+   "american": 573,
+   "dec": 6.7348,
+   "chance": 0.1943,
+   "breakEven": 0.1485,
+   "ev": 0.3087,
    "firstKick": "2026-11-15T14:30:00.000Z",
    "legs": [
     {
@@ -3458,31 +3458,6 @@
      "result": null
     },
     {
-     "id": "401873054|pp|4685247|rush_yds|under",
-     "label": "Braelon Allen under 33.5 rush yds",
-     "kind": "pp",
-     "game_id": "401873054",
-     "game": "BUF @ NYJ",
-     "league": "nfl",
-     "kick": "2026-11-15T18:00Z",
-     "price": -112,
-     "line": 33.5,
-     "win": 0.5815,
-     "bookWin": 0.5168,
-     "value": 0.1008,
-     "cat": "prop",
-     "why": "We project 29 rush yds against 33.5; our checked chance on the under is 59%, the books' 52%. BUF is middle of the pack here: 10th of 32 in rush yds allowed to RBs (78 a game; league average 93).",
-     "alt": null,
-     "prop": {
-      "pid": "4685247",
-      "stat": "rush_yds",
-      "side": "under",
-      "line": 33.5,
-      "name": "Braelon Allen"
-     },
-     "result": null
-    },
-    {
      "id": "401873053|pp|4431452|rush_yds|under",
      "label": "Drake Maye under 28.5 rush yds",
      "kind": "pp",
@@ -3506,13 +3481,38 @@
       "name": "Drake Maye"
      },
      "result": null
+    },
+    {
+     "id": "401873055|pp|4685720|rush_yds|under",
+     "label": "Bryce Young under 8.5 rush yds",
+     "kind": "pp",
+     "game_id": "401873055",
+     "game": "CAR @ NO",
+     "league": "nfl",
+     "kick": "2026-11-15T18:00Z",
+     "price": -107,
+     "line": 8.5,
+     "win": 0.5625,
+     "bookWin": 0.4895,
+     "value": 0.0882,
+     "cat": "prop",
+     "why": "We project 8.7 rush yds against 8.5; our checked chance on the under is 55%, the books' 49%. NO is middle of the pack here: 23rd of 32 in rush yds allowed to QBs (19 a game; league average 16).",
+     "alt": null,
+     "prop": {
+      "pid": "4685720",
+      "stat": "rush_yds",
+      "side": "under",
+      "line": 8.5,
+      "name": "Bryce Young"
+     },
+     "result": null
     }
    ],
    "result": null,
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T11:31:28.951Z"
+   "lockedAt": "2026-11-15T12:01:58.747Z"
   }
  ],
  "teasers": [
@@ -3610,7 +3610,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-15T11:31:28.951Z"
+   "lockedAt": "2026-11-15T12:01:58.747Z"
   }
  ],
  "teaserLegs": [
@@ -6092,10 +6092,10 @@
    "price": 550,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0.2978,
-   "mkt": 0.1481,
-   "win": 0.1855,
-   "ev": 0.2057,
+   "ours": 0.2932,
+   "mkt": 0.1449,
+   "win": 0.1819,
+   "ev": 0.1827,
    "result": null,
    "final": null,
    "units": null
@@ -6134,10 +6134,10 @@
    "price": 450,
    "book": "Fanatics",
    "books": 6,
-   "ours": 0.2932,
-   "mkt": 0.1781,
-   "win": 0.2069,
-   "ev": 0.138,
+   "ours": 0.2886,
+   "mkt": 0.1744,
+   "win": 0.2029,
+   "ev": 0.1161,
    "result": null,
    "final": null,
    "units": null
