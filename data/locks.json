@@ -1996,8 +1996,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-15T23:01:37.409Z",
-   "provisional": true
+   "lockedAt": "2026-11-16T00:01:54.441Z"
   }
  },
  "potd": {
@@ -2646,12 +2645,11 @@
     "ours": "CIN -4.5 · total 49.7",
     "score": "PIT 22.6 – CIN 27.1",
     "market": "CIN -3.5 · total 49.5",
-    "lockedAt": "2026-11-15T23:01:37.428Z",
-    "locked": false,
-    "provisional": true,
+    "lockedAt": "2026-11-16T00:01:54.459Z",
+    "locked": true,
     "kick": "2026-11-16T01:20Z",
     "big": false,
-    "savedAt": 1794783697428
+    "savedAt": 1794787314459
    }
   ],
   "cfb": [
@@ -3390,7 +3388,7 @@
    }
   ]
  },
- "updated": "2026-11-15T23:01:37.409Z",
+ "updated": "2026-11-16T00:01:54.441Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5848,9 +5846,9 @@
    "ev": 0.0819,
    "mev": 0.0502,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "SEA 21, LV 13",
+   "units": -1
   },
   {
    "id": "401873063|sp|home",
@@ -8004,7 +8002,10 @@
    "ours": 5.5,
    "market": 6.5,
    "label": "LV +3.5",
-   "lockedAt": "2026-11-15T19:46:19.096Z"
+   "lockedAt": "2026-11-15T19:46:19.096Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "SEA 21, LV 13"
   },
   {
    "id": "401873061",
@@ -8020,7 +8021,10 @@
    "ours": -10.3,
    "market": -9.5,
    "label": "LAR -9",
-   "lockedAt": "2026-11-15T19:46:19.096Z"
+   "lockedAt": "2026-11-15T19:46:19.096Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "LAR 34, ARI 6"
   },
   {
    "id": "401873063",
@@ -8037,6 +8041,22 @@
    "market": 4.5,
    "label": "DAL +4.5",
    "lockedAt": "2026-11-15T20:01:25.015Z"
+  },
+  {
+   "id": "401873064",
+   "league": "nfl",
+   "gid": "401873064",
+   "side": "home",
+   "team": "CIN",
+   "game": "PIT @ CIN",
+   "kick": "2026-11-16T01:20Z",
+   "line": -3.5,
+   "price": -108,
+   "book": "BetMGM",
+   "ours": -4.5,
+   "market": -3.5,
+   "label": "CIN -3.5",
+   "lockedAt": "2026-11-16T00:01:54.441Z"
   }
  ]
 }
