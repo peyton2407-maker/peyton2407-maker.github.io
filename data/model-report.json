@@ -1,6 +1,6 @@
 {
- "updated": "2026-11-10T04:47:43.999Z",
- "games": 289,
+ "updated": "2026-11-16T11:01:46.088Z",
+ "games": 356,
  "leagues": {
   "nfl": {
    "games": 57,
@@ -22,28 +22,28 @@
    }
   },
   "cfb": {
-   "games": 232,
-   "margin_miss_ours": 12,
-   "margin_miss_market": 11.8,
-   "total_miss_ours": 12.79,
-   "total_miss_market": 12.91,
-   "total_lean_ours": 0.59,
-   "avg_vs_close": 0.05,
+   "games": 299,
+   "margin_miss_ours": 12.3,
+   "margin_miss_market": 12.14,
+   "total_miss_ours": 12.69,
+   "total_miss_market": 12.79,
+   "total_lean_ours": 0.43,
+   "avg_vs_close": 0.01,
    "real_side_plays_by_confidence": {
     "under 54%": {
-     "w": 13,
+     "w": 16,
      "l": 18
     }
    }
   },
   "all": {
-   "games": 289,
-   "margin_miss_ours": 11.38,
-   "margin_miss_market": 11.26,
-   "total_miss_ours": 12.36,
-   "total_miss_market": 12.46,
-   "total_lean_ours": 0.41,
-   "avg_vs_close": 0.06,
+   "games": 356,
+   "margin_miss_ours": 11.74,
+   "margin_miss_market": 11.65,
+   "total_miss_ours": 12.35,
+   "total_miss_market": 12.44,
+   "total_lean_ours": 0.31,
+   "avg_vs_close": 0.02,
    "real_side_plays_by_confidence": {
     "54-57%": {
      "w": 3,
@@ -54,7 +54,7 @@
      "l": 0
     },
     "under 54%": {
-     "w": 13,
+     "w": 16,
      "l": 18
     }
    }
