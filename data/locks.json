@@ -2635,9 +2635,9 @@
     "hitPct": 56,
     "why": "We project Aaron Rodgers for 1.4 pass TDs against a line of 1.5. Our checked chance on the under is 56%; the books' own chance is 52%. At -117 (DraftKings) that is 4% better than the price. CIN is a tough defense here: it allows the 6th-fewest pass TDs to QBs (1.1 a game; league average 1.5). The under hit in 4 of his last 8 games at this line.",
     "label": "Sunday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "Aaron Rodgers: 2 pass TDs",
+    "resultWhy": "It missed. Aaron Rodgers under 1.5 pass TDs did not cash.",
     "units": 1.25,
     "prop": {
      "pid": "8439",
@@ -2660,7 +2660,8 @@
     "close_line": 1.5,
     "closeAt": "2026-11-16T00:31:45.495Z",
     "close_src": "board",
-    "clv": 0
+    "clv": 0,
+    "by": "0.5 over 1.5"
    }
   ],
   "cfb": [
@@ -3399,7 +3400,7 @@
    }
   ]
  },
- "updated": "2026-11-16T04:31:48.531Z",
+ "updated": "2026-11-16T04:42:54.569Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
