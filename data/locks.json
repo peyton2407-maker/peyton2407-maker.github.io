@@ -1997,11 +1997,11 @@
    "spread": -3.5,
    "total": 49.5,
    "lockedAt": "2026-11-16T00:01:54.441Z",
-   "close_spread": -3.5,
-   "close_total": 49.5,
-   "closeAt": "2026-11-16T00:31:45.495Z",
-   "clv_side": 0,
-   "clv_total": 0
+   "close_spread": -4.5,
+   "close_total": 48.5,
+   "closeAt": "2026-11-16T01:01:14.045Z",
+   "clv_side": 1,
+   "clv_total": -1
   }
  },
  "potd": {
@@ -3397,7 +3397,7 @@
    }
   ]
  },
- "updated": "2026-11-16T00:31:45.495Z",
+ "updated": "2026-11-16T01:01:14.045Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5877,9 +5877,9 @@
    "ev": 0.0818,
    "mev": -0.0038,
    "src": "proj",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "SF 46, DAL 40",
+   "units": -1
   },
   {
    "id": "401873065|sp|away",
@@ -8027,7 +8027,10 @@
    "ours": 3.8,
    "market": 4.5,
    "label": "DAL +4.5",
-   "lockedAt": "2026-11-15T20:01:25.015Z"
+   "lockedAt": "2026-11-15T20:01:25.015Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "SF 46, DAL 40"
   },
   {
    "id": "401873064",
