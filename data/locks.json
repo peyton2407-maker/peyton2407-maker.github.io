@@ -3400,7 +3400,7 @@
    }
   ]
  },
- "updated": "2026-11-16T04:42:54.569Z",
+ "updated": "2026-11-16T05:16:48.791Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5901,28 +5901,6 @@
    "mwin": 0.2917,
    "ev": 0.0354,
    "mev": 0.0064,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401866466|sp|away",
-   "gid": "401866466",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "away",
-   "label": "M-OH -19.5",
-   "game": "M-OH @ KENT",
-   "kick": "2026-11-18T00:00Z",
-   "line": -19.5,
-   "mainLine": -9.5,
-   "price": 285,
-   "book": "FanDuel",
-   "win": 0.2688,
-   "mwin": 0.265,
-   "ev": 0.0351,
-   "mev": 0.0202,
    "src": "mkt",
    "result": null,
    "final": null,
