@@ -1998,10 +1998,10 @@
    "total": 49.5,
    "lockedAt": "2026-11-16T00:01:54.441Z",
    "close_spread": -4.5,
-   "close_total": 48.5,
-   "closeAt": "2026-11-16T01:01:14.045Z",
+   "close_total": 49.5,
+   "closeAt": "2026-11-16T01:16:52.388Z",
    "clv_side": 1,
-   "clv_total": -1
+   "clv_total": 0
   }
  },
  "potd": {
@@ -2518,9 +2518,9 @@
     "hitPct": 62,
     "why": "We project Blake Corum for 1.3 receptions against a line of 1.5. Our checked chance on the under is 62%; the books' own chance is 60%. At -158 (DraftKings) that is 1.6% better than the price. ARI is a tough defense here: it allows the 4th-fewest receptions to RBs (3.3 a game; league average 4.3). The under hit in 5 of his last 8 games at this line.",
     "label": "Best of Sunday's 10 games",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "Blake Corum: 3 receptions",
+    "resultWhy": "It missed. Blake Corum under 1.5 receptions did not cash.",
     "units": 0.5,
     "prop": {
      "pid": "4429096",
@@ -2537,11 +2537,11 @@
     "market": "LAR -9.5 · total 38.5",
     "lockedAt": "2026-11-15T17:46:37.349Z",
     "locked": true,
-    "provisional": false,
     "kick": "2026-11-15T21:05Z",
     "big": true,
     "savedAt": 1794764797349,
-    "note": "No lock run landed in the 90 minutes before kickoff; this is the last play saved before kickoff."
+    "note": "No lock run landed in the 90 minutes before kickoff; this is the last play saved before kickoff.",
+    "by": "1.5 over 1.5"
    },
    {
     "key": "game:401873062",
@@ -2555,9 +2555,9 @@
     "hitPct": 57,
     "why": "We project Mike Washington Jr. for 27 rush yds against a line of 27.5. Our checked chance on the under is 57%; the books' own chance is 51%. At -116 (DraftKings) that is 6.6% better than the price. SEA is a tough defense here: it allows the 3rd-fewest rush yds to RBs (70 a game; league average 93). The under hit in 5 of his last 8 games at this line.",
     "label": "Sunday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "Mike Washington Jr.: 23 rush yds",
+    "resultWhy": "It hit. Mike Washington Jr. under 27.5 rush yds cashed.",
     "units": 2,
     "prop": {
      "pid": "4686658",
@@ -2580,7 +2580,8 @@
     "close_line": 27.5,
     "closeAt": "2026-11-15T20:16:47.983Z",
     "close_src": "board",
-    "clv": 0
+    "clv": 0,
+    "by": "4.5 under 27.5"
    },
    {
     "key": "game:401873063",
@@ -2594,9 +2595,9 @@
     "hitPct": 55,
     "why": "We project George Kittle for 60 rec yds against a line of 63.5. Our checked chance on the under is 55%; the books' own chance is 52%. At -114 (DraftKings) that is 3.6% better than the price. DAL is middle of the pack here: 14th of 32 in rec yds allowed to TEs (50 a game; league average 55). The under hit in 3 of his last 8 games at this line.",
     "label": "Sunday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "George Kittle: 74 rec yds",
+    "resultWhy": "It missed. George Kittle under 63.5 rec yds did not cash.",
     "units": 1,
     "prop": {
      "pid": "3040151",
@@ -2619,7 +2620,8 @@
     "close_line": 63.5,
     "closeAt": "2026-11-15T21:31:45.829Z",
     "close_src": "board",
-    "clv": 0
+    "clv": 0,
+    "by": "10.5 over 63.5"
    },
    {
     "key": "game:401873064",
@@ -3397,7 +3399,7 @@
    }
   ]
  },
- "updated": "2026-11-16T01:01:14.045Z",
+ "updated": "2026-11-16T01:16:52.388Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6259,9 +6261,9 @@
    "mkt": 0.0654,
    "win": 0.0766,
    "ev": 0.0727,
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "VOID",
+   "final": "Didn't play",
+   "units": 0
   },
   {
    "key": "401873051|4036133",
