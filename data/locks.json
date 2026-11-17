@@ -1502,7 +1502,7 @@
    }
   ]
  },
- "updated": "2026-11-17T05:46:45.599Z",
+ "updated": "2026-11-17T06:17:00.560Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4101,28 +4101,6 @@
    "mwin": 0.3122,
    "ev": 0.0301,
    "mev": 0.0301,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401866464|sp|home",
-   "gid": "401866464",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "home",
-   "label": "OHIO -21.5",
-   "game": "BALL @ OHIO",
-   "kick": "2026-11-18T00:00Z",
-   "line": -21.5,
-   "mainLine": -11.5,
-   "price": 285,
-   "book": "FanDuel",
-   "win": 0.2736,
-   "mwin": 0.2736,
-   "ev": 0.0534,
-   "mev": 0.0534,
    "src": "mkt",
    "result": null,
    "final": null,
