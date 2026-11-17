@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -10,
    "total": 49.5,
-   "lockedAt": "2026-11-17T15:46:30.134Z",
+   "lockedAt": "2026-11-17T16:17:28.928Z",
    "provisional": true
   },
   "401866465": {
@@ -31,16 +31,16 @@
    "away": "EMU",
    "date": "2026-11-17T23:00Z",
    "pick": "EMU",
-   "pick_line": "EMU +15.5",
+   "pick_line": "EMU +14.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 15.1,
+   "our_margin": 14.45,
    "our_total": 46.5,
    "confidence": null,
    "total_play": false,
-   "spread": -15.5,
+   "spread": -14.5,
    "total": 46.5,
-   "lockedAt": "2026-11-17T15:46:30.134Z",
+   "lockedAt": "2026-11-17T16:17:28.928Z",
    "provisional": true
   },
   "401866466": {
@@ -1566,7 +1566,7 @@
    }
   ]
  },
- "updated": "2026-11-17T15:46:30.134Z",
+ "updated": "2026-11-17T16:17:28.928Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
