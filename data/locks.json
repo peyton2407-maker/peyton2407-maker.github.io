@@ -13,13 +13,13 @@
    "pick_line": "OHIO -11.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 11.95,
+   "our_margin": 13.4,
    "our_total": 49.5,
    "confidence": null,
    "total_play": false,
    "spread": -11.5,
    "total": 49.5,
-   "lockedAt": "2026-11-17T14:16:51.289Z",
+   "lockedAt": "2026-11-17T14:31:53.069Z",
    "provisional": true
   },
   "401866465": {
@@ -34,13 +34,13 @@
    "pick_line": "EMU +15.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 15.15,
+   "our_margin": 15.1,
    "our_total": 46.5,
    "confidence": null,
    "total_play": false,
    "spread": -15.5,
    "total": 46.5,
-   "lockedAt": "2026-11-17T14:16:51.289Z",
+   "lockedAt": "2026-11-17T14:31:53.069Z",
    "provisional": true
   },
   "401866466": {
@@ -1566,7 +1566,7 @@
    }
   ]
  },
- "updated": "2026-11-17T14:16:51.289Z",
+ "updated": "2026-11-17T14:31:53.069Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4488,12 +4488,12 @@
    "game": "NYJ @ LAC",
    "kick": "2026-11-22T21:05Z",
    "line": -11,
-   "mainLine": -3,
+   "mainLine": -3.5,
    "price": 290,
    "book": "BetMGM",
-   "win": 0.2705,
-   "mwin": 0.2532,
-   "ev": 0.0685,
+   "win": 0.2616,
+   "mwin": 0.253,
+   "ev": 0.0345,
    "mev": 0.0007,
    "src": "proj",
    "result": null,
