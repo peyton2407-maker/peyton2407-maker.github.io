@@ -672,9 +672,9 @@
     "hitPct": 65,
     "why": "We project Keaton Mitchell for 1.9 receptions against a line of 2.5. Our checked chance on the under is 65%; the books' own chance is 61%. At -181 (DraftKings) that is 0.6% better than the price. BAL is middle of the pack here: 11th of 32 in receptions allowed to RBs (4.0 a game; league average 4.4). The under hit in 3 of his last 8 games at this line.",
     "label": "Monday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "Keaton Mitchell: 0 receptions",
+    "resultWhy": "It hit. Keaton Mitchell under 2.5 receptions cashed.",
     "units": 0.25,
     "prop": {
      "pid": "4596334",
@@ -697,7 +697,8 @@
     "close_line": 2.5,
     "closeAt": "2026-11-17T00:16:29.479Z",
     "close_src": "board",
-    "clv": 0
+    "clv": 0,
+    "by": "2.5 under 2.5"
    }
   ],
   "cfb": [
@@ -1501,7 +1502,7 @@
    }
   ]
  },
- "updated": "2026-11-17T04:31:45.968Z",
+ "updated": "2026-11-17T04:46:56.410Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
