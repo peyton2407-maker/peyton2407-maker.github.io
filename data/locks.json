@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -10,
    "total": 50.5,
-   "lockedAt": "2026-11-17T20:01:52.584Z",
+   "lockedAt": "2026-11-17T20:16:31.838Z",
    "provisional": true
   },
   "401866465": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 46.5,
-   "lockedAt": "2026-11-17T20:01:52.584Z",
+   "lockedAt": "2026-11-17T20:16:31.838Z",
    "provisional": true
   },
   "401866466": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 45.5,
-   "lockedAt": "2026-11-17T19:31:45.815Z",
+   "lockedAt": "2026-11-17T20:16:31.838Z",
    "provisional": true
   }
  },
@@ -1566,7 +1566,7 @@
    }
   ]
  },
- "updated": "2026-11-17T20:01:52.584Z",
+ "updated": "2026-11-17T20:16:31.838Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4125,28 +4125,6 @@
    "result": "MISS",
    "final": "LAC 23, BAL 20",
    "units": -1
-  },
-  {
-   "id": "401866466|tot|over",
-   "gid": "401866466",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "over",
-   "label": "Over 55.5",
-   "game": "M-OH @ KENT",
-   "kick": "2026-11-18T00:00Z",
-   "line": 55.5,
-   "mainLine": 44.5,
-   "price": 300,
-   "book": "FanDuel",
-   "win": 0.2576,
-   "mwin": 0.2576,
-   "ev": 0.0305,
-   "mev": 0.0305,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
   },
   {
    "id": "401873066|sp|away",
