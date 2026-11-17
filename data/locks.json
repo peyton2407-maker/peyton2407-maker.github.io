@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -10,
    "total": 50.5,
-   "lockedAt": "2026-11-17T21:31:50.892Z",
+   "lockedAt": "2026-11-17T21:46:43.011Z",
    "provisional": true
   },
   "401866465": {
@@ -1565,7 +1565,7 @@
    }
   ]
  },
- "updated": "2026-11-17T21:31:50.892Z",
+ "updated": "2026-11-17T21:46:43.011Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4223,12 +4223,12 @@
    "game": "NO @ CHI",
    "kick": "2026-11-22T18:00Z",
    "line": 41.5,
-   "mainLine": 49.5,
+   "mainLine": 48.5,
    "price": 240,
    "book": "FanDuel",
-   "win": 0.3072,
+   "win": 0.3055,
    "mwin": 0.3016,
-   "ev": 0.0444,
+   "ev": 0.0386,
    "mev": 0.0256,
    "src": "mkt",
    "result": null,
