@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -10,
    "total": 50.5,
-   "lockedAt": "2026-11-17T20:47:03.067Z",
+   "lockedAt": "2026-11-17T21:16:41.149Z",
    "provisional": true
   },
   "401866465": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 46.5,
-   "lockedAt": "2026-11-17T20:47:03.067Z",
+   "lockedAt": "2026-11-17T21:16:41.149Z",
    "provisional": true
   },
   "401866466": {
@@ -1566,7 +1566,7 @@
    }
   ]
  },
- "updated": "2026-11-17T20:47:03.067Z",
+ "updated": "2026-11-17T21:16:41.149Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4193,28 +4193,6 @@
    "units": null
   },
   {
-   "id": "401873076|tot|over",
-   "gid": "401873076",
-   "league": "nfl",
-   "kind": "tot",
-   "side": "over",
-   "label": "Over 47.5",
-   "game": "PIT @ PHI",
-   "kick": "2026-11-22T18:00Z",
-   "line": 47.5,
-   "mainLine": 38.5,
-   "price": 300,
-   "book": "FanDuel",
-   "win": 0.2614,
-   "mwin": 0.2603,
-   "ev": 0.0458,
-   "mev": 0.0411,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401873067|tot|over",
    "gid": "401873067",
    "league": "nfl",
@@ -4452,6 +4430,28 @@
    "ev": 0.0723,
    "mev": 0.0746,
    "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873069|tot|under",
+   "gid": "401873069",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 37.5",
+   "game": "JAX @ NYG",
+   "kick": "2026-11-22T21:25Z",
+   "line": 37.5,
+   "mainLine": 46.5,
+   "price": 280,
+   "book": "FanDuel",
+   "win": 0.2725,
+   "mwin": 0.2628,
+   "ev": 0.0354,
+   "mev": -0.0015,
+   "src": "proj",
    "result": null,
    "final": null,
    "units": null
