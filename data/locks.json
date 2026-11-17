@@ -21,8 +21,8 @@
    "total": 50.5,
    "lockedAt": "2026-11-17T22:31:24.913Z",
    "close_spread": -10,
-   "close_total": 50.5,
-   "closeAt": "2026-11-17T23:01:38.965Z",
+   "close_total": 49.5,
+   "closeAt": "2026-11-17T23:46:22.273Z",
    "clv_side": 0,
    "clv_total": null
   },
@@ -1578,7 +1578,7 @@
    }
   ]
  },
- "updated": "2026-11-17T23:16:55.830Z",
+ "updated": "2026-11-17T23:46:22.273Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4888,9 +4888,9 @@
    "win": 0.5833,
    "ev": 0.0499,
    "rule": "likely",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "No TD",
+   "units": -1
   },
   {
    "key": "401873062|4430878",
