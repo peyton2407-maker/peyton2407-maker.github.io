@@ -11,15 +11,15 @@
    "date": "2026-11-18T00:00Z",
    "pick": "OHIO",
    "pick_line": "OHIO -10.0",
-   "total_pick": "OVER 50.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 10.92,
-   "our_total": 50.1,
+   "our_margin": 12.6,
+   "our_total": 50.5,
    "confidence": null,
    "total_play": false,
    "spread": -10,
    "total": 50.5,
-   "lockedAt": "2026-11-17T19:47:09.728Z",
+   "lockedAt": "2026-11-17T20:01:52.584Z",
    "provisional": true
   },
   "401866465": {
@@ -31,16 +31,16 @@
    "away": "EMU",
    "date": "2026-11-17T23:00Z",
    "pick": "EMU",
-   "pick_line": "EMU +14.5",
+   "pick_line": "EMU +15.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 14.45,
+   "our_margin": 15.1,
    "our_total": 46.5,
    "confidence": null,
    "total_play": false,
-   "spread": -14.5,
+   "spread": -15.5,
    "total": 46.5,
-   "lockedAt": "2026-11-17T19:47:09.728Z",
+   "lockedAt": "2026-11-17T20:01:52.584Z",
    "provisional": true
   },
   "401866466": {
@@ -1566,7 +1566,7 @@
    }
   ]
  },
- "updated": "2026-11-17T19:47:09.728Z",
+ "updated": "2026-11-17T20:01:52.584Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
