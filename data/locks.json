@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 49.5,
-   "lockedAt": "2026-11-17T12:17:11.295Z",
+   "lockedAt": "2026-11-17T13:17:15.708Z",
    "provisional": true
   },
   "401866465": {
@@ -40,7 +40,28 @@
    "total_play": false,
    "spread": -15.5,
    "total": 46.5,
-   "lockedAt": "2026-11-17T12:17:11.295Z",
+   "lockedAt": "2026-11-17T13:17:15.708Z",
+   "provisional": true
+  },
+  "401866466": {
+   "id": "401866466",
+   "league": "cfb",
+   "week": 12,
+   "short": "M-OH @ KENT",
+   "home": "KENT",
+   "away": "M-OH",
+   "date": "2026-11-18T00:00Z",
+   "pick": "NO PLAY",
+   "pick_line": null,
+   "total_pick": "UNDER 44.5",
+   "side_play": false,
+   "our_margin": -9.5,
+   "our_total": 44.9,
+   "confidence": null,
+   "total_play": false,
+   "spread": 9.5,
+   "total": 44.5,
+   "lockedAt": "2026-11-17T13:17:15.708Z",
    "provisional": true
   }
  },
@@ -1545,7 +1566,7 @@
    }
   ]
  },
- "updated": "2026-11-17T12:17:11.295Z",
+ "updated": "2026-11-17T13:17:15.708Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
