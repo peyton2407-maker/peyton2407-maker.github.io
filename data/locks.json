@@ -19,7 +19,12 @@
    "total_play": false,
    "spread": -10,
    "total": 50.5,
-   "lockedAt": "2026-11-17T22:31:24.913Z"
+   "lockedAt": "2026-11-17T22:31:24.913Z",
+   "close_spread": -10,
+   "close_total": 50.5,
+   "closeAt": "2026-11-17T23:01:38.965Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401866465": {
    "id": "401866465",
@@ -64,7 +69,12 @@
    "total_play": false,
    "spread": 9.5,
    "total": 45.5,
-   "lockedAt": "2026-11-17T22:31:24.913Z"
+   "lockedAt": "2026-11-17T22:31:24.913Z",
+   "close_spread": 9.5,
+   "close_total": 45.5,
+   "closeAt": "2026-11-17T23:01:38.965Z",
+   "clv_side": null,
+   "clv_total": 0
   }
  },
  "potd": {
@@ -1568,7 +1578,7 @@
    }
   ]
  },
- "updated": "2026-11-17T22:51:15.748Z",
+ "updated": "2026-11-17T23:01:38.965Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4248,12 +4258,12 @@
    "game": "NO @ CHI",
    "kick": "2026-11-22T18:00Z",
    "line": 41.5,
-   "mainLine": 49.5,
+   "mainLine": 48.5,
    "price": 240,
    "book": "FanDuel",
-   "win": 0.3072,
+   "win": 0.3055,
    "mwin": 0.3016,
-   "ev": 0.0444,
+   "ev": 0.0386,
    "mev": 0.0256,
    "src": "mkt",
    "result": null,
