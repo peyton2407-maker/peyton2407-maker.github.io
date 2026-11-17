@@ -1566,7 +1566,7 @@
    }
   ]
  },
- "updated": "2026-11-17T20:16:31.838Z",
+ "updated": "2026-11-17T20:31:39.149Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4308,17 +4308,17 @@
    "league": "nfl",
    "kind": "sp",
    "side": "away",
-   "label": "NO +4.5",
+   "label": "NO +3.5",
    "game": "NO @ CHI",
    "kick": "2026-11-22T18:00Z",
-   "line": 4.5,
+   "line": 3.5,
    "mainLine": 11.5,
-   "price": 255,
+   "price": 290,
    "book": "BetRivers",
-   "win": 0.299,
-   "mwin": 0.294,
-   "ev": 0.0614,
-   "mev": 0.0437,
+   "win": 0.2735,
+   "mwin": 0.2687,
+   "ev": 0.0666,
+   "mev": 0.0478,
    "src": "mkt",
    "result": null,
    "final": null,
