@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -10,
    "total": 50.5,
-   "lockedAt": "2026-11-17T18:17:30.506Z",
+   "lockedAt": "2026-11-17T19:01:30.995Z",
    "provisional": true
   },
   "401866465": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -14.5,
    "total": 46.5,
-   "lockedAt": "2026-11-17T18:17:30.506Z",
+   "lockedAt": "2026-11-17T19:01:30.995Z",
    "provisional": true
   },
   "401866466": {
@@ -1566,7 +1566,7 @@
    }
   ]
  },
- "updated": "2026-11-17T18:17:30.506Z",
+ "updated": "2026-11-17T19:01:30.995Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4510,12 +4510,12 @@
    "game": "MIN VS SF",
    "kick": "2026-11-23T01:20Z",
    "line": 38.5,
-   "mainLine": 46.5,
+   "mainLine": 45.5,
    "price": 250,
    "book": "FanDuel",
-   "win": 0.302,
+   "win": 0.3001,
    "mwin": 0.3001,
-   "ev": 0.057,
+   "ev": 0.0505,
    "mev": 0.0505,
    "src": "mkt",
    "result": null,
