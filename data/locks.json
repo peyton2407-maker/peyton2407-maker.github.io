@@ -10,16 +10,16 @@
    "away": "BALL",
    "date": "2026-11-18T00:00Z",
    "pick": "OHIO",
-   "pick_line": "OHIO -11.5",
+   "pick_line": "OHIO -10.0",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 13.4,
+   "our_margin": 10.92,
    "our_total": 49.5,
    "confidence": null,
    "total_play": false,
-   "spread": -11.5,
+   "spread": -10,
    "total": 49.5,
-   "lockedAt": "2026-11-17T14:46:30.883Z",
+   "lockedAt": "2026-11-17T15:14:56.225Z",
    "provisional": true
   },
   "401866465": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 46.5,
-   "lockedAt": "2026-11-17T14:46:30.883Z",
+   "lockedAt": "2026-11-17T15:14:56.225Z",
    "provisional": true
   },
   "401866466": {
@@ -1566,7 +1566,7 @@
    }
   ]
  },
- "updated": "2026-11-17T14:46:30.883Z",
+ "updated": "2026-11-17T15:14:56.225Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
