@@ -19,8 +19,7 @@
    "total_play": false,
    "spread": -10,
    "total": 50.5,
-   "lockedAt": "2026-11-17T22:17:04.222Z",
-   "provisional": true
+   "lockedAt": "2026-11-17T22:31:24.913Z"
   },
   "401866465": {
    "id": "401866465",
@@ -41,10 +40,10 @@
    "spread": -15.5,
    "total": 46.5,
    "lockedAt": "2026-11-17T21:31:50.892Z",
-   "close_spread": -15.5,
+   "close_spread": -16.5,
    "close_total": 46.5,
-   "closeAt": "2026-11-17T22:01:23.661Z",
-   "clv_side": 0,
+   "closeAt": "2026-11-17T22:31:24.913Z",
+   "clv_side": -1,
    "clv_total": null
   },
   "401866466": {
@@ -65,8 +64,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 45.5,
-   "lockedAt": "2026-11-17T22:17:04.222Z",
-   "provisional": true
+   "lockedAt": "2026-11-17T22:31:24.913Z"
   }
  },
  "potd": {
@@ -1570,7 +1568,7 @@
    }
   ]
  },
- "updated": "2026-11-17T22:17:04.222Z",
+ "updated": "2026-11-17T22:31:24.913Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4131,6 +4129,28 @@
    "units": -1
   },
   {
+   "id": "401866465|sp|away",
+   "gid": "401866465",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "away",
+   "label": "EMU +5.5",
+   "game": "EMU @ WMU",
+   "kick": "2026-11-17T23:00Z",
+   "line": 5.5,
+   "mainLine": 16.5,
+   "price": 285,
+   "book": "FanDuel",
+   "win": 0.2677,
+   "mwin": 0.2668,
+   "ev": 0.0307,
+   "mev": 0.027,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873066|sp|away",
    "gid": "401873066",
    "league": "nfl",
@@ -4228,12 +4248,12 @@
    "game": "NO @ CHI",
    "kick": "2026-11-22T18:00Z",
    "line": 41.5,
-   "mainLine": 48.5,
+   "mainLine": 49.5,
    "price": 240,
    "book": "FanDuel",
-   "win": 0.3055,
+   "win": 0.3072,
    "mwin": 0.3016,
-   "ev": 0.0386,
+   "ev": 0.0444,
    "mev": 0.0256,
    "src": "mkt",
    "result": null,
@@ -6642,6 +6662,38 @@
    "market": 15.5,
    "label": "EMU +15.5",
    "lockedAt": "2026-11-17T21:31:50.892Z"
+  },
+  {
+   "id": "401866464",
+   "league": "cfb",
+   "gid": "401866464",
+   "side": "home",
+   "team": "OHIO",
+   "game": "BALL @ OHIO",
+   "kick": "2026-11-18T00:00Z",
+   "line": -10,
+   "price": -110,
+   "book": "standard",
+   "ours": -12.6,
+   "market": -10,
+   "label": "OHIO -10",
+   "lockedAt": "2026-11-17T22:31:24.913Z"
+  },
+  {
+   "id": "401866466",
+   "league": "cfb",
+   "gid": "401866466",
+   "side": "home",
+   "team": "KENT",
+   "game": "M-OH @ KENT",
+   "kick": "2026-11-18T00:00Z",
+   "line": 9.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 9.5,
+   "market": 9.5,
+   "label": "KENT +9.5",
+   "lockedAt": "2026-11-17T22:31:24.913Z"
   }
  ]
 }
