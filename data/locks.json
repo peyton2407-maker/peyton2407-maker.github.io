@@ -1,6 +1,28 @@
 {
  "v": 1,
- "plays": {},
+ "plays": {
+  "401866464": {
+   "id": "401866464",
+   "league": "cfb",
+   "week": 12,
+   "short": "BALL @ OHIO",
+   "home": "OHIO",
+   "away": "BALL",
+   "date": "2026-11-18T00:00Z",
+   "pick": "OHIO",
+   "pick_line": "OHIO -11.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 11.95,
+   "our_total": 49.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -11.5,
+   "total": 49.5,
+   "lockedAt": "2026-11-17T12:01:55.741Z",
+   "provisional": true
+  }
+ },
  "potd": {
   "nfl": [
    {
@@ -1502,7 +1524,7 @@
    }
   ]
  },
- "updated": "2026-11-17T11:46:32.330Z",
+ "updated": "2026-11-17T12:01:55.741Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4116,12 +4138,12 @@
    "game": "IND @ HOU",
    "kick": "2026-11-20T01:15Z",
    "line": 3.5,
-   "mainLine": 11.5,
+   "mainLine": 12.5,
    "price": 300,
    "book": "ESPN BET",
-   "win": 0.2714,
+   "win": 0.2656,
    "mwin": 0.2563,
-   "ev": 0.0855,
+   "ev": 0.0622,
    "mev": 0.0253,
    "src": "mkt",
    "result": null,
