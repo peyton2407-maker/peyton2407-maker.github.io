@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -10,
    "total": 50.5,
-   "lockedAt": "2026-11-17T21:16:41.149Z",
+   "lockedAt": "2026-11-17T21:31:50.892Z",
    "provisional": true
   },
   "401866465": {
@@ -40,8 +40,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 46.5,
-   "lockedAt": "2026-11-17T21:16:41.149Z",
-   "provisional": true
+   "lockedAt": "2026-11-17T21:31:50.892Z"
   },
   "401866466": {
    "id": "401866466",
@@ -1566,7 +1565,7 @@
    }
   ]
  },
- "updated": "2026-11-17T21:16:41.149Z",
+ "updated": "2026-11-17T21:31:50.892Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4224,12 +4223,12 @@
    "game": "NO @ CHI",
    "kick": "2026-11-22T18:00Z",
    "line": 41.5,
-   "mainLine": 48.5,
+   "mainLine": 49.5,
    "price": 240,
    "book": "FanDuel",
-   "win": 0.3055,
+   "win": 0.3072,
    "mwin": 0.3016,
-   "ev": 0.0388,
+   "ev": 0.0444,
    "mev": 0.0256,
    "src": "mkt",
    "result": null,
@@ -4334,12 +4333,12 @@
    "game": "BAL @ CAR",
    "kick": "2026-11-22T18:00Z",
    "line": 35.5,
-   "mainLine": 43.5,
+   "mainLine": 44.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.273,
+   "win": 0.2745,
    "mwin": 0.2687,
-   "ev": 0.0374,
+   "ev": 0.0432,
    "mev": 0.0209,
    "src": "mkt",
    "result": null,
@@ -6622,6 +6621,22 @@
    "result": "HIT",
    "units": 0.8929,
    "final": "LAC 23, BAL 20"
+  },
+  {
+   "id": "401866465",
+   "league": "cfb",
+   "gid": "401866465",
+   "side": "away",
+   "team": "EMU",
+   "game": "EMU @ WMU",
+   "kick": "2026-11-17T23:00Z",
+   "line": 15.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 15.1,
+   "market": 15.5,
+   "label": "EMU +15.5",
+   "lockedAt": "2026-11-17T21:31:50.892Z"
   }
  ]
 }
