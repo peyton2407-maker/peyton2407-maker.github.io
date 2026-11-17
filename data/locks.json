@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 49.5,
-   "lockedAt": "2026-11-17T14:31:53.069Z",
+   "lockedAt": "2026-11-17T14:46:30.883Z",
    "provisional": true
   },
   "401866465": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 46.5,
-   "lockedAt": "2026-11-17T14:31:53.069Z",
+   "lockedAt": "2026-11-17T14:46:30.883Z",
    "provisional": true
   },
   "401866466": {
@@ -1566,7 +1566,7 @@
    }
   ]
  },
- "updated": "2026-11-17T14:31:53.069Z",
+ "updated": "2026-11-17T14:46:30.883Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4359,9 +4359,9 @@
    "mainLine": 49.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2796,
+   "win": 0.274,
    "mwin": 0.2687,
-   "ev": 0.0626,
+   "ev": 0.0413,
    "mev": 0.0209,
    "src": "mkt",
    "result": null,
@@ -4400,12 +4400,12 @@
    "game": "TB @ DET",
    "kick": "2026-11-22T18:00Z",
    "line": 39.5,
-   "mainLine": 46.5,
+   "mainLine": 45.5,
    "price": 230,
    "book": "FanDuel",
-   "win": 0.3164,
+   "win": 0.3145,
    "mwin": 0.3125,
-   "ev": 0.0441,
+   "ev": 0.0379,
    "mev": 0.0313,
    "src": "mkt",
    "result": null,
@@ -4430,28 +4430,6 @@
    "ev": 0.0304,
    "mev": -0.0145,
    "src": "proj",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873070|tot|under",
-   "gid": "401873070",
-   "league": "nfl",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 39.5",
-   "game": "MIA @ BUF",
-   "kick": "2026-11-22T18:00Z",
-   "line": 39.5,
-   "mainLine": 45.5,
-   "price": 215,
-   "book": "FanDuel",
-   "win": 0.3296,
-   "mwin": 0.3256,
-   "ev": 0.0383,
-   "mev": 0.0256,
-   "src": "mkt",
    "result": null,
    "final": null,
    "units": null
