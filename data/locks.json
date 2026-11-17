@@ -1502,7 +1502,7 @@
    }
   ]
  },
- "updated": "2026-11-17T06:17:00.560Z",
+ "updated": "2026-11-17T06:47:00.672Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4388,6 +4388,28 @@
    "ev": 0.0304,
    "mev": -0.0145,
    "src": "proj",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873070|tot|under",
+   "gid": "401873070",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 39.5",
+   "game": "MIA @ BUF",
+   "kick": "2026-11-22T18:00Z",
+   "line": 39.5,
+   "mainLine": 45.5,
+   "price": 215,
+   "book": "FanDuel",
+   "win": 0.3289,
+   "mwin": 0.3256,
+   "ev": 0.0361,
+   "mev": 0.0256,
+   "src": "mkt",
    "result": null,
    "final": null,
    "units": null
