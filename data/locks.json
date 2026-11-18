@@ -1578,7 +1578,7 @@
    }
   ]
  },
- "updated": "2026-11-18T05:31:20.124Z",
+ "updated": "2026-11-18T05:50:26.246Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4258,12 +4258,12 @@
    "game": "NO @ CHI",
    "kick": "2026-11-22T18:00Z",
    "line": 41.5,
-   "mainLine": 49.5,
+   "mainLine": 48.5,
    "price": 240,
    "book": "FanDuel",
-   "win": 0.3072,
+   "win": 0.3055,
    "mwin": 0.3016,
-   "ev": 0.0444,
+   "ev": 0.0386,
    "mev": 0.0256,
    "src": "mkt",
    "result": null,
