@@ -1578,7 +1578,7 @@
    }
   ]
  },
- "updated": "2026-11-18T01:31:29.658Z",
+ "updated": "2026-11-18T01:52:29.790Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4390,12 +4390,12 @@
    "game": "TB @ DET",
    "kick": "2026-11-22T18:00Z",
    "line": 53.5,
-   "mainLine": 44.5,
+   "mainLine": 43.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2687,
+   "win": 0.2703,
    "mwin": 0.2687,
-   "ev": 0.0343,
+   "ev": 0.0407,
    "mev": 0.0343,
    "src": "mkt",
    "result": null,
