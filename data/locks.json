@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 47.5,
-   "lockedAt": "2026-11-18T15:36:55.467Z",
+   "lockedAt": "2026-11-18T16:16:48.483Z",
    "provisional": true
   },
   "401866469": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 45.5,
-   "lockedAt": "2026-11-18T15:36:55.467Z",
+   "lockedAt": "2026-11-18T16:16:48.483Z",
    "provisional": true
   }
  },
@@ -1620,7 +1620,7 @@
    }
   ]
  },
- "updated": "2026-11-18T15:36:55.467Z",
+ "updated": "2026-11-18T16:16:48.483Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4366,12 +4366,12 @@
    "game": "BAL @ CAR",
    "kick": "2026-11-22T18:00Z",
    "line": 35.5,
-   "mainLine": 44.5,
+   "mainLine": 43.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2745,
+   "win": 0.2729,
    "mwin": 0.2687,
-   "ev": 0.0432,
+   "ev": 0.0372,
    "mev": 0.0209,
    "src": "mkt",
    "result": null,
