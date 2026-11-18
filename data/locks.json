@@ -85,16 +85,16 @@
    "away": "AKR",
    "date": "2026-11-19T00:00Z",
    "pick": "MASS",
-   "pick_line": "MASS -3.0",
+   "pick_line": "MASS -3.5",
    "total_pick": "NO PLAY",
    "side_play": true,
-   "our_margin": 5.83,
+   "our_margin": 5.9,
    "our_total": 46.5,
    "confidence": 51,
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-18T13:52:42.124Z",
+   "lockedAt": "2026-11-18T14:09:36.789Z",
    "provisional": true
   },
   "401866469": {
@@ -1620,7 +1620,7 @@
    }
   ]
  },
- "updated": "2026-11-18T13:52:42.124Z",
+ "updated": "2026-11-18T14:09:36.789Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
