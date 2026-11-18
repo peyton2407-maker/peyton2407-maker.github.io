@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 47.5,
-   "lockedAt": "2026-11-18T16:16:48.483Z",
+   "lockedAt": "2026-11-18T16:27:39.475Z",
    "provisional": true
   },
   "401866469": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 45.5,
-   "lockedAt": "2026-11-18T16:16:48.483Z",
+   "lockedAt": "2026-11-18T16:27:39.475Z",
    "provisional": true
   }
  },
@@ -1620,7 +1620,7 @@
    }
   ]
  },
- "updated": "2026-11-18T16:16:48.483Z",
+ "updated": "2026-11-18T16:27:39.475Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4278,12 +4278,12 @@
    "game": "ARI @ KC",
    "kick": "2026-11-22T18:00Z",
    "line": 49.5,
-   "mainLine": 41.5,
+   "mainLine": 40.5,
    "price": 261,
    "book": "DraftKings",
-   "win": 0.2954,
+   "win": 0.2961,
    "mwin": 0.2841,
-   "ev": 0.0663,
+   "ev": 0.0691,
    "mev": 0.0257,
    "src": "mkt",
    "result": null,
