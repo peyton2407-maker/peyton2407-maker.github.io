@@ -1,54 +1,65 @@
 {
- "checked_at": "2026-11-17T04:10:00Z",
+ "checked_at": "2026-11-18T03:07:11Z",
  "errors": [],
  "console": [
-  "Failed to load resource: the server responded with a status of 503 ()"
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT"
  ],
- "failed_requests": {},
- "bad_status": {
-  "peyton2407-maker.github.io": {
-   "count": 1,
-   "statuses": {
-    "503": 1
-   },
-   "example": "https://peyton2407-maker.github.io/assets/logos/cfb/251.webp?v=15"
+ "failed_requests": {
+  "api.open-meteo.com": {
+   "count": 24,
+   "example": "https://api.open-meteo.com/v1/forecast?latitude=33.9498&longitude=-83.3733&hourly=temperature_2m,precipitation_probability,precipitation,weathercode,windspeed_10m,windgusts_10m,relativehumidity_2m&dai",
+   "reason": "net::ERR_ABORTED"
   }
  },
+ "bad_status": {},
  "screens": {
   "home": {
    "visible": true,
-   "count": 22,
+   "count": 15,
    "summary": [],
    "empty": [],
-   "chars": 1601,
-   "images": 56,
+   "chars": 1347,
+   "images": 42,
    "broken_images": []
   },
   "nfl": {
    "visible": true,
-   "count": 1,
+   "count": 13,
    "summary": [],
    "empty": [],
-   "chars": 2528,
-   "images": 10,
+   "chars": 5833,
+   "images": 32,
    "broken_images": []
   },
   "cfb": {
    "visible": true,
-   "count": 70,
+   "count": 68,
    "summary": [],
    "empty": [],
-   "chars": 11214,
-   "images": 96,
+   "chars": 10950,
+   "images": 102,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 13,
+   "count": 17,
    "summary": [],
    "empty": [],
-   "chars": 2546,
-   "images": 21,
+   "chars": 2541,
+   "images": 20,
    "broken_images": []
   },
   "season": {
@@ -56,7 +67,7 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3220,
+   "chars": 3223,
    "images": 42,
    "broken_images": []
   },
@@ -65,7 +76,7 @@
    "count": 519,
    "summary": [],
    "empty": [],
-   "chars": 34864,
+   "chars": 34799,
    "images": 0,
    "broken_images": []
   },
@@ -74,17 +85,17 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3239,
+   "chars": 3362,
    "images": 35,
    "broken_images": []
   },
   "card": {
    "visible": true,
-   "count": 10,
+   "count": 7,
    "summary": [],
    "empty": [],
-   "chars": 920,
-   "images": 20,
+   "chars": 786,
+   "images": 14,
    "broken_images": []
   },
   "props": {
@@ -92,49 +103,45 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 6386,
-   "images": 15,
+   "chars": 6436,
+   "images": 12,
    "broken_images": []
   },
   "tds": {
    "visible": true,
    "count": 1,
    "summary": [],
-   "empty": [
-    "No players in this filter. Try another market, position or game."
-   ],
-   "chars": 1089,
-   "images": 0,
+   "empty": [],
+   "chars": 3860,
+   "images": 25,
    "broken_images": []
   },
   "charts": {
    "visible": true,
-   "count": 14,
+   "count": 29,
    "summary": [],
    "empty": [],
-   "chars": 3852,
-   "images": 5,
+   "chars": 3710,
+   "images": 6,
    "broken_images": []
   },
   "value": {
    "visible": true,
-   "count": 41,
+   "count": 72,
    "summary": [
-    "41 value tickets in this filter 0 TD plus-money 5 spread / dog sides 100% be"
+    "132 value tickets in this filter 113 TD plus-money 5 spread / dog sides 74% b"
    ],
    "empty": [],
-   "chars": 3457,
-   "images": 29,
+   "chars": 3713,
+   "images": 31,
    "broken_images": []
   },
   "parlay": {
    "visible": true,
-   "count": 0,
+   "count": 1,
    "summary": [],
-   "empty": [
-    "No NFL parlay this week. No two plays are far enough off the number to make a ticket priced fair or better."
-   ],
-   "chars": 489,
+   "empty": [],
+   "chars": 1000,
    "images": 0,
    "broken_images": []
   },
@@ -143,8 +150,8 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2528,
-   "images": 10,
+   "chars": 2487,
+   "images": 7,
    "broken_images": []
   },
   "nflinj": {
@@ -152,13 +159,13 @@
    "count": 61,
    "summary": [
     "565 listed THU \u00b7 11:16 PM ET 557 listed FRI \u00b7 11:37 PM ET 512 listed S",
-    "508 listed SUN \u00b7 11:42 PM ET 578 listed MON \u00b7 10:31 PM ET 583 listed W",
+    "508 listed SUN \u00b7 11:42 PM ET 578 listed TUE \u00b7 9:25 PM ET 586 listed WS",
     "35 listed NE VS DET 35 listed KC @ ATL 34 listed HOU @ CLE 36 listed ",
     "33 listed JAX @ TEN 35 listed MIA @ IND 28 listed CAR @ NO 34 listed "
    ],
    "empty": [],
-   "chars": 5623,
-   "images": 8,
+   "chars": 4611,
+   "images": 9,
    "broken_images": []
   },
   "nflwx": {
@@ -166,7 +173,7 @@
    "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 3895,
+   "chars": 4188,
    "images": 28,
    "broken_images": []
   },
@@ -175,8 +182,8 @@
    "count": 4,
    "summary": [],
    "empty": [],
-   "chars": 2327,
-   "images": 0,
+   "chars": 3101,
+   "images": 2,
    "broken_images": []
   },
   "cfbpicks": {
@@ -184,7 +191,7 @@
    "count": 18,
    "summary": [],
    "empty": [],
-   "chars": 5241,
+   "chars": 5240,
    "images": 36,
    "broken_images": []
   }
@@ -193,15 +200,15 @@
   "open": true,
   "hero": true,
   "shown_twice": false,
-  "logos_ok": 16
+  "logos_ok": 14
  },
  "split": {
-  "games": 22,
+  "games": 24,
   "images": 32,
   "broken_images": [],
   "errors": []
  },
  "dk_lines_loaded": null,
- "games_with_props": 14,
- "nfl_games_upcoming": 14
+ "games_with_props": 29,
+ "nfl_games_upcoming": 29
 }
