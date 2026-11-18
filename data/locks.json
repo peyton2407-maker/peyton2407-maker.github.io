@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 47.5,
-   "lockedAt": "2026-11-18T17:16:32.884Z",
+   "lockedAt": "2026-11-18T18:01:35.468Z",
    "provisional": true
   },
   "401866469": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 46.5,
-   "lockedAt": "2026-11-18T17:16:32.884Z",
+   "lockedAt": "2026-11-18T18:01:35.468Z",
    "provisional": true
   }
  },
@@ -1620,7 +1620,7 @@
    }
   ]
  },
- "updated": "2026-11-18T17:16:32.884Z",
+ "updated": "2026-11-18T18:01:35.468Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2261,12 +2261,12 @@
    "side": "home",
    "game": "TEN @ DAL",
    "kick": "2026-11-22T18:00Z",
-   "from": -8.5,
-   "to": -2.5,
+   "from": -7.5,
+   "to": -1.5,
    "book": null,
-   "win": 0.7432,
-   "bookWin": 0.7432,
-   "total": 54.5,
+   "win": 0.7505,
+   "bookWin": 0.7428,
+   "total": 55.5,
    "result": null,
    "final": null
   },
@@ -4357,28 +4357,6 @@
    "units": null
   },
   {
-   "id": "401873073|sp|away",
-   "gid": "401873073",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "away",
-   "label": "TEN +2.5",
-   "game": "TEN @ DAL",
-   "kick": "2026-11-22T18:00Z",
-   "line": 2.5,
-   "mainLine": 8.5,
-   "price": 280,
-   "book": "FanDuel",
-   "win": 0.2772,
-   "mwin": 0.2772,
-   "ev": 0.0533,
-   "mev": 0.0533,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401873068|tot|under",
    "gid": "401873068",
    "league": "nfl",
@@ -4505,6 +4483,28 @@
    "mwin": 0.2664,
    "ev": 0.034,
    "mev": 0.0508,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873073|sp|home",
+   "gid": "401873073",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "home",
+   "label": "DAL -15",
+   "game": "TEN @ DAL",
+   "kick": "2026-11-22T18:00Z",
+   "line": -15,
+   "mainLine": -7.5,
+   "price": 210,
+   "book": "BetMGM",
+   "win": 0.3304,
+   "mwin": 0.3208,
+   "ev": 0.0389,
+   "mev": 0.0092,
    "src": "mkt",
    "result": null,
    "final": null,
