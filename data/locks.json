@@ -75,6 +75,27 @@
    "closeAt": "2026-11-17T23:16:55.830Z",
    "clv_side": null,
    "clv_total": 1
+  },
+  "401866467": {
+   "id": "401866467",
+   "league": "cfb",
+   "week": 12,
+   "short": "AKR @ MASS",
+   "home": "MASS",
+   "away": "AKR",
+   "date": "2026-11-19T00:00Z",
+   "pick": "MASS",
+   "pick_line": "MASS -3.0",
+   "total_pick": "NO PLAY",
+   "side_play": true,
+   "our_margin": 5.83,
+   "our_total": 46.5,
+   "confidence": 51,
+   "total_play": false,
+   "spread": -3.5,
+   "total": 46.5,
+   "lockedAt": "2026-11-18T12:01:41.953Z",
+   "provisional": true
   }
  },
  "potd": {
@@ -1578,7 +1599,7 @@
    }
   ]
  },
- "updated": "2026-11-18T10:07:39.537Z",
+ "updated": "2026-11-18T12:01:41.953Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
