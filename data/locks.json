@@ -1578,7 +1578,7 @@
    }
   ]
  },
- "updated": "2026-11-18T01:52:29.790Z",
+ "updated": "2026-11-18T02:25:22.609Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4425,22 +4425,22 @@
    "units": null
   },
   {
-   "id": "401873077|tot|under",
-   "gid": "401873077",
+   "id": "401873078|tot|under",
+   "gid": "401873078",
    "league": "nfl",
    "kind": "tot",
    "side": "under",
-   "label": "Under 38.5",
-   "game": "MIN VS SF",
-   "kick": "2026-11-23T01:20Z",
-   "line": 38.5,
-   "mainLine": 45.5,
-   "price": 250,
+   "label": "Under 44.5",
+   "game": "CIN @ WSH",
+   "kick": "2026-11-24T01:15Z",
+   "line": 44.5,
+   "mainLine": 53.5,
+   "price": 280,
    "book": "FanDuel",
-   "win": 0.3001,
-   "mwin": 0.3001,
-   "ev": 0.0505,
-   "mev": 0.0505,
+   "win": 0.2788,
+   "mwin": 0.2735,
+   "ev": 0.0594,
+   "mev": 0.0394,
    "src": "mkt",
    "result": null,
    "final": null,
