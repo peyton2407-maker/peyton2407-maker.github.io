@@ -94,8 +94,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 47.5,
-   "lockedAt": "2026-11-18T22:23:46.491Z",
-   "provisional": true
+   "lockedAt": "2026-11-18T22:31:40.588Z"
   },
   "401866469": {
    "id": "401866469",
@@ -115,7 +114,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 46.5,
-   "lockedAt": "2026-11-18T22:23:46.491Z",
+   "lockedAt": "2026-11-18T22:31:40.588Z",
    "provisional": true
   }
  },
@@ -1620,7 +1619,7 @@
    }
   ]
  },
- "updated": "2026-11-18T22:23:46.491Z",
+ "updated": "2026-11-18T22:31:40.588Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6689,6 +6688,22 @@
    "result": "MISS",
    "units": -1,
    "final": "M-OH 20, KENT 3"
+  },
+  {
+   "id": "401866467",
+   "league": "cfb",
+   "gid": "401866467",
+   "side": "home",
+   "team": "MASS",
+   "game": "AKR @ MASS",
+   "kick": "2026-11-19T00:00Z",
+   "line": -3.5,
+   "price": -110,
+   "book": "standard",
+   "ours": -5.9,
+   "market": -3.5,
+   "label": "MASS -3.5",
+   "lockedAt": "2026-11-18T22:31:40.588Z"
   }
  ]
 }
