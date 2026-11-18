@@ -86,15 +86,15 @@
    "date": "2026-11-19T00:00Z",
    "pick": "MASS",
    "pick_line": "MASS -3.5",
-   "total_pick": "OVER 47.5",
+   "total_pick": "OVER 48.5",
    "side_play": true,
    "our_margin": 5.9,
-   "our_total": 47.1,
+   "our_total": 47.8,
    "confidence": 51,
    "total_play": false,
    "spread": -3.5,
-   "total": 47.5,
-   "lockedAt": "2026-11-18T16:27:39.475Z",
+   "total": 48.5,
+   "lockedAt": "2026-11-18T16:46:25.504Z",
    "provisional": true
   },
   "401866469": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 45.5,
-   "lockedAt": "2026-11-18T16:27:39.475Z",
+   "lockedAt": "2026-11-18T16:46:25.504Z",
    "provisional": true
   }
  },
@@ -1620,7 +1620,7 @@
    }
   ]
  },
- "updated": "2026-11-18T16:27:39.475Z",
+ "updated": "2026-11-18T16:46:25.504Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
