@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 47.5,
-   "lockedAt": "2026-11-18T19:31:24.386Z",
+   "lockedAt": "2026-11-18T19:55:34.666Z",
    "provisional": true
   },
   "401866469": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 46.5,
-   "lockedAt": "2026-11-18T19:31:24.386Z",
+   "lockedAt": "2026-11-18T19:55:34.666Z",
    "provisional": true
   }
  },
@@ -1620,7 +1620,7 @@
    }
   ]
  },
- "updated": "2026-11-18T19:31:24.386Z",
+ "updated": "2026-11-18T19:55:34.666Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4278,12 +4278,12 @@
    "game": "PIT @ PHI",
    "kick": "2026-11-22T18:00Z",
    "line": 31.5,
-   "mainLine": 38.5,
+   "mainLine": 37.5,
    "price": 240,
    "book": "FanDuel",
-   "win": 0.3067,
+   "win": 0.305,
    "mwin": 0.295,
-   "ev": 0.0427,
+   "ev": 0.0371,
    "mev": 0.003,
    "src": "proj",
    "result": null,
