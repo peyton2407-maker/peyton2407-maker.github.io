@@ -1578,7 +1578,7 @@
    }
   ]
  },
- "updated": "2026-11-18T01:01:58.731Z",
+ "updated": "2026-11-18T01:20:30.095Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2238,7 +2238,7 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7256,
+   "win": 0.7255,
    "bookWin": 0.7528,
    "total": 44.5,
    "result": null,
@@ -4327,9 +4327,9 @@
    "mainLine": 44.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2745,
+   "win": 0.2801,
    "mwin": 0.2687,
-   "ev": 0.0432,
+   "ev": 0.0642,
    "mev": 0.0209,
    "src": "mkt",
    "result": null,
@@ -4420,28 +4420,6 @@
    "ev": 0.0485,
    "mev": 0.0201,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873069|tot|under",
-   "gid": "401873069",
-   "league": "nfl",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 38.5",
-   "game": "JAX @ NYG",
-   "kick": "2026-11-22T21:25Z",
-   "line": 38.5,
-   "mainLine": 46.5,
-   "price": 240,
-   "book": "FanDuel",
-   "win": 0.3036,
-   "mwin": 0.2937,
-   "ev": 0.0323,
-   "mev": -0.0016,
-   "src": "proj",
    "result": null,
    "final": null,
    "units": null
