@@ -94,7 +94,28 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-18T12:01:41.953Z",
+   "lockedAt": "2026-11-18T12:37:23.280Z",
+   "provisional": true
+  },
+  "401866469": {
+   "id": "401866469",
+   "league": "cfb",
+   "week": 12,
+   "short": "CMU @ BUFF",
+   "home": "BUFF",
+   "away": "CMU",
+   "date": "2026-11-19T00:30Z",
+   "pick": "BUFF",
+   "pick_line": "BUFF -1.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 2.1,
+   "our_total": 45.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -1.5,
+   "total": 45.5,
+   "lockedAt": "2026-11-18T12:37:23.280Z",
    "provisional": true
   }
  },
@@ -1599,7 +1620,7 @@
    }
   ]
  },
- "updated": "2026-11-18T12:01:41.953Z",
+ "updated": "2026-11-18T12:37:23.280Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
