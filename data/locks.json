@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 47.5,
-   "lockedAt": "2026-11-18T22:01:34.929Z",
+   "lockedAt": "2026-11-18T22:23:46.491Z",
    "provisional": true
   },
   "401866469": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 46.5,
-   "lockedAt": "2026-11-18T22:01:34.929Z",
+   "lockedAt": "2026-11-18T22:23:46.491Z",
    "provisional": true
   }
  },
@@ -1620,7 +1620,7 @@
    }
   ]
  },
- "updated": "2026-11-18T22:01:34.929Z",
+ "updated": "2026-11-18T22:23:46.491Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4219,6 +4219,28 @@
    "mwin": 0.2838,
    "ev": 0.0614,
    "mev": 0.0614,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873066|tot|over",
+   "gid": "401873066",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "over",
+   "label": "Over 53.5",
+   "game": "IND @ HOU",
+   "kick": "2026-11-20T01:15Z",
+   "line": 53.5,
+   "mainLine": 43.5,
+   "price": 285,
+   "book": "FanDuel",
+   "win": 0.2692,
+   "mwin": 0.2687,
+   "ev": 0.0364,
+   "mev": 0.0343,
    "src": "mkt",
    "result": null,
    "final": null,
