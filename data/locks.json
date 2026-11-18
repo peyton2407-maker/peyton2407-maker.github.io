@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-18T12:46:33.930Z",
+   "lockedAt": "2026-11-18T13:24:05.134Z",
    "provisional": true
   },
   "401866469": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 45.5,
-   "lockedAt": "2026-11-18T12:46:33.930Z",
+   "lockedAt": "2026-11-18T13:24:05.134Z",
    "provisional": true
   }
  },
@@ -1620,7 +1620,7 @@
    }
   ]
  },
- "updated": "2026-11-18T12:46:33.930Z",
+ "updated": "2026-11-18T13:24:05.134Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4201,28 +4201,6 @@
    "result": "MISS",
    "final": "EMU 27, WMU 34",
    "units": -1
-  },
-  {
-   "id": "401873066|sp|away",
-   "gid": "401873066",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "away",
-   "label": "IND +4",
-   "game": "IND @ HOU",
-   "kick": "2026-11-20T01:15Z",
-   "line": 4,
-   "mainLine": 12.5,
-   "price": 300,
-   "book": "ESPN BET",
-   "win": 0.2596,
-   "mwin": 0.2528,
-   "ev": 0.0605,
-   "mev": 0.033,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
   },
   {
    "id": "401873068|sp|home",
