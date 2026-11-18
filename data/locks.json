@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-18T14:19:18.991Z",
+   "lockedAt": "2026-11-18T15:08:07.643Z",
    "provisional": true
   },
   "401866469": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 45.5,
-   "lockedAt": "2026-11-18T14:19:18.991Z",
+   "lockedAt": "2026-11-18T15:08:07.643Z",
    "provisional": true
   }
  },
@@ -1620,7 +1620,7 @@
    }
   ]
  },
- "updated": "2026-11-18T14:19:18.991Z",
+ "updated": "2026-11-18T15:08:07.643Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4461,6 +4461,28 @@
    "mwin": 0.2603,
    "ev": 0.0457,
    "mev": 0.0411,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873067|sp|home",
+   "gid": "401873067",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "home",
+   "label": "KC -24",
+   "game": "ARI @ KC",
+   "kick": "2026-11-22T18:00Z",
+   "line": -24,
+   "mainLine": -15.5,
+   "price": 280,
+   "book": "BetRivers",
+   "win": 0.262,
+   "mwin": 0.2664,
+   "ev": 0.034,
+   "mev": 0.0508,
    "src": "mkt",
    "result": null,
    "final": null,
