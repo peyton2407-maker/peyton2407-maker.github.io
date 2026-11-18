@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-18T14:09:36.789Z",
+   "lockedAt": "2026-11-18T14:19:18.991Z",
    "provisional": true
   },
   "401866469": {
@@ -106,16 +106,16 @@
    "away": "CMU",
    "date": "2026-11-19T00:30Z",
    "pick": "BUFF",
-   "pick_line": "BUFF -1.5",
-   "total_pick": "NO PLAY",
+   "pick_line": "BUFF -2.5",
+   "total_pick": "OVER 45.5",
    "side_play": false,
-   "our_margin": 2.1,
-   "our_total": 45.5,
+   "our_margin": 3.2,
+   "our_total": 45.6,
    "confidence": null,
    "total_play": false,
-   "spread": -1.5,
+   "spread": -2.5,
    "total": 45.5,
-   "lockedAt": "2026-11-18T13:52:42.124Z",
+   "lockedAt": "2026-11-18T14:19:18.991Z",
    "provisional": true
   }
  },
@@ -1620,7 +1620,7 @@
    }
   ]
  },
- "updated": "2026-11-18T14:09:36.789Z",
+ "updated": "2026-11-18T14:19:18.991Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4201,6 +4201,28 @@
    "result": "MISS",
    "final": "EMU 27, WMU 34",
    "units": -1
+  },
+  {
+   "id": "401866469|sp|home",
+   "gid": "401866469",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "home",
+   "label": "BUFF -10.5",
+   "game": "CMU @ BUFF",
+   "kick": "2026-11-19T00:30Z",
+   "line": -10.5,
+   "mainLine": -2.5,
+   "price": 293,
+   "book": "DraftKings",
+   "win": 0.2687,
+   "mwin": 0.2611,
+   "ev": 0.0561,
+   "mev": 0.0262,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
   },
   {
    "id": "401873068|sp|home",
