@@ -94,7 +94,12 @@
    "total_play": false,
    "spread": -3.5,
    "total": 47.5,
-   "lockedAt": "2026-11-18T22:31:40.588Z"
+   "lockedAt": "2026-11-18T22:31:40.588Z",
+   "close_spread": -3.5,
+   "close_total": 47.5,
+   "closeAt": "2026-11-18T23:01:20.697Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401866469": {
    "id": "401866469",
@@ -114,8 +119,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 46.5,
-   "lockedAt": "2026-11-18T22:31:40.588Z",
-   "provisional": true
+   "lockedAt": "2026-11-18T23:01:20.697Z"
   }
  },
  "potd": {
@@ -1619,7 +1623,7 @@
    }
   ]
  },
- "updated": "2026-11-18T22:31:40.588Z",
+ "updated": "2026-11-18T23:01:20.697Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6704,6 +6708,22 @@
    "market": -3.5,
    "label": "MASS -3.5",
    "lockedAt": "2026-11-18T22:31:40.588Z"
+  },
+  {
+   "id": "401866469",
+   "league": "cfb",
+   "gid": "401866469",
+   "side": "home",
+   "team": "BUFF",
+   "game": "CMU @ BUFF",
+   "kick": "2026-11-19T00:30Z",
+   "line": -2.5,
+   "price": -110,
+   "book": "standard",
+   "ours": -2.7,
+   "market": -2.5,
+   "label": "BUFF -2.5",
+   "lockedAt": "2026-11-18T23:01:20.697Z"
   }
  ]
 }
