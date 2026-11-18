@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 47.5,
-   "lockedAt": "2026-11-18T20:39:50.539Z",
+   "lockedAt": "2026-11-18T20:46:32.932Z",
    "provisional": true
   },
   "401866469": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 46.5,
-   "lockedAt": "2026-11-18T20:39:50.539Z",
+   "lockedAt": "2026-11-18T20:46:32.932Z",
    "provisional": true
   }
  },
@@ -1620,7 +1620,7 @@
    }
   ]
  },
- "updated": "2026-11-18T20:39:50.539Z",
+ "updated": "2026-11-18T20:46:32.932Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2264,8 +2264,8 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.7429,
-   "bookWin": 0.7428,
+   "win": 0.7432,
+   "bookWin": 0.7432,
    "total": 55.5,
    "result": null,
    "final": null
@@ -2280,7 +2280,7 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7255,
+   "win": 0.7256,
    "bookWin": 0.7528,
    "total": 43.5,
    "result": null,
@@ -4313,28 +4313,6 @@
    "units": null
   },
   {
-   "id": "401873073|sp|home",
-   "gid": "401873073",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "home",
-   "label": "DAL -18",
-   "game": "TEN @ DAL",
-   "kick": "2026-11-22T18:00Z",
-   "line": -18,
-   "mainLine": -8.5,
-   "price": 300,
-   "book": "BetMGM",
-   "win": 0.2516,
-   "mwin": 0.2514,
-   "ev": 0.0304,
-   "mev": 0.0298,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401873074|tot|under",
    "gid": "401873074",
    "league": "nfl",
@@ -4413,9 +4391,9 @@
    "mainLine": -3,
    "price": 200,
    "book": "FanDuel",
-   "win": 0.3457,
+   "win": 0.3459,
    "mwin": 0.3314,
-   "ev": 0.0371,
+   "ev": 0.0377,
    "mev": -0.0059,
    "src": "proj",
    "result": null,
