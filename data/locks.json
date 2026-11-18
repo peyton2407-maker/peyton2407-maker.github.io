@@ -1578,7 +1578,7 @@
    }
   ]
  },
- "updated": "2026-11-18T02:25:22.609Z",
+ "updated": "2026-11-18T02:35:53.796Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4156,9 +4156,9 @@
    "ev": 0.0404,
    "mev": 0.027,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "EMU 27, WMU 34",
+   "units": -1
   },
   {
    "id": "401873066|sp|away",
@@ -6605,7 +6605,10 @@
    "ours": 15.1,
    "market": 15.5,
    "label": "EMU +15.5",
-   "lockedAt": "2026-11-17T21:31:50.892Z"
+   "lockedAt": "2026-11-17T21:31:50.892Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "EMU 27, WMU 34"
   },
   {
    "id": "401866464",
