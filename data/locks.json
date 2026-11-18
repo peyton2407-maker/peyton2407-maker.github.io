@@ -96,8 +96,8 @@
    "total": 47.5,
    "lockedAt": "2026-11-18T22:31:40.588Z",
    "close_spread": -3,
-   "close_total": 47.5,
-   "closeAt": "2026-11-18T23:12:03.736Z",
+   "close_total": 46.5,
+   "closeAt": "2026-11-18T23:25:57.891Z",
    "clv_side": -0.5,
    "clv_total": null
   },
@@ -1623,7 +1623,7 @@
    }
   ]
  },
- "updated": "2026-11-18T23:12:03.736Z",
+ "updated": "2026-11-18T23:25:57.891Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
