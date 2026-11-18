@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 47.5,
-   "lockedAt": "2026-11-18T20:46:32.932Z",
+   "lockedAt": "2026-11-18T21:01:53.592Z",
    "provisional": true
   },
   "401866469": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 46.5,
-   "lockedAt": "2026-11-18T20:46:32.932Z",
+   "lockedAt": "2026-11-18T21:01:53.592Z",
    "provisional": true
   }
  },
@@ -1620,7 +1620,7 @@
    }
   ]
  },
- "updated": "2026-11-18T20:46:32.932Z",
+ "updated": "2026-11-18T21:01:53.592Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2280,7 +2280,7 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7256,
+   "win": 0.7255,
    "bookWin": 0.7528,
    "total": 43.5,
    "result": null,
@@ -4391,9 +4391,9 @@
    "mainLine": -3,
    "price": 200,
    "book": "FanDuel",
-   "win": 0.3459,
+   "win": 0.3457,
    "mwin": 0.3314,
-   "ev": 0.0377,
+   "ev": 0.0371,
    "mev": -0.0059,
    "src": "proj",
    "result": null,
