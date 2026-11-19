@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 51.5,
-   "lockedAt": "2026-11-19T20:31:22.625Z",
+   "lockedAt": "2026-11-19T20:48:17.261Z",
    "provisional": true
   },
   "401866464": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": -12.5,
    "total": 44.5,
-   "lockedAt": "2026-11-19T20:31:22.625Z",
+   "lockedAt": "2026-11-19T20:48:17.261Z",
    "provisional": true
   }
  },
@@ -897,12 +897,12 @@
     "ours": "HOU -11.0 · total 44.3",
     "score": "IND 16.7 – HOU 27.6",
     "market": "HOU -12.5 · total 44.5",
-    "lockedAt": "2026-11-19T20:31:22.654Z",
+    "lockedAt": "2026-11-19T20:48:17.284Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-20T01:15Z",
     "big": false,
-    "savedAt": 1795120282654
+    "savedAt": 1795121297284
    }
   ],
   "cfb": [
@@ -1667,7 +1667,7 @@
    }
   ]
  },
- "updated": "2026-11-19T20:31:22.625Z",
+ "updated": "2026-11-19T20:48:17.261Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4705,12 +4705,12 @@
    "game": "HOU @ WVU",
    "kick": "2026-11-21T18:00Z",
    "line": -1.5,
-   "mainLine": 8.5,
+   "mainLine": 7.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2681,
+   "win": 0.2721,
    "mwin": 0.2662,
-   "ev": 0.032,
+   "ev": 0.0475,
    "mev": 0.0248,
    "src": "mkt",
    "result": null,
