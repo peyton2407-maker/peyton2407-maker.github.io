@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-19T03:13:50Z",
+ "updated": "2026-11-19T04:01:08Z",
  "about": "Every side The Split took: the line when first picked, the closing line, and how many points the line moved toward our side (clv). Only picks still standing at kickoff count (counts: true); ones The Split dropped before the game are listed but not counted. Positive average CLV over a season is the sign of a real edge; win-loss needs far more games.",
  "summary": {
   "record": {
@@ -11,15 +11,15 @@
    "lost_close": 26,
    "at_first": {
     "w": 61,
-    "l": 69,
+    "l": 70,
     "p": 4,
-    "pct": 0.469
+    "pct": 0.466
    },
    "at_close": {
     "w": 26,
-    "l": 25,
+    "l": 26,
     "p": 2,
-    "pct": 0.51
+    "pct": 0.5
    }
   },
   "by_week": {
@@ -172,15 +172,15 @@
     "lost_close": 0,
     "at_first": {
      "w": 0,
-     "l": 0,
+     "l": 1,
      "p": 0,
-     "pct": null
+     "pct": 0.0
     },
     "at_close": {
      "w": 0,
-     "l": 0,
+     "l": 1,
      "p": 0,
-     "pct": null
+     "pct": 0.0
     }
    }
   },
@@ -3681,9 +3681,9 @@
    "close": -3.5,
    "close_src": "last look",
    "clv": 0.0,
-   "final": null,
-   "ats_first": null,
-   "ats_close": null,
+   "final": "AKR 34 - MASS 33",
+   "ats_first": "L",
+   "ats_close": "L",
    "counts": true
   },
   {
@@ -3699,7 +3699,7 @@
    "first_at": "2026-11-16T21:06:48Z",
    "hours_before": 118.4,
    "last": 8.5,
-   "last_at": "2026-11-19T03:13:50Z",
+   "last_at": "2026-11-19T04:01:08Z",
    "dropped": false,
    "flipped": false,
    "close": null,
@@ -3723,7 +3723,7 @@
    "first_at": "2026-11-16T13:40:19Z",
    "hours_before": 127.1,
    "last": -7.5,
-   "last_at": "2026-11-19T03:13:50Z",
+   "last_at": "2026-11-19T04:01:08Z",
    "dropped": false,
    "flipped": false,
    "close": null,
@@ -3747,7 +3747,7 @@
    "first_at": "2026-11-17T14:25:27Z",
    "hours_before": 102.6,
    "last": -1.5,
-   "last_at": "2026-11-19T03:13:50Z",
+   "last_at": "2026-11-19T04:01:08Z",
    "dropped": false,
    "flipped": false,
    "close": null,
@@ -3771,7 +3771,7 @@
    "first_at": "2026-11-16T13:40:19Z",
    "hours_before": 130.8,
    "last": -14.0,
-   "last_at": "2026-11-19T03:13:50Z",
+   "last_at": "2026-11-19T04:01:08Z",
    "dropped": false,
    "flipped": false,
    "close": null,
@@ -3795,7 +3795,7 @@
    "first_at": "2026-11-16T13:40:19Z",
    "hours_before": 130.8,
    "last": 2.5,
-   "last_at": "2026-11-19T03:13:50Z",
+   "last_at": "2026-11-19T04:01:08Z",
    "dropped": false,
    "flipped": false,
    "close": null,
