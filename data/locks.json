@@ -1628,7 +1628,7 @@
    }
   ]
  },
- "updated": "2026-11-19T10:46:30.874Z",
+ "updated": "2026-11-19T11:41:56.142Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4689,28 +4689,6 @@
    "mwin": 0.3662,
    "ev": 0.031,
    "mev": 0.0254,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873078|tot|under",
-   "gid": "401873078",
-   "league": "nfl",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 48.5",
-   "game": "CIN @ WSH",
-   "kick": "2026-11-24T01:15Z",
-   "line": 48.5,
-   "mainLine": 54.5,
-   "price": 185,
-   "book": "ESPN BET",
-   "win": 0.3617,
-   "mwin": 0.3537,
-   "ev": 0.0308,
-   "mev": 0.008,
    "src": "mkt",
    "result": null,
    "final": null,
