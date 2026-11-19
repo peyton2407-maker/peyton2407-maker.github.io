@@ -1628,7 +1628,7 @@
    }
   ]
  },
- "updated": "2026-11-19T08:54:41.701Z",
+ "updated": "2026-11-19T10:16:48.500Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4634,17 +4634,17 @@
    "league": "nfl",
    "kind": "tot",
    "side": "under",
-   "label": "Under 36.5",
+   "label": "Under 35.5",
    "game": "NYJ @ LAC",
    "kick": "2026-11-22T21:05Z",
-   "line": 36.5,
+   "line": 35.5,
    "mainLine": 41.5,
-   "price": 200,
+   "price": 225,
    "book": "ESPN BET",
-   "win": 0.3499,
-   "mwin": 0.3417,
-   "ev": 0.0498,
-   "mev": 0.0252,
+   "win": 0.3197,
+   "mwin": 0.3117,
+   "ev": 0.0389,
+   "mev": 0.013,
    "src": "mkt",
    "result": null,
    "final": null,
