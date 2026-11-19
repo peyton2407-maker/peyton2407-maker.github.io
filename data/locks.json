@@ -1628,7 +1628,7 @@
    }
   ]
  },
- "updated": "2026-11-19T07:16:31.499Z",
+ "updated": "2026-11-19T08:22:26.094Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4667,6 +4667,28 @@
    "mwin": 0.2861,
    "ev": 0.1141,
    "mev": 0.03,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873077|tot|under",
+   "gid": "401873077",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 41.5",
+   "game": "MIN VS SF",
+   "kick": "2026-11-23T01:20Z",
+   "line": 41.5,
+   "mainLine": 46.5,
+   "price": 180,
+   "book": "ESPN BET",
+   "win": 0.3682,
+   "mwin": 0.3662,
+   "ev": 0.031,
+   "mev": 0.0254,
    "src": "mkt",
    "result": null,
    "final": null,
