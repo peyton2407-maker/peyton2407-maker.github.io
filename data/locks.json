@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 51.5,
-   "lockedAt": "2026-11-19T15:06:59.056Z",
+   "lockedAt": "2026-11-19T15:49:36.195Z",
    "provisional": true
   },
   "401866464": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": -12.5,
    "total": 43.5,
-   "lockedAt": "2026-11-19T15:06:59.056Z",
+   "lockedAt": "2026-11-19T15:49:36.195Z",
    "provisional": true
   }
  },
@@ -897,12 +897,12 @@
     "ours": "HOU -11.0 · total 43.6",
     "score": "IND 16.3 – HOU 27.3",
     "market": "HOU -12.5 · total 43.5",
-    "lockedAt": "2026-11-19T15:06:59.076Z",
+    "lockedAt": "2026-11-19T15:49:36.215Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-20T01:15Z",
     "big": false,
-    "savedAt": 1795100819076
+    "savedAt": 1795103376215
    }
   ],
   "cfb": [
@@ -1706,7 +1706,7 @@
    }
   ]
  },
- "updated": "2026-11-19T15:06:59.056Z",
+ "updated": "2026-11-19T15:49:36.195Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4680,6 +4680,28 @@
    "ev": 0.1141,
    "mev": 0.03,
    "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873069|tot|under",
+   "gid": "401873069",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 43.5",
+   "game": "JAX @ NYG",
+   "kick": "2026-11-22T21:25Z",
+   "line": 43.5,
+   "mainLine": 46.5,
+   "price": 140,
+   "book": "ESPN BET",
+   "win": 0.4307,
+   "mwin": 0.4179,
+   "ev": 0.0338,
+   "mev": 0.003,
+   "src": "proj",
    "result": null,
    "final": null,
    "units": null
