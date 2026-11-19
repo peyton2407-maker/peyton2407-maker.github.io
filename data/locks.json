@@ -1628,7 +1628,7 @@
    }
   ]
  },
- "updated": "2026-11-19T04:07:22.230Z",
+ "updated": "2026-11-19T05:01:43.274Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4308,12 +4308,12 @@
    "game": "ISU @ UCF",
    "kick": "2026-11-20T23:00Z",
    "line": -6.5,
-   "mainLine": 1.5,
+   "mainLine": 2.5,
    "price": 240,
    "book": "BetRivers",
-   "win": 0.3075,
+   "win": 0.3099,
    "mwin": 0.3075,
-   "ev": 0.0454,
+   "ev": 0.0537,
    "mev": 0.0454,
    "src": "mkt",
    "result": null,
