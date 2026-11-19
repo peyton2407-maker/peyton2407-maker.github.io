@@ -1,6 +1,27 @@
 {
  "v": 1,
  "plays": {
+  "401862830": {
+   "id": "401862830",
+   "league": "cfb",
+   "week": 12,
+   "short": "RICE @ TEM",
+   "home": "TEM",
+   "away": "RICE",
+   "date": "2026-11-20T00:30Z",
+   "pick": "TEM",
+   "pick_line": "TEM -2.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 3.57,
+   "our_total": 51.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -2.5,
+   "total": 51.5,
+   "lockedAt": "2026-11-19T12:31:28.584Z",
+   "provisional": true
+  },
   "401866464": {
    "id": "401866464",
    "league": "cfb",
@@ -1628,7 +1649,7 @@
    }
   ]
  },
- "updated": "2026-11-19T11:41:56.142Z",
+ "updated": "2026-11-19T12:31:28.584Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
