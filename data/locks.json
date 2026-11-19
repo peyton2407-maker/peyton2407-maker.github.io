@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 51.5,
-   "lockedAt": "2026-11-19T21:38:40.015Z",
+   "lockedAt": "2026-11-19T22:18:01.788Z",
    "provisional": true
   },
   "401866464": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": -12.5,
    "total": 44.5,
-   "lockedAt": "2026-11-19T21:38:40.015Z",
+   "lockedAt": "2026-11-19T22:18:01.788Z",
    "provisional": true
   }
  },
@@ -897,12 +897,12 @@
     "ours": "HOU -11.0 · total 44.3",
     "score": "IND 16.7 – HOU 27.6",
     "market": "HOU -12.5 · total 44.5",
-    "lockedAt": "2026-11-19T21:38:40.036Z",
+    "lockedAt": "2026-11-19T22:18:01.807Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-20T01:15Z",
     "big": false,
-    "savedAt": 1795124320036
+    "savedAt": 1795126681807
    }
   ],
   "cfb": [
@@ -1667,7 +1667,7 @@
    }
   ]
  },
- "updated": "2026-11-19T21:38:40.015Z",
+ "updated": "2026-11-19T22:18:01.788Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4256,22 +4256,22 @@
    "units": -1
   },
   {
-   "id": "401862830|tot|under",
+   "id": "401862830|sp|home",
    "gid": "401862830",
    "league": "cfb",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 43.5",
+   "kind": "sp",
+   "side": "home",
+   "label": "TEM -10.5",
    "game": "RICE @ TEM",
    "kick": "2026-11-20T00:30Z",
-   "line": 43.5,
-   "mainLine": 51.5,
-   "price": 235,
+   "line": -10.5,
+   "mainLine": -2.5,
+   "price": 280,
    "book": "FanDuel",
-   "win": 0.3125,
-   "mwin": 0.3125,
-   "ev": 0.0469,
-   "mev": 0.0469,
+   "win": 0.2786,
+   "mwin": 0.2687,
+   "ev": 0.0586,
+   "mev": 0.0209,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -5400,28 +5400,6 @@
    "units": null
   },
   {
-   "id": "401873077|sp|home",
-   "gid": "401873077",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "home",
-   "label": "SF -10.5",
-   "game": "MIN VS SF",
-   "kick": "2026-11-23T01:20Z",
-   "line": -10.5,
-   "mainLine": -3,
-   "price": 275,
-   "book": "BetMGM",
-   "win": 0.2821,
-   "mwin": 0.2687,
-   "ev": 0.0577,
-   "mev": 0.0075,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401873077|tot|under",
    "gid": "401873077",
    "league": "nfl",
@@ -5438,6 +5416,28 @@
    "mwin": 0.2735,
    "ev": 0.0597,
    "mev": 0.0531,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873077|sp|away",
+   "gid": "401873077",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "away",
+   "label": "MIN -4",
+   "game": "MIN VS SF",
+   "kick": "2026-11-23T01:20Z",
+   "line": -4,
+   "mainLine": 3.5,
+   "price": 300,
+   "book": "ESPN BET",
+   "win": 0.2609,
+   "mwin": 0.2609,
+   "ev": 0.0652,
+   "mev": 0.0652,
    "src": "mkt",
    "result": null,
    "final": null,
