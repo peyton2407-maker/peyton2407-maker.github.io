@@ -21,8 +21,8 @@
    "total": 51.5,
    "lockedAt": "2026-11-19T23:03:42.504Z",
    "close_spread": -2.5,
-   "close_total": 51.5,
-   "closeAt": "2026-11-19T23:31:25.465Z",
+   "close_total": 52.5,
+   "closeAt": "2026-11-19T23:46:16.442Z",
    "clv_side": 0,
    "clv_total": null
   },
@@ -163,14 +163,13 @@
    "pick_line": "IND +12.5",
    "total_pick": "UNDER 44.5",
    "side_play": false,
-   "our_margin": 10.99,
+   "our_margin": 11.62,
    "our_total": 44.3,
    "confidence": null,
    "total_play": false,
    "spread": -12.5,
    "total": 44.5,
-   "lockedAt": "2026-11-19T23:31:25.465Z",
-   "provisional": true
+   "lockedAt": "2026-11-19T23:46:16.442Z"
   }
  },
  "potd": {
@@ -898,15 +897,14 @@
     "price": -114,
     "book": "DraftKings",
     "ev": 0.093,
-    "ours": "HOU -11.0 · total 44.3",
-    "score": "IND 16.7 – HOU 27.6",
+    "ours": "HOU -11.6 · total 44.3",
+    "score": "IND 16.3 – HOU 28.0",
     "market": "HOU -12.5 · total 44.5",
-    "lockedAt": "2026-11-19T23:31:25.486Z",
-    "locked": false,
-    "provisional": true,
+    "lockedAt": "2026-11-19T23:46:16.457Z",
+    "locked": true,
     "kick": "2026-11-20T01:15Z",
     "big": false,
-    "savedAt": 1795131085486
+    "savedAt": 1795131976457
    }
   ],
   "cfb": [
@@ -1671,7 +1669,7 @@
    }
   ]
  },
- "updated": "2026-11-19T23:31:25.465Z",
+ "updated": "2026-11-19T23:46:16.442Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4634,6 +4632,28 @@
    "units": null
   },
   {
+   "id": "401856866|tot|under",
+   "gid": "401856866",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 38.5",
+   "game": "BYU @ KU",
+   "kick": "2026-11-21T17:00Z",
+   "line": 38.5,
+   "mainLine": 46.5,
+   "price": 240,
+   "book": "FanDuel",
+   "win": 0.3054,
+   "mwin": 0.3001,
+   "ev": 0.0385,
+   "mev": 0.0205,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401858305|sp|home",
    "gid": "401858305",
    "league": "cfb",
@@ -4734,9 +4754,9 @@
    "mainLine": 52.5,
    "price": 277,
    "book": "DraftKings",
-   "win": 0.2829,
+   "win": 0.2894,
    "mwin": 0.2778,
-   "ev": 0.0665,
+   "ev": 0.0909,
    "mev": 0.0472,
    "src": "mkt",
    "result": null,
@@ -5244,28 +5264,6 @@
    "mwin": 0.2778,
    "ev": 0.0398,
    "mev": 0.0139,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873076|tot|under",
-   "gid": "401873076",
-   "league": "nfl",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 31.5",
-   "game": "PIT @ PHI",
-   "kick": "2026-11-22T18:00Z",
-   "line": 31.5,
-   "mainLine": 38.5,
-   "price": 230,
-   "book": "FanDuel",
-   "win": 0.319,
-   "mwin": 0.3073,
-   "ev": 0.0527,
-   "mev": 0.0141,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -7812,6 +7810,22 @@
    "market": -2.5,
    "label": "TEM -2.5",
    "lockedAt": "2026-11-19T23:03:42.504Z"
+  },
+  {
+   "id": "401873066",
+   "league": "nfl",
+   "gid": "401873066",
+   "side": "away",
+   "team": "IND",
+   "game": "IND @ HOU",
+   "kick": "2026-11-20T01:15Z",
+   "line": 12.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 11.6,
+   "market": 12.5,
+   "label": "IND +12.5",
+   "lockedAt": "2026-11-19T23:46:16.442Z"
   }
  ]
 }
