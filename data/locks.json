@@ -1628,7 +1628,7 @@
    }
   ]
  },
- "updated": "2026-11-19T02:04:04.457Z",
+ "updated": "2026-11-19T02:25:48.875Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4497,6 +4497,28 @@
    "units": null
   },
   {
+   "id": "401864542|tot|under",
+   "gid": "401864542",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 28.5",
+   "game": "UNM @ WYO",
+   "kick": "2026-11-21T02:00Z",
+   "line": 28.5,
+   "mainLine": 37.5,
+   "price": 300,
+   "book": "FanDuel",
+   "win": 0.2628,
+   "mwin": 0.2576,
+   "ev": 0.051,
+   "mev": 0.0305,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873068|sp|home",
    "gid": "401873068",
    "league": "nfl",
@@ -4733,28 +4755,6 @@
    "mwin": 0.2687,
    "ev": 0.032,
    "mev": 0.0343,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873078|tot|under",
-   "gid": "401873078",
-   "league": "nfl",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 44.5",
-   "game": "CIN @ WSH",
-   "kick": "2026-11-24T01:15Z",
-   "line": 44.5,
-   "mainLine": 54.5,
-   "price": 280,
-   "book": "FanDuel",
-   "win": 0.2752,
-   "mwin": 0.2735,
-   "ev": 0.0456,
-   "mev": 0.0394,
    "src": "mkt",
    "result": null,
    "final": null,
