@@ -1628,7 +1628,7 @@
    }
   ]
  },
- "updated": "2026-11-19T03:31:41.882Z",
+ "updated": "2026-11-19T03:49:12.774Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4228,9 +4228,9 @@
    "ev": 0.0531,
    "mev": 0.0531,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "CMU 21, BUFF 40",
+   "units": -1
   },
   {
    "id": "401862830|sp|home",
@@ -6995,7 +6995,10 @@
    "ours": -2.7,
    "market": -2.5,
    "label": "BUFF -2.5",
-   "lockedAt": "2026-11-18T23:01:20.697Z"
+   "lockedAt": "2026-11-18T23:01:20.697Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "CMU 21, BUFF 40"
   }
  ]
 }
