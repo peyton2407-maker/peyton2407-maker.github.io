@@ -1628,7 +1628,7 @@
    }
   ]
  },
- "updated": "2026-11-19T05:18:21.224Z",
+ "updated": "2026-11-19T06:02:25.111Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4623,6 +4623,28 @@
    "mwin": 0.2889,
    "ev": 0.0347,
    "mev": 0.0257,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873067|tot|over",
+   "gid": "401873067",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "over",
+   "label": "Over 41.5",
+   "game": "ARI @ KC",
+   "kick": "2026-11-22T18:00Z",
+   "line": 41.5,
+   "mainLine": 40.5,
+   "price": 112,
+   "book": "ESPN BET",
+   "win": 0.4917,
+   "mwin": 0.4772,
+   "ev": 0.0423,
+   "mev": 0.0117,
    "src": "mkt",
    "result": null,
    "final": null,
