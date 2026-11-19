@@ -1628,7 +1628,7 @@
    }
   ]
  },
- "updated": "2026-11-19T10:16:48.500Z",
+ "updated": "2026-11-19T10:46:30.874Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4572,12 +4572,12 @@
    "game": "TEN @ DAL",
    "kick": "2026-11-22T18:00Z",
    "line": 48.5,
-   "mainLine": 55.5,
+   "mainLine": 54.5,
    "price": 210,
    "book": "ESPN BET",
-   "win": 0.3373,
+   "win": 0.3355,
    "mwin": 0.3295,
-   "ev": 0.0455,
+   "ev": 0.04,
    "mev": 0.0216,
    "src": "mkt",
    "result": null,
