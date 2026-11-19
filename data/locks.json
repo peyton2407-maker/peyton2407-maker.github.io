@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 51.5,
-   "lockedAt": "2026-11-19T17:47:51.353Z",
+   "lockedAt": "2026-11-19T18:01:49.353Z",
    "provisional": true
   },
   "401866464": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": -12.5,
    "total": 44.5,
-   "lockedAt": "2026-11-19T17:47:51.353Z",
+   "lockedAt": "2026-11-19T18:01:49.353Z",
    "provisional": true
   }
  },
@@ -897,12 +897,12 @@
     "ours": "HOU -11.0 · total 44.3",
     "score": "IND 16.7 – HOU 27.6",
     "market": "HOU -12.5 · total 44.5",
-    "lockedAt": "2026-11-19T17:47:51.375Z",
+    "lockedAt": "2026-11-19T18:01:49.370Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-20T01:15Z",
     "big": false,
-    "savedAt": 1795110471375
+    "savedAt": 1795111309370
    }
   ],
   "cfb": [
@@ -1667,7 +1667,7 @@
    }
   ]
  },
- "updated": "2026-11-19T17:47:51.353Z",
+ "updated": "2026-11-19T18:01:49.353Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4795,6 +4795,28 @@
    "ev": 0.0339,
    "mev": 0.0411,
    "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873072|sp|away",
+   "gid": "401873072",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "away",
+   "label": "TB +2.5",
+   "game": "TB @ DET",
+   "kick": "2026-11-22T18:00Z",
+   "line": 2.5,
+   "mainLine": 6.5,
+   "price": 220,
+   "book": "FanDuel",
+   "win": 0.3248,
+   "mwin": 0.3108,
+   "ev": 0.0393,
+   "mev": -0.0056,
+   "src": "proj",
    "result": null,
    "final": null,
    "units": null
