@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 51.5,
-   "lockedAt": "2026-11-19T19:03:33.868Z",
+   "lockedAt": "2026-11-19T19:21:01.208Z",
    "provisional": true
   },
   "401866464": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": -12.5,
    "total": 44.5,
-   "lockedAt": "2026-11-19T19:03:33.868Z",
+   "lockedAt": "2026-11-19T19:21:01.208Z",
    "provisional": true
   }
  },
@@ -897,12 +897,12 @@
     "ours": "HOU -11.0 · total 44.3",
     "score": "IND 16.7 – HOU 27.6",
     "market": "HOU -12.5 · total 44.5",
-    "lockedAt": "2026-11-19T19:03:33.893Z",
+    "lockedAt": "2026-11-19T19:21:01.227Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-20T01:15Z",
     "big": false,
-    "savedAt": 1795115013893
+    "savedAt": 1795116061227
    }
   ],
   "cfb": [
@@ -1667,7 +1667,7 @@
    }
   ]
  },
- "updated": "2026-11-19T19:03:33.868Z",
+ "updated": "2026-11-19T19:21:01.208Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4388,28 +4388,6 @@
    "units": null
   },
   {
-   "id": "401858529|sp|home",
-   "gid": "401858529",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "home",
-   "label": "MSU +6.5",
-   "game": "ORE @ MSU",
-   "kick": "2026-11-21T01:00Z",
-   "line": 6.5,
-   "mainLine": 16.5,
-   "price": 280,
-   "book": "FanDuel",
-   "win": 0.2714,
-   "mwin": 0.2648,
-   "ev": 0.0315,
-   "mev": 0.0064,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401864545|sp|home",
    "gid": "401864545",
    "league": "cfb",
@@ -4683,13 +4661,57 @@
    "game": "HOU @ WVU",
    "kick": "2026-11-21T18:00Z",
    "line": -1.5,
-   "mainLine": 8.5,
+   "mainLine": 7.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2681,
+   "win": 0.2721,
    "mwin": 0.2662,
-   "ev": 0.032,
+   "ev": 0.0476,
    "mev": 0.0248,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401862832|sp|away",
+   "gid": "401862832",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "away",
+   "label": "CLT +13.5",
+   "game": "CLT @ TLSA",
+   "kick": "2026-11-21T19:00Z",
+   "line": 13.5,
+   "mainLine": 22.5,
+   "price": 250,
+   "book": "FanDuel",
+   "win": 0.3003,
+   "mwin": 0.299,
+   "ev": 0.0509,
+   "mev": 0.0467,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401871079|tot|under",
+   "gid": "401871079",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 43.5",
+   "game": "MOST @ JXST",
+   "kick": "2026-11-21T19:00Z",
+   "line": 43.5,
+   "mainLine": 52.5,
+   "price": 277,
+   "book": "DraftKings",
+   "win": 0.2756,
+   "mwin": 0.2778,
+   "ev": 0.0388,
+   "mev": 0.0472,
    "src": "mkt",
    "result": null,
    "final": null,
