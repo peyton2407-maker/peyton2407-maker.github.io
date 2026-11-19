@@ -38,11 +38,11 @@
    "teams": 32
   }
  ],
- "ran_at": "2026-11-19T13:01:12Z",
+ "ran_at": "2026-11-19T13:17:21Z",
  "nfl_week": 11,
  "cfb_week": 12,
  "changes": [
-  "0 new games, 134 updated, 0 new finals"
+  "0 new games, 163 updated, 0 new finals"
  ],
  "parse": {
   "cfb_efficiency_names": [
@@ -59,15 +59,15 @@
   "sample": [
    {
     "abbr": "UGA",
-    "fpi": 28.053,
-    "off": 91.473,
-    "def": 84.607
+    "fpi": 28.051,
+    "off": 91.46,
+    "def": 84.565
    },
    {
     "abbr": "ND",
-    "fpi": 27.36,
-    "off": 85.728,
-    "def": 87.186
+    "fpi": 27.37,
+    "off": 85.722,
+    "def": 87.167
    }
   ],
   "nfl_depth_teams": 32
