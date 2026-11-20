@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 48.5,
-   "lockedAt": "2026-11-20T16:17:04.957Z",
+   "lockedAt": "2026-11-20T16:32:02.019Z",
    "provisional": true
   },
   "401858303": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -12.5,
    "total": 41.5,
-   "lockedAt": "2026-11-20T16:17:04.957Z",
+   "lockedAt": "2026-11-20T16:32:02.019Z",
    "provisional": true
   },
   "401858529": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 17.5,
    "total": 43.5,
-   "lockedAt": "2026-11-20T16:17:04.957Z",
+   "lockedAt": "2026-11-20T16:32:02.019Z",
    "provisional": true
   },
   "401862830": {
@@ -107,7 +107,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 37.5,
-   "lockedAt": "2026-11-20T16:17:04.957Z",
+   "lockedAt": "2026-11-20T16:32:02.019Z",
    "provisional": true
   },
   "401864545": {
@@ -128,7 +128,7 @@
    "total_play": false,
    "spread": -21.5,
    "total": 47.5,
-   "lockedAt": "2026-11-20T16:17:04.957Z",
+   "lockedAt": "2026-11-20T16:32:02.019Z",
    "provisional": true
   },
   "401866464": {
@@ -249,7 +249,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 45.5,
-   "lockedAt": "2026-11-20T16:17:04.957Z",
+   "lockedAt": "2026-11-20T16:32:02.019Z",
    "provisional": true
   },
   "401866469": {
@@ -1805,7 +1805,7 @@
    }
   ]
  },
- "updated": "2026-11-20T16:17:04.957Z",
+ "updated": "2026-11-20T16:32:02.019Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5349,12 +5349,12 @@
    "game": "ARST @ LT",
    "kick": "2026-11-22T00:00Z",
    "line": 3.5,
-   "mainLine": 14,
+   "mainLine": 14.5,
    "price": 300,
    "book": "FanDuel",
-   "win": 0.2638,
+   "win": 0.2656,
    "mwin": 0.2619,
-   "ev": 0.0551,
+   "ev": 0.0624,
    "mev": 0.0476,
    "src": "mkt",
    "result": null,
@@ -5444,28 +5444,6 @@
    "mwin": 0.2909,
    "ev": 0.0327,
    "mev": 0.0327,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401860918|sp|home",
-   "gid": "401860918",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "home",
-   "label": "FRES -30",
-   "game": "CSU @ FRES",
-   "kick": "2026-11-22T00:30Z",
-   "line": -30,
-   "mainLine": -19.5,
-   "price": 275,
-   "book": "BetRivers",
-   "win": 0.2694,
-   "mwin": 0.2705,
-   "ev": 0.0312,
-   "mev": 0.0354,
    "src": "mkt",
    "result": null,
    "final": null,
