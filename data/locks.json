@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 48.5,
-   "lockedAt": "2026-11-20T14:31:27.327Z",
+   "lockedAt": "2026-11-20T15:31:42.384Z",
    "provisional": true
   },
   "401858303": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -12.5,
    "total": 41.5,
-   "lockedAt": "2026-11-20T14:31:27.327Z",
+   "lockedAt": "2026-11-20T15:31:42.384Z",
    "provisional": true
   },
   "401858529": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 17.5,
    "total": 44.5,
-   "lockedAt": "2026-11-20T14:31:27.327Z",
+   "lockedAt": "2026-11-20T15:31:42.384Z",
    "provisional": true
   },
   "401862830": {
@@ -98,16 +98,16 @@
    "away": "UNM",
    "date": "2026-11-21T02:00Z",
    "pick": "UNM",
-   "pick_line": "UNM -8.5",
+   "pick_line": "UNM -9.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": -9.5,
+   "our_margin": -10.15,
    "our_total": 37.5,
    "confidence": null,
    "total_play": false,
-   "spread": 8.5,
+   "spread": 9.5,
    "total": 37.5,
-   "lockedAt": "2026-11-20T14:31:27.327Z",
+   "lockedAt": "2026-11-20T15:31:42.384Z",
    "provisional": true
   },
   "401864545": {
@@ -128,7 +128,7 @@
    "total_play": false,
    "spread": -21.5,
    "total": 47.5,
-   "lockedAt": "2026-11-20T14:31:27.327Z",
+   "lockedAt": "2026-11-20T15:31:42.384Z",
    "provisional": true
   },
   "401866464": {
@@ -249,7 +249,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 45.5,
-   "lockedAt": "2026-11-20T14:31:27.327Z",
+   "lockedAt": "2026-11-20T15:31:42.384Z",
    "provisional": true
   },
   "401866469": {
@@ -1805,7 +1805,7 @@
    }
   ]
  },
- "updated": "2026-11-20T14:31:27.327Z",
+ "updated": "2026-11-20T15:31:42.384Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4557,12 +4557,12 @@
    "game": "UNM @ WYO",
    "kick": "2026-11-21T02:00Z",
    "line": 1.5,
-   "mainLine": 8.5,
+   "mainLine": 9.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.274,
+   "win": 0.2719,
    "mwin": 0.2749,
-   "ev": 0.0548,
+   "ev": 0.0466,
    "mev": 0.0585,
    "src": "mkt",
    "result": null,
@@ -4586,6 +4586,28 @@
    "mwin": 0.2687,
    "ev": 0.0343,
    "mev": 0.0343,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401864542|sp|away",
+   "gid": "401864542",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "away",
+   "label": "UNM -18.5",
+   "game": "UNM @ WYO",
+   "kick": "2026-11-21T02:00Z",
+   "line": -18.5,
+   "mainLine": -9.5,
+   "price": 283,
+   "book": "DraftKings",
+   "win": 0.2695,
+   "mwin": 0.2659,
+   "ev": 0.0322,
+   "mev": 0.0183,
    "src": "mkt",
    "result": null,
    "final": null,
