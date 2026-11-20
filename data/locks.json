@@ -19,8 +19,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 49.5,
-   "lockedAt": "2026-11-20T21:17:19.353Z",
-   "provisional": true
+   "lockedAt": "2026-11-20T21:31:56.568Z"
   },
   "401858303": {
    "id": "401858303",
@@ -40,7 +39,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 41.5,
-   "lockedAt": "2026-11-20T21:17:19.353Z",
+   "lockedAt": "2026-11-20T21:31:56.568Z",
    "provisional": true
   },
   "401858529": {
@@ -61,7 +60,7 @@
    "total_play": false,
    "spread": 17.5,
    "total": 43.5,
-   "lockedAt": "2026-11-20T21:17:19.353Z",
+   "lockedAt": "2026-11-20T21:31:56.568Z",
    "provisional": true
   },
   "401862830": {
@@ -107,7 +106,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 37.5,
-   "lockedAt": "2026-11-20T21:17:19.353Z",
+   "lockedAt": "2026-11-20T21:31:56.568Z",
    "provisional": true
   },
   "401864545": {
@@ -128,7 +127,7 @@
    "total_play": false,
    "spread": -22.5,
    "total": 48.5,
-   "lockedAt": "2026-11-20T21:17:19.353Z",
+   "lockedAt": "2026-11-20T21:31:56.568Z",
    "provisional": true
   },
   "401866464": {
@@ -249,7 +248,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 46.5,
-   "lockedAt": "2026-11-20T21:17:19.353Z",
+   "lockedAt": "2026-11-20T21:31:56.568Z",
    "provisional": true
   },
   "401866469": {
@@ -1805,7 +1804,7 @@
    }
   ]
  },
- "updated": "2026-11-20T21:17:19.353Z",
+ "updated": "2026-11-20T21:31:56.568Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -8276,6 +8275,22 @@
    "result": "MISS",
    "units": -1,
    "final": "IND 3, HOU 26"
+  },
+  {
+   "id": "401856869",
+   "league": "cfb",
+   "gid": "401856869",
+   "side": "home",
+   "team": "UCF",
+   "game": "ISU @ UCF",
+   "kick": "2026-11-20T23:00Z",
+   "line": 1.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 0.7,
+   "market": 1.5,
+   "label": "UCF +1.5",
+   "lockedAt": "2026-11-20T21:31:56.568Z"
   }
  ]
 }
