@@ -169,7 +169,12 @@
    "total_play": false,
    "spread": -12.5,
    "total": 44.5,
-   "lockedAt": "2026-11-19T23:46:16.442Z"
+   "lockedAt": "2026-11-19T23:46:16.442Z",
+   "close_spread": -12.5,
+   "close_total": 44.5,
+   "closeAt": "2026-11-20T00:21:10.966Z",
+   "clv_side": 0,
+   "clv_total": 0
   }
  },
  "potd": {
@@ -904,7 +909,11 @@
     "locked": true,
     "kick": "2026-11-20T01:15Z",
     "big": false,
-    "savedAt": 1795131976457
+    "savedAt": 1795131976457,
+    "close_line": 8.5,
+    "closeAt": "2026-11-20T00:21:10.966Z",
+    "close_src": "board",
+    "clv": 0
    }
   ],
   "cfb": [
@@ -1669,7 +1678,7 @@
    }
   ]
  },
- "updated": "2026-11-20T00:05:00.597Z",
+ "updated": "2026-11-20T00:21:10.966Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4949,12 +4958,12 @@
    "game": "LSU @ TENN",
    "kick": "2026-11-21T20:30Z",
    "line": -9.5,
-   "mainLine": -1.5,
+   "mainLine": 1.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2744,
+   "win": 0.2763,
    "mwin": 0.2744,
-   "ev": 0.0566,
+   "ev": 0.0638,
    "mev": 0.0565,
    "src": "mkt",
    "result": null,
