@@ -1678,7 +1678,7 @@
    }
   ]
  },
- "updated": "2026-11-20T04:16:41.754Z",
+ "updated": "2026-11-20T04:31:44.458Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5574,12 +5574,12 @@
    "game": "TEN @ DAL",
    "kick": "2026-11-22T18:00Z",
    "line": 45.5,
-   "mainLine": 55.5,
+   "mainLine": 54.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2699,
+   "win": 0.2684,
    "mwin": 0.2632,
-   "ev": 0.0391,
+   "ev": 0.0335,
    "mev": 0.0132,
    "src": "mkt",
    "result": null,
