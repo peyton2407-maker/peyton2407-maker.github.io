@@ -39,7 +39,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 41.5,
-   "lockedAt": "2026-11-20T21:31:56.568Z",
+   "lockedAt": "2026-11-20T21:46:51.042Z",
    "provisional": true
   },
   "401858529": {
@@ -52,15 +52,15 @@
    "date": "2026-11-21T01:00Z",
    "pick": "MSU",
    "pick_line": "MSU +17.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "UNDER 42.5",
    "side_play": false,
    "our_margin": -14.2,
-   "our_total": 43.5,
+   "our_total": 42.9,
    "confidence": null,
    "total_play": false,
    "spread": 17.5,
-   "total": 43.5,
-   "lockedAt": "2026-11-20T21:31:56.568Z",
+   "total": 42.5,
+   "lockedAt": "2026-11-20T21:46:51.042Z",
    "provisional": true
   },
   "401862830": {
@@ -106,7 +106,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 37.5,
-   "lockedAt": "2026-11-20T21:31:56.568Z",
+   "lockedAt": "2026-11-20T21:46:51.042Z",
    "provisional": true
   },
   "401864545": {
@@ -127,7 +127,7 @@
    "total_play": false,
    "spread": -22.5,
    "total": 48.5,
-   "lockedAt": "2026-11-20T21:31:56.568Z",
+   "lockedAt": "2026-11-20T21:46:51.042Z",
    "provisional": true
   },
   "401866464": {
@@ -248,7 +248,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 46.5,
-   "lockedAt": "2026-11-20T21:31:56.568Z",
+   "lockedAt": "2026-11-20T21:46:51.042Z",
    "provisional": true
   },
   "401866469": {
@@ -1804,7 +1804,7 @@
    }
   ]
  },
- "updated": "2026-11-20T21:31:56.568Z",
+ "updated": "2026-11-20T21:46:51.042Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4578,12 +4578,12 @@
    "game": "ORE @ MSU",
    "kick": "2026-11-21T01:00Z",
    "line": 50.5,
-   "mainLine": 43.5,
+   "mainLine": 42.5,
    "price": 230,
    "book": "FanDuel",
-   "win": 0.3147,
+   "win": 0.317,
    "mwin": 0.3147,
-   "ev": 0.0384,
+   "ev": 0.0461,
    "mev": 0.0384,
    "src": "mkt",
    "result": null,
@@ -4629,6 +4629,28 @@
    "mwin": 0.3518,
    "ev": 0.0306,
    "mev": 0.0378,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401858529|sp|home",
+   "gid": "401858529",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "home",
+   "label": "MSU +7.5",
+   "game": "ORE @ MSU",
+   "kick": "2026-11-21T01:00Z",
+   "line": 7.5,
+   "mainLine": 17.5,
+   "price": 255,
+   "book": "FanDuel",
+   "win": 0.2902,
+   "mwin": 0.2841,
+   "ev": 0.0301,
+   "mev": 0.0087,
    "src": "mkt",
    "result": null,
    "final": null,
