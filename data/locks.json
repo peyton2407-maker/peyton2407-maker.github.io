@@ -14,12 +14,12 @@
    "total_pick": "UNDER 47.5",
    "side_play": false,
    "our_margin": 1.3,
-   "our_total": 45.9,
-   "confidence": 51,
-   "total_play": true,
+   "our_total": 46.4,
+   "confidence": null,
+   "total_play": false,
    "spread": -1.5,
    "total": 47.5,
-   "lockedAt": "2026-11-20T11:31:40.495Z",
+   "lockedAt": "2026-11-20T12:01:22.551Z",
    "provisional": true
   },
   "401862830": {
@@ -1700,7 +1700,7 @@
    }
   ]
  },
- "updated": "2026-11-20T11:31:40.495Z",
+ "updated": "2026-11-20T12:01:22.551Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5555,9 +5555,9 @@
    "mainLine": 48.5,
    "price": 300,
    "book": "FanDuel",
-   "win": 0.2646,
+   "win": 0.2579,
    "mwin": 0.255,
-   "ev": 0.0583,
+   "ev": 0.0317,
    "mev": 0.0201,
    "src": "mkt",
    "result": null,
