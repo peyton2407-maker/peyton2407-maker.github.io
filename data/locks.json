@@ -114,7 +114,7 @@
    "total_play": false,
    "spread": 10,
    "total": 37.5,
-   "lockedAt": "2026-11-20T23:32:06.174Z",
+   "lockedAt": "2026-11-20T23:50:48.408Z",
    "provisional": true
   },
   "401864545": {
@@ -1815,7 +1815,7 @@
    }
   ]
  },
- "updated": "2026-11-20T23:32:06.174Z",
+ "updated": "2026-11-20T23:50:48.408Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5362,9 +5362,9 @@
    "mainLine": 51.5,
    "price": 230,
    "book": "FanDuel",
-   "win": 0.3244,
+   "win": 0.3178,
    "mwin": 0.3125,
-   "ev": 0.0707,
+   "ev": 0.0487,
    "mev": 0.0313,
    "src": "mkt",
    "result": null,
@@ -5406,9 +5406,9 @@
    "mainLine": 48.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2799,
+   "win": 0.2736,
    "mwin": 0.2687,
-   "ev": 0.0775,
+   "ev": 0.0534,
    "mev": 0.0343,
    "src": "mkt",
    "result": null,
@@ -5780,9 +5780,9 @@
    "mainLine": 46.5,
    "price": 230,
    "book": "FanDuel",
-   "win": 0.3138,
+   "win": 0.3215,
    "mwin": 0.3125,
-   "ev": 0.0354,
+   "ev": 0.0611,
    "mev": 0.0313,
    "src": "mkt",
    "result": null,
