@@ -1679,7 +1679,7 @@
    }
   ]
  },
- "updated": "2026-11-20T09:16:54.443Z",
+ "updated": "2026-11-20T10:16:46.663Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2323,9 +2323,9 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.7432,
-   "bookWin": 0.7432,
-   "total": 55.5,
+   "win": 0.7433,
+   "bookWin": 0.7433,
+   "total": 54.5,
    "result": null,
    "final": null
   }
@@ -5534,9 +5534,9 @@
    "mainLine": -16.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2791,
+   "win": 0.2852,
    "mwin": 0.2728,
-   "ev": 0.0606,
+   "ev": 0.0838,
    "mev": 0.0366,
    "src": "mkt",
    "result": null,
