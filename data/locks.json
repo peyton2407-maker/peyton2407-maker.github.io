@@ -44,7 +44,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 41.5,
-   "lockedAt": "2026-11-20T22:17:06.423Z",
+   "lockedAt": "2026-11-20T22:46:51.942Z",
    "provisional": true
   },
   "401858529": {
@@ -65,7 +65,7 @@
    "total_play": false,
    "spread": 17.5,
    "total": 42.5,
-   "lockedAt": "2026-11-20T22:17:06.423Z",
+   "lockedAt": "2026-11-20T22:46:51.942Z",
    "provisional": true
   },
   "401862830": {
@@ -111,7 +111,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 37.5,
-   "lockedAt": "2026-11-20T22:17:06.423Z",
+   "lockedAt": "2026-11-20T22:46:51.942Z",
    "provisional": true
   },
   "401864545": {
@@ -132,7 +132,7 @@
    "total_play": false,
    "spread": -22.5,
    "total": 48.5,
-   "lockedAt": "2026-11-20T22:17:06.423Z",
+   "lockedAt": "2026-11-20T22:46:51.942Z",
    "provisional": true
   },
   "401866464": {
@@ -253,7 +253,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 45.5,
-   "lockedAt": "2026-11-20T22:17:06.423Z",
+   "lockedAt": "2026-11-20T22:46:51.942Z",
    "provisional": true
   },
   "401866469": {
@@ -1809,7 +1809,7 @@
    }
   ]
  },
- "updated": "2026-11-20T22:17:06.423Z",
+ "updated": "2026-11-20T22:46:51.942Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5199,12 +5199,12 @@
    "game": "TA&M @ OU",
    "kick": "2026-11-21T20:45Z",
    "line": -1.5,
-   "mainLine": 7.5,
+   "mainLine": 7,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2851,
+   "win": 0.2809,
    "mwin": 0.2757,
-   "ev": 0.0834,
+   "ev": 0.0674,
    "mev": 0.0478,
    "src": "mkt",
    "result": null,
