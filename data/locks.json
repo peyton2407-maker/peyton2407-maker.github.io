@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 49.5,
-   "lockedAt": "2026-11-20T19:31:58.420Z",
+   "lockedAt": "2026-11-20T19:47:11.428Z",
    "provisional": true
   },
   "401858303": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -12.5,
    "total": 41.5,
-   "lockedAt": "2026-11-20T19:31:58.420Z",
+   "lockedAt": "2026-11-20T19:47:11.428Z",
    "provisional": true
   },
   "401858529": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 17.5,
    "total": 43.5,
-   "lockedAt": "2026-11-20T19:31:58.420Z",
+   "lockedAt": "2026-11-20T19:47:11.428Z",
    "provisional": true
   },
   "401862830": {
@@ -107,7 +107,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 37.5,
-   "lockedAt": "2026-11-20T19:31:58.420Z",
+   "lockedAt": "2026-11-20T19:47:11.428Z",
    "provisional": true
   },
   "401864545": {
@@ -128,7 +128,7 @@
    "total_play": false,
    "spread": -21.5,
    "total": 47.5,
-   "lockedAt": "2026-11-20T19:31:58.420Z",
+   "lockedAt": "2026-11-20T19:47:11.428Z",
    "provisional": true
   },
   "401866464": {
@@ -249,7 +249,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 45.5,
-   "lockedAt": "2026-11-20T19:31:58.420Z",
+   "lockedAt": "2026-11-20T19:47:11.428Z",
    "provisional": true
   },
   "401866469": {
@@ -1805,7 +1805,7 @@
    }
   ]
  },
- "updated": "2026-11-20T19:31:58.420Z",
+ "updated": "2026-11-20T19:47:11.428Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2452,6 +2452,22 @@
    "win": 0.7433,
    "bookWin": 0.7433,
    "total": 54.5,
+   "result": null,
+   "final": null
+  },
+  {
+   "id": "401873068|sp|away",
+   "gid": "401873068",
+   "team": "BAL",
+   "side": "away",
+   "game": "BAL @ CAR",
+   "kick": "2026-11-22T18:00Z",
+   "from": 2.5,
+   "to": 8.5,
+   "book": null,
+   "win": 0.7254,
+   "bookWin": 0.7527,
+   "total": 43.5,
    "result": null,
    "final": null
   }
@@ -4834,28 +4850,6 @@
    "units": null
   },
   {
-   "id": "401858309|sp|home",
-   "gid": "401858309",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "home",
-   "label": "BC -6.5",
-   "game": "SYR @ BC",
-   "kick": "2026-11-21T17:00Z",
-   "line": -6.5,
-   "mainLine": 2.5,
-   "price": 265,
-   "book": "DraftKings",
-   "win": 0.2838,
-   "mwin": 0.2838,
-   "ev": 0.0359,
-   "mev": 0.0359,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401858309|sp|away",
    "gid": "401858309",
    "league": "cfb",
@@ -4865,12 +4859,12 @@
    "game": "SYR @ BC",
    "kick": "2026-11-21T17:00Z",
    "line": -10.5,
-   "mainLine": -2.5,
+   "mainLine": -3,
    "price": 294,
    "book": "DraftKings",
-   "win": 0.2626,
+   "win": 0.2664,
    "mwin": 0.2626,
-   "ev": 0.0346,
+   "ev": 0.0496,
    "mev": 0.0346,
    "src": "mkt",
    "result": null,
@@ -4894,28 +4888,6 @@
    "mwin": 0.2632,
    "ev": 0.0315,
    "mev": 0.0132,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401858309|tot|over",
-   "gid": "401858309",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "over",
-   "label": "Over 60.5",
-   "game": "SYR @ BC",
-   "kick": "2026-11-21T17:00Z",
-   "line": 60.5,
-   "mainLine": 51.5,
-   "price": 230,
-   "book": "FanDuel",
-   "win": 0.3125,
-   "mwin": 0.3125,
-   "ev": 0.0313,
-   "mev": 0.0313,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -5657,12 +5629,12 @@
    "game": "BAL @ CAR",
    "kick": "2026-11-22T18:00Z",
    "line": -9,
-   "mainLine": -3,
+   "mainLine": -2.5,
    "price": 275,
    "book": "BetRivers",
-   "win": 0.2843,
-   "mwin": 0.2659,
-   "ev": 0.0764,
+   "win": 0.293,
+   "mwin": 0.2661,
+   "ev": 0.1086,
    "mev": 0.0074,
    "src": "mkt",
    "result": null,
