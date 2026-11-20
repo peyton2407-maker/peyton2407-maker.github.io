@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 48.5,
-   "lockedAt": "2026-11-20T12:32:24.763Z",
+   "lockedAt": "2026-11-20T13:01:25.743Z",
    "provisional": true
   },
   "401858303": {
@@ -40,7 +40,28 @@
    "total_play": false,
    "spread": -13.5,
    "total": 41.5,
-   "lockedAt": "2026-11-20T12:32:24.763Z",
+   "lockedAt": "2026-11-20T13:01:25.743Z",
+   "provisional": true
+  },
+  "401858529": {
+   "id": "401858529",
+   "league": "cfb",
+   "week": 12,
+   "short": "ORE @ MSU",
+   "home": "MSU",
+   "away": "ORE",
+   "date": "2026-11-21T01:00Z",
+   "pick": "MSU",
+   "pick_line": "MSU +17.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -14.2,
+   "our_total": 44.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 17.5,
+   "total": 44.5,
+   "lockedAt": "2026-11-20T13:01:25.743Z",
    "provisional": true
   },
   "401862830": {
@@ -67,6 +88,27 @@
    "closeAt": "2026-11-19T23:46:16.442Z",
    "clv_side": 0,
    "clv_total": null
+  },
+  "401864545": {
+   "id": "401864545",
+   "league": "cfb",
+   "week": 12,
+   "short": "UTEP @ AFA",
+   "home": "AFA",
+   "away": "UTEP",
+   "date": "2026-11-21T01:00Z",
+   "pick": "UTEP",
+   "pick_line": "UTEP +21.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 21.3,
+   "our_total": 47.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -21.5,
+   "total": 47.5,
+   "lockedAt": "2026-11-20T13:01:25.743Z",
+   "provisional": true
   },
   "401866464": {
    "id": "401866464",
@@ -186,7 +228,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 47.5,
-   "lockedAt": "2026-11-20T12:32:24.763Z",
+   "lockedAt": "2026-11-20T13:01:25.743Z",
    "provisional": true
   },
   "401866469": {
@@ -1742,7 +1784,7 @@
    }
   ]
  },
- "updated": "2026-11-20T12:32:24.763Z",
+ "updated": "2026-11-20T13:01:25.743Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
