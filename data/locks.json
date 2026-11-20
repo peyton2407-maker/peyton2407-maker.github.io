@@ -1678,7 +1678,7 @@
    }
   ]
  },
- "updated": "2026-11-20T01:20:54.770Z",
+ "updated": "2026-11-20T01:46:46.548Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4741,9 +4741,9 @@
    "mainLine": 52.5,
    "price": 277,
    "book": "DraftKings",
-   "win": 0.2894,
+   "win": 0.293,
    "mwin": 0.2778,
-   "ev": 0.0909,
+   "ev": 0.1045,
    "mev": 0.0472,
    "src": "mkt",
    "result": null,
@@ -5521,6 +5521,28 @@
    "units": null
   },
   {
+   "id": "401873076|tot|over",
+   "gid": "401873076",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "over",
+   "label": "Over 46.5",
+   "game": "PIT @ PHI",
+   "kick": "2026-11-22T18:00Z",
+   "line": 46.5,
+   "mainLine": 38.5,
+   "price": 276,
+   "book": "DraftKings",
+   "win": 0.279,
+   "mwin": 0.2778,
+   "ev": 0.049,
+   "mev": 0.0444,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873074|tot|under",
    "gid": "401873074",
    "league": "nfl",
@@ -5577,9 +5599,9 @@
    "mainLine": 46.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2851,
+   "win": 0.2794,
    "mwin": 0.2687,
-   "ev": 0.0836,
+   "ev": 0.0619,
    "mev": 0.0209,
    "src": "mkt",
    "result": null,
