@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 49.5,
-   "lockedAt": "2026-11-20T18:46:43.590Z",
+   "lockedAt": "2026-11-20T19:01:39.270Z",
    "provisional": true
   },
   "401858303": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -12.5,
    "total": 41.5,
-   "lockedAt": "2026-11-20T18:46:43.590Z",
+   "lockedAt": "2026-11-20T19:01:39.270Z",
    "provisional": true
   },
   "401858529": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 17.5,
    "total": 43.5,
-   "lockedAt": "2026-11-20T18:46:43.590Z",
+   "lockedAt": "2026-11-20T19:01:39.270Z",
    "provisional": true
   },
   "401862830": {
@@ -107,7 +107,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 37.5,
-   "lockedAt": "2026-11-20T18:46:43.590Z",
+   "lockedAt": "2026-11-20T19:01:39.270Z",
    "provisional": true
   },
   "401864545": {
@@ -128,7 +128,7 @@
    "total_play": false,
    "spread": -21.5,
    "total": 47.5,
-   "lockedAt": "2026-11-20T18:46:43.590Z",
+   "lockedAt": "2026-11-20T19:01:39.270Z",
    "provisional": true
   },
   "401866464": {
@@ -249,7 +249,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 45.5,
-   "lockedAt": "2026-11-20T18:46:43.590Z",
+   "lockedAt": "2026-11-20T19:01:39.270Z",
    "provisional": true
   },
   "401866469": {
@@ -1805,7 +1805,7 @@
    }
   ]
  },
- "updated": "2026-11-20T18:46:43.590Z",
+ "updated": "2026-11-20T19:01:39.270Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5503,12 +5503,12 @@
    "game": "CSU @ FRES",
    "kick": "2026-11-22T00:30Z",
    "line": 76.5,
-   "mainLine": 65.5,
+   "mainLine": 66.5,
    "price": 255,
    "book": "DraftKings",
-   "win": 0.2925,
+   "win": 0.2909,
    "mwin": 0.2909,
-   "ev": 0.0383,
+   "ev": 0.0327,
    "mev": 0.0327,
    "src": "mkt",
    "result": null,
