@@ -1678,7 +1678,7 @@
    }
   ]
  },
- "updated": "2026-11-20T04:31:44.458Z",
+ "updated": "2026-11-20T05:01:24.652Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4287,28 +4287,6 @@
    "result": "MISS",
    "final": "RICE 31, TEM 27",
    "units": -1
-  },
-  {
-   "id": "401856869|tot|under",
-   "gid": "401856869",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 37.5",
-   "game": "ISU @ UCF",
-   "kick": "2026-11-20T23:00Z",
-   "line": 37.5,
-   "mainLine": 47.5,
-   "price": 290,
-   "book": "FanDuel",
-   "win": 0.2688,
-   "mwin": 0.2576,
-   "ev": 0.0485,
-   "mev": 0.0047,
-   "src": "proj",
-   "result": null,
-   "final": null,
-   "units": null
   },
   {
    "id": "401858303|sp|away",
