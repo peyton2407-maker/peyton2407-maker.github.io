@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 49.5,
-   "lockedAt": "2026-11-20T19:16:38.341Z",
+   "lockedAt": "2026-11-20T19:31:58.420Z",
    "provisional": true
   },
   "401858303": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -12.5,
    "total": 41.5,
-   "lockedAt": "2026-11-20T19:16:38.341Z",
+   "lockedAt": "2026-11-20T19:31:58.420Z",
    "provisional": true
   },
   "401858529": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 17.5,
    "total": 43.5,
-   "lockedAt": "2026-11-20T19:16:38.341Z",
+   "lockedAt": "2026-11-20T19:31:58.420Z",
    "provisional": true
   },
   "401862830": {
@@ -107,7 +107,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 37.5,
-   "lockedAt": "2026-11-20T19:16:38.341Z",
+   "lockedAt": "2026-11-20T19:31:58.420Z",
    "provisional": true
   },
   "401864545": {
@@ -128,7 +128,7 @@
    "total_play": false,
    "spread": -21.5,
    "total": 47.5,
-   "lockedAt": "2026-11-20T19:16:38.341Z",
+   "lockedAt": "2026-11-20T19:31:58.420Z",
    "provisional": true
   },
   "401866464": {
@@ -249,7 +249,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 45.5,
-   "lockedAt": "2026-11-20T19:16:38.341Z",
+   "lockedAt": "2026-11-20T19:31:58.420Z",
    "provisional": true
   },
   "401866469": {
@@ -1805,7 +1805,7 @@
    }
   ]
  },
- "updated": "2026-11-20T19:16:38.341Z",
+ "updated": "2026-11-20T19:31:58.420Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5912,22 +5912,22 @@
    "units": null
   },
   {
-   "id": "401873077|sp|away",
+   "id": "401873077|sp|home",
    "gid": "401873077",
    "league": "nfl",
    "kind": "sp",
-   "side": "away",
-   "label": "MIN -4",
+   "side": "home",
+   "label": "SF -8.5",
    "game": "MIN VS SF",
    "kick": "2026-11-23T01:20Z",
-   "line": -4,
-   "mainLine": 3.5,
-   "price": 300,
-   "book": "ESPN BET",
-   "win": 0.2568,
-   "mwin": 0.2568,
-   "ev": 0.0488,
-   "mev": 0.0488,
+   "line": -8.5,
+   "mainLine": -3,
+   "price": 220,
+   "book": "FanDuel",
+   "win": 0.3288,
+   "mwin": 0.3147,
+   "ev": 0.0521,
+   "mev": 0.0069,
    "src": "mkt",
    "result": null,
    "final": null,
