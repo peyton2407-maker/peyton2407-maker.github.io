@@ -888,9 +888,9 @@
     "hitPct": 58,
     "why": "We project Daniel Jones for 8.6 rush yds against a line of 8.5. Our checked chance on the under is 58%; the books' own chance is 53%. At -114 (DraftKings) that is 9.3% better than the price. HOU is middle of the pack here: 9th of 32 in rush yds allowed to QBs (12 a game; league average 16). The under hit in 4 of his last 8 games at this line.",
     "label": "Thursday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "Daniel Jones: 3 rush yds",
+    "resultWhy": "It hit. Daniel Jones under 8.5 rush yds cashed.",
     "units": 2,
     "prop": {
      "pid": "3917792",
@@ -913,7 +913,8 @@
     "close_line": 8.5,
     "closeAt": "2026-11-20T00:21:10.966Z",
     "close_src": "board",
-    "clv": 0
+    "clv": 0,
+    "by": "5.5 under 8.5"
    }
   ],
   "cfb": [
@@ -1678,7 +1679,7 @@
    }
   ]
  },
- "updated": "2026-11-20T05:01:24.652Z",
+ "updated": "2026-11-20T05:17:16.936Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4289,6 +4290,28 @@
    "units": -1
   },
   {
+   "id": "401856869|sp|away",
+   "gid": "401856869",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "away",
+   "label": "ISU -7.5",
+   "game": "ISU @ UCF",
+   "kick": "2026-11-20T23:00Z",
+   "line": -7.5,
+   "mainLine": 1.5,
+   "price": 300,
+   "book": "ESPN BET",
+   "win": 0.2618,
+   "mwin": 0.2618,
+   "ev": 0.047,
+   "mev": 0.047,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401858303|sp|away",
    "gid": "401858303",
    "league": "cfb",
@@ -4936,12 +4959,12 @@
    "game": "LSU @ TENN",
    "kick": "2026-11-21T20:30Z",
    "line": -9.5,
-   "mainLine": -1.5,
+   "mainLine": 1.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2744,
+   "win": 0.2763,
    "mwin": 0.2744,
-   "ev": 0.0565,
+   "ev": 0.0638,
    "mev": 0.0565,
    "src": "mkt",
    "result": null,
