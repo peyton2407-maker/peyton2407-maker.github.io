@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 48.5,
-   "lockedAt": "2026-11-20T14:16:22.211Z",
+   "lockedAt": "2026-11-20T14:31:27.327Z",
    "provisional": true
   },
   "401858303": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -12.5,
    "total": 41.5,
-   "lockedAt": "2026-11-20T14:16:22.211Z",
+   "lockedAt": "2026-11-20T14:31:27.327Z",
    "provisional": true
   },
   "401858529": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 17.5,
    "total": 44.5,
-   "lockedAt": "2026-11-20T14:16:22.211Z",
+   "lockedAt": "2026-11-20T14:31:27.327Z",
    "provisional": true
   },
   "401862830": {
@@ -107,7 +107,7 @@
    "total_play": false,
    "spread": 8.5,
    "total": 37.5,
-   "lockedAt": "2026-11-20T14:16:22.211Z",
+   "lockedAt": "2026-11-20T14:31:27.327Z",
    "provisional": true
   },
   "401864545": {
@@ -128,7 +128,7 @@
    "total_play": false,
    "spread": -21.5,
    "total": 47.5,
-   "lockedAt": "2026-11-20T14:16:22.211Z",
+   "lockedAt": "2026-11-20T14:31:27.327Z",
    "provisional": true
   },
   "401866464": {
@@ -241,15 +241,15 @@
    "date": "2026-11-21T00:30Z",
    "pick": "BGSU",
    "pick_line": "BGSU +16.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "UNDER 45.5",
    "side_play": false,
    "our_margin": 16.1,
-   "our_total": 47.5,
+   "our_total": 46.2,
    "confidence": null,
    "total_play": false,
    "spread": -16.5,
-   "total": 47.5,
-   "lockedAt": "2026-11-20T14:16:22.211Z",
+   "total": 45.5,
+   "lockedAt": "2026-11-20T14:31:27.327Z",
    "provisional": true
   },
   "401866469": {
@@ -1805,7 +1805,7 @@
    }
   ]
  },
- "updated": "2026-11-20T14:16:22.211Z",
+ "updated": "2026-11-20T14:31:27.327Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4476,28 +4476,6 @@
    "mwin": 0.2722,
    "ev": 0.0344,
    "mev": 0.0344,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401866468|tot|under",
-   "gid": "401866468",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 37.5",
-   "game": "BGSU @ TOL",
-   "kick": "2026-11-21T00:30Z",
-   "line": 37.5,
-   "mainLine": 47.5,
-   "price": 285,
-   "book": "FanDuel",
-   "win": 0.2687,
-   "mwin": 0.2687,
-   "ev": 0.0343,
-   "mev": 0.0343,
    "src": "mkt",
    "result": null,
    "final": null,
