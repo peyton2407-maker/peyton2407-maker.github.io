@@ -1678,7 +1678,7 @@
    }
   ]
  },
- "updated": "2026-11-20T02:08:20.010Z",
+ "updated": "2026-11-20T02:31:39.593Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4289,28 +4289,6 @@
    "units": null
   },
   {
-   "id": "401856869|tot|under",
-   "gid": "401856869",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 37.5",
-   "game": "ISU @ UCF",
-   "kick": "2026-11-20T23:00Z",
-   "line": 37.5,
-   "mainLine": 48.5,
-   "price": 290,
-   "book": "FanDuel",
-   "win": 0.2684,
-   "mwin": 0.2576,
-   "ev": 0.0469,
-   "mev": 0.0047,
-   "src": "proj",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401858303|sp|away",
    "gid": "401858303",
    "league": "cfb",
@@ -4763,9 +4741,9 @@
    "mainLine": 52.5,
    "price": 277,
    "book": "DraftKings",
-   "win": 0.293,
+   "win": 0.2829,
    "mwin": 0.2778,
-   "ev": 0.1045,
+   "ev": 0.0665,
    "mev": 0.0472,
    "src": "mkt",
    "result": null,
