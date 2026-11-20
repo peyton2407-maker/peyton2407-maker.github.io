@@ -44,7 +44,12 @@
    "total_play": false,
    "spread": -11.5,
    "total": 41.5,
-   "lockedAt": "2026-11-20T23:02:08.827Z"
+   "lockedAt": "2026-11-20T23:02:08.827Z",
+   "close_spread": -11.5,
+   "close_total": 41.5,
+   "closeAt": "2026-11-20T23:32:06.174Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401858529": {
    "id": "401858529",
@@ -64,8 +69,7 @@
    "total_play": false,
    "spread": 17.5,
    "total": 42.5,
-   "lockedAt": "2026-11-20T23:16:54.385Z",
-   "provisional": true
+   "lockedAt": "2026-11-20T23:32:06.174Z"
   },
   "401862830": {
    "id": "401862830",
@@ -110,7 +114,7 @@
    "total_play": false,
    "spread": 10,
    "total": 37.5,
-   "lockedAt": "2026-11-20T23:16:54.385Z",
+   "lockedAt": "2026-11-20T23:32:06.174Z",
    "provisional": true
   },
   "401864545": {
@@ -131,8 +135,7 @@
    "total_play": false,
    "spread": -22.5,
    "total": 48.5,
-   "lockedAt": "2026-11-20T23:16:54.385Z",
-   "provisional": true
+   "lockedAt": "2026-11-20T23:32:06.174Z"
   },
   "401866464": {
    "id": "401866464",
@@ -252,7 +255,12 @@
    "total_play": false,
    "spread": -16.5,
    "total": 45.5,
-   "lockedAt": "2026-11-20T23:02:08.827Z"
+   "lockedAt": "2026-11-20T23:02:08.827Z",
+   "close_spread": -16.5,
+   "close_total": 45.5,
+   "closeAt": "2026-11-20T23:32:06.174Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401866469": {
    "id": "401866469",
@@ -1807,7 +1815,7 @@
    }
   ]
  },
- "updated": "2026-11-20T23:16:54.385Z",
+ "updated": "2026-11-20T23:32:06.174Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4830,28 +4838,6 @@
    "mwin": 0.2626,
    "ev": 0.0496,
    "mev": 0.0346,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401858310|tot|under",
-   "gid": "401858310",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 45.5",
-   "game": "WAKE @ GT",
-   "kick": "2026-11-21T17:00Z",
-   "line": 45.5,
-   "mainLine": 56.5,
-   "price": 285,
-   "book": "FanDuel",
-   "win": 0.2679,
-   "mwin": 0.2632,
-   "ev": 0.0315,
-   "mev": 0.0132,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -8282,6 +8268,38 @@
    "market": 16.5,
    "label": "BGSU +16.5",
    "lockedAt": "2026-11-20T23:02:08.827Z"
+  },
+  {
+   "id": "401858529",
+   "league": "cfb",
+   "gid": "401858529",
+   "side": "home",
+   "team": "MSU",
+   "game": "ORE @ MSU",
+   "kick": "2026-11-21T01:00Z",
+   "line": 17.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 14.2,
+   "market": 17.5,
+   "label": "MSU +17.5",
+   "lockedAt": "2026-11-20T23:32:06.174Z"
+  },
+  {
+   "id": "401864545",
+   "league": "cfb",
+   "gid": "401864545",
+   "side": "away",
+   "team": "UTEP",
+   "game": "UTEP @ AFA",
+   "kick": "2026-11-21T01:00Z",
+   "line": 22.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 21.9,
+   "market": 22.5,
+   "label": "UTEP +22.5",
+   "lockedAt": "2026-11-20T23:32:06.174Z"
   }
  ]
 }
