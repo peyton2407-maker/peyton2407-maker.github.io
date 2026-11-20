@@ -1,6 +1,27 @@
 {
  "v": 1,
  "plays": {
+  "401856869": {
+   "id": "401856869",
+   "league": "cfb",
+   "week": 12,
+   "short": "ISU @ UCF",
+   "home": "UCF",
+   "away": "ISU",
+   "date": "2026-11-20T23:00Z",
+   "pick": "ISU",
+   "pick_line": "ISU +1.5",
+   "total_pick": "UNDER 47.5",
+   "side_play": false,
+   "our_margin": 1.3,
+   "our_total": 45.9,
+   "confidence": 51,
+   "total_play": true,
+   "spread": -1.5,
+   "total": 47.5,
+   "lockedAt": "2026-11-20T11:01:53.073Z",
+   "provisional": true
+  },
   "401862830": {
    "id": "401862830",
    "league": "cfb",
@@ -1679,7 +1700,7 @@
    }
   ]
  },
- "updated": "2026-11-20T10:16:46.663Z",
+ "updated": "2026-11-20T11:01:53.073Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
