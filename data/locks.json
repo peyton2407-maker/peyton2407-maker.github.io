@@ -70,10 +70,10 @@
    "spread": 17.5,
    "total": 42.5,
    "lockedAt": "2026-11-20T23:32:06.174Z",
-   "close_spread": 17.5,
+   "close_spread": 18.5,
    "close_total": 42.5,
-   "closeAt": "2026-11-21T00:01:26.340Z",
-   "clv_side": 0,
+   "closeAt": "2026-11-21T00:46:42.836Z",
+   "clv_side": -1,
    "clv_total": 0
   },
   "401862830": {
@@ -1824,7 +1824,7 @@
    }
   ]
  },
- "updated": "2026-11-21T00:37:35.341Z",
+ "updated": "2026-11-21T00:46:42.836Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4625,7 +4625,7 @@
    "book": "BetRivers",
    "win": 0.3021,
    "mwin": 0.284,
-   "ev": 0.0726,
+   "ev": 0.0725,
    "mev": 0.0081,
    "src": "mkt",
    "result": null,
