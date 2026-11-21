@@ -120,10 +120,10 @@
    "spread": 10,
    "total": 37.5,
    "lockedAt": "2026-11-21T00:32:20.704Z",
-   "close_spread": 9.5,
+   "close_spread": 10.5,
    "close_total": 37.5,
-   "closeAt": "2026-11-21T01:01:43.762Z",
-   "clv_side": -0.5,
+   "closeAt": "2026-11-21T01:47:03.840Z",
+   "clv_side": 0.5,
    "clv_total": null
   },
   "401864545": {
@@ -1829,7 +1829,7 @@
    }
   ]
  },
- "updated": "2026-11-21T01:32:09.692Z",
+ "updated": "2026-11-21T01:47:03.840Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4581,12 +4581,12 @@
    "game": "UNM @ WYO",
    "kick": "2026-11-21T02:00Z",
    "line": 4.5,
-   "mainLine": 9.5,
+   "mainLine": 10.5,
    "price": 190,
    "book": "FanDuel",
-   "win": 0.3561,
+   "win": 0.3578,
    "mwin": 0.3578,
-   "ev": 0.0327,
+   "ev": 0.0375,
    "mev": 0.0375,
    "src": "mkt",
    "result": null,
@@ -4894,7 +4894,7 @@
    "book": "BetRivers",
    "win": 0.2744,
    "mwin": 0.2744,
-   "ev": 0.0976,
+   "ev": 0.0974,
    "mev": 0.0976,
    "src": "mkt",
    "result": null,
@@ -6245,9 +6245,9 @@
    "win": 0.5066,
    "ev": 0.0639,
    "rule": "likely",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "1 TD",
+   "units": 1.1
   },
   {
    "key": "401873063|3117251",
