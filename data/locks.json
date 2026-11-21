@@ -1829,7 +1829,7 @@
    }
   ]
  },
- "updated": "2026-11-21T03:17:01.822Z",
+ "updated": "2026-11-21T04:02:01.682Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4501,9 +4501,9 @@
    "ev": 0.0563,
    "mev": 0.0563,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "BGSU 0, TOL 19",
+   "units": -1
   },
   {
    "id": "401866468|sp|away",
@@ -4523,9 +4523,9 @@
    "ev": 0.0404,
    "mev": 0.0404,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "BGSU 0, TOL 19",
+   "units": -1
   },
   {
    "id": "401864545|tot|over",
@@ -4874,6 +4874,28 @@
    "mwin": 0.2576,
    "ev": 0.0305,
    "mev": 0.0305,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401858310|tot|under",
+   "gid": "401858310",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 45.5",
+   "game": "WAKE @ GT",
+   "kick": "2026-11-21T17:00Z",
+   "line": 45.5,
+   "mainLine": 55.5,
+   "price": 285,
+   "book": "FanDuel",
+   "win": 0.2736,
+   "mwin": 0.2687,
+   "ev": 0.0534,
+   "mev": 0.0343,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -8218,7 +8240,10 @@
    "ours": 16.1,
    "market": 16.5,
    "label": "BGSU +16.5",
-   "lockedAt": "2026-11-20T23:02:08.827Z"
+   "lockedAt": "2026-11-20T23:02:08.827Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "BGSU 0, TOL 19"
   },
   {
    "id": "401858529",
