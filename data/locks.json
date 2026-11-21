@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -13.5,
    "total": 45.5,
-   "lockedAt": "2026-11-21T06:16:40.478Z",
+   "lockedAt": "2026-11-21T06:31:44.701Z",
    "provisional": true
   },
   "401856749": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -50.5,
    "total": 59.5,
-   "lockedAt": "2026-11-21T06:16:40.478Z",
+   "lockedAt": "2026-11-21T06:31:44.701Z",
    "provisional": true
   },
   "401856866": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 46.5,
-   "lockedAt": "2026-11-21T06:16:40.478Z",
+   "lockedAt": "2026-11-21T06:31:44.701Z",
    "provisional": true
   },
   "401856867": {
@@ -82,7 +82,7 @@
    "total_play": false,
    "spread": -3,
    "total": 57.5,
-   "lockedAt": "2026-11-21T06:16:40.478Z",
+   "lockedAt": "2026-11-21T06:31:44.701Z",
    "provisional": true
   },
   "401856868": {
@@ -103,7 +103,7 @@
    "total_play": false,
    "spread": 7,
    "total": 71.5,
-   "lockedAt": "2026-11-21T06:16:40.478Z",
+   "lockedAt": "2026-11-21T06:31:44.701Z",
    "provisional": true
   },
   "401856869": {
@@ -174,7 +174,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 41.5,
-   "lockedAt": "2026-11-21T06:16:40.478Z",
+   "lockedAt": "2026-11-21T06:31:44.701Z",
    "provisional": true
   },
   "401858309": {
@@ -195,7 +195,7 @@
    "total_play": false,
    "spread": 3,
    "total": 52.5,
-   "lockedAt": "2026-11-21T06:16:40.478Z",
+   "lockedAt": "2026-11-21T06:31:44.701Z",
    "provisional": true
   },
   "401858310": {
@@ -216,7 +216,7 @@
    "total_play": false,
    "spread": 21,
    "total": 55.5,
-   "lockedAt": "2026-11-21T06:16:40.478Z",
+   "lockedAt": "2026-11-21T06:31:44.701Z",
    "provisional": true
   },
   "401858529": {
@@ -262,7 +262,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 41.5,
-   "lockedAt": "2026-11-21T06:16:40.478Z",
+   "lockedAt": "2026-11-21T06:31:44.701Z",
    "provisional": true
   },
   "401858533": {
@@ -283,7 +283,7 @@
    "total_play": false,
    "spread": 6,
    "total": 46.5,
-   "lockedAt": "2026-11-21T06:16:40.478Z",
+   "lockedAt": "2026-11-21T06:31:44.701Z",
    "provisional": true
   },
   "401862830": {
@@ -329,7 +329,7 @@
    "total_play": false,
    "spread": -6,
    "total": 46.5,
-   "lockedAt": "2026-11-21T06:16:40.478Z",
+   "lockedAt": "2026-11-21T06:31:44.701Z",
    "provisional": true
   },
   "401862834": {
@@ -350,7 +350,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 67.5,
-   "lockedAt": "2026-11-21T06:16:40.478Z",
+   "lockedAt": "2026-11-21T06:31:44.701Z",
    "provisional": true
   },
   "401862835": {
@@ -371,7 +371,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 55.5,
-   "lockedAt": "2026-11-21T06:16:40.478Z",
+   "lockedAt": "2026-11-21T06:31:44.701Z",
    "provisional": true
   },
   "401864542": {
@@ -1954,12 +1954,12 @@
     "ours": "MISS -50.1 · total 59.5",
     "score": "WOF 4.7 – MISS 54.8",
     "market": "MISS -50.5 · total 59.5",
-    "lockedAt": "2026-11-21T06:16:40.546Z",
+    "lockedAt": "2026-11-21T06:31:44.755Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-21T17:00Z",
     "big": true,
-    "savedAt": 1795241800546
+    "savedAt": 1795242704755
    }
   ],
   "cfbHit": [
@@ -2054,12 +2054,12 @@
     "ours": "MEM -3.5 · total 67.5",
     "score": "MEM 35.5 – NAVY 32.0",
     "market": "MEM -2.5 · total 67.5",
-    "lockedAt": "2026-11-21T06:16:40.551Z",
+    "lockedAt": "2026-11-21T06:31:44.760Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-21T17:00Z",
     "big": true,
-    "savedAt": 1795241800551
+    "savedAt": 1795242704760
    }
   ]
  },
@@ -2162,7 +2162,7 @@
    }
   ]
  },
- "updated": "2026-11-21T06:16:40.478Z",
+ "updated": "2026-11-21T06:31:44.701Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5702,17 +5702,17 @@
    "league": "cfb",
    "kind": "tot",
    "side": "under",
-   "label": "Under 37.5",
+   "label": "Under 39.5",
    "game": "GASO @ TROY",
    "kick": "2026-11-21T21:00Z",
-   "line": 37.5,
+   "line": 39.5,
    "mainLine": 47.5,
-   "price": 300,
+   "price": 250,
    "book": "FanDuel",
-   "win": 0.2744,
-   "mwin": 0.2632,
-   "ev": 0.0975,
-   "mev": 0.0526,
+   "win": 0.3001,
+   "mwin": 0.3001,
+   "ev": 0.0505,
+   "mev": 0.0505,
    "src": "mkt",
    "result": null,
    "final": null,
