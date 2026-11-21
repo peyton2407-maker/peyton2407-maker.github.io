@@ -119,8 +119,7 @@
    "total_play": false,
    "spread": 10,
    "total": 37.5,
-   "lockedAt": "2026-11-21T00:16:49.916Z",
-   "provisional": true
+   "lockedAt": "2026-11-21T00:32:20.704Z"
   },
   "401864545": {
    "id": "401864545",
@@ -1825,7 +1824,7 @@
    }
   ]
  },
- "updated": "2026-11-21T00:16:49.916Z",
+ "updated": "2026-11-21T00:32:20.704Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4890,7 +4889,7 @@
    "book": "BetRivers",
    "win": 0.2744,
    "mwin": 0.2744,
-   "ev": 0.0974,
+   "ev": 0.0976,
    "mev": 0.0976,
    "src": "mkt",
    "result": null,
@@ -8288,6 +8287,22 @@
    "market": 22.5,
    "label": "UTEP +22.5",
    "lockedAt": "2026-11-20T23:32:06.174Z"
+  },
+  {
+   "id": "401864542",
+   "league": "cfb",
+   "gid": "401864542",
+   "side": "away",
+   "team": "UNM",
+   "game": "UNM @ WYO",
+   "kick": "2026-11-21T02:00Z",
+   "line": -10,
+   "price": -110,
+   "book": "standard",
+   "ours": -10.3,
+   "market": -10,
+   "label": "UNM -10",
+   "lockedAt": "2026-11-21T00:32:20.704Z"
   }
  ]
 }
