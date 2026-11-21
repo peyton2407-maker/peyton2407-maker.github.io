@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -13.5,
    "total": 45.5,
-   "lockedAt": "2026-11-21T05:17:09.704Z",
+   "lockedAt": "2026-11-21T05:31:41.466Z",
    "provisional": true
   },
   "401856749": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -49.5,
    "total": 59.5,
-   "lockedAt": "2026-11-21T05:17:09.704Z",
+   "lockedAt": "2026-11-21T05:31:41.466Z",
    "provisional": true
   },
   "401856866": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 46.5,
-   "lockedAt": "2026-11-21T05:17:09.704Z",
+   "lockedAt": "2026-11-21T05:31:41.466Z",
    "provisional": true
   },
   "401856867": {
@@ -82,7 +82,7 @@
    "total_play": false,
    "spread": -3,
    "total": 57.5,
-   "lockedAt": "2026-11-21T05:17:09.704Z",
+   "lockedAt": "2026-11-21T05:31:41.466Z",
    "provisional": true
   },
   "401856869": {
@@ -135,6 +135,27 @@
    "clv_side": 0,
    "clv_total": null
   },
+  "401858305": {
+   "id": "401858305",
+   "league": "cfb",
+   "week": 12,
+   "short": "UNC @ UVA",
+   "home": "UVA",
+   "away": "UNC",
+   "date": "2026-11-21T17:30Z",
+   "pick": "UNC",
+   "pick_line": "UNC +1.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 1.1,
+   "our_total": 41.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -1.5,
+   "total": 41.5,
+   "lockedAt": "2026-11-21T05:31:41.466Z",
+   "provisional": true
+  },
   "401858309": {
    "id": "401858309",
    "league": "cfb",
@@ -153,7 +174,7 @@
    "total_play": false,
    "spread": 3,
    "total": 52.5,
-   "lockedAt": "2026-11-21T05:17:09.704Z",
+   "lockedAt": "2026-11-21T05:31:41.466Z",
    "provisional": true
   },
   "401858310": {
@@ -174,7 +195,7 @@
    "total_play": false,
    "spread": 21,
    "total": 55.5,
-   "lockedAt": "2026-11-21T05:17:09.704Z",
+   "lockedAt": "2026-11-21T05:31:41.466Z",
    "provisional": true
   },
   "401858529": {
@@ -220,7 +241,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 41.5,
-   "lockedAt": "2026-11-21T05:17:09.704Z",
+   "lockedAt": "2026-11-21T05:31:41.466Z",
    "provisional": true
   },
   "401858533": {
@@ -241,7 +262,7 @@
    "total_play": false,
    "spread": 6,
    "total": 46.5,
-   "lockedAt": "2026-11-21T05:17:09.704Z",
+   "lockedAt": "2026-11-21T05:31:41.466Z",
    "provisional": true
   },
   "401862830": {
@@ -287,7 +308,7 @@
    "total_play": false,
    "spread": -6,
    "total": 46.5,
-   "lockedAt": "2026-11-21T05:17:09.704Z",
+   "lockedAt": "2026-11-21T05:31:41.466Z",
    "provisional": true
   },
   "401862834": {
@@ -308,7 +329,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 67.5,
-   "lockedAt": "2026-11-21T05:17:09.704Z",
+   "lockedAt": "2026-11-21T05:31:41.466Z",
    "provisional": true
   },
   "401862835": {
@@ -329,7 +350,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 55.5,
-   "lockedAt": "2026-11-21T05:17:09.704Z",
+   "lockedAt": "2026-11-21T05:31:41.466Z",
    "provisional": true
   },
   "401864542": {
@@ -1912,12 +1933,12 @@
     "ours": "MISS -48.0 · total 59.5",
     "score": "WOF 5.8 – MISS 53.8",
     "market": "MISS -49.5 · total 59.5",
-    "lockedAt": "2026-11-21T05:17:09.755Z",
+    "lockedAt": "2026-11-21T05:31:41.547Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-21T17:00Z",
     "big": true,
-    "savedAt": 1795238229755
+    "savedAt": 1795239101547
    }
   ],
   "cfbHit": [
@@ -2012,12 +2033,12 @@
     "ours": "MEM -3.5 · total 67.5",
     "score": "MEM 35.5 – NAVY 32.0",
     "market": "MEM -2.5 · total 67.5",
-    "lockedAt": "2026-11-21T05:17:09.760Z",
+    "lockedAt": "2026-11-21T05:31:41.555Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-21T17:00Z",
     "big": true,
-    "savedAt": 1795238229760
+    "savedAt": 1795239101555
    }
   ]
  },
@@ -2120,7 +2141,7 @@
    }
   ]
  },
- "updated": "2026-11-21T05:17:09.704Z",
+ "updated": "2026-11-21T05:31:41.466Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
