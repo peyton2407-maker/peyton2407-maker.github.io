@@ -1829,7 +1829,7 @@
    }
   ]
  },
- "updated": "2026-11-21T02:32:18.555Z",
+ "updated": "2026-11-21T03:17:01.822Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -5446,28 +5446,6 @@
    "mwin": 0.2988,
    "ev": 0.0347,
    "mev": 0.0308,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401860925|tot|over",
-   "gid": "401860925",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "over",
-   "label": "Over 71.5",
-   "game": "SDSU @ BOIS",
-   "kick": "2026-11-22T02:30Z",
-   "line": 71.5,
-   "mainLine": 60.5,
-   "price": 275,
-   "book": "DraftKings",
-   "win": 0.2778,
-   "mwin": 0.2778,
-   "ev": 0.0417,
-   "mev": 0.0417,
    "src": "mkt",
    "result": null,
    "final": null,
