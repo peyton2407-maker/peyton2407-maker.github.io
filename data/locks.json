@@ -1829,7 +1829,7 @@
    }
   ]
  },
- "updated": "2026-11-21T02:16:40.231Z",
+ "updated": "2026-11-21T02:32:18.555Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4457,9 +4457,9 @@
    "ev": 0.0527,
    "mev": 0.0454,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "ISU 17, UCF 48",
+   "units": 2.97
   },
   {
    "id": "401856869|sp|away",
@@ -4479,9 +4479,9 @@
    "ev": 0.058,
    "mev": 0.0648,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "ISU 17, UCF 48",
+   "units": -1
   },
   {
    "id": "401866468|sp|home",
@@ -8205,7 +8205,10 @@
    "ours": 0.7,
    "market": 1.5,
    "label": "UCF +1.5",
-   "lockedAt": "2026-11-20T21:31:56.568Z"
+   "lockedAt": "2026-11-20T21:31:56.568Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "ISU 17, UCF 48"
   },
   {
    "id": "401858303",
