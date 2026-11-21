@@ -1829,7 +1829,7 @@
    }
   ]
  },
- "updated": "2026-11-21T01:16:30.407Z",
+ "updated": "2026-11-21T01:32:09.692Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6420,6 +6420,28 @@
    "mkt": 0.5311,
    "win": 0.6733,
    "ev": 0.1077,
+   "rule": "likely",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "key": "401873078|4362238",
+   "gid": "401873078",
+   "pid": "4362238",
+   "name": "Chase Brown",
+   "pos": "RB",
+   "team": "CIN",
+   "opp": "WSH",
+   "game": "CIN @ WSH",
+   "kick": "2026-11-24T01:15Z",
+   "price": -125,
+   "book": "DraftKings",
+   "books": 6,
+   "ours": 0.3773,
+   "mkt": 0.452,
+   "win": 0.623,
+   "ev": 0.1214,
    "rule": "likely",
    "result": null,
    "final": null,
