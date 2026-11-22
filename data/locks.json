@@ -1844,8 +1844,7 @@
    "total_play": false,
    "spread": 6,
    "total": 45.5,
-   "lockedAt": "2026-11-22T19:46:54.998Z",
-   "provisional": true
+   "lockedAt": "2026-11-22T20:01:57.086Z"
   },
   "401873070": {
    "id": "401873070",
@@ -1985,8 +1984,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T19:46:54.998Z",
-   "provisional": true
+   "lockedAt": "2026-11-22T20:01:57.086Z"
   },
   "401873076": {
    "id": "401873076",
@@ -2031,7 +2029,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-22T19:46:54.998Z",
+   "lockedAt": "2026-11-22T20:01:57.086Z",
    "provisional": true
   }
  },
@@ -3710,7 +3708,7 @@
    }
   ]
  },
- "updated": "2026-11-22T19:46:54.998Z",
+ "updated": "2026-11-22T20:01:57.086Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4092,7 +4090,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-22T19:46:54.998Z",
+      "at": "2026-11-22T20:01:57.086Z",
       "line": 23.5,
       "price": -116,
       "book": "DraftKings",
@@ -4126,7 +4124,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-22T19:46:54.998Z",
+      "at": "2026-11-22T20:01:57.086Z",
       "line": 32.5,
       "price": -109,
       "book": "DraftKings",
@@ -11669,6 +11667,38 @@
    "market": -3,
    "label": "LAC -3",
    "lockedAt": "2026-11-22T19:46:54.998Z"
+  },
+  {
+   "id": "401873075",
+   "league": "nfl",
+   "gid": "401873075",
+   "side": "home",
+   "team": "DEN",
+   "game": "LV @ DEN",
+   "kick": "2026-11-22T21:25Z",
+   "line": -10.5,
+   "price": -110,
+   "book": "standard",
+   "ours": -10.9,
+   "market": -10.5,
+   "label": "DEN -10.5",
+   "lockedAt": "2026-11-22T20:01:57.086Z"
+  },
+  {
+   "id": "401873069",
+   "league": "nfl",
+   "gid": "401873069",
+   "side": "away",
+   "team": "JAX",
+   "game": "JAX @ NYG",
+   "kick": "2026-11-22T21:25Z",
+   "line": -6,
+   "price": -110,
+   "book": "standard",
+   "ours": -6.6,
+   "market": -6,
+   "label": "JAX -6",
+   "lockedAt": "2026-11-22T20:01:57.086Z"
   }
  ]
 }
