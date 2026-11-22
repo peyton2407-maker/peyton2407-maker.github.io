@@ -1794,7 +1794,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T12:46:52.252Z",
+   "lockedAt": "2026-11-22T13:01:56.564Z",
    "provisional": true
   },
   "401873068": {
@@ -1815,7 +1815,7 @@
    "total_play": false,
    "spread": -3,
    "total": 43.5,
-   "lockedAt": "2026-11-22T12:46:52.252Z",
+   "lockedAt": "2026-11-22T13:01:56.564Z",
    "provisional": true
   },
   "401873069": {
@@ -1831,12 +1831,12 @@
    "total_pick": "UNDER 45.5",
    "side_play": false,
    "our_margin": -6.56,
-   "our_total": 45.1,
+   "our_total": 44,
    "confidence": null,
    "total_play": false,
    "spread": 6,
    "total": 45.5,
-   "lockedAt": "2026-11-22T12:46:52.252Z",
+   "lockedAt": "2026-11-22T13:01:56.564Z",
    "provisional": true
   },
   "401873070": {
@@ -1857,7 +1857,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 44.5,
-   "lockedAt": "2026-11-22T12:46:52.252Z",
+   "lockedAt": "2026-11-22T13:01:56.564Z",
    "provisional": true
   },
   "401873071": {
@@ -1873,12 +1873,12 @@
    "total_pick": "UNDER 48.5",
    "side_play": false,
    "our_margin": 10.8,
-   "our_total": 46.9,
+   "our_total": 46,
    "confidence": null,
    "total_play": false,
    "spread": -11.5,
    "total": 48.5,
-   "lockedAt": "2026-11-22T12:46:52.252Z",
+   "lockedAt": "2026-11-22T13:01:56.564Z",
    "provisional": true
   },
   "401873072": {
@@ -1899,7 +1899,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 47.5,
-   "lockedAt": "2026-11-22T12:46:52.252Z",
+   "lockedAt": "2026-11-22T13:01:56.564Z",
    "provisional": true
   },
   "401873073": {
@@ -1920,7 +1920,7 @@
    "total_play": false,
    "spread": -7.5,
    "total": 54.5,
-   "lockedAt": "2026-11-22T12:46:52.252Z",
+   "lockedAt": "2026-11-22T13:01:56.564Z",
    "provisional": true
   },
   "401873074": {
@@ -1941,7 +1941,7 @@
    "total_play": false,
    "spread": -3,
    "total": 41.5,
-   "lockedAt": "2026-11-22T12:46:52.252Z",
+   "lockedAt": "2026-11-22T13:01:56.564Z",
    "provisional": true
   },
   "401873075": {
@@ -1962,7 +1962,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 41.5,
-   "lockedAt": "2026-11-22T12:46:52.252Z",
+   "lockedAt": "2026-11-22T13:01:56.564Z",
    "provisional": true
   },
   "401873076": {
@@ -1983,7 +1983,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 37.5,
-   "lockedAt": "2026-11-22T12:46:52.252Z",
+   "lockedAt": "2026-11-22T13:01:56.564Z",
    "provisional": true
   }
  },
@@ -2755,12 +2755,12 @@
     "ours": "LAC -3.5 · total 41.0",
     "score": "NYJ 18.8 – LAC 22.2",
     "market": "LAC -3.0 · total 41.5",
-    "lockedAt": "2026-11-22T12:46:52.301Z",
+    "lockedAt": "2026-11-22T13:01:56.616Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-22T21:05Z",
     "big": true,
-    "savedAt": 1795351612301
+    "savedAt": 1795352516616
    }
   ],
   "cfb": [
@@ -3627,7 +3627,7 @@
    }
   ]
  },
- "updated": "2026-11-22T12:46:52.252Z",
+ "updated": "2026-11-22T13:01:56.564Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3979,9 +3979,9 @@
    "size": 1,
    "american": 587,
    "dec": 6.8704,
-   "chance": 0.185,
+   "chance": 0.1854,
    "breakEven": 0.1456,
-   "ev": 0.2712,
+   "ev": 0.2738,
    "firstKick": "2026-11-22T18:00:00.000Z",
    "legs": [
     {
@@ -4044,11 +4044,11 @@
      "kick": "2026-11-22T18:00Z",
      "price": -109,
      "line": 22.5,
-     "win": 0.5524,
-     "bookWin": 0.5345,
-     "value": 0.0592,
+     "win": 0.5535,
+     "bookWin": 0.5343,
+     "value": 0.0613,
      "cat": "prop",
-     "why": "We project 25 rec yds against 22.5; our checked chance on the under is 55%, the books' 54%. CHI is middle of the pack here: 14th of 32 in rec yds allowed to TEs (49 a game; league average 54).",
+     "why": "We project 25 rec yds against 22.5; our checked chance on the under is 55%, the books' 53%. CHI is middle of the pack here: 14th of 32 in rec yds allowed to TEs (49 a game; league average 54).",
      "alt": null,
      "prop": {
       "pid": "3929645",
@@ -4064,7 +4064,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-22T12:46:52.252Z"
+   "lockedAt": "2026-11-22T13:01:56.564Z"
   }
  ],
  "teasers": [
@@ -7425,9 +7425,9 @@
    "mainLine": 48.5,
    "price": 260,
    "book": "ESPN BET",
-   "win": 0.2956,
+   "win": 0.3015,
    "mwin": 0.2856,
-   "ev": 0.0642,
+   "ev": 0.0854,
    "mev": 0.0283,
    "src": "mkt",
    "result": null,
@@ -7645,9 +7645,9 @@
    "mainLine": 45.5,
    "price": 270,
    "book": "ESPN BET",
-   "win": 0.2842,
+   "win": 0.2911,
    "mwin": 0.2818,
-   "ev": 0.0517,
+   "ev": 0.0772,
    "mev": 0.0427,
    "src": "mkt",
    "result": null,
