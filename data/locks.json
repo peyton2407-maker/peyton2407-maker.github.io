@@ -1794,7 +1794,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T13:01:56.564Z",
+   "lockedAt": "2026-11-22T13:16:40.143Z",
    "provisional": true
   },
   "401873068": {
@@ -1815,7 +1815,7 @@
    "total_play": false,
    "spread": -3,
    "total": 43.5,
-   "lockedAt": "2026-11-22T13:01:56.564Z",
+   "lockedAt": "2026-11-22T13:16:40.143Z",
    "provisional": true
   },
   "401873069": {
@@ -1836,7 +1836,7 @@
    "total_play": false,
    "spread": 6,
    "total": 45.5,
-   "lockedAt": "2026-11-22T13:01:56.564Z",
+   "lockedAt": "2026-11-22T13:16:40.143Z",
    "provisional": true
   },
   "401873070": {
@@ -1857,7 +1857,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 44.5,
-   "lockedAt": "2026-11-22T13:01:56.564Z",
+   "lockedAt": "2026-11-22T13:16:40.143Z",
    "provisional": true
   },
   "401873071": {
@@ -1878,7 +1878,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 48.5,
-   "lockedAt": "2026-11-22T13:01:56.564Z",
+   "lockedAt": "2026-11-22T13:16:40.143Z",
    "provisional": true
   },
   "401873072": {
@@ -1899,7 +1899,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 47.5,
-   "lockedAt": "2026-11-22T13:01:56.564Z",
+   "lockedAt": "2026-11-22T13:16:40.143Z",
    "provisional": true
   },
   "401873073": {
@@ -1920,7 +1920,7 @@
    "total_play": false,
    "spread": -7.5,
    "total": 54.5,
-   "lockedAt": "2026-11-22T13:01:56.564Z",
+   "lockedAt": "2026-11-22T13:16:40.143Z",
    "provisional": true
   },
   "401873074": {
@@ -1941,7 +1941,7 @@
    "total_play": false,
    "spread": -3,
    "total": 41.5,
-   "lockedAt": "2026-11-22T13:01:56.564Z",
+   "lockedAt": "2026-11-22T13:16:40.143Z",
    "provisional": true
   },
   "401873075": {
@@ -1954,15 +1954,15 @@
    "date": "2026-11-22T21:25Z",
    "pick": "DEN",
    "pick_line": "DEN -10.5",
-   "total_pick": "UNDER 41.5",
+   "total_pick": "OVER 40.5",
    "side_play": false,
    "our_margin": 10.93,
-   "our_total": 41.3,
+   "our_total": 40.6,
    "confidence": null,
    "total_play": false,
    "spread": -10.5,
-   "total": 41.5,
-   "lockedAt": "2026-11-22T13:01:56.564Z",
+   "total": 40.5,
+   "lockedAt": "2026-11-22T13:16:40.143Z",
    "provisional": true
   },
   "401873076": {
@@ -1983,7 +1983,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 37.5,
-   "lockedAt": "2026-11-22T13:01:56.564Z",
+   "lockedAt": "2026-11-22T13:16:40.143Z",
    "provisional": true
   }
  },
@@ -2736,12 +2736,12 @@
     "kind": "Player prop",
     "line": "Geno Smith under 1.5 pass TDs",
     "hitPct": 66,
-    "why": "We project Geno Smith for 1.1 pass TDs against a line of 1.5. Our checked chance on the under is 66%; the books' own chance is 61%. At -182 (BetRivers) that is 2.2% better than the price. LAC is middle of the pack here: 15th of 32 in pass TDs allowed to QBs (1.4 a game; league average 1.5). The under hit in 5 of his last 8 games at this line.",
+    "why": "We project Geno Smith for 1.1 pass TDs against a line of 1.5. Our checked chance on the under is 66%; the books' own chance is 61%. At -180 (BetRivers) that is 2.6% better than the price. LAC is middle of the pack here: 15th of 32 in pass TDs allowed to QBs (1.4 a game; league average 1.5). The under hit in 5 of his last 8 games at this line.",
     "label": "Best of Sunday's 10 games",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 1,
+    "units": 1.25,
     "prop": {
      "pid": "15864",
      "name": "Geno Smith",
@@ -2749,18 +2749,18 @@
      "side": "under",
      "line": 1.5
     },
-    "price": -182,
+    "price": -180,
     "book": "BetRivers",
-    "ev": 0.022,
+    "ev": 0.026,
     "ours": "LAC -3.5 · total 41.0",
     "score": "NYJ 18.8 – LAC 22.2",
     "market": "LAC -3.0 · total 41.5",
-    "lockedAt": "2026-11-22T13:01:56.616Z",
+    "lockedAt": "2026-11-22T13:16:40.185Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-22T21:05Z",
     "big": true,
-    "savedAt": 1795352516616
+    "savedAt": 1795353400185
    }
   ],
   "cfb": [
@@ -3627,7 +3627,7 @@
    }
   ]
  },
- "updated": "2026-11-22T13:01:56.564Z",
+ "updated": "2026-11-22T13:16:40.143Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3977,11 +3977,11 @@
    "tier": "value",
    "stake": 1,
    "size": 1,
-   "american": 587,
-   "dec": 6.8704,
-   "chance": 0.1854,
-   "breakEven": 0.1456,
-   "ev": 0.2738,
+   "american": 573,
+   "dec": 6.7262,
+   "chance": 0.1859,
+   "breakEven": 0.1487,
+   "ev": 0.2507,
    "firstKick": "2026-11-22T18:00:00.000Z",
    "legs": [
     {
@@ -4035,27 +4035,27 @@
      "result": null
     },
     {
-     "id": "401873071|pp|3929645|rec_yds|under",
-     "label": "Juwan Johnson under 22.5 rec yds",
+     "id": "401873072|pp|4374302|rec_yds|under",
+     "label": "Amon-Ra St. Brown under 83.5 rec yds",
      "kind": "pp",
-     "game_id": "401873071",
-     "game": "NO @ CHI",
+     "game_id": "401873072",
+     "game": "TB @ DET",
      "league": "nfl",
      "kick": "2026-11-22T18:00Z",
-     "price": -109,
-     "line": 22.5,
-     "win": 0.5535,
-     "bookWin": 0.5343,
-     "value": 0.0613,
+     "price": -114,
+     "line": 83.5,
+     "win": 0.5551,
+     "bookWin": 0.5122,
+     "value": 0.0421,
      "cat": "prop",
-     "why": "We project 25 rec yds against 22.5; our checked chance on the under is 55%, the books' 53%. CHI is middle of the pack here: 14th of 32 in rec yds allowed to TEs (49 a game; league average 54).",
+     "why": "We project 75 rec yds against 83.5; our checked chance on the under is 55%, the books' 51%. TB is middle of the pack here: 10th of 32 in rec yds allowed to WRs (139 a game; league average 147).",
      "alt": null,
      "prop": {
-      "pid": "3929645",
+      "pid": "4374302",
       "stat": "rec_yds",
       "side": "under",
-      "line": 22.5,
-      "name": "Juwan Johnson"
+      "line": 83.5,
+      "name": "Amon-Ra St. Brown"
      },
      "result": null
     }
@@ -4064,7 +4064,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-22T13:01:56.564Z"
+   "lockedAt": "2026-11-22T13:16:40.143Z"
   }
  ],
  "teasers": [
@@ -7655,22 +7655,44 @@
    "units": null
   },
   {
+   "id": "401873075|tot|over",
+   "gid": "401873075",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "over",
+   "label": "Over 47.5",
+   "game": "LV @ DEN",
+   "kick": "2026-11-22T21:25Z",
+   "line": 47.5,
+   "mainLine": 40.5,
+   "price": 230,
+   "book": "FanDuel",
+   "win": 0.3127,
+   "mwin": 0.312,
+   "ev": 0.0318,
+   "mev": 0.0297,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873077|tot|under",
    "gid": "401873077",
    "league": "nfl",
    "kind": "tot",
    "side": "under",
-   "label": "Under 37.5",
+   "label": "Under 38.5",
    "game": "MIN VS SF",
    "kick": "2026-11-23T01:20Z",
-   "line": 37.5,
+   "line": 38.5,
    "mainLine": 46.5,
-   "price": 285,
-   "book": "FanDuel",
-   "win": 0.2787,
-   "mwin": 0.2703,
-   "ev": 0.0729,
-   "mev": 0.0408,
+   "price": 250,
+   "book": "ESPN BET",
+   "win": 0.2986,
+   "mwin": 0.2899,
+   "ev": 0.045,
+   "mev": 0.0146,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -7682,17 +7704,17 @@
    "league": "nfl",
    "kind": "sp",
    "side": "away",
-   "label": "MIN -4.5",
+   "label": "MIN -4",
    "game": "MIN VS SF",
    "kick": "2026-11-23T01:20Z",
-   "line": -4.5,
+   "line": -4,
    "mainLine": 3.5,
    "price": 300,
    "book": "ESPN BET",
-   "win": 0.2576,
-   "mwin": 0.2576,
-   "ev": 0.0305,
-   "mev": 0.0305,
+   "win": 0.2542,
+   "mwin": 0.2542,
+   "ev": 0.0386,
+   "mev": 0.0386,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -7716,28 +7738,6 @@
    "ev": 0.0632,
    "mev": 0.0694,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873078|sp|away",
-   "gid": "401873078",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "away",
-   "label": "CIN -14.5",
-   "game": "CIN @ WSH",
-   "kick": "2026-11-24T01:15Z",
-   "line": -14.5,
-   "mainLine": -6,
-   "price": 290,
-   "book": "BetMGM",
-   "win": 0.2642,
-   "mwin": 0.2576,
-   "ev": 0.0305,
-   "mev": 0.0047,
-   "src": "proj",
    "result": null,
    "final": null,
    "units": null
@@ -8299,6 +8299,28 @@
    "units": null
   },
   {
+   "key": "401873069|4882093",
+   "gid": "401873069",
+   "pid": "4882093",
+   "name": "Bhayshul Tuten",
+   "pos": "RB",
+   "team": "JAX",
+   "opp": "NYG",
+   "game": "JAX @ NYG",
+   "kick": "2026-11-22T21:25Z",
+   "price": -105,
+   "book": "FanDuel",
+   "books": 6,
+   "ours": 0.5317,
+   "mkt": 0.4904,
+   "win": 0.5196,
+   "ev": 0.0145,
+   "rule": "likely",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "key": "401873077|3117251",
    "gid": "401873077",
    "pid": "3117251",
@@ -8308,13 +8330,13 @@
    "opp": "MIN",
    "game": "MIN VS SF",
    "kick": "2026-11-23T01:20Z",
-   "price": -160,
+   "price": -155,
    "book": "BetMGM",
    "books": 6,
    "ours": 0.5535,
-   "mkt": 0.5286,
+   "mkt": 0.5344,
    "win": 0.6733,
-   "ev": 0.0941,
+   "ev": 0.1077,
    "rule": "likely",
    "result": null,
    "final": null,
