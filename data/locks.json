@@ -1844,7 +1844,7 @@
    "total_play": false,
    "spread": 6,
    "total": 45.5,
-   "lockedAt": "2026-11-22T17:31:45.961Z",
+   "lockedAt": "2026-11-22T18:01:27.080Z",
    "provisional": true
   },
   "401873070": {
@@ -1965,7 +1965,7 @@
    "total_play": false,
    "spread": -3,
    "total": 43.5,
-   "lockedAt": "2026-11-22T17:31:45.961Z",
+   "lockedAt": "2026-11-22T18:01:27.080Z",
    "provisional": true
   },
   "401873075": {
@@ -1986,7 +1986,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T17:31:45.961Z",
+   "lockedAt": "2026-11-22T18:01:27.080Z",
    "provisional": true
   },
   "401873076": {
@@ -2032,7 +2032,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-22T17:31:45.961Z",
+   "lockedAt": "2026-11-22T18:01:27.080Z",
    "provisional": true
   }
  },
@@ -2810,6 +2810,42 @@
     "kick": "2026-11-22T21:05Z",
     "big": true,
     "savedAt": 1795368706008
+   },
+   {
+    "key": "game:401873074",
+    "week": 11,
+    "day": "2026-11-22",
+    "league": "nfl",
+    "id": "401873074",
+    "game": "NYJ @ LAC",
+    "kind": "Player prop",
+    "line": "Geno Smith under 1.5 pass TDs",
+    "hitPct": 65,
+    "why": "We project Geno Smith for 1.1 pass TDs against a line of 1.5. Our checked chance on the under is 65%; the books' own chance is 59%. At -157 (BetRivers) that is 6.1% better than the price. LAC is middle of the pack here: 15th of 32 in pass TDs allowed to QBs (1.4 a game; league average 1.5). The under hit in 5 of his last 8 games at this line.",
+    "label": "Sunday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 2,
+    "prop": {
+     "pid": "15864",
+     "name": "Geno Smith",
+     "stat": "pass_td",
+     "side": "under",
+     "line": 1.5
+    },
+    "price": -157,
+    "book": "BetRivers",
+    "ev": 0.061,
+    "ours": "LAC -3.5 · total 42.4",
+    "score": "NYJ 19.5 – LAC 22.9",
+    "market": "LAC -3.0 · total 43.5",
+    "lockedAt": "2026-11-22T18:01:27.105Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-22T21:05Z",
+    "big": false,
+    "savedAt": 1795370487105
    }
   ],
   "cfb": [
@@ -3676,7 +3712,7 @@
    }
   ]
  },
- "updated": "2026-11-22T17:31:45.961Z",
+ "updated": "2026-11-22T18:01:27.080Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4058,7 +4094,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-22T17:31:45.961Z",
+      "at": "2026-11-22T18:01:27.080Z",
       "line": 23.5,
       "price": -116,
       "book": "DraftKings",
@@ -4092,7 +4128,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-22T17:31:45.961Z",
+      "at": "2026-11-22T18:01:27.080Z",
       "line": 30.5,
       "price": -109,
       "book": "DraftKings",
@@ -7763,9 +7799,9 @@
    "mainLine": -3,
    "price": 240,
    "book": "BetRivers",
-   "win": 0.3286,
+   "win": 0.3287,
    "mwin": 0.3147,
-   "ev": 0.1173,
+   "ev": 0.1176,
    "mev": 0.0698,
    "src": "mkt",
    "result": null,
