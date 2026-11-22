@@ -1,32 +1,17 @@
 {
- "checked_at": "2026-11-21T02:48:16Z",
+ "checked_at": "2026-11-22T01:32:44Z",
  "errors": [],
- "console": [
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT"
- ],
- "failed_requests": {
-  "api.open-meteo.com": {
-   "count": 16,
-   "example": "https://api.open-meteo.com/v1/forecast?latitude=35.994&longitude=-78.899&hourly=temperature_2m,precipitation_probability,precipitation,weathercode,windspeed_10m,windgusts_10m,relativehumidity_2m&daily",
-   "reason": "net::ERR_ABORTED"
-  }
- },
+ "console": [],
+ "failed_requests": {},
  "bad_status": {},
  "screens": {
   "home": {
    "visible": true,
-   "count": 32,
+   "count": 48,
    "summary": [],
    "empty": [],
-   "chars": 2412,
-   "images": 76,
+   "chars": 3174,
+   "images": 108,
    "broken_images": []
   },
   "nfl": {
@@ -34,26 +19,26 @@
    "count": 12,
    "summary": [],
    "empty": [],
-   "chars": 4844,
-   "images": 33,
+   "chars": 4721,
+   "images": 34,
    "broken_images": []
   },
   "cfb": {
    "visible": true,
-   "count": 63,
+   "count": 18,
    "summary": [],
    "empty": [],
-   "chars": 10364,
-   "images": 125,
+   "chars": 5119,
+   "images": 46,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 27,
+   "count": 28,
    "summary": [],
    "empty": [],
-   "chars": 2513,
-   "images": 25,
+   "chars": 2514,
+   "images": 50,
    "broken_images": []
   },
   "season": {
@@ -61,16 +46,16 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3228,
+   "chars": 3218,
    "images": 42,
    "broken_images": []
   },
   "score": {
    "visible": true,
-   "count": 525,
+   "count": 527,
    "summary": [],
    "empty": [],
-   "chars": 35114,
+   "chars": 35224,
    "images": 0,
    "broken_images": []
   },
@@ -79,7 +64,7 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3321,
+   "chars": 3315,
    "images": 35,
    "broken_images": []
   },
@@ -88,7 +73,7 @@
    "count": 7,
    "summary": [],
    "empty": [],
-   "chars": 764,
+   "chars": 746,
    "images": 14,
    "broken_images": []
   },
@@ -97,8 +82,8 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 6401,
-   "images": 15,
+   "chars": 6784,
+   "images": 12,
    "broken_images": []
   },
   "tds": {
@@ -106,7 +91,7 @@
    "count": 1,
    "summary": [],
    "empty": [],
-   "chars": 4022,
+   "chars": 4005,
    "images": 28,
    "broken_images": []
   },
@@ -123,11 +108,11 @@
    "visible": true,
    "count": 72,
    "summary": [
-    "303 value tickets in this filter 109 TD plus-money 5 spread / dog sides 89% b"
+    "333 value tickets in this filter 110 TD plus-money 6 spread / dog sides 97% b"
    ],
    "empty": [],
-   "chars": 3411,
-   "images": 39,
+   "chars": 3416,
+   "images": 38,
    "broken_images": []
   },
   "parlay": {
@@ -135,7 +120,7 @@
    "count": 5,
    "summary": [],
    "empty": [],
-   "chars": 3538,
+   "chars": 3506,
    "images": 0,
    "broken_images": []
   },
@@ -144,21 +129,21 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 3344,
-   "images": 16,
+   "chars": 4759,
+   "images": 30,
    "broken_images": []
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "540 listed THU \u00b7 11:31 PM ET 535 listed FRI \u00b7 9:19 PM ET 506 listed SA",
-    "38 listed MIA @ BUF 90 min before kick NO @ CHI 90 min before kick TE",
-    "506 listed 0 probable \u00b7 75% 83 questionable / GTD \u00b7 50% 5 doubtful \u00b7 2"
+    "540 listed THU \u00b7 11:31 PM ET 535 listed FRI \u00b7 11:16 PM ET 506 listed S",
+    "505 listed SUN Not posted IND @ HOU 38 listed MIA @ BUF 90 min before ",
+    "505 listed 0 probable \u00b7 75% 83 questionable / GTD \u00b7 50% 5 doubtful \u00b7 2"
    ],
    "empty": [],
-   "chars": 4316,
-   "images": 4,
+   "chars": 4565,
+   "images": 5,
    "broken_images": []
   },
   "nflwx": {
@@ -166,7 +151,7 @@
    "count": 13,
    "summary": [],
    "empty": [],
-   "chars": 4275,
+   "chars": 4454,
    "images": 26,
    "broken_images": []
   },
@@ -175,7 +160,7 @@
    "count": 4,
    "summary": [],
    "empty": [],
-   "chars": 3182,
+   "chars": 3183,
    "images": 2,
    "broken_images": []
   },
@@ -184,8 +169,8 @@
    "count": 18,
    "summary": [],
    "empty": [],
-   "chars": 4071,
-   "images": 34,
+   "chars": 6907,
+   "images": 36,
    "broken_images": []
   }
  },
