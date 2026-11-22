@@ -1794,7 +1794,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T14:46:42.598Z",
+   "lockedAt": "2026-11-22T15:02:14.763Z",
    "provisional": true
   },
   "401873068": {
@@ -1815,7 +1815,7 @@
    "total_play": false,
    "spread": -3,
    "total": 44.5,
-   "lockedAt": "2026-11-22T14:46:42.598Z",
+   "lockedAt": "2026-11-22T15:02:14.763Z",
    "provisional": true
   },
   "401873069": {
@@ -1831,12 +1831,12 @@
    "total_pick": "UNDER 45.5",
    "side_play": false,
    "our_margin": -6.56,
-   "our_total": 44,
+   "our_total": 45.1,
    "confidence": null,
    "total_play": false,
    "spread": 6,
    "total": 45.5,
-   "lockedAt": "2026-11-22T14:46:42.598Z",
+   "lockedAt": "2026-11-22T15:02:14.763Z",
    "provisional": true
   },
   "401873070": {
@@ -1857,7 +1857,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 44.5,
-   "lockedAt": "2026-11-22T14:46:42.598Z",
+   "lockedAt": "2026-11-22T15:02:14.763Z",
    "provisional": true
   },
   "401873071": {
@@ -1878,7 +1878,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 48.5,
-   "lockedAt": "2026-11-22T14:46:42.598Z",
+   "lockedAt": "2026-11-22T15:02:14.763Z",
    "provisional": true
   },
   "401873072": {
@@ -1899,7 +1899,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 48.5,
-   "lockedAt": "2026-11-22T14:46:42.598Z",
+   "lockedAt": "2026-11-22T15:02:14.763Z",
    "provisional": true
   },
   "401873073": {
@@ -1920,7 +1920,7 @@
    "total_play": false,
    "spread": -7.5,
    "total": 54.5,
-   "lockedAt": "2026-11-22T14:46:42.598Z",
+   "lockedAt": "2026-11-22T15:02:14.763Z",
    "provisional": true
   },
   "401873074": {
@@ -1941,7 +1941,7 @@
    "total_play": false,
    "spread": -3,
    "total": 42.5,
-   "lockedAt": "2026-11-22T14:46:42.598Z",
+   "lockedAt": "2026-11-22T15:02:14.763Z",
    "provisional": true
   },
   "401873075": {
@@ -1962,7 +1962,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T14:46:42.598Z",
+   "lockedAt": "2026-11-22T15:02:14.763Z",
    "provisional": true
   },
   "401873076": {
@@ -1983,7 +1983,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 37.5,
-   "lockedAt": "2026-11-22T14:46:42.598Z",
+   "lockedAt": "2026-11-22T15:02:14.763Z",
    "provisional": true
   },
   "401873077": {
@@ -2004,7 +2004,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-22T14:46:42.598Z",
+   "lockedAt": "2026-11-22T15:02:14.763Z",
    "provisional": true
   }
  },
@@ -2776,12 +2776,12 @@
     "ours": "LAC -3.5 · total 41.7",
     "score": "NYJ 19.1 – LAC 22.6",
     "market": "LAC -3.0 · total 42.5",
-    "lockedAt": "2026-11-22T14:46:42.667Z",
+    "lockedAt": "2026-11-22T15:02:14.813Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-22T21:05Z",
     "big": true,
-    "savedAt": 1795358802667
+    "savedAt": 1795359734813
    }
   ],
   "cfb": [
@@ -3648,7 +3648,7 @@
    }
   ]
  },
- "updated": "2026-11-22T14:46:42.598Z",
+ "updated": "2026-11-22T15:02:14.763Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4085,7 +4085,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-22T14:46:42.598Z"
+   "lockedAt": "2026-11-22T15:02:14.763Z"
   }
  ],
  "teasers": [
@@ -7688,9 +7688,9 @@
    "mainLine": 45.5,
    "price": 270,
    "book": "ESPN BET",
-   "win": 0.2911,
+   "win": 0.2842,
    "mwin": 0.2818,
-   "ev": 0.0772,
+   "ev": 0.0517,
    "mev": 0.0427,
    "src": "mkt",
    "result": null,
@@ -7776,9 +7776,9 @@
    "mainLine": 54.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2762,
+   "win": 0.2715,
    "mwin": 0.2778,
-   "ev": 0.0632,
+   "ev": 0.0452,
    "mev": 0.0694,
    "src": "mkt",
    "result": null,
