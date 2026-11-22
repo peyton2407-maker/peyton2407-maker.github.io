@@ -1794,7 +1794,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T07:16:46.777Z",
+   "lockedAt": "2026-11-22T07:31:47.859Z",
    "provisional": true
   },
   "401873068": {
@@ -1815,7 +1815,7 @@
    "total_play": false,
    "spread": -3,
    "total": 43.5,
-   "lockedAt": "2026-11-22T07:16:46.777Z",
+   "lockedAt": "2026-11-22T07:31:47.859Z",
    "provisional": true
   },
   "401873070": {
@@ -1827,16 +1827,16 @@
    "away": "MIA",
    "date": "2026-11-22T18:00Z",
    "pick": "BUF",
-   "pick_line": "BUF -15.5",
+   "pick_line": "BUF -16.5",
    "total_pick": "OVER 44.5",
    "side_play": false,
-   "our_margin": 16.35,
+   "our_margin": 17.05,
    "our_total": 45.2,
    "confidence": null,
    "total_play": false,
-   "spread": -15.5,
+   "spread": -16.5,
    "total": 44.5,
-   "lockedAt": "2026-11-22T07:16:46.777Z",
+   "lockedAt": "2026-11-22T07:31:47.859Z",
    "provisional": true
   },
   "401873071": {
@@ -1857,7 +1857,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 48.5,
-   "lockedAt": "2026-11-22T07:16:46.777Z",
+   "lockedAt": "2026-11-22T07:31:47.859Z",
    "provisional": true
   },
   "401873072": {
@@ -1878,7 +1878,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 47.5,
-   "lockedAt": "2026-11-22T07:16:46.777Z",
+   "lockedAt": "2026-11-22T07:31:47.859Z",
    "provisional": true
   },
   "401873073": {
@@ -1899,7 +1899,7 @@
    "total_play": false,
    "spread": -7.5,
    "total": 54.5,
-   "lockedAt": "2026-11-22T07:16:46.777Z",
+   "lockedAt": "2026-11-22T07:31:47.859Z",
    "provisional": true
   },
   "401873076": {
@@ -1920,7 +1920,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 37.5,
-   "lockedAt": "2026-11-22T07:16:46.777Z",
+   "lockedAt": "2026-11-22T07:31:47.859Z",
    "provisional": true
   }
  },
@@ -3301,9 +3301,9 @@
     "hitPct": 54,
     "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 60.5. At -110 the price needs 52%; we count it at 54%, so it's 3.6% better than the price. Under plays are 3-5 on the play of the day, so that record is in the pick.",
     "label": "Saturday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "OKST 30 – ASU 27",
+    "resultWhy": "It hit. UNDER 60.5 cashed. Final was OKST 30 – ASU 27.",
     "units": 1,
     "price": -110,
     "book": "standard -110",
@@ -3320,7 +3320,8 @@
     "close_line": 60.5,
     "closeAt": "2026-11-22T02:46:41.534Z",
     "close_src": "board",
-    "clv": 0
+    "clv": 0,
+    "by": "Final total 57, 3.5 under 60.5"
    }
   ],
   "cfbHit": [
@@ -3527,7 +3528,7 @@
    }
   ]
  },
- "updated": "2026-11-22T07:16:46.777Z",
+ "updated": "2026-11-22T07:31:47.859Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3964,7 +3965,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-22T07:16:46.777Z"
+   "lockedAt": "2026-11-22T07:31:47.859Z"
   }
  ],
  "teasers": [
@@ -7300,12 +7301,12 @@
    "game": "MIA @ BUF",
    "kick": "2026-11-22T18:00Z",
    "line": -24.5,
-   "mainLine": -15.5,
+   "mainLine": -16.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2807,
+   "win": 0.286,
    "mwin": 0.2735,
-   "ev": 0.0667,
+   "ev": 0.0866,
    "mev": 0.0391,
    "src": "mkt",
    "result": null,
@@ -8127,28 +8128,6 @@
    "mkt": 0.5505,
    "win": 0.6021,
    "ev": 0.0291,
-   "rule": "likely",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "key": "401873069|4882093",
-   "gid": "401873069",
-   "pid": "4882093",
-   "name": "Bhayshul Tuten",
-   "pos": "RB",
-   "team": "JAX",
-   "opp": "NYG",
-   "game": "JAX @ NYG",
-   "kick": "2026-11-22T21:25Z",
-   "price": -109,
-   "book": "BetRivers",
-   "books": 6,
-   "ours": 0.5317,
-   "mkt": 0.4919,
-   "win": 0.5303,
-   "ev": 0.0168,
    "rule": "likely",
    "result": null,
    "final": null,
@@ -11159,7 +11138,10 @@
    "ours": -3.1,
    "market": -2.5,
    "label": "OKST -2.5",
-   "lockedAt": "2026-11-22T01:46:46.439Z"
+   "lockedAt": "2026-11-22T01:46:46.439Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "OKST 30, ASU 27"
   },
   {
    "id": "401860919",
