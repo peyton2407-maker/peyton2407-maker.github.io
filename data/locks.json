@@ -1794,7 +1794,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T07:01:57.226Z",
+   "lockedAt": "2026-11-22T07:16:46.777Z",
    "provisional": true
   },
   "401873068": {
@@ -1815,7 +1815,7 @@
    "total_play": false,
    "spread": -3,
    "total": 43.5,
-   "lockedAt": "2026-11-22T07:01:57.226Z",
+   "lockedAt": "2026-11-22T07:16:46.777Z",
    "provisional": true
   },
   "401873070": {
@@ -1827,16 +1827,16 @@
    "away": "MIA",
    "date": "2026-11-22T18:00Z",
    "pick": "BUF",
-   "pick_line": "BUF -16.5",
+   "pick_line": "BUF -15.5",
    "total_pick": "OVER 44.5",
    "side_play": false,
-   "our_margin": 17.05,
+   "our_margin": 16.35,
    "our_total": 45.2,
    "confidence": null,
    "total_play": false,
-   "spread": -16.5,
+   "spread": -15.5,
    "total": 44.5,
-   "lockedAt": "2026-11-22T07:01:57.226Z",
+   "lockedAt": "2026-11-22T07:16:46.777Z",
    "provisional": true
   },
   "401873071": {
@@ -1857,7 +1857,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 48.5,
-   "lockedAt": "2026-11-22T07:01:57.226Z",
+   "lockedAt": "2026-11-22T07:16:46.777Z",
    "provisional": true
   },
   "401873072": {
@@ -1878,7 +1878,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 47.5,
-   "lockedAt": "2026-11-22T07:01:57.226Z",
+   "lockedAt": "2026-11-22T07:16:46.777Z",
    "provisional": true
   },
   "401873073": {
@@ -1899,7 +1899,7 @@
    "total_play": false,
    "spread": -7.5,
    "total": 54.5,
-   "lockedAt": "2026-11-22T07:01:57.226Z",
+   "lockedAt": "2026-11-22T07:16:46.777Z",
    "provisional": true
   },
   "401873076": {
@@ -1920,7 +1920,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 37.5,
-   "lockedAt": "2026-11-22T07:01:57.226Z",
+   "lockedAt": "2026-11-22T07:16:46.777Z",
    "provisional": true
   }
  },
@@ -3527,7 +3527,7 @@
    }
   ]
  },
- "updated": "2026-11-22T07:01:57.226Z",
+ "updated": "2026-11-22T07:16:46.777Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3877,11 +3877,11 @@
    "tier": "value",
    "stake": 1,
    "size": 1,
-   "american": 573,
-   "dec": 6.7284,
+   "american": 581,
+   "dec": 6.8111,
    "chance": 0.1859,
-   "breakEven": 0.1486,
-   "ev": 0.2511,
+   "breakEven": 0.1468,
+   "ev": 0.2665,
    "firstKick": "2026-11-22T18:00:00.000Z",
    "legs": [
     {
@@ -3917,11 +3917,11 @@
      "game": "LV @ DEN",
      "league": "nfl",
      "kick": "2026-11-22T21:25Z",
-     "price": -116,
+     "price": -113,
      "line": 31.5,
      "win": 0.5748,
      "bookWin": 0.5,
-     "value": 0.0704,
+     "value": 0.0836,
      "cat": "prop",
      "why": "We project 31 rush yds against 31.5; our checked chance on the under is 56%, the books' 50%. DEN is middle of the pack here: 19th of 32 in rush yds allowed to RBs (98 a game; league average 92).",
      "alt": null,
@@ -3964,7 +3964,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-22T07:01:57.226Z"
+   "lockedAt": "2026-11-22T07:16:46.777Z"
   }
  ],
  "teasers": [
@@ -7264,9 +7264,9 @@
    "ev": 0.0479,
    "mev": 0.0293,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "USU 24, ORST 31",
+   "units": -1
   },
   {
    "id": "401873068|sp|home",
@@ -7300,12 +7300,12 @@
    "game": "MIA @ BUF",
    "kick": "2026-11-22T18:00Z",
    "line": -24.5,
-   "mainLine": -16.5,
+   "mainLine": -15.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.286,
+   "win": 0.2807,
    "mwin": 0.2735,
-   "ev": 0.0866,
+   "ev": 0.0667,
    "mev": 0.0391,
    "src": "mkt",
    "result": null,
@@ -8164,13 +8164,13 @@
    "opp": "MIN",
    "game": "MIN VS SF",
    "kick": "2026-11-23T01:20Z",
-   "price": -159,
-   "book": "BetRivers",
+   "price": -160,
+   "book": "BetMGM",
    "books": 6,
    "ours": 0.5505,
-   "mkt": 0.5241,
+   "mkt": 0.5225,
    "win": 0.6733,
-   "ev": 0.0968,
+   "ev": 0.0941,
    "rule": "likely",
    "result": null,
    "final": null,
@@ -11175,7 +11175,10 @@
    "ours": -8.1,
    "market": -7,
    "label": "ORST -7",
-   "lockedAt": "2026-11-22T02:01:29.404Z"
+   "lockedAt": "2026-11-22T02:01:29.404Z",
+   "result": "PUSH",
+   "units": 0,
+   "final": "USU 24, ORST 31"
   },
   {
    "id": "401864541",
