@@ -1844,7 +1844,7 @@
    "total_play": false,
    "spread": 6,
    "total": 45.5,
-   "lockedAt": "2026-11-22T18:16:34.302Z",
+   "lockedAt": "2026-11-22T19:16:45.289Z",
    "provisional": true
   },
   "401873070": {
@@ -1965,7 +1965,7 @@
    "total_play": false,
    "spread": -3,
    "total": 43.5,
-   "lockedAt": "2026-11-22T18:16:34.302Z",
+   "lockedAt": "2026-11-22T19:16:45.289Z",
    "provisional": true
   },
   "401873075": {
@@ -1986,7 +1986,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T18:16:34.302Z",
+   "lockedAt": "2026-11-22T19:16:45.289Z",
    "provisional": true
   },
   "401873076": {
@@ -2032,7 +2032,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-22T18:16:34.302Z",
+   "lockedAt": "2026-11-22T19:16:45.289Z",
    "provisional": true
   }
  },
@@ -2840,12 +2840,12 @@
     "ours": "LAC -3.5 · total 42.4",
     "score": "NYJ 19.5 – LAC 22.9",
     "market": "LAC -3.0 · total 43.5",
-    "lockedAt": "2026-11-22T18:16:34.330Z",
+    "lockedAt": "2026-11-22T19:16:45.313Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-22T21:05Z",
     "big": false,
-    "savedAt": 1795371394330
+    "savedAt": 1795375005313
    }
   ],
   "cfb": [
@@ -3712,7 +3712,7 @@
    }
   ]
  },
- "updated": "2026-11-22T18:16:34.302Z",
+ "updated": "2026-11-22T19:16:45.289Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4094,7 +4094,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-22T18:16:34.302Z",
+      "at": "2026-11-22T19:16:45.289Z",
       "line": 23.5,
       "price": -116,
       "book": "DraftKings",
@@ -4128,7 +4128,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-22T18:16:34.302Z",
+      "at": "2026-11-22T19:16:45.289Z",
       "line": 32.5,
       "price": -109,
       "book": "DraftKings",
@@ -7875,44 +7875,44 @@
    "units": null
   },
   {
-   "id": "401873077|sp|home",
-   "gid": "401873077",
+   "id": "401873078|tot|over",
+   "gid": "401873078",
    "league": "nfl",
-   "kind": "sp",
-   "side": "home",
-   "label": "SF -9.5",
-   "game": "MIN VS SF",
-   "kick": "2026-11-23T01:20Z",
-   "line": -9.5,
-   "mainLine": -3.5,
-   "price": 230,
+   "kind": "tot",
+   "side": "over",
+   "label": "Over 63.5",
+   "game": "CIN @ WSH",
+   "kick": "2026-11-24T01:15Z",
+   "line": 63.5,
+   "mainLine": 54.5,
+   "price": 260,
    "book": "FanDuel",
-   "win": 0.3147,
-   "mwin": 0.3147,
-   "ev": 0.0384,
-   "mev": 0.0384,
+   "win": 0.2874,
+   "mwin": 0.2941,
+   "ev": 0.0348,
+   "mev": 0.0588,
    "src": "mkt",
    "result": null,
    "final": null,
    "units": null
   },
   {
-   "id": "401873078|tot|over",
+   "id": "401873078|tot|under",
    "gid": "401873078",
    "league": "nfl",
    "kind": "tot",
-   "side": "over",
-   "label": "Over 64.5",
+   "side": "under",
+   "label": "Under 51.5",
    "game": "CIN @ WSH",
    "kick": "2026-11-24T01:15Z",
-   "line": 64.5,
+   "line": 51.5,
    "mainLine": 54.5,
-   "price": 285,
-   "book": "FanDuel",
-   "win": 0.2715,
-   "mwin": 0.2778,
-   "ev": 0.0452,
-   "mev": 0.0694,
+   "price": 140,
+   "book": "ESPN BET",
+   "win": 0.4307,
+   "mwin": 0.4222,
+   "ev": 0.0337,
+   "mev": 0.0132,
    "src": "mkt",
    "result": null,
    "final": null,
