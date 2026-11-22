@@ -3169,7 +3169,11 @@
     "locked": true,
     "kick": "2026-11-22T03:15Z",
     "big": false,
-    "savedAt": 1795314712776
+    "savedAt": 1795314712776,
+    "close_line": 60.5,
+    "closeAt": "2026-11-22T02:46:41.534Z",
+    "close_src": "board",
+    "clv": 0
    }
   ],
   "cfbHit": [
@@ -3376,7 +3380,7 @@
    }
   ]
  },
- "updated": "2026-11-22T02:31:52.732Z",
+ "updated": "2026-11-22T02:46:41.534Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7121,9 +7125,9 @@
    "mainLine": 48.5,
    "price": 210,
    "book": "ESPN BET",
-   "win": 0.3446,
+   "win": 0.3384,
    "mwin": 0.3277,
-   "ev": 0.0684,
+   "ev": 0.0491,
    "mev": 0.0158,
    "src": "mkt",
    "result": null,
@@ -10645,7 +10649,10 @@
    "ours": 17.5,
    "market": 17.5,
    "label": "MD +17.5",
-   "lockedAt": "2026-11-21T21:46:18.405Z"
+   "lockedAt": "2026-11-21T21:46:18.405Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "MD 21, USC 35"
   },
   {
    "id": "401858302",
