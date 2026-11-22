@@ -939,8 +939,7 @@
    "total_play": false,
    "spread": -7,
    "total": 51.5,
-   "lockedAt": "2026-11-22T01:46:46.439Z",
-   "provisional": true
+   "lockedAt": "2026-11-22T02:01:29.404Z"
   },
   "401860920": {
    "id": "401860920",
@@ -1210,8 +1209,7 @@
    "total_play": false,
    "spread": -7,
    "total": 40.5,
-   "lockedAt": "2026-11-22T01:46:46.439Z",
-   "provisional": true
+   "lockedAt": "2026-11-22T02:01:29.404Z"
   },
   "401864542": {
    "id": "401864542",
@@ -3334,7 +3332,7 @@
    }
   ]
  },
- "updated": "2026-11-22T01:46:46.439Z",
+ "updated": "2026-11-22T02:01:29.404Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -10847,6 +10845,38 @@
    "market": -2.5,
    "label": "OKST -2.5",
    "lockedAt": "2026-11-22T01:46:46.439Z"
+  },
+  {
+   "id": "401860919",
+   "league": "cfb",
+   "gid": "401860919",
+   "side": "home",
+   "team": "ORST",
+   "game": "USU @ ORST",
+   "kick": "2026-11-22T03:30Z",
+   "line": -7,
+   "price": -110,
+   "book": "standard",
+   "ours": -8.1,
+   "market": -7,
+   "label": "ORST -7",
+   "lockedAt": "2026-11-22T02:01:29.404Z"
+  },
+  {
+   "id": "401864541",
+   "league": "cfb",
+   "gid": "401864541",
+   "side": "home",
+   "team": "NEV",
+   "game": "HAW @ NEV",
+   "kick": "2026-11-22T03:30Z",
+   "line": -7,
+   "price": -110,
+   "book": "standard",
+   "ours": -7.5,
+   "market": -7,
+   "label": "NEV -7",
+   "lockedAt": "2026-11-22T02:01:29.404Z"
   }
  ]
 }
