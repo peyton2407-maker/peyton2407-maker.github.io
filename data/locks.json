@@ -1995,11 +1995,11 @@
    "spread": -10.5,
    "total": 40.5,
    "lockedAt": "2026-11-22T20:01:57.086Z",
-   "close_spread": -10.5,
-   "close_total": 40.5,
-   "closeAt": "2026-11-22T20:32:11.170Z",
-   "clv_side": 0,
-   "clv_total": 0
+   "close_spread": -11.5,
+   "close_total": 41.5,
+   "closeAt": "2026-11-22T21:01:51.869Z",
+   "clv_side": 1,
+   "clv_total": 1
   },
   "401873076": {
    "id": "401873076",
@@ -2044,7 +2044,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-22T20:32:11.170Z",
+   "lockedAt": "2026-11-22T21:01:51.869Z",
    "provisional": true
   }
  },
@@ -3727,7 +3727,7 @@
    }
   ]
  },
- "updated": "2026-11-22T20:32:11.170Z",
+ "updated": "2026-11-22T21:01:51.869Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4109,7 +4109,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-22T20:32:11.170Z",
+      "at": "2026-11-22T21:01:51.869Z",
       "line": 23.5,
       "price": -115,
       "book": "DraftKings",
@@ -4143,7 +4143,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-22T20:32:11.170Z",
+      "at": "2026-11-22T21:01:51.869Z",
       "line": 32.5,
       "price": -109,
       "book": "DraftKings",
@@ -7643,9 +7643,9 @@
    "ev": 0.0396,
    "mev": 0.0572,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "ARI 7, KC 34",
+   "units": 2.7
   },
   {
    "id": "401873071|sp|away",
@@ -7687,9 +7687,9 @@
    "ev": 0.0465,
    "mev": 0.0291,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "ARI 7, KC 34",
+   "units": -1
   },
   {
    "id": "401873073|sp|home",
@@ -7775,9 +7775,9 @@
    "ev": 0.0343,
    "mev": 0.0096,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "ARI 7, KC 34",
+   "units": -1
   },
   {
    "id": "401873068|tot|under",
@@ -11593,7 +11593,10 @@
    "ours": 14.8,
    "market": 15.5,
    "label": "ARI +15.5",
-   "lockedAt": "2026-11-22T16:31:58.829Z"
+   "lockedAt": "2026-11-22T16:31:58.829Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "ARI 7, KC 34"
   },
   {
    "id": "401873076",
