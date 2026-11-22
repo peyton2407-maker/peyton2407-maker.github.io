@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-22T02:01:29Z",
+ "updated": "2026-11-22T03:01:47Z",
  "about": "Every side The Split took: the line when first picked, the closing line, and how many points the line moved toward our side (clv). Only picks still standing at kickoff count (counts: true); ones The Split dropped before the game are listed but not counted. Positive average CLV over a season is the sign of a real edge; win-loss needs far more games.",
  "summary": {
   "record": {
@@ -11,15 +11,15 @@
    "lost_close": 28,
    "at_first": {
     "w": 63,
-    "l": 71,
+    "l": 72,
     "p": 4,
-    "pct": 0.47
+    "pct": 0.467
    },
    "at_close": {
     "w": 28,
-    "l": 27,
+    "l": 28,
     "p": 2,
-    "pct": 0.509
+    "pct": 0.5
    }
   },
   "by_week": {
@@ -172,15 +172,15 @@
     "lost_close": 2,
     "at_first": {
      "w": 2,
-     "l": 2,
+     "l": 3,
      "p": 0,
-     "pct": 0.5
+     "pct": 0.4
     },
     "at_close": {
      "w": 2,
-     "l": 2,
+     "l": 3,
      "p": 0,
-     "pct": 0.5
+     "pct": 0.4
     }
    }
   },
@@ -3801,9 +3801,9 @@
    "close": -13.5,
    "close_src": "last look",
    "clv": -0.0,
-   "final": null,
-   "ats_first": null,
-   "ats_close": null,
+   "final": "WSU 14 - TXST 42",
+   "ats_first": "L",
+   "ats_close": "L",
    "counts": true
   },
   {
