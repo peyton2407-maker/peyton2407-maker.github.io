@@ -2044,7 +2044,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-22T21:16:58.522Z",
+   "lockedAt": "2026-11-22T21:32:06.194Z",
    "provisional": true
   }
  },
@@ -2896,7 +2896,47 @@
     "locked": true,
     "kick": "2026-11-22T21:25Z",
     "big": false,
-    "savedAt": 1795382218544
+    "savedAt": 1795382218544,
+    "close_line": 3.5,
+    "closeAt": "2026-11-22T21:32:06.194Z",
+    "close_src": "board",
+    "clv": 0
+   },
+   {
+    "key": "game:401873077",
+    "week": 11,
+    "day": "2026-11-22",
+    "league": "nfl",
+    "id": "401873077",
+    "game": "MIN VS SF",
+    "kind": "Player prop",
+    "line": "Christian McCaffrey under 33.5 rec yds",
+    "hitPct": 55,
+    "why": "We project Christian McCaffrey for 30 rec yds against a line of 33.5. Our checked chance on the under is 55%; the books' own chance is 51%. At -112 (DraftKings) that is 4.9% better than the price. MIN is a tough defense here: it allows the 4th-fewest rec yds to RBs (21 a game; league average 32). The under hit in 3 of his last 8 games at this line.",
+    "label": "Sunday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 1.5,
+    "prop": {
+     "pid": "3117251",
+     "name": "Christian McCaffrey",
+     "stat": "rec_yds",
+     "side": "under",
+     "line": 33.5
+    },
+    "price": -112,
+    "book": "DraftKings",
+    "ev": 0.049,
+    "ours": "SF -3.5 · total 45.1",
+    "score": "MIN 20.8 – SF 24.3",
+    "market": "SF -3.5 · total 46.5",
+    "lockedAt": "2026-11-22T21:32:06.217Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-23T01:20Z",
+    "big": false,
+    "savedAt": 1795383126217
    }
   ],
   "cfb": [
@@ -3763,7 +3803,7 @@
    }
   ]
  },
- "updated": "2026-11-22T21:16:58.522Z",
+ "updated": "2026-11-22T21:32:06.194Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4365,12 +4405,12 @@
      "win": 0.7257,
      "bookWin": 0.7528,
      "total": 44.5,
-     "result": null,
-     "final": null
+     "result": "HIT",
+     "final": "BAL 33, CAR 35"
     }
    ],
-   "result": null,
-   "units": null,
+   "result": "HIT",
+   "units": 0.8333,
    "locked": true,
    "provisional": false,
    "lockedAt": "2026-11-22T16:31:58.829Z"
@@ -4598,8 +4638,8 @@
    "win": 0.7255,
    "bookWin": 0.7528,
    "total": 44.5,
-   "result": null,
-   "final": null
+   "result": "HIT",
+   "final": "BAL 33, CAR 35"
   }
  ],
  "altLines": [
@@ -7613,9 +7653,9 @@
    "ev": 0.0796,
    "mev": -0.0147,
    "src": "proj",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "BAL 33, CAR 35",
+   "units": -1
   },
   {
    "id": "401873071|tot|under",
@@ -7833,9 +7873,9 @@
    "ev": 0.0342,
    "mev": 0.0133,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "BAL 33, CAR 35",
+   "units": -1
   },
   {
    "id": "401873074|sp|home",
@@ -11679,7 +11719,10 @@
    "ours": -3.7,
    "market": -2.5,
    "label": "CAR -2.5",
-   "lockedAt": "2026-11-22T16:31:58.829Z"
+   "lockedAt": "2026-11-22T16:31:58.829Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "BAL 33, CAR 35"
   },
   {
    "id": "401873074",
