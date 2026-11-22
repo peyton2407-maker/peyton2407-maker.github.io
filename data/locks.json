@@ -2044,7 +2044,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-22T21:32:06.194Z",
+   "lockedAt": "2026-11-22T22:01:24.891Z",
    "provisional": true
   }
  },
@@ -2912,12 +2912,12 @@
     "kind": "Player prop",
     "line": "Christian McCaffrey under 33.5 rec yds",
     "hitPct": 55,
-    "why": "We project Christian McCaffrey for 30 rec yds against a line of 33.5. Our checked chance on the under is 55%; the books' own chance is 51%. At -112 (DraftKings) that is 4.9% better than the price. MIN is a tough defense here: it allows the 4th-fewest rec yds to RBs (21 a game; league average 32). The under hit in 3 of his last 8 games at this line.",
+    "why": "We project Christian McCaffrey for 30 rec yds against a line of 33.5. Our checked chance on the under is 55%; the books' own chance is 51%. At -112 (DraftKings) that is 4.8% better than the price. MIN is a tough defense here: it allows the 4th-fewest rec yds to RBs (21 a game; league average 32). The under hit in 3 of his last 8 games at this line.",
     "label": "Sunday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 1.5,
+    "units": 1.25,
     "prop": {
      "pid": "3117251",
      "name": "Christian McCaffrey",
@@ -2927,16 +2927,16 @@
     },
     "price": -112,
     "book": "DraftKings",
-    "ev": 0.049,
+    "ev": 0.048,
     "ours": "SF -3.5 · total 45.1",
     "score": "MIN 20.8 – SF 24.3",
     "market": "SF -3.5 · total 46.5",
-    "lockedAt": "2026-11-22T21:32:06.217Z",
+    "lockedAt": "2026-11-22T22:01:24.914Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-23T01:20Z",
     "big": false,
-    "savedAt": 1795383126217
+    "savedAt": 1795384884914
    }
   ],
   "cfb": [
@@ -3803,7 +3803,7 @@
    }
   ]
  },
- "updated": "2026-11-22T21:32:06.194Z",
+ "updated": "2026-11-22T22:01:24.891Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4251,7 +4251,7 @@
       "line": 34.5,
       "name": "Chris Godwin Jr."
      },
-     "result": null,
+     "result": "HIT",
      "close": {
       "at": "2026-11-22T17:31:45.961Z",
       "line": 33.5,
@@ -4260,7 +4260,9 @@
       "fair": null,
       "push": 0,
       "src": "books"
-     }
+     },
+     "actual": 13,
+     "final": "Chris Godwin Jr.: 13 rec yds"
     }
    ],
    "result": null,
@@ -8553,13 +8555,13 @@
    "opp": "MIN",
    "game": "MIN VS SF",
    "kick": "2026-11-23T01:20Z",
-   "price": -157,
-   "book": "Caesars",
+   "price": -160,
+   "book": "FanDuel",
    "books": 6,
    "ours": 0.5535,
-   "mkt": 0.5321,
+   "mkt": 0.5323,
    "win": 0.6774,
-   "ev": 0.1089,
+   "ev": 0.1008,
    "rule": "likely",
    "result": null,
    "final": null,
