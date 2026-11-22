@@ -1794,7 +1794,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T08:16:44.242Z",
+   "lockedAt": "2026-11-22T08:47:10.261Z",
    "provisional": true
   },
   "401873068": {
@@ -1815,7 +1815,7 @@
    "total_play": false,
    "spread": -3,
    "total": 43.5,
-   "lockedAt": "2026-11-22T08:16:44.242Z",
+   "lockedAt": "2026-11-22T08:47:10.261Z",
    "provisional": true
   },
   "401873070": {
@@ -1836,7 +1836,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 44.5,
-   "lockedAt": "2026-11-22T08:16:44.242Z",
+   "lockedAt": "2026-11-22T08:47:10.261Z",
    "provisional": true
   },
   "401873071": {
@@ -1857,7 +1857,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 48.5,
-   "lockedAt": "2026-11-22T08:16:44.242Z",
+   "lockedAt": "2026-11-22T08:47:10.261Z",
    "provisional": true
   },
   "401873072": {
@@ -1878,7 +1878,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 47.5,
-   "lockedAt": "2026-11-22T08:16:44.242Z",
+   "lockedAt": "2026-11-22T08:47:10.261Z",
    "provisional": true
   },
   "401873073": {
@@ -1899,7 +1899,7 @@
    "total_play": false,
    "spread": -7.5,
    "total": 54.5,
-   "lockedAt": "2026-11-22T08:16:44.242Z",
+   "lockedAt": "2026-11-22T08:47:10.261Z",
    "provisional": true
   },
   "401873076": {
@@ -1920,7 +1920,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 37.5,
-   "lockedAt": "2026-11-22T08:16:44.242Z",
+   "lockedAt": "2026-11-22T08:47:10.261Z",
    "provisional": true
   }
  },
@@ -3528,7 +3528,7 @@
    }
   ]
  },
- "updated": "2026-11-22T08:16:44.242Z",
+ "updated": "2026-11-22T08:47:10.261Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3965,7 +3965,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-22T08:16:44.242Z"
+   "lockedAt": "2026-11-22T08:47:10.261Z"
   }
  ],
  "teasers": [
@@ -7590,9 +7590,9 @@
    "mainLine": 54.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2715,
+   "win": 0.2762,
    "mwin": 0.2778,
-   "ev": 0.0452,
+   "ev": 0.0632,
    "mev": 0.0694,
    "src": "mkt",
    "result": null,
