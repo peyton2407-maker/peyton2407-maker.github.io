@@ -3380,7 +3380,7 @@
    }
   ]
  },
- "updated": "2026-11-22T04:16:27.688Z",
+ "updated": "2026-11-22T04:32:00.408Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6992,9 +6992,9 @@
    "ev": 0.048,
    "mev": 0.0443,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "UTSA 19, UAB 17",
+   "units": -1
   },
   {
    "id": "401860925|tot|under",
@@ -10833,7 +10833,10 @@
    "ours": 18.9,
    "market": 20.5,
    "label": "CSU +20.5",
-   "lockedAt": "2026-11-21T23:01:38.497Z"
+   "lockedAt": "2026-11-21T23:01:38.497Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "CSU 42, FRES 49"
   },
   {
    "id": "401862836",
@@ -10849,7 +10852,10 @@
    "ours": 3.7,
    "market": 4,
    "label": "UAB +4",
-   "lockedAt": "2026-11-21T23:32:02.295Z"
+   "lockedAt": "2026-11-21T23:32:02.295Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "UTSA 19, UAB 17"
   },
   {
    "id": "401856872",
