@@ -1844,7 +1844,7 @@
    "total_play": false,
    "spread": 6,
    "total": 45.5,
-   "lockedAt": "2026-11-22T19:16:45.289Z",
+   "lockedAt": "2026-11-22T19:46:54.998Z",
    "provisional": true
   },
   "401873070": {
@@ -1965,8 +1965,7 @@
    "total_play": false,
    "spread": -3,
    "total": 43.5,
-   "lockedAt": "2026-11-22T19:16:45.289Z",
-   "provisional": true
+   "lockedAt": "2026-11-22T19:46:54.998Z"
   },
   "401873075": {
    "id": "401873075",
@@ -1986,7 +1985,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T19:16:45.289Z",
+   "lockedAt": "2026-11-22T19:46:54.998Z",
    "provisional": true
   },
   "401873076": {
@@ -2032,7 +2031,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-22T19:16:45.289Z",
+   "lockedAt": "2026-11-22T19:46:54.998Z",
    "provisional": true
   }
  },
@@ -2840,12 +2839,11 @@
     "ours": "LAC -3.5 · total 42.4",
     "score": "NYJ 19.5 – LAC 22.9",
     "market": "LAC -3.0 · total 43.5",
-    "lockedAt": "2026-11-22T19:16:45.313Z",
-    "locked": false,
-    "provisional": true,
+    "lockedAt": "2026-11-22T19:46:55.018Z",
+    "locked": true,
     "kick": "2026-11-22T21:05Z",
     "big": false,
-    "savedAt": 1795375005313
+    "savedAt": 1795376815018
    }
   ],
   "cfb": [
@@ -3712,7 +3710,7 @@
    }
   ]
  },
- "updated": "2026-11-22T19:16:45.289Z",
+ "updated": "2026-11-22T19:46:54.998Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4094,7 +4092,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-22T19:16:45.289Z",
+      "at": "2026-11-22T19:46:54.998Z",
       "line": 23.5,
       "price": -116,
       "book": "DraftKings",
@@ -4128,7 +4126,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-22T19:16:45.289Z",
+      "at": "2026-11-22T19:46:54.998Z",
       "line": 32.5,
       "price": -109,
       "book": "DraftKings",
@@ -11655,6 +11653,22 @@
    "market": -2.5,
    "label": "CAR -2.5",
    "lockedAt": "2026-11-22T16:31:58.829Z"
+  },
+  {
+   "id": "401873074",
+   "league": "nfl",
+   "gid": "401873074",
+   "side": "home",
+   "team": "LAC",
+   "game": "NYJ @ LAC",
+   "kick": "2026-11-22T21:05Z",
+   "line": -3,
+   "price": -110,
+   "book": "standard",
+   "ours": -3.5,
+   "market": -3,
+   "label": "LAC -3",
+   "lockedAt": "2026-11-22T19:46:54.998Z"
   }
  ]
 }
