@@ -394,7 +394,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 59.5,
-   "lockedAt": "2026-11-22T00:16:52.853Z",
+   "lockedAt": "2026-11-22T00:31:25.752Z",
    "provisional": true
   },
   "401856871": {
@@ -440,8 +440,7 @@
    "total_play": false,
    "spread": 8.5,
    "total": 46.5,
-   "lockedAt": "2026-11-22T00:16:52.853Z",
-   "provisional": true
+   "lockedAt": "2026-11-22T00:31:25.752Z"
   },
   "401858302": {
    "id": "401858302",
@@ -936,7 +935,7 @@
    "total_play": false,
    "spread": -7,
    "total": 51.5,
-   "lockedAt": "2026-11-22T00:16:52.853Z",
+   "lockedAt": "2026-11-22T00:31:25.752Z",
    "provisional": true
   },
   "401860920": {
@@ -982,7 +981,7 @@
    "total_play": false,
    "spread": -20.5,
    "total": 60.5,
-   "lockedAt": "2026-11-22T00:16:52.853Z",
+   "lockedAt": "2026-11-22T00:31:25.752Z",
    "provisional": true
   },
   "401861968": {
@@ -1203,7 +1202,7 @@
    "total_play": false,
    "spread": -7,
    "total": 40.5,
-   "lockedAt": "2026-11-22T00:16:52.853Z",
+   "lockedAt": "2026-11-22T00:31:25.752Z",
    "provisional": true
   },
   "401864542": {
@@ -3327,7 +3326,7 @@
    }
   ]
  },
- "updated": "2026-11-22T00:16:52.853Z",
+ "updated": "2026-11-22T00:31:25.752Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6703,9 +6702,9 @@
    "ev": 0.0303,
    "mev": 0.0556,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "GAST 27, MRSH 28",
+   "units": -1
   },
   {
    "id": "401869958|sp|away",
@@ -6725,9 +6724,9 @@
    "ev": 0.1211,
    "mev": 0.0942,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "GAST 27, MRSH 28",
+   "units": -1
   },
   {
    "id": "401864543|sp|away",
@@ -6747,9 +6746,9 @@
    "ev": 0.0313,
    "mev": 0.0219,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "NIU 25, NDSU 31",
+   "units": 2.85
   },
   {
    "id": "401869953|tot|under",
@@ -6791,9 +6790,9 @@
    "ev": 0.0427,
    "mev": 0.0427,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "GAST 27, MRSH 28",
+   "units": -1
   },
   {
    "id": "401869953|sp|home",
@@ -6835,9 +6834,9 @@
    "ev": 0.0382,
    "mev": 0.0459,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "NIU 25, NDSU 31",
+   "units": -1
   },
   {
    "id": "401869938|sp|away",
@@ -10437,7 +10436,10 @@
    "ours": 2.8,
    "market": 3.5,
    "label": "MICH +3.5",
-   "lockedAt": "2026-11-21T19:01:49.764Z"
+   "lockedAt": "2026-11-21T19:01:49.764Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "UCLA 16, MICH 18"
   },
   {
    "id": "401856871",
@@ -10602,7 +10604,10 @@
    "ours": 24.5,
    "market": 25.5,
    "label": "NIU +25.5",
-   "lockedAt": "2026-11-21T19:32:00.636Z"
+   "lockedAt": "2026-11-21T19:32:00.636Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "NIU 25, NDSU 31"
   },
   {
    "id": "401869953",
@@ -10637,7 +10642,10 @@
    "ours": 0.3,
    "market": 3,
    "label": "GAST +3",
-   "lockedAt": "2026-11-21T19:32:00.636Z"
+   "lockedAt": "2026-11-21T19:32:00.636Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "GAST 27, MRSH 28"
   },
   {
    "id": "401871101",
@@ -10653,7 +10661,10 @@
    "ours": 4.9,
    "market": 5.5,
    "label": "USM +5.5",
-   "lockedAt": "2026-11-21T19:32:00.636Z"
+   "lockedAt": "2026-11-21T19:32:00.636Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "USA 40, USM 35"
   },
   {
    "id": "401860920",
@@ -10862,6 +10873,22 @@
    "market": 4,
    "label": "UAB +4",
    "lockedAt": "2026-11-21T23:32:02.295Z"
+  },
+  {
+   "id": "401856872",
+   "league": "cfb",
+   "gid": "401856872",
+   "side": "home",
+   "team": "TCU",
+   "game": "UTAH @ TCU",
+   "kick": "2026-11-22T02:00Z",
+   "line": 8.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 7.5,
+   "market": 8.5,
+   "label": "TCU +8.5",
+   "lockedAt": "2026-11-22T00:31:25.752Z"
   }
  ]
 }
