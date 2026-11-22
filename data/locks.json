@@ -1794,7 +1794,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T15:16:49.863Z",
+   "lockedAt": "2026-11-22T16:01:29.111Z",
    "provisional": true
   },
   "401873068": {
@@ -1806,16 +1806,16 @@
    "away": "BAL",
    "date": "2026-11-22T18:00Z",
    "pick": "CAR",
-   "pick_line": "CAR -3.0",
+   "pick_line": "CAR -2.5",
    "total_pick": "UNDER 44.5",
    "side_play": false,
-   "our_margin": 4.01,
+   "our_margin": 3.66,
    "our_total": 43.5,
    "confidence": null,
    "total_play": false,
-   "spread": -3,
+   "spread": -2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-22T15:16:49.863Z",
+   "lockedAt": "2026-11-22T16:01:29.111Z",
    "provisional": true
   },
   "401873069": {
@@ -1836,7 +1836,7 @@
    "total_play": false,
    "spread": 6,
    "total": 45.5,
-   "lockedAt": "2026-11-22T15:16:49.863Z",
+   "lockedAt": "2026-11-22T16:01:29.111Z",
    "provisional": true
   },
   "401873070": {
@@ -1857,7 +1857,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 44.5,
-   "lockedAt": "2026-11-22T15:16:49.863Z",
+   "lockedAt": "2026-11-22T16:01:29.111Z",
    "provisional": true
   },
   "401873071": {
@@ -1873,12 +1873,12 @@
    "total_pick": "UNDER 47.5",
    "side_play": false,
    "our_margin": 10.8,
-   "our_total": 45.3,
+   "our_total": 46.1,
    "confidence": null,
    "total_play": false,
    "spread": -11.5,
    "total": 47.5,
-   "lockedAt": "2026-11-22T15:16:49.863Z",
+   "lockedAt": "2026-11-22T16:01:29.111Z",
    "provisional": true
   },
   "401873072": {
@@ -1899,7 +1899,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 48.5,
-   "lockedAt": "2026-11-22T15:16:49.863Z",
+   "lockedAt": "2026-11-22T16:01:29.111Z",
    "provisional": true
   },
   "401873073": {
@@ -1920,7 +1920,7 @@
    "total_play": false,
    "spread": -7.5,
    "total": 54.5,
-   "lockedAt": "2026-11-22T15:16:49.863Z",
+   "lockedAt": "2026-11-22T16:01:29.111Z",
    "provisional": true
   },
   "401873074": {
@@ -1941,7 +1941,7 @@
    "total_play": false,
    "spread": -3,
    "total": 42.5,
-   "lockedAt": "2026-11-22T15:16:49.863Z",
+   "lockedAt": "2026-11-22T16:01:29.111Z",
    "provisional": true
   },
   "401873075": {
@@ -1962,7 +1962,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T15:16:49.863Z",
+   "lockedAt": "2026-11-22T16:01:29.111Z",
    "provisional": true
   },
   "401873076": {
@@ -1983,7 +1983,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 37.5,
-   "lockedAt": "2026-11-22T15:16:49.863Z",
+   "lockedAt": "2026-11-22T16:01:29.111Z",
    "provisional": true
   },
   "401873077": {
@@ -2004,7 +2004,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-22T15:16:49.863Z",
+   "lockedAt": "2026-11-22T16:01:29.111Z",
    "provisional": true
   }
  },
@@ -2776,12 +2776,12 @@
     "ours": "LAC -3.5 · total 41.7",
     "score": "NYJ 19.1 – LAC 22.6",
     "market": "LAC -3.0 · total 42.5",
-    "lockedAt": "2026-11-22T15:16:49.912Z",
+    "lockedAt": "2026-11-22T16:01:29.153Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-22T21:05Z",
     "big": true,
-    "savedAt": 1795360609912
+    "savedAt": 1795363289153
    }
   ],
   "cfb": [
@@ -3648,7 +3648,7 @@
    }
   ]
  },
- "updated": "2026-11-22T15:16:49.863Z",
+ "updated": "2026-11-22T16:01:29.111Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4085,7 +4085,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-22T15:16:49.863Z"
+   "lockedAt": "2026-11-22T16:01:29.111Z"
   }
  ],
  "teasers": [
@@ -4184,6 +4184,54 @@
    "locked": true,
    "provisional": false,
    "lockedAt": "2026-11-15T13:01:23.839Z"
+  },
+  {
+   "key": "teaser:nfl-11|cfb-12",
+   "week": "nfl-11|cfb-12",
+   "n": 2,
+   "price": -120,
+   "chance": 0.5418,
+   "ev": -0.0067,
+   "firstKick": "2026-11-22T18:00:00.000Z",
+   "legs": [
+    {
+     "id": "401873073|sp|home",
+     "gid": "401873073",
+     "team": "DAL",
+     "side": "home",
+     "game": "TEN @ DAL",
+     "kick": "2026-11-22T18:00Z",
+     "from": -7.5,
+     "to": -1.5,
+     "book": null,
+     "win": 0.7466,
+     "bookWin": 0.7428,
+     "total": 54.5,
+     "result": null,
+     "final": null
+    },
+    {
+     "id": "401873068|sp|away",
+     "gid": "401873068",
+     "team": "BAL",
+     "side": "away",
+     "game": "BAL @ CAR",
+     "kick": "2026-11-22T18:00Z",
+     "from": 2.5,
+     "to": 8.5,
+     "book": null,
+     "win": 0.7257,
+     "bookWin": 0.7528,
+     "total": 44.5,
+     "result": null,
+     "final": null
+    }
+   ],
+   "result": null,
+   "units": null,
+   "locked": false,
+   "provisional": true,
+   "lockedAt": "2026-11-22T16:01:29.111Z"
   }
  ],
  "teaserLegs": [
@@ -4392,6 +4440,22 @@
    "win": 0.7466,
    "bookWin": 0.7428,
    "total": 54.5,
+   "result": null,
+   "final": null
+  },
+  {
+   "id": "401873068|sp|away",
+   "gid": "401873068",
+   "team": "BAL",
+   "side": "away",
+   "game": "BAL @ CAR",
+   "kick": "2026-11-22T18:00Z",
+   "from": 2.5,
+   "to": 8.5,
+   "book": null,
+   "win": 0.7257,
+   "bookWin": 0.7528,
+   "total": 44.5,
    "result": null,
    "final": null
   }
@@ -7399,12 +7463,12 @@
    "game": "BAL @ CAR",
    "kick": "2026-11-22T18:00Z",
    "line": -3.5,
-   "mainLine": -3,
+   "mainLine": -2.5,
    "price": 125,
    "book": "ESPN BET",
-   "win": 0.4632,
+   "win": 0.4735,
    "mwin": 0.4429,
-   "ev": 0.0422,
+   "ev": 0.0653,
    "mev": -0.0035,
    "src": "proj",
    "result": null,
@@ -7446,9 +7510,9 @@
    "mainLine": 47.5,
    "price": 290,
    "book": "ESPN BET",
-   "win": 0.2752,
+   "win": 0.27,
    "mwin": 0.2613,
-   "ev": 0.0734,
+   "ev": 0.0532,
    "mev": 0.0192,
    "src": "mkt",
    "result": null,
