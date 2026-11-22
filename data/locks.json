@@ -394,7 +394,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 59.5,
-   "lockedAt": "2026-11-22T00:01:21.035Z",
+   "lockedAt": "2026-11-22T00:16:52.853Z",
    "provisional": true
   },
   "401856871": {
@@ -440,7 +440,7 @@
    "total_play": false,
    "spread": 8.5,
    "total": 46.5,
-   "lockedAt": "2026-11-22T00:01:21.035Z",
+   "lockedAt": "2026-11-22T00:16:52.853Z",
    "provisional": true
   },
   "401858302": {
@@ -936,7 +936,7 @@
    "total_play": false,
    "spread": -7,
    "total": 51.5,
-   "lockedAt": "2026-11-22T00:01:21.035Z",
+   "lockedAt": "2026-11-22T00:16:52.853Z",
    "provisional": true
   },
   "401860920": {
@@ -982,7 +982,7 @@
    "total_play": false,
    "spread": -20.5,
    "total": 60.5,
-   "lockedAt": "2026-11-22T00:01:21.035Z",
+   "lockedAt": "2026-11-22T00:16:52.853Z",
    "provisional": true
   },
   "401861968": {
@@ -1203,7 +1203,7 @@
    "total_play": false,
    "spread": -7,
    "total": 40.5,
-   "lockedAt": "2026-11-22T00:01:21.035Z",
+   "lockedAt": "2026-11-22T00:16:52.853Z",
    "provisional": true
   },
   "401864542": {
@@ -3327,7 +3327,7 @@
    }
   ]
  },
- "updated": "2026-11-22T00:01:21.035Z",
+ "updated": "2026-11-22T00:16:52.853Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6527,9 +6527,9 @@
    "ev": 0.0875,
    "mev": 0.0644,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "RUTG 25, PSU 24",
+   "units": 2.85
   },
   {
    "id": "401856754|sp|home",
@@ -6571,9 +6571,9 @@
    "ev": 0.0793,
    "mev": 0.0793,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "SAM 17, AUB 59",
+   "units": -1
   },
   {
    "id": "401856755|tot|over",
@@ -6615,9 +6615,9 @@
    "ev": 0.0672,
    "mev": 0.0672,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "IU 24, WASH 27",
+   "units": -1
   },
   {
    "id": "401858304|tot|under",
@@ -6659,9 +6659,9 @@
    "ev": 0.0343,
    "mev": 0.0343,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "RUTG 25, PSU 24",
+   "units": -1
   },
   {
    "id": "401856752|tot|under",
@@ -6681,9 +6681,9 @@
    "ev": 0.0404,
    "mev": 0.0209,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "TA&M 7, OU 28",
+   "units": -1
   },
   {
    "id": "401869958|sp|home",
@@ -6769,9 +6769,9 @@
    "ev": 0.0955,
    "mev": 0.0955,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "GASO 45, TROY 7",
+   "units": -1
   },
   {
    "id": "401869958|tot|under",
@@ -6813,9 +6813,9 @@
    "ev": 0.0566,
    "mev": 0.05,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "GASO 45, TROY 7",
+   "units": -1
   },
   {
    "id": "401864543|sp|home",
@@ -6867,17 +6867,39 @@
    "league": "cfb",
    "kind": "sp",
    "side": "home",
-   "label": "CAL -5",
+   "label": "CAL -4.5",
    "game": "STAN @ CAL",
    "kick": "2026-11-22T00:30Z",
-   "line": -5,
+   "line": -4.5,
    "mainLine": 2.5,
-   "price": 240,
+   "price": 225,
    "book": "BetRivers",
-   "win": 0.3144,
-   "mwin": 0.3102,
-   "ev": 0.083,
-   "mev": 0.0688,
+   "win": 0.3362,
+   "mwin": 0.332,
+   "ev": 0.0928,
+   "mev": 0.0791,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401856751|sp|away",
+   "gid": "401856751",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "away",
+   "label": "UK +1.5",
+   "game": "UK @ MIZ",
+   "kick": "2026-11-22T00:30Z",
+   "line": 1.5,
+   "mainLine": 4.5,
+   "price": 175,
+   "book": "ESPN BET",
+   "win": 0.3766,
+   "mwin": 0.3766,
+   "ev": 0.0357,
+   "mev": 0.0357,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -6889,61 +6911,17 @@
    "league": "cfb",
    "kind": "sp",
    "side": "home",
-   "label": "UAB -3",
+   "label": "UAB -3.5",
    "game": "UTSA @ UAB",
    "kick": "2026-11-22T01:00Z",
-   "line": -3,
+   "line": -3.5,
    "mainLine": 4,
-   "price": 245,
+   "price": 265,
    "book": "BetRivers",
-   "win": 0.2864,
-   "mwin": 0.2854,
-   "ev": 0.0508,
-   "mev": 0.0473,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401862836|tot|under",
-   "gid": "401862836",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 39.5",
-   "game": "UTSA @ UAB",
-   "kick": "2026-11-22T01:00Z",
-   "line": 39.5,
-   "mainLine": 49.5,
-   "price": 300,
-   "book": "FanDuel",
-   "win": 0.2687,
-   "mwin": 0.2687,
-   "ev": 0.0746,
-   "mev": 0.0746,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401860925|tot|under",
-   "gid": "401860925",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 53.5",
-   "game": "SDSU @ BOIS",
-   "kick": "2026-11-22T02:30Z",
-   "line": 53.5,
-   "mainLine": 60.5,
-   "price": 215,
-   "book": "FanDuel",
-   "win": 0.3271,
-   "mwin": 0.3271,
-   "ev": 0.0304,
-   "mev": 0.0304,
+   "win": 0.2871,
+   "mwin": 0.2861,
+   "ev": 0.048,
+   "mev": 0.0443,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -10440,7 +10418,10 @@
    "ours": 8,
    "market": 9.5,
    "label": "WASH +9.5",
-   "lockedAt": "2026-11-21T19:01:49.764Z"
+   "lockedAt": "2026-11-21T19:01:49.764Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "IU 24, WASH 27"
   },
   {
    "id": "401858528",
@@ -10526,7 +10507,10 @@
    "ours": 48.5,
    "market": 48.5,
    "label": "SAM +48.5",
-   "lockedAt": "2026-11-21T19:01:49.764Z"
+   "lockedAt": "2026-11-21T19:01:49.764Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "SAM 17, AUB 59"
   },
   {
    "id": "401858304",
@@ -10561,7 +10545,10 @@
    "ours": 22.6,
    "market": 25.5,
    "label": "RUTG +25.5",
-   "lockedAt": "2026-11-21T19:01:49.764Z"
+   "lockedAt": "2026-11-21T19:01:49.764Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "RUTG 25, PSU 24"
   },
   {
    "id": "401861968",
@@ -10596,7 +10583,10 @@
    "ours": 4,
    "market": 7,
    "label": "TA&M +7",
-   "lockedAt": "2026-11-21T19:16:59.193Z"
+   "lockedAt": "2026-11-21T19:16:59.193Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "TA&M 7, OU 28"
   },
   {
    "id": "401864543",
@@ -10628,7 +10618,10 @@
    "ours": 8.3,
    "market": 9.5,
    "label": "TROY +9.5",
-   "lockedAt": "2026-11-21T19:32:00.636Z"
+   "lockedAt": "2026-11-21T19:32:00.636Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "GASO 45, TROY 7"
   },
   {
    "id": "401869958",
