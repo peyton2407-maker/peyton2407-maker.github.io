@@ -1794,7 +1794,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T09:16:22.224Z",
+   "lockedAt": "2026-11-22T09:31:29.335Z",
    "provisional": true
   },
   "401873068": {
@@ -1815,7 +1815,28 @@
    "total_play": false,
    "spread": -3,
    "total": 43.5,
-   "lockedAt": "2026-11-22T09:16:22.224Z",
+   "lockedAt": "2026-11-22T09:31:29.335Z",
+   "provisional": true
+  },
+  "401873069": {
+   "id": "401873069",
+   "league": "nfl",
+   "week": 11,
+   "short": "JAX @ NYG",
+   "home": "NYG",
+   "away": "JAX",
+   "date": "2026-11-22T21:25Z",
+   "pick": "JAX",
+   "pick_line": "JAX -6.0",
+   "total_pick": "UNDER 45.5",
+   "side_play": false,
+   "our_margin": -6.56,
+   "our_total": 45.1,
+   "confidence": null,
+   "total_play": false,
+   "spread": 6,
+   "total": 45.5,
+   "lockedAt": "2026-11-22T09:31:29.335Z",
    "provisional": true
   },
   "401873070": {
@@ -1836,7 +1857,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 44.5,
-   "lockedAt": "2026-11-22T09:16:22.224Z",
+   "lockedAt": "2026-11-22T09:31:29.335Z",
    "provisional": true
   },
   "401873071": {
@@ -1857,7 +1878,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 48.5,
-   "lockedAt": "2026-11-22T09:16:22.224Z",
+   "lockedAt": "2026-11-22T09:31:29.335Z",
    "provisional": true
   },
   "401873072": {
@@ -1878,7 +1899,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 47.5,
-   "lockedAt": "2026-11-22T09:16:22.224Z",
+   "lockedAt": "2026-11-22T09:31:29.335Z",
    "provisional": true
   },
   "401873073": {
@@ -1899,7 +1920,7 @@
    "total_play": false,
    "spread": -7.5,
    "total": 54.5,
-   "lockedAt": "2026-11-22T09:16:22.224Z",
+   "lockedAt": "2026-11-22T09:31:29.335Z",
    "provisional": true
   },
   "401873074": {
@@ -1920,7 +1941,28 @@
    "total_play": false,
    "spread": -3,
    "total": 41.5,
-   "lockedAt": "2026-11-22T09:16:22.224Z",
+   "lockedAt": "2026-11-22T09:31:29.335Z",
+   "provisional": true
+  },
+  "401873075": {
+   "id": "401873075",
+   "league": "nfl",
+   "week": 11,
+   "short": "LV @ DEN",
+   "home": "DEN",
+   "away": "LV",
+   "date": "2026-11-22T21:25Z",
+   "pick": "DEN",
+   "pick_line": "DEN -10.5",
+   "total_pick": "UNDER 41.5",
+   "side_play": false,
+   "our_margin": 10.93,
+   "our_total": 41.3,
+   "confidence": null,
+   "total_play": false,
+   "spread": -10.5,
+   "total": 41.5,
+   "lockedAt": "2026-11-22T09:31:29.335Z",
    "provisional": true
   },
   "401873076": {
@@ -1941,7 +1983,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 37.5,
-   "lockedAt": "2026-11-22T09:16:22.224Z",
+   "lockedAt": "2026-11-22T09:31:29.335Z",
    "provisional": true
   }
  },
@@ -2713,12 +2755,12 @@
     "ours": "LAC -3.5 · total 41.0",
     "score": "NYJ 18.8 – LAC 22.2",
     "market": "LAC -3.0 · total 41.5",
-    "lockedAt": "2026-11-22T09:16:22.294Z",
+    "lockedAt": "2026-11-22T09:31:29.408Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-22T21:05Z",
     "big": true,
-    "savedAt": 1795338982294
+    "savedAt": 1795339889408
    }
   ],
   "cfb": [
@@ -3585,7 +3627,7 @@
    }
   ]
  },
- "updated": "2026-11-22T09:16:22.224Z",
+ "updated": "2026-11-22T09:31:29.335Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4022,7 +4064,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-22T09:16:22.224Z"
+   "lockedAt": "2026-11-22T09:31:29.335Z"
   }
  ],
  "teasers": [
