@@ -2044,7 +2044,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-22T22:04:27.280Z",
+   "lockedAt": "2026-11-22T22:16:40.481Z",
    "provisional": true
   }
  },
@@ -2931,12 +2931,12 @@
     "ours": "SF -3.5 · total 45.1",
     "score": "MIN 20.8 – SF 24.3",
     "market": "SF -3.5 · total 46.5",
-    "lockedAt": "2026-11-22T22:04:27.302Z",
+    "lockedAt": "2026-11-22T22:16:40.513Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-23T01:20Z",
     "big": false,
-    "savedAt": 1795385067302
+    "savedAt": 1795385800513
    }
   ],
   "cfb": [
@@ -3803,7 +3803,7 @@
    }
   ]
  },
- "updated": "2026-11-22T22:04:27.280Z",
+ "updated": "2026-11-22T22:16:40.481Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7918,6 +7918,50 @@
    "mwin": 0.2634,
    "ev": 0.0526,
    "mev": 0.0273,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873077|tot|under",
+   "gid": "401873077",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 37.5",
+   "game": "MIN VS SF",
+   "kick": "2026-11-23T01:20Z",
+   "line": 37.5,
+   "mainLine": 46.5,
+   "price": 252,
+   "book": "DraftKings",
+   "win": 0.2929,
+   "mwin": 0.2846,
+   "ev": 0.0311,
+   "mev": 0.0019,
+   "src": "proj",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873077|sp|away",
+   "gid": "401873077",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "away",
+   "label": "MIN +1.5",
+   "game": "MIN VS SF",
+   "kick": "2026-11-23T01:20Z",
+   "line": 1.5,
+   "mainLine": 3.5,
+   "price": 165,
+   "book": "ESPN BET",
+   "win": 0.3887,
+   "mwin": 0.3887,
+   "ev": 0.0302,
+   "mev": 0.0302,
    "src": "mkt",
    "result": null,
    "final": null,
