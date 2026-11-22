@@ -1794,8 +1794,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T16:16:53.790Z",
-   "provisional": true
+   "lockedAt": "2026-11-22T16:31:58.829Z"
   },
   "401873068": {
    "id": "401873068",
@@ -1815,8 +1814,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-22T16:16:53.790Z",
-   "provisional": true
+   "lockedAt": "2026-11-22T16:31:58.829Z"
   },
   "401873069": {
    "id": "401873069",
@@ -1836,7 +1834,7 @@
    "total_play": false,
    "spread": 6,
    "total": 45.5,
-   "lockedAt": "2026-11-22T16:16:53.790Z",
+   "lockedAt": "2026-11-22T16:31:58.829Z",
    "provisional": true
   },
   "401873070": {
@@ -1857,8 +1855,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 45.5,
-   "lockedAt": "2026-11-22T16:16:53.790Z",
-   "provisional": true
+   "lockedAt": "2026-11-22T16:31:58.829Z"
   },
   "401873071": {
    "id": "401873071",
@@ -1878,8 +1875,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 47.5,
-   "lockedAt": "2026-11-22T16:16:53.790Z",
-   "provisional": true
+   "lockedAt": "2026-11-22T16:31:58.829Z"
   },
   "401873072": {
    "id": "401873072",
@@ -1899,8 +1895,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 48.5,
-   "lockedAt": "2026-11-22T16:16:53.790Z",
-   "provisional": true
+   "lockedAt": "2026-11-22T16:31:58.829Z"
   },
   "401873073": {
    "id": "401873073",
@@ -1920,8 +1915,7 @@
    "total_play": false,
    "spread": -7.5,
    "total": 54.5,
-   "lockedAt": "2026-11-22T16:16:53.790Z",
-   "provisional": true
+   "lockedAt": "2026-11-22T16:31:58.829Z"
   },
   "401873074": {
    "id": "401873074",
@@ -1941,7 +1935,7 @@
    "total_play": false,
    "spread": -3,
    "total": 42.5,
-   "lockedAt": "2026-11-22T16:16:53.790Z",
+   "lockedAt": "2026-11-22T16:31:58.829Z",
    "provisional": true
   },
   "401873075": {
@@ -1962,7 +1956,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T16:16:53.790Z",
+   "lockedAt": "2026-11-22T16:31:58.829Z",
    "provisional": true
   },
   "401873076": {
@@ -1983,8 +1977,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 37.5,
-   "lockedAt": "2026-11-22T16:16:53.790Z",
-   "provisional": true
+   "lockedAt": "2026-11-22T16:31:58.829Z"
   },
   "401873077": {
    "id": "401873077",
@@ -2004,7 +1997,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-22T16:16:53.790Z",
+   "lockedAt": "2026-11-22T16:31:58.829Z",
    "provisional": true
   }
  },
@@ -2776,12 +2769,12 @@
     "ours": "LAC -3.5 · total 41.7",
     "score": "NYJ 19.1 – LAC 22.6",
     "market": "LAC -3.0 · total 42.5",
-    "lockedAt": "2026-11-22T16:16:53.834Z",
+    "lockedAt": "2026-11-22T16:31:58.877Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-22T21:05Z",
     "big": true,
-    "savedAt": 1795364213834
+    "savedAt": 1795365118877
    }
   ],
   "cfb": [
@@ -3648,7 +3641,7 @@
    }
   ]
  },
- "updated": "2026-11-22T16:16:53.790Z",
+ "updated": "2026-11-22T16:31:58.829Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4028,7 +4021,16 @@
       "line": 23.5,
       "name": "Justin Herbert"
      },
-     "result": null
+     "result": null,
+     "close": {
+      "at": "2026-11-22T16:31:58.829Z",
+      "line": 23.5,
+      "price": -116,
+      "book": "DraftKings",
+      "fair": 0.508,
+      "push": 0,
+      "src": "books"
+     }
     },
     {
      "id": "401873075|pp|4890973|rush_yds|under",
@@ -4053,7 +4055,16 @@
       "line": 30.5,
       "name": "Ashton Jeanty"
      },
-     "result": null
+     "result": null,
+     "close": {
+      "at": "2026-11-22T16:31:58.829Z",
+      "line": 30.5,
+      "price": -109,
+      "book": "DraftKings",
+      "fair": 0.4847,
+      "push": 0,
+      "src": "books"
+     }
     },
     {
      "id": "401873072|pp|3116165|rec_yds|under",
@@ -4078,14 +4089,23 @@
       "line": 34.5,
       "name": "Chris Godwin Jr."
      },
-     "result": null
+     "result": null,
+     "close": {
+      "at": "2026-11-22T16:31:58.829Z",
+      "line": 34.5,
+      "price": -113,
+      "book": "DraftKings",
+      "fair": 0.5179,
+      "push": 0,
+      "src": "books"
+     }
     }
    ],
    "result": null,
    "units": null,
-   "locked": false,
-   "provisional": true,
-   "lockedAt": "2026-11-22T16:16:53.790Z"
+   "locked": true,
+   "provisional": false,
+   "lockedAt": "2026-11-22T16:31:58.829Z"
   }
  ],
  "teasers": [
@@ -4229,9 +4249,9 @@
    ],
    "result": null,
    "units": null,
-   "locked": false,
-   "provisional": true,
-   "lockedAt": "2026-11-22T16:16:53.790Z"
+   "locked": true,
+   "provisional": false,
+   "lockedAt": "2026-11-22T16:31:58.829Z"
   }
  ],
  "teaserLegs": [
@@ -11386,6 +11406,118 @@
    "result": "HIT",
    "units": 0.9091,
    "final": "HAW 8, NEV 16"
+  },
+  {
+   "id": "401873070",
+   "league": "nfl",
+   "gid": "401873070",
+   "side": "home",
+   "team": "BUF",
+   "game": "MIA @ BUF",
+   "kick": "2026-11-22T18:00Z",
+   "line": -16.5,
+   "price": -110,
+   "book": "standard",
+   "ours": -17,
+   "market": -16.5,
+   "label": "BUF -16.5",
+   "lockedAt": "2026-11-22T16:31:58.829Z"
+  },
+  {
+   "id": "401873071",
+   "league": "nfl",
+   "gid": "401873071",
+   "side": "away",
+   "team": "NO",
+   "game": "NO @ CHI",
+   "kick": "2026-11-22T18:00Z",
+   "line": 11.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 10.8,
+   "market": 11.5,
+   "label": "NO +11.5",
+   "lockedAt": "2026-11-22T16:31:58.829Z"
+  },
+  {
+   "id": "401873073",
+   "league": "nfl",
+   "gid": "401873073",
+   "side": "home",
+   "team": "DAL",
+   "game": "TEN @ DAL",
+   "kick": "2026-11-22T18:00Z",
+   "line": -7.5,
+   "price": -110,
+   "book": "standard",
+   "ours": -8,
+   "market": -7.5,
+   "label": "DAL -7.5",
+   "lockedAt": "2026-11-22T16:31:58.829Z"
+  },
+  {
+   "id": "401873072",
+   "league": "nfl",
+   "gid": "401873072",
+   "side": "home",
+   "team": "DET",
+   "game": "TB @ DET",
+   "kick": "2026-11-22T18:00Z",
+   "line": -3.5,
+   "price": -110,
+   "book": "standard",
+   "ours": -3.8,
+   "market": -3.5,
+   "label": "DET -3.5",
+   "lockedAt": "2026-11-22T16:31:58.829Z"
+  },
+  {
+   "id": "401873067",
+   "league": "nfl",
+   "gid": "401873067",
+   "side": "away",
+   "team": "ARI",
+   "game": "ARI @ KC",
+   "kick": "2026-11-22T18:00Z",
+   "line": 15.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 14.8,
+   "market": 15.5,
+   "label": "ARI +15.5",
+   "lockedAt": "2026-11-22T16:31:58.829Z"
+  },
+  {
+   "id": "401873076",
+   "league": "nfl",
+   "gid": "401873076",
+   "side": "home",
+   "team": "PHI",
+   "game": "PIT @ PHI",
+   "kick": "2026-11-22T18:00Z",
+   "line": 3.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 3.2,
+   "market": 3.5,
+   "label": "PHI +3.5",
+   "lockedAt": "2026-11-22T16:31:58.829Z"
+  },
+  {
+   "id": "401873068",
+   "league": "nfl",
+   "gid": "401873068",
+   "side": "home",
+   "team": "CAR",
+   "game": "BAL @ CAR",
+   "kick": "2026-11-22T18:00Z",
+   "line": -2.5,
+   "price": -110,
+   "book": "standard",
+   "ours": -3.7,
+   "market": -2.5,
+   "label": "CAR -2.5",
+   "lockedAt": "2026-11-22T16:31:58.829Z"
   }
  ]
 }
