@@ -3380,7 +3380,7 @@
    }
   ]
  },
- "updated": "2026-11-22T03:46:20.473Z",
+ "updated": "2026-11-22T04:01:58.174Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6970,9 +6970,9 @@
    "ev": 0.0357,
    "mev": 0.0357,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "UK 14, MIZ 28",
+   "units": -1
   },
   {
    "id": "401862836|sp|home",
@@ -10751,7 +10751,10 @@
    "ours": 13.3,
    "market": 14.5,
    "label": "SC +14.5",
-   "lockedAt": "2026-11-21T23:01:38.497Z"
+   "lockedAt": "2026-11-21T23:01:38.497Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "UGA 34, SC 6"
   },
   {
    "id": "401856751",
@@ -10767,7 +10770,10 @@
    "ours": 4.3,
    "market": 4.5,
    "label": "UK +4.5",
-   "lockedAt": "2026-11-21T23:01:38.497Z"
+   "lockedAt": "2026-11-21T23:01:38.497Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "UK 14, MIZ 28"
   },
   {
    "id": "401858307",
@@ -10783,7 +10789,10 @@
    "ours": 18.9,
    "market": 20.5,
    "label": "SMU +20.5",
-   "lockedAt": "2026-11-21T23:01:38.497Z"
+   "lockedAt": "2026-11-21T23:01:38.497Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "SMU 3, ND 24"
   },
   {
    "id": "401858308",
