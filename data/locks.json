@@ -2036,15 +2036,15 @@
    "date": "2026-11-23T01:20Z",
    "pick": "NO PLAY",
    "pick_line": null,
-   "total_pick": "UNDER 46.5",
+   "total_pick": "UNDER 45.5",
    "side_play": false,
    "our_margin": 3.54,
-   "our_total": 45.1,
+   "our_total": 44.4,
    "confidence": null,
    "total_play": false,
    "spread": -3.5,
-   "total": 46.5,
-   "lockedAt": "2026-11-22T22:16:40.481Z",
+   "total": 45.5,
+   "lockedAt": "2026-11-22T23:16:46.802Z",
    "provisional": true
   }
  },
@@ -2912,7 +2912,7 @@
     "kind": "Player prop",
     "line": "Christian McCaffrey under 33.5 rec yds",
     "hitPct": 55,
-    "why": "We project Christian McCaffrey for 30 rec yds against a line of 33.5. Our checked chance on the under is 55%; the books' own chance is 51%. At -112 (DraftKings) that is 4.6% better than the price. MIN is a tough defense here: it allows the 4th-fewest rec yds to RBs (21 a game; league average 32). The under hit in 3 of his last 8 games at this line.",
+    "why": "We project Christian McCaffrey for 30 rec yds against a line of 33.5. Our checked chance on the under is 55%; the books' own chance is 51%. At -112 (DraftKings) that is 4.9% better than the price. MIN is a tough defense here: it allows the 4th-fewest rec yds to RBs (21 a game; league average 32). The under hit in 3 of his last 8 games at this line.",
     "label": "Sunday · next game",
     "result": null,
     "final": null,
@@ -2927,16 +2927,16 @@
     },
     "price": -112,
     "book": "DraftKings",
-    "ev": 0.046,
-    "ours": "SF -3.5 · total 45.1",
-    "score": "MIN 20.8 – SF 24.3",
-    "market": "SF -3.5 · total 46.5",
-    "lockedAt": "2026-11-22T22:16:40.513Z",
+    "ev": 0.049,
+    "ours": "SF -3.5 · total 44.4",
+    "score": "MIN 20.4 – SF 24.0",
+    "market": "SF -3.5 · total 45.5",
+    "lockedAt": "2026-11-22T23:16:46.825Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-23T01:20Z",
     "big": false,
-    "savedAt": 1795385800513
+    "savedAt": 1795389406825
    }
   ],
   "cfb": [
@@ -3803,7 +3803,7 @@
    }
   ]
  },
- "updated": "2026-11-22T22:16:40.481Z",
+ "updated": "2026-11-22T23:16:46.802Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7919,28 +7919,6 @@
    "ev": 0.0526,
    "mev": 0.0273,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873077|tot|under",
-   "gid": "401873077",
-   "league": "nfl",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 37.5",
-   "game": "MIN VS SF",
-   "kick": "2026-11-23T01:20Z",
-   "line": 37.5,
-   "mainLine": 46.5,
-   "price": 252,
-   "book": "DraftKings",
-   "win": 0.2929,
-   "mwin": 0.2846,
-   "ev": 0.0311,
-   "mev": 0.0019,
-   "src": "proj",
    "result": null,
    "final": null,
    "units": null
