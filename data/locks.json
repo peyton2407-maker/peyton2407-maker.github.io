@@ -2044,7 +2044,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-22T21:01:51.869Z",
+   "lockedAt": "2026-11-22T21:16:58.522Z",
    "provisional": true
   }
  },
@@ -2817,11 +2817,12 @@
     "score": "NYJ 19.5 – LAC 22.9",
     "market": "LAC -3.0 · total 43.5",
     "lockedAt": "2026-11-22T17:31:46.008Z",
-    "locked": false,
-    "provisional": true,
+    "locked": true,
+    "provisional": false,
     "kick": "2026-11-22T21:05Z",
     "big": true,
-    "savedAt": 1795368706008
+    "savedAt": 1795368706008,
+    "note": "No lock run landed in the 90 minutes before kickoff; this is the last play saved before kickoff."
    },
    {
     "key": "game:401873074",
@@ -2861,6 +2862,41 @@
     "closeAt": "2026-11-22T20:16:43.735Z",
     "close_src": "board",
     "clv": 0
+   },
+   {
+    "key": "game:401873075",
+    "week": 11,
+    "day": "2026-11-22",
+    "league": "nfl",
+    "id": "401873075",
+    "game": "LV @ DEN",
+    "kind": "Player prop",
+    "line": "Courtland Sutton under 3.5 receptions",
+    "hitPct": 61,
+    "why": "We project Courtland Sutton for 3.0 receptions against a line of 3.5. Our checked chance on the under is 61%; the books' own chance is 58%. At -150 (BetMGM) that is 1.2% better than the price. LV is middle of the pack here: 11th of 32 in receptions allowed to WRs (10 a game; league average 11). The under hit in 6 of his last 8 games at this line.",
+    "label": "Sunday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 0.5,
+    "prop": {
+     "pid": "3128429",
+     "name": "Courtland Sutton",
+     "stat": "rec",
+     "side": "under",
+     "line": 3.5
+    },
+    "price": -150,
+    "book": "BetMGM",
+    "ev": 0.012,
+    "ours": "DEN -11.6 · total 41.3",
+    "score": "LV 14.8 – DEN 26.5",
+    "market": "DEN -11.5 · total 41.5",
+    "lockedAt": "2026-11-22T21:16:58.544Z",
+    "locked": true,
+    "kick": "2026-11-22T21:25Z",
+    "big": false,
+    "savedAt": 1795382218544
    }
   ],
   "cfb": [
@@ -3727,7 +3763,7 @@
    }
   ]
  },
- "updated": "2026-11-22T21:01:51.869Z",
+ "updated": "2026-11-22T21:16:58.522Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4143,7 +4179,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-22T21:01:51.869Z",
+      "at": "2026-11-22T21:16:58.522Z",
       "line": 32.5,
       "price": -109,
       "book": "DraftKings",
@@ -4313,8 +4349,8 @@
      "win": 0.7466,
      "bookWin": 0.7428,
      "total": 54.5,
-     "result": null,
-     "final": null
+     "result": "HIT",
+     "final": "TEN 30, DAL 51"
     },
     {
      "id": "401873068|sp|away",
@@ -4546,8 +4582,8 @@
    "win": 0.7466,
    "bookWin": 0.7428,
    "total": 54.5,
-   "result": null,
-   "final": null
+   "result": "HIT",
+   "final": "TEN 30, DAL 51"
   },
   {
    "id": "401873068|sp|away",
@@ -7599,9 +7635,9 @@
    "ev": 0.0495,
    "mev": 0.0164,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "NO 13, CHI 21",
+   "units": 2.8
   },
   {
    "id": "401873072|tot|under",
@@ -7621,9 +7657,9 @@
    "ev": 0.0494,
    "mev": 0.021,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "TB 21, DET 31",
+   "units": -1
   },
   {
    "id": "401873067|sp|home",
@@ -7665,9 +7701,9 @@
    "ev": 0.0374,
    "mev": 0.02,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "NO 13, CHI 21",
+   "units": -1
   },
   {
    "id": "401873067|sp|away",
@@ -7709,9 +7745,9 @@
    "ev": 0.0739,
    "mev": 0.0575,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "TEN 30, DAL 51",
+   "units": 2.6
   },
   {
    "id": "401873073|tot|under",
@@ -7731,9 +7767,9 @@
    "ev": 0.0486,
    "mev": 0.023,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "TEN 30, DAL 51",
+   "units": -1
   },
   {
    "id": "401873073|sp|away",
@@ -7753,9 +7789,9 @@
    "ev": 0.0498,
    "mev": 0.0643,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "TEN 30, DAL 51",
+   "units": -1
   },
   {
    "id": "401873067|tot|over",
@@ -11529,7 +11565,10 @@
    "ours": -17,
    "market": -16.5,
    "label": "BUF -16.5",
-   "lockedAt": "2026-11-22T16:31:58.829Z"
+   "lockedAt": "2026-11-22T16:31:58.829Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "MIA 9, BUF 26"
   },
   {
    "id": "401873071",
@@ -11545,7 +11584,10 @@
    "ours": 10.8,
    "market": 11.5,
    "label": "NO +11.5",
-   "lockedAt": "2026-11-22T16:31:58.829Z"
+   "lockedAt": "2026-11-22T16:31:58.829Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "NO 13, CHI 21"
   },
   {
    "id": "401873073",
@@ -11561,7 +11603,10 @@
    "ours": -8,
    "market": -7.5,
    "label": "DAL -7.5",
-   "lockedAt": "2026-11-22T16:31:58.829Z"
+   "lockedAt": "2026-11-22T16:31:58.829Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "TEN 30, DAL 51"
   },
   {
    "id": "401873072",
@@ -11577,7 +11622,10 @@
    "ours": -3.8,
    "market": -3.5,
    "label": "DET -3.5",
-   "lockedAt": "2026-11-22T16:31:58.829Z"
+   "lockedAt": "2026-11-22T16:31:58.829Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "TB 21, DET 31"
   },
   {
    "id": "401873067",
@@ -11612,7 +11660,10 @@
    "ours": 3.2,
    "market": 3.5,
    "label": "PHI +3.5",
-   "lockedAt": "2026-11-22T16:31:58.829Z"
+   "lockedAt": "2026-11-22T16:31:58.829Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "PIT 16, PHI 19"
   },
   {
    "id": "401873068",
