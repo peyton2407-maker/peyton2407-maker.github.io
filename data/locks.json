@@ -1794,7 +1794,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T13:46:47.883Z",
+   "lockedAt": "2026-11-22T14:46:42.598Z",
    "provisional": true
   },
   "401873068": {
@@ -1815,7 +1815,7 @@
    "total_play": false,
    "spread": -3,
    "total": 44.5,
-   "lockedAt": "2026-11-22T13:46:47.883Z",
+   "lockedAt": "2026-11-22T14:46:42.598Z",
    "provisional": true
   },
   "401873069": {
@@ -1836,7 +1836,7 @@
    "total_play": false,
    "spread": 6,
    "total": 45.5,
-   "lockedAt": "2026-11-22T13:46:47.883Z",
+   "lockedAt": "2026-11-22T14:46:42.598Z",
    "provisional": true
   },
   "401873070": {
@@ -1857,7 +1857,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 44.5,
-   "lockedAt": "2026-11-22T13:46:47.883Z",
+   "lockedAt": "2026-11-22T14:46:42.598Z",
    "provisional": true
   },
   "401873071": {
@@ -1878,7 +1878,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 48.5,
-   "lockedAt": "2026-11-22T13:46:47.883Z",
+   "lockedAt": "2026-11-22T14:46:42.598Z",
    "provisional": true
   },
   "401873072": {
@@ -1891,15 +1891,15 @@
    "date": "2026-11-22T18:00Z",
    "pick": "DET",
    "pick_line": "DET -3.5",
-   "total_pick": "UNDER 47.5",
+   "total_pick": "UNDER 48.5",
    "side_play": false,
    "our_margin": 3.8,
-   "our_total": 46.6,
+   "our_total": 47.3,
    "confidence": null,
    "total_play": false,
    "spread": -3.5,
-   "total": 47.5,
-   "lockedAt": "2026-11-22T13:46:47.883Z",
+   "total": 48.5,
+   "lockedAt": "2026-11-22T14:46:42.598Z",
    "provisional": true
   },
   "401873073": {
@@ -1920,7 +1920,7 @@
    "total_play": false,
    "spread": -7.5,
    "total": 54.5,
-   "lockedAt": "2026-11-22T13:46:47.883Z",
+   "lockedAt": "2026-11-22T14:46:42.598Z",
    "provisional": true
   },
   "401873074": {
@@ -1933,15 +1933,15 @@
    "date": "2026-11-22T21:05Z",
    "pick": "LAC",
    "pick_line": "LAC -3.0",
-   "total_pick": "UNDER 41.5",
+   "total_pick": "UNDER 42.5",
    "side_play": false,
    "our_margin": 3.46,
-   "our_total": 41,
+   "our_total": 41.7,
    "confidence": null,
    "total_play": false,
    "spread": -3,
-   "total": 41.5,
-   "lockedAt": "2026-11-22T13:46:47.883Z",
+   "total": 42.5,
+   "lockedAt": "2026-11-22T14:46:42.598Z",
    "provisional": true
   },
   "401873075": {
@@ -1962,7 +1962,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T13:46:47.883Z",
+   "lockedAt": "2026-11-22T14:46:42.598Z",
    "provisional": true
   },
   "401873076": {
@@ -1983,7 +1983,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 37.5,
-   "lockedAt": "2026-11-22T13:46:47.883Z",
+   "lockedAt": "2026-11-22T14:46:42.598Z",
    "provisional": true
   },
   "401873077": {
@@ -2004,7 +2004,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-22T13:46:47.883Z",
+   "lockedAt": "2026-11-22T14:46:42.598Z",
    "provisional": true
   }
  },
@@ -2773,15 +2773,15 @@
     "price": -180,
     "book": "BetRivers",
     "ev": 0.026,
-    "ours": "LAC -3.5 · total 41.0",
-    "score": "NYJ 18.8 – LAC 22.2",
-    "market": "LAC -3.0 · total 41.5",
-    "lockedAt": "2026-11-22T13:46:47.929Z",
+    "ours": "LAC -3.5 · total 41.7",
+    "score": "NYJ 19.1 – LAC 22.6",
+    "market": "LAC -3.0 · total 42.5",
+    "lockedAt": "2026-11-22T14:46:42.667Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-22T21:05Z",
     "big": true,
-    "savedAt": 1795355207929
+    "savedAt": 1795358802667
    }
   ],
   "cfb": [
@@ -3648,7 +3648,7 @@
    }
   ]
  },
- "updated": "2026-11-22T13:46:47.883Z",
+ "updated": "2026-11-22T14:46:42.598Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3998,11 +3998,11 @@
    "tier": "value",
    "stake": 1,
    "size": 1,
-   "american": 573,
-   "dec": 6.7262,
-   "chance": 0.1859,
-   "breakEven": 0.1487,
-   "ev": 0.2507,
+   "american": 584,
+   "dec": 6.8405,
+   "chance": 0.1825,
+   "breakEven": 0.1462,
+   "ev": 0.2485,
    "firstKick": "2026-11-22T18:00:00.000Z",
    "legs": [
     {
@@ -4015,9 +4015,9 @@
      "kick": "2026-11-22T21:05Z",
      "price": -111,
      "line": 23.5,
-     "win": 0.5827,
-     "bookWin": 0.5068,
-     "value": 0.1076,
+     "win": 0.5804,
+     "bookWin": 0.5069,
+     "value": 0.1032,
      "cat": "prop",
      "why": "We project 23 rush yds against 23.5; our checked chance on the under is 58%, the books' 51%. NYJ is middle of the pack here: 14th of 32 in rush yds allowed to QBs (14 a game; league average 16).",
      "alt": null,
@@ -4056,27 +4056,27 @@
      "result": null
     },
     {
-     "id": "401873072|pp|4374302|rec_yds|under",
-     "label": "Amon-Ra St. Brown under 83.5 rec yds",
+     "id": "401873072|pp|3116165|rec_yds|under",
+     "label": "Chris Godwin Jr. under 33.5 rec yds",
      "kind": "pp",
      "game_id": "401873072",
      "game": "TB @ DET",
      "league": "nfl",
      "kick": "2026-11-22T18:00Z",
-     "price": -114,
-     "line": 83.5,
-     "win": 0.5551,
-     "bookWin": 0.5122,
-     "value": 0.0421,
+     "price": -110,
+     "line": 33.5,
+     "win": 0.5471,
+     "bookWin": 0.5041,
+     "value": 0.0444,
      "cat": "prop",
-     "why": "We project 75 rec yds against 83.5; our checked chance on the under is 55%, the books' 51%. TB is middle of the pack here: 10th of 32 in rec yds allowed to WRs (139 a game; league average 147).",
+     "why": "We project 30 rec yds against 33.5; our checked chance on the under is 55%, the books' 50%. DET is middle of the pack here: 20th of 32 in rec yds allowed to WRs (156 a game; league average 147).",
      "alt": null,
      "prop": {
-      "pid": "4374302",
+      "pid": "3116165",
       "stat": "rec_yds",
       "side": "under",
-      "line": 83.5,
-      "name": "Amon-Ra St. Brown"
+      "line": 33.5,
+      "name": "Chris Godwin Jr."
      },
      "result": null
     }
@@ -4085,7 +4085,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-22T13:46:47.883Z"
+   "lockedAt": "2026-11-22T14:46:42.598Z"
   }
  ],
  "teasers": [
@@ -7465,12 +7465,12 @@
    "game": "TB @ DET",
    "kick": "2026-11-22T18:00Z",
    "line": 38.5,
-   "mainLine": 47.5,
+   "mainLine": 48.5,
    "price": 300,
    "book": "ESPN BET",
-   "win": 0.2642,
+   "win": 0.2657,
    "mwin": 0.2589,
-   "ev": 0.0568,
+   "ev": 0.0626,
    "mev": 0.0357,
    "src": "mkt",
    "result": null,
@@ -7649,6 +7649,28 @@
    "ev": 0.0532,
    "mev": 0.0021,
    "src": "proj",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873074|tot|under",
+   "gid": "401873074",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 33.5",
+   "game": "NYJ @ LAC",
+   "kick": "2026-11-22T21:05Z",
+   "line": 33.5,
+   "mainLine": 42.5,
+   "price": 290,
+   "book": "ESPN BET",
+   "win": 0.2657,
+   "mwin": 0.261,
+   "ev": 0.0363,
+   "mev": 0.018,
+   "src": "mkt",
    "result": null,
    "final": null,
    "units": null
