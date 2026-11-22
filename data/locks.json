@@ -3380,7 +3380,7 @@
    }
   ]
  },
- "updated": "2026-11-22T04:01:58.174Z",
+ "updated": "2026-11-22T04:16:27.688Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6948,9 +6948,9 @@
    "ev": 0.0928,
    "mev": 0.0791,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "STAN 44, CAL 28",
+   "units": -1
   },
   {
    "id": "401856751|sp|away",
@@ -10681,7 +10681,10 @@
    "ours": 8.5,
    "market": 10,
    "label": "KSU +10",
-   "lockedAt": "2026-11-21T22:32:00.217Z"
+   "lockedAt": "2026-11-21T22:32:00.217Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "ARIZ 35, KSU 28"
   },
   {
    "id": "401864544",
@@ -10735,7 +10738,10 @@
    "ours": 9.4,
    "market": 10.5,
    "label": "PITT +10.5",
-   "lockedAt": "2026-11-21T23:01:38.497Z"
+   "lockedAt": "2026-11-21T23:01:38.497Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "PITT 10, LOU 42"
   },
   {
    "id": "401856753",
@@ -10808,7 +10814,10 @@
    "ours": 0.7,
    "market": 2.5,
    "label": "CAL +2.5",
-   "lockedAt": "2026-11-21T23:01:38.497Z"
+   "lockedAt": "2026-11-21T23:01:38.497Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "STAN 44, CAL 28"
   },
   {
    "id": "401860918",
