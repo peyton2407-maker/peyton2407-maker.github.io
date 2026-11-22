@@ -3380,7 +3380,7 @@
    }
   ]
  },
- "updated": "2026-11-22T03:31:32.823Z",
+ "updated": "2026-11-22T03:46:20.473Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4024,7 +4024,7 @@
    "from": -7.5,
    "to": -1.5,
    "book": null,
-   "win": 0.7466,
+   "win": 0.7467,
    "bookWin": 0.7428,
    "total": 54.5,
    "result": null,
@@ -4040,8 +4040,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7254,
-   "bookWin": 0.7528,
+   "win": 0.7255,
+   "bookWin": 0.7527,
    "total": 43.5,
    "result": null,
    "final": null
@@ -10662,7 +10662,10 @@
    "ours": 19.9,
    "market": 20.5,
    "label": "VT +20.5",
-   "lockedAt": "2026-11-21T22:32:00.217Z"
+   "lockedAt": "2026-11-21T22:32:00.217Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "VT 20, MIA 28"
   },
   {
    "id": "401856865",
