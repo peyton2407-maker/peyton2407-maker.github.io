@@ -1834,7 +1834,7 @@
    "total_play": false,
    "spread": 6,
    "total": 45.5,
-   "lockedAt": "2026-11-22T16:31:58.829Z",
+   "lockedAt": "2026-11-22T16:47:01.350Z",
    "provisional": true
   },
   "401873070": {
@@ -1927,15 +1927,15 @@
    "date": "2026-11-22T21:05Z",
    "pick": "LAC",
    "pick_line": "LAC -3.0",
-   "total_pick": "UNDER 42.5",
+   "total_pick": "UNDER 43.5",
    "side_play": false,
    "our_margin": 3.46,
-   "our_total": 41.7,
+   "our_total": 42.4,
    "confidence": null,
    "total_play": false,
    "spread": -3,
-   "total": 42.5,
-   "lockedAt": "2026-11-22T16:31:58.829Z",
+   "total": 43.5,
+   "lockedAt": "2026-11-22T16:47:01.350Z",
    "provisional": true
   },
   "401873075": {
@@ -1956,7 +1956,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T16:31:58.829Z",
+   "lockedAt": "2026-11-22T16:47:01.350Z",
    "provisional": true
   },
   "401873076": {
@@ -1997,7 +1997,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-22T16:31:58.829Z",
+   "lockedAt": "2026-11-22T16:47:01.350Z",
    "provisional": true
   }
  },
@@ -2766,15 +2766,15 @@
     "price": -165,
     "book": "BetRivers",
     "ev": 0.047,
-    "ours": "LAC -3.5 · total 41.7",
-    "score": "NYJ 19.1 – LAC 22.6",
-    "market": "LAC -3.0 · total 42.5",
-    "lockedAt": "2026-11-22T16:31:58.877Z",
+    "ours": "LAC -3.5 · total 42.4",
+    "score": "NYJ 19.5 – LAC 22.9",
+    "market": "LAC -3.0 · total 43.5",
+    "lockedAt": "2026-11-22T16:47:01.402Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-22T21:05Z",
     "big": true,
-    "savedAt": 1795365118877
+    "savedAt": 1795366021402
    }
   ],
   "cfb": [
@@ -3641,7 +3641,7 @@
    }
   ]
  },
- "updated": "2026-11-22T16:31:58.829Z",
+ "updated": "2026-11-22T16:47:01.350Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4023,11 +4023,11 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-22T16:31:58.829Z",
+      "at": "2026-11-22T16:47:01.350Z",
       "line": 23.5,
       "price": -116,
       "book": "DraftKings",
-      "fair": 0.508,
+      "fair": 0.5081,
       "push": 0,
       "src": "books"
      }
@@ -4057,7 +4057,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-22T16:31:58.829Z",
+      "at": "2026-11-22T16:47:01.350Z",
       "line": 30.5,
       "price": -109,
       "book": "DraftKings",
@@ -4091,7 +4091,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-22T16:31:58.829Z",
+      "at": "2026-11-22T16:47:01.350Z",
       "line": 34.5,
       "price": -113,
       "book": "DraftKings",
@@ -8286,8 +8286,8 @@
    "books": 6,
    "ours": 0.6013,
    "mkt": 0.6074,
-   "win": 0.7497,
-   "ev": 0.0829,
+   "win": 0.7588,
+   "ev": 0.096,
    "rule": "likely",
    "result": null,
    "final": null,
@@ -8308,8 +8308,8 @@
    "books": 6,
    "ours": 0.6035,
    "mkt": 0.4922,
-   "win": 0.6607,
-   "ev": 0.087,
+   "win": 0.6514,
+   "ev": 0.0717,
    "rule": "likely",
    "result": null,
    "final": null,
@@ -8330,8 +8330,8 @@
    "books": 6,
    "ours": 0.6264,
    "mkt": 0.5572,
-   "win": 0.6021,
-   "ev": 0.0322,
+   "win": 0.6079,
+   "ev": 0.0421,
    "rule": "likely",
    "result": null,
    "final": null,
@@ -8374,8 +8374,8 @@
    "books": 6,
    "ours": 0.5535,
    "mkt": 0.5273,
-   "win": 0.6733,
-   "ev": 0.1163,
+   "win": 0.6774,
+   "ev": 0.1231,
    "rule": "likely",
    "result": null,
    "final": null,
