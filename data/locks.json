@@ -1794,7 +1794,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 40.5,
-   "lockedAt": "2026-11-22T08:47:10.261Z",
+   "lockedAt": "2026-11-22T09:16:22.224Z",
    "provisional": true
   },
   "401873068": {
@@ -1815,7 +1815,7 @@
    "total_play": false,
    "spread": -3,
    "total": 43.5,
-   "lockedAt": "2026-11-22T08:47:10.261Z",
+   "lockedAt": "2026-11-22T09:16:22.224Z",
    "provisional": true
   },
   "401873070": {
@@ -1836,7 +1836,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 44.5,
-   "lockedAt": "2026-11-22T08:47:10.261Z",
+   "lockedAt": "2026-11-22T09:16:22.224Z",
    "provisional": true
   },
   "401873071": {
@@ -1857,7 +1857,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 48.5,
-   "lockedAt": "2026-11-22T08:47:10.261Z",
+   "lockedAt": "2026-11-22T09:16:22.224Z",
    "provisional": true
   },
   "401873072": {
@@ -1878,7 +1878,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 47.5,
-   "lockedAt": "2026-11-22T08:47:10.261Z",
+   "lockedAt": "2026-11-22T09:16:22.224Z",
    "provisional": true
   },
   "401873073": {
@@ -1899,7 +1899,28 @@
    "total_play": false,
    "spread": -7.5,
    "total": 54.5,
-   "lockedAt": "2026-11-22T08:47:10.261Z",
+   "lockedAt": "2026-11-22T09:16:22.224Z",
+   "provisional": true
+  },
+  "401873074": {
+   "id": "401873074",
+   "league": "nfl",
+   "week": 11,
+   "short": "NYJ @ LAC",
+   "home": "LAC",
+   "away": "NYJ",
+   "date": "2026-11-22T21:05Z",
+   "pick": "LAC",
+   "pick_line": "LAC -3.0",
+   "total_pick": "UNDER 41.5",
+   "side_play": false,
+   "our_margin": 3.46,
+   "our_total": 41,
+   "confidence": null,
+   "total_play": false,
+   "spread": -3,
+   "total": 41.5,
+   "lockedAt": "2026-11-22T09:16:22.224Z",
    "provisional": true
   },
   "401873076": {
@@ -1920,7 +1941,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 37.5,
-   "lockedAt": "2026-11-22T08:47:10.261Z",
+   "lockedAt": "2026-11-22T09:16:22.224Z",
    "provisional": true
   }
  },
@@ -2662,6 +2683,42 @@
     "close_src": "board",
     "clv": 0,
     "by": "5.5 under 8.5"
+   },
+   {
+    "key": "slate:2026-11-22",
+    "week": 11,
+    "day": "2026-11-22",
+    "league": "nfl",
+    "id": "401873074",
+    "game": "NYJ @ LAC",
+    "kind": "Player prop",
+    "line": "Geno Smith under 1.5 pass TDs",
+    "hitPct": 66,
+    "why": "We project Geno Smith for 1.1 pass TDs against a line of 1.5. Our checked chance on the under is 66%; the books' own chance is 61%. At -182 (BetRivers) that is 2.2% better than the price. LAC is middle of the pack here: 15th of 32 in pass TDs allowed to QBs (1.4 a game; league average 1.5). The under hit in 5 of his last 8 games at this line.",
+    "label": "Best of Sunday's 10 games",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 1,
+    "prop": {
+     "pid": "15864",
+     "name": "Geno Smith",
+     "stat": "pass_td",
+     "side": "under",
+     "line": 1.5
+    },
+    "price": -182,
+    "book": "BetRivers",
+    "ev": 0.022,
+    "ours": "LAC -3.5 · total 41.0",
+    "score": "NYJ 18.8 – LAC 22.2",
+    "market": "LAC -3.0 · total 41.5",
+    "lockedAt": "2026-11-22T09:16:22.294Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-22T21:05Z",
+    "big": true,
+    "savedAt": 1795338982294
    }
   ],
   "cfb": [
@@ -3528,7 +3585,7 @@
    }
   ]
  },
- "updated": "2026-11-22T08:47:10.261Z",
+ "updated": "2026-11-22T09:16:22.224Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3878,11 +3935,11 @@
    "tier": "value",
    "stake": 1,
    "size": 1,
-   "american": 581,
-   "dec": 6.8111,
-   "chance": 0.1859,
-   "breakEven": 0.1468,
-   "ev": 0.2665,
+   "american": 575,
+   "dec": 6.754,
+   "chance": 0.185,
+   "breakEven": 0.1481,
+   "ev": 0.2497,
    "firstKick": "2026-11-22T18:00:00.000Z",
    "legs": [
     {
@@ -3936,27 +3993,27 @@
      "result": null
     },
     {
-     "id": "401873072|pp|4374302|rec_yds|under",
-     "label": "Amon-Ra St. Brown under 83.5 rec yds",
+     "id": "401873071|pp|3929645|rec_yds|under",
+     "label": "Juwan Johnson under 22.5 rec yds",
      "kind": "pp",
-     "game_id": "401873072",
-     "game": "TB @ DET",
+     "game_id": "401873071",
+     "game": "NO @ CHI",
      "league": "nfl",
      "kick": "2026-11-22T18:00Z",
-     "price": -111,
-     "line": 83.5,
-     "win": 0.5551,
-     "bookWin": 0.5122,
-     "value": 0.0553,
+     "price": -113,
+     "line": 22.5,
+     "win": 0.5524,
+     "bookWin": 0.5345,
+     "value": 0.0412,
      "cat": "prop",
-     "why": "We project 75 rec yds against 83.5; our checked chance on the under is 55%, the books' 51%. TB is middle of the pack here: 10th of 32 in rec yds allowed to WRs (139 a game; league average 147).",
+     "why": "We project 25 rec yds against 22.5; our checked chance on the under is 55%, the books' 54%. CHI is middle of the pack here: 14th of 32 in rec yds allowed to TEs (49 a game; league average 54).",
      "alt": null,
      "prop": {
-      "pid": "4374302",
+      "pid": "3929645",
       "stat": "rec_yds",
       "side": "under",
-      "line": 83.5,
-      "name": "Amon-Ra St. Brown"
+      "line": 22.5,
+      "name": "Juwan Johnson"
      },
      "result": null
     }
@@ -3965,7 +4022,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-22T08:47:10.261Z"
+   "lockedAt": "2026-11-22T09:16:22.224Z"
   }
  ],
  "teasers": [
@@ -7561,17 +7618,17 @@
    "league": "nfl",
    "kind": "sp",
    "side": "home",
-   "label": "SF -8.5",
+   "label": "SF -9.5",
    "game": "MIN VS SF",
    "kick": "2026-11-23T01:20Z",
-   "line": -8.5,
+   "line": -9.5,
    "mainLine": -3,
-   "price": 215,
+   "price": 230,
    "book": "FanDuel",
-   "win": 0.3286,
-   "mwin": 0.3147,
-   "ev": 0.035,
-   "mev": -0.0088,
+   "win": 0.3182,
+   "mwin": 0.3045,
+   "ev": 0.0501,
+   "mev": 0.0048,
    "src": "proj",
    "result": null,
    "final": null,
@@ -8144,10 +8201,10 @@
    "game": "NO @ CHI",
    "kick": "2026-11-22T18:00Z",
    "price": -155,
-   "book": "BetMGM",
+   "book": "DraftKings",
    "books": 6,
-   "ours": 0.6022,
-   "mkt": 0.4986,
+   "ours": 0.6086,
+   "mkt": 0.4994,
    "win": 0.6607,
    "ev": 0.087,
    "rule": "likely",
