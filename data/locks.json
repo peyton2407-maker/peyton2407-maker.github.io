@@ -300,6 +300,27 @@
    "closeAt": "2026-11-23T01:16:48.748Z",
    "clv_side": 0,
    "clv_total": -1
+  },
+  "401873078": {
+   "id": "401873078",
+   "league": "nfl",
+   "week": 11,
+   "short": "CIN @ WSH",
+   "home": "WSH",
+   "away": "CIN",
+   "date": "2026-11-24T01:15Z",
+   "pick": "CIN",
+   "pick_line": "CIN -6.0",
+   "total_pick": "UNDER 54.5",
+   "side_play": false,
+   "our_margin": -6.24,
+   "our_total": 53.3,
+   "confidence": null,
+   "total_play": false,
+   "spread": 6,
+   "total": 54.5,
+   "lockedAt": "2026-11-23T13:16:18.263Z",
+   "provisional": true
   }
  },
  "potd": {
@@ -1197,6 +1218,42 @@
     "close_src": "board",
     "clv": 0,
     "by": "20.5 under 33.5"
+   },
+   {
+    "key": "game:401873078",
+    "week": 11,
+    "day": "2026-11-23",
+    "league": "nfl",
+    "id": "401873078",
+    "game": "CIN @ WSH",
+    "kind": "Player prop",
+    "line": "Tee Higgins under 75.5 rec yds",
+    "hitPct": 54,
+    "why": "We project Tee Higgins for 71 rec yds against a line of 75.5. Our checked chance on the under is 54%; the books' own chance is 50%. At -112 (DraftKings) that is 1.3% better than the price. WSH is middle of the pack here: 17th of 32 in rec yds allowed to WRs (149 a game; league average 148). The under hit in 3 of his last 8 games at this line.",
+    "label": "Monday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 0.5,
+    "prop": {
+     "pid": "4239993",
+     "name": "Tee Higgins",
+     "stat": "rec_yds",
+     "side": "under",
+     "line": 75.5
+    },
+    "price": -112,
+    "book": "DraftKings",
+    "ev": 0.013,
+    "ours": "CIN -6.2 · total 53.3",
+    "score": "CIN 29.8 – WSH 23.5",
+    "market": "CIN -6.0 · total 54.5",
+    "lockedAt": "2026-11-23T13:16:18.292Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-24T01:15Z",
+    "big": false,
+    "savedAt": 1795439778292
    }
   ],
   "cfb": [
@@ -2102,7 +2159,7 @@
    }
   ]
  },
- "updated": "2026-11-23T13:03:22.702Z",
+ "updated": "2026-11-23T13:16:18.263Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
