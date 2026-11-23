@@ -319,7 +319,7 @@
    "total_play": false,
    "spread": 6,
    "total": 54.5,
-   "lockedAt": "2026-11-23T17:03:27.722Z",
+   "lockedAt": "2026-11-23T18:19:26.329Z",
    "provisional": true
   }
  },
@@ -2159,7 +2159,7 @@
    }
   ]
  },
- "updated": "2026-11-23T17:03:27.722Z",
+ "updated": "2026-11-23T18:19:26.329Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6388,6 +6388,50 @@
    "mwin": 0.295,
    "ev": 0.0347,
    "mev": -0.0118,
+   "src": "proj",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873088|sp|home",
+   "gid": "401873088",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "home",
+   "label": "IND -1.5",
+   "game": "NYG @ IND",
+   "kick": "2026-11-29T18:00Z",
+   "line": -1.5,
+   "mainLine": 6.5,
+   "price": 285,
+   "book": "BetRivers",
+   "win": 0.2816,
+   "mwin": 0.2562,
+   "ev": 0.0843,
+   "mev": -0.0135,
+   "src": "proj",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873085|sp|home",
+   "gid": "401873085",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "home",
+   "label": "HOU -14.5",
+   "game": "BAL @ HOU",
+   "kick": "2026-11-29T18:00Z",
+   "line": -14.5,
+   "mainLine": -6.5,
+   "price": 260,
+   "book": "BetRivers",
+   "win": 0.2969,
+   "mwin": 0.2788,
+   "ev": 0.0689,
+   "mev": 0.0035,
    "src": "proj",
    "result": null,
    "final": null,
