@@ -319,7 +319,7 @@
    "total_play": false,
    "spread": 6,
    "total": 54.5,
-   "lockedAt": "2026-11-23T15:09:21.636Z",
+   "lockedAt": "2026-11-23T15:20:36.349Z",
    "provisional": true
   }
  },
@@ -2159,7 +2159,7 @@
    }
   ]
  },
- "updated": "2026-11-23T15:09:21.636Z",
+ "updated": "2026-11-23T15:20:36.349Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6304,28 +6304,6 @@
    "result": "MISS",
    "final": "MIN 10, SF 35",
    "units": -1
-  },
-  {
-   "id": "401873078|tot|under",
-   "gid": "401873078",
-   "league": "nfl",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 45.5",
-   "game": "CIN @ WSH",
-   "kick": "2026-11-24T01:15Z",
-   "line": 45.5,
-   "mainLine": 54.5,
-   "price": 280,
-   "book": "ESPN BET",
-   "win": 0.2736,
-   "mwin": 0.2718,
-   "ev": 0.0395,
-   "mev": 0.0329,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
   },
   {
    "id": "401866471|tot|over",
