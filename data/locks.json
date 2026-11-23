@@ -2044,8 +2044,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 44.5,
-   "lockedAt": "2026-11-22T23:31:26.701Z",
-   "provisional": true
+   "lockedAt": "2026-11-23T00:01:29.184Z"
   }
  },
  "potd": {
@@ -2931,12 +2930,11 @@
     "ours": "SF -4.2 · total 43.8",
     "score": "MIN 19.8 – SF 24.0",
     "market": "SF -4.5 · total 44.5",
-    "lockedAt": "2026-11-22T23:31:26.724Z",
-    "locked": false,
-    "provisional": true,
+    "lockedAt": "2026-11-23T00:01:29.200Z",
+    "locked": true,
     "kick": "2026-11-23T01:20Z",
     "big": false,
-    "savedAt": 1795390286724
+    "savedAt": 1795392089200
    }
   ],
   "cfb": [
@@ -3803,7 +3801,7 @@
    }
   ]
  },
- "updated": "2026-11-22T23:31:26.701Z",
+ "updated": "2026-11-23T00:01:29.184Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7897,9 +7895,9 @@
    "ev": 0.0974,
    "mev": 0.0455,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "NYJ 27, LAC 24",
+   "units": -1
   },
   {
    "id": "401873074|tot|under",
@@ -7919,9 +7917,9 @@
    "ev": 0.0526,
    "mev": 0.0273,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "NYJ 27, LAC 24",
+   "units": -1
   },
   {
    "id": "401873078|tot|over",
@@ -11740,7 +11738,10 @@
    "ours": -3.5,
    "market": -3,
    "label": "LAC -3",
-   "lockedAt": "2026-11-22T19:46:54.998Z"
+   "lockedAt": "2026-11-22T19:46:54.998Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "NYJ 27, LAC 24"
   },
   {
    "id": "401873075",
@@ -11773,6 +11774,22 @@
    "market": -6,
    "label": "JAX -6",
    "lockedAt": "2026-11-22T20:01:57.086Z"
+  },
+  {
+   "id": "401873077",
+   "league": "nfl",
+   "gid": "401873077",
+   "side": "away",
+   "team": "MIN",
+   "game": "MIN VS SF",
+   "kick": "2026-11-23T01:20Z",
+   "line": 4.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 4.2,
+   "market": 4.5,
+   "label": "MIN +4.5",
+   "lockedAt": "2026-11-23T00:01:29.184Z"
   }
  ]
 }
