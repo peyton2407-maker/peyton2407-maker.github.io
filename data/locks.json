@@ -3813,7 +3813,7 @@
    }
   ]
  },
- "updated": "2026-11-23T09:01:30.326Z",
+ "updated": "2026-11-23T09:35:04.585Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -8020,6 +8020,28 @@
    "mwin": 0.3444,
    "ev": 0.0384,
    "mev": -0.0013,
+   "src": "proj",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873079|sp|home",
+   "gid": "401873079",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "home",
+   "label": "LAR -5.5",
+   "game": "GB @ LAR",
+   "kick": "2026-11-26T01:00Z",
+   "line": -5.5,
+   "mainLine": -3,
+   "price": 150,
+   "book": "Fanatics",
+   "win": 0.4134,
+   "mwin": 0.3933,
+   "ev": 0.0336,
+   "mev": -0.0169,
    "src": "proj",
    "result": null,
    "final": null,
