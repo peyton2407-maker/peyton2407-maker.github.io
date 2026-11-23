@@ -309,17 +309,17 @@
    "home": "WSH",
    "away": "CIN",
    "date": "2026-11-24T01:15Z",
-   "pick": "CIN",
-   "pick_line": "CIN -6.0",
+   "pick": "WSH",
+   "pick_line": "WSH +6.0",
    "total_pick": "UNDER 54.5",
    "side_play": false,
-   "our_margin": -6.24,
-   "our_total": 54.2,
+   "our_margin": -5.88,
+   "our_total": 53.3,
    "confidence": null,
    "total_play": false,
    "spread": 6,
    "total": 54.5,
-   "lockedAt": "2026-11-23T21:20:21.365Z",
+   "lockedAt": "2026-11-23T22:05:25.568Z",
    "provisional": true
   }
  },
@@ -1227,33 +1227,33 @@
     "id": "401873078",
     "game": "CIN @ WSH",
     "kind": "Player prop",
-    "line": "Dohnte Meyers under 20.5 rec yds",
-    "hitPct": 54,
-    "why": "We project Dohnte Meyers for 20 rec yds against a line of 20.5. Our checked chance on the under is 54%; the books' own chance is 49%. At -109 (DraftKings) that is 2.9% better than the price. WSH is middle of the pack here: 17th of 32 in rec yds allowed to WRs (149 a game; league average 148). The under hit in 4 of his last 8 games at this line.",
+    "line": "Ja'Marr Chase under 101.5 rec yds",
+    "hitPct": 53,
+    "why": "We project Ja'Marr Chase for 97 rec yds against a line of 101.5. Our checked chance on the under is 53%; the books' own chance is 50%. At -111 (DraftKings) that is 1.2% better than the price. WSH is middle of the pack here: 17th of 32 in rec yds allowed to WRs (149 a game; league average 148). The under hit in 5 of his last 8 games at this line.",
     "label": "Monday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 0.75,
+    "units": 0.25,
     "prop": {
-     "pid": "4384852",
-     "name": "Dohnte Meyers",
+     "pid": "4362628",
+     "name": "Ja'Marr Chase",
      "stat": "rec_yds",
      "side": "under",
-     "line": 20.5
+     "line": 101.5
     },
-    "price": -109,
+    "price": -111,
     "book": "DraftKings",
-    "ev": 0.029,
-    "ours": "CIN -6.2 · total 54.2",
-    "score": "CIN 30.2 – WSH 24.0",
+    "ev": 0.012,
+    "ours": "CIN -5.9 · total 53.3",
+    "score": "CIN 29.6 – WSH 23.7",
     "market": "CIN -6.0 · total 54.5",
-    "lockedAt": "2026-11-23T21:20:21.387Z",
+    "lockedAt": "2026-11-23T22:05:25.591Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-24T01:15Z",
     "big": false,
-    "savedAt": 1795468821387
+    "savedAt": 1795471525591
    }
   ],
   "cfb": [
@@ -2159,7 +2159,7 @@
    }
   ]
  },
- "updated": "2026-11-23T21:20:21.365Z",
+ "updated": "2026-11-23T22:05:25.568Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6304,6 +6304,28 @@
    "result": "MISS",
    "final": "MIN 10, SF 35",
    "units": -1
+  },
+  {
+   "id": "401873078|tot|under",
+   "gid": "401873078",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 46.5",
+   "game": "CIN @ WSH",
+   "kick": "2026-11-24T01:15Z",
+   "line": 46.5,
+   "mainLine": 54.5,
+   "price": 250,
+   "book": "ESPN BET",
+   "win": 0.2948,
+   "mwin": 0.2874,
+   "ev": 0.0319,
+   "mev": 0.0059,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
   },
   {
    "id": "401873079|sp|home",
