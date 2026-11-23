@@ -319,7 +319,7 @@
    "total_play": false,
    "spread": 6,
    "total": 54.5,
-   "lockedAt": "2026-11-23T22:05:25.568Z",
+   "lockedAt": "2026-11-23T22:50:29.454Z",
    "provisional": true
   }
  },
@@ -1248,12 +1248,12 @@
     "ours": "CIN -5.9 · total 53.3",
     "score": "CIN 29.6 – WSH 23.7",
     "market": "CIN -6.0 · total 54.5",
-    "lockedAt": "2026-11-23T22:05:25.591Z",
+    "lockedAt": "2026-11-23T22:50:29.478Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-24T01:15Z",
     "big": false,
-    "savedAt": 1795471525591
+    "savedAt": 1795474229478
    }
   ],
   "cfb": [
@@ -2159,7 +2159,7 @@
    }
   ]
  },
- "updated": "2026-11-23T22:05:25.568Z",
+ "updated": "2026-11-23T22:50:29.454Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6432,28 +6432,6 @@
    "mwin": 0.2831,
    "ev": 0.0404,
    "mev": -0.0092,
-   "src": "proj",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873083|sp|home",
-   "gid": "401873083",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "home",
-   "label": "PIT -4.5",
-   "game": "DEN @ PIT",
-   "kick": "2026-11-27T20:00Z",
-   "line": -4.5,
-   "mainLine": 3,
-   "price": 240,
-   "book": "Fanatics",
-   "win": 0.3029,
-   "mwin": 0.2902,
-   "ev": 0.03,
-   "mev": -0.0135,
    "src": "proj",
    "result": null,
    "final": null,
