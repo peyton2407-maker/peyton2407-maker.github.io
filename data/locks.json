@@ -319,7 +319,7 @@
    "total_play": false,
    "spread": 6,
    "total": 54.5,
-   "lockedAt": "2026-11-23T15:20:36.349Z",
+   "lockedAt": "2026-11-23T16:02:28.230Z",
    "provisional": true
   }
  },
@@ -2159,7 +2159,7 @@
    }
   ]
  },
- "updated": "2026-11-23T15:20:36.349Z",
+ "updated": "2026-11-23T16:02:28.230Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6304,28 +6304,6 @@
    "result": "MISS",
    "final": "MIN 10, SF 35",
    "units": -1
-  },
-  {
-   "id": "401866471|tot|over",
-   "gid": "401866471",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "over",
-   "label": "Over 56.5",
-   "game": "M-OH @ WMU",
-   "kick": "2026-11-25T00:00Z",
-   "line": 56.5,
-   "mainLine": 45.5,
-   "price": 284,
-   "book": "DraftKings",
-   "win": 0.2703,
-   "mwin": 0.2582,
-   "ev": 0.0378,
-   "mev": -0.0086,
-   "src": "proj",
-   "result": null,
-   "final": null,
-   "units": null
   },
   {
    "id": "401873079|sp|home",
