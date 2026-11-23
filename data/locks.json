@@ -314,13 +314,12 @@
    "total_pick": "UNDER 54.5",
    "side_play": false,
    "our_margin": -5.88,
-   "our_total": 54.2,
+   "our_total": 53.3,
    "confidence": null,
    "total_play": false,
    "spread": 6,
    "total": 54.5,
-   "lockedAt": "2026-11-23T23:06:21.176Z",
-   "provisional": true
+   "lockedAt": "2026-11-23T23:49:44.382Z"
   }
  },
  "potd": {
@@ -1229,7 +1228,7 @@
     "kind": "Player prop",
     "line": "Dohnte Meyers under 20.5 rec yds",
     "hitPct": 55,
-    "why": "We project Dohnte Meyers for 19 rec yds against a line of 20.5. Our checked chance on the under is 55%; the books' own chance is 51%. At -113 (DraftKings) that is 4.1% better than the price. WSH is middle of the pack here: 17th of 32 in rec yds allowed to WRs (149 a game; league average 148). The under hit in 4 of his last 8 games at this line.",
+    "why": "We project Dohnte Meyers for 19 rec yds against a line of 20.5. Our checked chance on the under is 55%; the books' own chance is 51%. At -113 (DraftKings) that is 4.3% better than the price. WSH is middle of the pack here: 17th of 32 in rec yds allowed to WRs (149 a game; league average 148). The under hit in 4 of his last 8 games at this line.",
     "label": "Monday · next game",
     "result": null,
     "final": null,
@@ -1244,16 +1243,15 @@
     },
     "price": -113,
     "book": "DraftKings",
-    "ev": 0.041,
-    "ours": "CIN -5.9 · total 54.2",
-    "score": "CIN 30.0 – WSH 24.2",
+    "ev": 0.043,
+    "ours": "CIN -5.9 · total 53.3",
+    "score": "CIN 29.6 – WSH 23.7",
     "market": "CIN -6.0 · total 54.5",
-    "lockedAt": "2026-11-23T23:06:21.200Z",
-    "locked": false,
-    "provisional": true,
+    "lockedAt": "2026-11-23T23:49:44.405Z",
+    "locked": true,
     "kick": "2026-11-24T01:15Z",
     "big": false,
-    "savedAt": 1795475181200
+    "savedAt": 1795477784405
    }
   ],
   "cfb": [
@@ -2159,7 +2157,7 @@
    }
   ]
  },
- "updated": "2026-11-23T23:06:21.176Z",
+ "updated": "2026-11-23T23:49:44.382Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -10315,6 +10313,22 @@
    "result": "MISS",
    "units": -1,
    "final": "MIN 10, SF 35"
+  },
+  {
+   "id": "401873078",
+   "league": "nfl",
+   "gid": "401873078",
+   "side": "home",
+   "team": "WSH",
+   "game": "CIN @ WSH",
+   "kick": "2026-11-24T01:15Z",
+   "line": 6,
+   "price": -110,
+   "book": "standard",
+   "ours": 5.9,
+   "market": 6,
+   "label": "WSH +6",
+   "lockedAt": "2026-11-23T23:49:44.382Z"
   }
  ]
 }
