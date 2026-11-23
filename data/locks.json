@@ -3812,7 +3812,7 @@
    }
   ]
  },
- "updated": "2026-11-23T02:17:13.514Z",
+ "updated": "2026-11-23T04:31:40.001Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7954,9 +7954,9 @@
    "ev": 0.065,
    "mev": 0.0417,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "MIN 10, SF 35",
+   "units": -1
   },
   {
    "id": "401873078|tot|over",
@@ -11854,7 +11854,10 @@
    "ours": 4.2,
    "market": 4.5,
    "label": "MIN +4.5",
-   "lockedAt": "2026-11-23T00:01:29.184Z"
+   "lockedAt": "2026-11-23T00:01:29.184Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "MIN 10, SF 35"
   }
  ]
 }
