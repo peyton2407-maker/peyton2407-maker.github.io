@@ -3813,7 +3813,7 @@
    }
   ]
  },
- "updated": "2026-11-23T08:16:51.723Z",
+ "updated": "2026-11-23T09:01:30.326Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7977,6 +7977,28 @@
    "ev": 0.0343,
    "mev": 0.0585,
    "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873078|sp|away",
+   "gid": "401873078",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "away",
+   "label": "CIN -14.5",
+   "game": "CIN @ WSH",
+   "kick": "2026-11-24T01:15Z",
+   "line": -14.5,
+   "mainLine": -6,
+   "price": 290,
+   "book": "BetMGM",
+   "win": 0.2643,
+   "mwin": 0.2576,
+   "ev": 0.0308,
+   "mev": 0.0047,
+   "src": "proj",
    "result": null,
    "final": null,
    "units": null
