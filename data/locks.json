@@ -2920,9 +2920,9 @@
     "hitPct": 56,
     "why": "We project Christian McCaffrey for 30 rec yds against a line of 33.5. Our checked chance on the under is 56%; the books' own chance is 51%. At -112 (DraftKings) that is 5.1% better than the price. MIN is a tough defense here: it allows the 4th-fewest rec yds to RBs (21 a game; league average 32). The under hit in 3 of his last 8 games at this line.",
     "label": "Sunday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "Christian McCaffrey: 13 rec yds",
+    "resultWhy": "It hit. Christian McCaffrey under 33.5 rec yds cashed.",
     "units": 1.5,
     "prop": {
      "pid": "3117251",
@@ -2945,7 +2945,8 @@
     "close_line": 33.5,
     "closeAt": "2026-11-23T00:32:13.909Z",
     "close_src": "board",
-    "clv": 0
+    "clv": 0,
+    "by": "20.5 under 33.5"
    }
   ],
   "cfb": [
@@ -3812,7 +3813,7 @@
    }
   ]
  },
- "updated": "2026-11-23T04:31:40.001Z",
+ "updated": "2026-11-23T05:16:44.362Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7964,39 +7965,17 @@
    "league": "nfl",
    "kind": "tot",
    "side": "over",
-   "label": "Over 63.5",
+   "label": "Over 64.5",
    "game": "CIN @ WSH",
    "kick": "2026-11-24T01:15Z",
-   "line": 63.5,
+   "line": 64.5,
    "mainLine": 54.5,
-   "price": 260,
+   "price": 285,
    "book": "FanDuel",
-   "win": 0.2874,
-   "mwin": 0.2941,
-   "ev": 0.0348,
-   "mev": 0.0588,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873078|tot|under",
-   "gid": "401873078",
-   "league": "nfl",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 51.5",
-   "game": "CIN @ WSH",
-   "kick": "2026-11-24T01:15Z",
-   "line": 51.5,
-   "mainLine": 54.5,
-   "price": 140,
-   "book": "ESPN BET",
-   "win": 0.4307,
-   "mwin": 0.4222,
-   "ev": 0.0337,
-   "mev": 0.0132,
+   "win": 0.2686,
+   "mwin": 0.2749,
+   "ev": 0.0343,
+   "mev": 0.0585,
    "src": "mkt",
    "result": null,
    "final": null,
