@@ -314,12 +314,12 @@
    "total_pick": "UNDER 54.5",
    "side_play": false,
    "our_margin": -6.24,
-   "our_total": 53.3,
+   "our_total": 54.2,
    "confidence": null,
    "total_play": false,
    "spread": 6,
    "total": 54.5,
-   "lockedAt": "2026-11-23T14:07:34.850Z",
+   "lockedAt": "2026-11-23T14:38:18.188Z",
    "provisional": true
   }
  },
@@ -1228,13 +1228,13 @@
     "game": "CIN @ WSH",
     "kind": "Player prop",
     "line": "Tee Higgins under 75.5 rec yds",
-    "hitPct": 54,
-    "why": "We project Tee Higgins for 71 rec yds against a line of 75.5. Our checked chance on the under is 54%; the books' own chance is 50%. At -112 (DraftKings) that is 1.3% better than the price. WSH is middle of the pack here: 17th of 32 in rec yds allowed to WRs (149 a game; league average 148). The under hit in 3 of his last 8 games at this line.",
+    "hitPct": 53,
+    "why": "We project Tee Higgins for 72 rec yds against a line of 75.5. Our checked chance on the under is 53%; the books' own chance is 50%. At -112 (DraftKings) that is 1.1% better than the price. WSH is middle of the pack here: 17th of 32 in rec yds allowed to WRs (149 a game; league average 148). The under hit in 3 of his last 8 games at this line.",
     "label": "Monday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 0.5,
+    "units": 0.25,
     "prop": {
      "pid": "4239993",
      "name": "Tee Higgins",
@@ -1244,16 +1244,16 @@
     },
     "price": -112,
     "book": "DraftKings",
-    "ev": 0.013,
-    "ours": "CIN -6.2 · total 53.3",
-    "score": "CIN 29.8 – WSH 23.5",
+    "ev": 0.011,
+    "ours": "CIN -6.2 · total 54.2",
+    "score": "CIN 30.2 – WSH 24.0",
     "market": "CIN -6.0 · total 54.5",
-    "lockedAt": "2026-11-23T14:07:34.873Z",
+    "lockedAt": "2026-11-23T14:38:18.211Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-24T01:15Z",
     "big": false,
-    "savedAt": 1795442854873
+    "savedAt": 1795444698211
    }
   ],
   "cfb": [
@@ -2159,7 +2159,7 @@
    }
   ]
  },
- "updated": "2026-11-23T14:07:34.850Z",
+ "updated": "2026-11-23T14:38:18.188Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6318,9 +6318,9 @@
    "mainLine": 54.5,
    "price": 280,
    "book": "ESPN BET",
-   "win": 0.2789,
+   "win": 0.2736,
    "mwin": 0.2718,
-   "ev": 0.0599,
+   "ev": 0.0395,
    "mev": 0.0329,
    "src": "mkt",
    "result": null,
