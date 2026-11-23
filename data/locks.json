@@ -2046,10 +2046,10 @@
    "total": 44.5,
    "lockedAt": "2026-11-23T00:01:29.184Z",
    "close_spread": -4.5,
-   "close_total": 44.5,
-   "closeAt": "2026-11-23T00:32:13.909Z",
+   "close_total": 45.5,
+   "closeAt": "2026-11-23T01:16:48.748Z",
    "clv_side": 0,
-   "clv_total": 0
+   "clv_total": -1
   }
  },
  "potd": {
@@ -2803,9 +2803,9 @@
     "hitPct": 65,
     "why": "We project Geno Smith for 1.1 pass TDs against a line of 1.5. Our checked chance on the under is 65%; the books' own chance is 59%. At -157 (BetRivers) that is 6.1% better than the price. LAC is middle of the pack here: 15th of 32 in pass TDs allowed to QBs (1.4 a game; league average 1.5). The under hit in 5 of his last 8 games at this line.",
     "label": "Best of Sunday's 10 games",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "Geno Smith: 3 pass TDs",
+    "resultWhy": "It missed. Geno Smith under 1.5 pass TDs did not cash.",
     "units": 2,
     "prop": {
      "pid": "15864",
@@ -2822,11 +2822,11 @@
     "market": "LAC -3.0 · total 43.5",
     "lockedAt": "2026-11-22T17:31:46.008Z",
     "locked": true,
-    "provisional": false,
     "kick": "2026-11-22T21:05Z",
     "big": true,
     "savedAt": 1795368706008,
-    "note": "No lock run landed in the 90 minutes before kickoff; this is the last play saved before kickoff."
+    "note": "No lock run landed in the 90 minutes before kickoff; this is the last play saved before kickoff.",
+    "by": "1.5 over 1.5"
    },
    {
     "key": "game:401873074",
@@ -2840,9 +2840,9 @@
     "hitPct": 65,
     "why": "We project Geno Smith for 1.1 pass TDs against a line of 1.5. Our checked chance on the under is 65%; the books' own chance is 59%. At -162 (BetRivers) that is 4.8% better than the price. LAC is middle of the pack here: 15th of 32 in pass TDs allowed to QBs (1.4 a game; league average 1.5). The under hit in 5 of his last 8 games at this line.",
     "label": "Sunday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "Geno Smith: 3 pass TDs",
+    "resultWhy": "It missed. Geno Smith under 1.5 pass TDs did not cash.",
     "units": 2,
     "prop": {
      "pid": "15864",
@@ -2865,7 +2865,8 @@
     "close_line": 1.5,
     "closeAt": "2026-11-22T20:16:43.735Z",
     "close_src": "board",
-    "clv": 0
+    "clv": 0,
+    "by": "1.5 over 1.5"
    },
    {
     "key": "game:401873075",
@@ -2879,9 +2880,9 @@
     "hitPct": 61,
     "why": "We project Courtland Sutton for 3.0 receptions against a line of 3.5. Our checked chance on the under is 61%; the books' own chance is 58%. At -150 (BetMGM) that is 1.2% better than the price. LV is middle of the pack here: 11th of 32 in receptions allowed to WRs (10 a game; league average 11). The under hit in 6 of his last 8 games at this line.",
     "label": "Sunday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "Courtland Sutton: 0 receptions",
+    "resultWhy": "It hit. Courtland Sutton under 3.5 receptions cashed.",
     "units": 0.5,
     "prop": {
      "pid": "3128429",
@@ -2904,7 +2905,8 @@
     "close_line": 3.5,
     "closeAt": "2026-11-22T21:32:06.194Z",
     "close_src": "board",
-    "clv": 0
+    "clv": 0,
+    "by": "3.5 under 3.5"
    },
    {
     "key": "game:401873077",
@@ -3810,7 +3812,7 @@
    }
   ]
  },
- "updated": "2026-11-23T01:01:24.320Z",
+ "updated": "2026-11-23T01:16:48.748Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4190,7 +4192,7 @@
       "line": 23.5,
       "name": "Justin Herbert"
      },
-     "result": null,
+     "result": "MISS",
      "close": {
       "at": "2026-11-22T21:01:51.869Z",
       "line": 23.5,
@@ -4199,7 +4201,9 @@
       "fair": 0.5072,
       "push": 0,
       "src": "books"
-     }
+     },
+     "actual": 32,
+     "final": "Justin Herbert: 32 rush yds"
     },
     {
      "id": "401873075|pp|4890973|rush_yds|under",
@@ -4224,7 +4228,7 @@
       "line": 30.5,
       "name": "Ashton Jeanty"
      },
-     "result": null,
+     "result": "MISS",
      "close": {
       "at": "2026-11-22T21:16:58.522Z",
       "line": 32.5,
@@ -4233,7 +4237,9 @@
       "fair": null,
       "push": 0,
       "src": "books"
-     }
+     },
+     "actual": 79,
+     "final": "Ashton Jeanty: 79 rush yds"
     },
     {
      "id": "401873072|pp|3116165|rec_yds|under",
@@ -4272,8 +4278,8 @@
      "final": "Chris Godwin Jr.: 13 rec yds"
     }
    ],
-   "result": null,
-   "units": null,
+   "result": "MISS",
+   "units": -1,
    "locked": true,
    "provisional": false,
    "lockedAt": "2026-11-22T16:31:58.829Z"
@@ -7940,12 +7946,12 @@
    "game": "MIN VS SF",
    "kick": "2026-11-23T01:20Z",
    "line": 38.5,
-   "mainLine": 44.5,
+   "mainLine": 45.5,
    "price": 230,
    "book": "FanDuel",
-   "win": 0.3203,
+   "win": 0.3227,
    "mwin": 0.3157,
-   "ev": 0.0569,
+   "ev": 0.065,
    "mev": 0.0417,
    "src": "mkt",
    "result": null,
