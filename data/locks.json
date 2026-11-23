@@ -314,12 +314,12 @@
    "total_pick": "UNDER 54.5",
    "side_play": false,
    "our_margin": -6.24,
-   "our_total": 53.3,
+   "our_total": 54.2,
    "confidence": null,
    "total_play": false,
    "spread": 6,
    "total": 54.5,
-   "lockedAt": "2026-11-23T18:19:26.329Z",
+   "lockedAt": "2026-11-23T19:16:21.549Z",
    "provisional": true
   }
  },
@@ -1227,33 +1227,33 @@
     "id": "401873078",
     "game": "CIN @ WSH",
     "kind": "Player prop",
-    "line": "Tee Higgins under 75.5 rec yds",
+    "line": "Dohnte Meyers under 20.5 rec yds",
     "hitPct": 53,
-    "why": "We project Tee Higgins for 72 rec yds against a line of 75.5. Our checked chance on the under is 53%; the books' own chance is 50%. At -112 (DraftKings) that is 1.1% better than the price. WSH is middle of the pack here: 17th of 32 in rec yds allowed to WRs (149 a game; league average 148). The under hit in 3 of his last 8 games at this line.",
+    "why": "We project Dohnte Meyers for 21 rec yds against a line of 20.5. Our checked chance on the under is 53%; the books' own chance is 49%. At -110 (ESPN BET) that is 1.1% better than the price. WSH is middle of the pack here: 17th of 32 in rec yds allowed to WRs (149 a game; league average 148). The under hit in 4 of his last 8 games at this line.",
     "label": "Monday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
     "units": 0.25,
     "prop": {
-     "pid": "4239993",
-     "name": "Tee Higgins",
+     "pid": "4384852",
+     "name": "Dohnte Meyers",
      "stat": "rec_yds",
      "side": "under",
-     "line": 75.5
+     "line": 20.5
     },
-    "price": -112,
-    "book": "DraftKings",
+    "price": -110,
+    "book": "ESPN BET",
     "ev": 0.011,
     "ours": "CIN -6.2 · total 54.2",
     "score": "CIN 30.2 – WSH 24.0",
     "market": "CIN -6.0 · total 54.5",
-    "lockedAt": "2026-11-23T14:38:18.211Z",
+    "lockedAt": "2026-11-23T19:16:21.579Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-24T01:15Z",
     "big": false,
-    "savedAt": 1795444698211
+    "savedAt": 1795461381579
    }
   ],
   "cfb": [
@@ -2159,7 +2159,7 @@
    }
   ]
  },
- "updated": "2026-11-23T18:19:26.329Z",
+ "updated": "2026-11-23T19:16:21.549Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6304,28 +6304,6 @@
    "result": "MISS",
    "final": "MIN 10, SF 35",
    "units": -1
-  },
-  {
-   "id": "401873078|tot|under",
-   "gid": "401873078",
-   "league": "nfl",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 46.5",
-   "game": "CIN @ WSH",
-   "kick": "2026-11-24T01:15Z",
-   "line": 46.5,
-   "mainLine": 54.5,
-   "price": 250,
-   "book": "ESPN BET",
-   "win": 0.2952,
-   "mwin": 0.2878,
-   "ev": 0.0332,
-   "mev": 0.0072,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
   },
   {
    "id": "401873079|sp|home",
