@@ -319,7 +319,7 @@
    "total_play": false,
    "spread": 6,
    "total": 54.5,
-   "lockedAt": "2026-11-23T20:17:26.087Z",
+   "lockedAt": "2026-11-23T20:49:43.255Z",
    "provisional": true
   }
  },
@@ -1229,12 +1229,12 @@
     "kind": "Player prop",
     "line": "Dohnte Meyers under 20.5 rec yds",
     "hitPct": 53,
-    "why": "We project Dohnte Meyers for 21 rec yds against a line of 20.5. Our checked chance on the under is 53%; the books' own chance is 49%. At -110 (ESPN BET) that is 1.1% better than the price. WSH is middle of the pack here: 17th of 32 in rec yds allowed to WRs (149 a game; league average 148). The under hit in 4 of his last 8 games at this line.",
+    "why": "We project Dohnte Meyers for 20 rec yds against a line of 20.5. Our checked chance on the under is 53%; the books' own chance is 49%. At -110 (ESPN BET) that is 2% better than the price. WSH is middle of the pack here: 17th of 32 in rec yds allowed to WRs (149 a game; league average 148). The under hit in 4 of his last 8 games at this line.",
     "label": "Monday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 0.25,
+    "units": 0.5,
     "prop": {
      "pid": "4384852",
      "name": "Dohnte Meyers",
@@ -1244,16 +1244,16 @@
     },
     "price": -110,
     "book": "ESPN BET",
-    "ev": 0.011,
+    "ev": 0.02,
     "ours": "CIN -6.2 · total 54.2",
     "score": "CIN 30.2 – WSH 24.0",
     "market": "CIN -6.0 · total 54.5",
-    "lockedAt": "2026-11-23T20:17:26.110Z",
+    "lockedAt": "2026-11-23T20:49:43.278Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-24T01:15Z",
     "big": false,
-    "savedAt": 1795465046110
+    "savedAt": 1795466983278
    }
   ],
   "cfb": [
@@ -2159,7 +2159,7 @@
    }
   ]
  },
- "updated": "2026-11-23T20:17:26.087Z",
+ "updated": "2026-11-23T20:49:43.255Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7011,9 +7011,9 @@
    "win": 0.5196,
    "ev": 0.0241,
    "rule": "likely",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "No TD",
+   "units": -1
   },
   {
    "key": "401873077|3117251",
@@ -7033,9 +7033,9 @@
    "win": 0.6774,
    "ev": 0.129,
    "rule": "likely",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "1 TD",
+   "units": 0.6667
   },
   {
    "key": "401873078|4362238",
