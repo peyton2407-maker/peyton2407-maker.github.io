@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 46.5,
-   "lockedAt": "2026-11-24T13:01:38.689Z",
+   "lockedAt": "2026-11-24T14:11:04.171Z",
    "provisional": true
   }
  },
@@ -1863,7 +1863,7 @@
    }
   ]
  },
- "updated": "2026-11-24T13:01:38.689Z",
+ "updated": "2026-11-24T14:11:04.171Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7008,10 +7008,10 @@
    "game": "GB @ LAR",
    "kick": "2026-11-26T01:00Z",
    "price": 115,
-   "book": "DraftKings",
+   "book": "FanDuel",
    "books": 6,
-   "ours": 0.4811,
-   "mkt": 0.459,
+   "ours": 0.4769,
+   "mkt": 0.4617,
    "win": 0.5062,
    "ev": 0.0883,
    "rule": "likely",
