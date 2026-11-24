@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 46.5,
-   "lockedAt": "2026-11-24T15:32:23.899Z",
+   "lockedAt": "2026-11-24T15:46:23.244Z",
    "provisional": true
   }
  },
@@ -1863,7 +1863,7 @@
    }
   ]
  },
- "updated": "2026-11-24T15:32:23.899Z",
+ "updated": "2026-11-24T15:46:23.244Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6173,6 +6173,28 @@
    "ev": 0.0776,
    "mev": 0.0313,
    "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873082|tot|under",
+   "gid": "401873082",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 39.5",
+   "game": "KC @ BUF",
+   "kick": "2026-11-27T01:20Z",
+   "line": 39.5,
+   "mainLine": 47.5,
+   "price": 280,
+   "book": "FanDuel",
+   "win": 0.2719,
+   "mwin": 0.2641,
+   "ev": 0.0332,
+   "mev": 0.0035,
+   "src": "proj",
    "result": null,
    "final": null,
    "units": null
