@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 46.5,
-   "lockedAt": "2026-11-24T19:46:43.078Z",
+   "lockedAt": "2026-11-24T20:02:27.729Z",
    "provisional": true
   },
   "401866471": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 45.5,
-   "lockedAt": "2026-11-24T19:46:43.078Z",
+   "lockedAt": "2026-11-24T20:02:27.729Z",
    "provisional": true
   }
  },
@@ -1884,7 +1884,7 @@
    }
   ]
  },
- "updated": "2026-11-24T19:46:43.078Z",
+ "updated": "2026-11-24T20:02:27.729Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7160,13 +7160,13 @@
    "opp": "CHI",
    "game": "CHI @ DET",
    "kick": "2026-11-26T18:00Z",
-   "price": -255,
-   "book": "Fanatics",
+   "price": -250,
+   "book": "BetMGM",
    "books": 6,
-   "ours": 0.6529,
-   "mkt": 0.598,
+   "ours": 0.655,
+   "mkt": 0.5972,
    "win": 0.7695,
-   "ev": 0.0713,
+   "ev": 0.0773,
    "rule": "likely",
    "result": null,
    "final": null,
