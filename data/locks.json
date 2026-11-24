@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 46.5,
-   "lockedAt": "2026-11-24T15:46:23.244Z",
+   "lockedAt": "2026-11-24T16:01:25.681Z",
    "provisional": true
   }
  },
@@ -1863,7 +1863,7 @@
    }
   ]
  },
- "updated": "2026-11-24T15:46:23.244Z",
+ "updated": "2026-11-24T16:01:25.681Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2765,7 +2765,7 @@
    "from": 1.5,
    "to": 7.5,
    "book": null,
-   "win": 0.7414,
+   "win": 0.7415,
    "bookWin": 0.749,
    "total": 35.5,
    "result": null,
