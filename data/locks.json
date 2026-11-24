@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 46.5,
-   "lockedAt": "2026-11-24T19:32:23.332Z",
+   "lockedAt": "2026-11-24T19:46:43.078Z",
    "provisional": true
   },
   "401866471": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 45.5,
-   "lockedAt": "2026-11-24T19:32:23.332Z",
+   "lockedAt": "2026-11-24T19:46:43.078Z",
    "provisional": true
   }
  },
@@ -1884,7 +1884,7 @@
    }
   ]
  },
- "updated": "2026-11-24T19:32:23.332Z",
+ "updated": "2026-11-24T19:46:43.078Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7124,9 +7124,9 @@
    "win": 0.6324,
    "ev": 0.1383,
    "rule": "likely",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "No TD",
+   "units": -1
   },
   {
    "key": "401873079|4430737",
