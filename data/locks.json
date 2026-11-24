@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 46.5,
-   "lockedAt": "2026-11-24T20:02:27.729Z",
+   "lockedAt": "2026-11-24T20:16:51.951Z",
    "provisional": true
   },
   "401866471": {
@@ -31,16 +31,16 @@
    "away": "M-OH",
    "date": "2026-11-25T00:00Z",
    "pick": "WMU",
-   "pick_line": "WMU -5.5",
+   "pick_line": "WMU -4.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 5.85,
+   "our_margin": 5.2,
    "our_total": 45.5,
    "confidence": null,
    "total_play": false,
-   "spread": -5.5,
+   "spread": -4.5,
    "total": 45.5,
-   "lockedAt": "2026-11-24T20:02:27.729Z",
+   "lockedAt": "2026-11-24T20:16:51.951Z",
    "provisional": true
   }
  },
@@ -1884,7 +1884,7 @@
    }
   ]
  },
- "updated": "2026-11-24T20:02:27.729Z",
+ "updated": "2026-11-24T20:16:51.951Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
