@@ -10,16 +10,16 @@
    "away": "KENT",
    "date": "2026-11-25T00:00Z",
    "pick": "EMU",
-   "pick_line": "EMU -5.5",
+   "pick_line": "EMU -6.0",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 6.5,
+   "our_margin": 6.83,
    "our_total": 46.5,
    "confidence": null,
    "total_play": false,
-   "spread": -5.5,
+   "spread": -6,
    "total": 46.5,
-   "lockedAt": "2026-11-24T20:16:51.951Z",
+   "lockedAt": "2026-11-24T20:32:08.713Z",
    "provisional": true
   },
   "401866471": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 45.5,
-   "lockedAt": "2026-11-24T20:16:51.951Z",
+   "lockedAt": "2026-11-24T20:32:08.713Z",
    "provisional": true
   }
  },
@@ -1884,7 +1884,7 @@
    }
   ]
  },
- "updated": "2026-11-24T20:16:51.951Z",
+ "updated": "2026-11-24T20:32:08.713Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6167,9 +6167,9 @@
    "mainLine": -3,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2822,
+   "win": 0.2824,
    "mwin": 0.2687,
-   "ev": 0.0723,
+   "ev": 0.0731,
    "mev": 0.0209,
    "src": "mkt",
    "result": null,
