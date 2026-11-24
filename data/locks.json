@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 46.5,
-   "lockedAt": "2026-11-24T12:46:37.792Z",
+   "lockedAt": "2026-11-24T13:01:38.689Z",
    "provisional": true
   }
  },
@@ -1863,7 +1863,7 @@
    }
   ]
  },
- "updated": "2026-11-24T12:46:37.792Z",
+ "updated": "2026-11-24T13:01:38.689Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6319,12 +6319,12 @@
    "game": "SEA @ SF",
    "kick": "2026-11-29T21:25Z",
    "line": -7.5,
-   "mainLine": -3.5,
+   "mainLine": -3,
    "price": 210,
    "book": "FanDuel",
-   "win": 0.3355,
+   "win": 0.3403,
    "mwin": 0.326,
-   "ev": 0.0401,
+   "ev": 0.0548,
    "mev": 0.0106,
    "src": "mkt",
    "result": null,
