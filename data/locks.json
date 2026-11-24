@@ -19,7 +19,12 @@
    "total_play": false,
    "spread": -6.5,
    "total": 46.5,
-   "lockedAt": "2026-11-24T22:31:32.417Z"
+   "lockedAt": "2026-11-24T22:31:32.417Z",
+   "close_spread": -6.5,
+   "close_total": 46.5,
+   "closeAt": "2026-11-24T23:01:37.418Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401866471": {
    "id": "401866471",
@@ -39,7 +44,12 @@
    "total_play": false,
    "spread": -4.5,
    "total": 45.5,
-   "lockedAt": "2026-11-24T22:31:32.417Z"
+   "lockedAt": "2026-11-24T22:31:32.417Z",
+   "close_spread": -4.5,
+   "close_total": 45.5,
+   "closeAt": "2026-11-24T23:01:37.418Z",
+   "clv_side": 0,
+   "clv_total": null
   }
  },
  "potd": {
@@ -1882,7 +1892,7 @@
    }
   ]
  },
- "updated": "2026-11-24T22:46:32.460Z",
+ "updated": "2026-11-24T23:01:37.418Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2787,22 +2797,6 @@
    "win": 0.7414,
    "bookWin": 0.749,
    "total": 35.5,
-   "result": null,
-   "final": null
-  },
-  {
-   "id": "401873092|sp|away",
-   "gid": "401873092",
-   "team": "WSH",
-   "side": "away",
-   "game": "WSH @ ARI",
-   "kick": "2026-11-29T21:25Z",
-   "from": -7.5,
-   "to": -1.5,
-   "book": null,
-   "win": 0.7132,
-   "bookWin": 0.7428,
-   "total": 42.5,
    "result": null,
    "final": null
   }
@@ -6470,12 +6464,12 @@
    "game": "WSH @ ARI",
    "kick": "2026-11-29T21:25Z",
    "line": 49.5,
-   "mainLine": 42.5,
+   "mainLine": 41.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2809,
+   "win": 0.2825,
    "mwin": 0.2733,
-   "ev": 0.0675,
+   "ev": 0.0735,
    "mev": 0.0386,
    "src": "mkt",
    "result": null,
@@ -6492,12 +6486,12 @@
    "game": "WSH @ ARI",
    "kick": "2026-11-29T21:25Z",
    "line": 1.5,
-   "mainLine": 7.5,
+   "mainLine": 7,
    "price": 240,
    "book": "BetRivers",
-   "win": 0.3236,
+   "win": 0.316,
    "mwin": 0.2941,
-   "ev": 0.1002,
+   "ev": 0.0745,
    "mev": 0,
    "src": "proj",
    "result": null,
