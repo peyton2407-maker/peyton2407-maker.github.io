@@ -1840,7 +1840,7 @@
    }
   ]
  },
- "updated": "2026-11-24T04:23:46.085Z",
+ "updated": "2026-11-24T04:54:13.772Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6173,9 +6173,9 @@
    "mainLine": -6.5,
    "price": 260,
    "book": "BetRivers",
-   "win": 0.2966,
+   "win": 0.2965,
    "mwin": 0.2788,
-   "ev": 0.0676,
+   "ev": 0.0674,
    "mev": 0.0035,
    "src": "proj",
    "result": null,
