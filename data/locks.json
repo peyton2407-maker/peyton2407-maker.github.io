@@ -1,6 +1,28 @@
 {
  "v": 1,
- "plays": {},
+ "plays": {
+  "401866470": {
+   "id": "401866470",
+   "league": "cfb",
+   "week": 13,
+   "short": "KENT @ EMU",
+   "home": "EMU",
+   "away": "KENT",
+   "date": "2026-11-25T00:00Z",
+   "pick": "EMU",
+   "pick_line": "EMU -5.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 6.5,
+   "our_total": 46.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -5.5,
+   "total": 46.5,
+   "lockedAt": "2026-11-24T12:02:05.889Z",
+   "provisional": true
+  }
+ },
  "potd": {
   "nfl": [
    {
@@ -1841,7 +1863,7 @@
    }
   ]
  },
- "updated": "2026-11-24T10:17:05.365Z",
+ "updated": "2026-11-24T12:02:05.889Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6253,12 +6275,12 @@
    "game": "WSH @ ARI",
    "kick": "2026-11-29T21:25Z",
    "line": 49.5,
-   "mainLine": 40.5,
+   "mainLine": 42.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2841,
+   "win": 0.2808,
    "mwin": 0.2733,
-   "ev": 0.0796,
+   "ev": 0.0671,
    "mev": 0.0386,
    "src": "mkt",
    "result": null,
