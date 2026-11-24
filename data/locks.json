@@ -10,16 +10,16 @@
    "away": "KENT",
    "date": "2026-11-25T00:00Z",
    "pick": "EMU",
-   "pick_line": "EMU -6.0",
+   "pick_line": "EMU -6.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 6.7,
+   "our_margin": 7.03,
    "our_total": 46.5,
    "confidence": null,
    "total_play": false,
-   "spread": -6,
+   "spread": -6.5,
    "total": 46.5,
-   "lockedAt": "2026-11-24T21:31:41.775Z",
+   "lockedAt": "2026-11-24T21:46:48.485Z",
    "provisional": true
   },
   "401866471": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 45.5,
-   "lockedAt": "2026-11-24T21:31:41.775Z",
+   "lockedAt": "2026-11-24T21:46:48.485Z",
    "provisional": true
   }
  },
@@ -1884,7 +1884,7 @@
    }
   ]
  },
- "updated": "2026-11-24T21:31:41.775Z",
+ "updated": "2026-11-24T21:46:48.485Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6296,12 +6296,12 @@
    "game": "ATL @ MIN",
    "kick": "2026-11-29T18:00Z",
    "line": 35.5,
-   "mainLine": 42.5,
+   "mainLine": 41.5,
    "price": 235,
    "book": "Fanatics",
-   "win": 0.3118,
+   "win": 0.3102,
    "mwin": 0.2998,
-   "ev": 0.0444,
+   "ev": 0.039,
    "mev": 0.0042,
    "src": "proj",
    "result": null,
