@@ -46,8 +46,8 @@
    "total": 45.5,
    "lockedAt": "2026-11-24T22:31:32.417Z",
    "close_spread": -4.5,
-   "close_total": 45.5,
-   "closeAt": "2026-11-24T23:01:37.418Z",
+   "close_total": 44.5,
+   "closeAt": "2026-11-24T23:31:18.790Z",
    "clv_side": 0,
    "clv_total": null
   }
@@ -1892,7 +1892,7 @@
    }
   ]
  },
- "updated": "2026-11-24T23:16:44.635Z",
+ "updated": "2026-11-24T23:31:18.790Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2778,8 +2778,8 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.7461,
-   "bookWin": 0.743,
+   "win": 0.746,
+   "bookWin": 0.7428,
    "total": 47.5,
    "result": null,
    "final": null
@@ -6310,12 +6310,12 @@
    "game": "TEN @ JAX",
    "kick": "2026-11-29T18:00Z",
    "line": 56.5,
-   "mainLine": 47.5,
+   "mainLine": 48.5,
    "price": 280,
    "book": "Fanatics",
-   "win": 0.2738,
+   "win": 0.2718,
    "mwin": 0.2771,
-   "ev": 0.0403,
+   "ev": 0.033,
    "mev": 0.0528,
    "src": "mkt",
    "result": null,
@@ -6376,12 +6376,12 @@
    "game": "TEN @ JAX",
    "kick": "2026-11-29T18:00Z",
    "line": 42.5,
-   "mainLine": 47.5,
+   "mainLine": 48.5,
    "price": 196,
    "book": "FanDuel",
-   "win": 0.3483,
+   "win": 0.3502,
    "mwin": 0.3444,
-   "ev": 0.0311,
+   "ev": 0.0367,
    "mev": 0.0193,
    "src": "mkt",
    "result": null,
