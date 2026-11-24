@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 46.5,
-   "lockedAt": "2026-11-24T12:17:04.342Z",
+   "lockedAt": "2026-11-24T12:46:37.792Z",
    "provisional": true
   }
  },
@@ -1863,7 +1863,7 @@
    }
   ]
  },
- "updated": "2026-11-24T12:17:04.342Z",
+ "updated": "2026-11-24T12:46:37.792Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6319,14 +6319,36 @@
    "game": "SEA @ SF",
    "kick": "2026-11-29T21:25Z",
    "line": -7.5,
-   "mainLine": -3,
+   "mainLine": -3.5,
    "price": 210,
    "book": "FanDuel",
-   "win": 0.3405,
+   "win": 0.3355,
    "mwin": 0.326,
-   "ev": 0.0554,
+   "ev": 0.0401,
    "mev": 0.0106,
    "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873086|tot|under",
+   "gid": "401873086",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 35.5",
+   "game": "LV @ CLE",
+   "kick": "2026-11-30T01:20Z",
+   "line": 35.5,
+   "mainLine": 41.5,
+   "price": 200,
+   "book": "FanDuel",
+   "win": 0.3437,
+   "mwin": 0.3279,
+   "ev": 0.0311,
+   "mev": -0.0162,
+   "src": "proj",
    "result": null,
    "final": null,
    "units": null
