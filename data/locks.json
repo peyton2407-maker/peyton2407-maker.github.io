@@ -19,8 +19,7 @@
    "total_play": false,
    "spread": -6.5,
    "total": 46.5,
-   "lockedAt": "2026-11-24T22:16:50.605Z",
-   "provisional": true
+   "lockedAt": "2026-11-24T22:31:32.417Z"
   },
   "401866471": {
    "id": "401866471",
@@ -40,8 +39,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 45.5,
-   "lockedAt": "2026-11-24T22:16:50.605Z",
-   "provisional": true
+   "lockedAt": "2026-11-24T22:31:32.417Z"
   }
  },
  "potd": {
@@ -1884,7 +1882,7 @@
    }
   ]
  },
- "updated": "2026-11-24T22:16:50.605Z",
+ "updated": "2026-11-24T22:31:32.417Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2738,9 +2736,9 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7261,
-   "bookWin": 0.7528,
-   "total": 43.5,
+   "win": 0.726,
+   "bookWin": 0.7527,
+   "total": 44.5,
    "result": null,
    "final": null
   },
@@ -2770,8 +2768,8 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.7459,
-   "bookWin": 0.7428,
+   "win": 0.7461,
+   "bookWin": 0.743,
    "total": 47.5,
    "result": null,
    "final": null
@@ -10535,6 +10533,38 @@
    "result": "HIT",
    "units": 0.9091,
    "final": "CIN 20, WSH 22"
+  },
+  {
+   "id": "401866470",
+   "league": "cfb",
+   "gid": "401866470",
+   "side": "home",
+   "team": "EMU",
+   "game": "KENT @ EMU",
+   "kick": "2026-11-25T00:00Z",
+   "line": -6.5,
+   "price": -110,
+   "book": "standard",
+   "ours": -7,
+   "market": -6.5,
+   "label": "EMU -6.5",
+   "lockedAt": "2026-11-24T22:31:32.417Z"
+  },
+  {
+   "id": "401866471",
+   "league": "cfb",
+   "gid": "401866471",
+   "side": "home",
+   "team": "WMU",
+   "game": "M-OH @ WMU",
+   "kick": "2026-11-25T00:00Z",
+   "line": -4.5,
+   "price": -110,
+   "book": "standard",
+   "ours": -5.1,
+   "market": -4.5,
+   "label": "WMU -4.5",
+   "lockedAt": "2026-11-24T22:31:32.417Z"
   }
  ]
 }
