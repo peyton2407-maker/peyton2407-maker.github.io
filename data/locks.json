@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 43.5,
-   "lockedAt": "2026-11-25T18:04:09.956Z",
+   "lockedAt": "2026-11-25T19:02:22.963Z",
    "provisional": true
   }
  },
@@ -1038,12 +1038,12 @@
     "ours": "LAR -3.3 · total 44.1",
     "score": "GB 20.4 – LAR 23.7",
     "market": "LAR -2.5 · total 43.5",
-    "lockedAt": "2026-11-25T18:04:09.976Z",
+    "lockedAt": "2026-11-25T19:02:22.983Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T01:00Z",
     "big": false,
-    "savedAt": 1795629849976
+    "savedAt": 1795633342983
    }
   ],
   "cfb": [
@@ -1949,7 +1949,7 @@
    }
   ]
  },
- "updated": "2026-11-25T18:04:09.956Z",
+ "updated": "2026-11-25T19:02:22.963Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6292,28 +6292,6 @@
    "units": null
   },
   {
-   "id": "401873082|tot|under",
-   "gid": "401873082",
-   "league": "nfl",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 40.5",
-   "game": "KC @ BUF",
-   "kick": "2026-11-27T01:20Z",
-   "line": 40.5,
-   "mainLine": 46.5,
-   "price": 225,
-   "book": "ESPN BET",
-   "win": 0.3244,
-   "mwin": 0.3178,
-   "ev": 0.0542,
-   "mev": 0.033,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401873082|sp|home",
    "gid": "401873082",
    "league": "nfl",
@@ -6326,10 +6304,10 @@
    "mainLine": -3,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2888,
-   "mwin": 0.275,
-   "ev": 0.0973,
-   "mev": 0.0451,
+   "win": 0.2901,
+   "mwin": 0.2764,
+   "ev": 0.1024,
+   "mev": 0.0502,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -6700,9 +6678,9 @@
    "mainLine": 40.5,
    "price": 300,
    "book": "FanDuel",
-   "win": 0.2804,
+   "win": 0.2764,
    "mwin": 0.2562,
-   "ev": 0.1217,
+   "ev": 0.1055,
    "mev": 0.0247,
    "src": "mkt",
    "result": null,
