@@ -1892,7 +1892,7 @@
    }
   ]
  },
- "updated": "2026-11-25T03:02:09.870Z",
+ "updated": "2026-11-25T03:16:24.566Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6185,6 +6185,28 @@
    "mwin": 0.2707,
    "ev": 0.0535,
    "mev": 0.0246,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873080|sp|home",
+   "gid": "401873080",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "home",
+   "label": "DAL -18",
+   "game": "PHI @ DAL",
+   "kick": "2026-11-26T21:30Z",
+   "line": -18,
+   "mainLine": -8.5,
+   "price": 285,
+   "book": "BetRivers",
+   "win": 0.2712,
+   "mwin": 0.2678,
+   "ev": 0.0684,
+   "mev": 0.055,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -10498,7 +10520,10 @@
    "ours": -7,
    "market": -6.5,
    "label": "EMU -6.5",
-   "lockedAt": "2026-11-24T22:31:32.417Z"
+   "lockedAt": "2026-11-24T22:31:32.417Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "KENT 12, EMU 17"
   },
   {
    "id": "401866471",
