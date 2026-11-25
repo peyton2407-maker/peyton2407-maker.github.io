@@ -1892,7 +1892,7 @@
    }
   ]
  },
- "updated": "2026-11-25T12:17:11.738Z",
+ "updated": "2026-11-25T12:32:06.729Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2746,8 +2746,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7258,
-   "bookWin": 0.7527,
+   "win": 0.7259,
+   "bookWin": 0.7528,
    "total": 44.5,
    "result": null,
    "final": null
@@ -2762,8 +2762,8 @@
    "from": 1.5,
    "to": 7.5,
    "book": null,
-   "win": 0.7561,
-   "bookWin": 0.7491,
+   "win": 0.756,
+   "bookWin": 0.749,
    "total": 55.5,
    "result": null,
    "final": null
@@ -6477,6 +6477,28 @@
    "units": null
   },
   {
+   "id": "401873087|tot|under",
+   "gid": "401873087",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 42.5",
+   "game": "NO @ CIN",
+   "kick": "2026-11-29T18:00Z",
+   "line": 42.5,
+   "mainLine": 50.5,
+   "price": 255,
+   "book": "FanDuel",
+   "win": 0.2989,
+   "mwin": 0.2846,
+   "ev": 0.0612,
+   "mev": 0.0104,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873092|tot|over",
    "gid": "401873092",
    "league": "nfl",
@@ -6555,9 +6577,9 @@
    "mainLine": 40.5,
    "price": 300,
    "book": "FanDuel",
-   "win": 0.2705,
+   "win": 0.2804,
    "mwin": 0.2562,
-   "ev": 0.0819,
+   "ev": 0.1217,
    "mev": 0.0247,
    "src": "mkt",
    "result": null,
