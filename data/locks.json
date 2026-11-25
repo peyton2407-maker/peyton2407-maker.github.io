@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 43.5,
-   "lockedAt": "2026-11-25T20:16:52.924Z",
+   "lockedAt": "2026-11-25T21:16:45.269Z",
    "provisional": true
   }
  },
@@ -1018,13 +1018,13 @@
     "game": "GB @ LAR",
     "kind": "Player prop",
     "line": "Kaleb Johnson under 31.5 rush yds",
-    "hitPct": 55,
-    "why": "We project Kaleb Johnson for 29 rush yds against a line of 31.5. Our checked chance on the under is 55%; the books' own chance is 49%. At -112 (DraftKings) that is 4.4% better than the price. LAR is a tough defense here: it allows the 8th-fewest rush yds to RBs (73 a game; league average 92). The under hit in 3 of his last 6 games at this line.",
+    "hitPct": 56,
+    "why": "We project Kaleb Johnson for 29 rush yds against a line of 31.5. Our checked chance on the under is 56%; the books' own chance is 50%. At -113 (FanDuel) that is 4.9% better than the price. LAR is a tough defense here: it allows the 8th-fewest rush yds to RBs (73 a game; league average 92). The under hit in 3 of his last 6 games at this line.",
     "label": "Wednesday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 1.25,
+    "units": 1.5,
     "prop": {
      "pid": "4819231",
      "name": "Kaleb Johnson",
@@ -1032,18 +1032,18 @@
      "side": "under",
      "line": 31.5
     },
-    "price": -112,
-    "book": "DraftKings",
-    "ev": 0.044,
+    "price": -113,
+    "book": "FanDuel",
+    "ev": 0.049,
     "ours": "LAR -3.3 · total 44.1",
     "score": "GB 20.4 – LAR 23.7",
     "market": "LAR -2.5 · total 43.5",
-    "lockedAt": "2026-11-25T20:16:52.945Z",
+    "lockedAt": "2026-11-25T21:16:45.290Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T01:00Z",
     "big": false,
-    "savedAt": 1795637812945
+    "savedAt": 1795641405290
    }
   ],
   "cfb": [
@@ -1949,7 +1949,7 @@
    }
   ]
  },
- "updated": "2026-11-25T20:16:52.924Z",
+ "updated": "2026-11-25T21:16:45.269Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6484,6 +6484,28 @@
    "units": null
   },
   {
+   "id": "401862838|sp|away",
+   "gid": "401862838",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "away",
+   "label": "TEM +7.5",
+   "game": "TEM @ MEM",
+   "kick": "2026-11-27T20:30Z",
+   "line": 7.5,
+   "mainLine": 17.5,
+   "price": 235,
+   "book": "FanDuel",
+   "win": 0.308,
+   "mwin": 0.3021,
+   "ev": 0.0319,
+   "mev": 0.0121,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873088|sp|home",
    "gid": "401873088",
    "league": "nfl",
@@ -7358,10 +7380,10 @@
    "game": "GB @ LAR",
    "kick": "2026-11-26T01:00Z",
    "price": 115,
-   "book": "DraftKings",
+   "book": "FanDuel",
    "books": 6,
    "ours": 0.5324,
-   "mkt": 0.4745,
+   "mkt": 0.4744,
    "win": 0.5062,
    "ev": 0.0883,
    "rule": "likely",
