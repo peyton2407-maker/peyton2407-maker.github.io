@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 43.5,
-   "lockedAt": "2026-11-25T22:16:57.612Z",
+   "lockedAt": "2026-11-25T22:31:55.395Z",
    "provisional": true
   }
  },
@@ -1038,12 +1038,12 @@
     "ours": "LAR -3.3 · total 44.1",
     "score": "GB 20.4 – LAR 23.7",
     "market": "LAR -2.5 · total 43.5",
-    "lockedAt": "2026-11-25T22:16:57.633Z",
+    "lockedAt": "2026-11-25T22:31:55.419Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T01:00Z",
     "big": false,
-    "savedAt": 1795645017633
+    "savedAt": 1795645915419
    }
   ],
   "cfb": [
@@ -1949,7 +1949,7 @@
    }
   ]
  },
- "updated": "2026-11-25T22:16:57.612Z",
+ "updated": "2026-11-25T22:31:55.395Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7467,13 +7467,13 @@
    "opp": "DET",
    "game": "CHI @ DET",
    "kick": "2026-11-26T18:00Z",
-   "price": -108,
+   "price": -109,
    "book": "BetRivers",
-   "books": 5,
+   "books": 6,
    "ours": 0.5616,
-   "mkt": 0.4564,
+   "mkt": 0.4533,
    "win": 0.6343,
-   "ev": 0.2216,
+   "ev": 0.2162,
    "rule": "likely",
    "result": null,
    "final": null,
