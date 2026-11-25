@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 43.5,
-   "lockedAt": "2026-11-25T19:47:00.386Z",
+   "lockedAt": "2026-11-25T20:01:50.467Z",
    "provisional": true
   }
  },
@@ -1038,12 +1038,12 @@
     "ours": "LAR -3.3 · total 44.1",
     "score": "GB 20.4 – LAR 23.7",
     "market": "LAR -2.5 · total 43.5",
-    "lockedAt": "2026-11-25T19:47:00.411Z",
+    "lockedAt": "2026-11-25T20:01:50.499Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T01:00Z",
     "big": false,
-    "savedAt": 1795636020411
+    "savedAt": 1795636910499
    }
   ],
   "cfb": [
@@ -1949,7 +1949,7 @@
    }
   ]
  },
- "updated": "2026-11-25T19:47:00.386Z",
+ "updated": "2026-11-25T20:01:50.467Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6691,12 +6691,12 @@
    "game": "LV @ CLE",
    "kick": "2026-11-30T01:20Z",
    "line": 32.5,
-   "mainLine": 40.5,
+   "mainLine": 39.5,
    "price": 300,
    "book": "FanDuel",
-   "win": 0.2764,
+   "win": 0.275,
    "mwin": 0.2562,
-   "ev": 0.1055,
+   "ev": 0.1001,
    "mev": 0.0247,
    "src": "mkt",
    "result": null,
