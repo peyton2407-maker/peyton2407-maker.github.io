@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-25T13:12:38.668Z",
+   "lockedAt": "2026-11-25T13:16:44.680Z",
    "provisional": true
   }
  },
@@ -1038,12 +1038,12 @@
     "ours": "LAR -3.3 · total 44.8",
     "score": "GB 20.8 – LAR 24.0",
     "market": "LAR -2.5 · total 44.5",
-    "lockedAt": "2026-11-25T13:12:38.692Z",
+    "lockedAt": "2026-11-25T13:16:44.705Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T01:00Z",
     "big": false,
-    "savedAt": 1795612358692
+    "savedAt": 1795612604705
    }
   ],
   "cfb": [
@@ -1949,7 +1949,7 @@
    }
   ]
  },
- "updated": "2026-11-25T13:12:38.668Z",
+ "updated": "2026-11-25T13:16:44.680Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6258,12 +6258,12 @@
    "kick": "2026-11-27T01:00Z",
    "line": 4.5,
    "mainLine": 14,
-   "price": 285,
+   "price": 280,
    "book": "FanDuel",
    "win": 0.2736,
    "mwin": 0.2698,
-   "ev": 0.0532,
-   "mev": 0.0386,
+   "ev": 0.0396,
+   "mev": 0.0251,
    "src": "mkt",
    "result": null,
    "final": null,
