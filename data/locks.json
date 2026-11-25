@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-25T13:31:36.567Z",
+   "lockedAt": "2026-11-25T13:46:51.247Z",
    "provisional": true
   }
  },
@@ -1038,12 +1038,12 @@
     "ours": "LAR -3.3 · total 44.8",
     "score": "GB 20.8 – LAR 24.0",
     "market": "LAR -2.5 · total 44.5",
-    "lockedAt": "2026-11-25T13:31:36.590Z",
+    "lockedAt": "2026-11-25T13:46:51.270Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T01:00Z",
     "big": false,
-    "savedAt": 1795613496590
+    "savedAt": 1795614411270
    }
   ],
   "cfb": [
@@ -1949,7 +1949,7 @@
    }
   ]
  },
- "updated": "2026-11-25T13:31:36.567Z",
+ "updated": "2026-11-25T13:46:51.247Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2835,7 +2835,7 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.746,
+   "win": 0.7459,
    "bookWin": 0.7428,
    "total": 47.5,
    "result": null,
