@@ -1892,7 +1892,7 @@
    }
   ]
  },
- "updated": "2026-11-24T23:46:20.026Z",
+ "updated": "2026-11-25T00:01:31.481Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2778,8 +2778,8 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.7459,
-   "bookWin": 0.7428,
+   "win": 0.7461,
+   "bookWin": 0.743,
    "total": 47.5,
    "result": null,
    "final": null
