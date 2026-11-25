@@ -69,8 +69,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 43.5,
-   "lockedAt": "2026-11-25T22:46:29.999Z",
-   "provisional": true
+   "lockedAt": "2026-11-25T23:31:20.714Z"
   }
  },
  "potd": {
@@ -1038,12 +1037,11 @@
     "ours": "LAR -3.3 · total 44.1",
     "score": "GB 20.4 – LAR 23.7",
     "market": "LAR -2.5 · total 43.5",
-    "lockedAt": "2026-11-25T22:46:30.025Z",
-    "locked": false,
-    "provisional": true,
+    "lockedAt": "2026-11-25T23:31:20.741Z",
+    "locked": true,
     "kick": "2026-11-26T01:00Z",
     "big": false,
-    "savedAt": 1795646790025
+    "savedAt": 1795649480741
    }
   ],
   "cfb": [
@@ -1949,7 +1947,7 @@
    }
   ]
  },
- "updated": "2026-11-25T22:46:29.999Z",
+ "updated": "2026-11-25T23:31:20.714Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2867,7 +2865,7 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7259,
+   "win": 0.7167,
    "bookWin": 0.7528,
    "total": 44.5,
    "result": null,
@@ -6738,9 +6736,9 @@
    "mainLine": -2.5,
    "price": 265,
    "book": "FanDuel",
-   "win": 0.3063,
+   "win": 0.3154,
    "mwin": 0.2793,
-   "ev": 0.1178,
+   "ev": 0.1512,
    "mev": 0.0196,
    "src": "mkt",
    "result": null,
@@ -10770,6 +10768,22 @@
    "result": "MISS",
    "units": -1,
    "final": "M-OH 28, WMU 24"
+  },
+  {
+   "id": "401873079",
+   "league": "nfl",
+   "gid": "401873079",
+   "side": "home",
+   "team": "LAR",
+   "game": "GB @ LAR",
+   "kick": "2026-11-26T01:00Z",
+   "line": -2.5,
+   "price": -110,
+   "book": "standard",
+   "ours": -3.3,
+   "market": -2.5,
+   "label": "LAR -2.5",
+   "lockedAt": "2026-11-25T23:31:20.714Z"
   }
  ]
 }
