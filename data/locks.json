@@ -50,6 +50,27 @@
    "closeAt": "2026-11-24T23:31:18.790Z",
    "clv_side": 0,
    "clv_total": null
+  },
+  "401873079": {
+   "id": "401873079",
+   "league": "nfl",
+   "week": 12,
+   "short": "GB @ LAR",
+   "home": "LAR",
+   "away": "GB",
+   "date": "2026-11-26T01:00Z",
+   "pick": "LAR",
+   "pick_line": "LAR -2.5",
+   "total_pick": "OVER 44.5",
+   "side_play": false,
+   "our_margin": 3.28,
+   "our_total": 44.8,
+   "confidence": null,
+   "total_play": false,
+   "spread": -2.5,
+   "total": 44.5,
+   "lockedAt": "2026-11-25T13:01:29.717Z",
+   "provisional": true
   }
  },
  "potd": {
@@ -987,6 +1008,42 @@
     "close_src": "board",
     "clv": 0,
     "by": "18.5 under 20.5"
+   },
+   {
+    "key": "game:401873079",
+    "week": 12,
+    "day": "2026-11-25",
+    "league": "nfl",
+    "id": "401873079",
+    "game": "GB @ LAR",
+    "kind": "Player prop",
+    "line": "Kyren Williams under 23.5 rec yds",
+    "hitPct": 57,
+    "why": "We project Kyren Williams for 23 rec yds against a line of 23.5. Our checked chance on the under is 57%; the books' own chance is 53%. At -115 (DraftKings) that is 6% better than the price. GB is middle of the pack here: 14th of 32 in rec yds allowed to RBs (32 a game; league average 32). The under hit in 5 of his last 8 games at this line.",
+    "label": "Wednesday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 1.75,
+    "prop": {
+     "pid": "4430737",
+     "name": "Kyren Williams",
+     "stat": "rec_yds",
+     "side": "under",
+     "line": 23.5
+    },
+    "price": -115,
+    "book": "DraftKings",
+    "ev": 0.06,
+    "ours": "LAR -3.3 · total 44.8",
+    "score": "GB 20.8 – LAR 24.0",
+    "market": "LAR -2.5 · total 44.5",
+    "lockedAt": "2026-11-25T13:01:29.745Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-26T01:00Z",
+    "big": false,
+    "savedAt": 1795611689745
    }
   ],
   "cfb": [
@@ -1892,7 +1949,7 @@
    }
   ]
  },
- "updated": "2026-11-25T12:47:01.802Z",
+ "updated": "2026-11-25T13:01:29.717Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2746,8 +2803,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7259,
-   "bookWin": 0.7528,
+   "win": 0.7258,
+   "bookWin": 0.7527,
    "total": 44.5,
    "result": null,
    "final": null
@@ -2762,7 +2819,7 @@
    "from": 1.5,
    "to": 7.5,
    "book": null,
-   "win": 0.756,
+   "win": 0.7561,
    "bookWin": 0.749,
    "total": 55.5,
    "result": null,
