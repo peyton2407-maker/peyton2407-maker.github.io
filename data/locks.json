@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-25T14:47:01.820Z",
+   "lockedAt": "2026-11-25T15:01:25.876Z",
    "provisional": true
   }
  },
@@ -1038,12 +1038,12 @@
     "ours": "LAR -3.3 · total 44.8",
     "score": "GB 20.8 – LAR 24.0",
     "market": "LAR -2.5 · total 44.5",
-    "lockedAt": "2026-11-25T14:47:01.845Z",
+    "lockedAt": "2026-11-25T15:01:25.899Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T01:00Z",
     "big": false,
-    "savedAt": 1795618021845
+    "savedAt": 1795618885899
    }
   ],
   "cfb": [
@@ -1949,7 +1949,7 @@
    }
   ]
  },
- "updated": "2026-11-25T14:47:01.820Z",
+ "updated": "2026-11-25T15:01:25.876Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2803,8 +2803,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7259,
-   "bookWin": 0.7528,
+   "win": 0.7258,
+   "bookWin": 0.7527,
    "total": 44.5,
    "result": null,
    "final": null
@@ -2851,7 +2851,7 @@
    "from": 1.5,
    "to": 7.5,
    "book": null,
-   "win": 0.7414,
+   "win": 0.7412,
    "bookWin": 0.749,
    "total": 35.5,
    "result": null,
@@ -7288,6 +7288,28 @@
    "units": -1
   },
   {
+   "key": "401873079|4430737",
+   "gid": "401873079",
+   "pid": "4430737",
+   "name": "Kyren Williams",
+   "pos": "RB",
+   "team": "LAR",
+   "opp": "GB",
+   "game": "GB @ LAR",
+   "kick": "2026-11-26T01:00Z",
+   "price": 115,
+   "book": "FanDuel",
+   "books": 6,
+   "ours": 0.5369,
+   "mkt": 0.4774,
+   "win": 0.5062,
+   "ev": 0.0883,
+   "rule": "likely",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "key": "401873081|4429795",
    "gid": "401873081",
    "pid": "4429795",
@@ -7344,10 +7366,10 @@
    "price": -120,
    "book": "BetRivers",
    "books": 6,
-   "ours": 0,
-   "mkt": 0.4222,
-   "win": 0.5648,
-   "ev": 0.0355,
+   "ours": 0.5751,
+   "mkt": 0.4151,
+   "win": 0.5527,
+   "ev": 0.0133,
    "rule": "likely",
    "result": null,
    "final": null,
@@ -7366,10 +7388,10 @@
    "price": -105,
    "book": "BetMGM",
    "books": 6,
-   "ours": 0.5669,
-   "mkt": 0.4322,
-   "win": 0.5242,
-   "ev": 0.0234,
+   "ours": 0.5325,
+   "mkt": 0.4258,
+   "win": 0.5128,
+   "ev": 0.0012,
    "rule": "likely",
    "result": null,
    "final": null,
