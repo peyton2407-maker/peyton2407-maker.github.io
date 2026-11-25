@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-25T17:16:20.898Z",
+   "lockedAt": "2026-11-25T17:31:50.027Z",
    "provisional": true
   }
  },
@@ -1038,12 +1038,12 @@
     "ours": "LAR -3.3 · total 44.8",
     "score": "GB 20.8 – LAR 24.0",
     "market": "LAR -2.5 · total 44.5",
-    "lockedAt": "2026-11-25T17:16:20.930Z",
+    "lockedAt": "2026-11-25T17:31:50.048Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T01:00Z",
     "big": false,
-    "savedAt": 1795626980930
+    "savedAt": 1795627910048
    }
   ],
   "cfb": [
@@ -1949,7 +1949,7 @@
    }
   ]
  },
- "updated": "2026-11-25T17:16:20.898Z",
+ "updated": "2026-11-25T17:31:50.027Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7480,28 +7480,6 @@
    "mkt": 0.46,
    "win": 0.6343,
    "ev": 0.1956,
-   "rule": "likely",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "key": "401873082|4567048",
-   "gid": "401873082",
-   "pid": "4567048",
-   "name": "Kenneth Walker III",
-   "pos": "RB",
-   "team": "KC",
-   "opp": "BUF",
-   "game": "KC @ BUF",
-   "kick": "2026-11-27T01:20Z",
-   "price": -115,
-   "book": "BetRivers",
-   "books": 6,
-   "ours": 0.5751,
-   "mkt": 0.4136,
-   "win": 0.5527,
-   "ev": 0.0333,
    "rule": "likely",
    "result": null,
    "final": null,
