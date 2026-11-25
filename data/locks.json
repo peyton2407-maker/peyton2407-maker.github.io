@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 43.5,
-   "lockedAt": "2026-11-25T19:02:22.963Z",
+   "lockedAt": "2026-11-25T19:17:19.177Z",
    "provisional": true
   }
  },
@@ -1019,7 +1019,7 @@
     "kind": "Player prop",
     "line": "Kaleb Johnson under 31.5 rush yds",
     "hitPct": 55,
-    "why": "We project Kaleb Johnson for 29 rush yds against a line of 31.5. Our checked chance on the under is 55%; the books' own chance is 50%. At -113 (DraftKings) that is 4.4% better than the price. LAR is a tough defense here: it allows the 8th-fewest rush yds to RBs (73 a game; league average 92). The under hit in 3 of his last 6 games at this line.",
+    "why": "We project Kaleb Johnson for 29 rush yds against a line of 31.5. Our checked chance on the under is 55%; the books' own chance is 49%. At -112 (DraftKings) that is 4.4% better than the price. LAR is a tough defense here: it allows the 8th-fewest rush yds to RBs (73 a game; league average 92). The under hit in 3 of his last 6 games at this line.",
     "label": "Wednesday · next game",
     "result": null,
     "final": null,
@@ -1032,18 +1032,18 @@
      "side": "under",
      "line": 31.5
     },
-    "price": -113,
+    "price": -112,
     "book": "DraftKings",
     "ev": 0.044,
     "ours": "LAR -3.3 · total 44.1",
     "score": "GB 20.4 – LAR 23.7",
     "market": "LAR -2.5 · total 43.5",
-    "lockedAt": "2026-11-25T19:02:22.983Z",
+    "lockedAt": "2026-11-25T19:17:19.200Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T01:00Z",
     "big": false,
-    "savedAt": 1795633342983
+    "savedAt": 1795634239200
    }
   ],
   "cfb": [
@@ -1949,7 +1949,7 @@
    }
   ]
  },
- "updated": "2026-11-25T19:02:22.963Z",
+ "updated": "2026-11-25T19:17:19.177Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6209,17 +6209,17 @@
    "league": "nfl",
    "kind": "sp",
    "side": "home",
-   "label": "LAR -9.5",
+   "label": "LAR -8.5",
    "game": "GB @ LAR",
    "kick": "2026-11-26T01:00Z",
-   "line": -9.5,
+   "line": -8.5,
    "mainLine": -2.5,
-   "price": 290,
+   "price": 265,
    "book": "Fanatics",
-   "win": 0.2895,
-   "mwin": 0.263,
-   "ev": 0.1291,
-   "mev": 0.0256,
+   "win": 0.304,
+   "mwin": 0.2771,
+   "ev": 0.1095,
+   "mev": 0.0113,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -7342,10 +7342,10 @@
    "game": "GB @ LAR",
    "kick": "2026-11-26T01:00Z",
    "price": 115,
-   "book": "FanDuel",
+   "book": "DraftKings",
    "books": 6,
-   "ours": 0.5369,
-   "mkt": 0.4802,
+   "ours": 0.5324,
+   "mkt": 0.4745,
    "win": 0.5062,
    "ev": 0.0883,
    "rule": "likely",
