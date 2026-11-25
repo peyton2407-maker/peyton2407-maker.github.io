@@ -1892,7 +1892,7 @@
    }
   ]
  },
- "updated": "2026-11-25T02:31:58.600Z",
+ "updated": "2026-11-25T02:43:32.931Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2759,11 +2759,11 @@
    "side": "home",
    "game": "CHI @ DET",
    "kick": "2026-11-26T18:00Z",
-   "from": 2.5,
-   "to": 8.5,
+   "from": 1.5,
+   "to": 7.5,
    "book": null,
-   "win": 0.7602,
-   "bookWin": 0.7528,
+   "win": 0.756,
+   "bookWin": 0.749,
    "total": 55.5,
    "result": null,
    "final": null
