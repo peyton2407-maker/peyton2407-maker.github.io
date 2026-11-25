@@ -1892,7 +1892,7 @@
    }
   ]
  },
- "updated": "2026-11-25T03:16:24.566Z",
+ "updated": "2026-11-25T03:31:53.590Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6120,9 +6120,9 @@
    "ev": 0.0973,
    "mev": 0.0909,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "M-OH 28, WMU 24",
+   "units": -1
   },
   {
    "id": "401866471|sp|away",
@@ -6142,9 +6142,9 @@
    "ev": 0.0497,
    "mev": 0.0555,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "M-OH 28, WMU 24",
+   "units": 2.97
   },
   {
    "id": "401873079|sp|home",
@@ -6511,9 +6511,9 @@
    "mainLine": 40.5,
    "price": 300,
    "book": "FanDuel",
-   "win": 0.2692,
+   "win": 0.2764,
    "mwin": 0.2562,
-   "ev": 0.0767,
+   "ev": 0.1055,
    "mev": 0.0247,
    "src": "mkt",
    "result": null,
@@ -10539,7 +10539,10 @@
    "ours": -5.1,
    "market": -4.5,
    "label": "WMU -4.5",
-   "lockedAt": "2026-11-24T22:31:32.417Z"
+   "lockedAt": "2026-11-24T22:31:32.417Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "M-OH 28, WMU 24"
   }
  ]
 }
