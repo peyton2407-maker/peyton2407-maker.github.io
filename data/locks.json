@@ -61,15 +61,15 @@
    "date": "2026-11-26T01:00Z",
    "pick": "LAR",
    "pick_line": "LAR -2.5",
-   "total_pick": "OVER 44.5",
+   "total_pick": "OVER 43.5",
    "side_play": false,
    "our_margin": 3.28,
-   "our_total": 44.8,
+   "our_total": 44.1,
    "confidence": null,
    "total_play": false,
    "spread": -2.5,
-   "total": 44.5,
-   "lockedAt": "2026-11-25T17:31:50.027Z",
+   "total": 43.5,
+   "lockedAt": "2026-11-25T17:46:45.033Z",
    "provisional": true
   }
  },
@@ -1019,7 +1019,7 @@
     "kind": "Player prop",
     "line": "Kaleb Johnson under 31.5 rush yds",
     "hitPct": 55,
-    "why": "We project Kaleb Johnson for 30 rush yds against a line of 31.5. Our checked chance on the under is 55%; the books' own chance is 50%. At -113 (DraftKings) that is 4.2% better than the price. LAR is a tough defense here: it allows the 8th-fewest rush yds to RBs (73 a game; league average 92). The under hit in 3 of his last 6 games at this line.",
+    "why": "We project Kaleb Johnson for 29 rush yds against a line of 31.5. Our checked chance on the under is 55%; the books' own chance is 50%. At -113 (DraftKings) that is 4.4% better than the price. LAR is a tough defense here: it allows the 8th-fewest rush yds to RBs (73 a game; league average 92). The under hit in 3 of his last 6 games at this line.",
     "label": "Wednesday · next game",
     "result": null,
     "final": null,
@@ -1034,16 +1034,16 @@
     },
     "price": -113,
     "book": "DraftKings",
-    "ev": 0.042,
-    "ours": "LAR -3.3 · total 44.8",
-    "score": "GB 20.8 – LAR 24.0",
-    "market": "LAR -2.5 · total 44.5",
-    "lockedAt": "2026-11-25T17:31:50.048Z",
+    "ev": 0.044,
+    "ours": "LAR -3.3 · total 44.1",
+    "score": "GB 20.4 – LAR 23.7",
+    "market": "LAR -2.5 · total 43.5",
+    "lockedAt": "2026-11-25T17:46:45.058Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T01:00Z",
     "big": false,
-    "savedAt": 1795627910048
+    "savedAt": 1795628805058
    }
   ],
   "cfb": [
@@ -1949,7 +1949,7 @@
    }
   ]
  },
- "updated": "2026-11-25T17:31:50.027Z",
+ "updated": "2026-11-25T17:46:45.033Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
