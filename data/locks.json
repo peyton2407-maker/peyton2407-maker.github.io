@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 46.5,
-   "lockedAt": "2026-11-26T16:31:57.654Z",
+   "lockedAt": "2026-11-26T16:46:48.453Z",
    "provisional": true
   },
   "401866470": {
@@ -105,17 +105,17 @@
    "home": "DAL",
    "away": "PHI",
    "date": "2026-11-26T21:30Z",
-   "pick": "NO PLAY",
-   "pick_line": null,
+   "pick": "DAL",
+   "pick_line": "DAL -8.5",
    "total_pick": "UNDER 49.5",
    "side_play": false,
-   "our_margin": 9.52,
+   "our_margin": 8.82,
    "our_total": 48.9,
    "confidence": null,
    "total_play": false,
-   "spread": -9.5,
+   "spread": -8.5,
    "total": 49.5,
-   "lockedAt": "2026-11-26T16:31:57.654Z",
+   "lockedAt": "2026-11-26T16:46:48.453Z",
    "provisional": true
   },
   "401873081": {
@@ -156,7 +156,7 @@
    "total_play": false,
    "spread": -3,
    "total": 45.5,
-   "lockedAt": "2026-11-26T16:31:57.654Z",
+   "lockedAt": "2026-11-26T16:46:48.453Z",
    "provisional": true
   }
  },
@@ -2075,7 +2075,7 @@
    }
   ]
  },
- "updated": "2026-11-26T16:31:57.654Z",
+ "updated": "2026-11-26T16:46:48.453Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2587,7 +2587,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T16:31:57.654Z",
+      "at": "2026-11-26T16:46:48.453Z",
       "line": 15.5,
       "price": -108,
       "book": "DraftKings",
@@ -2621,7 +2621,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T16:31:57.654Z",
+      "at": "2026-11-26T16:46:48.453Z",
       "line": 12.5,
       "price": -108,
       "book": "DraftKings",
@@ -2655,7 +2655,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T16:31:57.654Z",
+      "at": "2026-11-26T16:46:48.453Z",
       "line": 38.5,
       "price": -113,
       "book": "DraftKings",
@@ -3124,6 +3124,22 @@
    "final": null
   },
   {
+   "id": "401873080|sp|home",
+   "gid": "401873080",
+   "team": "DAL",
+   "side": "home",
+   "game": "PHI @ DAL",
+   "kick": "2026-11-26T21:30Z",
+   "from": -8.5,
+   "to": -2.5,
+   "book": null,
+   "win": 0.7432,
+   "bookWin": 0.7432,
+   "total": 49.5,
+   "result": null,
+   "final": null
+  },
+  {
    "id": "401873093|sp|home",
    "gid": "401873093",
    "team": "LAC",
@@ -3149,7 +3165,7 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7166,
+   "win": 0.7259,
    "bookWin": 0.7528,
    "total": 43.5,
    "result": null,
@@ -7064,9 +7080,9 @@
    "mainLine": -2.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.3031,
+   "win": 0.294,
    "mwin": 0.2674,
-   "ev": 0.167,
+   "ev": 0.1318,
    "mev": 0.0297,
    "src": "mkt",
    "result": null,
