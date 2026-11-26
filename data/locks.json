@@ -69,7 +69,12 @@
    "total_play": false,
    "spread": -2.5,
    "total": 43.5,
-   "lockedAt": "2026-11-25T23:31:20.714Z"
+   "lockedAt": "2026-11-25T23:31:20.714Z",
+   "close_spread": -2.5,
+   "close_total": 43.5,
+   "closeAt": "2026-11-26T00:02:03.783Z",
+   "clv_side": 0,
+   "clv_total": 0
   }
  },
  "potd": {
@@ -1041,7 +1046,11 @@
     "locked": true,
     "kick": "2026-11-26T01:00Z",
     "big": false,
-    "savedAt": 1795649480741
+    "savedAt": 1795649480741,
+    "close_line": 2.5,
+    "closeAt": "2026-11-26T00:02:03.783Z",
+    "close_src": "board",
+    "clv": 0
    }
   ],
   "cfb": [
@@ -1947,7 +1956,7 @@
    }
   ]
  },
- "updated": "2026-11-25T23:46:28.201Z",
+ "updated": "2026-11-26T00:02:03.783Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
