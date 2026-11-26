@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -14,
    "total": 46.5,
-   "lockedAt": "2026-11-26T19:31:43.464Z",
+   "lockedAt": "2026-11-26T20:01:26.921Z",
    "provisional": true
   },
   "401866470": {
@@ -115,8 +115,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 49.5,
-   "lockedAt": "2026-11-26T19:31:43.464Z",
-   "provisional": true
+   "lockedAt": "2026-11-26T20:01:26.921Z"
   },
   "401873081": {
    "id": "401873081",
@@ -161,7 +160,7 @@
    "total_play": false,
    "spread": -3,
    "total": 45.5,
-   "lockedAt": "2026-11-26T19:31:43.464Z",
+   "lockedAt": "2026-11-26T20:01:26.921Z",
    "provisional": true
   }
  },
@@ -1209,12 +1208,11 @@
     "ours": "DAL -8.8 · total 48.9",
     "score": "PHI 20.0 – DAL 28.9",
     "market": "DAL -8.5 · total 49.5",
-    "lockedAt": "2026-11-26T19:31:43.486Z",
-    "locked": false,
-    "provisional": true,
+    "lockedAt": "2026-11-26T20:01:26.950Z",
+    "locked": true,
     "kick": "2026-11-26T21:30Z",
     "big": false,
-    "savedAt": 1795721503486
+    "savedAt": 1795723286950
    }
   ],
   "cfb": [
@@ -2094,7 +2092,7 @@
    }
   ]
  },
- "updated": "2026-11-26T19:31:43.464Z",
+ "updated": "2026-11-26T20:01:26.921Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2606,7 +2604,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T19:31:43.464Z",
+      "at": "2026-11-26T20:01:26.921Z",
       "line": 15.5,
       "price": -108,
       "book": "DraftKings",
@@ -2640,7 +2638,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T19:31:43.464Z",
+      "at": "2026-11-26T20:01:26.921Z",
       "line": 12.5,
       "price": -108,
       "book": "DraftKings",
@@ -7655,9 +7653,9 @@
    "mainLine": -3,
    "price": 265,
    "book": "Fanatics",
-   "win": 0.2932,
+   "win": 0.3023,
    "mwin": 0.2793,
-   "ev": 0.0703,
+   "ev": 0.1033,
    "mev": 0.0196,
    "src": "mkt",
    "result": null,
@@ -11722,6 +11720,22 @@
    "market": 1.5,
    "label": "DET +1.5",
    "lockedAt": "2026-11-26T16:31:57.654Z"
+  },
+  {
+   "id": "401873080",
+   "league": "nfl",
+   "gid": "401873080",
+   "side": "home",
+   "team": "DAL",
+   "game": "PHI @ DAL",
+   "kick": "2026-11-26T21:30Z",
+   "line": -8.5,
+   "price": -110,
+   "book": "standard",
+   "ours": -8.8,
+   "market": -8.5,
+   "label": "DAL -8.5",
+   "lockedAt": "2026-11-26T20:01:26.921Z"
   }
  ]
 }
