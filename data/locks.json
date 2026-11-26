@@ -1956,7 +1956,7 @@
    }
   ]
  },
- "updated": "2026-11-26T01:16:42.999Z",
+ "updated": "2026-11-26T01:32:17.818Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6764,12 +6764,12 @@
    "game": "WSH @ ARI",
    "kick": "2026-11-29T21:25Z",
    "line": 1.5,
-   "mainLine": 6.5,
+   "mainLine": 7,
    "price": 255,
    "book": "BetRivers",
-   "win": 0.2986,
+   "win": 0.3069,
    "mwin": 0.285,
-   "ev": 0.0601,
+   "ev": 0.0894,
    "mev": 0.0116,
    "src": "mkt",
    "result": null,
