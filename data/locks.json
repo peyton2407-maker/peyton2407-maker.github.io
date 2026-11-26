@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -14,
    "total": 46.5,
-   "lockedAt": "2026-11-26T19:16:36.491Z",
+   "lockedAt": "2026-11-26T19:31:43.464Z",
    "provisional": true
   },
   "401866470": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 49.5,
-   "lockedAt": "2026-11-26T19:16:36.491Z",
+   "lockedAt": "2026-11-26T19:31:43.464Z",
    "provisional": true
   },
   "401873081": {
@@ -161,7 +161,7 @@
    "total_play": false,
    "spread": -3,
    "total": 45.5,
-   "lockedAt": "2026-11-26T19:16:36.491Z",
+   "lockedAt": "2026-11-26T19:31:43.464Z",
    "provisional": true
   }
  },
@@ -1209,12 +1209,12 @@
     "ours": "DAL -8.8 · total 48.9",
     "score": "PHI 20.0 – DAL 28.9",
     "market": "DAL -8.5 · total 49.5",
-    "lockedAt": "2026-11-26T19:16:36.517Z",
+    "lockedAt": "2026-11-26T19:31:43.486Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T21:30Z",
     "big": false,
-    "savedAt": 1795720596517
+    "savedAt": 1795721503486
    }
   ],
   "cfb": [
@@ -2094,7 +2094,7 @@
    }
   ]
  },
- "updated": "2026-11-26T19:16:36.491Z",
+ "updated": "2026-11-26T19:31:43.464Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2606,7 +2606,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T19:16:36.491Z",
+      "at": "2026-11-26T19:31:43.464Z",
       "line": 15.5,
       "price": -108,
       "book": "DraftKings",
@@ -2640,7 +2640,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T19:16:36.491Z",
+      "at": "2026-11-26T19:31:43.464Z",
       "line": 12.5,
       "price": -108,
       "book": "DraftKings",
@@ -6763,6 +6763,28 @@
    "units": null
   },
   {
+   "id": "401873083|tot|over",
+   "gid": "401873083",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "over",
+   "label": "Over 45.5",
+   "game": "DEN @ PIT",
+   "kick": "2026-11-27T20:00Z",
+   "line": 45.5,
+   "mainLine": 36.5,
+   "price": 285,
+   "book": "FanDuel",
+   "win": 0.2714,
+   "mwin": 0.2589,
+   "ev": 0.0447,
+   "mev": -0.0033,
+   "src": "proj",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401862838|sp|away",
    "gid": "401862838",
    "league": "cfb",
@@ -7523,9 +7545,9 @@
    "mainLine": 49.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2768,
+   "win": 0.2805,
    "mwin": 0.2687,
-   "ev": 0.0658,
+   "ev": 0.0799,
    "mev": 0.0343,
    "src": "mkt",
    "result": null,
@@ -7648,17 +7670,17 @@
    "league": "nfl",
    "kind": "tot",
    "side": "under",
-   "label": "Under 34.5",
+   "label": "Under 33.5",
    "game": "LV @ CLE",
    "kick": "2026-11-30T01:20Z",
-   "line": 34.5,
+   "line": 33.5,
    "mainLine": 40.5,
-   "price": 200,
+   "price": 225,
    "book": "ESPN BET",
-   "win": 0.3488,
-   "mwin": 0.3335,
-   "ev": 0.0463,
-   "mev": 0.0004,
+   "win": 0.3294,
+   "mwin": 0.3085,
+   "ev": 0.0707,
+   "mev": 0.0028,
    "src": "proj",
    "result": null,
    "final": null,
