@@ -1956,7 +1956,7 @@
    }
   ]
  },
- "updated": "2026-11-26T02:16:51.777Z",
+ "updated": "2026-11-26T03:11:05.195Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6782,18 +6782,18 @@
    "league": "nfl",
    "kind": "sp",
    "side": "home",
-   "label": "TB -9.5",
+   "label": "TB -6.5",
    "game": "CAR @ TB",
    "kick": "2026-12-01T01:15Z",
-   "line": -9.5,
+   "line": -6.5,
    "mainLine": -3,
-   "price": 280,
-   "book": "FanDuel",
-   "win": 0.2823,
-   "mwin": 0.2687,
-   "ev": 0.0728,
-   "mev": 0.0209,
-   "src": "mkt",
+   "price": 170,
+   "book": "BetRivers",
+   "win": 0.386,
+   "mwin": 0.3713,
+   "ev": 0.0422,
+   "mev": 0.0024,
+   "src": "proj",
    "result": null,
    "final": null,
    "units": null
