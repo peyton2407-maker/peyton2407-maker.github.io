@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-26T08:18:02.235Z",
+   "lockedAt": "2026-11-26T09:03:14.113Z",
    "provisional": true
   }
  },
@@ -1103,12 +1103,12 @@
     "ours": "CHI -0.4 · total 54.0",
     "score": "CHI 27.2 – DET 26.8",
     "market": "CHI -1.5 · total 55.5",
-    "lockedAt": "2026-11-26T08:18:02.258Z",
+    "lockedAt": "2026-11-26T09:03:14.137Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T18:00Z",
     "big": false,
-    "savedAt": 1795681082258
+    "savedAt": 1795683794137
    }
   ],
   "cfb": [
@@ -2014,7 +2014,7 @@
    }
   ]
  },
- "updated": "2026-11-26T08:18:02.235Z",
+ "updated": "2026-11-26T09:03:14.113Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2494,11 +2494,11 @@
    "tier": "value",
    "stake": 1,
    "size": 1,
-   "american": 593,
-   "dec": 6.9285,
-   "chance": 0.1743,
-   "breakEven": 0.1443,
-   "ev": 0.2077,
+   "american": 587,
+   "dec": 6.8704,
+   "chance": 0.1757,
+   "breakEven": 0.1456,
+   "ev": 0.2073,
    "firstKick": "2026-11-26T18:00:00.000Z",
    "legs": [
     {
@@ -2511,11 +2511,11 @@
      "kick": "2026-11-27T01:20Z",
      "price": -109,
      "line": 13.5,
-     "win": 0.5755,
-     "bookWin": 0.5376,
-     "value": 0.1036,
+     "win": 0.5731,
+     "bookWin": 0.5335,
+     "value": 0.0989,
      "cat": "prop",
-     "why": "We project 12 rush yds against 13.5; our checked chance on the under is 59%, the books' 54%. BUF is middle of the pack here: 11th of 32 in rush yds allowed to QBs (13 a game; league average 16).",
+     "why": "We project 12 rush yds against 13.5; our checked chance on the under is 58%, the books' 53%. BUF is middle of the pack here: 11th of 32 in rush yds allowed to QBs (13 a game; league average 16).",
      "alt": null,
      "prop": {
       "pid": "3139477",
@@ -2523,6 +2523,31 @@
       "side": "under",
       "line": 13.5,
       "name": "Patrick Mahomes"
+     },
+     "result": null
+    },
+    {
+     "id": "401873081|pp|4429795|rec_yds|under",
+     "label": "Jahmyr Gibbs under 38.5 rec yds",
+     "kind": "pp",
+     "game_id": "401873081",
+     "game": "CHI @ DET",
+     "league": "nfl",
+     "kick": "2026-11-26T18:00Z",
+     "price": -113,
+     "line": 38.5,
+     "win": 0.5567,
+     "bookWin": 0.5278,
+     "value": 0.0493,
+     "cat": "prop",
+     "why": "We project 38 rec yds against 38.5; our checked chance on the under is 55%, the books' 53%. CHI is middle of the pack here: 22nd of 32 in rec yds allowed to RBs (36 a game; league average 32).",
+     "alt": null,
+     "prop": {
+      "pid": "4429795",
+      "stat": "rec_yds",
+      "side": "under",
+      "line": 38.5,
+      "name": "Jahmyr Gibbs"
      },
      "result": null
     },
@@ -2550,38 +2575,13 @@
       "name": "Brevyn Spann-Ford"
      },
      "result": null
-    },
-    {
-     "id": "401873081|pp|4429795|rec_yds|under",
-     "label": "Jahmyr Gibbs under 37.5 rec yds",
-     "kind": "pp",
-     "game_id": "401873081",
-     "game": "CHI @ DET",
-     "league": "nfl",
-     "kick": "2026-11-26T18:00Z",
-     "price": -111,
-     "line": 37.5,
-     "win": 0.5498,
-     "bookWin": 0.5242,
-     "value": 0.0451,
-     "cat": "prop",
-     "why": "We project 38 rec yds against 37.5; our checked chance on the under is 55%, the books' 52%. CHI is middle of the pack here: 22nd of 32 in rec yds allowed to RBs (36 a game; league average 32).",
-     "alt": null,
-     "prop": {
-      "pid": "4429795",
-      "stat": "rec_yds",
-      "side": "under",
-      "line": 37.5,
-      "name": "Jahmyr Gibbs"
-     },
-     "result": null
     }
    ],
    "result": null,
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T08:18:02.235Z"
+   "lockedAt": "2026-11-26T09:03:14.113Z"
   }
  ],
  "teasers": [
@@ -2775,7 +2775,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T08:18:02.235Z"
+   "lockedAt": "2026-11-26T09:03:14.113Z"
   }
  ],
  "teaserLegs": [
@@ -6633,17 +6633,39 @@
    "league": "cfb",
    "kind": "sp",
    "side": "away",
-   "label": "TEM +7.5",
+   "label": "TEM +8.5",
    "game": "TEM @ MEM",
    "kick": "2026-11-27T20:30Z",
-   "line": 7.5,
+   "line": 8.5,
    "mainLine": 18.5,
-   "price": 235,
+   "price": 230,
    "book": "FanDuel",
-   "win": 0.3088,
-   "mwin": 0.3021,
-   "ev": 0.0346,
-   "mev": 0.0121,
+   "win": 0.3168,
+   "mwin": 0.3099,
+   "ev": 0.0456,
+   "mev": 0.0228,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401856759|tot|under",
+   "gid": "401856759",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 43.5",
+   "game": "FLA @ FSU",
+   "kick": "2026-11-27T20:30Z",
+   "line": 43.5,
+   "mainLine": 53.5,
+   "price": 290,
+   "book": "FanDuel",
+   "win": 0.2687,
+   "mwin": 0.2687,
+   "ev": 0.0478,
+   "mev": 0.0478,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -7658,10 +7680,10 @@
    "price": 100,
    "book": "BetMGM",
    "books": 6,
-   "ours": 0.5354,
-   "mkt": 0.4283,
-   "win": 0.5128,
-   "ev": 0.0256,
+   "ours": 0.5296,
+   "mkt": 0.4288,
+   "win": 0.5013,
+   "ev": 0.0026,
    "rule": "likely",
    "result": null,
    "final": null,
