@@ -1956,7 +1956,7 @@
    }
   ]
  },
- "updated": "2026-11-26T00:16:26.725Z",
+ "updated": "2026-11-26T00:43:48.924Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7419,28 +7419,6 @@
    "result": "MISS",
    "final": "No TD",
    "units": -1
-  },
-  {
-   "key": "401873079|4430737",
-   "gid": "401873079",
-   "pid": "4430737",
-   "name": "Kyren Williams",
-   "pos": "RB",
-   "team": "LAR",
-   "opp": "GB",
-   "game": "GB @ LAR",
-   "kick": "2026-11-26T01:00Z",
-   "price": 110,
-   "book": "FanDuel",
-   "books": 6,
-   "ours": 0.5354,
-   "mkt": 0.4816,
-   "win": 0.5062,
-   "ev": 0.063,
-   "rule": "likely",
-   "result": null,
-   "final": null,
-   "units": null
   },
   {
    "key": "401873081|4429795",
