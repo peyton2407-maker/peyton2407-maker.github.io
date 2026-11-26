@@ -88,13 +88,13 @@
    "pick_line": "DAL -8.5",
    "total_pick": "UNDER 48.5",
    "side_play": false,
-   "our_margin": 8.87,
+   "our_margin": 8.82,
    "our_total": 48.2,
    "confidence": null,
    "total_play": false,
    "spread": -8.5,
    "total": 48.5,
-   "lockedAt": "2026-11-26T09:35:37.030Z",
+   "lockedAt": "2026-11-26T10:16:21.119Z",
    "provisional": true
   },
   "401873081": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-26T09:35:37.030Z",
+   "lockedAt": "2026-11-26T10:16:21.119Z",
    "provisional": true
   }
  },
@@ -1124,12 +1124,12 @@
     "ours": "CHI -0.4 · total 54.0",
     "score": "CHI 27.2 – DET 26.8",
     "market": "CHI -1.5 · total 55.5",
-    "lockedAt": "2026-11-26T09:35:37.055Z",
+    "lockedAt": "2026-11-26T10:16:21.143Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T18:00Z",
     "big": false,
-    "savedAt": 1795685737055
+    "savedAt": 1795688181143
    }
   ],
   "cfb": [
@@ -2035,7 +2035,7 @@
    }
   ]
  },
- "updated": "2026-11-26T09:35:37.030Z",
+ "updated": "2026-11-26T10:16:21.119Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2602,7 +2602,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T09:35:37.030Z"
+   "lockedAt": "2026-11-26T10:16:21.119Z"
   }
  ],
  "teasers": [
@@ -2796,7 +2796,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T09:35:37.030Z"
+   "lockedAt": "2026-11-26T10:16:21.119Z"
   }
  ],
  "teaserLegs": [
@@ -3066,9 +3066,9 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.7433,
-   "bookWin": 0.7434,
-   "total": 47.5,
+   "win": 0.7432,
+   "bookWin": 0.7432,
+   "total": 48.5,
    "result": null,
    "final": null
   },
@@ -6478,17 +6478,17 @@
    "league": "nfl",
    "kind": "sp",
    "side": "home",
-   "label": "DET -6",
+   "label": "DET -6.5",
    "game": "CHI @ DET",
    "kick": "2026-11-26T18:00Z",
-   "line": -6,
+   "line": -6.5,
    "mainLine": 1.5,
-   "price": 275,
+   "price": 285,
    "book": "BetRivers",
-   "win": 0.2721,
-   "mwin": 0.2648,
-   "ev": 0.0576,
-   "mev": 0.0298,
+   "win": 0.2801,
+   "mwin": 0.2728,
+   "ev": 0.0783,
+   "mev": 0.0502,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -6511,6 +6511,28 @@
    "mwin": 0.2678,
    "ev": 0.0545,
    "mev": 0.055,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873080|sp|away",
+   "gid": "401873080",
+   "league": "nfl",
+   "kind": "sp",
+   "side": "away",
+   "label": "PHI +2.5",
+   "game": "PHI @ DAL",
+   "kick": "2026-11-26T21:30Z",
+   "line": 2.5,
+   "mainLine": 8.5,
+   "price": 280,
+   "book": "FanDuel",
+   "win": 0.2734,
+   "mwin": 0.2734,
+   "ev": 0.039,
+   "mev": 0.0387,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -6773,7 +6795,7 @@
    "book": "BetRivers",
    "win": 0.2747,
    "mwin": 0.2524,
-   "ev": 0.0926,
+   "ev": 0.0924,
    "mev": 0.0046,
    "src": "proj",
    "result": null,
