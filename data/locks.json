@@ -1956,7 +1956,7 @@
    }
   ]
  },
- "updated": "2026-11-26T01:32:17.818Z",
+ "updated": "2026-11-26T01:46:38.215Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6464,28 +6464,6 @@
    "ev": 0.032,
    "mev": 0.032,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401866472|tot|under",
-   "gid": "401866472",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 37.5",
-   "game": "BUFF @ AKR",
-   "kick": "2026-11-27T17:00Z",
-   "line": 37.5,
-   "mainLine": 48.5,
-   "price": 290,
-   "book": "FanDuel",
-   "win": 0.2652,
-   "mwin": 0.2547,
-   "ev": 0.0343,
-   "mev": -0.0065,
-   "src": "proj",
    "result": null,
    "final": null,
    "units": null
