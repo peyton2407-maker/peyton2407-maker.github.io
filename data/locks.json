@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-26T07:16:17.796Z",
+   "lockedAt": "2026-11-26T08:18:02.235Z",
    "provisional": true
   }
  },
@@ -1103,12 +1103,12 @@
     "ours": "CHI -0.4 · total 54.0",
     "score": "CHI 27.2 – DET 26.8",
     "market": "CHI -1.5 · total 55.5",
-    "lockedAt": "2026-11-26T07:16:17.816Z",
+    "lockedAt": "2026-11-26T08:18:02.258Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T18:00Z",
     "big": false,
-    "savedAt": 1795677377816
+    "savedAt": 1795681082258
    }
   ],
   "cfb": [
@@ -2014,7 +2014,7 @@
    }
   ]
  },
- "updated": "2026-11-26T07:16:17.796Z",
+ "updated": "2026-11-26T08:18:02.235Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2581,7 +2581,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T07:16:17.796Z"
+   "lockedAt": "2026-11-26T08:18:02.235Z"
   }
  ],
  "teasers": [
@@ -2775,7 +2775,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T07:16:17.796Z"
+   "lockedAt": "2026-11-26T08:18:02.235Z"
   }
  ],
  "teaserLegs": [
@@ -6496,22 +6496,22 @@
    "units": null
   },
   {
-   "id": "401856879|tot|under",
+   "id": "401856879|sp|away",
    "gid": "401856879",
    "league": "cfb",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 37.5",
+   "kind": "sp",
+   "side": "away",
+   "label": "TCU +5.5",
    "game": "TCU @ TTU",
    "kick": "2026-11-27T01:00Z",
-   "line": 37.5,
-   "mainLine": 46.5,
-   "price": 280,
+   "line": 5.5,
+   "mainLine": 15.5,
+   "price": 290,
    "book": "FanDuel",
-   "win": 0.2778,
-   "mwin": 0.2778,
-   "ev": 0.0556,
-   "mev": 0.0556,
+   "win": 0.2708,
+   "mwin": 0.2656,
+   "ev": 0.0563,
+   "mev": 0.0358,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -6530,10 +6530,32 @@
    "mainLine": -3,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.286,
-   "mwin": 0.2721,
-   "ev": 0.0866,
-   "mev": 0.0341,
+   "win": 0.2903,
+   "mwin": 0.2764,
+   "ev": 0.103,
+   "mev": 0.0505,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873082|tot|under",
+   "gid": "401873082",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 38.5",
+   "game": "KC @ BUF",
+   "kick": "2026-11-27T01:20Z",
+   "line": 38.5,
+   "mainLine": 45.5,
+   "price": 250,
+   "book": "FanDuel",
+   "win": 0.2961,
+   "mwin": 0.2918,
+   "ev": 0.0365,
+   "mev": 0.0212,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -6926,10 +6948,10 @@
    "mainLine": 40.5,
    "price": 225,
    "book": "ESPN BET",
-   "win": 0.3366,
-   "mwin": 0.3157,
-   "ev": 0.094,
-   "mev": 0.026,
+   "win": 0.3356,
+   "mwin": 0.3147,
+   "ev": 0.0906,
+   "mev": 0.0226,
    "src": "mkt",
    "result": null,
    "final": null,
