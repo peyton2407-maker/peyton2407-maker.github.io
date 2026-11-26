@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 46.5,
-   "lockedAt": "2026-11-26T14:17:04.110Z",
+   "lockedAt": "2026-11-26T15:01:55.351Z",
    "provisional": true
   },
   "401866470": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 49.5,
-   "lockedAt": "2026-11-26T14:17:04.110Z",
+   "lockedAt": "2026-11-26T15:01:55.351Z",
    "provisional": true
   },
   "401873081": {
@@ -136,7 +136,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 56.5,
-   "lockedAt": "2026-11-26T14:17:04.110Z",
+   "lockedAt": "2026-11-26T15:01:55.351Z",
    "provisional": true
   },
   "401873082": {
@@ -157,7 +157,7 @@
    "total_play": false,
    "spread": -3,
    "total": 45.5,
-   "lockedAt": "2026-11-26T14:17:04.110Z",
+   "lockedAt": "2026-11-26T15:01:55.351Z",
    "provisional": true
   }
  },
@@ -1166,12 +1166,12 @@
     "ours": "CHI -0.4 · total 54.7",
     "score": "CHI 27.5 – DET 27.2",
     "market": "CHI -1.5 · total 56.5",
-    "lockedAt": "2026-11-26T14:17:04.135Z",
+    "lockedAt": "2026-11-26T15:01:55.376Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T18:00Z",
     "big": false,
-    "savedAt": 1795702624135
+    "savedAt": 1795705315376
    }
   ],
   "cfb": [
@@ -2077,7 +2077,7 @@
    }
   ]
  },
- "updated": "2026-11-26T14:17:04.110Z",
+ "updated": "2026-11-26T15:01:55.351Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2644,7 +2644,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T14:17:04.110Z"
+   "lockedAt": "2026-11-26T15:01:55.351Z"
   }
  ],
  "teasers": [
@@ -2838,7 +2838,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T14:17:04.110Z"
+   "lockedAt": "2026-11-26T15:01:55.351Z"
   }
  ],
  "teaserLegs": [
@@ -6795,28 +6795,6 @@
    "mwin": 0.2869,
    "ev": 0.0329,
    "mev": 0.033,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401856756|sp|home",
-   "gid": "401856756",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "home",
-   "label": "TA&M +3.5",
-   "game": "TEX @ TA&M",
-   "kick": "2026-11-28T00:30Z",
-   "line": 3.5,
-   "mainLine": 10.5,
-   "price": 235,
-   "book": "FanDuel",
-   "win": 0.3079,
-   "mwin": 0.3045,
-   "ev": 0.0313,
-   "mev": 0.02,
    "src": "mkt",
    "result": null,
    "final": null,
