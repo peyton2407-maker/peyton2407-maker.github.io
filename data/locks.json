@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -14,
    "total": 46.5,
-   "lockedAt": "2026-11-26T21:16:19.320Z",
+   "lockedAt": "2026-11-26T21:31:30.469Z",
    "provisional": true
   },
   "401866470": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": -3,
    "total": 45.5,
-   "lockedAt": "2026-11-26T21:16:19.320Z",
+   "lockedAt": "2026-11-26T21:31:30.469Z",
    "provisional": true
   }
  },
@@ -1222,6 +1222,42 @@
     "closeAt": "2026-11-26T21:16:19.320Z",
     "close_src": "board",
     "clv": 0
+   },
+   {
+    "key": "game:401873082",
+    "week": 12,
+    "day": "2026-11-26",
+    "league": "nfl",
+    "id": "401873082",
+    "game": "KC @ BUF",
+    "kind": "Player prop",
+    "line": "Patrick Mahomes under 12.5 rush yds",
+    "hitPct": 55,
+    "why": "We project Patrick Mahomes for 12 rush yds against a line of 12.5. Our checked chance on the under is 55%; the books' own chance is 49%. At -108 (DraftKings) that is 5.3% better than the price. BUF is middle of the pack here: 11th of 32 in rush yds allowed to QBs (13 a game; league average 16). The under hit in 5 of his last 8 games at this line.",
+    "label": "Thursday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 1.5,
+    "prop": {
+     "pid": "3139477",
+     "name": "Patrick Mahomes",
+     "stat": "rush_yds",
+     "side": "under",
+     "line": 12.5
+    },
+    "price": -108,
+    "book": "DraftKings",
+    "ev": 0.053,
+    "ours": "BUF -3.2 · total 44.8",
+    "score": "KC 20.8 – BUF 24.0",
+    "market": "BUF -3.0 · total 45.5",
+    "lockedAt": "2026-11-26T21:31:30.505Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-27T01:20Z",
+    "big": false,
+    "savedAt": 1795728690505
    }
   ],
   "cfb": [
@@ -2101,7 +2137,7 @@
    }
   ]
  },
- "updated": "2026-11-26T21:16:19.320Z",
+ "updated": "2026-11-26T21:31:30.469Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2647,7 +2683,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T21:16:19.320Z",
+      "at": "2026-11-26T21:31:30.469Z",
       "line": 12.5,
       "price": -108,
       "book": "DraftKings",
