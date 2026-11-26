@@ -1,7 +1,14 @@
 {
- "checked_at": "2026-11-25T04:33:43Z",
+ "checked_at": "2026-11-26T03:45:52Z",
  "errors": [],
  "console": [
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
   "Failed to load resource: the server responded with a status of 404 ()",
   "Failed to load resource: the server responded with a status of 404 ()",
   "Failed to load resource: the server responded with a status of 404 ()"
@@ -9,9 +16,9 @@
  "failed_requests": {},
  "bad_status": {
   "a.espncdn.com": {
-   "count": 3,
+   "count": 10,
    "statuses": {
-    "404": 3
+    "404": 10
    },
    "example": "https://a.espncdn.com/i/teamlogos/ncaa/500/-2.png"
   }
@@ -19,11 +26,11 @@
  "screens": {
   "home": {
    "visible": true,
-   "count": 14,
+   "count": 17,
    "summary": [],
    "empty": [],
-   "chars": 1460,
-   "images": 40,
+   "chars": 1615,
+   "images": 45,
    "broken_images": []
   },
   "nfl": {
@@ -31,7 +38,7 @@
    "count": 16,
    "summary": [],
    "empty": [],
-   "chars": 5452,
+   "chars": 5225,
    "images": 42,
    "broken_images": []
   },
@@ -40,17 +47,17 @@
    "count": 75,
    "summary": [],
    "empty": [],
-   "chars": 11111,
-   "images": 88,
+   "chars": 11132,
+   "images": 90,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 17,
+   "count": 16,
    "summary": [],
    "empty": [],
-   "chars": 2478,
-   "images": 34,
+   "chars": 2543,
+   "images": 32,
    "broken_images": []
   },
   "season": {
@@ -58,7 +65,7 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3229,
+   "chars": 3242,
    "images": 42,
    "broken_images": []
   },
@@ -67,7 +74,7 @@
    "count": 595,
    "summary": [],
    "empty": [],
-   "chars": 39021,
+   "chars": 39038,
    "images": 0,
    "broken_images": []
   },
@@ -76,7 +83,7 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3450,
+   "chars": 3457,
    "images": 35,
    "broken_images": []
   },
@@ -85,8 +92,8 @@
    "count": 8,
    "summary": [],
    "empty": [],
-   "chars": 847,
-   "images": 16,
+   "chars": 842,
+   "images": 15,
    "broken_images": []
   },
   "props": {
@@ -94,8 +101,8 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 6537,
-   "images": 15,
+   "chars": 7019,
+   "images": 16,
    "broken_images": []
   },
   "tds": {
@@ -103,7 +110,7 @@
    "count": 1,
    "summary": [],
    "empty": [],
-   "chars": 4241,
+   "chars": 4229,
    "images": 28,
    "broken_images": []
   },
@@ -112,7 +119,7 @@
    "count": 30,
    "summary": [],
    "empty": [],
-   "chars": 3970,
+   "chars": 3971,
    "images": 4,
    "broken_images": []
   },
@@ -120,11 +127,11 @@
    "visible": true,
    "count": 72,
    "summary": [
-    "237 value tickets in this filter 142 TD plus-money 4 spread / dog sides 92% b"
+    "239 value tickets in this filter 137 TD plus-money 5 spread / dog sides 84% b"
    ],
    "empty": [],
-   "chars": 3927,
-   "images": 47,
+   "chars": 3905,
+   "images": 50,
    "broken_images": []
   },
   "parlay": {
@@ -132,7 +139,7 @@
    "count": 5,
    "summary": [],
    "empty": [],
-   "chars": 3686,
+   "chars": 4088,
    "images": 0,
    "broken_images": []
   },
@@ -141,22 +148,21 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 4285,
-   "images": 26,
+   "chars": 2553,
+   "images": 12,
    "broken_images": []
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "540 listed THU \u00b7 11:31 PM ET 535 listed FRI \u00b7 11:16 PM ET 506 listed S",
-    "505 listed SUN \u00b7 11:31 PM ET 592 listed TUE \u00b7 11:16 PM ET 610 listed I",
-    "38 listed MIA @ BUF 27 listed NO @ CHI 32 listed TEN @ DAL 34 listed ",
-    "30 listed ARI @ KC 39 listed PIT @ PHI 27 listed BAL @ CAR 38 listed "
+    "517 listed THU Not posted FRI Not posted SAT Not posted SUN Not posted",
+    "36 listed CHI @ DET 90 min before kick PHI @ DAL 90 min before kick K",
+    "517 listed 0 probable \u00b7 75% 157 questionable / GTD \u00b7 50% 4 doubtful \u00b7 "
    ],
    "empty": [],
-   "chars": 5301,
-   "images": 6,
+   "chars": 4199,
+   "images": 2,
    "broken_images": []
   },
   "nflwx": {
@@ -164,7 +170,7 @@
    "count": 16,
    "summary": [],
    "empty": [],
-   "chars": 4826,
+   "chars": 5022,
    "images": 32,
    "broken_images": []
   },
@@ -173,7 +179,7 @@
    "count": 4,
    "summary": [],
    "empty": [],
-   "chars": 3607,
+   "chars": 3700,
    "images": 2,
    "broken_images": []
   },
@@ -182,8 +188,8 @@
    "count": 18,
    "summary": [],
    "empty": [],
-   "chars": 7246,
-   "images": 28,
+   "chars": 7254,
+   "images": 30,
    "broken_images": []
   }
  },
