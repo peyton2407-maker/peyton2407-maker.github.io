@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 46.5,
-   "lockedAt": "2026-11-26T13:16:35.741Z",
+   "lockedAt": "2026-11-26T13:31:43.821Z",
    "provisional": true
   },
   "401866470": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 48.5,
-   "lockedAt": "2026-11-26T13:16:35.741Z",
+   "lockedAt": "2026-11-26T13:31:43.821Z",
    "provisional": true
   },
   "401873081": {
@@ -128,15 +128,36 @@
    "date": "2026-11-26T18:00Z",
    "pick": "DET",
    "pick_line": "DET +1.5",
-   "total_pick": "UNDER 55.5",
+   "total_pick": "UNDER 56.5",
    "side_play": false,
    "our_margin": -0.38,
-   "our_total": 54,
+   "our_total": 54.7,
    "confidence": null,
    "total_play": false,
    "spread": 1.5,
-   "total": 55.5,
-   "lockedAt": "2026-11-26T13:16:35.741Z",
+   "total": 56.5,
+   "lockedAt": "2026-11-26T13:31:43.821Z",
+   "provisional": true
+  },
+  "401873082": {
+   "id": "401873082",
+   "league": "nfl",
+   "week": 12,
+   "short": "KC @ BUF",
+   "home": "BUF",
+   "away": "KC",
+   "date": "2026-11-27T01:20Z",
+   "pick": "BUF",
+   "pick_line": "BUF -3.0",
+   "total_pick": "UNDER 45.5",
+   "side_play": false,
+   "our_margin": 3.2,
+   "our_total": 44.8,
+   "confidence": null,
+   "total_play": false,
+   "spread": -3,
+   "total": 45.5,
+   "lockedAt": "2026-11-26T13:31:43.821Z",
    "provisional": true
   }
  },
@@ -1126,12 +1147,12 @@
     "kind": "Player prop",
     "line": "Jahmyr Gibbs under 38.5 rec yds",
     "hitPct": 55,
-    "why": "We project Jahmyr Gibbs for 38 rec yds against a line of 38.5. Our checked chance on the under is 55%; the books' own chance is 53%. At -113 (DraftKings) that is 4.1% better than the price. CHI is middle of the pack here: 22nd of 32 in rec yds allowed to RBs (36 a game; league average 32). The under hit in 5 of his last 8 games at this line.",
+    "why": "We project Jahmyr Gibbs for 38 rec yds against a line of 38.5. Our checked chance on the under is 55%; the books' own chance is 53%. At -113 (DraftKings) that is 4% better than the price. CHI is middle of the pack here: 22nd of 32 in rec yds allowed to RBs (36 a game; league average 32). The under hit in 5 of his last 8 games at this line.",
     "label": "Thursday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 1.25,
+    "units": 1,
     "prop": {
      "pid": "4429795",
      "name": "Jahmyr Gibbs",
@@ -1141,16 +1162,16 @@
     },
     "price": -113,
     "book": "DraftKings",
-    "ev": 0.041,
-    "ours": "CHI -0.4 · total 54.0",
-    "score": "CHI 27.2 – DET 26.8",
-    "market": "CHI -1.5 · total 55.5",
-    "lockedAt": "2026-11-26T13:16:35.764Z",
+    "ev": 0.04,
+    "ours": "CHI -0.4 · total 54.7",
+    "score": "CHI 27.5 – DET 27.2",
+    "market": "CHI -1.5 · total 56.5",
+    "lockedAt": "2026-11-26T13:31:43.844Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T18:00Z",
     "big": false,
-    "savedAt": 1795698995764
+    "savedAt": 1795699903844
    }
   ],
   "cfb": [
@@ -2056,7 +2077,7 @@
    }
   ]
  },
- "updated": "2026-11-26T13:16:35.741Z",
+ "updated": "2026-11-26T13:31:43.821Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2538,9 +2559,9 @@
    "size": 0.75,
    "american": 576,
    "dec": 6.7598,
-   "chance": 0.1738,
+   "chance": 0.1735,
    "breakEven": 0.1479,
-   "ev": 0.1745,
+   "ev": 0.1726,
    "firstKick": "2026-11-26T18:00:00.000Z",
    "legs": [
     {
@@ -2603,9 +2624,9 @@
      "kick": "2026-11-26T18:00Z",
      "price": -113,
      "line": 38.5,
-     "win": 0.5562,
-     "bookWin": 0.5279,
-     "value": 0.0484,
+     "win": 0.5553,
+     "bookWin": 0.528,
+     "value": 0.0467,
      "cat": "prop",
      "why": "We project 38 rec yds against 38.5; our checked chance on the under is 55%, the books' 53%. CHI is middle of the pack here: 22nd of 32 in rec yds allowed to RBs (36 a game; league average 32).",
      "alt": null,
@@ -2623,7 +2644,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T13:16:35.741Z"
+   "lockedAt": "2026-11-26T13:31:43.821Z"
   }
  ],
  "teasers": [
@@ -2808,7 +2829,7 @@
      "book": null,
      "win": 0.756,
      "bookWin": 0.749,
-     "total": 55.5,
+     "total": 56.5,
      "result": null,
      "final": null
     }
@@ -2817,7 +2838,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T13:16:35.741Z"
+   "lockedAt": "2026-11-26T13:31:43.821Z"
   }
  ],
  "teaserLegs": [
