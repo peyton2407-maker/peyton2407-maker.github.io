@@ -13,13 +13,13 @@
    "pick_line": "TCU +14.0",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 12.52,
+   "our_margin": 12.5,
    "our_total": 46.5,
    "confidence": null,
    "total_play": false,
    "spread": -14,
    "total": 46.5,
-   "lockedAt": "2026-11-26T20:16:33.412Z",
+   "lockedAt": "2026-11-26T20:31:39.328Z",
    "provisional": true
   },
   "401866470": {
@@ -115,7 +115,12 @@
    "total_play": false,
    "spread": -8.5,
    "total": 49.5,
-   "lockedAt": "2026-11-26T20:01:26.921Z"
+   "lockedAt": "2026-11-26T20:01:26.921Z",
+   "close_spread": -8.5,
+   "close_total": 49.5,
+   "closeAt": "2026-11-26T20:31:39.328Z",
+   "clv_side": 0,
+   "clv_total": 0
   },
   "401873081": {
    "id": "401873081",
@@ -160,7 +165,7 @@
    "total_play": false,
    "spread": -3,
    "total": 45.5,
-   "lockedAt": "2026-11-26T20:16:33.412Z",
+   "lockedAt": "2026-11-26T20:31:39.328Z",
    "provisional": true
   }
  },
@@ -1212,7 +1217,11 @@
     "locked": true,
     "kick": "2026-11-26T21:30Z",
     "big": false,
-    "savedAt": 1795723286950
+    "savedAt": 1795723286950,
+    "close_line": 14.5,
+    "closeAt": "2026-11-26T20:31:39.328Z",
+    "close_src": "board",
+    "clv": 1
    }
   ],
   "cfb": [
@@ -2092,7 +2101,7 @@
    }
   ]
  },
- "updated": "2026-11-26T20:16:33.412Z",
+ "updated": "2026-11-26T20:31:39.328Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2604,7 +2613,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T20:16:33.412Z",
+      "at": "2026-11-26T20:31:39.328Z",
       "line": 14.5,
       "price": -107,
       "book": "DraftKings",
@@ -2638,7 +2647,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T20:16:33.412Z",
+      "at": "2026-11-26T20:31:39.328Z",
       "line": 12.5,
       "price": -108,
       "book": "DraftKings",
@@ -3150,8 +3159,8 @@
    "from": -8.5,
    "to": -2.5,
    "book": null,
-   "win": 0.7432,
-   "bookWin": 0.7432,
+   "win": 0.7459,
+   "bookWin": 0.7428,
    "total": 49.5,
    "result": null,
    "final": null
@@ -6597,32 +6606,10 @@
    "mainLine": -8.5,
    "price": 275,
    "book": "BetRivers",
-   "win": 0.271,
+   "win": 0.2745,
    "mwin": 0.2711,
-   "ev": 0.0404,
+   "ev": 0.0537,
    "mev": 0.0407,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873080|sp|away",
-   "gid": "401873080",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "away",
-   "label": "PHI +2.5",
-   "game": "PHI @ DAL",
-   "kick": "2026-11-26T21:30Z",
-   "line": 2.5,
-   "mainLine": 8.5,
-   "price": 285,
-   "book": "FanDuel",
-   "win": 0.2694,
-   "mwin": 0.2694,
-   "ev": 0.0373,
-   "mev": 0.0371,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -7235,9 +7222,9 @@
    "mainLine": -5.5,
    "price": 300,
    "book": "FanDuel",
-   "win": 0.277,
+   "win": 0.2739,
    "mwin": 0.2746,
-   "ev": 0.1081,
+   "ev": 0.0956,
    "mev": 0.0985,
    "src": "mkt",
    "result": null,
@@ -7393,6 +7380,28 @@
    "mwin": 0.3086,
    "ev": 0.0307,
    "mev": 0.0185,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401862841|sp|home",
+   "gid": "401862841",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "home",
+   "label": "RICE -3.5",
+   "game": "ARMY @ RICE",
+   "kick": "2026-11-28T19:00Z",
+   "line": -3.5,
+   "mainLine": 5.5,
+   "price": 285,
+   "book": "FanDuel",
+   "win": 0.2678,
+   "mwin": 0.2671,
+   "ev": 0.0308,
+   "mev": 0.0283,
    "src": "mkt",
    "result": null,
    "final": null,
