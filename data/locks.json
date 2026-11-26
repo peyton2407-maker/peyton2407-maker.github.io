@@ -19,8 +19,7 @@
    "total_play": false,
    "spread": -14,
    "total": 46.5,
-   "lockedAt": "2026-11-26T23:16:46.101Z",
-   "provisional": true
+   "lockedAt": "2026-11-26T23:31:52.338Z"
   },
   "401866470": {
    "id": "401866470",
@@ -165,7 +164,7 @@
    "total_play": false,
    "spread": -3,
    "total": 45.5,
-   "lockedAt": "2026-11-26T23:16:46.101Z",
+   "lockedAt": "2026-11-26T23:31:52.338Z",
    "provisional": true
   }
  },
@@ -1253,12 +1252,12 @@
     "ours": "BUF -3.2 · total 44.8",
     "score": "KC 20.8 – BUF 24.0",
     "market": "BUF -3.0 · total 45.5",
-    "lockedAt": "2026-11-26T23:16:46.122Z",
+    "lockedAt": "2026-11-26T23:31:52.363Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T01:20Z",
     "big": false,
-    "savedAt": 1795735006122
+    "savedAt": 1795735912363
    }
   ],
   "cfb": [
@@ -2138,7 +2137,7 @@
    }
   ]
  },
- "updated": "2026-11-26T23:16:46.101Z",
+ "updated": "2026-11-26T23:31:52.338Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2684,7 +2683,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T23:16:46.101Z",
+      "at": "2026-11-26T23:31:52.338Z",
       "line": 12.5,
       "price": -108,
       "book": "DraftKings",
@@ -7349,9 +7348,9 @@
    "mainLine": 49.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2687,
+   "win": 0.2734,
    "mwin": 0.2687,
-   "ev": 0.0343,
+   "ev": 0.0528,
    "mev": 0.0343,
    "src": "mkt",
    "result": null,
@@ -11985,6 +11984,22 @@
    "market": -8.5,
    "label": "DAL -8.5",
    "lockedAt": "2026-11-26T20:01:26.921Z"
+  },
+  {
+   "id": "401856879",
+   "league": "cfb",
+   "gid": "401856879",
+   "side": "away",
+   "team": "TCU",
+   "game": "TCU @ TTU",
+   "kick": "2026-11-27T01:00Z",
+   "line": 14,
+   "price": -110,
+   "book": "standard",
+   "ours": 12.5,
+   "market": 14,
+   "label": "TCU +14",
+   "lockedAt": "2026-11-26T23:31:52.338Z"
   }
  ]
 }
