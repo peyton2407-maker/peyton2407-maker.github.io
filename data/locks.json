@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -14,
    "total": 46.5,
-   "lockedAt": "2026-11-26T21:31:30.469Z",
+   "lockedAt": "2026-11-26T21:46:39.848Z",
    "provisional": true
   },
   "401866470": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": -3,
    "total": 45.5,
-   "lockedAt": "2026-11-26T21:31:30.469Z",
+   "lockedAt": "2026-11-26T21:46:39.848Z",
    "provisional": true
   }
  },
@@ -1252,12 +1252,12 @@
     "ours": "BUF -3.2 · total 44.8",
     "score": "KC 20.8 – BUF 24.0",
     "market": "BUF -3.0 · total 45.5",
-    "lockedAt": "2026-11-26T21:31:30.505Z",
+    "lockedAt": "2026-11-26T21:46:39.875Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T01:20Z",
     "big": false,
-    "savedAt": 1795728690505
+    "savedAt": 1795729599875
    }
   ],
   "cfb": [
@@ -2137,7 +2137,7 @@
    }
   ]
  },
- "updated": "2026-11-26T21:31:30.469Z",
+ "updated": "2026-11-26T21:46:39.848Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2683,7 +2683,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T21:31:30.469Z",
+      "at": "2026-11-26T21:46:39.848Z",
       "line": 12.5,
       "price": -108,
       "book": "DraftKings",
@@ -2917,8 +2917,8 @@
      "win": 0.756,
      "bookWin": 0.749,
      "total": 56.5,
-     "result": null,
-     "final": null
+     "result": "HIT",
+     "final": "CHI 39, DET 35"
     }
    ],
    "result": null,
@@ -3182,8 +3182,8 @@
    "win": 0.756,
    "bookWin": 0.749,
    "total": 55.5,
-   "result": null,
-   "final": null
+   "result": "HIT",
+   "final": "CHI 39, DET 35"
   },
   {
    "id": "401873080|sp|home",
@@ -6603,9 +6603,9 @@
    "ev": 0.0359,
    "mev": -0.0045,
    "src": "proj",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "CHI 39, DET 35",
+   "units": -1
   },
   {
    "id": "401873081|sp|home",
@@ -6625,9 +6625,9 @@
    "ev": 0.0704,
    "mev": 0.0427,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "CHI 39, DET 35",
+   "units": -1
   },
   {
    "id": "401873080|sp|home",
@@ -11896,7 +11896,10 @@
    "ours": 0.4,
    "market": 1.5,
    "label": "DET +1.5",
-   "lockedAt": "2026-11-26T16:31:57.654Z"
+   "lockedAt": "2026-11-26T16:31:57.654Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "CHI 39, DET 35"
   },
   {
    "id": "401873080",
