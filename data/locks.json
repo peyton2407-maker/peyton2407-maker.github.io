@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -14,
    "total": 46.5,
-   "lockedAt": "2026-11-26T20:01:26.921Z",
+   "lockedAt": "2026-11-26T20:16:33.412Z",
    "provisional": true
   },
   "401866470": {
@@ -160,7 +160,7 @@
    "total_play": false,
    "spread": -3,
    "total": 45.5,
-   "lockedAt": "2026-11-26T20:01:26.921Z",
+   "lockedAt": "2026-11-26T20:16:33.412Z",
    "provisional": true
   }
  },
@@ -2092,7 +2092,7 @@
    }
   ]
  },
- "updated": "2026-11-26T20:01:26.921Z",
+ "updated": "2026-11-26T20:16:33.412Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2604,11 +2604,11 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T20:01:26.921Z",
-      "line": 15.5,
-      "price": -108,
+      "at": "2026-11-26T20:16:33.412Z",
+      "line": 14.5,
+      "price": -107,
       "book": "DraftKings",
-      "fair": 0.5245,
+      "fair": null,
       "push": 0,
       "src": "books"
      }
@@ -2638,11 +2638,11 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T20:01:26.921Z",
+      "at": "2026-11-26T20:16:33.412Z",
       "line": 12.5,
       "price": -108,
       "book": "DraftKings",
-      "fair": 0.5101,
+      "fair": 0.5,
       "push": 0,
       "src": "books"
      }
@@ -7012,12 +7012,12 @@
    "game": "MICH @ OSU",
    "kick": "2026-11-28T17:00Z",
    "line": -20.5,
-   "mainLine": -10.5,
+   "mainLine": -10,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2726,
+   "win": 0.2742,
    "mwin": 0.2709,
-   "ev": 0.0358,
+   "ev": 0.0421,
    "mev": 0.0296,
    "src": "mkt",
    "result": null,
@@ -7399,6 +7399,28 @@
    "units": null
   },
   {
+   "id": "401858317|tot|under",
+   "gid": "401858317",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 42.5",
+   "game": "UVA @ VT",
+   "kick": "2026-11-28T20:00Z",
+   "line": 42.5,
+   "mainLine": 50.5,
+   "price": 250,
+   "book": "FanDuel",
+   "win": 0.3096,
+   "mwin": 0.3045,
+   "ev": 0.0836,
+   "mev": 0.0657,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873088|sp|home",
    "gid": "401873088",
    "league": "nfl",
@@ -7653,9 +7675,9 @@
    "mainLine": -3,
    "price": 265,
    "book": "Fanatics",
-   "win": 0.3023,
+   "win": 0.2932,
    "mwin": 0.2793,
-   "ev": 0.1033,
+   "ev": 0.0703,
    "mev": 0.0196,
    "src": "mkt",
    "result": null,
