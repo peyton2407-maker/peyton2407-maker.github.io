@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -14,
    "total": 46.5,
-   "lockedAt": "2026-11-26T17:17:50.877Z",
+   "lockedAt": "2026-11-26T17:31:19.615Z",
    "provisional": true
   },
   "401866470": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 49.5,
-   "lockedAt": "2026-11-26T17:17:50.877Z",
+   "lockedAt": "2026-11-26T17:31:19.615Z",
    "provisional": true
   },
   "401873081": {
@@ -161,7 +161,7 @@
    "total_play": false,
    "spread": -3,
    "total": 45.5,
-   "lockedAt": "2026-11-26T17:17:50.877Z",
+   "lockedAt": "2026-11-26T17:31:19.615Z",
    "provisional": true
   }
  },
@@ -2058,7 +2058,7 @@
    }
   ]
  },
- "updated": "2026-11-26T17:17:50.877Z",
+ "updated": "2026-11-26T17:31:19.615Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2570,7 +2570,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T17:17:50.877Z",
+      "at": "2026-11-26T17:31:19.615Z",
       "line": 15.5,
       "price": -108,
       "book": "DraftKings",
@@ -2604,7 +2604,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T17:17:50.877Z",
+      "at": "2026-11-26T17:31:19.615Z",
       "line": 12.5,
       "price": -108,
       "book": "DraftKings",
@@ -2638,7 +2638,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T17:17:50.877Z",
+      "at": "2026-11-26T17:31:19.615Z",
       "line": 36.5,
       "price": -109,
       "book": "DraftKings",
@@ -6780,12 +6780,12 @@
    "game": "MINN @ WIS",
    "kick": "2026-11-28T00:30Z",
    "line": -18.5,
-   "mainLine": -8.5,
+   "mainLine": -7.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2764,
+   "win": 0.2784,
    "mwin": 0.2763,
-   "ev": 0.064,
+   "ev": 0.0718,
    "mev": 0.0639,
    "src": "mkt",
    "result": null,
@@ -6809,28 +6809,6 @@
    "mwin": 0.3015,
    "ev": 0.0553,
    "mev": 0.0553,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401858544|sp|away",
-   "gid": "401858544",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "away",
-   "label": "MINN +1.5",
-   "game": "MINN @ WIS",
-   "kick": "2026-11-28T00:30Z",
-   "line": 1.5,
-   "mainLine": 8.5,
-   "price": 260,
-   "book": "BetRivers",
-   "win": 0.2869,
-   "mwin": 0.2869,
-   "ev": 0.0329,
-   "mev": 0.033,
    "src": "mkt",
    "result": null,
    "final": null,
