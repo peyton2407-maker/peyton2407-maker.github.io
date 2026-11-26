@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 46.5,
-   "lockedAt": "2026-11-26T13:31:43.821Z",
+   "lockedAt": "2026-11-26T13:46:25.636Z",
    "provisional": true
   },
   "401866470": {
@@ -107,15 +107,15 @@
    "date": "2026-11-26T21:30Z",
    "pick": "DAL",
    "pick_line": "DAL -8.5",
-   "total_pick": "UNDER 48.5",
+   "total_pick": "UNDER 49.5",
    "side_play": false,
    "our_margin": 8.82,
-   "our_total": 48.2,
+   "our_total": 48.9,
    "confidence": null,
    "total_play": false,
    "spread": -8.5,
-   "total": 48.5,
-   "lockedAt": "2026-11-26T13:31:43.821Z",
+   "total": 49.5,
+   "lockedAt": "2026-11-26T13:46:25.636Z",
    "provisional": true
   },
   "401873081": {
@@ -136,7 +136,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 56.5,
-   "lockedAt": "2026-11-26T13:31:43.821Z",
+   "lockedAt": "2026-11-26T13:46:25.636Z",
    "provisional": true
   },
   "401873082": {
@@ -157,7 +157,7 @@
    "total_play": false,
    "spread": -3,
    "total": 45.5,
-   "lockedAt": "2026-11-26T13:31:43.821Z",
+   "lockedAt": "2026-11-26T13:46:25.636Z",
    "provisional": true
   }
  },
@@ -1166,12 +1166,12 @@
     "ours": "CHI -0.4 · total 54.7",
     "score": "CHI 27.5 – DET 27.2",
     "market": "CHI -1.5 · total 56.5",
-    "lockedAt": "2026-11-26T13:31:43.844Z",
+    "lockedAt": "2026-11-26T13:46:25.672Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T18:00Z",
     "big": false,
-    "savedAt": 1795699903844
+    "savedAt": 1795700785672
    }
   ],
   "cfb": [
@@ -2077,7 +2077,7 @@
    }
   ]
  },
- "updated": "2026-11-26T13:31:43.821Z",
+ "updated": "2026-11-26T13:46:25.636Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2559,9 +2559,9 @@
    "size": 0.75,
    "american": 576,
    "dec": 6.7598,
-   "chance": 0.1735,
+   "chance": 0.1732,
    "breakEven": 0.1479,
-   "ev": 0.1726,
+   "ev": 0.171,
    "firstKick": "2026-11-26T18:00:00.000Z",
    "legs": [
     {
@@ -2599,9 +2599,9 @@
      "kick": "2026-11-26T21:30Z",
      "price": -116,
      "line": 15.5,
-     "win": 0.5676,
-     "bookWin": 0.5305,
-     "value": 0.057,
+     "win": 0.5668,
+     "bookWin": 0.5304,
+     "value": 0.0555,
      "cat": "prop",
      "why": "We project 15 rec yds against 15.5; our checked chance on the under is 57%, the books' 53%. PHI is a tough defense here: it allows the 8th-fewest rec yds to TEs (45 a game; league average 54).",
      "alt": null,
@@ -2644,7 +2644,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T13:31:43.821Z"
+   "lockedAt": "2026-11-26T13:46:25.636Z"
   }
  ],
  "teasers": [
@@ -2838,7 +2838,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T13:31:43.821Z"
+   "lockedAt": "2026-11-26T13:46:25.636Z"
   }
  ],
  "teaserLegs": [
