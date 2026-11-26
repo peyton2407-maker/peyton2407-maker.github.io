@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 46.5,
-   "lockedAt": "2026-11-26T13:02:00.546Z",
+   "lockedAt": "2026-11-26T13:16:35.741Z",
    "provisional": true
   },
   "401866470": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 48.5,
-   "lockedAt": "2026-11-26T13:02:00.546Z",
+   "lockedAt": "2026-11-26T13:16:35.741Z",
    "provisional": true
   },
   "401873081": {
@@ -136,7 +136,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-26T13:02:00.546Z",
+   "lockedAt": "2026-11-26T13:16:35.741Z",
    "provisional": true
   }
  },
@@ -1145,12 +1145,12 @@
     "ours": "CHI -0.4 · total 54.0",
     "score": "CHI 27.2 – DET 26.8",
     "market": "CHI -1.5 · total 55.5",
-    "lockedAt": "2026-11-26T13:02:00.567Z",
+    "lockedAt": "2026-11-26T13:16:35.764Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T18:00Z",
     "big": false,
-    "savedAt": 1795698120567
+    "savedAt": 1795698995764
    }
   ],
   "cfb": [
@@ -2056,7 +2056,7 @@
    }
   ]
  },
- "updated": "2026-11-26T13:02:00.546Z",
+ "updated": "2026-11-26T13:16:35.741Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2623,7 +2623,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T13:02:00.546Z"
+   "lockedAt": "2026-11-26T13:16:35.741Z"
   }
  ],
  "teasers": [
@@ -2817,7 +2817,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T13:02:00.546Z"
+   "lockedAt": "2026-11-26T13:16:35.741Z"
   }
  ],
  "teaserLegs": [
@@ -6736,44 +6736,88 @@
    "units": null
   },
   {
-   "id": "401858544|tot|under",
+   "id": "401858544|sp|home",
    "gid": "401858544",
    "league": "cfb",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 29.5",
+   "kind": "sp",
+   "side": "home",
+   "label": "WIS -18.5",
    "game": "MINN @ WIS",
    "kick": "2026-11-28T00:30Z",
-   "line": 29.5,
-   "mainLine": 37.5,
-   "price": 280,
+   "line": -18.5,
+   "mainLine": -8.5,
+   "price": 285,
    "book": "FanDuel",
-   "win": 0.2778,
-   "mwin": 0.2778,
-   "ev": 0.0556,
-   "mev": 0.0556,
+   "win": 0.2764,
+   "mwin": 0.2763,
+   "ev": 0.064,
+   "mev": 0.0639,
    "src": "mkt",
    "result": null,
    "final": null,
    "units": null
   },
   {
-   "id": "401856756|tot|under",
+   "id": "401856756|tot|over",
    "gid": "401856756",
    "league": "cfb",
    "kind": "tot",
-   "side": "under",
-   "label": "Under 31.5",
+   "side": "over",
+   "label": "Over 48.5",
    "game": "TEX @ TA&M",
    "kick": "2026-11-28T00:30Z",
-   "line": 31.5,
+   "line": 48.5,
    "mainLine": 40.5,
-   "price": 280,
+   "price": 250,
    "book": "FanDuel",
-   "win": 0.2771,
-   "mwin": 0.2771,
-   "ev": 0.0528,
-   "mev": 0.0528,
+   "win": 0.3015,
+   "mwin": 0.3015,
+   "ev": 0.0553,
+   "mev": 0.0553,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401858544|sp|away",
+   "gid": "401858544",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "away",
+   "label": "MINN +1.5",
+   "game": "MINN @ WIS",
+   "kick": "2026-11-28T00:30Z",
+   "line": 1.5,
+   "mainLine": 8.5,
+   "price": 260,
+   "book": "BetRivers",
+   "win": 0.2869,
+   "mwin": 0.2869,
+   "ev": 0.0329,
+   "mev": 0.033,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401856756|sp|home",
+   "gid": "401856756",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "home",
+   "label": "TA&M +3.5",
+   "game": "TEX @ TA&M",
+   "kick": "2026-11-28T00:30Z",
+   "line": 3.5,
+   "mainLine": 10.5,
+   "price": 235,
+   "book": "FanDuel",
+   "win": 0.3079,
+   "mwin": 0.3045,
+   "ev": 0.0313,
+   "mev": 0.02,
    "src": "mkt",
    "result": null,
    "final": null,
