@@ -76,6 +76,27 @@
    "clv_side": 0,
    "clv_total": 0
   },
+  "401873080": {
+   "id": "401873080",
+   "league": "nfl",
+   "week": 12,
+   "short": "PHI @ DAL",
+   "home": "DAL",
+   "away": "PHI",
+   "date": "2026-11-26T21:30Z",
+   "pick": "DAL",
+   "pick_line": "DAL -8.5",
+   "total_pick": "UNDER 48.5",
+   "side_play": false,
+   "our_margin": 8.87,
+   "our_total": 48.2,
+   "confidence": null,
+   "total_play": false,
+   "spread": -8.5,
+   "total": 48.5,
+   "lockedAt": "2026-11-26T09:35:37.030Z",
+   "provisional": true
+  },
   "401873081": {
    "id": "401873081",
    "league": "nfl",
@@ -94,7 +115,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-26T09:18:14.436Z",
+   "lockedAt": "2026-11-26T09:35:37.030Z",
    "provisional": true
   }
  },
@@ -1103,12 +1124,12 @@
     "ours": "CHI -0.4 · total 54.0",
     "score": "CHI 27.2 – DET 26.8",
     "market": "CHI -1.5 · total 55.5",
-    "lockedAt": "2026-11-26T09:18:14.460Z",
+    "lockedAt": "2026-11-26T09:35:37.055Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T18:00Z",
     "big": false,
-    "savedAt": 1795684694460
+    "savedAt": 1795685737055
    }
   ],
   "cfb": [
@@ -2014,7 +2035,7 @@
    }
   ]
  },
- "updated": "2026-11-26T09:18:14.436Z",
+ "updated": "2026-11-26T09:35:37.030Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2581,7 +2602,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T09:18:14.436Z"
+   "lockedAt": "2026-11-26T09:35:37.030Z"
   }
  ],
  "teasers": [
@@ -2775,7 +2796,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T09:18:14.436Z"
+   "lockedAt": "2026-11-26T09:35:37.030Z"
   }
  ],
  "teaserLegs": [
