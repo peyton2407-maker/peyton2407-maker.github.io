@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 48.5,
-   "lockedAt": "2026-11-26T12:16:34.837Z",
+   "lockedAt": "2026-11-26T12:46:23.484Z",
    "provisional": true
   },
   "401873081": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-26T12:16:34.837Z",
+   "lockedAt": "2026-11-26T12:46:23.484Z",
    "provisional": true
   }
  },
@@ -1124,12 +1124,12 @@
     "ours": "CHI -0.4 · total 54.0",
     "score": "CHI 27.2 – DET 26.8",
     "market": "CHI -1.5 · total 55.5",
-    "lockedAt": "2026-11-26T12:16:34.860Z",
+    "lockedAt": "2026-11-26T12:46:23.508Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T18:00Z",
     "big": false,
-    "savedAt": 1795695394860
+    "savedAt": 1795697183508
    }
   ],
   "cfb": [
@@ -2035,7 +2035,7 @@
    }
   ]
  },
- "updated": "2026-11-26T12:16:34.837Z",
+ "updated": "2026-11-26T12:46:23.484Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2602,7 +2602,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T12:16:34.837Z"
+   "lockedAt": "2026-11-26T12:46:23.484Z"
   }
  ],
  "teasers": [
@@ -2796,7 +2796,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T12:16:34.837Z"
+   "lockedAt": "2026-11-26T12:46:23.484Z"
   }
  ],
  "teaserLegs": [
@@ -6966,12 +6966,12 @@
    "game": "WSH @ ARI",
    "kick": "2026-11-29T21:25Z",
    "line": 1,
-   "mainLine": 7,
+   "mainLine": 6.5,
    "price": 265,
    "book": "BetRivers",
-   "win": 0.2899,
-   "mwin": 0.2687,
-   "ev": 0.0796,
+   "win": 0.2817,
+   "mwin": 0.2684,
+   "ev": 0.0503,
    "mev": 0.0015,
    "src": "proj",
    "result": null,
