@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 48.5,
-   "lockedAt": "2026-11-26T11:31:22.941Z",
+   "lockedAt": "2026-11-26T12:14:28.442Z",
    "provisional": true
   },
   "401873081": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-26T11:31:22.941Z",
+   "lockedAt": "2026-11-26T12:14:28.442Z",
    "provisional": true
   }
  },
@@ -1103,33 +1103,33 @@
     "id": "401873081",
     "game": "CHI @ DET",
     "kind": "Player prop",
-    "line": "Amon-Ra St. Brown under 7.5 receptions",
-    "hitPct": 57,
-    "why": "We project Amon-Ra St. Brown for 6.6 receptions against a line of 7.5. Our checked chance on the under is 57%; the books' own chance is 55%. At -124 (DraftKings) that is 3.1% better than the price. CHI is a tough defense here: it allows the 8th-fewest receptions to WRs (10 a game; league average 11). The under hit in 5 of his last 8 games at this line.",
+    "line": "Jahmyr Gibbs under 38.5 rec yds",
+    "hitPct": 55,
+    "why": "We project Jahmyr Gibbs for 38 rec yds against a line of 38.5. Our checked chance on the under is 55%; the books' own chance is 53%. At -113 (DraftKings) that is 4.1% better than the price. CHI is middle of the pack here: 22nd of 32 in rec yds allowed to RBs (36 a game; league average 32). The under hit in 5 of his last 8 games at this line.",
     "label": "Thursday · next game",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 1,
+    "units": 1.25,
     "prop": {
-     "pid": "4374302",
-     "name": "Amon-Ra St. Brown",
-     "stat": "rec",
+     "pid": "4429795",
+     "name": "Jahmyr Gibbs",
+     "stat": "rec_yds",
      "side": "under",
-     "line": 7.5
+     "line": 38.5
     },
-    "price": -124,
+    "price": -113,
     "book": "DraftKings",
-    "ev": 0.031,
+    "ev": 0.041,
     "ours": "CHI -0.4 · total 54.0",
     "score": "CHI 27.2 – DET 26.8",
     "market": "CHI -1.5 · total 55.5",
-    "lockedAt": "2026-11-26T11:31:22.964Z",
+    "lockedAt": "2026-11-26T12:14:28.465Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T18:00Z",
     "big": false,
-    "savedAt": 1795692682964
+    "savedAt": 1795695268465
    }
   ],
   "cfb": [
@@ -2035,7 +2035,7 @@
    }
   ]
  },
- "updated": "2026-11-26T11:31:22.941Z",
+ "updated": "2026-11-26T12:14:28.442Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2515,35 +2515,60 @@
    "tier": "value",
    "stake": 1,
    "size": 0.75,
-   "american": 581,
-   "dec": 6.8127,
-   "chance": 0.1709,
-   "breakEven": 0.1468,
-   "ev": 0.1645,
+   "american": 576,
+   "dec": 6.7598,
+   "chance": 0.1738,
+   "breakEven": 0.1479,
+   "ev": 0.1745,
    "firstKick": "2026-11-26T18:00:00.000Z",
    "legs": [
     {
      "id": "401873082|pp|3139477|rush_yds|under",
-     "label": "Patrick Mahomes under 13.5 rush yds",
+     "label": "Patrick Mahomes under 12.5 rush yds",
      "kind": "pp",
      "game_id": "401873082",
      "game": "KC @ BUF",
      "league": "nfl",
      "kick": "2026-11-27T01:20Z",
-     "price": -109,
-     "line": 13.5,
-     "win": 0.5731,
-     "bookWin": 0.5335,
-     "value": 0.0989,
+     "price": -108,
+     "line": 12.5,
+     "win": 0.5503,
+     "bookWin": 0.5143,
+     "value": 0.0599,
      "cat": "prop",
-     "why": "We project 12 rush yds against 13.5; our checked chance on the under is 58%, the books' 53%. BUF is middle of the pack here: 11th of 32 in rush yds allowed to QBs (13 a game; league average 16).",
+     "why": "We project 12 rush yds against 12.5; our checked chance on the under is 56%, the books' 51%. BUF is middle of the pack here: 11th of 32 in rush yds allowed to QBs (13 a game; league average 16).",
      "alt": null,
      "prop": {
       "pid": "3139477",
       "stat": "rush_yds",
       "side": "under",
-      "line": 13.5,
+      "line": 12.5,
       "name": "Patrick Mahomes"
+     },
+     "result": null
+    },
+    {
+     "id": "401873080|pp|4360967|rec_yds|under",
+     "label": "Brevyn Spann-Ford under 15.5 rec yds",
+     "kind": "pp",
+     "game_id": "401873080",
+     "game": "PHI @ DAL",
+     "league": "nfl",
+     "kick": "2026-11-26T21:30Z",
+     "price": -116,
+     "line": 15.5,
+     "win": 0.5676,
+     "bookWin": 0.5305,
+     "value": 0.057,
+     "cat": "prop",
+     "why": "We project 15 rec yds against 15.5; our checked chance on the under is 57%, the books' 53%. PHI is a tough defense here: it allows the 8th-fewest rec yds to TEs (45 a game; league average 54).",
+     "alt": null,
+     "prop": {
+      "pid": "4360967",
+      "stat": "rec_yds",
+      "side": "under",
+      "line": 15.5,
+      "name": "Brevyn Spann-Ford"
      },
      "result": null
     },
@@ -2571,38 +2596,13 @@
       "name": "Jahmyr Gibbs"
      },
      "result": null
-    },
-    {
-     "id": "401873080|pp|2577417|pass_yds|under",
-     "label": "Dak Prescott under 265.5 pass yds",
-     "kind": "pp",
-     "game_id": "401873080",
-     "game": "PHI @ DAL",
-     "league": "nfl",
-     "kick": "2026-11-26T21:30Z",
-     "price": -113,
-     "line": 265.5,
-     "win": 0.5362,
-     "bookWin": 0.5184,
-     "value": 0.0108,
-     "cat": "prop",
-     "why": "We project 248 pass yds against 265.5; our checked chance on the under is 54%, the books' 52%. PHI is middle of the pack here: 17th of 32 in pass yds allowed to QBs (238 a game; league average 234).",
-     "alt": null,
-     "prop": {
-      "pid": "2577417",
-      "stat": "pass_yds",
-      "side": "under",
-      "line": 265.5,
-      "name": "Dak Prescott"
-     },
-     "result": null
     }
    ],
    "result": null,
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T11:31:22.941Z"
+   "lockedAt": "2026-11-26T12:14:28.442Z"
   }
  ],
  "teasers": [
@@ -2796,7 +2796,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T11:31:22.941Z"
+   "lockedAt": "2026-11-26T12:14:28.442Z"
   }
  ],
  "teaserLegs": [
@@ -7721,10 +7721,10 @@
    "game": "KC @ BUF",
    "kick": "2026-11-27T01:20Z",
    "price": 100,
-   "book": "BetMGM",
+   "book": "FanDuel",
    "books": 6,
    "ours": 0.5296,
-   "mkt": 0.4288,
+   "mkt": 0.4266,
    "win": 0.5013,
    "ev": 0.0026,
    "rule": "likely",
