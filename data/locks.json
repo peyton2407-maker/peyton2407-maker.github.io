@@ -1,6 +1,27 @@
 {
  "v": 1,
  "plays": {
+  "401856879": {
+   "id": "401856879",
+   "league": "cfb",
+   "week": 13,
+   "short": "TCU @ TTU",
+   "home": "TTU",
+   "away": "TCU",
+   "date": "2026-11-27T01:00Z",
+   "pick": "TCU",
+   "pick_line": "TCU +15.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 13.5,
+   "our_total": 46.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -15.5,
+   "total": 46.5,
+   "lockedAt": "2026-11-26T13:02:00.546Z",
+   "provisional": true
+  },
   "401866470": {
    "id": "401866470",
    "league": "cfb",
@@ -94,7 +115,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 48.5,
-   "lockedAt": "2026-11-26T12:46:23.484Z",
+   "lockedAt": "2026-11-26T13:02:00.546Z",
    "provisional": true
   },
   "401873081": {
@@ -115,7 +136,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-26T12:46:23.484Z",
+   "lockedAt": "2026-11-26T13:02:00.546Z",
    "provisional": true
   }
  },
@@ -1124,12 +1145,12 @@
     "ours": "CHI -0.4 · total 54.0",
     "score": "CHI 27.2 – DET 26.8",
     "market": "CHI -1.5 · total 55.5",
-    "lockedAt": "2026-11-26T12:46:23.508Z",
+    "lockedAt": "2026-11-26T13:02:00.567Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T18:00Z",
     "big": false,
-    "savedAt": 1795697183508
+    "savedAt": 1795698120567
    }
   ],
   "cfb": [
@@ -2035,7 +2056,7 @@
    }
   ]
  },
- "updated": "2026-11-26T12:46:23.484Z",
+ "updated": "2026-11-26T13:02:00.546Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2602,7 +2623,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T12:46:23.484Z"
+   "lockedAt": "2026-11-26T13:02:00.546Z"
   }
  ],
  "teasers": [
@@ -2796,7 +2817,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T12:46:23.484Z"
+   "lockedAt": "2026-11-26T13:02:00.546Z"
   }
  ],
  "teaserLegs": [
