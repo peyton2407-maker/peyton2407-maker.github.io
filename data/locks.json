@@ -1025,9 +1025,9 @@
     "hitPct": 62,
     "why": "We project Blake Corum for 1.9 receptions against a line of 2.5. Our checked chance on the under is 62%; the books' own chance is 60%. At -160 (ESPN BET) that is 1.1% better than the price. GB is middle of the pack here: 13th of 32 in receptions allowed to RBs (4.2 a game; league average 4.4). The under hit in 6 of his last 8 games at this line.",
     "label": "Wednesday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "Blake Corum: 2 receptions",
+    "resultWhy": "It hit. Blake Corum under 2.5 receptions cashed.",
     "units": 0.5,
     "prop": {
      "pid": "4429096",
@@ -1050,7 +1050,8 @@
     "close_line": 2.5,
     "closeAt": "2026-11-26T00:02:03.783Z",
     "close_src": "board",
-    "clv": 0
+    "clv": 0,
+    "by": "0.5 under 2.5"
    }
   ],
   "cfb": [
@@ -1956,7 +1957,7 @@
    }
   ]
  },
- "updated": "2026-11-26T05:01:45.405Z",
+ "updated": "2026-11-26T05:16:51.953Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6463,6 +6464,28 @@
    "mwin": 0.3125,
    "ev": 0.1225,
    "mev": 0.0156,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401862838|sp|away",
+   "gid": "401862838",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "away",
+   "label": "TEM +7.5",
+   "game": "TEM @ MEM",
+   "kick": "2026-11-27T20:30Z",
+   "line": 7.5,
+   "mainLine": 18.5,
+   "price": 235,
+   "book": "FanDuel",
+   "win": 0.3088,
+   "mwin": 0.3021,
+   "ev": 0.0346,
+   "mev": 0.0121,
    "src": "mkt",
    "result": null,
    "final": null,
