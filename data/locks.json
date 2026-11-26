@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -14,
    "total": 46.5,
-   "lockedAt": "2026-11-26T17:31:19.615Z",
+   "lockedAt": "2026-11-26T17:59:58.380Z",
    "provisional": true
   },
   "401866470": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 49.5,
-   "lockedAt": "2026-11-26T17:31:19.615Z",
+   "lockedAt": "2026-11-26T17:59:58.380Z",
    "provisional": true
   },
   "401873081": {
@@ -161,7 +161,7 @@
    "total_play": false,
    "spread": -3,
    "total": 45.5,
-   "lockedAt": "2026-11-26T17:31:19.615Z",
+   "lockedAt": "2026-11-26T17:59:58.380Z",
    "provisional": true
   }
  },
@@ -2058,7 +2058,7 @@
    }
   ]
  },
- "updated": "2026-11-26T17:31:19.615Z",
+ "updated": "2026-11-26T17:59:58.380Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2570,7 +2570,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T17:31:19.615Z",
+      "at": "2026-11-26T17:59:58.380Z",
       "line": 15.5,
       "price": -108,
       "book": "DraftKings",
@@ -2604,7 +2604,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T17:31:19.615Z",
+      "at": "2026-11-26T17:59:58.380Z",
       "line": 12.5,
       "price": -108,
       "book": "DraftKings",
@@ -2638,7 +2638,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T17:31:19.615Z",
+      "at": "2026-11-26T17:59:58.380Z",
       "line": 36.5,
       "price": -109,
       "book": "DraftKings",
@@ -7179,9 +7179,9 @@
    "mainLine": 49.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2698,
+   "win": 0.2768,
    "mwin": 0.2687,
-   "ev": 0.0387,
+   "ev": 0.0658,
    "mev": 0.0343,
    "src": "mkt",
    "result": null,
