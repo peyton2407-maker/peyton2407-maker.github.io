@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -14,
    "total": 46.5,
-   "lockedAt": "2026-11-26T22:47:03.293Z",
+   "lockedAt": "2026-11-26T23:01:49.571Z",
    "provisional": true
   },
   "401866470": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": -3,
    "total": 45.5,
-   "lockedAt": "2026-11-26T22:47:03.293Z",
+   "lockedAt": "2026-11-26T23:01:49.571Z",
    "provisional": true
   }
  },
@@ -1253,12 +1253,12 @@
     "ours": "BUF -3.2 · total 44.8",
     "score": "KC 20.8 – BUF 24.0",
     "market": "BUF -3.0 · total 45.5",
-    "lockedAt": "2026-11-26T22:47:03.315Z",
+    "lockedAt": "2026-11-26T23:01:49.591Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T01:20Z",
     "big": false,
-    "savedAt": 1795733223315
+    "savedAt": 1795734109591
    }
   ],
   "cfb": [
@@ -2138,7 +2138,7 @@
    }
   ]
  },
- "updated": "2026-11-26T22:47:03.293Z",
+ "updated": "2026-11-26T23:01:49.571Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2684,7 +2684,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T22:47:03.293Z",
+      "at": "2026-11-26T23:01:49.571Z",
       "line": 12.5,
       "price": -108,
       "book": "DraftKings",
@@ -6972,12 +6972,12 @@
    "game": "LT @ GASO",
    "kick": "2026-11-28T17:00Z",
    "line": 44.5,
-   "mainLine": 54.5,
+   "mainLine": 53.5,
    "price": 264,
    "book": "DraftKings",
-   "win": 0.2909,
+   "win": 0.2888,
    "mwin": 0.2909,
-   "ev": 0.0589,
+   "ev": 0.0511,
    "mev": 0.0589,
    "src": "mkt",
    "result": null,
