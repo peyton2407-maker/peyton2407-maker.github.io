@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -14,
    "total": 46.5,
-   "lockedAt": "2026-11-26T22:17:00.301Z",
+   "lockedAt": "2026-11-26T22:47:03.293Z",
    "provisional": true
   },
   "401866470": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": -3,
    "total": 45.5,
-   "lockedAt": "2026-11-26T22:17:00.301Z",
+   "lockedAt": "2026-11-26T22:47:03.293Z",
    "provisional": true
   }
  },
@@ -1253,12 +1253,12 @@
     "ours": "BUF -3.2 · total 44.8",
     "score": "KC 20.8 – BUF 24.0",
     "market": "BUF -3.0 · total 45.5",
-    "lockedAt": "2026-11-26T22:17:00.322Z",
+    "lockedAt": "2026-11-26T22:47:03.315Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T01:20Z",
     "big": false,
-    "savedAt": 1795731420322
+    "savedAt": 1795733223315
    }
   ],
   "cfb": [
@@ -2138,7 +2138,7 @@
    }
   ]
  },
- "updated": "2026-11-26T22:17:00.301Z",
+ "updated": "2026-11-26T22:47:03.293Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2684,7 +2684,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T22:17:00.301Z",
+      "at": "2026-11-26T22:47:03.293Z",
       "line": 12.5,
       "price": -108,
       "book": "DraftKings",
@@ -7500,12 +7500,12 @@
    "game": "UTEP @ NIU",
    "kick": "2026-11-28T20:30Z",
    "line": -12.5,
-   "mainLine": -4,
+   "mainLine": -4.5,
    "price": 250,
    "book": "FanDuel",
-   "win": 0.3005,
+   "win": 0.2985,
    "mwin": 0.2977,
-   "ev": 0.0519,
+   "ev": 0.0447,
    "mev": 0.0418,
    "src": "mkt",
    "result": null,
