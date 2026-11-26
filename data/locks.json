@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 46.5,
-   "lockedAt": "2026-11-26T16:16:22.138Z",
+   "lockedAt": "2026-11-26T16:31:57.654Z",
    "provisional": true
   },
   "401866470": {
@@ -105,17 +105,17 @@
    "home": "DAL",
    "away": "PHI",
    "date": "2026-11-26T21:30Z",
-   "pick": "DAL",
-   "pick_line": "DAL -8.5",
+   "pick": "NO PLAY",
+   "pick_line": null,
    "total_pick": "UNDER 49.5",
    "side_play": false,
-   "our_margin": 8.82,
+   "our_margin": 9.52,
    "our_total": 48.9,
    "confidence": null,
    "total_play": false,
-   "spread": -8.5,
+   "spread": -9.5,
    "total": 49.5,
-   "lockedAt": "2026-11-26T16:16:22.138Z",
+   "lockedAt": "2026-11-26T16:31:57.654Z",
    "provisional": true
   },
   "401873081": {
@@ -136,8 +136,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 56.5,
-   "lockedAt": "2026-11-26T16:16:22.138Z",
-   "provisional": true
+   "lockedAt": "2026-11-26T16:31:57.654Z"
   },
   "401873082": {
    "id": "401873082",
@@ -157,7 +156,7 @@
    "total_play": false,
    "spread": -3,
    "total": 45.5,
-   "lockedAt": "2026-11-26T16:16:22.138Z",
+   "lockedAt": "2026-11-26T16:31:57.654Z",
    "provisional": true
   }
  },
@@ -1166,12 +1165,11 @@
     "ours": "CHI -0.4 · total 54.7",
     "score": "CHI 27.5 – DET 27.2",
     "market": "CHI -1.5 · total 56.5",
-    "lockedAt": "2026-11-26T16:16:22.176Z",
-    "locked": false,
-    "provisional": true,
+    "lockedAt": "2026-11-26T16:31:57.677Z",
+    "locked": true,
     "kick": "2026-11-26T18:00Z",
     "big": false,
-    "savedAt": 1795709782176
+    "savedAt": 1795710717677
    }
   ],
   "cfb": [
@@ -2077,7 +2075,7 @@
    }
   ]
  },
- "updated": "2026-11-26T16:16:22.138Z",
+ "updated": "2026-11-26T16:31:57.654Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2587,7 +2585,16 @@
       "line": 15.5,
       "name": "Brevyn Spann-Ford"
      },
-     "result": null
+     "result": null,
+     "close": {
+      "at": "2026-11-26T16:31:57.654Z",
+      "line": 15.5,
+      "price": -108,
+      "book": "DraftKings",
+      "fair": 0.5304,
+      "push": 0,
+      "src": "books"
+     }
     },
     {
      "id": "401873082|pp|3139477|rush_yds|under",
@@ -2612,7 +2619,16 @@
       "line": 12.5,
       "name": "Patrick Mahomes"
      },
-     "result": null
+     "result": null,
+     "close": {
+      "at": "2026-11-26T16:31:57.654Z",
+      "line": 12.5,
+      "price": -108,
+      "book": "DraftKings",
+      "fair": 0.5101,
+      "push": 0,
+      "src": "books"
+     }
     },
     {
      "id": "401873081|pp|4429795|rec_yds|under",
@@ -2637,14 +2653,23 @@
       "line": 38.5,
       "name": "Jahmyr Gibbs"
      },
-     "result": null
+     "result": null,
+     "close": {
+      "at": "2026-11-26T16:31:57.654Z",
+      "line": 38.5,
+      "price": -113,
+      "book": "DraftKings",
+      "fair": 0.528,
+      "push": 0,
+      "src": "books"
+     }
     }
    ],
    "result": null,
    "units": null,
-   "locked": false,
-   "provisional": true,
-   "lockedAt": "2026-11-26T16:16:22.138Z"
+   "locked": true,
+   "provisional": false,
+   "lockedAt": "2026-11-26T16:31:57.654Z"
   }
  ],
  "teasers": [
@@ -2836,9 +2861,9 @@
    ],
    "result": null,
    "units": null,
-   "locked": false,
-   "provisional": true,
-   "lockedAt": "2026-11-26T16:16:22.138Z"
+   "locked": true,
+   "provisional": false,
+   "lockedAt": "2026-11-26T16:31:57.654Z"
   }
  ],
  "teaserLegs": [
@@ -3099,22 +3124,6 @@
    "final": null
   },
   {
-   "id": "401873080|sp|home",
-   "gid": "401873080",
-   "team": "DAL",
-   "side": "home",
-   "game": "PHI @ DAL",
-   "kick": "2026-11-26T21:30Z",
-   "from": -8.5,
-   "to": -2.5,
-   "book": null,
-   "win": 0.7432,
-   "bookWin": 0.7432,
-   "total": 48.5,
-   "result": null,
-   "final": null
-  },
-  {
    "id": "401873093|sp|home",
    "gid": "401873093",
    "team": "LAC",
@@ -3127,6 +3136,22 @@
    "win": 0.7572,
    "bookWin": 0.749,
    "total": 35.5,
+   "result": null,
+   "final": null
+  },
+  {
+   "id": "401873091|sp|away",
+   "gid": "401873091",
+   "team": "SEA",
+   "side": "away",
+   "game": "SEA @ SF",
+   "kick": "2026-11-29T21:25Z",
+   "from": 2.5,
+   "to": 8.5,
+   "book": null,
+   "win": 0.7166,
+   "bookWin": 0.7528,
+   "total": 43.5,
    "result": null,
    "final": null
   }
@@ -7036,12 +7061,12 @@
    "game": "SEA @ SF",
    "kick": "2026-11-29T21:25Z",
    "line": -9.5,
-   "mainLine": -3,
+   "mainLine": -2.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2812,
+   "win": 0.3031,
    "mwin": 0.2674,
-   "ev": 0.0825,
+   "ev": 0.167,
    "mev": 0.0297,
    "src": "mkt",
    "result": null,
@@ -11046,6 +11071,22 @@
    "result": "HIT",
    "units": 0.9091,
    "final": "GB 13, LAR 26"
+  },
+  {
+   "id": "401873081",
+   "league": "nfl",
+   "gid": "401873081",
+   "side": "home",
+   "team": "DET",
+   "game": "CHI @ DET",
+   "kick": "2026-11-26T18:00Z",
+   "line": 1.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 0.4,
+   "market": 1.5,
+   "label": "DET +1.5",
+   "lockedAt": "2026-11-26T16:31:57.654Z"
   }
  ]
 }
