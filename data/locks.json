@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-26T09:03:14.113Z",
+   "lockedAt": "2026-11-26T09:18:14.436Z",
    "provisional": true
   }
  },
@@ -1103,12 +1103,12 @@
     "ours": "CHI -0.4 · total 54.0",
     "score": "CHI 27.2 – DET 26.8",
     "market": "CHI -1.5 · total 55.5",
-    "lockedAt": "2026-11-26T09:03:14.137Z",
+    "lockedAt": "2026-11-26T09:18:14.460Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T18:00Z",
     "big": false,
-    "savedAt": 1795683794137
+    "savedAt": 1795684694460
    }
   ],
   "cfb": [
@@ -2014,7 +2014,7 @@
    }
   ]
  },
- "updated": "2026-11-26T09:03:14.113Z",
+ "updated": "2026-11-26T09:18:14.436Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2581,7 +2581,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T09:03:14.113Z"
+   "lockedAt": "2026-11-26T09:18:14.436Z"
   }
  ],
  "teasers": [
@@ -2775,7 +2775,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T09:03:14.113Z"
+   "lockedAt": "2026-11-26T09:18:14.436Z"
   }
  ],
  "teaserLegs": [
@@ -6622,6 +6622,28 @@
    "mwin": 0.3125,
    "ev": 0.1225,
    "mev": 0.0156,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401873083|tot|over",
+   "gid": "401873083",
+   "league": "nfl",
+   "kind": "tot",
+   "side": "over",
+   "label": "Over 43.5",
+   "game": "DEN @ PIT",
+   "kick": "2026-11-27T20:00Z",
+   "line": 43.5,
+   "mainLine": 36.5,
+   "price": 235,
+   "book": "Fanatics",
+   "win": 0.3165,
+   "mwin": 0.303,
+   "ev": 0.0602,
+   "mev": 0.015,
    "src": "mkt",
    "result": null,
    "final": null,
