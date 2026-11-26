@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -15.5,
    "total": 46.5,
-   "lockedAt": "2026-11-26T15:01:55.351Z",
+   "lockedAt": "2026-11-26T15:16:43.213Z",
    "provisional": true
   },
   "401866470": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -8.5,
    "total": 49.5,
-   "lockedAt": "2026-11-26T15:01:55.351Z",
+   "lockedAt": "2026-11-26T15:16:43.213Z",
    "provisional": true
   },
   "401873081": {
@@ -136,7 +136,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 56.5,
-   "lockedAt": "2026-11-26T15:01:55.351Z",
+   "lockedAt": "2026-11-26T15:16:43.213Z",
    "provisional": true
   },
   "401873082": {
@@ -157,7 +157,7 @@
    "total_play": false,
    "spread": -3,
    "total": 45.5,
-   "lockedAt": "2026-11-26T15:01:55.351Z",
+   "lockedAt": "2026-11-26T15:16:43.213Z",
    "provisional": true
   }
  },
@@ -1166,12 +1166,12 @@
     "ours": "CHI -0.4 · total 54.7",
     "score": "CHI 27.5 – DET 27.2",
     "market": "CHI -1.5 · total 56.5",
-    "lockedAt": "2026-11-26T15:01:55.376Z",
+    "lockedAt": "2026-11-26T15:16:43.238Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T18:00Z",
     "big": false,
-    "savedAt": 1795705315376
+    "savedAt": 1795706203238
    }
   ],
   "cfb": [
@@ -2077,7 +2077,7 @@
    }
   ]
  },
- "updated": "2026-11-26T15:01:55.351Z",
+ "updated": "2026-11-26T15:16:43.213Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2644,7 +2644,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T15:01:55.351Z"
+   "lockedAt": "2026-11-26T15:16:43.213Z"
   }
  ],
  "teasers": [
@@ -2838,7 +2838,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T15:01:55.351Z"
+   "lockedAt": "2026-11-26T15:16:43.213Z"
   }
  ],
  "teaserLegs": [
@@ -6571,10 +6571,10 @@
    "mainLine": 15.5,
    "price": 290,
    "book": "FanDuel",
-   "win": 0.2708,
-   "mwin": 0.2656,
-   "ev": 0.0563,
-   "mev": 0.0358,
+   "win": 0.2735,
+   "mwin": 0.2683,
+   "ev": 0.0667,
+   "mev": 0.0463,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -6586,17 +6586,17 @@
    "league": "nfl",
    "kind": "sp",
    "side": "home",
-   "label": "BUF -7.5",
+   "label": "BUF -9",
    "game": "KC @ BUF",
    "kick": "2026-11-27T01:20Z",
-   "line": -7.5,
+   "line": -9,
    "mainLine": -3,
-   "price": 220,
-   "book": "FanDuel",
-   "win": 0.3269,
-   "mwin": 0.3125,
-   "ev": 0.046,
-   "mev": 0,
+   "price": 265,
+   "book": "Fanatics",
+   "win": 0.2854,
+   "mwin": 0.2716,
+   "ev": 0.0521,
+   "mev": 0.0015,
    "src": "proj",
    "result": null,
    "final": null,
@@ -7070,18 +7070,18 @@
    "league": "nfl",
    "kind": "tot",
    "side": "under",
-   "label": "Under 33.5",
+   "label": "Under 34.5",
    "game": "LV @ CLE",
    "kick": "2026-11-30T01:20Z",
-   "line": 33.5,
+   "line": 34.5,
    "mainLine": 40.5,
-   "price": 225,
+   "price": 200,
    "book": "ESPN BET",
-   "win": 0.3295,
-   "mwin": 0.3147,
-   "ev": 0.0708,
-   "mev": 0.0226,
-   "src": "mkt",
+   "win": 0.3488,
+   "mwin": 0.3335,
+   "ev": 0.0463,
+   "mev": 0.0004,
+   "src": "proj",
    "result": null,
    "final": null,
    "units": null
