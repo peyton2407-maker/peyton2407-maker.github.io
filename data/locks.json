@@ -156,15 +156,15 @@
    "date": "2026-11-27T01:20Z",
    "pick": "BUF",
    "pick_line": "BUF -3.0",
-   "total_pick": "UNDER 45.5",
+   "total_pick": "UNDER 46.5",
    "side_play": false,
    "our_margin": 3.2,
-   "our_total": 44.8,
+   "our_total": 45.5,
    "confidence": null,
    "total_play": false,
    "spread": -3,
-   "total": 45.5,
-   "lockedAt": "2026-11-26T23:31:52.338Z",
+   "total": 46.5,
+   "lockedAt": "2026-11-26T23:45:24.747Z",
    "provisional": true
   }
  },
@@ -1233,7 +1233,7 @@
     "kind": "Player prop",
     "line": "Josh Downs under 37.5 rec yds",
     "hitPct": 57,
-    "why": "We project Josh Downs for 36 rec yds against a line of 37.5. Our checked chance on the under is 57%; the books' own chance is 54%. At -110 (DraftKings) that is 8.1% better than the price. BUF is middle of the pack here: 13th of 32 in rec yds allowed to WRs (144 a game; league average 147). The under hit in 3 of his last 5 games at this line.",
+    "why": "We project Josh Downs for 36 rec yds against a line of 37.5. Our checked chance on the under is 57%; the books' own chance is 54%. At -110 (DraftKings) that is 7.9% better than the price. BUF is middle of the pack here: 13th of 32 in rec yds allowed to WRs (144 a game; league average 147). The under hit in 3 of his last 5 games at this line.",
     "label": "Thursday · next game",
     "result": null,
     "final": null,
@@ -1248,16 +1248,16 @@
     },
     "price": -110,
     "book": "DraftKings",
-    "ev": 0.081,
-    "ours": "BUF -3.2 · total 44.8",
-    "score": "KC 20.8 – BUF 24.0",
-    "market": "BUF -3.0 · total 45.5",
-    "lockedAt": "2026-11-26T23:31:52.363Z",
+    "ev": 0.079,
+    "ours": "BUF -3.2 · total 45.5",
+    "score": "KC 21.1 – BUF 24.4",
+    "market": "BUF -3.0 · total 46.5",
+    "lockedAt": "2026-11-26T23:45:24.771Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T01:20Z",
     "big": false,
-    "savedAt": 1795735912363
+    "savedAt": 1795736724771
    }
   ],
   "cfb": [
@@ -2137,7 +2137,7 @@
    }
   ]
  },
- "updated": "2026-11-26T23:31:52.338Z",
+ "updated": "2026-11-26T23:45:24.747Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2683,7 +2683,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-26T23:31:52.338Z",
+      "at": "2026-11-26T23:45:24.747Z",
       "line": 12.5,
       "price": -108,
       "book": "DraftKings",
@@ -6685,12 +6685,12 @@
    "game": "KC @ BUF",
    "kick": "2026-11-27T01:20Z",
    "line": 38.5,
-   "mainLine": 45.5,
+   "mainLine": 46.5,
    "price": 260,
    "book": "ESPN BET",
-   "win": 0.2921,
+   "win": 0.2938,
    "mwin": 0.2878,
-   "ev": 0.0516,
+   "ev": 0.0576,
    "mev": 0.0359,
    "src": "mkt",
    "result": null,
