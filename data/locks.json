@@ -75,6 +75,27 @@
    "closeAt": "2026-11-26T00:02:03.783Z",
    "clv_side": 0,
    "clv_total": 0
+  },
+  "401873081": {
+   "id": "401873081",
+   "league": "nfl",
+   "week": 12,
+   "short": "CHI @ DET",
+   "home": "DET",
+   "away": "CHI",
+   "date": "2026-11-26T18:00Z",
+   "pick": "DET",
+   "pick_line": "DET +1.5",
+   "total_pick": "UNDER 55.5",
+   "side_play": false,
+   "our_margin": -0.38,
+   "our_total": 54,
+   "confidence": null,
+   "total_play": false,
+   "spread": 1.5,
+   "total": 55.5,
+   "lockedAt": "2026-11-26T06:01:56.657Z",
+   "provisional": true
   }
  },
  "potd": {
@@ -1052,6 +1073,42 @@
     "close_src": "board",
     "clv": 0,
     "by": "0.5 under 2.5"
+   },
+   {
+    "key": "game:401873081",
+    "week": 12,
+    "day": "2026-11-26",
+    "league": "nfl",
+    "id": "401873081",
+    "game": "CHI @ DET",
+    "kind": "Player prop",
+    "line": "Amon-Ra St. Brown under 7.5 receptions",
+    "hitPct": 56,
+    "why": "We project Amon-Ra St. Brown for 6.6 receptions against a line of 7.5. Our checked chance on the under is 56%; the books' own chance is 54%. At -124 (DraftKings) that is 1.4% better than the price. CHI is a tough defense here: it allows the 8th-fewest receptions to WRs (10 a game; league average 11). The under hit in 5 of his last 8 games at this line.",
+    "label": "Thursday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 0.5,
+    "prop": {
+     "pid": "4374302",
+     "name": "Amon-Ra St. Brown",
+     "stat": "rec",
+     "side": "under",
+     "line": 7.5
+    },
+    "price": -124,
+    "book": "DraftKings",
+    "ev": 0.014,
+    "ours": "CHI -0.4 · total 54.0",
+    "score": "CHI 27.2 – DET 26.8",
+    "market": "CHI -1.5 · total 55.5",
+    "lockedAt": "2026-11-26T06:01:56.680Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-26T18:00Z",
+    "big": false,
+    "savedAt": 1795672916680
    }
   ],
   "cfb": [
@@ -1957,7 +2014,7 @@
    }
   ]
  },
- "updated": "2026-11-26T05:16:51.953Z",
+ "updated": "2026-11-26T06:01:56.657Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2428,6 +2485,103 @@
    "locked": true,
    "provisional": false,
    "lockedAt": "2026-11-22T16:31:58.829Z"
+  },
+  {
+   "key": "ladder:2026-11-26",
+   "day": "2026-11-26",
+   "n": 3,
+   "book": "DraftKings",
+   "tier": "value",
+   "stake": 1,
+   "size": 1,
+   "american": 593,
+   "dec": 6.9285,
+   "chance": 0.1743,
+   "breakEven": 0.1443,
+   "ev": 0.2077,
+   "firstKick": "2026-11-26T18:00:00.000Z",
+   "legs": [
+    {
+     "id": "401873082|pp|3139477|rush_yds|under",
+     "label": "Patrick Mahomes under 13.5 rush yds",
+     "kind": "pp",
+     "game_id": "401873082",
+     "game": "KC @ BUF",
+     "league": "nfl",
+     "kick": "2026-11-27T01:20Z",
+     "price": -109,
+     "line": 13.5,
+     "win": 0.5755,
+     "bookWin": 0.5376,
+     "value": 0.1036,
+     "cat": "prop",
+     "why": "We project 12 rush yds against 13.5; our checked chance on the under is 59%, the books' 54%. BUF is middle of the pack here: 11th of 32 in rush yds allowed to QBs (13 a game; league average 16).",
+     "alt": null,
+     "prop": {
+      "pid": "3139477",
+      "stat": "rush_yds",
+      "side": "under",
+      "line": 13.5,
+      "name": "Patrick Mahomes"
+     },
+     "result": null
+    },
+    {
+     "id": "401873080|pp|4360967|rec_yds|under",
+     "label": "Brevyn Spann-Ford under 14.5 rec yds",
+     "kind": "pp",
+     "game_id": "401873080",
+     "game": "PHI @ DAL",
+     "league": "nfl",
+     "kick": "2026-11-26T21:30Z",
+     "price": -111,
+     "line": 14.5,
+     "win": 0.5508,
+     "bookWin": 0.5161,
+     "value": 0.0471,
+     "cat": "prop",
+     "why": "We project 15 rec yds against 14.5; our checked chance on the under is 55%, the books' 52%. PHI is a tough defense here: it allows the 8th-fewest rec yds to TEs (45 a game; league average 54).",
+     "alt": null,
+     "prop": {
+      "pid": "4360967",
+      "stat": "rec_yds",
+      "side": "under",
+      "line": 14.5,
+      "name": "Brevyn Spann-Ford"
+     },
+     "result": null
+    },
+    {
+     "id": "401873081|pp|4429795|rec_yds|under",
+     "label": "Jahmyr Gibbs under 37.5 rec yds",
+     "kind": "pp",
+     "game_id": "401873081",
+     "game": "CHI @ DET",
+     "league": "nfl",
+     "kick": "2026-11-26T18:00Z",
+     "price": -111,
+     "line": 37.5,
+     "win": 0.5498,
+     "bookWin": 0.5242,
+     "value": 0.0451,
+     "cat": "prop",
+     "why": "We project 38 rec yds against 37.5; our checked chance on the under is 55%, the books' 52%. CHI is middle of the pack here: 22nd of 32 in rec yds allowed to RBs (36 a game; league average 32).",
+     "alt": null,
+     "prop": {
+      "pid": "4429795",
+      "stat": "rec_yds",
+      "side": "under",
+      "line": 37.5,
+      "name": "Jahmyr Gibbs"
+     },
+     "result": null
+    }
+   ],
+   "result": null,
+   "units": null,
+   "locked": false,
+   "provisional": true,
+   "lockedAt": "2026-11-26T06:01:56.657Z"
   }
  ],
  "teasers": [
@@ -2574,6 +2728,54 @@
    "locked": true,
    "provisional": false,
    "lockedAt": "2026-11-22T16:31:58.829Z"
+  },
+  {
+   "key": "teaser:nfl-12|cfb-13",
+   "week": "nfl-12|cfb-13",
+   "n": 2,
+   "price": -120,
+   "chance": 0.5724,
+   "ev": 0.0495,
+   "firstKick": "2026-11-26T18:00:00.000Z",
+   "legs": [
+    {
+     "id": "401873093|sp|home",
+     "gid": "401873093",
+     "team": "LAC",
+     "side": "home",
+     "game": "NE @ LAC",
+     "kick": "2026-11-29T21:05Z",
+     "from": 1.5,
+     "to": 7.5,
+     "book": null,
+     "win": 0.7572,
+     "bookWin": 0.749,
+     "total": 35.5,
+     "result": null,
+     "final": null
+    },
+    {
+     "id": "401873081|sp|home",
+     "gid": "401873081",
+     "team": "DET",
+     "side": "home",
+     "game": "CHI @ DET",
+     "kick": "2026-11-26T18:00Z",
+     "from": 1.5,
+     "to": 7.5,
+     "book": null,
+     "win": 0.756,
+     "bookWin": 0.749,
+     "total": 55.5,
+     "result": null,
+     "final": null
+    }
+   ],
+   "result": null,
+   "units": null,
+   "locked": false,
+   "provisional": true,
+   "lockedAt": "2026-11-26T06:01:56.657Z"
   }
  ],
  "teaserLegs": [
