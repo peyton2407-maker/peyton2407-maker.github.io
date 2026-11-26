@@ -94,7 +94,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 55.5,
-   "lockedAt": "2026-11-26T07:05:07.322Z",
+   "lockedAt": "2026-11-26T07:16:17.796Z",
    "provisional": true
   }
  },
@@ -1103,12 +1103,12 @@
     "ours": "CHI -0.4 · total 54.0",
     "score": "CHI 27.2 – DET 26.8",
     "market": "CHI -1.5 · total 55.5",
-    "lockedAt": "2026-11-26T07:05:07.348Z",
+    "lockedAt": "2026-11-26T07:16:17.816Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-26T18:00Z",
     "big": false,
-    "savedAt": 1795676707348
+    "savedAt": 1795677377816
    }
   ],
   "cfb": [
@@ -2014,7 +2014,7 @@
    }
   ]
  },
- "updated": "2026-11-26T07:05:07.322Z",
+ "updated": "2026-11-26T07:16:17.796Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2581,7 +2581,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T07:05:07.322Z"
+   "lockedAt": "2026-11-26T07:16:17.796Z"
   }
  ],
  "teasers": [
@@ -2775,7 +2775,7 @@
    "units": null,
    "locked": false,
    "provisional": true,
-   "lockedAt": "2026-11-26T07:05:07.322Z"
+   "lockedAt": "2026-11-26T07:16:17.796Z"
   }
  ],
  "teaserLegs": [
@@ -6923,12 +6923,12 @@
    "game": "LV @ CLE",
    "kick": "2026-11-30T01:20Z",
    "line": 33.5,
-   "mainLine": 39.5,
+   "mainLine": 40.5,
    "price": 225,
    "book": "ESPN BET",
-   "win": 0.3351,
+   "win": 0.3366,
    "mwin": 0.3157,
-   "ev": 0.0892,
+   "ev": 0.094,
    "mev": 0.026,
    "src": "mkt",
    "result": null,
