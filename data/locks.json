@@ -2149,7 +2149,7 @@
    }
   ]
  },
- "updated": "2026-11-27T01:31:44.758Z",
+ "updated": "2026-11-27T01:46:56.220Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3212,8 +3212,8 @@
    "win": 0.7459,
    "bookWin": 0.7428,
    "total": 49.5,
-   "result": null,
-   "final": null
+   "result": "MISS",
+   "final": "PHI 39, DAL 38"
   },
   {
    "id": "401873093|sp|home",
@@ -6661,9 +6661,9 @@
    "ev": 0.0413,
    "mev": 0.0283,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "PHI 39, DAL 38",
+   "units": -1
   },
   {
    "id": "401856879|tot|under",
@@ -12105,7 +12105,10 @@
    "ours": -8.8,
    "market": -8.5,
    "label": "DAL -8.5",
-   "lockedAt": "2026-11-26T20:01:26.921Z"
+   "lockedAt": "2026-11-26T20:01:26.921Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "PHI 39, DAL 38"
   },
   {
    "id": "401856879",
