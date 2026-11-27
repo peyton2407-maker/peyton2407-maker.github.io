@@ -2150,7 +2150,7 @@
    }
   ]
  },
- "updated": "2026-11-27T02:32:07.977Z",
+ "updated": "2026-11-27T02:46:35.141Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7541,6 +7541,28 @@
    "mwin": 0.2632,
    "ev": 0.0342,
    "mev": 0.0342,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401862839|tot|under",
+   "gid": "401862839",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 36.5",
+   "game": "TULN @ USF",
+   "kick": "2026-11-28T20:30Z",
+   "line": 36.5,
+   "mainLine": 44.5,
+   "price": 215,
+   "book": "FanDuel",
+   "win": 0.3278,
+   "mwin": 0.3256,
+   "ev": 0.0327,
+   "mev": 0.0256,
    "src": "mkt",
    "result": null,
    "final": null,
