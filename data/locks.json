@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 41.5,
-   "lockedAt": "2026-11-27T22:31:09.383Z",
+   "lockedAt": "2026-11-27T22:47:28.559Z",
    "provisional": true
   },
   "401856759": {
@@ -109,13 +109,13 @@
    "pick_line": "WVU +25.5",
    "total_pick": "NO PLAY",
    "side_play": true,
-   "our_margin": 21.65,
+   "our_margin": 23.4,
    "our_total": 65.5,
    "confidence": 51,
    "total_play": false,
-   "spread": -24.5,
+   "spread": -25.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T22:31:09.383Z",
+   "lockedAt": "2026-11-27T22:47:28.559Z",
    "provisional": true
   },
   "401862838": {
@@ -2317,15 +2317,15 @@
     "book": "standard -110",
     "bookPct": 50,
     "ev": 0.037,
-    "ours": "UTAH -21.6 · total 65.5",
-    "score": "WVU 21.9 – UTAH 43.6",
-    "market": "UTAH -24.5 · total 65.5",
-    "lockedAt": "2026-11-27T22:31:09.419Z",
+    "ours": "UTAH -23.4 · total 65.5",
+    "score": "WVU 21.1 – UTAH 44.5",
+    "market": "UTAH -25.5 · total 65.5",
+    "lockedAt": "2026-11-27T22:47:28.610Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T02:00Z",
     "big": false,
-    "savedAt": 1795818669420
+    "savedAt": 1795819648610
    }
   ],
   "cfbHit": [
@@ -2575,7 +2575,7 @@
    }
   ]
  },
- "updated": "2026-11-27T22:31:09.383Z",
+ "updated": "2026-11-27T22:47:28.559Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7513,12 +7513,12 @@
    "game": "ILL @ NU",
    "kick": "2026-11-28T17:30Z",
    "line": -10.5,
-   "mainLine": -2.5,
+   "mainLine": -3,
    "price": 275,
    "book": "DraftKings",
-   "win": 0.2799,
+   "win": 0.2787,
    "mwin": 0.2729,
-   "ev": 0.0497,
+   "ev": 0.0453,
    "mev": 0.0232,
    "src": "mkt",
    "result": null,
@@ -8107,12 +8107,12 @@
    "game": "OU @ MIZ",
    "kick": "2026-11-28T21:15Z",
    "line": 34.5,
-   "mainLine": 42.5,
+   "mainLine": 41.5,
    "price": 235,
    "book": "FanDuel",
-   "win": 0.3125,
+   "win": 0.3102,
    "mwin": 0.3125,
-   "ev": 0.0469,
+   "ev": 0.0392,
    "mev": 0.0469,
    "src": "mkt",
    "result": null,
