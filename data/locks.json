@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 53.5,
-   "lockedAt": "2026-11-27T09:17:01.229Z",
+   "lockedAt": "2026-11-27T09:31:56.649Z",
    "provisional": true
   },
   "401856762": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 56.5,
-   "lockedAt": "2026-11-27T09:17:01.229Z",
+   "lockedAt": "2026-11-27T09:31:56.649Z",
    "provisional": true
   },
   "401856879": {
@@ -86,7 +86,7 @@
    "total_play": false,
    "spread": -18.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T09:17:01.229Z",
+   "lockedAt": "2026-11-27T09:31:56.649Z",
    "provisional": true
   },
   "401862840": {
@@ -107,7 +107,28 @@
    "total_play": false,
    "spread": 1.5,
    "total": 57.5,
-   "lockedAt": "2026-11-27T09:17:01.229Z",
+   "lockedAt": "2026-11-27T09:31:56.649Z",
+   "provisional": true
+  },
+  "401864546": {
+   "id": "401864546",
+   "league": "cfb",
+   "week": 13,
+   "short": "AFA @ UNM",
+   "home": "UNM",
+   "away": "AFA",
+   "date": "2026-11-27T21:30Z",
+   "pick": "UNM",
+   "pick_line": "UNM -6.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 6.7,
+   "our_total": 42.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -6.5,
+   "total": 42.5,
+   "lockedAt": "2026-11-27T09:31:56.649Z",
    "provisional": true
   },
   "401864549": {
@@ -128,7 +149,7 @@
    "total_play": false,
    "spread": 8.5,
    "total": 39.5,
-   "lockedAt": "2026-11-27T09:17:01.229Z",
+   "lockedAt": "2026-11-27T09:31:56.649Z",
    "provisional": true
   },
   "401866470": {
@@ -199,7 +220,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 48.5,
-   "lockedAt": "2026-11-27T09:17:01.229Z",
+   "lockedAt": "2026-11-27T09:31:56.649Z",
    "provisional": true
   },
   "401866473": {
@@ -220,7 +241,7 @@
    "total_play": false,
    "spread": 3,
    "total": 44.5,
-   "lockedAt": "2026-11-27T09:17:01.229Z",
+   "lockedAt": "2026-11-27T09:31:56.649Z",
    "provisional": true
   },
   "401873079": {
@@ -341,7 +362,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-27T09:17:01.229Z",
+   "lockedAt": "2026-11-27T09:31:56.649Z",
    "provisional": true
   }
  },
@@ -1470,12 +1491,12 @@
     "ours": "DEN -2.7 · total 39.3",
     "score": "DEN 21.0 – PIT 18.3",
     "market": "DEN -4.5 · total 37.5",
-    "lockedAt": "2026-11-27T09:17:01.250Z",
+    "lockedAt": "2026-11-27T09:31:56.674Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T20:00Z",
     "big": false,
-    "savedAt": 1795771021250
+    "savedAt": 1795771916674
    }
   ],
   "cfb": [
@@ -2160,12 +2181,12 @@
     "ours": "MEM -15.8 · total 65.8",
     "score": "TEM 25.0 – MEM 40.8",
     "market": "MEM -18.5 · total 65.5",
-    "lockedAt": "2026-11-27T09:17:01.254Z",
+    "lockedAt": "2026-11-27T09:31:56.677Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T20:30Z",
     "big": true,
-    "savedAt": 1795771021254
+    "savedAt": 1795771916677
    }
   ],
   "cfbHit": [
@@ -2385,7 +2406,7 @@
    }
   ]
  },
- "updated": "2026-11-27T09:17:01.229Z",
+ "updated": "2026-11-27T09:31:56.649Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
