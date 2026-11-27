@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 41.5,
-   "lockedAt": "2026-11-27T21:16:44.075Z",
+   "lockedAt": "2026-11-27T21:31:53.376Z",
    "provisional": true
   },
   "401856759": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -25.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T21:16:44.075Z",
+   "lockedAt": "2026-11-27T21:31:53.376Z",
    "provisional": true
   },
   "401862838": {
@@ -2296,6 +2296,36 @@
     "closeAt": "2026-11-27T19:31:30.961Z",
     "close_src": "board",
     "clv": 0
+   },
+   {
+    "key": "game:401856880",
+    "week": 13,
+    "day": "2026-11-27",
+    "league": "cfb",
+    "id": "401856880",
+    "game": "WVU @ UTAH",
+    "kind": "Under",
+    "line": "UNDER 65.5",
+    "hitPct": 54,
+    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 65.5. At -110 the price needs 52%; we count it at 54%, so it's 3.7% better than the price.",
+    "label": "Friday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 1,
+    "price": -110,
+    "book": "standard -110",
+    "bookPct": 50,
+    "ev": 0.037,
+    "ours": "UTAH -23.4 · total 65.5",
+    "score": "WVU 21.1 – UTAH 44.5",
+    "market": "UTAH -25.5 · total 65.5",
+    "lockedAt": "2026-11-27T21:31:53.425Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-28T02:00Z",
+    "big": false,
+    "savedAt": 1795815113425
    }
   ],
   "cfbHit": [
@@ -2545,7 +2575,7 @@
    }
   ]
  },
- "updated": "2026-11-27T21:16:44.075Z",
+ "updated": "2026-11-27T21:31:53.376Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
