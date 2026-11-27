@@ -2150,7 +2150,7 @@
    }
   ]
  },
- "updated": "2026-11-27T03:16:23.075Z",
+ "updated": "2026-11-27T03:56:38.969Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6799,6 +6799,28 @@
    "units": null
   },
   {
+   "id": "401856762|tot|over",
+   "gid": "401856762",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "over",
+   "label": "Over 65.5",
+   "game": "MSST @ MISS",
+   "kick": "2026-11-27T17:00Z",
+   "line": 65.5,
+   "mainLine": 56.5,
+   "price": 250,
+   "book": "FanDuel",
+   "win": 0.2946,
+   "mwin": 0.2946,
+   "ev": 0.0309,
+   "mev": 0.0309,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401873083|sp|home",
    "gid": "401873083",
    "league": "nfl",
@@ -7783,6 +7805,28 @@
    "mwin": 0.2667,
    "ev": 0.0328,
    "mev": 0.0268,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401858541|tot|over",
+   "gid": "401858541",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "over",
+   "label": "Over 57.5",
+   "game": "WASH @ ORE",
+   "kick": "2026-11-29T00:30Z",
+   "line": 57.5,
+   "mainLine": 50.5,
+   "price": 200,
+   "book": "FanDuel",
+   "win": 0.3436,
+   "mwin": 0.3436,
+   "ev": 0.0308,
+   "mev": 0.0308,
    "src": "mkt",
    "result": null,
    "final": null,
