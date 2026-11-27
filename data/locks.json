@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 11.5,
    "total": 41.5,
-   "lockedAt": "2026-11-27T15:31:55.332Z",
+   "lockedAt": "2026-11-27T15:46:28.895Z",
    "provisional": true
   },
   "401856759": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 53.5,
-   "lockedAt": "2026-11-27T15:31:55.332Z",
+   "lockedAt": "2026-11-27T15:46:28.895Z",
    "provisional": true
   },
   "401856762": {
@@ -106,7 +106,7 @@
    "total_play": false,
    "spread": -25.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T15:31:55.332Z",
+   "lockedAt": "2026-11-27T15:46:28.895Z",
    "provisional": true
   },
   "401862838": {
@@ -127,7 +127,7 @@
    "total_play": false,
    "spread": -19.5,
    "total": 66.5,
-   "lockedAt": "2026-11-27T15:31:55.332Z",
+   "lockedAt": "2026-11-27T15:46:28.895Z",
    "provisional": true
   },
   "401862840": {
@@ -168,7 +168,7 @@
    "total_play": false,
    "spread": -7,
    "total": 42.5,
-   "lockedAt": "2026-11-27T15:31:55.332Z",
+   "lockedAt": "2026-11-27T15:46:28.895Z",
    "provisional": true
   },
   "401864549": {
@@ -189,7 +189,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 39.5,
-   "lockedAt": "2026-11-27T15:31:55.332Z",
+   "lockedAt": "2026-11-27T15:46:28.895Z",
    "provisional": true
   },
   "401866470": {
@@ -300,7 +300,7 @@
    "total_play": false,
    "spread": -3,
    "total": 56.5,
-   "lockedAt": "2026-11-27T15:31:55.332Z",
+   "lockedAt": "2026-11-27T15:46:28.895Z",
    "provisional": true
   },
   "401873079": {
@@ -416,12 +416,12 @@
    "total_pick": "OVER 37.5",
    "side_play": false,
    "our_margin": -2.76,
-   "our_total": 38.2,
+   "our_total": 39.3,
    "confidence": null,
    "total_play": false,
    "spread": 4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-27T15:31:55.332Z",
+   "lockedAt": "2026-11-27T15:46:28.895Z",
    "provisional": true
   }
  },
@@ -1547,15 +1547,15 @@
     "price": -191,
     "book": "DraftKings",
     "ev": 0.016,
-    "ours": "DEN -2.8 · total 38.2",
-    "score": "DEN 20.5 – PIT 17.7",
+    "ours": "DEN -2.8 · total 39.3",
+    "score": "DEN 21.0 – PIT 18.3",
     "market": "DEN -4.5 · total 37.5",
-    "lockedAt": "2026-11-27T15:31:55.358Z",
+    "lockedAt": "2026-11-27T15:46:28.924Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T20:00Z",
     "big": false,
-    "savedAt": 1795793515358
+    "savedAt": 1795794388924
    }
   ],
   "cfb": [
@@ -2240,12 +2240,12 @@
     "ours": "MEM -16.4 · total 66.2",
     "score": "TEM 24.9 – MEM 41.3",
     "market": "MEM -19.5 · total 66.5",
-    "lockedAt": "2026-11-27T15:31:55.362Z",
+    "lockedAt": "2026-11-27T15:46:28.929Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T20:30Z",
     "big": true,
-    "savedAt": 1795793515362
+    "savedAt": 1795794388929
    }
   ],
   "cfbHit": [
@@ -2374,12 +2374,12 @@
     "ours": "UTAH -23.4 · total 65.5",
     "score": "WVU 21.1 – UTAH 44.5",
     "market": "UTAH -25.5 · total 65.5",
-    "lockedAt": "2026-11-27T15:31:55.364Z",
+    "lockedAt": "2026-11-27T15:46:28.932Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T02:00Z",
     "big": true,
-    "savedAt": 1795793515364
+    "savedAt": 1795794388932
    }
   ]
  },
@@ -2495,7 +2495,7 @@
    }
   ]
  },
- "updated": "2026-11-27T15:31:55.332Z",
+ "updated": "2026-11-27T15:46:28.895Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7446,28 +7446,6 @@
    "mwin": 0.2763,
    "ev": 0.0419,
    "mev": 0.0169,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401862842|tot|over",
-   "gid": "401862842",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "over",
-   "label": "Over 64.5",
-   "game": "NAVY @ CLT",
-   "kick": "2026-11-28T17:00Z",
-   "line": 64.5,
-   "mainLine": 53.5,
-   "price": 285,
-   "book": "DraftKings",
-   "win": 0.2687,
-   "mwin": 0.2687,
-   "ev": 0.0343,
-   "mev": 0.0343,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -12579,6 +12557,22 @@
    "market": 3,
    "label": "OHIO +3",
    "lockedAt": "2026-11-27T15:31:55.332Z"
+  },
+  {
+   "id": "401858536",
+   "league": "cfb",
+   "gid": "401858536",
+   "side": "away",
+   "team": "NEB",
+   "game": "NEB @ IOWA",
+   "kick": "2026-11-27T17:08Z",
+   "line": 3.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 3.5,
+   "market": 3.5,
+   "label": "NEB +3.5",
+   "lockedAt": "2026-11-27T15:46:28.895Z"
   }
  ]
 }
