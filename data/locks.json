@@ -2150,7 +2150,7 @@
    }
   ]
  },
- "updated": "2026-11-27T03:01:41.985Z",
+ "updated": "2026-11-27T03:16:23.075Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7783,6 +7783,28 @@
    "mwin": 0.2667,
    "ev": 0.0328,
    "mev": 0.0268,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401856874|tot|under",
+   "gid": "401856874",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 45.5",
+   "game": "BAY @ HOU",
+   "kick": "2026-11-29T02:30Z",
+   "line": 45.5,
+   "mainLine": 55.5,
+   "price": 267,
+   "book": "DraftKings",
+   "win": 0.2819,
+   "mwin": 0.2771,
+   "ev": 0.0344,
+   "mev": 0.0168,
    "src": "mkt",
    "result": null,
    "final": null,
