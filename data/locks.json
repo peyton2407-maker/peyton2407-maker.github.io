@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 41.5,
-   "lockedAt": "2026-11-27T20:46:44.569Z",
+   "lockedAt": "2026-11-27T21:01:39.995Z",
    "provisional": true
   },
   "401856759": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -25.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T20:46:44.569Z",
+   "lockedAt": "2026-11-27T21:01:39.995Z",
    "provisional": true
   },
   "401862838": {
@@ -187,10 +187,10 @@
    "spread": -7.5,
    "total": 42.5,
    "lockedAt": "2026-11-27T20:01:24.794Z",
-   "close_spread": -7.5,
+   "close_spread": -7,
    "close_total": 42.5,
-   "closeAt": "2026-11-27T20:31:43.530Z",
-   "clv_side": 0,
+   "closeAt": "2026-11-27T21:01:39.995Z",
+   "clv_side": 0.5,
    "clv_total": null
   },
   "401864549": {
@@ -2424,12 +2424,12 @@
     "ours": "UTAH -23.4 · total 65.5",
     "score": "WVU 21.1 – UTAH 44.5",
     "market": "UTAH -25.5 · total 65.5",
-    "lockedAt": "2026-11-27T20:46:44.633Z",
+    "lockedAt": "2026-11-27T21:01:40.047Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T02:00Z",
     "big": true,
-    "savedAt": 1795812404633
+    "savedAt": 1795813300047
    }
   ]
  },
@@ -2545,7 +2545,7 @@
    }
   ]
  },
- "updated": "2026-11-27T20:46:44.569Z",
+ "updated": "2026-11-27T21:01:39.995Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
