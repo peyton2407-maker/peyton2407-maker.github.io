@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-11-26T03:45:52Z",
+ "checked_at": "2026-11-27T03:47:00Z",
  "errors": [],
  "console": [
   "Failed to load resource: the server responded with a status of 404 ()",
@@ -11,35 +11,62 @@
   "Failed to load resource: the server responded with a status of 404 ()",
   "Failed to load resource: the server responded with a status of 404 ()",
   "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: the server responded with a status of 404 ()"
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: net::ERR_TIMED_OUT",
+  "Failed to load resource: net::ERR_TIMED_OUT"
  ],
- "failed_requests": {},
+ "failed_requests": {
+  "api.open-meteo.com": {
+   "count": 24,
+   "example": "https://api.open-meteo.com/v1/forecast?latitude=33.591&longitude=-101.872&hourly=temperature_2m,precipitation_probability,precipitation,weathercode,windspeed_10m,windgusts_10m,relativehumidity_2m&dail",
+   "reason": "net::ERR_ABORTED"
+  }
+ },
  "bad_status": {
   "a.espncdn.com": {
-   "count": 10,
+   "count": 17,
    "statuses": {
-    "404": 10
+    "404": 17
    },
-   "example": "https://a.espncdn.com/i/teamlogos/ncaa/500/-2.png"
+   "example": "https://a.espncdn.com/i/teamlogos/ncaa/500/-1.png"
   }
  },
  "screens": {
   "home": {
    "visible": true,
-   "count": 17,
+   "count": 28,
    "summary": [],
    "empty": [],
-   "chars": 1615,
-   "images": 45,
+   "chars": 2005,
+   "images": 51,
    "broken_images": []
   },
   "nfl": {
    "visible": true,
-   "count": 16,
+   "count": 13,
    "summary": [],
    "empty": [],
-   "chars": 5225,
-   "images": 42,
+   "chars": 4776,
+   "images": 35,
    "broken_images": []
   },
   "cfb": {
@@ -47,17 +74,17 @@
    "count": 75,
    "summary": [],
    "empty": [],
-   "chars": 11132,
-   "images": 90,
+   "chars": 11081,
+   "images": 89,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 16,
+   "count": 13,
    "summary": [],
    "empty": [],
-   "chars": 2543,
-   "images": 32,
+   "chars": 2424,
+   "images": 14,
    "broken_images": []
   },
   "season": {
@@ -65,7 +92,7 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3242,
+   "chars": 3220,
    "images": 42,
    "broken_images": []
   },
@@ -74,7 +101,7 @@
    "count": 595,
    "summary": [],
    "empty": [],
-   "chars": 39038,
+   "chars": 39187,
    "images": 0,
    "broken_images": []
   },
@@ -83,7 +110,7 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3457,
+   "chars": 3467,
    "images": 35,
    "broken_images": []
   },
@@ -92,7 +119,7 @@
    "count": 8,
    "summary": [],
    "empty": [],
-   "chars": 842,
+   "chars": 805,
    "images": 15,
    "broken_images": []
   },
@@ -101,8 +128,8 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 7019,
-   "images": 16,
+   "chars": 6651,
+   "images": 14,
    "broken_images": []
   },
   "tds": {
@@ -110,16 +137,16 @@
    "count": 1,
    "summary": [],
    "empty": [],
-   "chars": 4229,
-   "images": 28,
+   "chars": 3940,
+   "images": 27,
    "broken_images": []
   },
   "charts": {
    "visible": true,
-   "count": 30,
+   "count": 27,
    "summary": [],
    "empty": [],
-   "chars": 3971,
+   "chars": 4011,
    "images": 4,
    "broken_images": []
   },
@@ -127,11 +154,11 @@
    "visible": true,
    "count": 72,
    "summary": [
-    "239 value tickets in this filter 137 TD plus-money 5 spread / dog sides 84% b"
+    "296 value tickets in this filter 105 TD plus-money 5 spread / dog sides 99% b"
    ],
    "empty": [],
-   "chars": 3905,
-   "images": 50,
+   "chars": 3373,
+   "images": 33,
    "broken_images": []
   },
   "parlay": {
@@ -139,7 +166,7 @@
    "count": 5,
    "summary": [],
    "empty": [],
-   "chars": 4088,
+   "chars": 3898,
    "images": 0,
    "broken_images": []
   },
@@ -148,7 +175,7 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2553,
+   "chars": 2637,
    "images": 12,
    "broken_images": []
   },
@@ -156,22 +183,22 @@
    "visible": true,
    "count": 61,
    "summary": [
-    "517 listed THU Not posted FRI Not posted SAT Not posted SUN Not posted",
-    "36 listed CHI @ DET 90 min before kick PHI @ DAL 90 min before kick K",
-    "517 listed 0 probable \u00b7 75% 157 questionable / GTD \u00b7 50% 4 doubtful \u00b7 "
+    "519 listed THU \u00b7 10:46 PM ET 540 listed FRI Not posted SAT Not posted ",
+    "36 listed CHI @ DET 38 listed PHI @ DAL 28 listed KC @ BUF 26 listed ",
+    "540 listed 0 probable \u00b7 75% 154 questionable / GTD \u00b7 50% 2 doubtful \u00b7 "
    ],
    "empty": [],
-   "chars": 4199,
-   "images": 2,
+   "chars": 4384,
+   "images": 3,
    "broken_images": []
   },
   "nflwx": {
    "visible": true,
-   "count": 16,
+   "count": 14,
    "summary": [],
    "empty": [],
-   "chars": 5022,
-   "images": 32,
+   "chars": 4714,
+   "images": 28,
    "broken_images": []
   },
   "nflpotd": {
@@ -179,7 +206,7 @@
    "count": 4,
    "summary": [],
    "empty": [],
-   "chars": 3700,
+   "chars": 3919,
    "images": 2,
    "broken_images": []
   },
@@ -188,8 +215,8 @@
    "count": 18,
    "summary": [],
    "empty": [],
-   "chars": 7254,
-   "images": 30,
+   "chars": 7248,
+   "images": 34,
    "broken_images": []
   }
  },
@@ -206,6 +233,6 @@
   "errors": []
  },
  "dk_lines_loaded": null,
- "games_with_props": 30,
- "nfl_games_upcoming": 30
+ "games_with_props": 27,
+ "nfl_games_upcoming": 27
 }
