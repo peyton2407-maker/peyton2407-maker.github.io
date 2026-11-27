@@ -19,8 +19,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 41.5,
-   "lockedAt": "2026-11-27T22:47:28.559Z",
-   "provisional": true
+   "lockedAt": "2026-11-27T23:01:53.823Z"
   },
   "401856759": {
    "id": "401856759",
@@ -115,7 +114,7 @@
    "total_play": false,
    "spread": -25.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T22:47:28.559Z",
+   "lockedAt": "2026-11-27T23:01:53.823Z",
    "provisional": true
   },
   "401862838": {
@@ -2320,12 +2319,12 @@
     "ours": "UTAH -23.4 · total 65.5",
     "score": "WVU 21.1 – UTAH 44.5",
     "market": "UTAH -25.5 · total 65.5",
-    "lockedAt": "2026-11-27T22:47:28.610Z",
+    "lockedAt": "2026-11-27T23:01:53.876Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T02:00Z",
     "big": false,
-    "savedAt": 1795819648610
+    "savedAt": 1795820513876
    }
   ],
   "cfbHit": [
@@ -2575,7 +2574,7 @@
    }
   ]
  },
- "updated": "2026-11-27T22:47:28.559Z",
+ "updated": "2026-11-27T23:01:53.823Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3640,22 +3639,6 @@
    "total": 49.5,
    "result": "MISS",
    "final": "PHI 39, DAL 38"
-  },
-  {
-   "id": "401873093|sp|home",
-   "gid": "401873093",
-   "team": "LAC",
-   "side": "home",
-   "game": "NE @ LAC",
-   "kick": "2026-11-29T21:05Z",
-   "from": 2.5,
-   "to": 8.5,
-   "book": null,
-   "win": 0.7671,
-   "bookWin": 0.7527,
-   "total": 35.5,
-   "result": null,
-   "final": null
   },
   {
    "id": "401873091|sp|home",
@@ -7279,9 +7262,9 @@
    "ev": 0.1289,
    "mev": 0.0011,
    "src": "proj",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "DEN 5, PIT 27",
+   "units": 2.3
   },
   {
    "id": "401862838|sp|away",
@@ -8433,17 +8416,17 @@
    "league": "nfl",
    "kind": "sp",
    "side": "home",
-   "label": "LAC -4.5",
+   "label": "LAC -6.5",
    "game": "NE @ LAC",
    "kick": "2026-11-29T21:05Z",
-   "line": -4.5,
-   "mainLine": 2.5,
-   "price": 220,
-   "book": "BetMGM",
-   "win": 0.3311,
-   "mwin": 0.3147,
-   "ev": 0.0594,
-   "mev": 0.0069,
+   "line": -6.5,
+   "mainLine": 3,
+   "price": 280,
+   "book": "Fanatics",
+   "win": 0.2911,
+   "mwin": 0.2647,
+   "ev": 0.1061,
+   "mev": 0.0058,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -12721,7 +12704,10 @@
    "ours": 2.8,
    "market": 4.5,
    "label": "PIT +4.5",
-   "lockedAt": "2026-11-27T18:31:56.058Z"
+   "lockedAt": "2026-11-27T18:31:56.058Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "DEN 5, PIT 27"
   },
   {
    "id": "401869930",
@@ -12802,6 +12788,38 @@
    "market": 7.5,
    "label": "AFA +7.5",
    "lockedAt": "2026-11-27T20:01:24.794Z"
+  },
+  {
+   "id": "401856756",
+   "league": "cfb",
+   "gid": "401856756",
+   "side": "home",
+   "team": "TA&M",
+   "game": "TEX @ TA&M",
+   "kick": "2026-11-28T00:30Z",
+   "line": 10.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 9.7,
+   "market": 10.5,
+   "label": "TA&M +10.5",
+   "lockedAt": "2026-11-27T23:01:53.823Z"
+  },
+  {
+   "id": "401858544",
+   "league": "cfb",
+   "gid": "401858544",
+   "side": "away",
+   "team": "MINN",
+   "game": "MINN @ WIS",
+   "kick": "2026-11-28T00:30Z",
+   "line": 9.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 9.5,
+   "market": 9.5,
+   "label": "MINN +9.5",
+   "lockedAt": "2026-11-27T23:01:53.823Z"
   }
  ]
 }
