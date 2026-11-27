@@ -2150,7 +2150,7 @@
    }
   ]
  },
- "updated": "2026-11-27T04:17:18.167Z",
+ "updated": "2026-11-27T04:31:20.247Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6684,9 +6684,9 @@
    "ev": 0.0625,
    "mev": 0.0625,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "TCU 27, TTU 48",
+   "units": -1
   },
   {
    "id": "401873082|tot|under",
@@ -6706,9 +6706,9 @@
    "ev": 0.0473,
    "mev": 0.0256,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "KC 10, BUF 13",
+   "units": 2.6
   },
   {
    "id": "401873082|sp|home",
@@ -6728,9 +6728,9 @@
    "ev": 0.0464,
    "mev": -0.0078,
    "src": "proj",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "KC 10, BUF 13",
+   "units": -1
   },
   {
    "id": "401856762|sp|away",
@@ -12125,7 +12125,10 @@
    "ours": 12.5,
    "market": 14,
    "label": "TCU +14",
-   "lockedAt": "2026-11-26T23:31:52.338Z"
+   "lockedAt": "2026-11-26T23:31:52.338Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "TCU 27, TTU 48"
   },
   {
    "id": "401873082",
@@ -12141,7 +12144,10 @@
    "ours": -3.2,
    "market": -3,
    "label": "BUF -3",
-   "lockedAt": "2026-11-27T00:01:23.053Z"
+   "lockedAt": "2026-11-27T00:01:23.053Z",
+   "result": "PUSH",
+   "units": 0,
+   "final": "KC 10, BUF 13"
   }
  ]
 }
