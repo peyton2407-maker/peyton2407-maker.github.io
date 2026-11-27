@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 41.5,
-   "lockedAt": "2026-11-27T18:31:56.058Z",
+   "lockedAt": "2026-11-27T18:47:02.045Z",
    "provisional": true
   },
   "401856759": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 54.5,
-   "lockedAt": "2026-11-27T18:31:56.058Z",
+   "lockedAt": "2026-11-27T18:47:02.045Z",
    "provisional": true
   },
   "401856762": {
@@ -111,7 +111,7 @@
    "total_play": false,
    "spread": -25.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T18:31:56.058Z",
+   "lockedAt": "2026-11-27T18:47:02.045Z",
    "provisional": true
   },
   "401862838": {
@@ -123,16 +123,16 @@
    "away": "TEM",
    "date": "2026-11-27T20:30Z",
    "pick": "TEM",
-   "pick_line": "TEM +19.5",
+   "pick_line": "TEM +18.5",
    "total_pick": "OVER 66.5",
    "side_play": false,
-   "our_margin": 16.4,
+   "our_margin": 17.25,
    "our_total": 66.2,
    "confidence": null,
    "total_play": false,
-   "spread": -19.5,
+   "spread": -18.5,
    "total": 66.5,
-   "lockedAt": "2026-11-27T18:31:56.058Z",
+   "lockedAt": "2026-11-27T18:47:02.045Z",
    "provisional": true
   },
   "401862840": {
@@ -178,7 +178,7 @@
    "total_play": false,
    "spread": -7,
    "total": 42.5,
-   "lockedAt": "2026-11-27T18:31:56.058Z",
+   "lockedAt": "2026-11-27T18:47:02.045Z",
    "provisional": true
   },
   "401864549": {
@@ -190,16 +190,16 @@
    "away": "NDSU",
    "date": "2026-11-27T20:30Z",
    "pick": "SJSU",
-   "pick_line": "SJSU +8.5",
+   "pick_line": "SJSU +9.5",
    "total_pick": "OVER 41.5",
    "side_play": false,
-   "our_margin": -8.35,
+   "our_margin": -9,
    "our_total": 40.8,
    "confidence": null,
    "total_play": false,
-   "spread": 8.5,
+   "spread": 9.5,
    "total": 41.5,
-   "lockedAt": "2026-11-27T18:31:56.058Z",
+   "lockedAt": "2026-11-27T18:47:02.045Z",
    "provisional": true
   },
   "401866470": {
@@ -2254,15 +2254,15 @@
     "book": "standard -110",
     "bookPct": 50,
     "ev": 0.037,
-    "ours": "MEM -16.4 · total 66.2",
-    "score": "TEM 24.9 – MEM 41.3",
-    "market": "MEM -19.5 · total 66.5",
-    "lockedAt": "2026-11-27T18:31:56.086Z",
+    "ours": "MEM -17.3 · total 66.2",
+    "score": "TEM 24.5 – MEM 41.7",
+    "market": "MEM -18.5 · total 66.5",
+    "lockedAt": "2026-11-27T18:47:02.058Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T20:30Z",
     "big": true,
-    "savedAt": 1795804316086
+    "savedAt": 1795805222058
    }
   ],
   "cfbHit": [
@@ -2391,12 +2391,12 @@
     "ours": "UTAH -23.4 · total 65.5",
     "score": "WVU 21.1 – UTAH 44.5",
     "market": "UTAH -25.5 · total 65.5",
-    "lockedAt": "2026-11-27T18:31:56.089Z",
+    "lockedAt": "2026-11-27T18:47:02.062Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T02:00Z",
     "big": true,
-    "savedAt": 1795804316089
+    "savedAt": 1795805222062
    }
   ]
  },
@@ -2512,7 +2512,7 @@
    }
   ]
  },
- "updated": "2026-11-27T18:31:56.058Z",
+ "updated": "2026-11-27T18:47:02.045Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7221,28 +7221,6 @@
    "mwin": 0.3425,
    "ev": 0.0496,
    "mev": 0.0137,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401862838|sp|away",
-   "gid": "401862838",
-   "league": "cfb",
-   "kind": "sp",
-   "side": "away",
-   "label": "TEM +7.5",
-   "game": "TEM @ MEM",
-   "kick": "2026-11-27T20:30Z",
-   "line": 7.5,
-   "mainLine": 19.5,
-   "price": 285,
-   "book": "FanDuel",
-   "win": 0.2703,
-   "mwin": 0.2634,
-   "ev": 0.0407,
-   "mev": 0.0143,
    "src": "mkt",
    "result": null,
    "final": null,
