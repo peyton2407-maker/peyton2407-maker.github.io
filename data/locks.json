@@ -114,7 +114,7 @@
    "total_play": false,
    "spread": -25.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T23:01:53.823Z",
+   "lockedAt": "2026-11-27T23:16:19.327Z",
    "provisional": true
   },
   "401862838": {
@@ -1576,9 +1576,9 @@
     "hitPct": 67,
     "why": "We project Bo Nix for 1.0 pass TDs against a line of 1.5. Our checked chance on the under is 67%; the books' own chance is 64%. At -191 (DraftKings) that is 1.6% better than the price. PIT is a tough defense here: it allows the 6th-fewest pass TDs to QBs (1.1 a game; league average 1.5). The under hit in 5 of his last 8 games at this line.",
     "label": "Friday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "Bo Nix: 0 pass TDs",
+    "resultWhy": "It hit. Bo Nix under 1.5 pass TDs cashed.",
     "units": 0.75,
     "prop": {
      "pid": "4426338",
@@ -1601,7 +1601,8 @@
     "close_line": 1.5,
     "closeAt": "2026-11-27T19:01:43.063Z",
     "close_src": "board",
-    "clv": 0
+    "clv": 0,
+    "by": "1.5 under 1.5"
    }
   ],
   "cfb": [
@@ -2319,12 +2320,12 @@
     "ours": "UTAH -23.4 · total 65.5",
     "score": "WVU 21.1 – UTAH 44.5",
     "market": "UTAH -25.5 · total 65.5",
-    "lockedAt": "2026-11-27T23:01:53.876Z",
+    "lockedAt": "2026-11-27T23:16:19.380Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T02:00Z",
     "big": false,
-    "savedAt": 1795820513876
+    "savedAt": 1795821379380
    }
   ],
   "cfbHit": [
@@ -2574,7 +2575,7 @@
    }
   ]
  },
- "updated": "2026-11-27T23:01:53.823Z",
+ "updated": "2026-11-27T23:16:19.327Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -12723,7 +12724,10 @@
    "ours": -3.1,
    "market": -3,
    "label": "USA -3",
-   "lockedAt": "2026-11-27T18:31:56.058Z"
+   "lockedAt": "2026-11-27T18:31:56.058Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "APP 13, USA 20"
   },
   {
    "id": "401856759",
