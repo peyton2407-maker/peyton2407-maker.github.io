@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 11.5,
    "total": 41.5,
-   "lockedAt": "2026-11-27T16:46:23.330Z",
+   "lockedAt": "2026-11-27T17:01:29.749Z",
    "provisional": true
   },
   "401856759": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 54.5,
-   "lockedAt": "2026-11-27T16:46:23.330Z",
+   "lockedAt": "2026-11-27T17:01:29.749Z",
    "provisional": true
   },
   "401856762": {
@@ -111,7 +111,7 @@
    "total_play": false,
    "spread": -25.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T16:46:23.330Z",
+   "lockedAt": "2026-11-27T17:01:29.749Z",
    "provisional": true
   },
   "401862838": {
@@ -132,7 +132,7 @@
    "total_play": false,
    "spread": -19.5,
    "total": 66.5,
-   "lockedAt": "2026-11-27T16:46:23.330Z",
+   "lockedAt": "2026-11-27T17:01:29.749Z",
    "provisional": true
   },
   "401862840": {
@@ -178,7 +178,7 @@
    "total_play": false,
    "spread": -7,
    "total": 42.5,
-   "lockedAt": "2026-11-27T16:46:23.330Z",
+   "lockedAt": "2026-11-27T17:01:29.749Z",
    "provisional": true
   },
   "401864549": {
@@ -199,7 +199,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 40.5,
-   "lockedAt": "2026-11-27T16:46:23.330Z",
+   "lockedAt": "2026-11-27T17:01:29.749Z",
    "provisional": true
   },
   "401866470": {
@@ -320,7 +320,7 @@
    "total_play": false,
    "spread": -3,
    "total": 56.5,
-   "lockedAt": "2026-11-27T16:46:23.330Z",
+   "lockedAt": "2026-11-27T17:01:29.749Z",
    "provisional": true
   },
   "401873079": {
@@ -441,7 +441,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-27T16:46:23.330Z",
+   "lockedAt": "2026-11-27T17:01:29.749Z",
    "provisional": true
   }
  },
@@ -1570,12 +1570,12 @@
     "ours": "DEN -2.8 · total 39.3",
     "score": "DEN 21.0 – PIT 18.3",
     "market": "DEN -4.5 · total 37.5",
-    "lockedAt": "2026-11-27T16:46:23.361Z",
+    "lockedAt": "2026-11-27T17:01:29.784Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T20:00Z",
     "big": false,
-    "savedAt": 1795797983361
+    "savedAt": 1795798889784
    }
   ],
   "cfb": [
@@ -2248,7 +2248,7 @@
     "line": "UNDER 66.5",
     "hitPct": 54,
     "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 66.5. At -110 the price needs 52%; we count it at 54%, so it's 3.7% better than the price.",
-    "label": "Best of Friday's 12 games",
+    "label": "Best of Friday's 8 games",
     "result": null,
     "final": null,
     "resultWhy": "",
@@ -2260,12 +2260,12 @@
     "ours": "MEM -16.4 · total 66.2",
     "score": "TEM 24.9 – MEM 41.3",
     "market": "MEM -19.5 · total 66.5",
-    "lockedAt": "2026-11-27T16:46:23.366Z",
+    "lockedAt": "2026-11-27T17:01:29.788Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T20:30Z",
     "big": true,
-    "savedAt": 1795797983366
+    "savedAt": 1795798889788
    }
   ],
   "cfbHit": [
@@ -2394,12 +2394,12 @@
     "ours": "UTAH -23.4 · total 65.5",
     "score": "WVU 21.1 – UTAH 44.5",
     "market": "UTAH -25.5 · total 65.5",
-    "lockedAt": "2026-11-27T16:46:23.369Z",
+    "lockedAt": "2026-11-27T17:01:29.792Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T02:00Z",
     "big": true,
-    "savedAt": 1795797983369
+    "savedAt": 1795798889792
    }
   ]
  },
@@ -2515,7 +2515,7 @@
    }
   ]
  },
- "updated": "2026-11-27T16:46:23.330Z",
+ "updated": "2026-11-27T17:01:29.749Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -8053,12 +8053,12 @@
    "game": "OU @ MIZ",
    "kick": "2026-11-28T21:15Z",
    "line": 34.5,
-   "mainLine": 41.5,
+   "mainLine": 42.5,
    "price": 230,
    "book": "FanDuel",
-   "win": 0.3125,
+   "win": 0.3148,
    "mwin": 0.3125,
-   "ev": 0.0313,
+   "ev": 0.0387,
    "mev": 0.0313,
    "src": "mkt",
    "result": null,
