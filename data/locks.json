@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 41.5,
-   "lockedAt": "2026-11-27T19:16:15.475Z",
+   "lockedAt": "2026-11-27T19:31:30.961Z",
    "provisional": true
   },
   "401856759": {
@@ -40,7 +40,12 @@
    "total_play": false,
    "spread": 6.5,
    "total": 54.5,
-   "lockedAt": "2026-11-27T19:01:43.063Z"
+   "lockedAt": "2026-11-27T19:01:43.063Z",
+   "close_spread": 6.5,
+   "close_total": 54.5,
+   "closeAt": "2026-11-27T19:31:30.961Z",
+   "clv_side": 0,
+   "clv_total": 0
   },
   "401856762": {
    "id": "401856762",
@@ -110,7 +115,7 @@
    "total_play": false,
    "spread": -25.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T19:16:15.475Z",
+   "lockedAt": "2026-11-27T19:31:30.961Z",
    "provisional": true
   },
   "401862838": {
@@ -131,7 +136,12 @@
    "total_play": false,
    "spread": -19.5,
    "total": 66.5,
-   "lockedAt": "2026-11-27T19:01:43.063Z"
+   "lockedAt": "2026-11-27T19:01:43.063Z",
+   "close_spread": -19.5,
+   "close_total": 66.5,
+   "closeAt": "2026-11-27T19:31:30.961Z",
+   "clv_side": 0,
+   "clv_total": 0
   },
   "401862840": {
    "id": "401862840",
@@ -176,7 +186,7 @@
    "total_play": false,
    "spread": -7,
    "total": 42.5,
-   "lockedAt": "2026-11-27T19:16:15.475Z",
+   "lockedAt": "2026-11-27T19:31:30.961Z",
    "provisional": true
   },
   "401864549": {
@@ -197,7 +207,12 @@
    "total_play": false,
    "spread": 9.5,
    "total": 41.5,
-   "lockedAt": "2026-11-27T19:01:43.063Z"
+   "lockedAt": "2026-11-27T19:01:43.063Z",
+   "close_spread": 9.5,
+   "close_total": 41.5,
+   "closeAt": "2026-11-27T19:31:30.961Z",
+   "clv_side": 0,
+   "clv_total": 0
   },
   "401866470": {
    "id": "401866470",
@@ -2272,7 +2287,11 @@
     "locked": true,
     "kick": "2026-11-27T20:30Z",
     "big": true,
-    "savedAt": 1795806103079
+    "savedAt": 1795806103079,
+    "close_line": 66.5,
+    "closeAt": "2026-11-27T19:31:30.961Z",
+    "close_src": "board",
+    "clv": 0
    }
   ],
   "cfbHit": [
@@ -2401,12 +2420,12 @@
     "ours": "UTAH -23.4 · total 65.5",
     "score": "WVU 21.1 – UTAH 44.5",
     "market": "UTAH -25.5 · total 65.5",
-    "lockedAt": "2026-11-27T19:16:15.493Z",
+    "lockedAt": "2026-11-27T19:31:30.985Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T02:00Z",
     "big": true,
-    "savedAt": 1795806975493
+    "savedAt": 1795807890985
    }
   ]
  },
@@ -2522,7 +2541,7 @@
    }
   ]
  },
- "updated": "2026-11-27T19:16:15.475Z",
+ "updated": "2026-11-27T19:31:30.961Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
