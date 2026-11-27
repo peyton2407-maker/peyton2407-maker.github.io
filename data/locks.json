@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 53.5,
-   "lockedAt": "2026-11-27T09:02:00.079Z",
+   "lockedAt": "2026-11-27T09:17:01.229Z",
    "provisional": true
   },
   "401856762": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 56.5,
-   "lockedAt": "2026-11-27T09:02:00.079Z",
+   "lockedAt": "2026-11-27T09:17:01.229Z",
    "provisional": true
   },
   "401856879": {
@@ -86,7 +86,7 @@
    "total_play": false,
    "spread": -18.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T09:02:00.079Z",
+   "lockedAt": "2026-11-27T09:17:01.229Z",
    "provisional": true
   },
   "401862840": {
@@ -107,7 +107,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 57.5,
-   "lockedAt": "2026-11-27T09:02:00.079Z",
+   "lockedAt": "2026-11-27T09:17:01.229Z",
    "provisional": true
   },
   "401864549": {
@@ -128,7 +128,7 @@
    "total_play": false,
    "spread": 8.5,
    "total": 39.5,
-   "lockedAt": "2026-11-27T09:02:00.079Z",
+   "lockedAt": "2026-11-27T09:17:01.229Z",
    "provisional": true
   },
   "401866470": {
@@ -199,7 +199,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 48.5,
-   "lockedAt": "2026-11-27T09:02:00.079Z",
+   "lockedAt": "2026-11-27T09:17:01.229Z",
    "provisional": true
   },
   "401866473": {
@@ -220,7 +220,7 @@
    "total_play": false,
    "spread": 3,
    "total": 44.5,
-   "lockedAt": "2026-11-27T09:02:00.079Z",
+   "lockedAt": "2026-11-27T09:17:01.229Z",
    "provisional": true
   },
   "401873079": {
@@ -335,13 +335,13 @@
    "pick_line": "PIT +4.5",
    "total_pick": "OVER 37.5",
    "side_play": false,
-   "our_margin": -2.76,
+   "our_margin": -2.7,
    "our_total": 39.3,
    "confidence": null,
    "total_play": false,
    "spread": 4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-27T09:02:00.079Z",
+   "lockedAt": "2026-11-27T09:17:01.229Z",
    "provisional": true
   }
  },
@@ -1467,15 +1467,15 @@
     "price": -191,
     "book": "DraftKings",
     "ev": 0.016,
-    "ours": "DEN -2.8 · total 39.3",
+    "ours": "DEN -2.7 · total 39.3",
     "score": "DEN 21.0 – PIT 18.3",
     "market": "DEN -4.5 · total 37.5",
-    "lockedAt": "2026-11-27T09:02:00.103Z",
+    "lockedAt": "2026-11-27T09:17:01.250Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T20:00Z",
     "big": false,
-    "savedAt": 1795770120103
+    "savedAt": 1795771021250
    }
   ],
   "cfb": [
@@ -2160,12 +2160,12 @@
     "ours": "MEM -15.8 · total 65.8",
     "score": "TEM 25.0 – MEM 40.8",
     "market": "MEM -18.5 · total 65.5",
-    "lockedAt": "2026-11-27T09:02:00.107Z",
+    "lockedAt": "2026-11-27T09:17:01.254Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T20:30Z",
     "big": true,
-    "savedAt": 1795770120107
+    "savedAt": 1795771021254
    }
   ],
   "cfbHit": [
@@ -2385,7 +2385,7 @@
    }
   ]
  },
- "updated": "2026-11-27T09:02:00.079Z",
+ "updated": "2026-11-27T09:17:01.229Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3461,7 +3461,7 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.767,
+   "win": 0.7669,
    "bookWin": 0.7524,
    "total": 35.5,
    "result": null,
