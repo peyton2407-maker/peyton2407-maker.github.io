@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 41.5,
-   "lockedAt": "2026-11-27T20:31:43.530Z",
+   "lockedAt": "2026-11-27T20:46:44.569Z",
    "provisional": true
   },
   "401856759": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -25.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T20:31:43.530Z",
+   "lockedAt": "2026-11-27T20:46:44.569Z",
    "provisional": true
   },
   "401862838": {
@@ -2424,12 +2424,12 @@
     "ours": "UTAH -23.4 · total 65.5",
     "score": "WVU 21.1 – UTAH 44.5",
     "market": "UTAH -25.5 · total 65.5",
-    "lockedAt": "2026-11-27T20:31:43.595Z",
+    "lockedAt": "2026-11-27T20:46:44.633Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T02:00Z",
     "big": true,
-    "savedAt": 1795811503595
+    "savedAt": 1795812404633
    }
   ]
  },
@@ -2545,7 +2545,7 @@
    }
   ]
  },
- "updated": "2026-11-27T20:31:43.530Z",
+ "updated": "2026-11-27T20:46:44.569Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7145,9 +7145,9 @@
    "ev": 0.0406,
    "mev": 0.0336,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "TLSA 22, UTSA 28",
+   "units": -1
   },
   {
    "id": "401856762|sp|away",
@@ -7189,9 +7189,9 @@
    "ev": 0.0424,
    "mev": 0.0236,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "TOL 34, OHIO 31",
+   "units": -1
   },
   {
    "id": "401858536|sp|home",
@@ -7771,17 +7771,17 @@
    "league": "cfb",
    "kind": "sp",
    "side": "home",
-   "label": "MTSU -12.5",
+   "label": "MTSU -13.5",
    "game": "NMSU @ MTSU",
    "kick": "2026-11-28T19:00Z",
-   "line": -12.5,
-   "mainLine": -3,
-   "price": 280,
+   "line": -13.5,
+   "mainLine": -3.5,
+   "price": 300,
    "book": "FanDuel",
-   "win": 0.2745,
-   "mwin": 0.271,
-   "ev": 0.0432,
-   "mev": 0.0298,
+   "win": 0.2576,
+   "mwin": 0.2576,
+   "ev": 0.0302,
+   "mev": 0.0303,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -8201,28 +8201,6 @@
    "ev": 0.0431,
    "mev": 0.006,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873084|sp|home",
-   "gid": "401873084",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "home",
-   "label": "MIN -16.5",
-   "game": "ATL @ MIN",
-   "kick": "2026-11-29T18:00Z",
-   "line": -16.5,
-   "mainLine": -7,
-   "price": 300,
-   "book": "BetMGM",
-   "win": 0.261,
-   "mwin": 0.2475,
-   "ev": 0.0439,
-   "mev": -0.0099,
-   "src": "proj",
    "result": null,
    "final": null,
    "units": null
@@ -12555,7 +12533,10 @@
    "ours": 0.8,
    "market": 1.5,
    "label": "UTSA +1.5",
-   "lockedAt": "2026-11-27T15:31:55.332Z"
+   "lockedAt": "2026-11-27T15:31:55.332Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "TLSA 22, UTSA 28"
   },
   {
    "id": "401866472",
@@ -12590,7 +12571,10 @@
    "ours": 2.9,
    "market": 3,
    "label": "OHIO +3",
-   "lockedAt": "2026-11-27T15:31:55.332Z"
+   "lockedAt": "2026-11-27T15:31:55.332Z",
+   "result": "PUSH",
+   "units": 0,
+   "final": "TOL 34, OHIO 31"
   },
   {
    "id": "401858536",
