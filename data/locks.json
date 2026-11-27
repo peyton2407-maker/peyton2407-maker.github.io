@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 53.5,
-   "lockedAt": "2026-11-27T08:31:14.628Z",
+   "lockedAt": "2026-11-27T09:02:00.079Z",
    "provisional": true
   },
   "401856762": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 56.5,
-   "lockedAt": "2026-11-27T08:31:14.628Z",
+   "lockedAt": "2026-11-27T09:02:00.079Z",
    "provisional": true
   },
   "401856879": {
@@ -86,7 +86,7 @@
    "total_play": false,
    "spread": -18.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T08:31:14.628Z",
+   "lockedAt": "2026-11-27T09:02:00.079Z",
    "provisional": true
   },
   "401862840": {
@@ -107,7 +107,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 57.5,
-   "lockedAt": "2026-11-27T08:31:14.628Z",
+   "lockedAt": "2026-11-27T09:02:00.079Z",
    "provisional": true
   },
   "401864549": {
@@ -128,7 +128,7 @@
    "total_play": false,
    "spread": 8.5,
    "total": 39.5,
-   "lockedAt": "2026-11-27T08:31:14.628Z",
+   "lockedAt": "2026-11-27T09:02:00.079Z",
    "provisional": true
   },
   "401866470": {
@@ -199,7 +199,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 48.5,
-   "lockedAt": "2026-11-27T08:31:14.628Z",
+   "lockedAt": "2026-11-27T09:02:00.079Z",
    "provisional": true
   },
   "401866473": {
@@ -220,7 +220,7 @@
    "total_play": false,
    "spread": 3,
    "total": 44.5,
-   "lockedAt": "2026-11-27T08:31:14.628Z",
+   "lockedAt": "2026-11-27T09:02:00.079Z",
    "provisional": true
   },
   "401873079": {
@@ -341,7 +341,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-27T08:31:14.628Z",
+   "lockedAt": "2026-11-27T09:02:00.079Z",
    "provisional": true
   }
  },
@@ -1470,12 +1470,12 @@
     "ours": "DEN -2.8 · total 39.3",
     "score": "DEN 21.0 – PIT 18.3",
     "market": "DEN -4.5 · total 37.5",
-    "lockedAt": "2026-11-27T08:31:14.649Z",
+    "lockedAt": "2026-11-27T09:02:00.103Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T20:00Z",
     "big": false,
-    "savedAt": 1795768274649
+    "savedAt": 1795770120103
    }
   ],
   "cfb": [
@@ -2160,12 +2160,12 @@
     "ours": "MEM -15.8 · total 65.8",
     "score": "TEM 25.0 – MEM 40.8",
     "market": "MEM -18.5 · total 65.5",
-    "lockedAt": "2026-11-27T08:31:14.653Z",
+    "lockedAt": "2026-11-27T09:02:00.107Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T20:30Z",
     "big": true,
-    "savedAt": 1795768274653
+    "savedAt": 1795770120107
    }
   ],
   "cfbHit": [
@@ -2385,7 +2385,7 @@
    }
   ]
  },
- "updated": "2026-11-27T08:31:14.628Z",
+ "updated": "2026-11-27T09:02:00.079Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3461,8 +3461,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7672,
-   "bookWin": 0.7528,
+   "win": 0.767,
+   "bookWin": 0.7524,
    "total": 35.5,
    "result": null,
    "final": null
@@ -7574,9 +7574,9 @@
    "mainLine": 53.5,
    "price": 290,
    "book": "FanDuel",
-   "win": 0.2687,
+   "win": 0.2734,
    "mwin": 0.2687,
-   "ev": 0.0478,
+   "ev": 0.0664,
    "mev": 0.0478,
    "src": "mkt",
    "result": null,
@@ -7640,9 +7640,9 @@
    "mainLine": 49.5,
    "price": 290,
    "book": "FanDuel",
-   "win": 0.2743,
+   "win": 0.2733,
    "mwin": 0.2687,
-   "ev": 0.0698,
+   "ev": 0.0657,
    "mev": 0.0478,
    "src": "mkt",
    "result": null,
@@ -8058,9 +8058,9 @@
    "mainLine": 46.5,
    "price": 230,
    "book": "FanDuel",
-   "win": 0.3307,
+   "win": 0.3256,
    "mwin": 0.3256,
-   "ev": 0.0913,
+   "ev": 0.0744,
    "mev": 0.0744,
    "src": "mkt",
    "result": null,
@@ -8216,28 +8216,6 @@
    "mwin": 0.3436,
    "ev": 0.0308,
    "mev": 0.0308,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401856874|tot|under",
-   "gid": "401856874",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 45.5",
-   "game": "BAY @ HOU",
-   "kick": "2026-11-29T02:30Z",
-   "line": 45.5,
-   "mainLine": 55.5,
-   "price": 267,
-   "book": "DraftKings",
-   "win": 0.2819,
-   "mwin": 0.2771,
-   "ev": 0.0344,
-   "mev": 0.0168,
    "src": "mkt",
    "result": null,
    "final": null,
