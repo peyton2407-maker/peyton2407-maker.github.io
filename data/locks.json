@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 41.5,
-   "lockedAt": "2026-11-27T22:17:18.430Z",
+   "lockedAt": "2026-11-27T22:31:09.383Z",
    "provisional": true
   },
   "401856759": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -24.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T22:17:18.430Z",
+   "lockedAt": "2026-11-27T22:31:09.383Z",
    "provisional": true
   },
   "401862838": {
@@ -2320,12 +2320,12 @@
     "ours": "UTAH -21.6 · total 65.5",
     "score": "WVU 21.9 – UTAH 43.6",
     "market": "UTAH -24.5 · total 65.5",
-    "lockedAt": "2026-11-27T22:17:18.483Z",
+    "lockedAt": "2026-11-27T22:31:09.419Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T02:00Z",
     "big": false,
-    "savedAt": 1795817838483
+    "savedAt": 1795818669420
    }
   ],
   "cfbHit": [
@@ -2575,7 +2575,7 @@
    }
   ]
  },
- "updated": "2026-11-27T22:17:18.430Z",
+ "updated": "2026-11-27T22:31:09.383Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3658,18 +3658,18 @@
    "final": null
   },
   {
-   "id": "401873091|sp|away",
+   "id": "401873091|sp|home",
    "gid": "401873091",
-   "team": "SEA",
-   "side": "away",
+   "team": "SF",
+   "side": "home",
    "game": "SEA @ SF",
    "kick": "2026-11-29T21:25Z",
-   "from": 2.5,
-   "to": 8.5,
+   "from": 1.5,
+   "to": 7.5,
    "book": null,
-   "win": 0.7253,
-   "bookWin": 0.7527,
-   "total": 43.5,
+   "win": 0.7573,
+   "bookWin": 0.7491,
+   "total": 42.5,
    "result": null,
    "final": null
   }
@@ -8481,12 +8481,12 @@
    "game": "SEA @ SF",
    "kick": "2026-11-29T21:25Z",
    "line": -9.5,
-   "mainLine": -2.5,
+   "mainLine": 1.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2999,
+   "win": 0.2801,
    "mwin": 0.2728,
-   "ev": 0.1398,
+   "ev": 0.0643,
    "mev": 0.0366,
    "src": "mkt",
    "result": null,
