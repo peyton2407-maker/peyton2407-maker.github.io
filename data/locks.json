@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 56.5,
-   "lockedAt": "2026-11-27T07:16:46.183Z",
+   "lockedAt": "2026-11-27T08:02:06.913Z",
    "provisional": true
   },
   "401856879": {
@@ -65,7 +65,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 57.5,
-   "lockedAt": "2026-11-27T07:16:46.183Z",
+   "lockedAt": "2026-11-27T08:02:06.913Z",
    "provisional": true
   },
   "401866470": {
@@ -136,7 +136,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 48.5,
-   "lockedAt": "2026-11-27T07:16:46.183Z",
+   "lockedAt": "2026-11-27T08:02:06.913Z",
    "provisional": true
   },
   "401866473": {
@@ -157,7 +157,7 @@
    "total_play": false,
    "spread": 3,
    "total": 44.5,
-   "lockedAt": "2026-11-27T07:16:46.183Z",
+   "lockedAt": "2026-11-27T08:02:06.913Z",
    "provisional": true
   },
   "401873079": {
@@ -259,6 +259,27 @@
    "closeAt": "2026-11-27T00:47:07.043Z",
    "clv_side": 0,
    "clv_total": -1
+  },
+  "401873083": {
+   "id": "401873083",
+   "league": "nfl",
+   "week": 12,
+   "short": "DEN @ PIT",
+   "home": "PIT",
+   "away": "DEN",
+   "date": "2026-11-27T20:00Z",
+   "pick": "PIT",
+   "pick_line": "PIT +4.5",
+   "total_pick": "OVER 37.5",
+   "side_play": false,
+   "our_margin": -2.7,
+   "our_total": 39.3,
+   "confidence": null,
+   "total_play": false,
+   "spread": 4.5,
+   "total": 37.5,
+   "lockedAt": "2026-11-27T08:02:06.913Z",
+   "provisional": true
   }
  },
  "potd": {
@@ -1356,6 +1377,42 @@
     "close_src": "board",
     "clv": 1,
     "by": "24.5 under 37.5"
+   },
+   {
+    "key": "game:401873083",
+    "week": 12,
+    "day": "2026-11-27",
+    "league": "nfl",
+    "id": "401873083",
+    "game": "DEN @ PIT",
+    "kind": "Player prop",
+    "line": "Bo Nix under 1.5 pass TDs",
+    "hitPct": 67,
+    "why": "We project Bo Nix for 1.0 pass TDs against a line of 1.5. Our checked chance on the under is 67%; the books' own chance is 64%. At -191 (DraftKings) that is 1.6% better than the price. PIT is a tough defense here: it allows the 6th-fewest pass TDs to QBs (1.1 a game; league average 1.5). The under hit in 5 of his last 8 games at this line.",
+    "label": "Friday · next game",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 0.75,
+    "prop": {
+     "pid": "4426338",
+     "name": "Bo Nix",
+     "stat": "pass_td",
+     "side": "under",
+     "line": 1.5
+    },
+    "price": -191,
+    "book": "DraftKings",
+    "ev": 0.016,
+    "ours": "DEN -2.7 · total 39.3",
+    "score": "DEN 21.0 – PIT 18.3",
+    "market": "DEN -4.5 · total 37.5",
+    "lockedAt": "2026-11-27T08:02:06.936Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-27T20:00Z",
+    "big": false,
+    "savedAt": 1795766526936
    }
   ],
   "cfb": [
@@ -2235,7 +2292,7 @@
    }
   ]
  },
- "updated": "2026-11-27T07:16:46.183Z",
+ "updated": "2026-11-27T08:02:06.913Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -8260,9 +8317,9 @@
    "mainLine": 40.5,
    "price": 280,
    "book": "Fanatics",
-   "win": 0.2682,
+   "win": 0.2676,
    "mwin": 0.2545,
-   "ev": 0.0442,
+   "ev": 0.0418,
    "mev": -0.0082,
    "src": "proj",
    "result": null,
