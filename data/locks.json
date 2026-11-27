@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 41.5,
-   "lockedAt": "2026-11-27T19:31:30.961Z",
+   "lockedAt": "2026-11-27T20:01:24.794Z",
    "provisional": true
   },
   "401856759": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -25.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T19:31:30.961Z",
+   "lockedAt": "2026-11-27T20:01:24.794Z",
    "provisional": true
   },
   "401862838": {
@@ -176,18 +176,17 @@
    "home": "UNM",
    "away": "AFA",
    "date": "2026-11-27T21:30Z",
-   "pick": "UNM",
-   "pick_line": "UNM -7.0",
+   "pick": "AFA",
+   "pick_line": "AFA +7.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 7.1,
+   "our_margin": 7.43,
    "our_total": 42.5,
    "confidence": null,
    "total_play": false,
-   "spread": -7,
+   "spread": -7.5,
    "total": 42.5,
-   "lockedAt": "2026-11-27T19:31:30.961Z",
-   "provisional": true
+   "lockedAt": "2026-11-27T20:01:24.794Z"
   },
   "401864549": {
    "id": "401864549",
@@ -2420,12 +2419,12 @@
     "ours": "UTAH -23.4 · total 65.5",
     "score": "WVU 21.1 – UTAH 44.5",
     "market": "UTAH -25.5 · total 65.5",
-    "lockedAt": "2026-11-27T19:31:30.985Z",
+    "lockedAt": "2026-11-27T20:01:24.842Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T02:00Z",
     "big": true,
-    "savedAt": 1795807890985
+    "savedAt": 1795809684842
    }
   ]
  },
@@ -2541,7 +2540,7 @@
    }
   ]
  },
- "updated": "2026-11-27T19:31:30.961Z",
+ "updated": "2026-11-27T20:01:24.794Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3617,8 +3616,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7673,
-   "bookWin": 0.7528,
+   "win": 0.7672,
+   "bookWin": 0.7527,
    "total": 35.5,
    "result": null,
    "final": null
@@ -12743,6 +12742,22 @@
    "market": 9.5,
    "label": "SJSU +9.5",
    "lockedAt": "2026-11-27T19:01:43.063Z"
+  },
+  {
+   "id": "401864546",
+   "league": "cfb",
+   "gid": "401864546",
+   "side": "away",
+   "team": "AFA",
+   "game": "AFA @ UNM",
+   "kick": "2026-11-27T21:30Z",
+   "line": 7.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 7.4,
+   "market": 7.5,
+   "label": "AFA +7.5",
+   "lockedAt": "2026-11-27T20:01:24.794Z"
   }
  ]
 }
