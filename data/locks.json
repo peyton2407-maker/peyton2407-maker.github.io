@@ -2150,7 +2150,7 @@
    }
   ]
  },
- "updated": "2026-11-27T03:56:38.969Z",
+ "updated": "2026-11-27T04:01:55.989Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -6793,28 +6793,6 @@
    "mwin": 0.2982,
    "ev": 0.0506,
    "mev": 0.0438,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401856762|tot|over",
-   "gid": "401856762",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "over",
-   "label": "Over 65.5",
-   "game": "MSST @ MISS",
-   "kick": "2026-11-27T17:00Z",
-   "line": 65.5,
-   "mainLine": 56.5,
-   "price": 250,
-   "book": "FanDuel",
-   "win": 0.2946,
-   "mwin": 0.2946,
-   "ev": 0.0309,
-   "mev": 0.0309,
    "src": "mkt",
    "result": null,
    "final": null,
