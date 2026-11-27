@@ -1,6 +1,27 @@
 {
  "v": 1,
  "plays": {
+  "401856759": {
+   "id": "401856759",
+   "league": "cfb",
+   "week": 13,
+   "short": "FLA @ FSU",
+   "home": "FSU",
+   "away": "FLA",
+   "date": "2026-11-27T20:30Z",
+   "pick": "FSU",
+   "pick_line": "FSU +6.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -4.9,
+   "our_total": 53.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 6.5,
+   "total": 53.5,
+   "lockedAt": "2026-11-27T08:31:14.628Z",
+   "provisional": true
+  },
   "401856762": {
    "id": "401856762",
    "league": "cfb",
@@ -19,7 +40,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 56.5,
-   "lockedAt": "2026-11-27T08:17:10.161Z",
+   "lockedAt": "2026-11-27T08:31:14.628Z",
    "provisional": true
   },
   "401856879": {
@@ -47,6 +68,27 @@
    "clv_side": 0,
    "clv_total": null
   },
+  "401862838": {
+   "id": "401862838",
+   "league": "cfb",
+   "week": 13,
+   "short": "TEM @ MEM",
+   "home": "MEM",
+   "away": "TEM",
+   "date": "2026-11-27T20:30Z",
+   "pick": "TEM",
+   "pick_line": "TEM +18.5",
+   "total_pick": "UNDER 65.5",
+   "side_play": false,
+   "our_margin": 15.8,
+   "our_total": 65.8,
+   "confidence": null,
+   "total_play": false,
+   "spread": -18.5,
+   "total": 65.5,
+   "lockedAt": "2026-11-27T08:31:14.628Z",
+   "provisional": true
+  },
   "401862840": {
    "id": "401862840",
    "league": "cfb",
@@ -65,7 +107,28 @@
    "total_play": false,
    "spread": 1.5,
    "total": 57.5,
-   "lockedAt": "2026-11-27T08:17:10.161Z",
+   "lockedAt": "2026-11-27T08:31:14.628Z",
+   "provisional": true
+  },
+  "401864549": {
+   "id": "401864549",
+   "league": "cfb",
+   "week": 13,
+   "short": "NDSU @ SJSU",
+   "home": "SJSU",
+   "away": "NDSU",
+   "date": "2026-11-27T20:30Z",
+   "pick": "SJSU",
+   "pick_line": "SJSU +8.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -8.3,
+   "our_total": 39.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 8.5,
+   "total": 39.5,
+   "lockedAt": "2026-11-27T08:31:14.628Z",
    "provisional": true
   },
   "401866470": {
@@ -136,7 +199,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 48.5,
-   "lockedAt": "2026-11-27T08:17:10.161Z",
+   "lockedAt": "2026-11-27T08:31:14.628Z",
    "provisional": true
   },
   "401866473": {
@@ -157,7 +220,7 @@
    "total_play": false,
    "spread": 3,
    "total": 44.5,
-   "lockedAt": "2026-11-27T08:17:10.161Z",
+   "lockedAt": "2026-11-27T08:31:14.628Z",
    "provisional": true
   },
   "401873079": {
@@ -278,7 +341,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-27T08:17:10.161Z",
+   "lockedAt": "2026-11-27T08:31:14.628Z",
    "provisional": true
   }
  },
@@ -1407,12 +1470,12 @@
     "ours": "DEN -2.8 · total 39.3",
     "score": "DEN 21.0 – PIT 18.3",
     "market": "DEN -4.5 · total 37.5",
-    "lockedAt": "2026-11-27T08:17:10.186Z",
+    "lockedAt": "2026-11-27T08:31:14.649Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T20:00Z",
     "big": false,
-    "savedAt": 1795767430186
+    "savedAt": 1795768274649
    }
   ],
   "cfb": [
@@ -2073,6 +2136,36 @@
     "close_src": "board",
     "clv": 0,
     "by": "Final total 57, 3.5 under 60.5"
+   },
+   {
+    "key": "slate:2026-11-27",
+    "week": 13,
+    "day": "2026-11-27",
+    "league": "cfb",
+    "id": "401862838",
+    "game": "TEM @ MEM",
+    "kind": "Under",
+    "line": "UNDER 65.5",
+    "hitPct": 54,
+    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 65.5. At -110 the price needs 52%; we count it at 54%, so it's 3.7% better than the price.",
+    "label": "Best of Friday's 12 games",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 1,
+    "price": -110,
+    "book": "standard -110",
+    "bookPct": 50,
+    "ev": 0.037,
+    "ours": "MEM -15.8 · total 65.8",
+    "score": "TEM 25.0 – MEM 40.8",
+    "market": "MEM -18.5 · total 65.5",
+    "lockedAt": "2026-11-27T08:31:14.653Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-27T20:30Z",
+    "big": true,
+    "savedAt": 1795768274653
    }
   ],
   "cfbHit": [
@@ -2292,7 +2385,7 @@
    }
   ]
  },
- "updated": "2026-11-27T08:17:10.161Z",
+ "updated": "2026-11-27T08:31:14.628Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
