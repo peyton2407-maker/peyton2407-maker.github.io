@@ -11,15 +11,15 @@
    "date": "2026-11-28T00:30Z",
    "pick": "TA&M",
    "pick_line": "TA&M +11.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "OVER 41.5",
    "side_play": false,
    "our_margin": -10.35,
-   "our_total": 40.5,
+   "our_total": 41.1,
    "confidence": null,
    "total_play": false,
    "spread": 11.5,
-   "total": 40.5,
-   "lockedAt": "2026-11-27T14:16:56.505Z",
+   "total": 41.5,
+   "lockedAt": "2026-11-27T14:31:35.671Z",
    "provisional": true
   },
   "401856759": {
@@ -40,7 +40,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 53.5,
-   "lockedAt": "2026-11-27T14:16:56.505Z",
+   "lockedAt": "2026-11-27T14:31:35.671Z",
    "provisional": true
   },
   "401856762": {
@@ -61,7 +61,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 56.5,
-   "lockedAt": "2026-11-27T14:16:56.505Z",
+   "lockedAt": "2026-11-27T14:31:35.671Z",
    "provisional": true
   },
   "401856879": {
@@ -107,7 +107,7 @@
    "total_play": false,
    "spread": -25.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T14:16:56.505Z",
+   "lockedAt": "2026-11-27T14:31:35.671Z",
    "provisional": true
   },
   "401862838": {
@@ -128,7 +128,7 @@
    "total_play": false,
    "spread": -19.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T14:16:56.505Z",
+   "lockedAt": "2026-11-27T14:31:35.671Z",
    "provisional": true
   },
   "401862840": {
@@ -149,7 +149,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 57.5,
-   "lockedAt": "2026-11-27T14:16:56.505Z",
+   "lockedAt": "2026-11-27T14:31:35.671Z",
    "provisional": true
   },
   "401864546": {
@@ -170,7 +170,7 @@
    "total_play": false,
    "spread": -6.5,
    "total": 42.5,
-   "lockedAt": "2026-11-27T14:16:56.505Z",
+   "lockedAt": "2026-11-27T14:31:35.671Z",
    "provisional": true
   },
   "401864549": {
@@ -191,7 +191,7 @@
    "total_play": false,
    "spread": 8.5,
    "total": 39.5,
-   "lockedAt": "2026-11-27T14:16:56.505Z",
+   "lockedAt": "2026-11-27T14:31:35.671Z",
    "provisional": true
   },
   "401866470": {
@@ -262,7 +262,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 50.5,
-   "lockedAt": "2026-11-27T14:16:56.505Z",
+   "lockedAt": "2026-11-27T14:31:35.671Z",
    "provisional": true
   },
   "401866473": {
@@ -283,7 +283,7 @@
    "total_play": false,
    "spread": 3,
    "total": 44.5,
-   "lockedAt": "2026-11-27T14:16:56.505Z",
+   "lockedAt": "2026-11-27T14:31:35.671Z",
    "provisional": true
   },
   "401869930": {
@@ -304,7 +304,7 @@
    "total_play": false,
    "spread": -3,
    "total": 56.5,
-   "lockedAt": "2026-11-27T14:16:56.505Z",
+   "lockedAt": "2026-11-27T14:31:35.671Z",
    "provisional": true
   },
   "401873079": {
@@ -425,7 +425,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 37.5,
-   "lockedAt": "2026-11-27T14:16:56.505Z",
+   "lockedAt": "2026-11-27T14:31:35.671Z",
    "provisional": true
   }
  },
@@ -1554,12 +1554,12 @@
     "ours": "DEN -2.8 · total 38.2",
     "score": "DEN 20.5 – PIT 17.7",
     "market": "DEN -4.5 · total 37.5",
-    "lockedAt": "2026-11-27T14:16:56.527Z",
+    "lockedAt": "2026-11-27T14:31:35.701Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T20:00Z",
     "big": false,
-    "savedAt": 1795789016527
+    "savedAt": 1795789895701
    }
   ],
   "cfb": [
@@ -2244,12 +2244,12 @@
     "ours": "MEM -17.9 · total 65.8",
     "score": "TEM 23.9 – MEM 41.9",
     "market": "MEM -19.5 · total 65.5",
-    "lockedAt": "2026-11-27T14:16:56.531Z",
+    "lockedAt": "2026-11-27T14:31:35.705Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-27T20:30Z",
     "big": true,
-    "savedAt": 1795789016531
+    "savedAt": 1795789895705
    }
   ],
   "cfbHit": [
@@ -2378,12 +2378,12 @@
     "ours": "UTAH -22.3 · total 65.8",
     "score": "WVU 21.8 – UTAH 44.0",
     "market": "UTAH -25.5 · total 65.5",
-    "lockedAt": "2026-11-27T14:16:56.534Z",
+    "lockedAt": "2026-11-27T14:31:35.709Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T02:00Z",
     "big": true,
-    "savedAt": 1795789016534
+    "savedAt": 1795789895709
    }
   ]
  },
@@ -2499,7 +2499,7 @@
    }
   ]
  },
- "updated": "2026-11-27T14:16:56.505Z",
+ "updated": "2026-11-27T14:31:35.671Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
