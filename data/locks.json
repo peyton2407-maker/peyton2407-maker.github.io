@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 56.5,
-   "lockedAt": "2026-11-27T05:16:30.694Z",
+   "lockedAt": "2026-11-27T05:31:09.217Z",
    "provisional": true
   },
   "401856879": {
@@ -65,7 +65,7 @@
    "total_play": false,
    "spread": 1.5,
    "total": 57.5,
-   "lockedAt": "2026-11-27T05:16:30.694Z",
+   "lockedAt": "2026-11-27T05:31:09.217Z",
    "provisional": true
   },
   "401866470": {
@@ -136,7 +136,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 48.5,
-   "lockedAt": "2026-11-27T05:16:30.694Z",
+   "lockedAt": "2026-11-27T05:31:09.217Z",
    "provisional": true
   },
   "401866473": {
@@ -157,7 +157,7 @@
    "total_play": false,
    "spread": 3,
    "total": 44.5,
-   "lockedAt": "2026-11-27T05:16:30.694Z",
+   "lockedAt": "2026-11-27T05:31:09.217Z",
    "provisional": true
   },
   "401873079": {
@@ -2235,7 +2235,7 @@
    }
   ]
  },
- "updated": "2026-11-27T05:16:30.694Z",
+ "updated": "2026-11-27T05:31:09.217Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7729,12 +7729,12 @@
    "game": "USC @ UCLA",
    "kick": "2026-11-28T20:30Z",
    "line": 53.5,
-   "mainLine": 46.5,
+   "mainLine": 45.5,
    "price": 230,
    "book": "FanDuel",
-   "win": 0.3125,
+   "win": 0.3148,
    "mwin": 0.3125,
-   "ev": 0.0313,
+   "ev": 0.0387,
    "mev": 0.0313,
    "src": "mkt",
    "result": null,
