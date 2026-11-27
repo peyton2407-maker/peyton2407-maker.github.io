@@ -169,7 +169,12 @@
    "total_play": false,
    "spread": -3,
    "total": 45.5,
-   "lockedAt": "2026-11-27T00:01:23.053Z"
+   "lockedAt": "2026-11-27T00:01:23.053Z",
+   "close_spread": -3,
+   "close_total": 46.5,
+   "closeAt": "2026-11-27T00:47:07.043Z",
+   "clv_side": 0,
+   "clv_total": -1
   }
  },
  "potd": {
@@ -1260,7 +1265,11 @@
     "locked": true,
     "kick": "2026-11-27T01:20Z",
     "big": false,
-    "savedAt": 1795737683080
+    "savedAt": 1795737683080,
+    "close_line": 37.5,
+    "closeAt": "2026-11-27T00:47:07.043Z",
+    "close_src": "board",
+    "clv": 0
    }
   ],
   "cfb": [
@@ -2140,7 +2149,7 @@
    }
   ]
  },
- "updated": "2026-11-27T00:16:27.595Z",
+ "updated": "2026-11-27T00:47:07.043Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -2686,7 +2695,7 @@
      },
      "result": null,
      "close": {
-      "at": "2026-11-27T00:16:27.595Z",
+      "at": "2026-11-27T00:47:07.043Z",
       "line": 12.5,
       "price": -108,
       "book": "DraftKings",
@@ -3216,8 +3225,8 @@
    "from": 2.5,
    "to": 8.5,
    "book": null,
-   "win": 0.7669,
-   "bookWin": 0.7524,
+   "win": 0.7671,
+   "bookWin": 0.7527,
    "total": 35.5,
    "result": null,
    "final": null
@@ -6688,12 +6697,12 @@
    "game": "KC @ BUF",
    "kick": "2026-11-27T01:20Z",
    "line": 38.5,
-   "mainLine": 45.5,
+   "mainLine": 46.5,
    "price": 260,
    "book": "ESPN BET",
-   "win": 0.2921,
+   "win": 0.2938,
    "mwin": 0.2878,
-   "ev": 0.0516,
+   "ev": 0.0576,
    "mev": 0.0359,
    "src": "mkt",
    "result": null,
@@ -6715,7 +6724,7 @@
    "book": "Fanatics",
    "win": 0.287,
    "mwin": 0.2728,
-   "ev": 0.0475,
+   "ev": 0.0474,
    "mev": -0.0043,
    "src": "proj",
    "result": null,
@@ -6820,12 +6829,12 @@
    "game": "DEN @ PIT",
    "kick": "2026-11-27T20:00Z",
    "line": 2.5,
-   "mainLine": 4.5,
+   "mainLine": 5.5,
    "price": 160,
    "book": "ESPN BET",
-   "win": 0.4242,
+   "win": 0.4025,
    "mwin": 0.3838,
-   "ev": 0.1029,
+   "ev": 0.0464,
    "mev": -0.0022,
    "src": "proj",
    "result": null,
