@@ -19,7 +19,7 @@
    "total_play": false,
    "spread": 10.5,
    "total": 41.5,
-   "lockedAt": "2026-11-27T20:16:58.810Z",
+   "lockedAt": "2026-11-27T20:31:43.530Z",
    "provisional": true
   },
   "401856759": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -25.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T20:16:58.810Z",
+   "lockedAt": "2026-11-27T20:31:43.530Z",
    "provisional": true
   },
   "401862838": {
@@ -186,7 +186,12 @@
    "total_play": false,
    "spread": -7.5,
    "total": 42.5,
-   "lockedAt": "2026-11-27T20:01:24.794Z"
+   "lockedAt": "2026-11-27T20:01:24.794Z",
+   "close_spread": -7.5,
+   "close_total": 42.5,
+   "closeAt": "2026-11-27T20:31:43.530Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401864549": {
    "id": "401864549",
@@ -2419,12 +2424,12 @@
     "ours": "UTAH -23.4 · total 65.5",
     "score": "WVU 21.1 – UTAH 44.5",
     "market": "UTAH -25.5 · total 65.5",
-    "lockedAt": "2026-11-27T20:16:58.869Z",
+    "lockedAt": "2026-11-27T20:31:43.595Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T02:00Z",
     "big": true,
-    "savedAt": 1795810618869
+    "savedAt": 1795811503595
    }
   ]
  },
@@ -2540,7 +2545,7 @@
    }
   ]
  },
- "updated": "2026-11-27T20:16:58.810Z",
+ "updated": "2026-11-27T20:31:43.530Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7162,9 +7167,9 @@
    "ev": 0.0482,
    "mev": 0.0316,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "MISS",
+   "final": "MSST 17, MISS 41",
+   "units": -1
   },
   {
    "id": "401866473|tot|under",
@@ -7206,9 +7211,9 @@
    "ev": 0.0384,
    "mev": 0.0384,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "NEB 7, IOWA 31",
+   "units": 2.59
   },
   {
    "id": "401873083|sp|home",
@@ -8144,12 +8149,12 @@
    "game": "NYG @ IND",
    "kick": "2026-11-29T18:00Z",
    "line": -2,
-   "mainLine": 6,
+   "mainLine": 5.5,
    "price": 290,
    "book": "BetRivers",
-   "win": 0.2779,
-   "mwin": 0.255,
-   "ev": 0.1049,
+   "win": 0.2715,
+   "mwin": 0.2548,
+   "ev": 0.0806,
    "mev": 0.0148,
    "src": "mkt",
    "result": null,
@@ -8305,28 +8310,6 @@
    "mwin": 0.2576,
    "ev": 0.0592,
    "mev": 0.0305,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401873087|sp|home",
-   "gid": "401873087",
-   "league": "nfl",
-   "kind": "sp",
-   "side": "home",
-   "label": "CIN -19.5",
-   "game": "NO @ CIN",
-   "kick": "2026-11-29T18:00Z",
-   "line": -19.5,
-   "mainLine": -10,
-   "price": 285,
-   "book": "BetRivers",
-   "win": 0.27,
-   "mwin": 0.2647,
-   "ev": 0.0394,
-   "mev": 0.019,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -12553,7 +12536,10 @@
    "ours": 15.7,
    "market": 17.5,
    "label": "MSST +17.5",
-   "lockedAt": "2026-11-27T15:31:55.332Z"
+   "lockedAt": "2026-11-27T15:31:55.332Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "MSST 17, MISS 41"
   },
   {
    "id": "401862840",
@@ -12620,7 +12606,10 @@
    "ours": 3.5,
    "market": 3.5,
    "label": "NEB +3.5",
-   "lockedAt": "2026-11-27T15:46:28.895Z"
+   "lockedAt": "2026-11-27T15:46:28.895Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "NEB 7, IOWA 31"
   },
   {
    "id": "401873083",
