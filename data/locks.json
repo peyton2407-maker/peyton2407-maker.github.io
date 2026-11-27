@@ -119,7 +119,7 @@
    "total_play": false,
    "spread": -25.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T23:31:46.888Z",
+   "lockedAt": "2026-11-27T23:46:42.120Z",
    "provisional": true
   },
   "401862838": {
@@ -2325,12 +2325,12 @@
     "ours": "UTAH -23.4 · total 65.5",
     "score": "WVU 21.1 – UTAH 44.5",
     "market": "UTAH -25.5 · total 65.5",
-    "lockedAt": "2026-11-27T23:31:46.940Z",
+    "lockedAt": "2026-11-27T23:46:42.171Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T02:00Z",
     "big": false,
-    "savedAt": 1795822306940
+    "savedAt": 1795823202171
    }
   ],
   "cfbHit": [
@@ -2580,7 +2580,7 @@
    }
   ]
  },
- "updated": "2026-11-27T23:31:46.888Z",
+ "updated": "2026-11-27T23:46:42.120Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7828,17 +7828,17 @@
    "league": "cfb",
    "kind": "sp",
    "side": "home",
-   "label": "MTSU -13.5",
+   "label": "MTSU -12.5",
    "game": "NMSU @ MTSU",
    "kick": "2026-11-28T19:00Z",
-   "line": -13.5,
-   "mainLine": -3.5,
-   "price": 300,
+   "line": -12.5,
+   "mainLine": -3,
+   "price": 280,
    "book": "FanDuel",
-   "win": 0.2576,
-   "mwin": 0.2576,
-   "ev": 0.0302,
-   "mev": 0.0303,
+   "win": 0.2744,
+   "mwin": 0.271,
+   "ev": 0.0427,
+   "mev": 0.0298,
    "src": "mkt",
    "result": null,
    "final": null,
