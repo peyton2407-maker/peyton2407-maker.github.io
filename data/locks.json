@@ -19,7 +19,12 @@
    "total_play": false,
    "spread": 10.5,
    "total": 41.5,
-   "lockedAt": "2026-11-27T23:01:53.823Z"
+   "lockedAt": "2026-11-27T23:01:53.823Z",
+   "close_spread": 10.5,
+   "close_total": 41.5,
+   "closeAt": "2026-11-27T23:31:46.888Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401856759": {
    "id": "401856759",
@@ -114,7 +119,7 @@
    "total_play": false,
    "spread": -25.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T23:16:19.327Z",
+   "lockedAt": "2026-11-27T23:31:46.888Z",
    "provisional": true
   },
   "401862838": {
@@ -2320,12 +2325,12 @@
     "ours": "UTAH -23.4 · total 65.5",
     "score": "WVU 21.1 – UTAH 44.5",
     "market": "UTAH -25.5 · total 65.5",
-    "lockedAt": "2026-11-27T23:16:19.380Z",
+    "lockedAt": "2026-11-27T23:31:46.940Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T02:00Z",
     "big": false,
-    "savedAt": 1795821379380
+    "savedAt": 1795822306940
    }
   ],
   "cfbHit": [
@@ -2575,7 +2580,7 @@
    }
   ]
  },
- "updated": "2026-11-27T23:16:19.327Z",
+ "updated": "2026-11-27T23:31:46.888Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
