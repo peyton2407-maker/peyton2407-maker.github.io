@@ -2614,7 +2614,7 @@
    }
   ]
  },
- "updated": "2026-11-28T03:31:33.248Z",
+ "updated": "2026-11-28T04:01:57.064Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3690,8 +3690,8 @@
    "from": 1.5,
    "to": 7.5,
    "book": null,
-   "win": 0.7574,
-   "bookWin": 0.749,
+   "win": 0.7573,
+   "bookWin": 0.7491,
    "total": 42.5,
    "result": null,
    "final": null
@@ -7939,28 +7939,6 @@
    "mwin": 0.2778,
    "ev": 0.0556,
    "mev": 0.0556,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401856876|tot|under",
-   "gid": "401856876",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 45.5",
-   "game": "CIN @ BYU",
-   "kick": "2026-11-28T20:30Z",
-   "line": 45.5,
-   "mainLine": 55.5,
-   "price": 265,
-   "book": "FanDuel",
-   "win": 0.2826,
-   "mwin": 0.2778,
-   "ev": 0.0314,
-   "mev": 0.0139,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -12984,7 +12962,10 @@
    "ours": 9.5,
    "market": 9.5,
    "label": "MINN +9.5",
-   "lockedAt": "2026-11-27T23:01:53.823Z"
+   "lockedAt": "2026-11-27T23:01:53.823Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "MINN 5, WIS 28"
   },
   {
    "id": "401856880",
