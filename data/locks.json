@@ -44,7 +44,7 @@
    "total_play": false,
    "spread": -14,
    "total": 51.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401856758": {
@@ -115,7 +115,7 @@
    "total_play": false,
    "spread": -36.5,
    "total": 55.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401856761": {
@@ -186,7 +186,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 41.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401856764": {
@@ -207,7 +207,7 @@
    "total_play": false,
    "spread": 7,
    "total": 42.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401856765": {
@@ -228,7 +228,7 @@
    "total_play": false,
    "spread": 13.5,
    "total": 42.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401856873": {
@@ -249,7 +249,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 53.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401856875": {
@@ -270,8 +270,7 @@
    "total_play": true,
    "spread": -2.5,
    "total": 45.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
-   "provisional": true
+   "lockedAt": "2026-11-28T17:31:44.621Z"
   },
   "401856876": {
    "id": "401856876",
@@ -283,15 +282,15 @@
    "date": "2026-11-28T20:30Z",
    "pick": "CIN",
    "pick_line": "CIN +17.5",
-   "total_pick": "UNDER 54.5",
+   "total_pick": "UNDER 53.5",
    "side_play": false,
    "our_margin": 16.4,
-   "our_total": 54.9,
+   "our_total": 54.2,
    "confidence": null,
    "total_play": false,
    "spread": -17.5,
-   "total": 54.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "total": 53.5,
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401856877": {
@@ -312,7 +311,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 65.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401856878": {
@@ -333,8 +332,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 51.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
-   "provisional": true
+   "lockedAt": "2026-11-28T17:31:44.621Z"
   },
   "401856879": {
    "id": "401856879",
@@ -429,7 +427,7 @@
    "total_play": false,
    "spread": -14.5,
    "total": 55.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401858313": {
@@ -500,7 +498,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 47.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401858316": {
@@ -521,7 +519,7 @@
    "total_play": false,
    "spread": 7,
    "total": 60.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401858317": {
@@ -542,7 +540,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 50.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401858537": {
@@ -588,7 +586,7 @@
    "total_play": false,
    "spread": -23.5,
    "total": 52.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401858539": {
@@ -609,7 +607,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 47.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401858540": {
@@ -655,7 +653,7 @@
    "total_play": false,
    "spread": -13.5,
    "total": 51.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401858542": {
@@ -676,7 +674,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 45.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401858543": {
@@ -697,7 +695,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 45.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401858544": {
@@ -743,7 +741,7 @@
    "total_play": true,
    "spread": 21,
    "total": 76.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401860927": {
@@ -764,7 +762,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 59.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401860928": {
@@ -785,7 +783,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 53.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401860929": {
@@ -806,7 +804,7 @@
    "total_play": false,
    "spread": -3,
    "total": 46.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401861969": {
@@ -902,7 +900,7 @@
    "total_play": false,
    "spread": -7,
    "total": 44.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401862840": {
@@ -948,8 +946,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 45.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
-   "provisional": true
+   "lockedAt": "2026-11-28T17:31:44.621Z"
   },
   "401862842": {
    "id": "401862842",
@@ -994,7 +991,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401864546": {
@@ -1040,7 +1037,7 @@
    "total_play": false,
    "spread": -13.5,
    "total": 39.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401864548": {
@@ -1061,7 +1058,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 44.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401864549": {
@@ -1107,7 +1104,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 51.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401866470": {
@@ -1253,7 +1250,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 41.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401869930": {
@@ -1299,7 +1296,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 47.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401869947": {
@@ -1320,8 +1317,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 54.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
-   "provisional": true
+   "lockedAt": "2026-11-28T17:31:44.621Z"
   },
   "401869954": {
    "id": "401869954",
@@ -1366,8 +1362,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 54.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
-   "provisional": true
+   "lockedAt": "2026-11-28T17:31:44.621Z"
   },
   "401870804": {
    "id": "401870804",
@@ -1412,7 +1407,7 @@
    "total_play": false,
    "spread": -3,
    "total": 58.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
+   "lockedAt": "2026-11-28T17:31:44.621Z",
    "provisional": true
   },
   "401871063": {
@@ -1433,8 +1428,7 @@
    "total_play": false,
    "spread": 18.5,
    "total": 53.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
-   "provisional": true
+   "lockedAt": "2026-11-28T17:31:44.621Z"
   },
   "401871082": {
    "id": "401871082",
@@ -1454,8 +1448,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 41.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
-   "provisional": true
+   "lockedAt": "2026-11-28T17:31:44.621Z"
   },
   "401871083": {
    "id": "401871083",
@@ -1475,8 +1468,7 @@
    "total_play": false,
    "spread": -3,
    "total": 51.5,
-   "lockedAt": "2026-11-28T17:16:37.873Z",
-   "provisional": true
+   "lockedAt": "2026-11-28T17:31:44.621Z"
   },
   "401871102": {
    "id": "401871102",
@@ -3529,7 +3521,7 @@
     "line": "UNDER 76.5",
     "hitPct": 56,
     "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 76.5. Our total is 1.6 points under DraftKings 76.5. Why: Wind 19 mph, gusts to 41. The total moved -1.6. At -110 the price needs 52%; we count it at 56%, so it's 7.5% better than the price.",
-    "label": "Best of Saturday's 43 games",
+    "label": "Best of Saturday's 42 games",
     "result": null,
     "final": null,
     "resultWhy": "",
@@ -3541,12 +3533,12 @@
     "ours": "TBD -18.0 · total 74.9",
     "score": "TBD 46.5 – CSU 28.5",
     "market": "TBD -21.0 · total 76.5",
-    "lockedAt": "2026-11-28T17:16:37.944Z",
+    "lockedAt": "2026-11-28T17:31:44.703Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T23:00Z",
     "big": true,
-    "savedAt": 1795886197944
+    "savedAt": 1795887104703
    }
   ],
   "cfbHit": [
@@ -3830,7 +3822,7 @@
    }
   ]
  },
- "updated": "2026-11-28T17:16:37.873Z",
+ "updated": "2026-11-28T17:31:44.621Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -14092,6 +14084,134 @@
    "market": 4.5,
    "label": "USM +4.5",
    "lockedAt": "2026-11-28T16:31:31.280Z"
+  },
+  {
+   "id": "401856875",
+   "league": "cfb",
+   "gid": "401856875",
+   "side": "away",
+   "team": "UCF",
+   "game": "UCF @ COLO",
+   "kick": "2026-11-28T19:00Z",
+   "line": 2.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 1.8,
+   "market": 2.5,
+   "label": "UCF +2.5",
+   "lockedAt": "2026-11-28T17:31:44.621Z"
+  },
+  {
+   "id": "401856878",
+   "league": "cfb",
+   "gid": "401856878",
+   "side": "away",
+   "team": "KSU",
+   "game": "KSU @ ISU",
+   "kick": "2026-11-28T19:00Z",
+   "line": 5.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 4.3,
+   "market": 5.5,
+   "label": "KSU +5.5",
+   "lockedAt": "2026-11-28T17:31:44.621Z"
+  },
+  {
+   "id": "401862841",
+   "league": "cfb",
+   "gid": "401862841",
+   "side": "home",
+   "team": "RICE",
+   "game": "ARMY @ RICE",
+   "kick": "2026-11-28T19:00Z",
+   "line": 4.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 4.2,
+   "market": 4.5,
+   "label": "RICE +4.5",
+   "lockedAt": "2026-11-28T17:31:44.621Z"
+  },
+  {
+   "id": "401869947",
+   "league": "cfb",
+   "gid": "401869947",
+   "side": "away",
+   "team": "CCU",
+   "game": "CCU @ JMU",
+   "kick": "2026-11-28T19:00Z",
+   "line": 17.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 16.3,
+   "market": 17.5,
+   "label": "CCU +17.5",
+   "lockedAt": "2026-11-28T17:31:44.621Z"
+  },
+  {
+   "id": "401869959",
+   "league": "cfb",
+   "gid": "401869959",
+   "side": "home",
+   "team": "GAST",
+   "game": "UL @ GAST",
+   "kick": "2026-11-28T19:00Z",
+   "line": 4.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 3.5,
+   "market": 4.5,
+   "label": "GAST +4.5",
+   "lockedAt": "2026-11-28T17:31:44.621Z"
+  },
+  {
+   "id": "401871063",
+   "league": "cfb",
+   "gid": "401871063",
+   "side": "home",
+   "team": "MOST",
+   "game": "LIB @ MOST",
+   "kick": "2026-11-28T19:00Z",
+   "line": 18.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 16.7,
+   "market": 18.5,
+   "label": "MOST +18.5",
+   "lockedAt": "2026-11-28T17:31:44.621Z"
+  },
+  {
+   "id": "401871082",
+   "league": "cfb",
+   "gid": "401871082",
+   "side": "away",
+   "team": "SHSU",
+   "game": "SHSU @ FIU",
+   "kick": "2026-11-28T19:00Z",
+   "line": 11.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 10.5,
+   "market": 11.5,
+   "label": "SHSU +11.5",
+   "lockedAt": "2026-11-28T17:31:44.621Z"
+  },
+  {
+   "id": "401871083",
+   "league": "cfb",
+   "gid": "401871083",
+   "side": "home",
+   "team": "MTSU",
+   "game": "NMSU @ MTSU",
+   "kick": "2026-11-28T19:00Z",
+   "line": -3,
+   "price": -110,
+   "book": "standard",
+   "ours": -3.3,
+   "market": -3,
+   "label": "MTSU -3",
+   "lockedAt": "2026-11-28T17:31:44.621Z"
   }
  ]
 }
