@@ -119,7 +119,12 @@
    "total_play": false,
    "spread": -25.5,
    "total": 65.5,
-   "lockedAt": "2026-11-28T00:31:39.751Z"
+   "lockedAt": "2026-11-28T00:31:39.751Z",
+   "close_spread": -25.5,
+   "close_total": 65.5,
+   "closeAt": "2026-11-28T01:02:09.796Z",
+   "clv_side": 0,
+   "clv_total": null
   },
   "401858544": {
    "id": "401858544",
@@ -2354,7 +2359,11 @@
     "locked": true,
     "kick": "2026-11-28T02:00Z",
     "big": false,
-    "savedAt": 1795825899816
+    "savedAt": 1795825899816,
+    "close_line": 65.5,
+    "closeAt": "2026-11-28T01:02:09.796Z",
+    "close_src": "board",
+    "clv": 0
    }
   ],
   "cfbHit": [
@@ -2604,7 +2613,7 @@
    }
   ]
  },
- "updated": "2026-11-28T00:47:13.606Z",
+ "updated": "2026-11-28T01:02:09.796Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -12785,7 +12794,10 @@
    "ours": 7.4,
    "market": 7.5,
    "label": "AFA +7.5",
-   "lockedAt": "2026-11-27T20:01:24.794Z"
+   "lockedAt": "2026-11-27T20:01:24.794Z",
+   "result": "MISS",
+   "units": -1,
+   "final": "AFA 19, UNM 42"
   },
   {
    "id": "401856756",
