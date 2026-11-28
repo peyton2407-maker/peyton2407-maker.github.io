@@ -44,7 +44,7 @@
    "total_play": false,
    "spread": -14.5,
    "total": 50.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401856758": {
@@ -65,7 +65,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 49.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401856759": {
@@ -111,7 +111,7 @@
    "total_play": false,
    "spread": -35.5,
    "total": 55.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401856761": {
@@ -132,7 +132,7 @@
    "total_play": false,
    "spread": 3,
    "total": 53.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401856762": {
@@ -178,7 +178,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 41.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401856764": {
@@ -199,7 +199,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 42.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401856765": {
@@ -220,7 +220,7 @@
    "total_play": false,
    "spread": 13.5,
    "total": 43.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401856875": {
@@ -241,7 +241,7 @@
    "total_play": true,
    "spread": -2.5,
    "total": 47.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401856876": {
@@ -262,7 +262,7 @@
    "total_play": false,
    "spread": -16.5,
    "total": 55.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401856877": {
@@ -283,7 +283,7 @@
    "total_play": false,
    "spread": -6,
    "total": 64.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401856878": {
@@ -295,16 +295,16 @@
    "away": "KSU",
    "date": "2026-11-28T19:00Z",
    "pick": "KSU",
-   "pick_line": "KSU +4.0",
+   "pick_line": "KSU +4.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 3.3,
+   "our_margin": 3.63,
    "our_total": 52.5,
    "confidence": null,
    "total_play": false,
-   "spread": -4,
+   "spread": -4.5,
    "total": 52.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401856879": {
@@ -375,7 +375,7 @@
    "total_play": false,
    "spread": -24.5,
    "total": 54.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401858312": {
@@ -396,7 +396,7 @@
    "total_play": false,
    "spread": -14.5,
    "total": 55.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401858314": {
@@ -417,7 +417,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 53.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401858315": {
@@ -438,7 +438,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 47.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401858316": {
@@ -459,7 +459,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 60.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401858317": {
@@ -480,7 +480,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 50.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401858537": {
@@ -501,7 +501,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 48.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401858538": {
@@ -522,7 +522,7 @@
    "total_play": false,
    "spread": -23.5,
    "total": 52.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401858539": {
@@ -543,7 +543,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 48.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401858540": {
@@ -564,7 +564,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 37.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401858541": {
@@ -585,7 +585,7 @@
    "total_play": false,
    "spread": -13.5,
    "total": 51.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401858542": {
@@ -606,7 +606,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 45.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401858543": {
@@ -627,7 +627,7 @@
    "total_play": false,
    "spread": 5.5,
    "total": 46.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401858544": {
@@ -673,7 +673,7 @@
    "total_play": true,
    "spread": 21.5,
    "total": 76.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401860929": {
@@ -694,7 +694,7 @@
    "total_play": false,
    "spread": -3,
    "total": 46.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401861969": {
@@ -715,7 +715,7 @@
    "total_play": true,
    "spread": 3.5,
    "total": 44.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401862837": {
@@ -736,7 +736,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 58.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401862838": {
@@ -807,7 +807,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 46.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401862842": {
@@ -828,7 +828,7 @@
    "total_play": false,
    "spread": 16.5,
    "total": 53.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401862843": {
@@ -849,7 +849,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401864546": {
@@ -920,7 +920,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 50.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401866470": {
@@ -1041,7 +1041,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 50.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401866475": {
@@ -1062,7 +1062,7 @@
    "total_play": false,
    "spread": -3,
    "total": 41.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401869930": {
@@ -1108,7 +1108,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401869947": {
@@ -1129,7 +1129,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 54.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401869954": {
@@ -1150,7 +1150,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 52.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401869959": {
@@ -1171,7 +1171,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 54.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401870804": {
@@ -1192,7 +1192,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 54.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401871062": {
@@ -1213,7 +1213,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 58.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401871063": {
@@ -1234,7 +1234,7 @@
    "total_play": false,
    "spread": 18.5,
    "total": 52.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401871082": {
@@ -1255,7 +1255,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 41.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401871083": {
@@ -1276,7 +1276,7 @@
    "total_play": false,
    "spread": -3,
    "total": 51.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401871102": {
@@ -1297,7 +1297,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 51.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401871103": {
@@ -1318,7 +1318,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 49.5,
-   "lockedAt": "2026-11-28T12:31:51.415Z",
+   "lockedAt": "2026-11-28T12:46:28.213Z",
    "provisional": true
   },
   "401873079": {
@@ -3334,12 +3334,12 @@
     "ours": "TBD -17.8 · total 74.9",
     "score": "TBD 46.4 – CSU 28.6",
     "market": "TBD -21.5 · total 76.5",
-    "lockedAt": "2026-11-28T12:31:51.473Z",
+    "lockedAt": "2026-11-28T12:46:28.257Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T23:00Z",
     "big": true,
-    "savedAt": 1795869111473
+    "savedAt": 1795869988257
    }
   ],
   "cfbHit": [
@@ -3481,30 +3481,30 @@
     "week": 13,
     "day": "2026-11-28",
     "league": "cfbHit",
-    "id": "401860926",
-    "game": "TBD @ CSU",
+    "id": "401862837",
+    "game": "FAU @ ECU",
     "kind": "Under",
-    "line": "UNDER 76.5",
-    "hitPct": 56,
-    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 76.5. Our total is 1.6 points under DraftKings 76.5. Why: Wind 17 mph, gusts to 37. The total moved -1.6. At -110 the price needs 52%; we count it at 56%, so it's 7.5% better than the price.",
+    "line": "UNDER 58.5",
+    "hitPct": 54,
+    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 58.5. At -110 the price needs 52%; we count it at 54%, so it's 3.7% better than the price.",
     "label": "Best chance to hit · Saturday",
     "result": null,
     "final": null,
     "resultWhy": "",
-    "units": 2,
+    "units": 1,
     "price": -110,
     "book": "standard -110",
     "bookPct": 50,
-    "ev": 0.075,
-    "ours": "TBD -17.8 · total 74.9",
-    "score": "TBD 46.4 – CSU 28.6",
-    "market": "TBD -21.5 · total 76.5",
-    "lockedAt": "2026-11-28T12:31:51.477Z",
+    "ev": 0.037,
+    "ours": "ECU -1.9 · total 58.5",
+    "score": "FAU 28.3 – ECU 30.2",
+    "market": "ECU -1.5 · total 58.5",
+    "lockedAt": "2026-11-28T12:46:28.261Z",
     "locked": false,
     "provisional": true,
-    "kick": "2026-11-28T23:00Z",
+    "kick": "2026-11-28T18:00Z",
     "big": true,
-    "savedAt": 1795869111477
+    "savedAt": 1795869988261
    }
   ]
  },
@@ -3620,7 +3620,7 @@
    }
   ]
  },
- "updated": "2026-11-28T12:31:51.415Z",
+ "updated": "2026-11-28T12:46:28.213Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
