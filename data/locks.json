@@ -44,7 +44,7 @@
    "total_play": false,
    "spread": -14.5,
    "total": 51.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401856758": {
@@ -65,7 +65,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 49.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401856759": {
@@ -111,7 +111,7 @@
    "total_play": false,
    "spread": -35.5,
    "total": 55.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401856761": {
@@ -124,16 +124,15 @@
    "date": "2026-11-28T17:00Z",
    "pick": "LOU",
    "pick_line": "LOU -3.0",
-   "total_pick": "UNDER 53.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
    "our_margin": -3.5,
-   "our_total": 52.6,
+   "our_total": 53.5,
    "confidence": null,
    "total_play": false,
    "spread": 3,
    "total": 53.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
-   "provisional": true
+   "lockedAt": "2026-11-28T15:31:42.993Z"
   },
   "401856762": {
    "id": "401856762",
@@ -178,7 +177,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 41.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401856764": {
@@ -193,13 +192,13 @@
    "pick_line": "CLEM +6.5",
    "total_pick": "NO PLAY",
    "side_play": true,
-   "our_margin": -4.3,
+   "our_margin": -4.63,
    "our_total": 42.5,
    "confidence": 51,
    "total_play": false,
-   "spread": 6.5,
+   "spread": 7,
    "total": 42.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401856765": {
@@ -220,7 +219,7 @@
    "total_play": false,
    "spread": 13.5,
    "total": 43.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401856873": {
@@ -241,7 +240,7 @@
    "total_play": false,
    "spread": -9.5,
    "total": 53.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401856875": {
@@ -254,15 +253,15 @@
    "date": "2026-11-28T19:00Z",
    "pick": "UCF",
    "pick_line": "UCF +2.5",
-   "total_pick": "OVER 46.5",
+   "total_pick": "UNDER 45.5",
    "side_play": false,
    "our_margin": 1.8,
-   "our_total": 46.1,
-   "confidence": null,
-   "total_play": false,
+   "our_total": 43.9,
+   "confidence": 51,
+   "total_play": true,
    "spread": -2.5,
-   "total": 46.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "total": 45.5,
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401856876": {
@@ -283,7 +282,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 54.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401856877": {
@@ -304,7 +303,7 @@
    "total_play": false,
    "spread": -6,
    "total": 65.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401856878": {
@@ -325,7 +324,7 @@
    "total_play": false,
    "spread": -4.5,
    "total": 52.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401856879": {
@@ -396,8 +395,7 @@
    "total_play": false,
    "spread": -24.5,
    "total": 55.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
-   "provisional": true
+   "lockedAt": "2026-11-28T15:31:42.993Z"
   },
   "401858312": {
    "id": "401858312",
@@ -417,7 +415,7 @@
    "total_play": false,
    "spread": -14.5,
    "total": 55.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401858314": {
@@ -438,8 +436,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 53.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
-   "provisional": true
+   "lockedAt": "2026-11-28T15:31:42.993Z"
   },
   "401858315": {
    "id": "401858315",
@@ -459,7 +456,7 @@
    "total_play": false,
    "spread": 9.5,
    "total": 47.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401858316": {
@@ -472,15 +469,15 @@
    "date": "2026-11-28T20:30Z",
    "pick": "STAN",
    "pick_line": "STAN +7.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "UNDER 59.5",
    "side_play": false,
    "our_margin": -6.8,
-   "our_total": 60.5,
+   "our_total": 59.9,
    "confidence": null,
    "total_play": false,
    "spread": 7.5,
-   "total": 60.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "total": 59.5,
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401858317": {
@@ -501,7 +498,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 50.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401858537": {
@@ -522,7 +519,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 48.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401858538": {
@@ -543,7 +540,7 @@
    "total_play": false,
    "spread": -23.5,
    "total": 52.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401858539": {
@@ -556,15 +553,15 @@
    "date": "2026-11-28T20:30Z",
    "pick": "PSU",
    "pick_line": "PSU -7.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "UNDER 48.5",
    "side_play": false,
    "our_margin": -7.7,
-   "our_total": 48.5,
+   "our_total": 47.6,
    "confidence": null,
    "total_play": false,
    "spread": 7.5,
    "total": 48.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401858540": {
@@ -585,8 +582,7 @@
    "total_play": false,
    "spread": -10,
    "total": 36.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
-   "provisional": true
+   "lockedAt": "2026-11-28T15:31:42.993Z"
   },
   "401858541": {
    "id": "401858541",
@@ -606,7 +602,7 @@
    "total_play": false,
    "spread": -13.5,
    "total": 51.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401858542": {
@@ -627,7 +623,7 @@
    "total_play": false,
    "spread": 2.5,
    "total": 45.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401858543": {
@@ -640,15 +636,15 @@
    "date": "2026-11-28T20:30Z",
    "pick": "UCLA",
    "pick_line": "UCLA +4.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "OVER 46.5",
    "side_play": true,
    "our_margin": -1.5,
-   "our_total": 45.5,
+   "our_total": 46.1,
    "confidence": 51,
    "total_play": false,
    "spread": 4.5,
-   "total": 45.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "total": 46.5,
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401858544": {
@@ -694,7 +690,7 @@
    "total_play": true,
    "spread": 21.5,
    "total": 76.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401860927": {
@@ -715,7 +711,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 59.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401860928": {
@@ -736,7 +732,7 @@
    "total_play": false,
    "spread": 7.5,
    "total": 53.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401860929": {
@@ -757,7 +753,7 @@
    "total_play": false,
    "spread": -3,
    "total": 46.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401861969": {
@@ -773,13 +769,12 @@
    "total_pick": "UNDER 44.5",
    "side_play": false,
    "our_margin": -2.2,
-   "our_total": 43.6,
-   "confidence": null,
-   "total_play": false,
+   "our_total": 42.9,
+   "confidence": 51,
+   "total_play": true,
    "spread": 3.5,
    "total": 44.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
-   "provisional": true
+   "lockedAt": "2026-11-28T15:31:42.993Z"
   },
   "401862837": {
    "id": "401862837",
@@ -789,17 +784,17 @@
    "home": "ECU",
    "away": "FAU",
    "date": "2026-11-28T18:00Z",
-   "pick": "ECU",
-   "pick_line": "ECU -1.5",
+   "pick": "FAU",
+   "pick_line": "FAU +2.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 1.7,
+   "our_margin": 2.35,
    "our_total": 58.5,
    "confidence": null,
    "total_play": false,
-   "spread": -1.5,
+   "spread": -2.5,
    "total": 58.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401862838": {
@@ -845,7 +840,7 @@
    "total_play": false,
    "spread": -7,
    "total": 44.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401862840": {
@@ -891,7 +886,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 45.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401862842": {
@@ -912,8 +907,7 @@
    "total_play": false,
    "spread": 16.5,
    "total": 53.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
-   "provisional": true
+   "lockedAt": "2026-11-28T15:31:42.993Z"
   },
   "401862843": {
    "id": "401862843",
@@ -933,7 +927,7 @@
    "total_play": false,
    "spread": -2.5,
    "total": 44.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401864546": {
@@ -979,7 +973,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 44.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401864549": {
@@ -1025,7 +1019,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 51.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401866470": {
@@ -1146,8 +1140,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 49.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
-   "provisional": true
+   "lockedAt": "2026-11-28T15:31:42.993Z"
   },
   "401866475": {
    "id": "401866475",
@@ -1158,16 +1151,16 @@
    "away": "MASS",
    "date": "2026-11-28T20:30Z",
    "pick": "MASS",
-   "pick_line": "MASS +3.0",
+   "pick_line": "MASS +3.5",
    "total_pick": "UNDER 41.5",
    "side_play": false,
-   "our_margin": 1.5,
+   "our_margin": 1.83,
    "our_total": 40.6,
    "confidence": null,
    "total_play": false,
-   "spread": -3,
+   "spread": -3.5,
    "total": 41.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401869930": {
@@ -1213,7 +1206,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401869947": {
@@ -1234,7 +1227,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 54.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401869954": {
@@ -1255,8 +1248,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 52.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
-   "provisional": true
+   "lockedAt": "2026-11-28T15:31:42.993Z"
   },
   "401869959": {
    "id": "401869959",
@@ -1276,7 +1268,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 55.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401870804": {
@@ -1297,7 +1289,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 54.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401871062": {
@@ -1310,15 +1302,15 @@
    "date": "2026-11-28T20:30Z",
    "pick": "JXST",
    "pick_line": "JXST +2.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "UNDER 57.5",
    "side_play": false,
    "our_margin": 1.7,
-   "our_total": 57.5,
+   "our_total": 56.6,
    "confidence": null,
    "total_play": false,
    "spread": -2.5,
    "total": 57.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401871063": {
@@ -1339,7 +1331,7 @@
    "total_play": false,
    "spread": 18.5,
    "total": 52.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401871082": {
@@ -1360,7 +1352,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 41.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401871083": {
@@ -1373,15 +1365,15 @@
    "date": "2026-11-28T19:00Z",
    "pick": "MTSU",
    "pick_line": "MTSU -3.0",
-   "total_pick": "UNDER 51.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
    "our_margin": 3.3,
-   "our_total": 50.6,
+   "our_total": 51.5,
    "confidence": null,
    "total_play": false,
    "spread": -3,
    "total": 51.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401871102": {
@@ -1402,7 +1394,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 51.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401871103": {
@@ -1414,16 +1406,16 @@
    "away": "USM",
    "date": "2026-11-28T18:00Z",
    "pick": "USM",
-   "pick_line": "USM +5.5",
+   "pick_line": "USM +4.5",
    "total_pick": "NO PLAY",
    "side_play": false,
-   "our_margin": 4.7,
+   "our_margin": 4.05,
    "our_total": 48.5,
    "confidence": null,
    "total_play": false,
-   "spread": -5.5,
+   "spread": -4.5,
    "total": 48.5,
-   "lockedAt": "2026-11-28T15:16:19.037Z",
+   "lockedAt": "2026-11-28T15:31:42.993Z",
    "provisional": true
   },
   "401873079": {
@@ -3426,7 +3418,7 @@
     "kind": "Under",
     "line": "UNDER 76.5",
     "hitPct": 56,
-    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 76.5. Our total is 1.6 points under DraftKings 76.5. Why: Wind 18 mph, gusts to 39. The total moved -1.6. At -110 the price needs 52%; we count it at 56%, so it's 7.5% better than the price.",
+    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 76.5. Our total is 1.6 points under DraftKings 76.5. Why: Wind 19 mph, gusts to 37. The total moved -1.6. At -110 the price needs 52%; we count it at 56%, so it's 7.5% better than the price.",
     "label": "Best of Saturday's 52 games",
     "result": null,
     "final": null,
@@ -3439,12 +3431,12 @@
     "ours": "TBD -18.0 · total 74.9",
     "score": "TBD 46.5 – CSU 28.5",
     "market": "TBD -21.5 · total 76.5",
-    "lockedAt": "2026-11-28T15:16:19.084Z",
+    "lockedAt": "2026-11-28T15:31:43.046Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T23:00Z",
     "big": true,
-    "savedAt": 1795878979084
+    "savedAt": 1795879903046
    }
   ],
   "cfbHit": [
@@ -3601,15 +3593,15 @@
     "book": "standard -110",
     "bookPct": 50,
     "ev": 0.037,
-    "ours": "ECU -1.7 · total 58.5",
-    "score": "FAU 28.4 – ECU 30.1",
-    "market": "ECU -1.5 · total 58.5",
-    "lockedAt": "2026-11-28T15:16:19.088Z",
+    "ours": "ECU -2.4 · total 58.5",
+    "score": "FAU 28.1 – ECU 30.4",
+    "market": "ECU -2.5 · total 58.5",
+    "lockedAt": "2026-11-28T15:31:43.050Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T18:00Z",
     "big": true,
-    "savedAt": 1795878979088
+    "savedAt": 1795879903050
    }
   ]
  },
@@ -3725,7 +3717,7 @@
    }
   ]
  },
- "updated": "2026-11-28T15:16:19.037Z",
+ "updated": "2026-11-28T15:31:42.993Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -4801,8 +4793,8 @@
    "from": 1.5,
    "to": 7.5,
    "book": null,
-   "win": 0.749,
-   "bookWin": 0.7489,
+   "win": 0.7491,
+   "bookWin": 0.749,
    "total": 42.5,
    "result": null,
    "final": null
@@ -8682,23 +8674,23 @@
    "units": null
   },
   {
-   "id": "401856761|tot|under",
-   "gid": "401856761",
+   "id": "401861969|tot|under",
+   "gid": "401861969",
    "league": "cfb",
    "kind": "tot",
    "side": "under",
-   "label": "Under 42.5",
-   "game": "LOU @ UK",
+   "label": "Under 34.5",
+   "game": "CONN @ WYO",
    "kick": "2026-11-28T17:00Z",
-   "line": 42.5,
-   "mainLine": 53.5,
-   "price": 291,
-   "book": "DraftKings",
-   "win": 0.2649,
+   "line": 34.5,
+   "mainLine": 44.5,
+   "price": 285,
+   "book": "FanDuel",
+   "win": 0.2689,
    "mwin": 0.2603,
-   "ev": 0.0357,
-   "mev": 0.0177,
-   "src": "mkt",
+   "ev": 0.0353,
+   "mev": 0.0021,
+   "src": "proj",
    "result": null,
    "final": null,
    "units": null
@@ -8902,6 +8894,28 @@
    "units": null
   },
   {
+   "id": "401856875|tot|under",
+   "gid": "401856875",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 37.5",
+   "game": "UCF @ COLO",
+   "kick": "2026-11-28T19:00Z",
+   "line": 37.5,
+   "mainLine": 45.5,
+   "price": 240,
+   "book": "FanDuel",
+   "win": 0.3078,
+   "mwin": 0.2986,
+   "ev": 0.0464,
+   "mev": 0.0151,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
    "id": "401858317|tot|under",
    "gid": "401858317",
    "league": "cfb",
@@ -8918,6 +8932,28 @@
    "mwin": 0.2687,
    "ev": 0.0938,
    "mev": 0.0746,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401856764|sp|home",
+   "gid": "401856764",
+   "league": "cfb",
+   "kind": "sp",
+   "side": "home",
+   "label": "CLEM -3",
+   "game": "SC @ CLEM",
+   "kick": "2026-11-28T20:00Z",
+   "line": -3,
+   "mainLine": 7,
+   "price": 280,
+   "book": "Fanatics",
+   "win": 0.2583,
+   "mwin": 0.2526,
+   "ev": 0.0371,
+   "mev": 0.0146,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -8980,9 +9016,9 @@
    "mainLine": 48.5,
    "price": 280,
    "book": "FanDuel",
-   "win": 0.2744,
+   "win": 0.2792,
    "mwin": 0.2744,
-   "ev": 0.0427,
+   "ev": 0.0609,
    "mev": 0.0427,
    "src": "mkt",
    "result": null,
@@ -9072,6 +9108,28 @@
    "mwin": 0.2909,
    "ev": 0.0327,
    "mev": 0.0327,
+   "src": "mkt",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "id": "401858543|tot|under",
+   "gid": "401858543",
+   "league": "cfb",
+   "kind": "tot",
+   "side": "under",
+   "label": "Under 36.5",
+   "game": "USC @ UCLA",
+   "kick": "2026-11-28T20:30Z",
+   "line": 36.5,
+   "mainLine": 46.5,
+   "price": 300,
+   "book": "ESPN BET",
+   "win": 0.258,
+   "mwin": 0.2559,
+   "ev": 0.0321,
+   "mev": 0.0237,
    "src": "mkt",
    "result": null,
    "final": null,
@@ -13857,6 +13915,150 @@
    "result": "HIT",
    "units": 0.9091,
    "final": "WVU 28, UTAH 52"
+  },
+  {
+   "id": "401856761",
+   "league": "cfb",
+   "gid": "401856761",
+   "side": "away",
+   "team": "LOU",
+   "game": "LOU @ UK",
+   "kick": "2026-11-28T17:00Z",
+   "line": -3,
+   "price": -110,
+   "book": "standard",
+   "ours": -3.5,
+   "market": -3,
+   "label": "LOU -3",
+   "lockedAt": "2026-11-28T15:31:42.993Z"
+  },
+  {
+   "id": "401858314",
+   "league": "cfb",
+   "gid": "401858314",
+   "side": "home",
+   "team": "SYR",
+   "game": "ND @ SYR",
+   "kick": "2026-11-28T17:00Z",
+   "line": 25.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 22.3,
+   "market": 25.5,
+   "label": "SYR +25.5",
+   "lockedAt": "2026-11-28T15:31:42.993Z"
+  },
+  {
+   "id": "401858311",
+   "league": "cfb",
+   "gid": "401858311",
+   "side": "home",
+   "team": "MIA",
+   "game": "BC @ MIA",
+   "kick": "2026-11-28T17:00Z",
+   "line": -24.5,
+   "price": -110,
+   "book": "standard",
+   "ours": -25.4,
+   "market": -24.5,
+   "label": "MIA -24.5",
+   "lockedAt": "2026-11-28T15:31:42.993Z"
+  },
+  {
+   "id": "401858540",
+   "league": "cfb",
+   "gid": "401858540",
+   "side": "home",
+   "team": "OSU",
+   "game": "MICH @ OSU",
+   "kick": "2026-11-28T17:00Z",
+   "line": -10,
+   "price": -110,
+   "book": "standard",
+   "ours": -11.3,
+   "market": -10,
+   "label": "OSU -10",
+   "lockedAt": "2026-11-28T15:31:42.993Z"
+  },
+  {
+   "id": "401858313",
+   "league": "cfb",
+   "gid": "401858313",
+   "side": "away",
+   "team": "NCSU",
+   "game": "NCSU @ UNC",
+   "kick": "2026-11-28T17:00Z",
+   "line": 5.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 5.5,
+   "market": 5.5,
+   "label": "NCSU +5.5",
+   "lockedAt": "2026-11-28T15:31:42.993Z"
+  },
+  {
+   "id": "401861969",
+   "league": "cfb",
+   "gid": "401861969",
+   "side": "home",
+   "team": "WYO",
+   "game": "CONN @ WYO",
+   "kick": "2026-11-28T17:00Z",
+   "line": 3.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 2.2,
+   "market": 3.5,
+   "label": "WYO +3.5",
+   "lockedAt": "2026-11-28T15:31:42.993Z"
+  },
+  {
+   "id": "401862842",
+   "league": "cfb",
+   "gid": "401862842",
+   "side": "home",
+   "team": "CLT",
+   "game": "NAVY @ CLT",
+   "kick": "2026-11-28T17:00Z",
+   "line": 16.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 14.5,
+   "market": 16.5,
+   "label": "CLT +16.5",
+   "lockedAt": "2026-11-28T15:31:42.993Z"
+  },
+  {
+   "id": "401866474",
+   "league": "cfb",
+   "gid": "401866474",
+   "side": "home",
+   "team": "BALL",
+   "game": "CMU @ BALL",
+   "kick": "2026-11-28T17:00Z",
+   "line": 3.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 3.5,
+   "market": 3.5,
+   "label": "BALL +3.5",
+   "lockedAt": "2026-11-28T15:31:42.993Z"
+  },
+  {
+   "id": "401869954",
+   "league": "cfb",
+   "gid": "401869954",
+   "side": "away",
+   "team": "LT",
+   "game": "LT @ GASO",
+   "kick": "2026-11-28T17:00Z",
+   "line": 1.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 0.9,
+   "market": 1.5,
+   "label": "LT +1.5",
+   "lockedAt": "2026-11-28T15:31:42.993Z"
   }
  ]
 }
