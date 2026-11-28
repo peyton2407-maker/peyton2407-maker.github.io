@@ -2493,11 +2493,12 @@
     "score": "WVU 21.1 – UTAH 44.5",
     "market": "UTAH -25.5 · total 65.5",
     "lockedAt": "2026-11-27T21:16:44.130Z",
-    "locked": false,
-    "provisional": true,
+    "locked": true,
+    "provisional": false,
     "kick": "2026-11-28T02:00Z",
     "big": true,
-    "savedAt": 1795814204130
+    "savedAt": 1795814204130,
+    "note": "No lock run landed in the 90 minutes before kickoff; this is the last play saved before kickoff."
    }
   ]
  },
@@ -2613,7 +2614,7 @@
    }
   ]
  },
- "updated": "2026-11-28T01:16:43.050Z",
+ "updated": "2026-11-28T02:01:53.406Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -3689,8 +3690,8 @@
    "from": 1.5,
    "to": 7.5,
    "book": null,
-   "win": 0.7574,
-   "bookWin": 0.749,
+   "win": 0.7573,
+   "bookWin": 0.7491,
    "total": 42.5,
    "result": null,
    "final": null
@@ -9286,6 +9287,28 @@
    "mkt": 0.5106,
    "win": 0.6268,
    "ev": 0.0745,
+   "rule": "likely",
+   "result": null,
+   "final": null,
+   "units": null
+  },
+  {
+   "key": "401873094|4241416",
+   "gid": "401873094",
+   "pid": "4241416",
+   "name": "Chuba Hubbard",
+   "pos": "RB",
+   "team": "CAR",
+   "opp": "TB",
+   "game": "CAR @ TB",
+   "kick": "2026-12-01T01:15Z",
+   "price": 100,
+   "book": "DraftKings",
+   "books": 5,
+   "ours": 0.5884,
+   "mkt": 0.4442,
+   "win": 0.5371,
+   "ev": 0.0742,
    "rule": "likely",
    "result": null,
    "final": null,
