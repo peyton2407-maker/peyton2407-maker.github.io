@@ -2614,7 +2614,7 @@
    }
   ]
  },
- "updated": "2026-11-28T02:16:41.555Z",
+ "updated": "2026-11-28T02:32:17.535Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7712,12 +7712,12 @@
    "game": "UCF @ COLO",
    "kick": "2026-11-28T19:00Z",
    "line": 39.5,
-   "mainLine": 48.5,
+   "mainLine": 47.5,
    "price": 250,
    "book": "FanDuel",
-   "win": 0.3091,
+   "win": 0.2979,
    "mwin": 0.3001,
-   "ev": 0.0817,
+   "ev": 0.0427,
    "mev": 0.0505,
    "src": "mkt",
    "result": null,
