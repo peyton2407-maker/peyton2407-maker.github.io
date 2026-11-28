@@ -69,7 +69,7 @@
    "total_play": false,
    "spread": 3,
    "total": 53.5,
-   "lockedAt": "2026-11-28T05:01:32.711Z",
+   "lockedAt": "2026-11-28T05:31:43.330Z",
    "provisional": true
   },
   "401856762": {
@@ -165,7 +165,7 @@
    "total_play": false,
    "spread": -24.5,
    "total": 54.5,
-   "lockedAt": "2026-11-28T05:01:32.711Z",
+   "lockedAt": "2026-11-28T05:31:43.330Z",
    "provisional": true
   },
   "401858314": {
@@ -186,7 +186,28 @@
    "total_play": false,
    "spread": 25.5,
    "total": 53.5,
-   "lockedAt": "2026-11-28T05:01:32.711Z",
+   "lockedAt": "2026-11-28T05:31:43.330Z",
+   "provisional": true
+  },
+  "401858537": {
+   "id": "401858537",
+   "league": "cfb",
+   "week": 13,
+   "short": "ILL @ NU",
+   "home": "NU",
+   "away": "ILL",
+   "date": "2026-11-28T17:30Z",
+   "pick": "NU",
+   "pick_line": "NU -3.5",
+   "total_pick": "UNDER 48.5",
+   "side_play": false,
+   "our_margin": 4.5,
+   "our_total": 47.6,
+   "confidence": null,
+   "total_play": false,
+   "spread": -3.5,
+   "total": 48.5,
+   "lockedAt": "2026-11-28T05:31:43.330Z",
    "provisional": true
   },
   "401858540": {
@@ -207,7 +228,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 37.5,
-   "lockedAt": "2026-11-28T05:01:32.711Z",
+   "lockedAt": "2026-11-28T05:31:43.330Z",
    "provisional": true
   },
   "401858544": {
@@ -253,7 +274,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 44.5,
-   "lockedAt": "2026-11-28T05:01:32.711Z",
+   "lockedAt": "2026-11-28T05:31:43.330Z",
    "provisional": true
   },
   "401862838": {
@@ -324,7 +345,7 @@
    "total_play": false,
    "spread": 16.5,
    "total": 54.5,
-   "lockedAt": "2026-11-28T05:01:32.711Z",
+   "lockedAt": "2026-11-28T05:31:43.330Z",
    "provisional": true
   },
   "401864546": {
@@ -495,7 +516,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 50.5,
-   "lockedAt": "2026-11-28T05:01:32.711Z",
+   "lockedAt": "2026-11-28T05:31:43.330Z",
    "provisional": true
   },
   "401869930": {
@@ -541,7 +562,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 52.5,
-   "lockedAt": "2026-11-28T05:01:32.711Z",
+   "lockedAt": "2026-11-28T05:31:43.330Z",
    "provisional": true
   },
   "401873079": {
@@ -2782,7 +2803,7 @@
    }
   ]
  },
- "updated": "2026-11-28T05:01:32.711Z",
+ "updated": "2026-11-28T05:31:43.330Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7814,12 +7835,12 @@
    "game": "KENN @ WKU",
    "kick": "2026-11-28T18:00Z",
    "line": 43.5,
-   "mainLine": 53.5,
+   "mainLine": 54.5,
    "price": 285,
    "book": "FanDuel",
-   "win": 0.2734,
+   "win": 0.2707,
    "mwin": 0.2687,
-   "ev": 0.0528,
+   "ev": 0.0421,
    "mev": 0.0343,
    "src": "mkt",
    "result": null,
