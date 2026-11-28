@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-11-27T03:47:00Z",
+ "checked_at": "2026-11-28T03:30:09Z",
  "errors": [],
  "console": [
   "Failed to load resource: the server responded with a status of 404 ()",
@@ -14,38 +14,20 @@
   "Failed to load resource: the server responded with a status of 404 ()",
   "Failed to load resource: the server responded with a status of 404 ()",
   "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
   "Failed to load resource: the server responded with a status of 404 ()",
   "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
   "Failed to load resource: the server responded with a status of 404 ()",
   "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT",
   "Failed to load resource: the server responded with a status of 404 ()",
-  "Failed to load resource: net::ERR_TIMED_OUT",
-  "Failed to load resource: net::ERR_TIMED_OUT"
+  "Failed to load resource: the server responded with a status of 404 ()",
+  "Failed to load resource: the server responded with a status of 404 ()"
  ],
- "failed_requests": {
-  "api.open-meteo.com": {
-   "count": 24,
-   "example": "https://api.open-meteo.com/v1/forecast?latitude=33.591&longitude=-101.872&hourly=temperature_2m,precipitation_probability,precipitation,weathercode,windspeed_10m,windgusts_10m,relativehumidity_2m&dail",
-   "reason": "net::ERR_ABORTED"
-  }
- },
+ "failed_requests": {},
  "bad_status": {
   "a.espncdn.com": {
-   "count": 17,
+   "count": 19,
    "statuses": {
-    "404": 17
+    "404": 19
    },
    "example": "https://a.espncdn.com/i/teamlogos/ncaa/500/-1.png"
   }
@@ -53,38 +35,38 @@
  "screens": {
   "home": {
    "visible": true,
-   "count": 28,
+   "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 2005,
-   "images": 51,
+   "chars": 2291,
+   "images": 63,
    "broken_images": []
   },
   "nfl": {
    "visible": true,
-   "count": 13,
+   "count": 11,
    "summary": [],
    "empty": [],
-   "chars": 4776,
-   "images": 35,
+   "chars": 4972,
+   "images": 32,
    "broken_images": []
   },
   "cfb": {
    "visible": true,
-   "count": 75,
+   "count": 64,
    "summary": [],
    "empty": [],
-   "chars": 11081,
-   "images": 89,
+   "chars": 9780,
+   "images": 110,
    "broken_images": []
   },
   "builder": {
    "visible": true,
-   "count": 13,
+   "count": 24,
    "summary": [],
    "empty": [],
-   "chars": 2424,
-   "images": 14,
+   "chars": 2408,
+   "images": 23,
    "broken_images": []
   },
   "season": {
@@ -92,7 +74,7 @@
    "count": 42,
    "summary": [],
    "empty": [],
-   "chars": 3220,
+   "chars": 3198,
    "images": 42,
    "broken_images": []
   },
@@ -101,7 +83,7 @@
    "count": 595,
    "summary": [],
    "empty": [],
-   "chars": 39187,
+   "chars": 39153,
    "images": 0,
    "broken_images": []
   },
@@ -110,7 +92,7 @@
    "count": 35,
    "summary": [],
    "empty": [],
-   "chars": 3467,
+   "chars": 3546,
    "images": 35,
    "broken_images": []
   },
@@ -128,8 +110,8 @@
    "count": 80,
    "summary": [],
    "empty": [],
-   "chars": 6651,
-   "images": 14,
+   "chars": 6795,
+   "images": 12,
    "broken_images": []
   },
   "tds": {
@@ -137,36 +119,36 @@
    "count": 1,
    "summary": [],
    "empty": [],
-   "chars": 3940,
-   "images": 27,
+   "chars": 3992,
+   "images": 28,
    "broken_images": []
   },
   "charts": {
    "visible": true,
-   "count": 27,
+   "count": 25,
    "summary": [],
    "empty": [],
-   "chars": 4011,
-   "images": 4,
+   "chars": 4072,
+   "images": 5,
    "broken_images": []
   },
   "value": {
    "visible": true,
    "count": 72,
    "summary": [
-    "296 value tickets in this filter 105 TD plus-money 5 spread / dog sides 99% b"
+    "282 value tickets in this filter 95 TD plus-money 11 spread / dog sides 92% b"
    ],
    "empty": [],
-   "chars": 3373,
-   "images": 33,
+   "chars": 3402,
+   "images": 37,
    "broken_images": []
   },
   "parlay": {
    "visible": true,
-   "count": 5,
+   "count": 4,
    "summary": [],
    "empty": [],
-   "chars": 3898,
+   "chars": 3800,
    "images": 0,
    "broken_images": []
   },
@@ -175,30 +157,31 @@
    "count": 2,
    "summary": [],
    "empty": [],
-   "chars": 2637,
-   "images": 12,
+   "chars": 2917,
+   "images": 15,
    "broken_images": []
   },
   "nflinj": {
    "visible": true,
    "count": 61,
    "summary": [
-    "519 listed THU \u00b7 10:46 PM ET 540 listed FRI Not posted SAT Not posted ",
+    "519 listed THU \u00b7 11:50 PM ET 540 listed FRI \u00b7 10:18 PM ET 510 listed S",
     "36 listed CHI @ DET 38 listed PHI @ DAL 28 listed KC @ BUF 26 listed ",
-    "540 listed 0 probable \u00b7 75% 154 questionable / GTD \u00b7 50% 2 doubtful \u00b7 "
+    "31 listed NO @ CIN 90 min before kick NYG @ IND 90 min before kick NY",
+    "510 listed 0 probable \u00b7 75% 63 questionable / GTD \u00b7 50% 2 doubtful \u00b7 2"
    ],
    "empty": [],
-   "chars": 4384,
+   "chars": 4402,
    "images": 3,
    "broken_images": []
   },
   "nflwx": {
    "visible": true,
-   "count": 14,
+   "count": 16,
    "summary": [],
    "empty": [],
-   "chars": 4714,
-   "images": 28,
+   "chars": 5135,
+   "images": 32,
    "broken_images": []
   },
   "nflpotd": {
@@ -206,7 +189,7 @@
    "count": 4,
    "summary": [],
    "empty": [],
-   "chars": 3919,
+   "chars": 4079,
    "images": 2,
    "broken_images": []
   },
@@ -215,8 +198,8 @@
    "count": 18,
    "summary": [],
    "empty": [],
-   "chars": 7248,
-   "images": 34,
+   "chars": 7025,
+   "images": 28,
    "broken_images": []
   }
  },
@@ -224,7 +207,7 @@
   "open": true,
   "hero": true,
   "shown_twice": false,
-  "logos_ok": 17
+  "logos_ok": 15
  },
  "split": {
   "games": 21,
@@ -233,6 +216,6 @@
   "errors": []
  },
  "dk_lines_loaded": null,
- "games_with_props": 27,
- "nfl_games_upcoming": 27
+ "games_with_props": 25,
+ "nfl_games_upcoming": 25
 }
