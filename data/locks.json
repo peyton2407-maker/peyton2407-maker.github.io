@@ -119,8 +119,7 @@
    "total_play": false,
    "spread": -25.5,
    "total": 65.5,
-   "lockedAt": "2026-11-28T00:17:00.339Z",
-   "provisional": true
+   "lockedAt": "2026-11-28T00:31:39.751Z"
   },
   "401858544": {
    "id": "401858544",
@@ -2351,12 +2350,11 @@
     "ours": "UTAH -23.4 · total 65.5",
     "score": "WVU 21.1 – UTAH 44.5",
     "market": "UTAH -25.5 · total 65.5",
-    "lockedAt": "2026-11-28T00:17:00.391Z",
-    "locked": false,
-    "provisional": true,
+    "lockedAt": "2026-11-28T00:31:39.816Z",
+    "locked": true,
     "kick": "2026-11-28T02:00Z",
     "big": false,
-    "savedAt": 1795825020391
+    "savedAt": 1795825899816
    }
   ],
   "cfbHit": [
@@ -2606,7 +2604,7 @@
    }
   ]
  },
- "updated": "2026-11-28T00:17:00.339Z",
+ "updated": "2026-11-28T00:31:39.751Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -8069,28 +8067,6 @@
    "units": null
   },
   {
-   "id": "401858542|tot|under",
-   "gid": "401858542",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 36.5",
-   "game": "MSU @ RUTG",
-   "kick": "2026-11-28T21:15Z",
-   "line": 36.5,
-   "mainLine": 46.5,
-   "price": 300,
-   "book": "FanDuel",
-   "win": 0.2576,
-   "mwin": 0.2576,
-   "ev": 0.0305,
-   "mev": 0.0305,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
    "id": "401856763|tot|under",
    "gid": "401856763",
    "league": "cfb",
@@ -12768,7 +12744,10 @@
    "ours": 9,
    "market": 9.5,
    "label": "SJSU +9.5",
-   "lockedAt": "2026-11-27T19:01:43.063Z"
+   "lockedAt": "2026-11-27T19:01:43.063Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "NDSU 38, SJSU 31"
   },
   {
    "id": "401864546",
@@ -12817,6 +12796,22 @@
    "market": 9.5,
    "label": "MINN +9.5",
    "lockedAt": "2026-11-27T23:01:53.823Z"
+  },
+  {
+   "id": "401856880",
+   "league": "cfb",
+   "gid": "401856880",
+   "side": "away",
+   "team": "WVU",
+   "game": "WVU @ UTAH",
+   "kick": "2026-11-28T02:00Z",
+   "line": 25.5,
+   "price": -110,
+   "book": "standard",
+   "ours": 23.4,
+   "market": 25.5,
+   "label": "WVU +25.5",
+   "lockedAt": "2026-11-28T00:31:39.751Z"
   }
  ]
 }
