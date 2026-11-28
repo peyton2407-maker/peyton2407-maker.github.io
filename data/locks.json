@@ -44,7 +44,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 49.5,
-   "lockedAt": "2026-11-28T05:46:23.569Z",
+   "lockedAt": "2026-11-28T06:01:25.424Z",
    "provisional": true
   },
   "401856759": {
@@ -90,7 +90,7 @@
    "total_play": false,
    "spread": 3,
    "total": 53.5,
-   "lockedAt": "2026-11-28T05:46:23.569Z",
+   "lockedAt": "2026-11-28T06:01:25.424Z",
    "provisional": true
   },
   "401856762": {
@@ -186,7 +186,7 @@
    "total_play": false,
    "spread": -24.5,
    "total": 54.5,
-   "lockedAt": "2026-11-28T05:46:23.569Z",
+   "lockedAt": "2026-11-28T06:01:25.424Z",
    "provisional": true
   },
   "401858314": {
@@ -207,7 +207,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 53.5,
-   "lockedAt": "2026-11-28T05:46:23.569Z",
+   "lockedAt": "2026-11-28T06:01:25.424Z",
    "provisional": true
   },
   "401858537": {
@@ -228,7 +228,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 48.5,
-   "lockedAt": "2026-11-28T05:46:23.569Z",
+   "lockedAt": "2026-11-28T06:01:25.424Z",
    "provisional": true
   },
   "401858540": {
@@ -249,7 +249,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 37.5,
-   "lockedAt": "2026-11-28T05:46:23.569Z",
+   "lockedAt": "2026-11-28T06:01:25.424Z",
    "provisional": true
   },
   "401858544": {
@@ -295,7 +295,28 @@
    "total_play": false,
    "spread": 3.5,
    "total": 44.5,
-   "lockedAt": "2026-11-28T05:46:23.569Z",
+   "lockedAt": "2026-11-28T06:01:25.424Z",
+   "provisional": true
+  },
+  "401862837": {
+   "id": "401862837",
+   "league": "cfb",
+   "week": 13,
+   "short": "FAU @ ECU",
+   "home": "ECU",
+   "away": "FAU",
+   "date": "2026-11-28T18:00Z",
+   "pick": "ECU",
+   "pick_line": "ECU -1.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 1.9,
+   "our_total": 58.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -1.5,
+   "total": 58.5,
+   "lockedAt": "2026-11-28T06:01:25.424Z",
    "provisional": true
   },
   "401862838": {
@@ -366,7 +387,7 @@
    "total_play": false,
    "spread": 16.5,
    "total": 53.5,
-   "lockedAt": "2026-11-28T05:46:23.569Z",
+   "lockedAt": "2026-11-28T06:01:25.424Z",
    "provisional": true
   },
   "401864546": {
@@ -537,7 +558,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 50.5,
-   "lockedAt": "2026-11-28T05:46:23.569Z",
+   "lockedAt": "2026-11-28T06:01:25.424Z",
    "provisional": true
   },
   "401869930": {
@@ -583,7 +604,70 @@
    "total_play": false,
    "spread": -1.5,
    "total": 52.5,
-   "lockedAt": "2026-11-28T05:46:23.569Z",
+   "lockedAt": "2026-11-28T06:01:25.424Z",
+   "provisional": true
+  },
+  "401870804": {
+   "id": "401870804",
+   "league": "cfb",
+   "week": 13,
+   "short": "KENN @ WKU",
+   "home": "WKU",
+   "away": "KENN",
+   "date": "2026-11-28T18:00Z",
+   "pick": "WKU",
+   "pick_line": "WKU +3.5",
+   "total_pick": "OVER 54.5",
+   "side_play": false,
+   "our_margin": -3.3,
+   "our_total": 54.1,
+   "confidence": null,
+   "total_play": false,
+   "spread": 3.5,
+   "total": 54.5,
+   "lockedAt": "2026-11-28T06:01:25.424Z",
+   "provisional": true
+  },
+  "401871102": {
+   "id": "401871102",
+   "league": "cfb",
+   "week": 13,
+   "short": "MRSH @ ULM",
+   "home": "ULM",
+   "away": "MRSH",
+   "date": "2026-11-28T18:00Z",
+   "pick": "ULM",
+   "pick_line": "ULM +6.5",
+   "total_pick": "UNDER 51.5",
+   "side_play": false,
+   "our_margin": -5.3,
+   "our_total": 50.6,
+   "confidence": null,
+   "total_play": false,
+   "spread": 6.5,
+   "total": 51.5,
+   "lockedAt": "2026-11-28T06:01:25.424Z",
+   "provisional": true
+  },
+  "401871103": {
+   "id": "401871103",
+   "league": "cfb",
+   "week": 13,
+   "short": "USM @ ODU",
+   "home": "ODU",
+   "away": "USM",
+   "date": "2026-11-28T18:00Z",
+   "pick": "USM",
+   "pick_line": "USM +5.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 4.7,
+   "our_total": 49.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -5.5,
+   "total": 49.5,
+   "lockedAt": "2026-11-28T06:01:25.424Z",
    "provisional": true
   },
   "401873079": {
@@ -2575,6 +2659,36 @@
     "close_src": "board",
     "clv": 0,
     "by": "Final total 80, 14.5 over 65.5"
+   },
+   {
+    "key": "slate:2026-11-28",
+    "week": 13,
+    "day": "2026-11-28",
+    "league": "cfb",
+    "id": "401862837",
+    "game": "FAU @ ECU",
+    "kind": "Under",
+    "line": "UNDER 58.5",
+    "hitPct": 54,
+    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 58.5. At -110 the price needs 52%; we count it at 54%, so it's 3.7% better than the price.",
+    "label": "Best of Saturday's 52 games",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 1,
+    "price": -110,
+    "book": "standard -110",
+    "bookPct": 50,
+    "ev": 0.037,
+    "ours": "ECU -1.9 · total 58.5",
+    "score": "FAU 28.3 – ECU 30.2",
+    "market": "ECU -1.5 · total 58.5",
+    "lockedAt": "2026-11-28T06:01:25.502Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-28T18:00Z",
+    "big": true,
+    "savedAt": 1795845685502
    }
   ],
   "cfbHit": [
@@ -2825,7 +2939,7 @@
    }
   ]
  },
- "updated": "2026-11-28T05:46:23.569Z",
+ "updated": "2026-11-28T06:01:25.424Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
