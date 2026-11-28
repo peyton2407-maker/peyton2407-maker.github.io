@@ -26,6 +26,27 @@
    "clv_side": 0,
    "clv_total": null
   },
+  "401856758": {
+   "id": "401856758",
+   "league": "cfb",
+   "week": 13,
+   "short": "LSU @ ARK",
+   "home": "ARK",
+   "away": "LSU",
+   "date": "2026-11-28T17:45Z",
+   "pick": "ARK",
+   "pick_line": "ARK +14.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -13.7,
+   "our_total": 49.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 14.5,
+   "total": 49.5,
+   "lockedAt": "2026-11-28T05:46:23.569Z",
+   "provisional": true
+  },
   "401856759": {
    "id": "401856759",
    "league": "cfb",
@@ -69,7 +90,7 @@
    "total_play": false,
    "spread": 3,
    "total": 53.5,
-   "lockedAt": "2026-11-28T05:31:43.330Z",
+   "lockedAt": "2026-11-28T05:46:23.569Z",
    "provisional": true
   },
   "401856762": {
@@ -165,7 +186,7 @@
    "total_play": false,
    "spread": -24.5,
    "total": 54.5,
-   "lockedAt": "2026-11-28T05:31:43.330Z",
+   "lockedAt": "2026-11-28T05:46:23.569Z",
    "provisional": true
   },
   "401858314": {
@@ -186,7 +207,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 53.5,
-   "lockedAt": "2026-11-28T05:31:43.330Z",
+   "lockedAt": "2026-11-28T05:46:23.569Z",
    "provisional": true
   },
   "401858537": {
@@ -207,7 +228,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 48.5,
-   "lockedAt": "2026-11-28T05:31:43.330Z",
+   "lockedAt": "2026-11-28T05:46:23.569Z",
    "provisional": true
   },
   "401858540": {
@@ -228,7 +249,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 37.5,
-   "lockedAt": "2026-11-28T05:31:43.330Z",
+   "lockedAt": "2026-11-28T05:46:23.569Z",
    "provisional": true
   },
   "401858544": {
@@ -274,7 +295,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 44.5,
-   "lockedAt": "2026-11-28T05:31:43.330Z",
+   "lockedAt": "2026-11-28T05:46:23.569Z",
    "provisional": true
   },
   "401862838": {
@@ -337,15 +358,15 @@
    "date": "2026-11-28T17:00Z",
    "pick": "CLT",
    "pick_line": "CLT +16.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "UNDER 53.5",
    "side_play": false,
    "our_margin": -14.5,
-   "our_total": 54.5,
+   "our_total": 53.9,
    "confidence": null,
    "total_play": false,
    "spread": 16.5,
-   "total": 54.5,
-   "lockedAt": "2026-11-28T05:31:43.330Z",
+   "total": 53.5,
+   "lockedAt": "2026-11-28T05:46:23.569Z",
    "provisional": true
   },
   "401864546": {
@@ -516,7 +537,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 50.5,
-   "lockedAt": "2026-11-28T05:31:43.330Z",
+   "lockedAt": "2026-11-28T05:46:23.569Z",
    "provisional": true
   },
   "401869930": {
@@ -562,7 +583,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 52.5,
-   "lockedAt": "2026-11-28T05:31:43.330Z",
+   "lockedAt": "2026-11-28T05:46:23.569Z",
    "provisional": true
   },
   "401873079": {
@@ -2533,9 +2554,9 @@
     "hitPct": 54,
     "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 65.5. At -110 the price needs 52%; we count it at 54%, so it's 3.8% better than the price.",
     "label": "Friday · next game",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "WVU 28 – UTAH 52",
+    "resultWhy": "It missed. UNDER 65.5 did not cash. Final was WVU 28 – UTAH 52.",
     "units": 1,
     "price": -110,
     "book": "standard -110",
@@ -2552,7 +2573,8 @@
     "close_line": 65.5,
     "closeAt": "2026-11-28T01:02:09.796Z",
     "close_src": "board",
-    "clv": 0
+    "clv": 0,
+    "by": "Final total 80, 14.5 over 65.5"
    }
   ],
   "cfbHit": [
@@ -2670,9 +2692,9 @@
     "hitPct": 54,
     "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 65.5. At -110 the price needs 52%; we count it at 54%, so it's 3.7% better than the price.",
     "label": "Best chance to hit · Friday",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "MISS",
+    "final": "WVU 28 – UTAH 52",
+    "resultWhy": "It missed. UNDER 65.5 did not cash. Final was WVU 28 – UTAH 52.",
     "units": 1,
     "price": -110,
     "book": "standard -110",
@@ -2683,11 +2705,11 @@
     "market": "UTAH -25.5 · total 65.5",
     "lockedAt": "2026-11-27T21:16:44.130Z",
     "locked": true,
-    "provisional": false,
     "kick": "2026-11-28T02:00Z",
     "big": true,
     "savedAt": 1795814204130,
-    "note": "No lock run landed in the 90 minutes before kickoff; this is the last play saved before kickoff."
+    "note": "No lock run landed in the 90 minutes before kickoff; this is the last play saved before kickoff.",
+    "by": "Final total 80, 14.5 over 65.5"
    }
   ]
  },
@@ -2803,7 +2825,7 @@
    }
   ]
  },
- "updated": "2026-11-28T05:31:43.330Z",
+ "updated": "2026-11-28T05:46:23.569Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -13151,7 +13173,10 @@
    "ours": 23.4,
    "market": 25.5,
    "label": "WVU +25.5",
-   "lockedAt": "2026-11-28T00:31:39.751Z"
+   "lockedAt": "2026-11-28T00:31:39.751Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "WVU 28, UTAH 52"
   }
  ]
 }
