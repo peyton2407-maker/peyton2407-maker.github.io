@@ -119,7 +119,7 @@
    "total_play": false,
    "spread": -25.5,
    "total": 65.5,
-   "lockedAt": "2026-11-27T23:46:42.120Z",
+   "lockedAt": "2026-11-28T00:01:39.958Z",
    "provisional": true
   },
   "401862838": {
@@ -2281,9 +2281,9 @@
     "hitPct": 54,
     "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 66.5. At -110 the price needs 52%; we count it at 54%, so it's 3.7% better than the price.",
     "label": "Best of Friday's 7 games",
-    "result": null,
-    "final": null,
-    "resultWhy": "",
+    "result": "HIT",
+    "final": "TEM 35 – MEM 31",
+    "resultWhy": "It hit. UNDER 66.5 cashed. Final was TEM 35 – MEM 31.",
     "units": 1,
     "price": -110,
     "book": "standard -110",
@@ -2300,7 +2300,8 @@
     "close_line": 66.5,
     "closeAt": "2026-11-27T19:31:30.961Z",
     "close_src": "board",
-    "clv": 0
+    "clv": 0,
+    "by": "Final total 66, 0.5 under 66.5"
    },
    {
     "key": "game:401856880",
@@ -2312,7 +2313,7 @@
     "kind": "Under",
     "line": "UNDER 65.5",
     "hitPct": 54,
-    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 65.5. At -110 the price needs 52%; we count it at 54%, so it's 3.7% better than the price.",
+    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 65.5. At -110 the price needs 52%; we count it at 54%, so it's 3.8% better than the price.",
     "label": "Friday · next game",
     "result": null,
     "final": null,
@@ -2321,16 +2322,16 @@
     "price": -110,
     "book": "standard -110",
     "bookPct": 50,
-    "ev": 0.037,
+    "ev": 0.038,
     "ours": "UTAH -23.4 · total 65.5",
     "score": "WVU 21.1 – UTAH 44.5",
     "market": "UTAH -25.5 · total 65.5",
-    "lockedAt": "2026-11-27T23:46:42.171Z",
+    "lockedAt": "2026-11-28T00:01:40.010Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T02:00Z",
     "big": false,
-    "savedAt": 1795823202171
+    "savedAt": 1795824100010
    }
   ],
   "cfbHit": [
@@ -2580,7 +2581,7 @@
    }
   ]
  },
- "updated": "2026-11-27T23:46:42.120Z",
+ "updated": "2026-11-28T00:01:39.958Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7290,9 +7291,9 @@
    "ev": 0.0571,
    "mev": 0.0306,
    "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
+   "result": "HIT",
+   "final": "TEM 35, MEM 31",
+   "units": 2.85
   },
   {
    "id": "401858544|sp|home",
@@ -12764,7 +12765,10 @@
    "ours": 16.4,
    "market": 19.5,
    "label": "TEM +19.5",
-   "lockedAt": "2026-11-27T19:01:43.063Z"
+   "lockedAt": "2026-11-27T19:01:43.063Z",
+   "result": "HIT",
+   "units": 0.9091,
+   "final": "TEM 35, MEM 31"
   },
   {
    "id": "401864549",
