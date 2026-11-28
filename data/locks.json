@@ -44,7 +44,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 49.5,
-   "lockedAt": "2026-11-28T06:16:29.614Z",
+   "lockedAt": "2026-11-28T06:31:37.526Z",
    "provisional": true
   },
   "401856759": {
@@ -82,15 +82,15 @@
    "date": "2026-11-28T17:00Z",
    "pick": "LOU",
    "pick_line": "LOU -3.0",
-   "total_pick": "NO PLAY",
+   "total_pick": "UNDER 53.5",
    "side_play": false,
    "our_margin": -3.5,
-   "our_total": 53.5,
+   "our_total": 52.6,
    "confidence": null,
    "total_play": false,
    "spread": 3,
    "total": 53.5,
-   "lockedAt": "2026-11-28T06:16:29.614Z",
+   "lockedAt": "2026-11-28T06:31:37.526Z",
    "provisional": true
   },
   "401856762": {
@@ -186,7 +186,7 @@
    "total_play": false,
    "spread": -24.5,
    "total": 54.5,
-   "lockedAt": "2026-11-28T06:16:29.614Z",
+   "lockedAt": "2026-11-28T06:31:37.526Z",
    "provisional": true
   },
   "401858314": {
@@ -207,7 +207,7 @@
    "total_play": false,
    "spread": 25.5,
    "total": 53.5,
-   "lockedAt": "2026-11-28T06:16:29.614Z",
+   "lockedAt": "2026-11-28T06:31:37.526Z",
    "provisional": true
   },
   "401858537": {
@@ -228,7 +228,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 48.5,
-   "lockedAt": "2026-11-28T06:16:29.614Z",
+   "lockedAt": "2026-11-28T06:31:37.526Z",
    "provisional": true
   },
   "401858540": {
@@ -249,7 +249,7 @@
    "total_play": false,
    "spread": -10.5,
    "total": 37.5,
-   "lockedAt": "2026-11-28T06:16:29.614Z",
+   "lockedAt": "2026-11-28T06:31:37.526Z",
    "provisional": true
   },
   "401858544": {
@@ -287,15 +287,15 @@
    "date": "2026-11-28T17:00Z",
    "pick": "WYO",
    "pick_line": "WYO +3.5",
-   "total_pick": "UNDER 44.5",
+   "total_pick": "NO PLAY",
    "side_play": false,
    "our_margin": -2.2,
-   "our_total": 43.6,
+   "our_total": 44.5,
    "confidence": null,
    "total_play": false,
    "spread": 3.5,
    "total": 44.5,
-   "lockedAt": "2026-11-28T06:16:29.614Z",
+   "lockedAt": "2026-11-28T06:31:37.526Z",
    "provisional": true
   },
   "401862837": {
@@ -316,7 +316,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 58.5,
-   "lockedAt": "2026-11-28T06:16:29.614Z",
+   "lockedAt": "2026-11-28T06:31:37.526Z",
    "provisional": true
   },
   "401862838": {
@@ -387,7 +387,7 @@
    "total_play": false,
    "spread": 16.5,
    "total": 53.5,
-   "lockedAt": "2026-11-28T06:16:29.614Z",
+   "lockedAt": "2026-11-28T06:31:37.526Z",
    "provisional": true
   },
   "401864546": {
@@ -604,7 +604,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 52.5,
-   "lockedAt": "2026-11-28T06:16:29.614Z",
+   "lockedAt": "2026-11-28T06:31:37.526Z",
    "provisional": true
   },
   "401870804": {
@@ -625,7 +625,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 54.5,
-   "lockedAt": "2026-11-28T06:16:29.614Z",
+   "lockedAt": "2026-11-28T06:31:37.526Z",
    "provisional": true
   },
   "401871102": {
@@ -646,7 +646,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 51.5,
-   "lockedAt": "2026-11-28T06:16:29.614Z",
+   "lockedAt": "2026-11-28T06:31:37.526Z",
    "provisional": true
   },
   "401871103": {
@@ -659,15 +659,15 @@
    "date": "2026-11-28T18:00Z",
    "pick": "USM",
    "pick_line": "USM +5.5",
-   "total_pick": "NO PLAY",
+   "total_pick": "UNDER 49.5",
    "side_play": false,
    "our_margin": 4.7,
-   "our_total": 49.5,
+   "our_total": 48.6,
    "confidence": null,
    "total_play": false,
    "spread": -5.5,
    "total": 49.5,
-   "lockedAt": "2026-11-28T06:16:29.614Z",
+   "lockedAt": "2026-11-28T06:31:37.526Z",
    "provisional": true
   },
   "401873079": {
@@ -2683,12 +2683,12 @@
     "ours": "ECU -1.9 · total 58.5",
     "score": "FAU 28.3 – ECU 30.2",
     "market": "ECU -1.5 · total 58.5",
-    "lockedAt": "2026-11-28T06:16:29.691Z",
+    "lockedAt": "2026-11-28T06:31:37.602Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T18:00Z",
     "big": true,
-    "savedAt": 1795846589691
+    "savedAt": 1795847497602
    }
   ],
   "cfbHit": [
@@ -2939,7 +2939,7 @@
    }
   ]
  },
- "updated": "2026-11-28T06:16:29.614Z",
+ "updated": "2026-11-28T06:31:37.526Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -7890,28 +7890,6 @@
    "mwin": 0.2687,
    "ev": 0.0397,
    "mev": 0.0478,
-   "src": "mkt",
-   "result": null,
-   "final": null,
-   "units": null
-  },
-  {
-   "id": "401861969|tot|under",
-   "gid": "401861969",
-   "league": "cfb",
-   "kind": "tot",
-   "side": "under",
-   "label": "Under 35.5",
-   "game": "CONN @ WYO",
-   "kick": "2026-11-28T17:00Z",
-   "line": 35.5,
-   "mainLine": 44.5,
-   "price": 280,
-   "book": "FanDuel",
-   "win": 0.2721,
-   "mwin": 0.2671,
-   "ev": 0.0338,
-   "mev": 0.0149,
    "src": "mkt",
    "result": null,
    "final": null,
