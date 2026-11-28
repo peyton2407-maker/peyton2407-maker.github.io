@@ -44,7 +44,7 @@
    "total_play": false,
    "spread": 14.5,
    "total": 49.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401856759": {
@@ -72,6 +72,27 @@
    "clv_side": 0,
    "clv_total": 0
   },
+  "401856760": {
+   "id": "401856760",
+   "league": "cfb",
+   "week": 13,
+   "short": "GT @ UGA",
+   "home": "UGA",
+   "away": "GT",
+   "date": "2026-11-28T20:30Z",
+   "pick": "GT",
+   "pick_line": "GT +35.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 32.5,
+   "our_total": 55.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -35.5,
+   "total": 55.5,
+   "lockedAt": "2026-11-28T08:31:35.109Z",
+   "provisional": true
+  },
   "401856761": {
    "id": "401856761",
    "league": "cfb",
@@ -90,7 +111,7 @@
    "total_play": false,
    "spread": 3,
    "total": 53.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401856762": {
@@ -136,7 +157,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 42.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401856875": {
@@ -157,7 +178,28 @@
    "total_play": true,
    "spread": -2.5,
    "total": 47.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
+   "provisional": true
+  },
+  "401856876": {
+   "id": "401856876",
+   "league": "cfb",
+   "week": 13,
+   "short": "CIN @ BYU",
+   "home": "BYU",
+   "away": "CIN",
+   "date": "2026-11-28T20:30Z",
+   "pick": "CIN",
+   "pick_line": "CIN +16.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 15.8,
+   "our_total": 55.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -16.5,
+   "total": 55.5,
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401856878": {
@@ -178,7 +220,7 @@
    "total_play": false,
    "spread": -4,
    "total": 52.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401856879": {
@@ -249,7 +291,28 @@
    "total_play": false,
    "spread": -24.5,
    "total": 54.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
+   "provisional": true
+  },
+  "401858312": {
+   "id": "401858312",
+   "league": "cfb",
+   "week": 13,
+   "short": "DUKE @ WAKE",
+   "home": "WAKE",
+   "away": "DUKE",
+   "date": "2026-11-28T20:30Z",
+   "pick": "DUKE",
+   "pick_line": "DUKE +14.5",
+   "total_pick": "NO PLAY",
+   "side_play": true,
+   "our_margin": 12.9,
+   "our_total": 55.5,
+   "confidence": 50,
+   "total_play": false,
+   "spread": -14.5,
+   "total": 55.5,
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401858314": {
@@ -270,7 +333,28 @@
    "total_play": false,
    "spread": 25.5,
    "total": 53.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
+   "provisional": true
+  },
+  "401858316": {
+   "id": "401858316",
+   "league": "cfb",
+   "week": 13,
+   "short": "SMU @ STAN",
+   "home": "STAN",
+   "away": "SMU",
+   "date": "2026-11-28T20:30Z",
+   "pick": "STAN",
+   "pick_line": "STAN +7.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -6.8,
+   "our_total": 60.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 7.5,
+   "total": 60.5,
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401858317": {
@@ -291,7 +375,7 @@
    "total_play": false,
    "spread": -3,
    "total": 50.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401858537": {
@@ -312,7 +396,28 @@
    "total_play": false,
    "spread": -3.5,
    "total": 48.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
+   "provisional": true
+  },
+  "401858539": {
+   "id": "401858539",
+   "league": "cfb",
+   "week": 13,
+   "short": "PSU @ MD",
+   "home": "MD",
+   "away": "PSU",
+   "date": "2026-11-28T20:30Z",
+   "pick": "PSU",
+   "pick_line": "PSU -7.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": -7.7,
+   "our_total": 48.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": 7.5,
+   "total": 48.5,
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401858540": {
@@ -333,7 +438,28 @@
    "total_play": false,
    "spread": -10.5,
    "total": 37.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
+   "provisional": true
+  },
+  "401858543": {
+   "id": "401858543",
+   "league": "cfb",
+   "week": 13,
+   "short": "USC @ UCLA",
+   "home": "UCLA",
+   "away": "USC",
+   "date": "2026-11-28T20:30Z",
+   "pick": "UCLA",
+   "pick_line": "UCLA +4.5",
+   "total_pick": "NO PLAY",
+   "side_play": true,
+   "our_margin": -1.5,
+   "our_total": 46.5,
+   "confidence": 51,
+   "total_play": false,
+   "spread": 4.5,
+   "total": 46.5,
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401858544": {
@@ -379,7 +505,7 @@
    "total_play": false,
    "spread": 3.5,
    "total": 44.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401862837": {
@@ -400,7 +526,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 58.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401862838": {
@@ -471,7 +597,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 46.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401862842": {
@@ -492,7 +618,7 @@
    "total_play": false,
    "spread": 16.5,
    "total": 53.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401864546": {
@@ -544,6 +670,27 @@
    "closeAt": "2026-11-27T19:31:30.961Z",
    "clv_side": 0,
    "clv_total": 0
+  },
+  "401864550": {
+   "id": "401864550",
+   "league": "cfb",
+   "week": 13,
+   "short": "UTEP @ NIU",
+   "home": "NIU",
+   "away": "UTEP",
+   "date": "2026-11-28T20:30Z",
+   "pick": "NIU",
+   "pick_line": "NIU -4.5",
+   "total_pick": "NO PLAY",
+   "side_play": false,
+   "our_margin": 6.2,
+   "our_total": 50.5,
+   "confidence": null,
+   "total_play": false,
+   "spread": -4.5,
+   "total": 50.5,
+   "lockedAt": "2026-11-28T08:31:35.109Z",
+   "provisional": true
   },
   "401866470": {
    "id": "401866470",
@@ -666,6 +813,27 @@
    "lockedAt": "2026-11-28T06:16:29.614Z",
    "provisional": true
   },
+  "401866475": {
+   "id": "401866475",
+   "league": "cfb",
+   "week": 13,
+   "short": "MASS @ BGSU",
+   "home": "BGSU",
+   "away": "MASS",
+   "date": "2026-11-28T20:30Z",
+   "pick": "MASS",
+   "pick_line": "MASS +3.0",
+   "total_pick": "UNDER 41.5",
+   "side_play": false,
+   "our_margin": 1.5,
+   "our_total": 40.6,
+   "confidence": null,
+   "total_play": false,
+   "spread": -3,
+   "total": 41.5,
+   "lockedAt": "2026-11-28T08:31:35.109Z",
+   "provisional": true
+  },
   "401869930": {
    "id": "401869930",
    "league": "cfb",
@@ -709,7 +877,7 @@
    "total_play": false,
    "spread": -3.5,
    "total": 46.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401869947": {
@@ -730,7 +898,7 @@
    "total_play": false,
    "spread": -17.5,
    "total": 54.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401869954": {
@@ -751,7 +919,7 @@
    "total_play": false,
    "spread": -1.5,
    "total": 52.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401869959": {
@@ -772,7 +940,7 @@
    "total_play": false,
    "spread": 4.5,
    "total": 55.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401870804": {
@@ -793,7 +961,28 @@
    "total_play": false,
    "spread": 3.5,
    "total": 54.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
+   "provisional": true
+  },
+  "401871062": {
+   "id": "401871062",
+   "league": "cfb",
+   "week": 13,
+   "short": "JXST @ DEL",
+   "home": "DEL",
+   "away": "JXST",
+   "date": "2026-11-28T20:30Z",
+   "pick": "JXST",
+   "pick_line": "JXST +2.5",
+   "total_pick": "UNDER 57.5",
+   "side_play": false,
+   "our_margin": 1.7,
+   "our_total": 56.6,
+   "confidence": null,
+   "total_play": false,
+   "spread": -2.5,
+   "total": 57.5,
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401871063": {
@@ -814,7 +1003,7 @@
    "total_play": false,
    "spread": 18.5,
    "total": 52.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401871082": {
@@ -835,7 +1024,7 @@
    "total_play": false,
    "spread": -11.5,
    "total": 41.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401871083": {
@@ -856,7 +1045,7 @@
    "total_play": false,
    "spread": -3,
    "total": 51.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401871102": {
@@ -877,7 +1066,7 @@
    "total_play": false,
    "spread": 6.5,
    "total": 51.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401871103": {
@@ -898,7 +1087,7 @@
    "total_play": false,
    "spread": -5.5,
    "total": 49.5,
-   "lockedAt": "2026-11-28T08:16:58.233Z",
+   "lockedAt": "2026-11-28T08:31:35.109Z",
    "provisional": true
   },
   "401873079": {
@@ -2914,12 +3103,12 @@
     "ours": "ECU -1.9 · total 58.5",
     "score": "FAU 28.3 – ECU 30.2",
     "market": "ECU -1.5 · total 58.5",
-    "lockedAt": "2026-11-28T08:16:58.284Z",
+    "lockedAt": "2026-11-28T08:31:35.185Z",
     "locked": false,
     "provisional": true,
     "kick": "2026-11-28T18:00Z",
     "big": true,
-    "savedAt": 1795853818284
+    "savedAt": 1795854695185
    }
   ],
   "cfbHit": [
@@ -3055,6 +3244,36 @@
     "savedAt": 1795814204130,
     "note": "No lock run landed in the 90 minutes before kickoff; this is the last play saved before kickoff.",
     "by": "Final total 80, 14.5 over 65.5"
+   },
+   {
+    "key": "slate:2026-11-28",
+    "week": 13,
+    "day": "2026-11-28",
+    "league": "cfbHit",
+    "id": "401858316",
+    "game": "SMU @ STAN",
+    "kind": "Under",
+    "line": "UNDER 60.5",
+    "hitPct": 54,
+    "why": "College games with a total of 58 or more have gone under 561-458 (55.1%) at the closing total since 2021, and held up in both halves of that stretch; this one is at 60.5. At -110 the price needs 52%; we count it at 54%, so it's 3.7% better than the price.",
+    "label": "Best chance to hit · Saturday",
+    "result": null,
+    "final": null,
+    "resultWhy": "",
+    "units": 1,
+    "price": -110,
+    "book": "standard -110",
+    "bookPct": 50,
+    "ev": 0.037,
+    "ours": "SMU -6.8 · total 60.5",
+    "score": "SMU 33.6 – STAN 26.9",
+    "market": "SMU -7.5 · total 60.5",
+    "lockedAt": "2026-11-28T08:31:35.192Z",
+    "locked": false,
+    "provisional": true,
+    "kick": "2026-11-28T20:30Z",
+    "big": true,
+    "savedAt": 1795854695192
    }
   ]
  },
@@ -3170,7 +3389,7 @@
    }
   ]
  },
- "updated": "2026-11-28T08:16:58.233Z",
+ "updated": "2026-11-28T08:31:35.109Z",
  "ladder": [
   {
    "key": "ladder:2026-11-03",
@@ -9783,22 +10002,22 @@
    "units": null
   },
   {
-   "key": "401873091|3117251",
+   "key": "401873091|4430878",
    "gid": "401873091",
-   "pid": "3117251",
-   "name": "Christian McCaffrey",
-   "pos": "RB",
-   "team": "SF",
-   "opp": "SEA",
+   "pid": "4430878",
+   "name": "Jaxon Smith-Njigba",
+   "pos": "WR",
+   "team": "SEA",
+   "opp": "SF",
    "game": "SEA @ SF",
    "kick": "2026-11-29T21:25Z",
-   "price": -140,
-   "book": "DraftKings",
+   "price": 126,
+   "book": "Caesars",
    "books": 6,
-   "ours": 0.5317,
-   "mkt": 0.5106,
-   "win": 0.6268,
-   "ev": 0.0745,
+   "ours": 0.3751,
+   "mkt": 0.4141,
+   "win": 0.514,
+   "ev": 0.1616,
    "rule": "likely",
    "result": null,
    "final": null,
